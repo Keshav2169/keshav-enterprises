@@ -8,11 +8,12 @@ import {
 
 // --- DESIGN TOKENS & CONSTANTS ---
 const COLORS = {
-  primary: '#002147', // Deep Navy
-  accent: '#1E40AF',  // Bright Royal Blue
-  text: '#111827',    // Near Black for maximum visibility
-  background: '#FFFFFF', // Pure White
-  sectionBg: '#F3F4F6' // Light Gray
+  primary: '#0A192F', // Deep Corporate Navy
+  accent: '#2563EB',  // Vibrant Trust Blue
+  textDark: '#0F172A', // Slate 900
+  textMuted: '#475569', // Slate 600
+  background: '#FFFFFF', 
+  sectionBg: '#F8FAFC' // Slate 50 (Very light, premium gray)
 };
 
 const CONTACT_INFO = {
@@ -20,21 +21,20 @@ const CONTACT_INFO = {
   email: 'ksengg007@gmail.com',
   secondaryEmail: 'ppshekher71@gmail.com',
   address: 'Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, U.P., India',
-  whatsapp: '916397363268', 
+  whatsapp: '6397363268', 
   indiamart: 'https://www.indiamart.com/keshav-enterprises-shamli/',
   gmapsShare: 'https://share.google/uLc4GwsGec5eM62Ep' 
 };
 
 // --- DATA MODELS ---
 const SERVICES = [
-  { id: 'srv_1', title: 'Turbine Erection & Commissioning', icon: <CheckCircle2 className="w-6 h-6" />, desc: 'Expert erection and commissioning for steam turbines, pumps, compressors, and condensers. Includes complete OEM coordination and documentation.' },
-  { id: 'srv_2', title: 'Turnkey Overhauling & Maintenance', icon: <Wrench className="w-6 h-6" />, desc: 'Executed by ex-OEM engineers. Includes pre-shutdown planning, condition reporting, and 24x7 emergency troubleshooting.' },
-  { id: 'srv_3', title: 'Precision Reverse Engineering', icon: <Settings className="w-6 h-6" />, desc: '3D scanning, CMM, copying lathe, and PMI testing capabilities for turbines ranging from 5 kW to 27 MW.' },
-  { id: 'srv_4', title: 'Dynamic Balancing & Alignment', icon: <Activity className="w-6 h-6" />, desc: 'ISO/API standard dynamic balancing (50–2000 kg capacity), vibration monitoring, and precision laser alignment.' },
-  { id: 'srv_5', title: 'Lube Oil Flushing', icon: <Droplets className="w-6 h-6" />, desc: 'ISO-compliant flushing using high-capacity mobile centrifuge systems, complete with rigorous oil sampling and reporting.' }
+  { id: 'srv_1', title: 'Turbine Erection & Commissioning', icon: <CheckCircle2 className="w-7 h-7" />, desc: 'Expert erection and commissioning for steam turbines, pumps, compressors, and condensers. Includes complete OEM coordination and documentation.' },
+  { id: 'srv_2', title: 'Turnkey Overhauling & Maintenance', icon: <Wrench className="w-7 h-7" />, desc: 'Executed by ex-OEM engineers. Includes pre-shutdown planning, condition reporting, and 24x7 emergency troubleshooting.' },
+  { id: 'srv_3', title: 'Precision Reverse Engineering', icon: <Settings className="w-7 h-7" />, desc: '3D scanning, CMM, copying lathe, and PMI testing capabilities for turbines ranging from 5 kW to 27 MW.' },
+  { id: 'srv_4', title: 'Dynamic Balancing & Alignment', icon: <Activity className="w-7 h-7" />, desc: 'ISO/API standard dynamic balancing (50–2000 kg capacity), vibration monitoring, and precision laser alignment.' },
+  { id: 'srv_5', title: 'Lube Oil Flushing', icon: <Droplets className="w-7 h-7" />, desc: 'ISO-compliant flushing using high-capacity mobile centrifuge systems, complete with rigorous oil sampling and reporting.' }
 ];
 
-// DATA UPGRADE: "images" is now an Array to support multiple angles/photos per product
 const PRODUCTS = [
   // --- CATEGORY 1: Industrial Filtration & Strainers (15) ---
   { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter.jpg'] },
@@ -94,14 +94,13 @@ const PRODUCTS = [
 ];
 
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map(p => p.category))];
-
 const OEMS = ['Triveni', 'Siemens', 'BHEL', 'Belliss & Morcom', 'Alstom', 'GE', 'Maxwatt', 'Man Turbo', 'Chola Turbo', 'DLF-Skoda', 'KKK', 'ABB'];
 
 // --- REUSABLE COMPONENTS ---
 
 const BrandLogo = ({ scrolled, forceWhite, onClick }) => {
   const [imgError, setImgError] = useState(false);
-  const textColor = forceWhite ? 'text-white' : (scrolled ? 'text-[#002147]' : 'text-white');
+  const textColor = forceWhite ? 'text-white' : (scrolled ? 'text-slate-900' : 'text-white');
 
   return (
     <div className="flex items-center space-x-3 cursor-pointer group" onClick={onClick}>
@@ -109,16 +108,16 @@ const BrandLogo = ({ scrolled, forceWhite, onClick }) => {
         <img 
           src="keshav-logo.png" 
           alt="KESHAV ENTERPRISES Logo" 
-          className="h-12 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 bg-white rounded-sm p-1 shadow-sm"
+          className="h-10 sm:h-12 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 bg-white rounded p-1 shadow-sm"
           onError={() => setImgError(true)} 
         />
       ) : (
-        <div className="h-10 w-10 bg-[#1E40AF] rounded-sm flex items-center justify-center transform group-hover:rotate-90 transition-transform duration-500 shadow-sm">
+        <div className="h-10 w-10 bg-blue-600 rounded-sm flex items-center justify-center transform group-hover:rotate-90 transition-transform duration-500 shadow-sm">
           <Settings className="w-6 h-6 text-white" />
         </div>
       )}
-      <div className={`font-black text-2xl tracking-tight ${textColor}`}>
-        KESHAV ENTERPRISES<span className="text-[#1E40AF]">.</span>
+      <div className={`font-black text-xl sm:text-2xl tracking-tight ${textColor}`}>
+        KESHAV ENTERPRISES<span className="text-blue-500">.</span>
       </div>
     </div>
   );
@@ -128,7 +127,7 @@ const MakeInIndiaBadge = () => {
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="inline-flex items-center space-x-3 bg-white px-4 py-2 rounded-md border border-gray-200 shadow-md">
+    <div className="inline-flex items-center space-x-3 bg-white px-4 py-2 rounded-md border border-slate-200 shadow-md">
       {!imgError ? (
         <img 
           src="make-in-india.png" 
@@ -141,9 +140,9 @@ const MakeInIndiaBadge = () => {
             <Zap className="w-4 h-4 text-white" />
         </div>
       )}
-      <div className="flex flex-col justify-center border-l border-gray-200 pl-3">
-        <span className="text-[#002147] font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
-        <span className="text-gray-800 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
+      <div className="flex flex-col justify-center border-l border-slate-200 pl-3">
+        <span className="text-slate-900 font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
+        <span className="text-slate-600 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
       </div>
     </div>
   );
@@ -151,41 +150,38 @@ const MakeInIndiaBadge = () => {
 
 const getCategoryIcon = (category) => {
   switch(category) {
-    case 'Industrial Filtration': return <Droplets className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
-    case 'Expansion Joints': return <Layers className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
-    case 'Turbine Spares': return <Settings className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
-    case 'Hose Pipes': return <Activity className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
-    case 'Electronic Equipments': return <Cpu className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
-    default: return <Settings className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 transition-transform duration-500" />;
+    case 'Industrial Filtration': return <Droplets className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Expansion Joints': return <Layers className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Turbine Spares': return <Settings className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Hose Pipes': return <Activity className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Electronic Equipments': return <Cpu className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    default: return <Settings className="w-16 h-16 text-slate-300 group-hover:scale-110 transition-transform duration-500" />;
   }
 };
 
-// UPGRADED PRODUCT CARD: Now clickable & passes route state to open ProductDetailsPage
 const ProductCard = ({ product, setCurrentRoute }) => {
   const [imgError, setImgError] = useState(false);
   const primaryImage = product.images && product.images.length > 0 ? product.images[0] : null;
 
   const handleCardClick = (e) => {
-    // Prevent routing if user clicks an external link button directly
     if (e.target.closest('a')) return;
     setCurrentRoute(`/product/${product.id}`);
     window.scrollTo(0,0);
   };
 
   return (
-    <div onClick={handleCardClick} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col h-full w-full text-left cursor-pointer">
-      <div className="h-40 bg-[#F3F4F6] border-b border-gray-200 flex items-center justify-center relative overflow-hidden shrink-0">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent z-10 pointer-events-none"></div>
-        <span className="absolute top-4 left-4 bg-[#002147] text-white text-[11px] font-black px-3 py-1.5 uppercase tracking-wider rounded-sm z-20 shadow-sm">
+    <div onClick={handleCardClick} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-blue-900/5 hover:-translate-y-1 hover:border-blue-200 transition-all duration-300 group flex flex-col h-full w-full text-left cursor-pointer">
+      <div className="h-44 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent z-10 pointer-events-none"></div>
+        <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-wider rounded z-20 shadow-sm">
           {product.category}
         </span>
         
-        {/* Render Main Image with Icon Fallback */}
         {primaryImage && !imgError ? (
           <img 
             src={primaryImage} 
             alt={product.title} 
-            className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105"
             onError={() => setImgError(true)}
           />
         ) : (
@@ -196,40 +192,28 @@ const ProductCard = ({ product, setCurrentRoute }) => {
       </div>
       
       <div className="p-6 flex-1 flex flex-col pointer-events-auto">
-        <h3 className="text-xl font-black text-[#002147] mb-2 leading-tight group-hover:text-[#1E40AF] transition-colors">{product.title}</h3>
-        <p className="text-gray-900 font-semibold text-sm mb-4 leading-relaxed line-clamp-3">{product.desc}</p>
+        <h3 className="text-xl font-black text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">{product.title}</h3>
+        <p className="text-slate-600 font-medium text-sm mb-5 leading-relaxed line-clamp-3">{product.desc}</p>
         
-        <div className="mb-5 flex items-start bg-blue-50/70 p-4 rounded-md border border-blue-200">
-          <Target className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 shrink-0" />
-          <p className="text-sm text-gray-900 font-bold leading-relaxed line-clamp-2">
-            <strong className="text-[#002147] font-black">Usage: </strong> 
+        <div className="mb-6 flex items-start bg-slate-50 p-4 rounded-lg border border-slate-100">
+          <Target className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0" />
+          <p className="text-sm text-slate-700 font-medium leading-relaxed line-clamp-2">
+            <strong className="text-slate-900 font-bold">Usage: </strong> 
             {product.usage}
           </p>
         </div>
 
-        <div className="mb-6 flex-1 bg-gray-50/80 rounded-md p-5 border border-gray-200">
-          <h4 className="text-xs font-black text-gray-600 uppercase tracking-widest mb-3">Key Specifications</h4>
-          <ul className="space-y-3">
-            {product.features.map((feature, i) => (
-              <li key={i} className="text-sm font-bold text-gray-900 flex items-start">
-                <CheckCircle2 className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 shrink-0" />
-                <span className="leading-snug">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex flex-col xl:flex-row gap-3 mt-auto pt-4 border-t border-gray-200">
+        <div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
           <a 
             href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I need a quotation and more details regarding your product: ${product.title}.`}
             target="_blank"
             rel="noreferrer"
-            className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-sm font-black rounded-md hover:bg-[#1ebe5d] transition-colors shadow-md"
+            className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-colors shadow-sm"
           >
-            <MessageCircle className="w-5 h-5 mr-2" /> WhatsApp
+            <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp
           </a>
-          <div className="flex-1 bg-[#002147] text-white flex items-center justify-center py-3 text-sm font-black rounded-md hover:bg-[#1E40AF] transition-colors shadow-md">
-             View Specs <ArrowRight className="w-4 h-4 ml-2" />
+          <div className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3 text-sm font-bold rounded-lg group-hover:bg-blue-600 transition-colors shadow-sm">
+             View Specs <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
           </div>
         </div>
       </div>
@@ -262,7 +246,7 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#FFFFFF] shadow-md py-3' : 'bg-[#002147] text-white py-5'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 border-b ${scrolled ? 'bg-white/95 backdrop-blur-md border-slate-200 shadow-sm py-3' : 'bg-[#0A192F] border-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
@@ -273,10 +257,10 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
               <button 
                 key={link.name}
                 onClick={() => handleNav(link.path)}
-                className={`text-sm font-black uppercase tracking-wider transition-colors hover:text-[#1E40AF] ${
+                className={`text-sm font-bold uppercase tracking-wider transition-colors ${
                   currentRoute === link.path || (currentRoute.startsWith('/product/') && link.path === '/products')
-                    ? 'text-[#1E40AF]' 
-                    : scrolled ? 'text-gray-900' : 'text-white'
+                    ? (scrolled ? 'text-blue-600' : 'text-blue-400')
+                    : (scrolled ? 'text-slate-600 hover:text-blue-600' : 'text-slate-300 hover:text-white')
                 }`}
               >
                 {link.name}
@@ -284,14 +268,14 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
             ))}
             <button 
               onClick={() => handleNav('/contact')}
-              className="bg-[#002147] text-white px-6 py-2.5 rounded-sm font-black hover:bg-[#1E40AF] transition-colors shadow-lg shadow-blue-900/30"
+              className="bg-blue-600 text-white px-6 py-2.5 rounded font-bold hover:bg-blue-500 transition-colors shadow-lg shadow-blue-600/30"
             >
               Get Quote
             </button>
           </div>
 
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)} className={scrolled ? 'text-[#002147]' : 'text-white'}>
+            <button onClick={() => setIsOpen(!isOpen)} className={scrolled ? 'text-slate-900' : 'text-white'}>
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
@@ -299,14 +283,14 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
       </div>
 
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-[#FFFFFF] shadow-xl border-t border-gray-100">
+        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-slate-100">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <button
                 key={link.name}
                 onClick={() => handleNav(link.path)}
-                className={`block w-full text-left px-4 py-4 rounded-md text-base font-black ${
-                  currentRoute === link.path ? 'text-[#1E40AF] bg-blue-50' : 'text-gray-900 hover:text-[#1E40AF] hover:bg-gray-50'
+                className={`block w-full text-left px-4 py-4 rounded-md text-base font-bold ${
+                  currentRoute === link.path ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
                 }`}
               >
                 {link.name}
@@ -320,31 +304,32 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
 };
 
 const Footer = ({ setCurrentRoute }) => (
-  <footer className="bg-[#001124] text-white pt-16 pb-8 border-t-[6px] border-[#1E40AF]">
+  <footer className="bg-[#0A192F] text-slate-300 pt-20 pb-8 border-t-[8px] border-blue-600">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div>
           <div className="mb-6">
             <BrandLogo scrolled={false} forceWhite={true} onClick={() => {setCurrentRoute('/'); window.scrollTo(0,0);}} />
           </div>
-          <p className="text-gray-200 font-bold text-sm leading-relaxed mb-6">
+          <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">
             20+ years of excellence in industrial turbine engineering, reverse engineering, and manufacturing. Delivering precision to power, sugar, and process industries.
           </p>
           <div className="flex flex-col space-y-5">
             <MakeInIndiaBadge />
-            <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="text-gray-100 hover:text-white font-black transition-colors flex items-center underline decoration-[#1E40AF] decoration-2 underline-offset-4">
+            <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="text-slate-300 hover:text-white font-bold transition-colors flex items-center underline decoration-blue-500 decoration-2 underline-offset-4 mt-2">
               IndiaMART TrustSeal Profile <ExternalLink className="w-4 h-4 ml-1.5"/>
             </a>
           </div>
         </div>
         
         <div>
-          <h3 className="text-lg font-black mb-6 text-white border-b-2 border-gray-700 pb-2 inline-block">Quick Links</h3>
+          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Quick Links</h3>
+          <div className="w-12 h-1 bg-blue-600 mb-6"></div>
           <ul className="space-y-4">
             {['Home', 'Services', 'Products', 'About', 'Contact'].map(link => (
               <li key={link}>
-                <button onClick={() => {setCurrentRoute(link === 'Home' ? '/' : `/${link.toLowerCase()}`); window.scrollTo(0,0);}} className="text-gray-300 font-bold hover:text-white hover:translate-x-1 transition-all flex items-center text-sm">
-                  <ChevronRight className="w-4 h-4 mr-2 text-[#1E40AF]" /> {link}
+                <button onClick={() => {setCurrentRoute(link === 'Home' ? '/' : `/${link.toLowerCase()}`); window.scrollTo(0,0);}} className="text-slate-400 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm">
+                  <ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> {link}
                 </button>
               </li>
             ))}
@@ -352,32 +337,34 @@ const Footer = ({ setCurrentRoute }) => (
         </div>
 
         <div>
-          <h3 className="text-lg font-black mb-6 text-white border-b-2 border-gray-700 pb-2 inline-block">Our Services</h3>
+          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Our Services</h3>
+          <div className="w-12 h-1 bg-blue-600 mb-6"></div>
           <ul className="space-y-4">
-            <li className="text-gray-300 font-bold text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-[#1E40AF]" /> Turnkey Overhauling</li>
-            <li className="text-gray-300 font-bold text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-[#1E40AF]" /> Reverse Engineering</li>
-            <li className="text-gray-300 font-bold text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-[#1E40AF]" /> Dynamic Balancing</li>
-            <li className="text-gray-300 font-bold text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-[#1E40AF]" /> Spares Manufacturing</li>
+            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Turnkey Overhauling</li>
+            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Reverse Engineering</li>
+            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Dynamic Balancing</li>
+            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Spares Manufacturing</li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-lg font-black mb-6 text-white border-b-2 border-gray-700 pb-2 inline-block">Contact Us</h3>
-          <ul className="space-y-5">
+          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Contact Us</h3>
+          <div className="w-12 h-1 bg-blue-600 mb-6"></div>
+          <ul className="space-y-6">
             <li className="flex items-start">
-              <MapPin className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-gray-200 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</span>
+              <MapPin className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+              <span className="text-slate-400 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</span>
             </li>
             <li className="flex items-start">
-              <Phone className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 flex-shrink-0" />
-              <div className="text-gray-200 font-bold text-sm space-y-1">
+              <Phone className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+              <div className="text-slate-400 font-medium text-sm space-y-1">
                 <div>{CONTACT_INFO.phones[0]}</div>
                 <div>{CONTACT_INFO.phones[1]}</div>
               </div>
             </li>
             <li className="flex items-start">
-              <Mail className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 flex-shrink-0" />
-              <div className="text-gray-200 font-bold text-sm space-y-1">
+              <Mail className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
+              <div className="text-slate-400 font-medium text-sm space-y-1">
                 <div>{CONTACT_INFO.email}</div>
                 <div>{CONTACT_INFO.secondaryEmail}</div>
               </div>
@@ -385,8 +372,8 @@ const Footer = ({ setCurrentRoute }) => (
           </ul>
         </div>
       </div>
-      <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-        <p className="text-gray-400 font-bold text-sm">© 2026 KESHAV ENTERPRISES. GST: 09**********1ZC. All rights reserved.</p>
+      <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p className="text-slate-500 font-medium text-sm">© 2026 KESHAV ENTERPRISES. GST: 09**********1ZC. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -397,11 +384,11 @@ const WhatsAppFab = () => (
     href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hi KESHAV ENTERPRISES, I would like to request a technical quote.`}
     target="_blank"
     rel="noreferrer"
-    className="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 z-50 group"
+    className="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 z-50 group"
     aria-label="Chat on WhatsApp"
   >
     <MessageCircle className="w-7 h-7" />
-    <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-white text-gray-900 text-sm font-black px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+    <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
       Chat with an Engineer
     </span>
   </a>
@@ -428,21 +415,22 @@ const ProductSlideshow = ({ setCurrentRoute }) => {
         if (prev >= PRODUCTS.length - itemsPerView) return 0;
         return prev + 1;
       });
-    }, 3000); // Slower interval so user can click
+    }, 4000); 
     return () => clearInterval(timer);
   }, [itemsPerView]);
 
   return (
-    <section className="py-24 bg-[#F3F4F6] overflow-hidden border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 text-center">
-        <h2 className="text-3xl md:text-4xl font-black text-[#002147] mb-4">Explore Our High-Performance Catalog</h2>
-        <p className="text-gray-900 font-bold text-lg max-w-2xl mx-auto">
+    <section className="py-24 bg-slate-50 overflow-hidden border-t border-slate-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center flex flex-col items-center">
+        <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">Explore Our Catalog</h2>
+        <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full"></div>
+        <p className="text-slate-600 font-medium text-lg max-w-2xl mx-auto">
           Over 35+ precision-engineered components, including industrial filtration, expansion bellows, and OEM-compatible turbine spares.
         </p>
       </div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="overflow-hidden rounded-lg pb-6">
+        <div className="overflow-hidden rounded-xl pb-6 -mx-4 px-4">
           <div 
             className="flex transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
@@ -459,8 +447,8 @@ const ProductSlideshow = ({ setCurrentRoute }) => {
           </div>
         </div>
         
-        <div className="flex justify-center mt-6 space-x-2 overflow-hidden max-w-sm mx-auto h-2 bg-gray-200 rounded-full">
-           <div className="bg-[#1E40AF] h-full rounded-full transition-all duration-700 ease-in-out" style={{ width: `${((currentIndex + itemsPerView) / PRODUCTS.length) * 100}%` }}></div>
+        <div className="flex justify-center mt-8 space-x-2 overflow-hidden max-w-xs mx-auto h-1.5 bg-slate-200 rounded-full">
+           <div className="bg-blue-600 h-full rounded-full transition-all duration-700 ease-in-out" style={{ width: `${((currentIndex + itemsPerView) / PRODUCTS.length) * 100}%` }}></div>
         </div>
       </div>
     </section>
@@ -470,112 +458,108 @@ const ProductSlideshow = ({ setCurrentRoute }) => {
 
 // --- PAGES ---
 
-// 1. BRAND NEW PRODUCT DETAILS PAGE
 const ProductDetailsPage = ({ product, setCurrentRoute }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [mainImgError, setMainImgError] = useState(false);
   
-  // Guard clause just in case
   if (!product) return null;
 
   const hasImages = product.images && product.images.length > 0;
   const activeImage = hasImages ? product.images[activeImageIndex] : null;
 
   return (
-    <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#F3F4F6] min-h-screen">
+    <main className="pt-32 pb-20 animate-in fade-in duration-500 bg-slate-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Back Navigation */}
         <button 
           onClick={() => { setCurrentRoute('/products'); window.scrollTo(0,0); }}
-          className="flex items-center text-gray-600 hover:text-[#1E40AF] font-black mb-8 transition-colors"
+          className="flex items-center text-slate-500 hover:text-blue-600 font-bold mb-8 transition-colors text-sm uppercase tracking-wider"
         >
-          <ArrowLeft className="w-5 h-5 mr-2" /> Back to Catalog
+          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Catalog
         </button>
 
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden border border-slate-200">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             
-            {/* LEFT: Dynamic Image Gallery */}
-            <div className="p-8 lg:p-12 bg-gray-50 flex flex-col items-center border-b lg:border-b-0 lg:border-r border-gray-200">
-              <div className="w-full aspect-square bg-white rounded-lg border border-gray-200 flex items-center justify-center relative overflow-hidden shadow-sm mb-6">
+            {/* Image Gallery */}
+            <div className="p-8 lg:p-12 bg-white flex flex-col items-center border-b lg:border-b-0 lg:border-r border-slate-100">
+              <div className="w-full aspect-square bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 group">
                 {activeImage && !mainImgError ? (
                   <img 
                     src={activeImage} 
                     alt={`${product.title} - View ${activeImageIndex + 1}`}
-                    className="w-full h-full object-contain p-4 transition-opacity duration-300"
+                    className="w-full h-full object-contain p-8 transition-transform duration-500 group-hover:scale-105"
                     onError={() => setMainImgError(true)}
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center opacity-30">
                     {getCategoryIcon(product.category)}
-                    <span className="mt-4 font-bold text-gray-500">Image not available</span>
+                    <span className="mt-4 font-bold text-slate-500">Image not available</span>
                   </div>
                 )}
               </div>
 
-              {/* Thumbnails row (only visible if multiple images exist) */}
               {hasImages && product.images.length > 1 && (
-                <div className="flex gap-4 w-full overflow-x-auto pb-2 px-2" style={{ scrollbarWidth: 'none' }}>
+                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2" style={{ scrollbarWidth: 'none' }}>
                   {product.images.map((img, idx) => (
                     <button 
                       key={idx}
                       onClick={() => { setActiveImageIndex(idx); setMainImgError(false); }}
-                      className={`shrink-0 w-20 h-20 bg-white rounded-md border-2 overflow-hidden transition-all ${activeImageIndex === idx ? 'border-[#1E40AF] shadow-md scale-105' : 'border-gray-200 hover:border-gray-300 opacity-70 hover:opacity-100'}`}
+                      className={`shrink-0 w-24 h-24 bg-white rounded-lg border-2 overflow-hidden transition-all ${activeImageIndex === idx ? 'border-blue-600 shadow-md scale-105' : 'border-slate-200 hover:border-blue-300 opacity-60 hover:opacity-100'}`}
                     >
-                      <img src={img} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-cover p-2" />
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* RIGHT: Product Information & CTAs */}
+            {/* Product Details */}
             <div className="p-8 lg:p-12 flex flex-col">
-              <div className="mb-2">
-                <span className="bg-[#002147]/10 text-[#002147] text-xs font-black px-3 py-1.5 uppercase tracking-wider rounded-sm">
+              <div className="mb-4">
+                <span className="bg-slate-100 text-slate-600 text-xs font-black px-3 py-1.5 uppercase tracking-wider rounded border border-slate-200">
                   {product.category}
                 </span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-black text-[#002147] mb-6 leading-tight">{product.title}</h1>
-              <p className="text-gray-900 font-bold text-lg mb-8 leading-relaxed">{product.desc}</p>
+              <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight tracking-tight">{product.title}</h1>
+              <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">{product.desc}</p>
               
-              <div className="mb-8 bg-blue-50/50 p-6 rounded-lg border border-blue-100">
-                <h3 className="font-black text-[#1E40AF] text-sm uppercase tracking-widest mb-3 flex items-center">
+              <div className="mb-10 bg-blue-50/50 p-6 rounded-xl border border-blue-100">
+                <h3 className="font-bold text-blue-600 text-sm uppercase tracking-widest mb-3 flex items-center">
                   <Target className="w-5 h-5 mr-2" /> Primary Application
                 </h3>
-                <p className="text-gray-900 font-bold text-base leading-relaxed">{product.usage}</p>
+                <p className="text-slate-900 font-bold text-base leading-relaxed">{product.usage}</p>
               </div>
 
-              <div className="mb-10">
-                <h3 className="font-black text-gray-600 text-sm uppercase tracking-widest mb-5">Technical Specifications</h3>
+              <div className="mb-12">
+                <h3 className="font-bold text-slate-400 text-sm uppercase tracking-widest mb-5">Technical Specifications</h3>
                 <ul className="space-y-4">
                   {product.features.map((feature, i) => (
-                    <li key={i} className="text-base font-bold text-gray-900 flex items-start">
-                      <CheckCircle2 className="w-6 h-6 text-[#1E40AF] mr-3 shrink-0" />
+                    <li key={i} className="text-base font-medium text-slate-800 flex items-start">
+                      <CheckCircle2 className="w-6 h-6 text-blue-500 mr-3 shrink-0" />
                       <span className="leading-snug">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Action Buttons */}
-              <div className="mt-auto pt-8 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
+              {/* CTAs */}
+              <div className="mt-auto pt-8 border-t border-slate-100 flex flex-col sm:flex-row gap-4">
                 <a 
                   href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I am interested in purchasing or getting technical details for: *${product.title}*. Please assist.`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 bg-[#25D366] text-white py-4 rounded-md font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg flex items-center justify-center"
+                  className="flex-1 bg-[#25D366] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center"
                 >
-                  <MessageCircle className="w-6 h-6 mr-2.5" /> Quote via WhatsApp
+                  <MessageCircle className="w-5 h-5 mr-2.5" /> Quote via WhatsApp
                 </a>
                 <a 
                   href={CONTACT_INFO.indiamart} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="flex-1 bg-white border-2 border-[#002147] text-[#002147] py-4 rounded-md font-black text-lg hover:bg-[#002147] hover:text-white transition-all shadow-md flex items-center justify-center"
+                  className="flex-1 bg-white border-2 border-slate-900 text-slate-900 py-4 rounded-lg font-bold text-lg hover:bg-slate-900 hover:text-white transition-all shadow-sm flex items-center justify-center"
                 >
-                  <ExternalLink className="w-6 h-6 mr-2.5" /> View on IndiaMART
+                  <ExternalLink className="w-5 h-5 mr-2.5" /> View on IndiaMART
                 </a>
               </div>
             </div>
@@ -586,7 +570,6 @@ const ProductDetailsPage = ({ product, setCurrentRoute }) => {
     </main>
   );
 };
-
 
 const HomePage = ({ setCurrentRoute }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -600,20 +583,20 @@ const HomePage = ({ setCurrentRoute }) => {
   return (
     <main className="animate-in fade-in duration-500 bg-[#FFFFFF]">
       
-      <section className="relative bg-[#001124] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden">
+      <section className="relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden">
         
-        <div className="absolute inset-0 z-0 bg-[#001124]">
+        {/* MIX BLEND OVERLAY FOR PERFECT CONTRAST */}
+        <div className="absolute inset-0 z-0 bg-[#0A192F]">
           {!heroImgError && (
             <img 
               src="hero-background.png" 
-              alt="Industrial Engineering & Manufacturing" 
-              className="absolute inset-0 w-full h-full object-cover opacity-90"
+              alt="Industrial Engineering" 
+              className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
               onError={() => setHeroImgError(true)}
             />
           )}
-          {/* Overlay adjusted to ensure text readability against 90% visible image */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001124] via-[#001124]/60 to-transparent z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#001124] via-transparent to-transparent z-10 opacity-90"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F] via-[#0A192F]/80 to-transparent z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-transparent to-transparent z-10 opacity-90"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 w-full flex flex-col lg:flex-row items-center justify-between gap-12">
@@ -623,33 +606,33 @@ const HomePage = ({ setCurrentRoute }) => {
               
               <div className="flex flex-wrap items-center gap-5 mb-8">
                 <MakeInIndiaBadge />
-                <div className="inline-flex items-center space-x-2 bg-[#1E40AF]/20 px-4 py-2.5 rounded-md border border-[#1E40AF]/40 backdrop-blur-md shadow-md">
+                <div className="inline-flex items-center space-x-2 bg-blue-900/20 px-4 py-2.5 rounded-md border border-blue-500/30 backdrop-blur-md shadow-md">
                   <span className="relative flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                   </span>
-                  <span className="text-white text-[11px] font-black tracking-widest uppercase">IndiaMART TrustSeal Verified</span>
+                  <span className="text-white text-[11px] font-bold tracking-widest uppercase">IndiaMART TrustSeal Verified</span>
                 </div>
               </div>
               
               <h1 className="text-5xl md:text-7xl font-black text-white leading-[1.05] tracking-tight mb-8">
                 Engineered for <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E40AF] to-blue-300">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
                   Maximum Uptime.
                 </span>
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-100 font-bold mb-10 max-w-xl leading-relaxed border-l-4 border-[#1E40AF] pl-6 shadow-sm">
+              <p className="text-lg md:text-xl text-slate-300 font-medium mb-10 max-w-xl leading-relaxed border-l-4 border-blue-500 pl-6">
                 No compromises. We deliver ISO-grade dynamic balancing, rapid reverse engineering, and OEM-compatible turbine spares designed to keep your plant running 24/7.
               </p>
               
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5">
-                <button onClick={() => setCurrentRoute('/contact')} className="bg-[#1E40AF] text-white px-8 py-4 rounded-md font-black hover:bg-[#FFFFFF] hover:text-[#002147] transition-all duration-300 flex items-center justify-center text-lg shadow-xl shadow-blue-900/40 group border border-[#1E40AF]">
+                <button onClick={() => setCurrentRoute('/contact')} className="bg-blue-600 text-white px-8 py-4 rounded-md font-bold hover:bg-blue-500 transition-all duration-300 flex items-center justify-center text-lg shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] group">
                   Request Technical Quote
-                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-1.5 transition-transform duration-300" />
+                  <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
                 </button>
-                <a href={`https://wa.me/${CONTACT_INFO.whatsapp}`} target="_blank" rel="noreferrer" className="bg-[#001124]/50 text-white border-2 border-white/30 px-8 py-4 rounded-md font-bold hover:bg-white/10 transition-all duration-300 flex items-center justify-center text-lg backdrop-blur-md">
-                  <Activity className="mr-3 w-6 h-6 text-green-400" />
+                <a href={`https://wa.me/${CONTACT_INFO.whatsapp}`} target="_blank" rel="noreferrer" className="bg-white/5 text-white border border-white/20 px-8 py-4 rounded-md font-bold hover:bg-white/10 transition-all duration-300 flex items-center justify-center text-lg backdrop-blur-sm">
+                  <Activity className="mr-3 w-5 h-5 text-green-400" />
                   Emergency Breakdown
                 </a>
               </div>
@@ -657,42 +640,42 @@ const HomePage = ({ setCurrentRoute }) => {
           </div>
 
           <div className="w-full lg:w-2/5 hidden lg:flex flex-col gap-6 relative">
-            <div className={`bg-[#002147]/60 backdrop-blur-md border border-[#1E40AF]/40 p-6 rounded-lg shadow-2xl transform transition-all duration-1000 delay-300 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+            <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-xl shadow-2xl transform transition-all duration-1000 delay-300 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
               <div className="flex justify-between items-start mb-2">
-                <div className="text-gray-300 text-xs font-black uppercase tracking-widest">Service Capacity</div>
-                <Zap className="w-5 h-5 text-[#1E40AF]" />
+                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">Service Capacity</div>
+                <Zap className="w-5 h-5 text-blue-400" />
               </div>
-              <div className="text-3xl font-black text-white">5 kW – 27 MW</div>
-              <div className="text-sm text-gray-200 font-bold mt-2">Full-spectrum steam turbine overhauling & commissioning.</div>
+              <div className="text-3xl font-black text-white tracking-tight">5 kW – 27 MW</div>
+              <div className="text-sm text-slate-300 font-medium mt-2">Full-spectrum steam turbine overhauling & commissioning.</div>
             </div>
 
-            <div className={`bg-[#002147]/60 backdrop-blur-md border border-[#1E40AF]/40 p-6 rounded-lg shadow-2xl transform transition-all duration-1000 delay-500 ml-12 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+            <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-xl shadow-2xl transform transition-all duration-1000 delay-500 ml-12 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
               <div className="flex justify-between items-start mb-2">
-                <div className="text-gray-300 text-xs font-black uppercase tracking-widest">Dynamic Balancing</div>
-                <Settings className="w-5 h-5 text-[#1E40AF] animate-spin" style={{ animationDuration: '3s' }} />
+                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">Dynamic Balancing</div>
+                <Settings className="w-5 h-5 text-blue-400 animate-spin" style={{ animationDuration: '3s' }} />
               </div>
-              <div className="text-3xl font-black text-white">50 – 2000 kg</div>
-              <div className="text-sm text-gray-200 font-bold mt-2">ISO/API standard precision rotor balancing.</div>
+              <div className="text-3xl font-black text-white tracking-tight">50 – 2000 kg</div>
+              <div className="text-sm text-slate-300 font-medium mt-2">ISO/API standard precision rotor balancing.</div>
             </div>
 
-            <div className={`bg-[#002147]/60 backdrop-blur-md border border-[#1E40AF]/40 p-6 rounded-lg shadow-2xl transform transition-all duration-1000 delay-700 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+            <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-xl shadow-2xl transform transition-all duration-1000 delay-700 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
               <div className="flex justify-between items-start mb-2">
-                <div className="text-gray-300 text-xs font-black uppercase tracking-widest">OEM Compatibility</div>
+                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">OEM Compatibility</div>
                 <Shield className="w-5 h-5 text-green-400" />
               </div>
-              <div className="text-3xl font-black text-white">100% Guaranteed</div>
-              <div className="text-sm text-gray-200 font-bold mt-2">Triveni, Siemens, BHEL, Belliss India & more.</div>
+              <div className="text-3xl font-black text-white tracking-tight">100% Guaranteed</div>
+              <div className="text-sm text-slate-300 font-medium mt-2">Triveni, Siemens, BHEL, Belliss India & more.</div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-[#FFFFFF] py-12 border-b border-[#F3F4F6]">
+      <section className="bg-white py-12 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 overflow-hidden">
-          <p className="text-center text-sm font-black text-gray-900 uppercase tracking-widest mb-8">Compatible With Major OEMs & Trusted By Industry Leaders</p>
-          <div className="flex justify-center flex-wrap gap-8 md:gap-14 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+          <p className="text-center text-sm font-bold text-slate-400 uppercase tracking-widest mb-8">Compatible With Major OEMs & Trusted By Industry Leaders</p>
+          <div className="flex justify-center flex-wrap gap-8 md:gap-14 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
             {OEMS.slice(0, 8).map((oem, i) => (
-              <div key={i} className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter">
+              <div key={i} className="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">
                 {oem.toUpperCase()}
               </div>
             ))}
@@ -700,58 +683,60 @@ const HomePage = ({ setCurrentRoute }) => {
         </div>
       </section>
 
-      <section className="py-24 bg-[#F3F4F6]">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-[#002147] text-3xl md:text-4xl font-black mb-6">Core Engineering Capabilities</h2>
-            <p className="text-gray-900 font-bold text-lg leading-relaxed">Comprehensive mechanical solutions for rotating equipment, minimizing downtime and maximizing output up to 27 MW.</p>
+          <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-slate-900 text-3xl md:text-4xl font-black mb-4 tracking-tight">Core Engineering Capabilities</h2>
+            <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full"></div>
+            <p className="text-slate-600 font-medium text-lg leading-relaxed">Comprehensive mechanical solutions for rotating equipment, minimizing downtime and maximizing output up to 27 MW.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {SERVICES.slice(0, 4).map((service) => (
-              <div key={service.id} className="bg-[#FFFFFF] p-8 border border-gray-200 rounded-lg shadow-md hover:shadow-2xl transition-all group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-[#F3F4F6] rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-                <div className="w-16 h-16 bg-[#1E40AF]/10 text-[#1E40AF] rounded-md flex items-center justify-center mb-6 relative z-10 group-hover:bg-[#1E40AF] group-hover:text-white transition-colors">
+              <div key={service.id} className="bg-slate-50 p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-125"></div>
+                <div className="w-14 h-14 bg-white text-blue-600 rounded-lg flex items-center justify-center mb-6 relative z-10 shadow-sm border border-slate-100 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
                   {service.icon}
                 </div>
-                <h3 className="text-xl font-black text-[#002147] mb-3 relative z-10">{service.title}</h3>
-                <p className="text-gray-900 font-bold text-sm leading-relaxed relative z-10">{service.desc}</p>
+                <h3 className="text-xl font-black text-slate-900 mb-3 relative z-10 tracking-tight">{service.title}</h3>
+                <p className="text-slate-600 font-medium text-sm leading-relaxed relative z-10">{service.desc}</p>
               </div>
             ))}
           </div>
           
-          <div className="mt-14 text-center">
-            <button onClick={() => setCurrentRoute('/services')} className="text-[#002147] font-black text-lg flex items-center justify-center mx-auto hover:text-[#1E40AF] transition-colors">
-              View All Services <ArrowRight className="ml-2 w-5 h-5" />
+          <div className="mt-16 text-center">
+            <button onClick={() => setCurrentRoute('/services')} className="text-blue-600 font-bold text-lg flex items-center justify-center mx-auto hover:text-blue-700 transition-colors group">
+              View All Services <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-[#FFFFFF] relative border-t border-gray-200">
+      <section className="py-24 bg-slate-50 relative border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center md:text-left">
-            <h2 className="text-[#002147] text-3xl md:text-4xl font-black mb-8">Precision Manufacturing & Reverse Engineering</h2>
-            <p className="text-gray-900 font-bold text-lg mb-8 leading-relaxed">
+            <h2 className="text-slate-900 text-3xl md:text-4xl font-black mb-4 tracking-tight">Precision Manufacturing</h2>
+            <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full mx-auto md:mx-0"></div>
+            <p className="text-slate-600 font-medium text-lg mb-10 leading-relaxed">
               We manufacture high-tolerance turbine spares, 180 GPM / 850 LPM industrial filters, and expansion bellows (DN 15-12.000). Using advanced 3D scanning and PMI testing, we recreate obsolete components to exact OEM specifications.
             </p>
-            <ul className="space-y-5 mb-10 text-left inline-block">
+            <ul className="space-y-4 mb-10 text-left inline-block bg-white p-8 rounded-2xl shadow-sm border border-slate-100 w-full md:w-auto">
               {[
                 'Reduced lead times vs. OEM sourcing (Triveni, Siemens, BHEL)',
                 'Material upgrades (Glass fibre, SS mesh, Carbon Sealing Rings)',
                 'Stringent quality control & 50-2000kg dynamic balancing',
                 'Custom fabrication (Thick wall, Octagonal, Double Arch Bellows)'
               ].map((item, i) => (
-                <li key={i} className="flex items-center text-gray-900 font-black text-lg">
-                  <Shield className="w-6 h-6 text-[#1E40AF] mr-4 shrink-0" /> {item}
+                <li key={i} className="flex items-center text-slate-800 font-bold text-base md:text-lg">
+                  <Shield className="w-6 h-6 text-blue-500 mr-4 shrink-0" /> {item}
                 </li>
               ))}
             </ul>
-            <div className="flex flex-col md:flex-row flex-wrap gap-5 justify-center md:justify-start">
-              <button onClick={() => setCurrentRoute('/about')} className="bg-[#002147] text-white px-8 py-4 rounded-md font-black hover:bg-[#1E40AF] transition-colors shadow-lg">
+            <div className="flex flex-col md:flex-row flex-wrap gap-4 justify-center md:justify-start mt-4">
+              <button onClick={() => setCurrentRoute('/about')} className="bg-slate-900 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-600 transition-colors shadow-md">
                 Learn About Us
               </button>
-              <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="flex items-center justify-center px-8 py-4 border-2 border-gray-300 rounded-md text-gray-900 hover:text-[#1E40AF] hover:border-[#1E40AF] font-black transition-colors bg-gray-50 hover:bg-white">
+              <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="flex items-center justify-center px-8 py-4 border-2 border-slate-300 rounded-lg text-slate-700 hover:text-blue-600 hover:border-blue-600 font-bold transition-colors bg-white shadow-sm">
                 View IndiaMART Profile <ExternalLink className="w-5 h-5 ml-2.5" />
               </a>
             </div>
@@ -761,19 +746,20 @@ const HomePage = ({ setCurrentRoute }) => {
 
       <ProductSlideshow setCurrentRoute={setCurrentRoute} />
 
-      <section className="bg-[#002147] py-20 border-t-8 border-[#1E40AF]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Ready to Optimize Your Plant's Performance?</h2>
-          <p className="text-white font-bold text-xl mb-10 max-w-3xl mx-auto leading-relaxed">
+      <section className="bg-[#0A192F] py-24 border-t-8 border-blue-600">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Ready to Optimize Your Plant?</h2>
+          <div className="w-20 h-1.5 bg-blue-500 mb-8 rounded-full"></div>
+          <p className="text-slate-300 font-medium text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
             Contact our engineering team for specialized consultation, 24x7 emergency breakdown support, or a technical quotation.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-            <button onClick={() => setCurrentRoute('/contact')} className="bg-[#1E40AF] text-white px-10 py-5 rounded-md font-black text-lg hover:bg-[#FFFFFF] hover:text-[#002147] transition-all duration-300 flex items-center justify-center text-lg shadow-2xl w-full sm:w-auto border-2 border-[#1E40AF]">
+            <button onClick={() => setCurrentRoute('/contact')} className="bg-blue-600 text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] w-full sm:w-auto">
               Contact Engineering Team
             </button>
-            <div className="text-white font-bold text-xl flex items-center bg-[#001124] px-8 py-5 rounded-md border border-gray-700">
-              <span className="mr-3 text-gray-400">or Call:</span> 
-              <a href={`tel:${CONTACT_INFO.phones[0].replace(/ /g, '')}`} className="font-black text-2xl hover:text-[#1E40AF] transition-colors tracking-wider">
+            <div className="text-white font-medium text-lg flex items-center bg-white/5 px-8 py-5 rounded-lg border border-white/10 backdrop-blur-sm w-full sm:w-auto justify-center">
+              <span className="mr-3 text-slate-400">or Call:</span> 
+              <a href={`tel:${CONTACT_INFO.phones[0].replace(/ /g, '')}`} className="font-black text-2xl hover:text-blue-400 transition-colors tracking-wider">
                 {CONTACT_INFO.phones[0]}
               </a>
             </div>
@@ -786,41 +772,45 @@ const HomePage = ({ setCurrentRoute }) => {
 
 const ServicesPage = ({ setCurrentRoute }) => (
   <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#FFFFFF]">
-    <div className="bg-[#002147] text-white py-16 mb-16 border-b-8 border-[#1E40AF]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl md:text-6xl font-black mb-6">Engineering & Technical Services</h1>
-        <p className="text-gray-200 font-bold max-w-3xl mx-auto text-xl leading-relaxed">
+    <div className="bg-[#0A192F] text-white py-20 mb-20 border-b-8 border-blue-600">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
+        <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Technical Services</h1>
+        <div className="w-20 h-1.5 bg-blue-500 mb-6 rounded-full"></div>
+        <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
           Specialized mechanical solutions for industrial rotating equipment (up to 27 MW), ensuring peak reliability across power generation, sugar mills, and refineries.
         </p>
       </div>
     </div>
 
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-32">
       {SERVICES.map((service, index) => (
-        <div key={service.id} className={`flex flex-col md:flex-row gap-12 items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+        <div key={service.id} className={`flex flex-col md:flex-row gap-16 items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
           <div className="md:w-1/2">
-            <div className="w-full aspect-video bg-[#F3F4F6] rounded-xl border border-gray-200 flex items-center justify-center relative overflow-hidden group shadow-md">
+            <div className="w-full aspect-video bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-center relative overflow-hidden group shadow-lg shadow-slate-200/50">
                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:16px_16px]"></div>
-               <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300">
-                 {React.cloneElement(service.icon, { className: 'w-12 h-12 text-[#002147]' })}
+               <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500 border border-slate-100">
+                 {React.cloneElement(service.icon, { className: 'w-12 h-12 text-blue-600' })}
                </div>
             </div>
           </div>
           <div className="md:w-1/2">
-            <div className="text-[#1E40AF] font-black tracking-widest text-sm uppercase mb-3">Service {(index + 1).toString().padStart(2, '0')}</div>
-            <h2 className="text-3xl md:text-4xl font-black text-[#002147] mb-6">{service.title}</h2>
-            <p className="text-gray-900 font-bold text-lg mb-8 leading-relaxed">
+            <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-4 flex items-center">
+               <span className="w-8 h-0.5 bg-blue-600 mr-3"></span>
+               Service {(index + 1).toString().padStart(2, '0')}
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 tracking-tight">{service.title}</h2>
+            <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">
               {service.desc} We utilize state-of-the-art diagnostic tools and adhere strictly to OEM guidelines to deliver unparalleled service quality.
             </p>
-            <ul className="space-y-4 mb-10">
+            <ul className="space-y-4 mb-10 bg-slate-50 p-6 rounded-xl border border-slate-100">
               {['Rigorous OEM Standard Compliance', 'Detailed Technical & Condition Reporting', 'Ex-OEM Engineering Expertise'].map((item, i) => (
                 <li key={i} className="flex items-start">
-                  <CheckCircle2 className="w-6 h-6 text-[#1E40AF] mr-4 shrink-0 mt-0.5" />
-                  <span className="text-gray-900 font-black text-lg">{item}</span>
+                  <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0 mt-0.5" />
+                  <span className="text-slate-800 font-bold text-lg">{item}</span>
                 </li>
               ))}
             </ul>
-            <button onClick={() => setCurrentRoute('/contact')} className="border-2 border-[#002147] text-[#002147] px-8 py-3 rounded-md font-black text-lg hover:bg-[#1E40AF] hover:border-[#1E40AF] hover:text-white transition-colors shadow-sm">
+            <button onClick={() => setCurrentRoute('/contact')} className="border-2 border-slate-900 text-slate-900 px-8 py-3.5 rounded-lg font-bold text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm">
               Inquire About This Service
             </button>
           </div>
@@ -843,8 +833,8 @@ const ProductsPage = ({ setCurrentRoute }) => {
   });
 
   return (
-    <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#F3F4F6]">
-       <div className="bg-[#002147] text-white py-16 mb-12 relative overflow-hidden border-b-8 border-[#1E40AF]">
+    <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-slate-50 min-h-screen">
+       <div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
         <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -856,9 +846,10 @@ const ProductsPage = ({ setCurrentRoute }) => {
           </svg>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-black mb-6">Industrial Products & Spares</h1>
-          <p className="text-gray-200 font-bold max-w-3xl mx-auto text-xl leading-relaxed">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
+          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Industrial Products</h1>
+          <div className="w-20 h-1.5 bg-blue-500 mb-6 rounded-full"></div>
+          <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
             Explore our comprehensive catalog of 35+ high-performance industrial components. 
             Precision engineered for mission-critical rotating equipment and fluid systems.
           </p>
@@ -866,19 +857,19 @@ const ProductsPage = ({ setCurrentRoute }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border-2 border-[#1E40AF]/30 rounded-xl p-8 mb-12 flex flex-col md:flex-row items-center justify-between shadow-lg">
+        <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-12 flex flex-col md:flex-row items-center justify-between shadow-sm">
           <div>
-            <h3 className="text-[#002147] font-black text-2xl flex items-center mb-2">
-              TrustSeal Verified IndiaMART Supplier
+            <h3 className="text-slate-900 font-black text-2xl flex items-center mb-3 tracking-tight">
+              TrustSeal Verified Supplier
               <CheckCircle2 className="w-7 h-7 text-green-500 ml-3" />
             </h3>
-            <p className="text-gray-900 font-bold text-base">Explore our complete catalog of Carbon Sealing Rings, Lube Oil Filters, and Expansion Joints verified on our official IndiaMART portal.</p>
+            <p className="text-slate-600 font-medium text-base">Explore our complete catalog of Carbon Sealing Rings, Lube Oil Filters, and Expansion Joints verified on our official IndiaMART portal.</p>
           </div>
           <a 
             href={CONTACT_INFO.indiamart} 
             target="_blank" 
             rel="noreferrer"
-            className="mt-6 md:mt-0 bg-[#002147] text-white px-8 py-4 rounded-md font-black hover:bg-[#1E40AF] transition-colors flex items-center whitespace-nowrap shadow-xl text-lg"
+            className="mt-6 md:mt-0 bg-slate-900 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-600 transition-colors flex items-center whitespace-nowrap shadow-md text-lg"
           >
             View Store on IndiaMART <ExternalLink className="w-5 h-5 ml-3" />
           </a>
@@ -891,37 +882,37 @@ const ProductsPage = ({ setCurrentRoute }) => {
               placeholder="Search products, usage, or specs..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white border-2 border-gray-300 rounded-lg text-base font-bold text-gray-900 focus:outline-none focus:ring-4 focus:ring-[#1E40AF]/20 focus:border-[#1E40AF] transition-all shadow-sm"
+              className="w-full pl-14 pr-4 py-4 bg-white border-2 border-slate-200 rounded-xl text-base font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" />
           </div>
 
           <div className="relative w-full flex items-center">
             <div 
-              className="flex gap-3 overflow-x-auto w-full pb-2 snap-x snap-mandatory" 
+              className="flex gap-3 overflow-x-auto w-full pb-3 pt-1 snap-x snap-mandatory" 
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {PRODUCT_CATEGORIES.map(category => (
                 <button 
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`snap-start shrink-0 px-6 py-2.5 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 ${
+                  className={`snap-start shrink-0 px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 border-2 ${
                     activeCategory === category 
-                      ? 'bg-[#002147] text-white border-[#002147] shadow-md' 
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#1E40AF] hover:text-[#1E40AF] hover:bg-blue-50/50 shadow-sm'
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-md scale-105' 
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'
                   }`}
                 >
                   {category}
                 </button>
               ))}
             </div>
-            <div className="absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-[#F3F4F6] to-transparent pointer-events-none md:hidden"></div>
+            <div className="absolute right-0 top-0 bottom-3 w-16 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none md:hidden"></div>
           </div>
         </div>
 
-        <div className="mb-8 flex items-center text-base font-black text-gray-900 border-b-2 border-gray-300 pb-4">
-           <SlidersHorizontal className="w-5 h-5 mr-3 text-[#1E40AF]" />
-           Showing {filteredProducts.length} Product{filteredProducts.length !== 1 && 's'}
+        <div className="mb-8 flex items-center text-base font-bold text-slate-500 border-b border-slate-200 pb-4">
+           <SlidersHorizontal className="w-5 h-5 mr-3 text-blue-500" />
+           Showing <span className="text-slate-900 mx-1 font-black">{filteredProducts.length}</span> Product{filteredProducts.length !== 1 && 's'}
         </div>
 
         {filteredProducts.length > 0 ? (
@@ -931,13 +922,13 @@ const ProductsPage = ({ setCurrentRoute }) => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-32 bg-white rounded-xl border-2 border-dashed border-gray-400 shadow-sm">
-             <Settings className="w-16 h-16 text-gray-400 mx-auto mb-6 animate-spin" style={{ animationDuration: '3s' }} />
-             <h3 className="text-2xl font-black text-[#002147]">No products found</h3>
-             <p className="text-gray-900 font-bold text-lg mt-3">Try adjusting your search criteria or viewing a different category.</p>
+          <div className="text-center py-32 bg-white rounded-2xl border-2 border-dashed border-slate-300 shadow-sm">
+             <Settings className="w-16 h-16 text-slate-300 mx-auto mb-6 animate-spin" style={{ animationDuration: '3s' }} />
+             <h3 className="text-2xl font-black text-slate-900 tracking-tight">No products found</h3>
+             <p className="text-slate-500 font-medium text-lg mt-3">Try adjusting your search criteria or viewing a different category.</p>
              <button 
                onClick={() => {setSearchQuery(''); setActiveCategory('All');}}
-               className="mt-8 bg-[#002147] text-white px-8 py-3 rounded-md font-black hover:bg-[#1E40AF] transition-colors shadow-md"
+               className="mt-8 bg-slate-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-600 transition-colors shadow-md"
              >
                Clear all filters
              </button>
@@ -951,46 +942,53 @@ const ProductsPage = ({ setCurrentRoute }) => {
 const AboutPage = () => (
   <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#FFFFFF]">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 pt-10">
         <div>
-          <h1 className="text-4xl md:text-6xl font-black text-[#002147] mb-8 leading-tight">Engineering Excellence, Rooted in Precision.</h1>
-          <p className="text-gray-900 font-bold text-lg mb-6 leading-relaxed">
+          <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-4 flex items-center">
+             <span className="w-8 h-0.5 bg-blue-600 mr-3"></span>
+             About Us
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-8 leading-tight tracking-tight">Engineering Excellence, Rooted in Precision.</h1>
+          <p className="text-slate-600 font-medium text-lg mb-6 leading-relaxed">
             Based in Shamli, Uttar Pradesh, KESHAV ENTERPRISES has established itself over the past two decades as a premier partner for heavy industries relying on rotating equipment. We bridge the gap between high OEM costs and the critical need for reliable, precision-engineered replacements.
           </p>
-          <p className="text-gray-900 font-bold text-lg mb-10 leading-relaxed">
+          <p className="text-slate-600 font-medium text-lg mb-10 leading-relaxed">
             Our state-of-the-art facility is equipped for advanced metallurgical analysis, high-tolerance machining, 3D scanning, and dynamic balancing (up to 2000 kg). We ensure every component meets the rigorous demands of OEMs like Triveni, Siemens, BHEL, and Belliss India.
           </p>
-          <div className="grid grid-cols-2 gap-8">
-            <div className="border-l-8 border-[#1E40AF] pl-5 bg-gray-50 py-4 rounded-r-md">
-              <div className="text-4xl font-black text-[#002147]">20+</div>
-              <div className="text-sm font-black text-gray-800 uppercase tracking-widest mt-1">Years Experience</div>
+          <div className="grid grid-cols-2 gap-6">
+            <div className="border-l-4 border-blue-600 pl-5 bg-slate-50 py-5 rounded-r-xl border-y border-r border-slate-100">
+              <div className="text-4xl font-black text-slate-900 tracking-tight">20+</div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">Years Experience</div>
             </div>
-            <div className="border-l-8 border-[#1E40AF] pl-5 bg-gray-50 py-4 rounded-r-md">
-              <div className="text-4xl font-black text-[#002147]">100%</div>
-              <div className="text-sm font-black text-gray-800 uppercase tracking-widest mt-1">OEM Compatibility</div>
+            <div className="border-l-4 border-blue-600 pl-5 bg-slate-50 py-5 rounded-r-xl border-y border-r border-slate-100">
+              <div className="text-4xl font-black text-slate-900 tracking-tight">100%</div>
+              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">OEM Compatibility</div>
             </div>
           </div>
         </div>
         <div className="relative">
-          <div className="aspect-square bg-[#F3F4F6] rounded-xl relative z-10 border-2 border-gray-200 overflow-hidden flex items-center justify-center shadow-2xl">
-             <Factory className="w-40 h-40 text-gray-300" />
-             <div className="absolute bottom-6 right-6 bg-white p-5 rounded-md shadow-xl flex items-center space-x-4 border-2 border-gray-100">
-               <MapPin className="w-8 h-8 text-[#1E40AF]" />
+          <div className="aspect-square bg-slate-50 rounded-2xl relative z-10 border border-slate-200 overflow-hidden flex items-center justify-center shadow-2xl">
+             <Factory className="w-40 h-40 text-slate-300" />
+             <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-xl flex items-center space-x-5 border border-slate-100">
+               <div className="bg-blue-50 p-3 rounded-full">
+                 <MapPin className="w-8 h-8 text-blue-600" />
+               </div>
                <div>
-                 <div className="font-black text-[#002147] text-base uppercase tracking-wider">Headquarters</div>
-                 <div className="text-sm font-bold text-gray-800 mt-0.5">Shamli, U.P., India</div>
+                 <div className="font-black text-slate-900 text-sm uppercase tracking-widest">Headquarters</div>
+                 <div className="text-sm font-medium text-slate-600 mt-1">Shamli, U.P., India</div>
                </div>
              </div>
           </div>
-          <div className="absolute -top-8 -right-8 w-full h-full bg-[#002147] rounded-xl z-0"></div>
+          <div className="absolute -top-6 -right-6 w-full h-full bg-blue-600 rounded-2xl z-0 opacity-10"></div>
         </div>
       </div>
 
-      <div className="bg-[#002147] py-20 px-8 rounded-xl text-center shadow-2xl border-t-8 border-[#1E40AF]">
-        <h2 className="text-3xl md:text-4xl font-black text-white mb-12">Industries We Serve</h2>
-        <div className="flex flex-wrap justify-center gap-5">
+      <div className="bg-[#0A192F] py-24 px-8 rounded-3xl text-center shadow-2xl shadow-blue-900/20 border border-slate-800 flex flex-col items-center">
+        <h2 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">Industries We Serve</h2>
+        <div className="w-16 h-1.5 bg-blue-500 mb-12 rounded-full"></div>
+        <div className="flex flex-wrap justify-center gap-4 max-w-4xl">
           {['Power Generation', 'Sugar & Distilleries', 'Cement Plants', 'Paper & Pulp', 'Petrochemicals', 'Fertilizers', 'Steel', 'Nuclear', 'Oil & Gas'].map((industry, i) => (
-            <span key={i} className="px-8 py-4 bg-white/10 text-white border-2 border-white/20 rounded-md font-black text-base hover:bg-[#1E40AF] transition-colors cursor-default shadow-sm">
+            <span key={i} className="px-6 py-3 bg-white/5 text-slate-200 border border-white/10 rounded-lg font-bold text-base hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all cursor-default shadow-sm backdrop-blur-sm">
               {industry}
             </span>
           ))}
@@ -1013,62 +1011,62 @@ const ContactPage = () => {
   };
 
   return (
-    <main className="pt-24 pb-20 bg-[#F3F4F6] min-h-screen animate-in fade-in duration-500">
+    <main className="pt-24 pb-20 bg-slate-50 min-h-screen animate-in fade-in duration-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <h1 className="text-4xl md:text-6xl font-black text-[#002147] mb-6">Contact Engineering</h1>
-          <p className="text-gray-900 font-bold text-xl leading-relaxed">Send your technical RFQs, manufacturing drawings, or tender documents. Our engineering team provides rapid, precise responses for all industrial requirements.</p>
+        <div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">Contact Engineering</h1>
+          <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full"></div>
+          <p className="text-slate-600 font-medium text-xl leading-relaxed">Send your technical RFQs, manufacturing drawings, or tender documents. Our engineering team provides rapid, precise responses for all industrial requirements.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md flex items-start space-x-5">
-              <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center shrink-0 border border-blue-100">
-                <Phone className="w-7 h-7 text-[#1E40AF]" />
+            <div className="bg-white p-8 border border-slate-200 rounded-2xl shadow-sm flex items-start space-x-5 hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
+                <Phone className="w-7 h-7 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-black text-[#002147] text-lg mb-2">Direct Lines</h3>
-                <p className="text-gray-900 font-black text-base hover:text-[#1E40AF] cursor-pointer mb-1">{CONTACT_INFO.phones[0]}</p>
-                <p className="text-gray-900 font-black text-base hover:text-[#1E40AF] cursor-pointer">{CONTACT_INFO.phones[1]}</p>
+                <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Direct Lines</h3>
+                <p className="text-slate-600 font-bold text-base hover:text-blue-600 cursor-pointer mb-1 transition-colors">{CONTACT_INFO.phones[0]}</p>
+                <p className="text-slate-600 font-bold text-base hover:text-blue-600 cursor-pointer transition-colors">{CONTACT_INFO.phones[1]}</p>
               </div>
             </div>
             
-            <div className="bg-white p-6 border border-gray-200 rounded-lg shadow-md flex items-start space-x-5">
-              <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center shrink-0 border border-blue-100">
-                <Mail className="w-7 h-7 text-[#1E40AF]" />
+            <div className="bg-white p-8 border border-slate-200 rounded-2xl shadow-sm flex items-start space-x-5 hover:shadow-md transition-shadow">
+              <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
+                <Mail className="w-7 h-7 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-black text-[#002147] text-lg mb-2">Email (RFQs)</h3>
-                <a href={`mailto:${CONTACT_INFO.email}`} className="text-gray-900 font-black text-base hover:text-[#1E40AF] block mb-1">{CONTACT_INFO.email}</a>
-                <a href={`mailto:${CONTACT_INFO.secondaryEmail}`} className="text-gray-900 font-black text-base hover:text-[#1E40AF] block">{CONTACT_INFO.secondaryEmail}</a>
+                <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Email (RFQs)</h3>
+                <a href={`mailto:${CONTACT_INFO.email}`} className="text-slate-600 font-bold text-base hover:text-blue-600 block mb-1 transition-colors">{CONTACT_INFO.email}</a>
+                <a href={`mailto:${CONTACT_INFO.secondaryEmail}`} className="text-slate-600 font-bold text-base hover:text-blue-600 block transition-colors">{CONTACT_INFO.secondaryEmail}</a>
               </div>
             </div>
 
-            <div className="bg-white p-1 border border-gray-200 rounded-lg shadow-xl overflow-hidden">
-              <div className="p-6 pb-4">
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+              <div className="p-8 pb-6">
                 <div className="flex items-start space-x-5 mb-4">
-                  <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center shrink-0 border border-blue-100">
-                    <MapPin className="w-7 h-7 text-[#1E40AF]" />
+                  <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
+                    <MapPin className="w-7 h-7 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-black text-[#002147] text-lg mb-2">Facility Location</h3>
-                    <p className="text-gray-900 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p>
+                    <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Facility Location</h3>
+                    <p className="text-slate-600 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="w-full h-56 bg-[#F3F4F6] border-y border-gray-200 relative flex flex-col items-center justify-center p-6 text-center">
-                <MapPin className="w-12 h-12 text-[#1E40AF] mb-3 opacity-50" />
-                <h4 className="text-[#002147] font-black text-lg">Shamli, Uttar Pradesh</h4>
-                <p className="text-gray-600 font-bold text-sm mt-1">Click below to open exact routing in Google Maps.</p>
+              <div className="w-full h-48 bg-slate-100 border-t border-slate-200 relative flex flex-col items-center justify-center p-6 text-center">
+                <MapPin className="w-10 h-10 text-slate-300 mb-3" />
+                <h4 className="text-slate-500 font-black text-lg tracking-tight">Shamli, Uttar Pradesh</h4>
               </div>
 
-              <div className="p-4 bg-gray-50">
+              <div className="p-4 bg-white border-t border-slate-100">
                 <a 
                   href={CONTACT_INFO.gmapsShare} 
                   target="_blank" 
                   rel="noreferrer" 
-                  className="w-full bg-[#1E40AF] text-white py-3.5 rounded-md flex items-center justify-center font-black hover:bg-[#002147] transition-colors text-sm shadow-md"
+                  className="w-full bg-slate-900 text-white py-4 rounded-lg flex items-center justify-center font-bold hover:bg-blue-600 transition-colors text-sm shadow-sm"
                 >
                   <Navigation className="w-5 h-5 mr-2" /> Get Google Maps Directions
                 </a>
@@ -1077,41 +1075,44 @@ const ContactPage = () => {
           </div>
 
           <div className="lg:col-span-2">
-            <form onSubmit={handleSubmit} className="bg-white p-8 md:p-10 border border-gray-200 rounded-xl shadow-xl">
-              <h2 className="text-3xl font-black text-[#002147] mb-8 border-b-2 border-gray-100 pb-5">Request a Technical Quote</h2>
+            <form onSubmit={handleSubmit} className="bg-white p-8 md:p-12 border border-slate-200 rounded-2xl shadow-md">
+              <div className="flex flex-col mb-8 border-b border-slate-100 pb-6">
+                 <h2 className="text-3xl font-black text-slate-900 tracking-tight">Request a Technical Quote</h2>
+                 <div className="w-12 h-1.5 bg-blue-600 mt-4 rounded-full"></div>
+              </div>
               
               {formState.status === 'success' && (
-                <div className="mb-8 p-5 bg-green-50 border-2 border-green-200 text-green-900 font-black rounded-md flex items-center shadow-sm text-lg">
-                  <CheckCircle2 className="w-7 h-7 mr-3 text-green-600 shrink-0" />
+                <div className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 font-bold rounded-xl flex items-center shadow-sm text-lg">
+                  <CheckCircle2 className="w-8 h-8 mr-4 text-green-500 shrink-0" />
                   {formState.message}
                 </div>
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div>
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wider">Company Name *</label>
-                  <input required type="text" className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-md font-bold text-gray-900 focus:ring-0 focus:border-[#1E40AF] outline-none transition-all" placeholder="Enter company name" />
+                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Company Name *</label>
+                  <input required type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Enter company name" />
                 </div>
                 <div>
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wider">Contact Person *</label>
-                  <input required type="text" className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-md font-bold text-gray-900 focus:ring-0 focus:border-[#1E40AF] outline-none transition-all" placeholder="Your full name" />
+                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Contact Person *</label>
+                  <input required type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Your full name" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div>
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wider">Email Address *</label>
-                  <input required type="email" className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-md font-bold text-gray-900 focus:ring-0 focus:border-[#1E40AF] outline-none transition-all" placeholder="name@company.com" />
+                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Email Address *</label>
+                  <input required type="email" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="name@company.com" />
                 </div>
                 <div>
-                  <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wider">Phone Number *</label>
-                  <input required type="tel" className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-md font-bold text-gray-900 focus:ring-0 focus:border-[#1E40AF] outline-none transition-all" placeholder="+91 9149229448" />
+                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Phone Number *</label>
+                  <input required type="tel" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="+91 9149229448" />
                 </div>
               </div>
 
               <div className="mb-8">
-                <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wider">Primary Inquiry Category</label>
-                <select className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-md font-bold text-gray-900 focus:ring-0 focus:border-[#1E40AF] outline-none transition-all">
+                <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Primary Inquiry Category</label>
+                <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
                   <option>Turbine Spares (Carbon Rings, Seals, Bearings)</option>
                   <option>Filtration (Siemens/Triveni Oil Filters)</option>
                   <option>Expansion Joints & Bellows</option>
@@ -1121,14 +1122,14 @@ const ContactPage = () => {
               </div>
 
               <div className="mb-10">
-                <label className="block text-sm font-black text-gray-900 mb-3 uppercase tracking-wider">Technical Requirements / Scope of Work *</label>
-                <textarea required rows={6} className="w-full px-5 py-4 bg-gray-50 border-2 border-gray-200 rounded-md font-bold text-gray-900 focus:ring-0 focus:border-[#1E40AF] outline-none transition-all resize-none" placeholder="Provide OEM details, part numbers, capacities (e.g. MW or RPM), or paste your RFQ scope here..."></textarea>
+                <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Technical Requirements / Scope of Work *</label>
+                <textarea required rows={6} className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none" placeholder="Provide OEM details, part numbers, capacities (e.g. MW or RPM), or paste your RFQ scope here..."></textarea>
               </div>
 
               <button 
                 type="submit" 
                 disabled={formState.status === 'loading'}
-                className="w-full bg-[#002147] text-white py-5 rounded-md font-black text-lg hover:bg-[#1E40AF] transition-colors flex items-center justify-center disabled:opacity-70 shadow-lg border-2 border-[#002147]"
+                className="w-full bg-blue-600 text-white py-5 rounded-xl font-bold text-lg hover:bg-blue-700 transition-colors flex items-center justify-center disabled:opacity-70 shadow-lg shadow-blue-600/30"
               >
                 {formState.status === 'loading' ? (
                   <span className="flex items-center">Transmitting Data <span className="animate-spin ml-3 w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span></span>
@@ -1136,7 +1137,7 @@ const ContactPage = () => {
                   <span className="flex items-center">Submit Technical Inquiry <ArrowRight className="ml-3 w-6 h-6" /></span>
                 )}
               </button>
-              <p className="text-sm text-gray-700 font-bold text-center mt-5">By submitting, you agree to our data processing guidelines. Formal NDA available upon request.</p>
+              <p className="text-sm text-slate-500 font-medium text-center mt-6">By submitting, you agree to our data processing guidelines. Formal NDA available upon request.</p>
             </form>
           </div>
         </div>
@@ -1174,7 +1175,7 @@ export default function App() {
   };
 
   return (
-    <div className="font-sans min-h-screen flex flex-col bg-[#FFFFFF] selection:bg-[#1E40AF] selection:text-white text-[#111827]">
+    <div className="font-sans min-h-screen flex flex-col bg-[#FFFFFF] selection:bg-blue-600 selection:text-white text-[#111827]">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
