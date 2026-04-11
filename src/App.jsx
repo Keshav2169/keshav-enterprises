@@ -3,7 +3,7 @@ import {
   Menu, X, ChevronRight, Phone, Mail, MapPin, 
   Settings, Wrench, Shield, Zap, Factory, ArrowRight,
   CheckCircle2, Download, ExternalLink, MessageCircle, Activity, Droplets,
-  Search, SlidersHorizontal, Layers, Target, Navigation
+  Search, SlidersHorizontal, Layers, Target, Navigation, Cpu, ArrowLeft, Image as ImageIcon
 } from 'lucide-react';
 
 // --- DESIGN TOKENS & CONSTANTS ---
@@ -20,7 +20,7 @@ const CONTACT_INFO = {
   email: 'ksengg007@gmail.com',
   secondaryEmail: 'ppshekher71@gmail.com',
   address: 'Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, U.P., India',
-  whatsapp: '919149229448', 
+  whatsapp: '916397363268', 
   indiamart: 'https://www.indiamart.com/keshav-enterprises-shamli/',
   gmapsShare: 'https://share.google/uLc4GwsGec5eM62Ep' 
 };
@@ -34,57 +34,63 @@ const SERVICES = [
   { id: 'srv_5', title: 'Lube Oil Flushing', icon: <Droplets className="w-6 h-6" />, desc: 'ISO-compliant flushing using high-capacity mobile centrifuge systems, complete with rigorous oil sampling and reporting.' }
 ];
 
+// DATA UPGRADE: "images" is now an Array to support multiple angles/photos per product
 const PRODUCTS = [
   // --- CATEGORY 1: Industrial Filtration & Strainers (15) ---
-  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'] },
-  { id: 'prod_f2', category: 'Industrial Filtration', title: '850 LPM Siemens Turbine Filter Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure'] },
-  { id: 'prod_f3', category: 'Industrial Filtration', title: 'Simplex Basket Strainer', desc: 'Provides heavy equipment protection with remarkably low pressure drop at high flow velocities.', usage: 'General pipeline debris removal for liquids and gases.', features: ['ASME #125 to #600 Ratings', 'Quick Open Closures', 'SS Perforated Basket'] },
-  { id: 'prod_f4', category: 'Industrial Filtration', title: 'Duplex Basket Strainer', desc: 'Allows continuous flow during filter element changeouts for mission-critical uninterrupted systems.', usage: 'Uninterrupted continuous flow systems needing 24/7 filtration.', features: ['Continuous Uninterrupted Flow', 'Cast Steel & SS MOC', 'DP Gauge Integration'] },
-  { id: 'prod_f5', category: 'Industrial Filtration', title: 'Y-Type Strainer', desc: 'Standard pipeline protection against solid particulates for liquid, gas, and steam applications.', usage: 'Inline pipeline protection for steam and chemical processing.', features: ['Flanged & Butt Weld Ends', 'Horizontal/Vertical Mount', 'Easy Maintenance'] },
-  { id: 'prod_f6', category: 'Industrial Filtration', title: 'Conical / Temporary Strainer', desc: 'Ideal for system start-ups and flushing operations to catch debris before regular operation.', usage: 'Commissioning and startup flushing of new piping networks.', features: ['Cost-Effective Protection', 'Custom Mesh Sizes', 'Easy Flange Installation'] },
-  { id: 'prod_f7', category: 'Industrial Filtration', title: 'Hydraulic Suction Strainer', desc: 'Protects hydraulic pumps from coarse contamination residing in the main reservoir.', usage: 'In-tank pump protection for heavy industrial hydraulics.', features: ['Submerged Operation', 'Stainless Steel Mesh', 'Ultra Low Pressure Drop'] },
-  { id: 'prod_f8', category: 'Industrial Filtration', title: 'High-Pressure Filter Element (01.E)', desc: 'In-line pressure filtration up to 2320 psi to protect sensitive servo valves and hydraulic motors.', usage: 'High-pressure hydraulic lines and servo valve protection.', features: ['Sizes 30 to 1350', 'Up to 160 Bar Pressure', 'Multi-Layer Media'] },
-  { id: 'prod_f9', category: 'Industrial Filtration', title: 'Return-Line Filter Element (01.NR)', desc: 'DIN 24550-4 standard compliant elements for system return lines to reduce oil aging.', usage: 'Reducing fluid contamination and oil aging in return lines.', features: ['Sizes 63 to 1000', '145 PSI / 10 Bar', 'DIN 24550-4 Compliant'] },
-  { id: 'prod_f10', category: 'Industrial Filtration', title: 'Air Breather Filter Element (01.NBF)', desc: 'Protects hydraulic fluid reservoirs from ambient airborne contamination and moisture.', usage: 'Tank breather filtration for ambient moisture control.', features: ['Moisture Resistance', 'High Dirt Holding Capacity', 'Sizes 25 to 125'] },
-  { id: 'prod_f11', category: 'Industrial Filtration', title: 'Lubrication Filter Element', desc: 'For large-scale lubrication modules ensuring continuous bearing and gear protection.', usage: 'Large-scale bearing and gearbox lubrication modules.', features: ['Sizes 631 to 4001', 'High Flow Dynamics', 'Optimal Cleanliness Class'] },
-  { id: 'prod_f12', category: 'Industrial Filtration', title: 'Wire Mesh Filter Element', desc: 'Washable and reusable stainless steel mesh elements intended for coarse filtration applications.', usage: 'High-temperature environments requiring reusable filtration.', features: ['Pleated Design', 'High Temp Resistance', 'Reusable & Cleanable'] },
-  { id: 'prod_f13', category: 'Industrial Filtration', title: 'Cep Strainer Filter', desc: 'Specialized heavy-duty strainers constructed for customized industrial processing applications.', usage: 'Heavy-duty customized industrial and chemical processing.', features: ['Rugged Build Quality', 'Custom Dimensions', 'Long Service Life'] },
-  { id: 'prod_f14', category: 'Industrial Filtration', title: 'WaterSorp Filter Element', desc: 'Advanced media that absorbs free and emulsified water directly from the lubricating oil.', usage: 'Absorbing free/emulsified water from turbine lube oil.', features: ['Moisture Removal', 'Prevents Rapid Oxidation', 'Improves Oil Life'] },
-  { id: 'prod_f15', category: 'Industrial Filtration', title: 'Mobile Centrifugal Oil Cleaner', desc: 'Complete centrifuge systems for on-site, ISO-compliant lube oil flushing and conditioning.', usage: 'On-site ISO-compliant lube oil flushing and purification.', features: ['High Capacity Centrifuge', 'Particle Counting Support', 'Turnkey Operation'] },
+  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter.jpg'] },
+  { id: 'prod_f2', category: 'Industrial Filtration', title: '850 LPM Siemens Turbine Filter Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure'], images: ['850-lpm-siemens-filter.jpg'] },
+  { id: 'prod_f3', category: 'Industrial Filtration', title: 'Simplex Basket Strainer', desc: 'Provides heavy equipment protection with remarkably low pressure drop at high flow velocities.', usage: 'General pipeline debris removal for liquids and gases.', features: ['ASME #125 to #600 Ratings', 'Quick Open Closures', 'SS Perforated Basket'], images: ['simplex-basket-strainer.jpg'] },
+  { id: 'prod_f4', category: 'Industrial Filtration', title: 'Duplex Basket Strainer', desc: 'Allows continuous flow during filter element changeouts for mission-critical uninterrupted systems.', usage: 'Uninterrupted continuous flow systems needing 24/7 filtration.', features: ['Continuous Uninterrupted Flow', 'Cast Steel & SS MOC', 'DP Gauge Integration'], images: ['duplex-basket-strainer.jpg'] },
+  { id: 'prod_f5', category: 'Industrial Filtration', title: 'Y-Type Strainer', desc: 'Standard pipeline protection against solid particulates for liquid, gas, and steam applications.', usage: 'Inline pipeline protection for steam and chemical processing.', features: ['Flanged & Butt Weld Ends', 'Horizontal/Vertical Mount', 'Easy Maintenance'], images: ['y-type-strainer.jpg'] },
+  { id: 'prod_f6', category: 'Industrial Filtration', title: 'Conical / Temporary Strainer', desc: 'Ideal for system start-ups and flushing operations to catch debris before regular operation.', usage: 'Commissioning and startup flushing of new piping networks.', features: ['Cost-Effective Protection', 'Custom Mesh Sizes', 'Easy Flange Installation'], images: ['conical-strainer.jpg'] },
+  { id: 'prod_f7', category: 'Industrial Filtration', title: 'Hydraulic Suction Strainer', desc: 'Protects hydraulic pumps from coarse contamination residing in the main reservoir.', usage: 'In-tank pump protection for heavy industrial hydraulics.', features: ['Submerged Operation', 'Stainless Steel Mesh', 'Ultra Low Pressure Drop'], images: ['hydraulic-suction-strainer.jpg'] },
+  { id: 'prod_f8', category: 'Industrial Filtration', title: 'High-Pressure Filter Element (01.E)', desc: 'In-line pressure filtration up to 2320 psi to protect sensitive servo valves and hydraulic motors.', usage: 'High-pressure hydraulic lines and servo valve protection.', features: ['Sizes 30 to 1350', 'Up to 160 Bar Pressure', 'Multi-Layer Media'], images: ['high-pressure-filter.jpg'] },
+  { id: 'prod_f9', category: 'Industrial Filtration', title: 'Return-Line Filter Element (01.NR)', desc: 'DIN 24550-4 standard compliant elements for system return lines to reduce oil aging.', usage: 'Reducing fluid contamination and oil aging in return lines.', features: ['Sizes 63 to 1000', '145 PSI / 10 Bar', 'DIN 24550-4 Compliant'], images: ['return-line-filter.jpg'] },
+  { id: 'prod_f10', category: 'Industrial Filtration', title: 'Air Breather Filter Element (01.NBF)', desc: 'Protects hydraulic fluid reservoirs from ambient airborne contamination and moisture.', usage: 'Tank breather filtration for ambient moisture control.', features: ['Moisture Resistance', 'High Dirt Holding Capacity', 'Sizes 25 to 125'], images: ['air-breather-filter.jpg'] },
+  { id: 'prod_f11', category: 'Industrial Filtration', title: 'Lubrication Filter Element', desc: 'For large-scale lubrication modules ensuring continuous bearing and gear protection.', usage: 'Large-scale bearing and gearbox lubrication modules.', features: ['Sizes 631 to 4001', 'High Flow Dynamics', 'Optimal Cleanliness Class'], images: ['lubrication-filter.jpg'] },
+  { id: 'prod_f12', category: 'Industrial Filtration', title: 'Wire Mesh Filter Element', desc: 'Washable and reusable stainless steel mesh elements intended for coarse filtration applications.', usage: 'High-temperature environments requiring reusable filtration.', features: ['Pleated Design', 'High Temp Resistance', 'Reusable & Cleanable'], images: ['wire-mesh-filter.jpg'] },
+  { id: 'prod_f13', category: 'Industrial Filtration', title: 'Cep Strainer Filter', desc: 'Specialized heavy-duty strainers constructed for customized industrial processing applications.', usage: 'Heavy-duty customized industrial and chemical processing.', features: ['Rugged Build Quality', 'Custom Dimensions', 'Long Service Life'], images: ['cep-strainer-filter.jpg'] },
+  { id: 'prod_f14', category: 'Industrial Filtration', title: 'WaterSorp Filter Element', desc: 'Advanced media that absorbs free and emulsified water directly from the lubricating oil.', usage: 'Absorbing free/emulsified water from turbine lube oil.', features: ['Moisture Removal', 'Prevents Rapid Oxidation', 'Improves Oil Life'], images: ['watersorp-filter.jpg'] },
+  { id: 'prod_f15', category: 'Industrial Filtration', title: 'Mobile Centrifugal Oil Cleaner', desc: 'Complete centrifuge systems for on-site, ISO-compliant lube oil flushing and conditioning.', usage: 'On-site ISO-compliant lube oil flushing and purification.', features: ['High Capacity Centrifuge', 'Particle Counting Support', 'Turnkey Operation'], images: ['mobile-centrifugal-cleaner.jpg'] },
 
   // --- CATEGORY 2: Expansion Joints & Bellows (10) ---
-  { id: 'prod_e1', category: 'Expansion Joints', title: 'Stainless Steel Metallic Bellows', desc: 'Absorbs thermal expansion and vibration in high-pressure exhaust and process pipe systems.', usage: 'High-pressure steam exhaust and chemical process pipes.', features: ['Multi-Ply SS Construction', 'High Temp Resistance', 'Fatigue & Yield Tested'] },
-  { id: 'prod_e2', category: 'Expansion Joints', title: 'Double Arch Rubber Expansion Joint', desc: 'Provides substantially higher movement capability and vibration dampening over single arch models.', usage: 'High movement vibration dampening in cooling water lines.', features: ['Axial & Lateral Movement', 'Superior Noise Reduction', 'High Flexibility'] },
-  { id: 'prod_e3', category: 'Expansion Joints', title: 'Single Arch Rubber Expansion Joint', desc: 'Standard vibration and thermal movement absorption for general industrial piping networks.', usage: 'Standard pipe stress prevention in HVAC and water systems.', features: ['Compact Design footprint', 'Durable Elastomer', 'Prevents Pipe Stress'] },
-  { id: 'prod_e4', category: 'Expansion Joints', title: 'Wide Arch Expansion Bellow', desc: 'Designed for fluid systems requiring significant axial compression and extension ranges.', usage: 'Fluid systems needing significant axial compression.', features: ['High Movement Range', 'Self-Cleaning Arch Design', 'Low Spring Rate'] },
-  { id: 'prod_e5', category: 'Expansion Joints', title: 'Flanged Rubber Expansion Joint', desc: 'Allows for easy and secure installation within standard flanged piping infrastructure.', usage: 'Secure integration into standard flanged piping infrastructure.', features: ['Carbon/SS Flange Options', 'Secure Leak-proof Sealing', 'Vibration Dampening'] },
-  { id: 'prod_e6', category: 'Expansion Joints', title: 'Butt Weld Expansion Joint', desc: 'Permanent welded integration intended for high-pressure, seamless piping environments.', usage: 'High-pressure seamless welded piping in power plants.', features: ['Weld-End Preparation', '100% Leak-Proof', 'High Pressure Rating'] },
-  { id: 'prod_e7', category: 'Expansion Joints', title: 'Fabric Expansion Joints', desc: 'Ideal for gas turbine exhausts and low-pressure hot gas ducting needing large compensations.', usage: 'Gas turbine exhaust and low-pressure hot gas ducting.', features: ['Extreme Temperatures', 'Large Duct Sizes', 'Corrosion Resistant'] },
-  { id: 'prod_e8', category: 'Expansion Joints', title: 'Heavy-Duty Industrial Bellows', desc: 'Massive scale expansion joints manufactured for extreme industrial applications.', usage: 'Extreme Oil & Gas, Nuclear, and heavy fluid applications.', features: ['DN 15 to 12.000 Sizes', 'Up to 150 BARG', 'API/ASME Compliant'] },
-  { id: 'prod_e9', category: 'Expansion Joints', title: 'PTFE Lined Expansion Joints', desc: 'Highly chemically resistant joints designed to handle aggressive acids and corrosive media.', usage: 'Corrosive chemical processing and acid transport pipelines.', features: ['100% Virgin PTFE Liner', 'Extreme Chemical Resistance', 'Non-Stick Surface'] },
-  { id: 'prod_e10', category: 'Expansion Joints', title: 'Universal Expansion Joints', desc: 'Dual-bellow assemblies connected by a center spool to absorb multi-directional movements.', usage: 'Absorbing large lateral and axial movements in complex piping.', features: ['Multi-Directional Flex', 'Center Spool Design', 'Custom Lengths'] },
+  { id: 'prod_e1', category: 'Expansion Joints', title: 'Stainless Steel Metallic Bellows', desc: 'Absorbs thermal expansion and vibration in high-pressure exhaust and process pipe systems.', usage: 'High-pressure steam exhaust and chemical process pipes.', features: ['Multi-Ply SS Construction', 'High Temp Resistance', 'Fatigue & Yield Tested'], images: ['ss-metallic-bellows.jpg'] },
+  { id: 'prod_e2', category: 'Expansion Joints', title: 'Double Arch Rubber Expansion Joint', desc: 'Provides substantially higher movement capability and vibration dampening over single arch models.', usage: 'High movement vibration dampening in cooling water lines.', features: ['Axial & Lateral Movement', 'Superior Noise Reduction', 'High Flexibility'], images: ['double-arch-rubber-joint.jpg'] },
+  { id: 'prod_e3', category: 'Expansion Joints', title: 'Single Arch Rubber Expansion Joint', desc: 'Standard vibration and thermal movement absorption for general industrial piping networks.', usage: 'Standard pipe stress prevention in HVAC and water systems.', features: ['Compact Design footprint', 'Durable Elastomer', 'Prevents Pipe Stress'], images: ['single-arch-rubber-joint.jpg'] },
+  { id: 'prod_e4', category: 'Expansion Joints', title: 'Wide Arch Expansion Bellow', desc: 'Designed for fluid systems requiring significant axial compression and extension ranges.', usage: 'Fluid systems needing significant axial compression.', features: ['High Movement Range', 'Self-Cleaning Arch Design', 'Low Spring Rate'], images: ['wide-arch-expansion-bellow.jpg'] },
+  { id: 'prod_e5', category: 'Expansion Joints', title: 'Flanged Rubber Expansion Joint', desc: 'Allows for easy and secure installation within standard flanged piping infrastructure.', usage: 'Secure integration into standard flanged piping infrastructure.', features: ['Carbon/SS Flange Options', 'Secure Leak-proof Sealing', 'Vibration Dampening'], images: ['flanged-rubber-joint.jpg'] },
+  { id: 'prod_e6', category: 'Expansion Joints', title: 'Butt Weld Expansion Joint', desc: 'Permanent welded integration intended for high-pressure, seamless piping environments.', usage: 'High-pressure seamless welded piping in power plants.', features: ['Weld-End Preparation', '100% Leak-Proof', 'High Pressure Rating'], images: ['butt-weld-expansion-joint.jpg'] },
+  { id: 'prod_e7', category: 'Expansion Joints', title: 'Fabric Expansion Joints', desc: 'Ideal for gas turbine exhausts and low-pressure hot gas ducting needing large compensations.', usage: 'Gas turbine exhaust and low-pressure hot gas ducting.', features: ['Extreme Temperatures', 'Large Duct Sizes', 'Corrosion Resistant'], images: ['fabric-expansion-joint.jpg'] },
+  { id: 'prod_e8', category: 'Expansion Joints', title: 'Heavy-Duty Industrial Bellows', desc: 'Massive scale expansion joints manufactured for extreme industrial applications.', usage: 'Extreme Oil & Gas, Nuclear, and heavy fluid applications.', features: ['DN 15 to 12.000 Sizes', 'Up to 150 BARG', 'API/ASME Compliant'], images: ['heavy-duty-industrial-bellows.jpg'] },
+  { id: 'prod_e9', category: 'Expansion Joints', title: 'PTFE Lined Expansion Joints', desc: 'Highly chemically resistant joints designed to handle aggressive acids and corrosive media.', usage: 'Corrosive chemical processing and acid transport pipelines.', features: ['100% Virgin PTFE Liner', 'Extreme Chemical Resistance', 'Non-Stick Surface'], images: ['ptfe-lined-expansion-joint.jpg'] },
+  { id: 'prod_e10', category: 'Expansion Joints', title: 'Universal Expansion Joints', desc: 'Dual-bellow assemblies connected by a center spool to absorb multi-directional movements.', usage: 'Absorbing large lateral and axial movements in complex piping.', features: ['Multi-Directional Flex', 'Center Spool Design', 'Custom Lengths'], images: ['universal-expansion-joint.jpg'] },
 
   // --- CATEGORY 3: Turbine Spares & Seals (12) ---
-  { id: 'prod_ts1', category: 'Turbine Spares', title: 'Black Carbon Sealing Rings', desc: 'Precision machined black carbon rings offering superior steam turbine gland sealing.', usage: 'Steam turbine gland sealing for pressure retention.', features: ['Self-Lubricating Material', 'High Temp Resistance', 'Precise Clearances'] },
-  { id: 'prod_ts2', category: 'Turbine Spares', title: 'High-Temperature Graphite Rings', desc: 'Advanced graphite sealing solutions engineered for extreme pressure environments.', usage: 'Extreme pressure and temperature steam sealing.', features: ['Thermal Stability', 'Chemical Resistance', 'Meets OEM Specifications'] },
-  { id: 'prod_ts3', category: 'Turbine Spares', title: 'Labyrinth Seal Rings', desc: 'Complex tortuous path seals designed to minimize steam or gas leakage along the rotor shaft.', usage: 'Minimizing steam/gas leakage on high-speed rotor shafts.', features: ['Bronze, Alloy, or SS', 'High Speed Rating', 'Exact CNC Tolerances'] },
-  { id: 'prod_ts4', category: 'Turbine Spares', title: 'Labyrinth Packings', desc: 'Complete packing sets for inner casing and inter-stage sealing within the turbine.', usage: 'Inner casing and inter-stage steam sealing within turbines.', features: ['Spring Backed Design', 'High Durability', 'Custom Manufactured'] },
-  { id: 'prod_ts5', category: 'Turbine Spares', title: 'Rotor Assemblies', desc: 'Fully balanced and tested replacement rotors ready for drop-in industrial turbine installation.', usage: 'Drop-in replacement for damaged or aged turbine rotors.', features: ['Dynamic Balanced (ISO)', 'NDT Flaw Tested', 'Ready to Install'] },
-  { id: 'prod_ts6', category: 'Turbine Spares', title: 'Journal Bearings', desc: 'White metal babbitted bearings ensuring stable and smooth rotor dynamics under heavy load.', usage: 'Supporting rotor weight and ensuring stable shaft dynamics.', features: ['Ultrasonic Tested Babbitt', 'Optimized Oil Wedge', 'High Load Capacity'] },
-  { id: 'prod_ts7', category: 'Turbine Spares', title: 'Thrust Bearings', desc: 'Tilting pad and fixed profile thrust bearings crafted to handle massive axial rotor loads.', usage: 'Absorbing axial thrust loads from the spinning turbine rotor.', features: ['High Axial Load', 'Direct Lubrication Paths', 'Temperature Monitored'] },
-  { id: 'prod_ts8', category: 'Turbine Spares', title: 'Mechanical Governors', desc: 'Precision speed control linkage components ensuring reliable and steady turbine RPM.', usage: 'Regulating turbine speed and RPM under varying loads.', features: ['Woodward/OEM Compatible', 'Responsive Regulation', 'Flyweight Assemblies'] },
-  { id: 'prod_ts9', category: 'Turbine Spares', title: 'Main Oil Pumps (MOP)', desc: 'Shaft-driven primary oil pumps ensuring critical lubrication flow during operation.', usage: 'Providing primary lubrication flow during turbine operation.', features: ['Gear/Centrifugal Types', 'High Reliability', 'Tested Flow Rates'] },
-  { id: 'prod_ts10', category: 'Turbine Spares', title: 'High-Grade Turbine Blades', desc: 'Reverse-engineered moving and stationary blades utilizing 3D scanning and CNC milling.', usage: 'Replacement of eroded or damaged moving/stationary blades.', features: ['Alloy Steel / Titanium', 'Root CNC Machining', 'Moment Weighed'] },
-  { id: 'prod_ts11', category: 'Turbine Spares', title: 'Turbine Fasteners & Bolting', desc: 'High-tensile, heat-resistant studs and cap nuts designed for securing turbine casings.', usage: 'Securing high-pressure turbine upper and lower casings.', features: ['High-Tensile Alloys', 'Creep Resistant', 'Precise Threading'] },
-  { id: 'prod_ts12', category: 'Turbine Spares', title: 'White Metal Babbitt Remetalling', desc: 'Expert remetalling services and custom babbitt poured bearings for heavy industrial rotors.', usage: 'Reconditioning worn out heavy-duty industrial bearings.', features: ['Centrifugal Casting', 'Dye Penetrant Tested', 'Custom Alloy Mix'] },
+  { id: 'prod_ts1', category: 'Turbine Spares', title: 'Black Carbon Sealing Rings', desc: 'Precision machined black carbon rings offering superior steam turbine gland sealing.', usage: 'Steam turbine gland sealing for pressure retention.', features: ['Self-Lubricating Material', 'High Temp Resistance', 'Precise Clearances'], images: ['black-carbon-sealing-rings.jpg'] },
+  { id: 'prod_ts2', category: 'Turbine Spares', title: 'High-Temperature Graphite Rings', desc: 'Advanced graphite sealing solutions engineered for extreme pressure environments.', usage: 'Extreme pressure and temperature steam sealing.', features: ['Thermal Stability', 'Chemical Resistance', 'Meets OEM Specifications'], images: ['high-temp-graphite-rings.jpg'] },
+  { id: 'prod_ts3', category: 'Turbine Spares', title: 'Labyrinth Seal Rings', desc: 'Complex tortuous path seals designed to minimize steam or gas leakage along the rotor shaft.', usage: 'Minimizing steam/gas leakage on high-speed rotor shafts.', features: ['Bronze, Alloy, or SS', 'High Speed Rating', 'Exact CNC Tolerances'], images: ['labyrinth-seal-rings.jpg'] },
+  { id: 'prod_ts4', category: 'Turbine Spares', title: 'Labyrinth Packings', desc: 'Complete packing sets for inner casing and inter-stage sealing within the turbine.', usage: 'Inner casing and inter-stage steam sealing within turbines.', features: ['Spring Backed Design', 'High Durability', 'Custom Manufactured'], images: ['labyrinth-packings.jpg'] },
+  { id: 'prod_ts5', category: 'Turbine Spares', title: 'Rotor Assemblies', desc: 'Fully balanced and tested replacement rotors ready for drop-in industrial turbine installation.', usage: 'Drop-in replacement for damaged or aged turbine rotors.', features: ['Dynamic Balanced (ISO)', 'NDT Flaw Tested', 'Ready to Install'], images: ['rotor-assemblies.jpg'] },
+  { id: 'prod_ts6', category: 'Turbine Spares', title: 'Journal Bearings', desc: 'White metal babbitted bearings ensuring stable and smooth rotor dynamics under heavy load.', usage: 'Supporting rotor weight and ensuring stable shaft dynamics.', features: ['Ultrasonic Tested Babbitt', 'Optimized Oil Wedge', 'High Load Capacity'], images: ['journal-bearings.jpg'] },
+  { id: 'prod_ts7', category: 'Turbine Spares', title: 'Thrust Bearings', desc: 'Tilting pad and fixed profile thrust bearings crafted to handle massive axial rotor loads.', usage: 'Absorbing axial thrust loads from the spinning turbine rotor.', features: ['High Axial Load', 'Direct Lubrication Paths', 'Temperature Monitored'], images: ['thrust-bearings.jpg'] },
+  { id: 'prod_ts8', category: 'Turbine Spares', title: 'Mechanical Governors', desc: 'Precision speed control linkage components ensuring reliable and steady turbine RPM.', usage: 'Regulating turbine speed and RPM under varying loads.', features: ['Woodward/OEM Compatible', 'Responsive Regulation', 'Flyweight Assemblies'], images: ['mechanical-governors.jpg'] },
+  { id: 'prod_ts9', category: 'Turbine Spares', title: 'Main Oil Pumps (MOP)', desc: 'Shaft-driven primary oil pumps ensuring critical lubrication flow during operation.', usage: 'Providing primary lubrication flow during turbine operation.', features: ['Gear/Centrifugal Types', 'High Reliability', 'Tested Flow Rates'], images: ['main-oil-pumps.jpg'] },
+  { id: 'prod_ts10', category: 'Turbine Spares', title: 'High-Grade Turbine Blades', desc: 'Reverse-engineered moving and stationary blades utilizing 3D scanning and CNC milling.', usage: 'Replacement of eroded or damaged moving/stationary blades.', features: ['Alloy Steel / Titanium', 'Root CNC Machining', 'Moment Weighed'], images: ['high-grade-turbine-blades.jpg'] },
+  { id: 'prod_ts11', category: 'Turbine Spares', title: 'Turbine Fasteners & Bolting', desc: 'High-tensile, heat-resistant studs and cap nuts designed for securing turbine casings.', usage: 'Securing high-pressure turbine upper and lower casings.', features: ['High-Tensile Alloys', 'Creep Resistant', 'Precise Threading'], images: ['turbine-fasteners-bolting.jpg'] },
+  { id: 'prod_ts12', category: 'Turbine Spares', title: 'White Metal Babbitt Remetalling', desc: 'Expert remetalling services and custom babbitt poured bearings for heavy industrial rotors.', usage: 'Reconditioning worn out heavy-duty industrial bearings.', features: ['Centrifugal Casting', 'Dye Penetrant Tested', 'Custom Alloy Mix'], images: ['white-metal-babbitt.jpg'] },
 
   // --- CATEGORY 4: Hose Pipes & Flexible Tubing (6) ---
-  { id: 'prod_h1', category: 'Hose Pipes', title: 'Stainless Steel Corrugated Flexible Hose', desc: 'High-quality stainless steel corrugated hoses designed for conveying highly corrosive chemicals and extreme temperature fluids.', usage: 'High-temperature steam, chemical transfer, and vibration absorption in rigid piping.', features: ['SS 304/316L Construction', 'High Temperature Resistance', 'Braided for High Pressure'] },
-  { id: 'prod_h2', category: 'Hose Pipes', title: 'PTFE Smoothbore Flexible Hose', desc: 'Smoothbore PTFE lined hoses reinforced with stainless steel braiding for maximum chemical resistance and purity.', usage: 'Pharmaceutical, food processing, and aggressive chemical transport.', features: ['100% Virgin PTFE Liner', 'Non-Stick FDA Approved', 'SS 304 Outer Braid'] },
-  { id: 'prod_h3', category: 'Hose Pipes', title: 'Industrial Rubber Hose', desc: 'Heavy-duty rubber hoses reinforced with synthetic yarn or steel wire for pneumatic, water, and abrasive material transfer.', usage: 'Pneumatic lines, cooling water systems, and industrial washdown.', features: ['EPDM / NBR Rubber', 'High Abrasion Resistance', 'Flexible & Kink-Resistant'] },
-  { id: 'prod_h4', category: 'Hose Pipes', title: 'Composite Chemical Transfer Hose', desc: 'Multi-layer thermoplastic composite hoses with inner and outer wire helixes for safe chemical and hydrocarbon transfer.', usage: 'Ship-to-shore chemical transfer and tank truck unloading.', features: ['Lightweight & Flexible', 'Chemical/Acid Resistant', 'Inner/Outer Steel Wire Helix'] },
-  { id: 'prod_h5', category: 'Hose Pipes', title: 'High-Pressure Hydraulic Hose', desc: 'Steel-wire reinforced hydraulic hoses engineered to withstand extreme impulse pressures in hydraulic fluid power systems.', usage: 'Hydraulic control systems, heavy machinery, and earth-moving equipment.', features: ['SAE/EN Standard Compliant', 'High Burst Pressure', 'Oil & Weather Resistant Cover'] },
-  { id: 'prod_h6', category: 'Hose Pipes', title: 'Interlocked Exhaust Flexible Hose', desc: 'Fully interlocked metallic hoses designed specifically to absorb engine exhaust vibrations and thermal expansion.', usage: 'Diesel engine exhausts, generator sets, and heavy vehicle exhausts.', features: ['Galvanized or SS Material', 'High Flexibility', 'Absorbs Heavy Vibration'] }
+  { id: 'prod_h1', category: 'Hose Pipes', title: 'Stainless Steel Corrugated Flexible Hose', desc: 'High-quality stainless steel corrugated hoses designed for conveying highly corrosive chemicals and extreme temperature fluids.', usage: 'High-temperature steam, chemical transfer, and vibration absorption in rigid piping.', features: ['SS 304/316L Construction', 'High Temperature Resistance', 'Braided for High Pressure'], images: ['ss-corrugated-flexible-hose.jpg'] },
+  { id: 'prod_h2', category: 'Hose Pipes', title: 'PTFE Smoothbore Flexible Hose', desc: 'Smoothbore PTFE lined hoses reinforced with stainless steel braiding for maximum chemical resistance and purity.', usage: 'Pharmaceutical, food processing, and aggressive chemical transport.', features: ['100% Virgin PTFE Liner', 'Non-Stick FDA Approved', 'SS 304 Outer Braid'], images: ['ptfe-smoothbore-hose.jpg'] },
+  { id: 'prod_h3', category: 'Hose Pipes', title: 'Industrial Rubber Hose', desc: 'Heavy-duty rubber hoses reinforced with synthetic yarn or steel wire for pneumatic, water, and abrasive material transfer.', usage: 'Pneumatic lines, cooling water systems, and industrial washdown.', features: ['EPDM / NBR Rubber', 'High Abrasion Resistance', 'Flexible & Kink-Resistant'], images: ['industrial-rubber-hose.jpg'] },
+  { id: 'prod_h4', category: 'Hose Pipes', title: 'Composite Chemical Transfer Hose', desc: 'Multi-layer thermoplastic composite hoses with inner and outer wire helixes for safe chemical and hydrocarbon transfer.', usage: 'Ship-to-shore chemical transfer and tank truck unloading.', features: ['Lightweight & Flexible', 'Chemical/Acid Resistant', 'Inner/Outer Steel Wire Helix'], images: ['composite-chemical-hose.jpg'] },
+  { id: 'prod_h5', category: 'Hose Pipes', title: 'High-Pressure Hydraulic Hose', desc: 'Steel-wire reinforced hydraulic hoses engineered to withstand extreme impulse pressures in hydraulic fluid power systems.', usage: 'Hydraulic control systems, heavy machinery, and earth-moving equipment.', features: ['SAE/EN Standard Compliant', 'High Burst Pressure', 'Oil & Weather Resistant Cover'], images: ['high-pressure-hydraulic-hose.jpg'] },
+  { id: 'prod_h6', category: 'Hose Pipes', title: 'Interlocked Exhaust Flexible Hose', desc: 'Fully interlocked metallic hoses designed specifically to absorb engine exhaust vibrations and thermal expansion.', usage: 'Diesel engine exhausts, generator sets, and heavy vehicle exhausts.', features: ['Galvanized or SS Material', 'High Flexibility', 'Absorbs Heavy Vibration'], images: ['interlocked-exhaust-hose.jpg'] },
+
+  // --- CATEGORY 5: Electronic Equipments (3) ---
+  { id: 'prod_ee1', category: 'Electronic Equipments', title: 'Vibration Probe (Shinkawa Make)', desc: 'High-precision non-contact eddy current vibration displacement sensors designed for continuous monitoring of turbine shaft vibration and axial position.', usage: 'Continuous monitoring of shaft vibration, thrust, and axial displacement in high-speed rotating machinery.', features: ['High Frequency Response', 'Extreme Temperature Tolerance', 'API 670 Standard Compliant'], images: ['vibration-probe-shinkawa.jpg'] },
+  { id: 'prod_ee2', category: 'Electronic Equipments', title: 'RPM Sensors (Woodward)', desc: 'Reliable magnetic pickup (MPU) and active speed sensors engineered for precise speed detection and turbine governor control systems.', usage: 'Critical speed sensing, regulation, and overspeed protection for steam and gas turbines.', features: ['Zero-Speed Detection Capability', 'High Signal-to-Noise Ratio', 'Seamless Woodward Governor Integration'], images: ['rpm-sensors-woodward.jpg'] },
+  { id: 'prod_ee3', category: 'Electronic Equipments', title: 'Industrial RTDs & Thermocouples', desc: 'Heavy-duty Resistance Temperature Detectors (RTDs) and thermocouples tailored for the accurate temperature measurement of turbine bearings and critical fluids.', usage: 'Real-time monitoring of bearing metal temperature, lube oil lines, and steam temperatures.', features: ['PT100 High-Accuracy Sensing', 'Vibration-Resistant Construction', 'Custom Sheath Lengths & Fittings'], images: ['industrial-rtd-thermocouples.jpg'] }
 ];
 
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map(p => p.category))];
@@ -93,7 +99,6 @@ const OEMS = ['Triveni', 'Siemens', 'BHEL', 'Belliss & Morcom', 'Alstom', 'GE', 
 
 // --- REUSABLE COMPONENTS ---
 
-// 1. Robust Brand Logo Component
 const BrandLogo = ({ scrolled, forceWhite, onClick }) => {
   const [imgError, setImgError] = useState(false);
   const textColor = forceWhite ? 'text-white' : (scrolled ? 'text-[#002147]' : 'text-white');
@@ -119,7 +124,6 @@ const BrandLogo = ({ scrolled, forceWhite, onClick }) => {
   );
 };
 
-// 2. High-Visibility Make In India Badge
 const MakeInIndiaBadge = () => {
   const [imgError, setImgError] = useState(false);
 
@@ -151,65 +155,87 @@ const getCategoryIcon = (category) => {
     case 'Expansion Joints': return <Layers className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
     case 'Turbine Spares': return <Settings className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
     case 'Hose Pipes': return <Activity className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
+    case 'Electronic Equipments': return <Cpu className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 group-hover:text-[#1E40AF] transition-all duration-500" />;
     default: return <Settings className="w-16 h-16 text-[#002147] opacity-20 group-hover:scale-110 transition-transform duration-500" />;
   }
 };
 
-const ProductCard = ({ product }) => (
-  <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col h-full w-full text-left">
-    <div className="h-40 bg-[#F3F4F6] border-b border-gray-200 flex items-center justify-center relative overflow-hidden shrink-0">
-      <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
-      <span className="absolute top-4 left-4 bg-[#002147] text-white text-[11px] font-black px-3 py-1.5 uppercase tracking-wider rounded-sm z-10 shadow-sm">
-        {product.category}
-      </span>
-      {getCategoryIcon(product.category)}
-    </div>
-    
-    <div className="p-6 flex-1 flex flex-col">
-      <h3 className="text-xl font-black text-[#002147] mb-2 leading-tight group-hover:text-[#1E40AF] transition-colors">{product.title}</h3>
-      <p className="text-gray-900 font-semibold text-sm mb-4 leading-relaxed line-clamp-3">{product.desc}</p>
+// UPGRADED PRODUCT CARD: Now clickable & passes route state to open ProductDetailsPage
+const ProductCard = ({ product, setCurrentRoute }) => {
+  const [imgError, setImgError] = useState(false);
+  const primaryImage = product.images && product.images.length > 0 ? product.images[0] : null;
+
+  const handleCardClick = (e) => {
+    // Prevent routing if user clicks an external link button directly
+    if (e.target.closest('a')) return;
+    setCurrentRoute(`/product/${product.id}`);
+    window.scrollTo(0,0);
+  };
+
+  return (
+    <div onClick={handleCardClick} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all group flex flex-col h-full w-full text-left cursor-pointer">
+      <div className="h-40 bg-[#F3F4F6] border-b border-gray-200 flex items-center justify-center relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent z-10 pointer-events-none"></div>
+        <span className="absolute top-4 left-4 bg-[#002147] text-white text-[11px] font-black px-3 py-1.5 uppercase tracking-wider rounded-sm z-20 shadow-sm">
+          {product.category}
+        </span>
+        
+        {/* Render Main Image with Icon Fallback */}
+        {primaryImage && !imgError ? (
+          <img 
+            src={primaryImage} 
+            alt={product.title} 
+            className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="z-0 relative">
+            {getCategoryIcon(product.category)}
+          </div>
+        )}
+      </div>
       
-      <div className="mb-5 flex items-start bg-blue-50/70 p-4 rounded-md border border-blue-200">
-        <Target className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 shrink-0" />
-        <p className="text-sm text-gray-900 font-bold leading-relaxed line-clamp-2">
-          <strong className="text-[#002147] font-black">Usage: </strong> 
-          {product.usage}
-        </p>
-      </div>
+      <div className="p-6 flex-1 flex flex-col pointer-events-auto">
+        <h3 className="text-xl font-black text-[#002147] mb-2 leading-tight group-hover:text-[#1E40AF] transition-colors">{product.title}</h3>
+        <p className="text-gray-900 font-semibold text-sm mb-4 leading-relaxed line-clamp-3">{product.desc}</p>
+        
+        <div className="mb-5 flex items-start bg-blue-50/70 p-4 rounded-md border border-blue-200">
+          <Target className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 shrink-0" />
+          <p className="text-sm text-gray-900 font-bold leading-relaxed line-clamp-2">
+            <strong className="text-[#002147] font-black">Usage: </strong> 
+            {product.usage}
+          </p>
+        </div>
 
-      <div className="mb-6 flex-1 bg-gray-50/80 rounded-md p-5 border border-gray-200">
-        <h4 className="text-xs font-black text-gray-600 uppercase tracking-widest mb-3">Key Specifications</h4>
-        <ul className="space-y-3">
-          {product.features.map((feature, i) => (
-            <li key={i} className="text-sm font-bold text-gray-900 flex items-start">
-              <CheckCircle2 className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 shrink-0" />
-              <span className="leading-snug">{feature}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+        <div className="mb-6 flex-1 bg-gray-50/80 rounded-md p-5 border border-gray-200">
+          <h4 className="text-xs font-black text-gray-600 uppercase tracking-widest mb-3">Key Specifications</h4>
+          <ul className="space-y-3">
+            {product.features.map((feature, i) => (
+              <li key={i} className="text-sm font-bold text-gray-900 flex items-start">
+                <CheckCircle2 className="w-5 h-5 text-[#1E40AF] mr-3 mt-0.5 shrink-0" />
+                <span className="leading-snug">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="flex flex-col xl:flex-row gap-3 mt-auto pt-4 border-t border-gray-200">
-        <a 
-          href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I need a quotation and more details regarding your product: ${product.title}.`}
-          target="_blank"
-          rel="noreferrer"
-          className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-sm font-black rounded-md hover:bg-[#1ebe5d] transition-colors shadow-md"
-        >
-          <MessageCircle className="w-5 h-5 mr-2" /> WhatsApp
-        </a>
-        <a 
-          href={CONTACT_INFO.indiamart} 
-          target="_blank" 
-          rel="noreferrer"
-          className="flex-1 border-2 border-[#002147] text-[#002147] flex items-center justify-center py-3 text-sm font-black rounded-md hover:bg-[#002147] hover:text-white transition-colors shadow-md"
-        >
-          <ExternalLink className="w-5 h-5 mr-2" /> IndiaMART
-        </a>
+        <div className="flex flex-col xl:flex-row gap-3 mt-auto pt-4 border-t border-gray-200">
+          <a 
+            href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I need a quotation and more details regarding your product: ${product.title}.`}
+            target="_blank"
+            rel="noreferrer"
+            className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-sm font-black rounded-md hover:bg-[#1ebe5d] transition-colors shadow-md"
+          >
+            <MessageCircle className="w-5 h-5 mr-2" /> WhatsApp
+          </a>
+          <div className="flex-1 bg-[#002147] text-white flex items-center justify-center py-3 text-sm font-black rounded-md hover:bg-[#1E40AF] transition-colors shadow-md">
+             View Specs <ArrowRight className="w-4 h-4 ml-2" />
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const Navbar = ({ currentRoute, setCurrentRoute }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -248,7 +274,7 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
                 key={link.name}
                 onClick={() => handleNav(link.path)}
                 className={`text-sm font-black uppercase tracking-wider transition-colors hover:text-[#1E40AF] ${
-                  currentRoute === link.path 
+                  currentRoute === link.path || (currentRoute.startsWith('/product/') && link.path === '/products')
                     ? 'text-[#1E40AF]' 
                     : scrolled ? 'text-gray-900' : 'text-white'
                 }`}
@@ -381,7 +407,7 @@ const WhatsAppFab = () => (
   </a>
 );
 
-const ProductSlideshow = () => {
+const ProductSlideshow = ({ setCurrentRoute }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(3);
 
@@ -402,7 +428,7 @@ const ProductSlideshow = () => {
         if (prev >= PRODUCTS.length - itemsPerView) return 0;
         return prev + 1;
       });
-    }, 2000);
+    }, 3000); // Slower interval so user can click
     return () => clearInterval(timer);
   }, [itemsPerView]);
 
@@ -427,7 +453,7 @@ const ProductSlideshow = () => {
                 className="flex-shrink-0 px-4"
                 style={{ width: `${100 / itemsPerView}%` }}
               >
-                <ProductCard product={product} />
+                <ProductCard product={product} setCurrentRoute={setCurrentRoute} />
               </div>
             ))}
           </div>
@@ -438,6 +464,126 @@ const ProductSlideshow = () => {
         </div>
       </div>
     </section>
+  );
+};
+
+
+// --- PAGES ---
+
+// 1. BRAND NEW PRODUCT DETAILS PAGE
+const ProductDetailsPage = ({ product, setCurrentRoute }) => {
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [mainImgError, setMainImgError] = useState(false);
+  
+  // Guard clause just in case
+  if (!product) return null;
+
+  const hasImages = product.images && product.images.length > 0;
+  const activeImage = hasImages ? product.images[activeImageIndex] : null;
+
+  return (
+    <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#F3F4F6] min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Back Navigation */}
+        <button 
+          onClick={() => { setCurrentRoute('/products'); window.scrollTo(0,0); }}
+          className="flex items-center text-gray-600 hover:text-[#1E40AF] font-black mb-8 transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5 mr-2" /> Back to Catalog
+        </button>
+
+        <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-200">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            
+            {/* LEFT: Dynamic Image Gallery */}
+            <div className="p-8 lg:p-12 bg-gray-50 flex flex-col items-center border-b lg:border-b-0 lg:border-r border-gray-200">
+              <div className="w-full aspect-square bg-white rounded-lg border border-gray-200 flex items-center justify-center relative overflow-hidden shadow-sm mb-6">
+                {activeImage && !mainImgError ? (
+                  <img 
+                    src={activeImage} 
+                    alt={`${product.title} - View ${activeImageIndex + 1}`}
+                    className="w-full h-full object-contain p-4 transition-opacity duration-300"
+                    onError={() => setMainImgError(true)}
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center opacity-30">
+                    {getCategoryIcon(product.category)}
+                    <span className="mt-4 font-bold text-gray-500">Image not available</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Thumbnails row (only visible if multiple images exist) */}
+              {hasImages && product.images.length > 1 && (
+                <div className="flex gap-4 w-full overflow-x-auto pb-2 px-2" style={{ scrollbarWidth: 'none' }}>
+                  {product.images.map((img, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => { setActiveImageIndex(idx); setMainImgError(false); }}
+                      className={`shrink-0 w-20 h-20 bg-white rounded-md border-2 overflow-hidden transition-all ${activeImageIndex === idx ? 'border-[#1E40AF] shadow-md scale-105' : 'border-gray-200 hover:border-gray-300 opacity-70 hover:opacity-100'}`}
+                    >
+                      <img src={img} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* RIGHT: Product Information & CTAs */}
+            <div className="p-8 lg:p-12 flex flex-col">
+              <div className="mb-2">
+                <span className="bg-[#002147]/10 text-[#002147] text-xs font-black px-3 py-1.5 uppercase tracking-wider rounded-sm">
+                  {product.category}
+                </span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-black text-[#002147] mb-6 leading-tight">{product.title}</h1>
+              <p className="text-gray-900 font-bold text-lg mb-8 leading-relaxed">{product.desc}</p>
+              
+              <div className="mb-8 bg-blue-50/50 p-6 rounded-lg border border-blue-100">
+                <h3 className="font-black text-[#1E40AF] text-sm uppercase tracking-widest mb-3 flex items-center">
+                  <Target className="w-5 h-5 mr-2" /> Primary Application
+                </h3>
+                <p className="text-gray-900 font-bold text-base leading-relaxed">{product.usage}</p>
+              </div>
+
+              <div className="mb-10">
+                <h3 className="font-black text-gray-600 text-sm uppercase tracking-widest mb-5">Technical Specifications</h3>
+                <ul className="space-y-4">
+                  {product.features.map((feature, i) => (
+                    <li key={i} className="text-base font-bold text-gray-900 flex items-start">
+                      <CheckCircle2 className="w-6 h-6 text-[#1E40AF] mr-3 shrink-0" />
+                      <span className="leading-snug">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-auto pt-8 border-t border-gray-200 flex flex-col sm:flex-row gap-4">
+                <a 
+                  href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I am interested in purchasing or getting technical details for: *${product.title}*. Please assist.`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 bg-[#25D366] text-white py-4 rounded-md font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg flex items-center justify-center"
+                >
+                  <MessageCircle className="w-6 h-6 mr-2.5" /> Quote via WhatsApp
+                </a>
+                <a 
+                  href={CONTACT_INFO.indiamart} 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="flex-1 bg-white border-2 border-[#002147] text-[#002147] py-4 rounded-md font-black text-lg hover:bg-[#002147] hover:text-white transition-all shadow-md flex items-center justify-center"
+                >
+                  <ExternalLink className="w-6 h-6 mr-2.5" /> View on IndiaMART
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
   );
 };
 
@@ -461,11 +607,12 @@ const HomePage = ({ setCurrentRoute }) => {
             <img 
               src="hero-background.png" 
               alt="Industrial Engineering & Manufacturing" 
-              className="absolute inset-0 w-full h-full object-cover opacity-10"
+              className="absolute inset-0 w-full h-full object-cover opacity-90"
               onError={() => setHeroImgError(true)}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001124] via-[#002147]/80 to-transparent z-10"></div>
+          {/* Overlay adjusted to ensure text readability against 90% visible image */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001124] via-[#001124]/60 to-transparent z-10"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-[#001124] via-transparent to-transparent z-10 opacity-90"></div>
         </div>
 
@@ -612,7 +759,7 @@ const HomePage = ({ setCurrentRoute }) => {
         </div>
       </section>
 
-      <ProductSlideshow />
+      <ProductSlideshow setCurrentRoute={setCurrentRoute} />
 
       <section className="bg-[#002147] py-20 border-t-8 border-[#1E40AF]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -683,7 +830,7 @@ const ServicesPage = ({ setCurrentRoute }) => (
   </main>
 );
 
-const ProductsPage = () => {
+const ProductsPage = ({ setCurrentRoute }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -737,32 +884,38 @@ const ProductsPage = () => {
           </a>
         </div>
 
-        <div className="mb-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex space-x-3 overflow-x-auto w-full md:w-auto pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {PRODUCT_CATEGORIES.map(category => (
-              <button 
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-3 rounded-md text-sm font-black whitespace-nowrap transition-all shadow-sm ${
-                  activeCategory === category 
-                    ? 'bg-[#002147] text-white border-2 border-[#002147]' 
-                    : 'bg-white border-2 border-gray-300 text-gray-900 hover:border-[#1E40AF] hover:text-[#1E40AF]'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-          
-          <div className="relative w-full md:w-96">
+        <div className="mb-10 flex flex-col gap-6">
+          <div className="relative w-full max-w-xl mx-auto md:mx-0">
             <input 
               type="text" 
               placeholder="Search products, usage, or specs..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white border-2 border-gray-300 rounded-md text-base font-bold text-gray-900 focus:outline-none focus:ring-4 focus:ring-[#1E40AF]/20 focus:border-[#1E40AF] transition-all shadow-sm"
+              className="w-full pl-12 pr-4 py-4 bg-white border-2 border-gray-300 rounded-lg text-base font-bold text-gray-900 focus:outline-none focus:ring-4 focus:ring-[#1E40AF]/20 focus:border-[#1E40AF] transition-all shadow-sm"
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
+          </div>
+
+          <div className="relative w-full flex items-center">
+            <div 
+              className="flex gap-3 overflow-x-auto w-full pb-2 snap-x snap-mandatory" 
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {PRODUCT_CATEGORIES.map(category => (
+                <button 
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`snap-start shrink-0 px-6 py-2.5 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 ${
+                    activeCategory === category 
+                      ? 'bg-[#002147] text-white border-[#002147] shadow-md' 
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#1E40AF] hover:text-[#1E40AF] hover:bg-blue-50/50 shadow-sm'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+            <div className="absolute right-0 top-0 bottom-2 w-12 bg-gradient-to-l from-[#F3F4F6] to-transparent pointer-events-none md:hidden"></div>
           </div>
         </div>
 
@@ -774,7 +927,7 @@ const ProductsPage = () => {
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} setCurrentRoute={setCurrentRoute} />
             ))}
           </div>
         ) : (
@@ -995,7 +1148,21 @@ const ContactPage = () => {
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState('/');
 
+  // NEW DYNAMIC ROUTING SYSTEM
   const renderPage = () => {
+    // Intercept dynamic product routes (e.g. '/product/prod_f1')
+    if (currentRoute.startsWith('/product/')) {
+      const productId = currentRoute.split('/')[2];
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (product) {
+        return <ProductDetailsPage product={product} setCurrentRoute={setCurrentRoute} />;
+      } else {
+        // Fallback if product not found
+        return <ProductsPage setCurrentRoute={setCurrentRoute} />;
+      }
+    }
+
+    // Standard static routes
     switch (currentRoute) {
       case '/': return <HomePage setCurrentRoute={setCurrentRoute} />;
       case '/services': return <ServicesPage setCurrentRoute={setCurrentRoute} />;
@@ -1008,6 +1175,10 @@ export default function App() {
 
   return (
     <div className="font-sans min-h-screen flex flex-col bg-[#FFFFFF] selection:bg-[#1E40AF] selection:text-white text-[#111827]">
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      `}</style>
       <Navbar currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} />
       
       <div className="flex-1 flex flex-col">
