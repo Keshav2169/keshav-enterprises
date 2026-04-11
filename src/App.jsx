@@ -37,7 +37,7 @@ const SERVICES = [
 
 const PRODUCTS = [
   // --- CATEGORY 1: Industrial Filtration & Strainers (15) ---
-  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter.jpg'] },
+  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter.jpg', '180-gpm-lube-filter-alt1.jpg', '180-gpm-lube-filter-alt2.jpg'] },
   { id: 'prod_f2', category: 'Industrial Filtration', title: '850 LPM Siemens Turbine Filter Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure'], images: ['850-lpm-siemens-filter.jpg'] },
   { id: 'prod_f3', category: 'Industrial Filtration', title: 'Simplex Basket Strainer', desc: 'Provides heavy equipment protection with remarkably low pressure drop at high flow velocities.', usage: 'General pipeline debris removal for liquids and gases.', features: ['ASME #125 to #600 Ratings', 'Quick Open Closures', 'SS Perforated Basket'], images: ['simplex-basket-strainer.jpg'] },
   { id: 'prod_f4', category: 'Industrial Filtration', title: 'Duplex Basket Strainer', desc: 'Allows continuous flow during filter element changeouts for mission-critical uninterrupted systems.', usage: 'Uninterrupted continuous flow systems needing 24/7 filtration.', features: ['Continuous Uninterrupted Flow', 'Cast Steel & SS MOC', 'DP Gauge Integration'], images: ['duplex-basket-strainer.jpg'] },
@@ -177,10 +177,13 @@ const ProductCard = ({ product, setCurrentRoute }) => {
           {product.category}
         </span>
         
+        {/* Render Main Image with Icon Fallback & lazy loading */}
         {primaryImage && !imgError ? (
           <img 
             src={primaryImage} 
-            alt={product.title} 
+            alt={product.title}
+            loading="lazy"
+            decoding="async" 
             className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105"
             onError={() => setImgError(true)}
           />
@@ -455,9 +458,7 @@ const ProductSlideshow = ({ setCurrentRoute }) => {
   );
 };
 
-
-// --- PAGES ---
-
+// MULTIPLE IMAGE CAPABILITY: Redesigned Product Details Page to support advanced image formatting and scaling.
 const ProductDetailsPage = ({ product, setCurrentRoute }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [mainImgError, setMainImgError] = useState(false);
@@ -488,6 +489,8 @@ const ProductDetailsPage = ({ product, setCurrentRoute }) => {
                   <img 
                     src={activeImage} 
                     alt={`${product.title} - View ${activeImageIndex + 1}`}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain p-8 transition-transform duration-500 group-hover:scale-105"
                     onError={() => setMainImgError(true)}
                   />
@@ -507,7 +510,7 @@ const ProductDetailsPage = ({ product, setCurrentRoute }) => {
                       onClick={() => { setActiveImageIndex(idx); setMainImgError(false); }}
                       className={`shrink-0 w-24 h-24 bg-white rounded-lg border-2 overflow-hidden transition-all ${activeImageIndex === idx ? 'border-blue-600 shadow-md scale-105' : 'border-slate-200 hover:border-blue-300 opacity-60 hover:opacity-100'}`}
                     >
-                      <img src={img} alt={`Thumbnail ${idx+1}`} className="w-full h-full object-cover p-2" />
+                      <img src={img} alt={`Thumbnail ${idx+1}`} loading="lazy" className="w-full h-full object-cover p-2" />
                     </button>
                   ))}
                 </div>
@@ -585,18 +588,19 @@ const HomePage = ({ setCurrentRoute }) => {
       
       <section className="relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden">
         
-        {/* MIX BLEND OVERLAY FOR PERFECT CONTRAST */}
+        {/* IMMERSIVE 90% VISIBLE BACKGROUND */}
         <div className="absolute inset-0 z-0 bg-[#0A192F]">
           {!heroImgError && (
             <img 
               src="hero-background.png" 
               alt="Industrial Engineering" 
-              className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay"
+              className="absolute inset-0 w-full h-full object-cover opacity-90"
               onError={() => setHeroImgError(true)}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F] via-[#0A192F]/80 to-transparent z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-transparent to-transparent z-10 opacity-90"></div>
+          {/* Gradients softened to allow the 90% image to be highly visible while preserving text contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/95 via-[#0A192F]/60 to-transparent z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-transparent to-transparent z-10 opacity-80"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 w-full flex flex-col lg:flex-row items-center justify-between gap-12">
