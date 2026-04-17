@@ -30,8 +30,8 @@ const SERVICES = [
 // FULLY COMPREHENSIVE PRODUCT LIST (ALL STANDARDIZED WITH 3 .WEBP IMAGE SLOTS)
 const PRODUCTS = [
   // --- FILTRATION ---
-  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter-1.webp', '180-gpm-lube-filter-2.webp', '180-gpm-lube-filter-3.webp'] },
-  { id: 'prod_f2', category: 'Industrial Filtration', title: '850 LPM Siemens Turbine Filter Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure', 'Electrostatic Critical Application (IS27)'], images: ['850-lpm-siemens-filter-1.webp', '850-lpm-siemens-filter-2.webp', '850-lpm-siemens-filter-3.webp'] },
+  { id: 'prod_f1', category: 'Industrial Filtration', title: 'Triveni Turbine Filter Elements', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter-1.webp', '180-gpm-lube-filter-2.webp', '180-gpm-lube-filter-3.webp'] },
+  { id: 'prod_f2', category: 'Industrial Filtration', title: 'Siemens Turbine Filters Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure', 'Electrostatic Critical Application (IS27)'], images: ['850-lpm-siemens-filter-1.webp', '850-lpm-siemens-filter-2.webp', '850-lpm-siemens-filter-3.webp'] },
   { id: 'prod_f3', category: 'Industrial Filtration', title: 'Wire Mesh Centrifugal Filter', desc: 'Stainless steel wire mesh filters (Cep Strainer Filters) designed for rigorous industrial use and easy cleaning.', usage: 'High-temperature fluid and gas filtration.', features: ['SS 304/316 Wire Mesh', 'Cleanable and Reusable', 'High Collapse Pressure', 'HSN Code: 8421'], images: ['wire-mesh-centrifugal-filter-1.webp', 'wire-mesh-centrifugal-filter-2.webp', 'wire-mesh-centrifugal-filter-3.webp'] },
   { id: 'prod_f4', category: 'Industrial Filtration', title: 'Air Breather Filter Element', desc: 'Prevents airborne contaminants and moisture from entering hydraulic and lube oil reservoirs.', usage: 'Hydraulic tanks, gearboxes, and lube oil reservoirs.', features: ['High Dirt Holding Capacity', 'Moisture Absorption', 'Easy Replacement'], images: ['air-breather-filter-1.webp', 'air-breather-filter-2.webp', 'air-breather-filter-3.webp'] },
   { id: 'prod_f5', category: 'Industrial Filtration', title: 'Hydraulic Suction Strainer', desc: 'Designed to protect hydraulic pumps and control systems from coarse contamination.', usage: 'Immersed in hydraulic reservoirs to protect system pumps.', features: ['Stainless Steel Wire Mesh', 'Low Pressure Drop', 'Reusable & Cleanable', 'Protects Pumps from Cavitation'], images: ['hydraulic-suction-strainer-1.webp', 'hydraulic-suction-strainer-2.webp', 'hydraulic-suction-strainer-3.webp'] },
@@ -139,7 +139,7 @@ const BrandLogo = ({ scrolled, forceWhite, navigate }) => {
 const MakeInIndiaBadge = () => {
   const [imgError, setImgError] = useState(false);
   return (
-    <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl">
+    <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl w-fit">
       {!imgError ? (
         <img src="make-in-india.png" alt="Make In India" className="h-8 object-contain" onError={() => setImgError(true)} />
       ) : (
@@ -147,7 +147,7 @@ const MakeInIndiaBadge = () => {
             <Zap className="w-4 h-4 text-white" />
         </div>
       )}
-      <div className="flex flex-col justify-center border-l border-white/20 pl-3">
+      <div className="flex flex-col justify-center border-l border-white/20 pl-3 text-left">
         <span className="text-white font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
         <span className="text-slate-300 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
       </div>
@@ -156,12 +156,19 @@ const MakeInIndiaBadge = () => {
 };
 
 const IndiaMartBadge = () => {
+  const [imgError, setImgError] = useState(false);
   return (
-    <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer">
-      <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center border border-slate-700 group-hover:border-blue-400 transition-colors">
-        <CheckCircle2 className="w-4 h-4 text-green-400" />
-      </div>
-      <div className="flex flex-col justify-center border-l border-white/20 pl-3">
+    <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer w-fit">
+      {!imgError ? (
+         <div className="h-8 bg-white rounded px-1.5 flex items-center justify-center">
+           <img src="indiamart-logo.png" alt="IndiaMART" className="h-5 object-contain" onError={() => setImgError(true)} />
+         </div>
+      ) : (
+         <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center border border-slate-700 group-hover:border-blue-400 transition-colors">
+           <CheckCircle2 className="w-4 h-4 text-green-400" />
+         </div>
+      )}
+      <div className="flex flex-col justify-center border-l border-white/20 pl-3 text-left">
         <span className="text-white font-black text-sm leading-none tracking-widest flex items-center">
           IndiaMART Verified
         </span>
@@ -289,7 +296,7 @@ const Navbar = ({ currentPath, navigate }) => {
               <a 
                 key={link.name}
                 href={`#${link.path}`}
-                onClick={(e) => { e.preventDefault(); navigate(link.path); }}
+                onClick={(e) => { e.preventDefault(); navigate(link.path); setIsOpen(false); }}
                 className={`text-sm font-bold uppercase tracking-widest transition-colors ${
                   isActive(link.path)
                     ? (scrolled ? 'text-blue-600' : 'text-blue-400')
@@ -299,6 +306,7 @@ const Navbar = ({ currentPath, navigate }) => {
                 {link.name}
               </a>
             ))}
+            
             <a 
               href="#/contact"
               onClick={(e) => { e.preventDefault(); navigate('/contact'); }}
@@ -350,22 +358,9 @@ const Footer = ({ navigate }) => (
           <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">
             20+ years of excellence in industrial turbine engineering, reverse engineering, and manufacturing. Delivering precision to power, sugar, and process industries.
           </p>
-          <div className="flex flex-col space-y-4">
-            <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/10 w-fit">
-              <Zap className="w-5 h-5 text-orange-500" />
-              <div className="flex flex-col justify-center border-l border-white/20 pl-3">
-                <span className="text-white font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
-              </div>
-            </div>
-            
-            <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="group flex flex-col space-y-2 bg-white/5 backdrop-blur-sm px-4 py-3 rounded-md border border-white/10 hover:border-blue-500/50 transition-colors w-fit">
-              <span className="text-white font-bold text-sm flex items-center tracking-wide">
-                IndiaMART TrustSeal <CheckCircle2 className="w-4 h-4 text-green-400 ml-2"/>
-              </span>
-              <span className="text-yellow-400 text-xs font-black flex items-center tracking-widest">
-                ★★★★★ <span className="text-slate-400 ml-2 font-medium tracking-normal">4.3/5 (90% Response)</span>
-              </span>
-            </a>
+          <div className="flex flex-col space-y-4 mt-6">
+            <MakeInIndiaBadge />
+            <IndiaMartBadge />
           </div>
         </div>
         
@@ -755,11 +750,11 @@ const HomePage = ({ navigate }) => {
           <div className="animate-marquee gap-8 md:gap-16 px-4">
             {/* Render list twice for infinite loop effect */}
             {[...OEMS, ...OEMS].map((oem, i) => (
-              <div key={i} className="group flex items-center justify-center shrink-0 w-48 md:w-64 h-24 p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+              <div key={i} className="flex items-center justify-center shrink-0 w-40 md:w-56 h-20 p-2 cursor-pointer">
                 <img 
                   src={`${oem.toLowerCase().replace(/[^a-z0-9]/g, '-')}-logo.png`} 
                   alt={`${oem} Logo`} 
-                  className="max-h-full max-w-full object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  className="max-h-full max-w-full object-contain transition-all duration-500"
                   onError={(e) => {
                     e.target.style.display = 'none';
                     e.target.nextElementSibling.classList.remove('hidden');
@@ -767,8 +762,8 @@ const HomePage = ({ navigate }) => {
                   }}
                 />
                 <div className="hidden items-center justify-center space-x-3 w-full">
-                  <Factory className="w-8 h-8 text-slate-300 group-hover:text-blue-500 transition-colors duration-500 shrink-0" />
-                  <span className="text-sm md:text-base font-black text-slate-700 tracking-widest uppercase truncate group-hover:text-blue-600 transition-colors duration-300">
+                  <Factory className="w-8 h-8 text-slate-300 shrink-0" />
+                  <span className="text-sm md:text-base font-black text-slate-500 tracking-widest uppercase truncate">
                     {oem}
                   </span>
                 </div>
@@ -1068,13 +1063,13 @@ const ProductsPage = ({ navigate }) => {
 };
 
 const ContactPage = () => {
-  const [formState, setFormState] = useState({ status: 'idle', message: '', rfqBody: '' });
+  const [formState, setFormState] = useState({ status: 'idle', message: '', rfqBody: '', inquiryType: '' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormState({ ...formState, status: 'loading', message: '' });
     setTimeout(() => {
-      setFormState({ status: 'success', message: 'Technical Inquiry sent successfully. Our engineers will contact you shortly.', rfqBody: '' });
+      setFormState({ status: 'success', message: 'Technical Inquiry sent successfully. Our engineers will contact you shortly.', rfqBody: '', inquiryType: '' });
       e.target.reset();
     }, 1500);
   };
@@ -1168,7 +1163,12 @@ const ContactPage = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Inquiry Type *</label>
-                  <select required defaultValue="" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all appearance-none cursor-pointer">
+                  <select 
+                    required 
+                    value={formState.inquiryType}
+                    onChange={(e) => setFormState({...formState, inquiryType: e.target.value})}
+                    className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all appearance-none cursor-pointer"
+                  >
                     <option value="" disabled>Select an option...</option>
                     <option value="product">Product RFQ / Specification</option>
                     <option value="service">Turbine Overhauling Service</option>
