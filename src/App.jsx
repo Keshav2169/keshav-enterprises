@@ -1,190 +1,216 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Menu, X, ChevronRight, Phone, Mail, MapPin, 
   Settings, Wrench, Shield, Zap, Factory, ArrowRight,
-  CheckCircle2, Download, ExternalLink, MessageCircle, Activity, Droplets,
-  Search, SlidersHorizontal, Layers, Target, Navigation, Cpu, ArrowLeft, Image as ImageIcon
+  CheckCircle2, ExternalLink, MessageCircle, Activity, Droplets,
+  Search, Layers, Target, Cpu, ArrowLeft, Paperclip, 
+  Filter, FileText, Hexagon, Cog, LifeBuoy, ChevronLeft
 } from 'lucide-react';
 
 // --- DESIGN TOKENS & CONSTANTS ---
-const COLORS = {
-  primary: '#0A192F', // Deep Corporate Navy
-  accent: '#2563EB',  // Vibrant Trust Blue
-  textDark: '#0F172A', // Slate 900
-  textMuted: '#475569', // Slate 600
-  background: '#FFFFFF', 
-  sectionBg: '#F8FAFC' // Slate 50 (Very light, premium gray)
-};
-
 const CONTACT_INFO = {
   phones: ['+91 9149229448', '+91 6397363268'], 
   email: 'ksengg007@gmail.com',
   secondaryEmail: 'ppshekher71@gmail.com',
+  marketingEmail: 'ksenggmrkt007@gmail.com',
   address: 'Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, U.P., India',
   whatsapp: '6397363268', 
   indiamart: 'https://www.indiamart.com/keshav-enterprises-shamli/',
   gmapsShare: 'https://share.google/uLc4GwsGec5eM62Ep' 
 };
 
-// --- DATA MODELS ---
+// --- DATA MODELS (EXTRACTED FROM PDFS & BROCHURES) ---
 const SERVICES = [
-  { id: 'srv_1', title: 'Turbine Erection & Commissioning', icon: <CheckCircle2 className="w-7 h-7" />, desc: 'Expert erection and commissioning for steam turbines, pumps, compressors, and condensers. Includes complete OEM coordination and documentation.' },
+  { id: 'srv_1', title: 'Turbine Erection & Commissioning', icon: <Cog className="w-7 h-7" />, desc: 'Expert erection and commissioning for steam turbines, pumps, compressors, and condensers. Includes complete OEM coordination and documentation.' },
   { id: 'srv_2', title: 'Turnkey Overhauling & Maintenance', icon: <Wrench className="w-7 h-7" />, desc: 'Executed by ex-OEM engineers. Includes pre-shutdown planning, condition reporting, and 24x7 emergency troubleshooting.' },
-  { id: 'srv_3', title: 'Precision Reverse Engineering', icon: <Settings className="w-7 h-7" />, desc: '3D scanning, CMM, copying lathe, and PMI testing capabilities for turbines ranging from 5 kW to 27 MW.' },
-  { id: 'srv_4', title: 'Dynamic Balancing & Alignment', icon: <Activity className="w-7 h-7" />, desc: 'ISO/API standard dynamic balancing (50–2000 kg capacity), vibration monitoring, and precision laser alignment.' },
+  { id: 'srv_3', title: 'Precision Reverse Engineering', icon: <Hexagon className="w-7 h-7" />, desc: '3D scanning, CMM, copying lathe, and PMI testing capabilities for turbines ranging from 5 kW to 27 MW.' },
   { id: 'srv_5', title: 'Lube Oil Flushing', icon: <Droplets className="w-7 h-7" />, desc: 'ISO-compliant flushing using high-capacity mobile centrifuge systems, complete with rigorous oil sampling and reporting.' }
 ];
 
+// FULLY COMPREHENSIVE PRODUCT LIST (ALL STANDARDIZED WITH 3 .WEBP IMAGE SLOTS)
 const PRODUCTS = [
-  // --- CATEGORY 1: Industrial Filtration & Strainers (15) ---
-  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter.jpg', '180-gpm-lube-filter-alt1.jpg', '180-gpm-lube-filter-alt2.jpg'] },
-  { id: 'prod_f2', category: 'Industrial Filtration', title: '850 LPM Siemens Turbine Filter Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure'], images: ['850-lpm-siemens-filter.jpg'] },
-  { id: 'prod_f3', category: 'Industrial Filtration', title: 'Simplex Basket Strainer', desc: 'Provides heavy equipment protection with remarkably low pressure drop at high flow velocities.', usage: 'General pipeline debris removal for liquids and gases.', features: ['ASME #125 to #600 Ratings', 'Quick Open Closures', 'SS Perforated Basket'], images: ['simplex-basket-strainer.jpg'] },
-  { id: 'prod_f4', category: 'Industrial Filtration', title: 'Duplex Basket Strainer', desc: 'Allows continuous flow during filter element changeouts for mission-critical uninterrupted systems.', usage: 'Uninterrupted continuous flow systems needing 24/7 filtration.', features: ['Continuous Uninterrupted Flow', 'Cast Steel & SS MOC', 'DP Gauge Integration'], images: ['duplex-basket-strainer.jpg'] },
-  { id: 'prod_f5', category: 'Industrial Filtration', title: 'Y-Type Strainer', desc: 'Standard pipeline protection against solid particulates for liquid, gas, and steam applications.', usage: 'Inline pipeline protection for steam and chemical processing.', features: ['Flanged & Butt Weld Ends', 'Horizontal/Vertical Mount', 'Easy Maintenance'], images: ['y-type-strainer.jpg'] },
-  { id: 'prod_f6', category: 'Industrial Filtration', title: 'Conical / Temporary Strainer', desc: 'Ideal for system start-ups and flushing operations to catch debris before regular operation.', usage: 'Commissioning and startup flushing of new piping networks.', features: ['Cost-Effective Protection', 'Custom Mesh Sizes', 'Easy Flange Installation'], images: ['conical-strainer.jpg'] },
-  { id: 'prod_f7', category: 'Industrial Filtration', title: 'Hydraulic Suction Strainer', desc: 'Protects hydraulic pumps from coarse contamination residing in the main reservoir.', usage: 'In-tank pump protection for heavy industrial hydraulics.', features: ['Submerged Operation', 'Stainless Steel Mesh', 'Ultra Low Pressure Drop'], images: ['hydraulic-suction-strainer.jpg'] },
-  { id: 'prod_f8', category: 'Industrial Filtration', title: 'High-Pressure Filter Element (01.E)', desc: 'In-line pressure filtration up to 2320 psi to protect sensitive servo valves and hydraulic motors.', usage: 'High-pressure hydraulic lines and servo valve protection.', features: ['Sizes 30 to 1350', 'Up to 160 Bar Pressure', 'Multi-Layer Media'], images: ['high-pressure-filter.jpg'] },
-  { id: 'prod_f9', category: 'Industrial Filtration', title: 'Return-Line Filter Element (01.NR)', desc: 'DIN 24550-4 standard compliant elements for system return lines to reduce oil aging.', usage: 'Reducing fluid contamination and oil aging in return lines.', features: ['Sizes 63 to 1000', '145 PSI / 10 Bar', 'DIN 24550-4 Compliant'], images: ['return-line-filter.jpg'] },
-  { id: 'prod_f10', category: 'Industrial Filtration', title: 'Air Breather Filter Element (01.NBF)', desc: 'Protects hydraulic fluid reservoirs from ambient airborne contamination and moisture.', usage: 'Tank breather filtration for ambient moisture control.', features: ['Moisture Resistance', 'High Dirt Holding Capacity', 'Sizes 25 to 125'], images: ['air-breather-filter.jpg'] },
-  { id: 'prod_f11', category: 'Industrial Filtration', title: 'Lubrication Filter Element', desc: 'For large-scale lubrication modules ensuring continuous bearing and gear protection.', usage: 'Large-scale bearing and gearbox lubrication modules.', features: ['Sizes 631 to 4001', 'High Flow Dynamics', 'Optimal Cleanliness Class'], images: ['lubrication-filter.jpg'] },
-  { id: 'prod_f12', category: 'Industrial Filtration', title: 'Wire Mesh Filter Element', desc: 'Washable and reusable stainless steel mesh elements intended for coarse filtration applications.', usage: 'High-temperature environments requiring reusable filtration.', features: ['Pleated Design', 'High Temp Resistance', 'Reusable & Cleanable'], images: ['wire-mesh-filter.jpg'] },
-  { id: 'prod_f13', category: 'Industrial Filtration', title: 'Cep Strainer Filter', desc: 'Specialized heavy-duty strainers constructed for customized industrial processing applications.', usage: 'Heavy-duty customized industrial and chemical processing.', features: ['Rugged Build Quality', 'Custom Dimensions', 'Long Service Life'], images: ['cep-strainer-filter.jpg'] },
-  { id: 'prod_f14', category: 'Industrial Filtration', title: 'WaterSorp Filter Element', desc: 'Advanced media that absorbs free and emulsified water directly from the lubricating oil.', usage: 'Absorbing free/emulsified water from turbine lube oil.', features: ['Moisture Removal', 'Prevents Rapid Oxidation', 'Improves Oil Life'], images: ['watersorp-filter.jpg'] },
-  { id: 'prod_f15', category: 'Industrial Filtration', title: 'Mobile Centrifugal Oil Cleaner', desc: 'Complete centrifuge systems for on-site, ISO-compliant lube oil flushing and conditioning.', usage: 'On-site ISO-compliant lube oil flushing and purification.', features: ['High Capacity Centrifuge', 'Particle Counting Support', 'Turnkey Operation'], images: ['mobile-centrifugal-cleaner.jpg'] },
+  // --- FILTRATION ---
+  { id: 'prod_f1', category: 'Industrial Filtration', title: '180 GPM Lube Hydraulic Oil Filter', desc: 'Designed specifically for turbine oil systems ensuring optimum fluid cleanliness and extended bearing life.', usage: 'Primary lube oil filtration in Triveni steam turbines.', features: ['180 GPM Flow Capacity', 'OEM Triveni Compatible', 'High Particulate Retention'], images: ['180-gpm-lube-filter-1.webp', '180-gpm-lube-filter-2.webp', '180-gpm-lube-filter-3.webp'] },
+  { id: 'prod_f2', category: 'Industrial Filtration', title: '850 LPM Siemens Turbine Filter Element', desc: 'High-performance control oil filter replacement specifically manufactured for Siemens turbines.', usage: 'Maintaining hydraulic control systems in Siemens industrial turbines.', features: ['850 LPM Rating', 'Microglass Deep Media', 'High Collapse Pressure', 'Electrostatic Critical Application (IS27)'], images: ['850-lpm-siemens-filter-1.webp', '850-lpm-siemens-filter-2.webp', '850-lpm-siemens-filter-3.webp'] },
+  { id: 'prod_f3', category: 'Industrial Filtration', title: 'Wire Mesh Centrifugal Filter', desc: 'Stainless steel wire mesh filters (Cep Strainer Filters) designed for rigorous industrial use and easy cleaning.', usage: 'High-temperature fluid and gas filtration.', features: ['SS 304/316 Wire Mesh', 'Cleanable and Reusable', 'High Collapse Pressure', 'HSN Code: 8421'], images: ['wire-mesh-centrifugal-filter-1.webp', 'wire-mesh-centrifugal-filter-2.webp', 'wire-mesh-centrifugal-filter-3.webp'] },
+  { id: 'prod_f4', category: 'Industrial Filtration', title: 'Air Breather Filter Element', desc: 'Prevents airborne contaminants and moisture from entering hydraulic and lube oil reservoirs.', usage: 'Hydraulic tanks, gearboxes, and lube oil reservoirs.', features: ['High Dirt Holding Capacity', 'Moisture Absorption', 'Easy Replacement'], images: ['air-breather-filter-1.webp', 'air-breather-filter-2.webp', 'air-breather-filter-3.webp'] },
+  { id: 'prod_f5', category: 'Industrial Filtration', title: 'Hydraulic Suction Strainer', desc: 'Designed to protect hydraulic pumps and control systems from coarse contamination.', usage: 'Immersed in hydraulic reservoirs to protect system pumps.', features: ['Stainless Steel Wire Mesh', 'Low Pressure Drop', 'Reusable & Cleanable', 'Protects Pumps from Cavitation'], images: ['hydraulic-suction-strainer-1.webp', 'hydraulic-suction-strainer-2.webp', 'hydraulic-suction-strainer-3.webp'] },
+  { id: 'prod_f6', category: 'Industrial Filtration', title: 'WaterSorp Filter Elements', desc: 'Simultaneously removes solid particles and absorbs free and emulsified water from hydraulic and lube oils.', usage: 'Off-line filtration in side-stream return lines of lube oil systems.', features: ['Absorbs Free/Emulsified Water', 'Reduces Oil Aging', 'High Particulate Retention', 'Nominal Sizes: 250–1,000 (10 bar)'], images: ['watersorp-filter-1.webp', 'watersorp-filter-2.webp', 'watersorp-filter-3.webp'] },
+  { id: 'prod_f7', category: 'Industrial Filtration', title: 'PTFE Air & Gas Filters', desc: 'Specialized hydrophobic PTFE filtration for critical compressed air and process gas applications.', usage: 'Compressed air systems, process gases, and venting applications.', features: ['Hydrophobic PTFE Media', 'High Flow Rates', 'Chemical Resistance', 'Moisture Repellent'], images: ['ptfe-air-filter-1.webp', 'ptfe-air-filter-2.webp', 'ptfe-air-filter-3.webp'] },
 
-  // --- CATEGORY 2: Expansion Joints & Bellows (10) ---
-  { id: 'prod_e1', category: 'Expansion Joints', title: 'Stainless Steel Metallic Bellows', desc: 'Absorbs thermal expansion and vibration in high-pressure exhaust and process pipe systems.', usage: 'High-pressure steam exhaust and chemical process pipes.', features: ['Multi-Ply SS Construction', 'High Temp Resistance', 'Fatigue & Yield Tested'], images: ['ss-metallic-bellows.jpg'] },
-  { id: 'prod_e2', category: 'Expansion Joints', title: 'Double Arch Rubber Expansion Joint', desc: 'Provides substantially higher movement capability and vibration dampening over single arch models.', usage: 'High movement vibration dampening in cooling water lines.', features: ['Axial & Lateral Movement', 'Superior Noise Reduction', 'High Flexibility'], images: ['double-arch-rubber-joint.jpg'] },
-  { id: 'prod_e3', category: 'Expansion Joints', title: 'Single Arch Rubber Expansion Joint', desc: 'Standard vibration and thermal movement absorption for general industrial piping networks.', usage: 'Standard pipe stress prevention in HVAC and water systems.', features: ['Compact Design footprint', 'Durable Elastomer', 'Prevents Pipe Stress'], images: ['single-arch-rubber-joint.jpg'] },
-  { id: 'prod_e4', category: 'Expansion Joints', title: 'Wide Arch Expansion Bellow', desc: 'Designed for fluid systems requiring significant axial compression and extension ranges.', usage: 'Fluid systems needing significant axial compression.', features: ['High Movement Range', 'Self-Cleaning Arch Design', 'Low Spring Rate'], images: ['wide-arch-expansion-bellow.jpg'] },
-  { id: 'prod_e5', category: 'Expansion Joints', title: 'Flanged Rubber Expansion Joint', desc: 'Allows for easy and secure installation within standard flanged piping infrastructure.', usage: 'Secure integration into standard flanged piping infrastructure.', features: ['Carbon/SS Flange Options', 'Secure Leak-proof Sealing', 'Vibration Dampening'], images: ['flanged-rubber-joint.jpg'] },
-  { id: 'prod_e6', category: 'Expansion Joints', title: 'Butt Weld Expansion Joint', desc: 'Permanent welded integration intended for high-pressure, seamless piping environments.', usage: 'High-pressure seamless welded piping in power plants.', features: ['Weld-End Preparation', '100% Leak-Proof', 'High Pressure Rating'], images: ['butt-weld-expansion-joint.jpg'] },
-  { id: 'prod_e7', category: 'Expansion Joints', title: 'Fabric Expansion Joints', desc: 'Ideal for gas turbine exhausts and low-pressure hot gas ducting needing large compensations.', usage: 'Gas turbine exhaust and low-pressure hot gas ducting.', features: ['Extreme Temperatures', 'Large Duct Sizes', 'Corrosion Resistant'], images: ['fabric-expansion-joint.jpg'] },
-  { id: 'prod_e8', category: 'Expansion Joints', title: 'Heavy-Duty Industrial Bellows', desc: 'Massive scale expansion joints manufactured for extreme industrial applications.', usage: 'Extreme Oil & Gas, Nuclear, and heavy fluid applications.', features: ['DN 15 to 12.000 Sizes', 'Up to 150 BARG', 'API/ASME Compliant'], images: ['heavy-duty-industrial-bellows.jpg'] },
-  { id: 'prod_e9', category: 'Expansion Joints', title: 'PTFE Lined Expansion Joints', desc: 'Highly chemically resistant joints designed to handle aggressive acids and corrosive media.', usage: 'Corrosive chemical processing and acid transport pipelines.', features: ['100% Virgin PTFE Liner', 'Extreme Chemical Resistance', 'Non-Stick Surface'], images: ['ptfe-lined-expansion-joint.jpg'] },
-  { id: 'prod_e10', category: 'Expansion Joints', title: 'Universal Expansion Joints', desc: 'Dual-bellow assemblies connected by a center spool to absorb multi-directional movements.', usage: 'Absorbing large lateral and axial movements in complex piping.', features: ['Multi-Directional Flex', 'Center Spool Design', 'Custom Lengths'], images: ['universal-expansion-joint.jpg'] },
+  // --- STRAINERS ---
+  { id: 'prod_st1', category: 'Industrial Strainers', title: 'Simplex Basket Strainer', desc: 'Designed to meet rigorous customer requirements for high-pressure applications, offering perfect protection against undesirable particles.', usage: 'Liquid, viscous, and gaseous media filtration in pipelines.', features: ['MOC: Cast Steel, SS', 'Ratings: ASME #125, #150, #300, #600', 'Low Pressure Drop at High Velocities', 'SS Perforated Baskets', 'Davit Lifts & Quick Open Closures'], images: ['simplex-basket-strainer-1.webp', 'simplex-basket-strainer-2.webp', 'simplex-basket-strainer-3.webp'] },
+  { id: 'prod_st2', category: 'Industrial Strainers', title: 'Duplex Type Basket Strainer', desc: 'Allows continuous operation during cleaning. Cost-effective protection for piping systems, industrial valves, and plant equipment.', usage: 'Continuous flow fluid systems requiring zero downtime.', features: ['Continuous Service w/o Shutdown', 'MOC: Cast Steel, SS', 'ASME Code Compliant', 'DP Gauges Available'], images: ['duplex-basket-strainer-1.webp', 'duplex-basket-strainer-2.webp', 'duplex-basket-strainer-3.webp'] },
+  { id: 'prod_st3', category: 'Industrial Strainers', title: 'Conical Strainer', desc: 'Welded design strainer with mesh, installed between standard flanges to remove foreign matter and protect pumps, meters, and valves.', usage: 'Pipeline protection for downstream mechanical equipment.', features: ['MOC: Stainless Steel', 'Customizable Mesh Sizes', 'Welded Design', 'Standard Flange Installation'], images: ['conical-strainer-1.webp', 'conical-strainer-2.webp', 'conical-strainer-3.webp'] },
+  { id: 'prod_st4', category: 'Industrial Strainers', title: 'Y-Type Strainer', desc: 'Robust Y-Type Strainer designed for liquid and gas lines to mechanically remove solids from flowing media.', usage: 'General purpose pipeline filtration and equipment protection.', features: ['MOC: Cast Iron, Cast Steel, SS', 'Easy Blow-Off Cleanout', 'High Pressure Rating Capabilities'], images: ['y-type-strainer-1.webp', 'y-type-strainer-2.webp', 'y-type-strainer-3.webp'] },
+  
+  // --- EXPANSION JOINTS & BELLOWS ---
+  { id: 'prod_e1', category: 'Expansion Joints', title: 'Stainless Steel Metallic Bellows', desc: 'Absorbs thermal expansion and vibration in high-pressure exhaust and process pipe systems.', usage: 'High-pressure steam exhaust and chemical process pipes.', features: ['Multi-Ply SS Construction', 'High Temp Resistance', 'Fatigue & Yield Tested'], images: ['ss-metallic-bellows-1.webp', 'ss-metallic-bellows-2.webp', 'ss-metallic-bellows-3.webp'] },
+  { id: 'prod_e2', category: 'Expansion Joints', title: 'Double Arch Rubber Expansion Joint', desc: 'Heavy-duty rubber expansion joint designed to absorb greater multi-directional movements and vibrations.', usage: 'Pumps, chillers, cooling towers, and heavy fluid systems.', features: ['Double Arch Design', 'High Flexibility', 'Noise & Vibration Reduction', 'Flanged Ends'], images: ['double-arch-rubber-joint-1.webp', 'double-arch-rubber-joint-2.webp', 'double-arch-rubber-joint-3.webp'] },
+  { id: 'prod_e3', category: 'Expansion Joints', title: 'Single Arch Rubber Expansion Joint', desc: 'Standard rubber expansion joint for absorbing thermal movements and mechanical vibrations in pipelines.', usage: 'HVAC, water piping, and light industrial fluid lines.', features: ['Single Arch Configuration', 'Corrosion Resistant', 'Durable Rubber Compound'], images: ['single-arch-rubber-joint-1.webp', 'single-arch-rubber-joint-2.webp', 'single-arch-rubber-joint-3.webp'] },
+  { id: 'prod_e4', category: 'Expansion Joints', title: 'Universal Expansion Joint', desc: 'Engineered with tie rod assembly to absorb multi-directional movements in complex piping configurations.', usage: 'Complex piping systems requiring lateral and angular movement absorption.', features: ['Twin Bellows Construction', 'Tie Rod Assembly Recommended', 'Maximum Flexibility'], images: ['universal-expansion-joint-1.webp', 'universal-expansion-joint-2.webp', 'universal-expansion-joint-3.webp'] },
+  { id: 'prod_e5', category: 'Expansion Joints', title: 'Rectangular Expansion Joint', desc: 'Custom manufactured rectangular joints demanded for specific ducting and low-pressure ventilation systems.', usage: 'Exhaust gas ducting, ventilation, and low-pressure large volume lines.', features: ['Custom Dimensions Available', 'Vibration Isolation', 'High Temperature Resistance'], images: ['rectangular-expansion-joint-1.webp', 'rectangular-expansion-joint-2.webp', 'rectangular-expansion-joint-3.webp'] },
+  { id: 'prod_e6', category: 'Expansion Joints', title: 'Dismantling Joint', desc: 'Mechanical joint designed to allow easy disassembly of connected piping components or machinery for maintenance.', usage: 'Pump, valve, and meter installations requiring quick access.', features: ['Easy Disassembly', 'High Tensile Tie Rods', 'Prevents Part Damage', 'Custom Dimensions'], images: ['dismantling-joint-1.webp', 'dismantling-joint-2.webp', 'dismantling-joint-3.webp'] },
+  { id: 'prod_e7', category: 'Expansion Joints', title: 'Pressure Balance Expansion Joint', desc: 'Engineered to absorb axial movement and lateral deflection while continuously maintaining system pressure balance.', usage: 'Turbine crossovers, pump connections, and complex piping loops.', features: ['In-Line Pressure Balance', 'Absorbs Axial/Lateral Movement', 'Reduces Anchor Loads', 'High Pressure Capacity'], images: ['pressure-balance-joint-1.webp', 'pressure-balance-joint-2.webp', 'pressure-balance-joint-3.webp'] },
+  { id: 'prod_e8', category: 'Expansion Joints', title: 'Thick Wall Expansion Joint', desc: 'Heavy-duty expansion joints manufactured with thicker plies to handle extreme pressure, abrasive media, or high-corrosion environments.', usage: 'Heavy industry, heat exchangers, and abrasive fluid pipelines.', features: ['Thick Wall Construction', 'High Fatigue Life', 'Erosion Resistant', 'Custom Convolution Profiles'], images: ['thick-wall-joint-1.webp', 'thick-wall-joint-2.webp', 'thick-wall-joint-3.webp'] },
+  { id: 'prod_e9', category: 'Expansion Joints', title: 'Octagonal Expansion Joint', desc: 'Custom non-circular expansion joints engineered for specific ducting and low-pressure ventilation.', usage: 'Boilers, HVAC, chimneys, and industrial ducting.', features: ['Octagonal Profile', 'Accommodates Thermal Expansion', 'Vibration Isolation', 'Low Pressure Applications'], images: ['octagonal-expansion-joint-1.webp', 'octagonal-expansion-joint-2.webp', 'octagonal-expansion-joint-3.webp'] },
+  { id: 'prod_e10', category: 'Expansion Joints', title: 'Non-Metallic Fabric Expansion Joint', desc: 'Fabric, PTFE, and rubber matrix joints designed to absorb thermal expansion and severe vibration in gas and air ducts.', usage: 'Boilers, bag filters, Electrostatic Precipitators (ESPs).', features: ['PTFE/Fabric/Rubber Matrices', 'High Temperature Resistance', 'Maximum Vibration Dampening', 'Large Movement Absorption'], images: ['non-metallic-expansion-joint-1.webp', 'non-metallic-expansion-joint-2.webp', 'non-metallic-expansion-joint-3.webp'] },
+  { id: 'prod_e11', category: 'Expansion Joints', title: 'Slip Type Expansion Joint', desc: 'Sleeve-driven expansion joint designed to absorb large amounts of axial thermal expansion in straight piping runs.', usage: 'Long, straight piping systems with significant thermal expansion.', features: ['High Axial Movement Capacity', 'Internally Guided', 'Minimal Space Requirement', 'Packing Gland Design'], images: ['slip-type-expansion-joint-1.webp', 'slip-type-expansion-joint-2.webp', 'slip-type-expansion-joint-3.webp'] },
+  { id: 'prod_e12', category: 'Expansion Joints', title: 'Industrial Dampers', desc: 'Precision-engineered flow control devices to regulate air or gas flow within complex industrial duct systems.', usage: 'HVAC systems, industrial chimneys, and gas exhaust lines.', features: ['Manual or Actuated Control', 'High Temperature Rated', 'Tight Shut-Off Sealing', 'Corrosion Resistant Body'], images: ['industrial-damper-1.webp', 'industrial-damper-2.webp', 'industrial-damper-3.webp'] },
 
-  // --- CATEGORY 3: Turbine Spares & Seals (12) ---
-  { id: 'prod_ts1', category: 'Turbine Spares', title: 'Black Carbon Sealing Rings', desc: 'Precision machined black carbon rings offering superior steam turbine gland sealing.', usage: 'Steam turbine gland sealing for pressure retention.', features: ['Self-Lubricating Material', 'High Temp Resistance', 'Precise Clearances'], images: ['black-carbon-sealing-rings.jpg'] },
-  { id: 'prod_ts2', category: 'Turbine Spares', title: 'High-Temperature Graphite Rings', desc: 'Advanced graphite sealing solutions engineered for extreme pressure environments.', usage: 'Extreme pressure and temperature steam sealing.', features: ['Thermal Stability', 'Chemical Resistance', 'Meets OEM Specifications'], images: ['high-temp-graphite-rings.jpg'] },
-  { id: 'prod_ts3', category: 'Turbine Spares', title: 'Labyrinth Seal Rings', desc: 'Complex tortuous path seals designed to minimize steam or gas leakage along the rotor shaft.', usage: 'Minimizing steam/gas leakage on high-speed rotor shafts.', features: ['Bronze, Alloy, or SS', 'High Speed Rating', 'Exact CNC Tolerances'], images: ['labyrinth-seal-rings.jpg'] },
-  { id: 'prod_ts4', category: 'Turbine Spares', title: 'Labyrinth Packings', desc: 'Complete packing sets for inner casing and inter-stage sealing within the turbine.', usage: 'Inner casing and inter-stage steam sealing within turbines.', features: ['Spring Backed Design', 'High Durability', 'Custom Manufactured'], images: ['labyrinth-packings.jpg'] },
-  { id: 'prod_ts5', category: 'Turbine Spares', title: 'Rotor Assemblies', desc: 'Fully balanced and tested replacement rotors ready for drop-in industrial turbine installation.', usage: 'Drop-in replacement for damaged or aged turbine rotors.', features: ['Dynamic Balanced (ISO)', 'NDT Flaw Tested', 'Ready to Install'], images: ['rotor-assemblies.jpg'] },
-  { id: 'prod_ts6', category: 'Turbine Spares', title: 'Journal Bearings', desc: 'White metal babbitted bearings ensuring stable and smooth rotor dynamics under heavy load.', usage: 'Supporting rotor weight and ensuring stable shaft dynamics.', features: ['Ultrasonic Tested Babbitt', 'Optimized Oil Wedge', 'High Load Capacity'], images: ['journal-bearings.jpg'] },
-  { id: 'prod_ts7', category: 'Turbine Spares', title: 'Thrust Bearings', desc: 'Tilting pad and fixed profile thrust bearings crafted to handle massive axial rotor loads.', usage: 'Absorbing axial thrust loads from the spinning turbine rotor.', features: ['High Axial Load', 'Direct Lubrication Paths', 'Temperature Monitored'], images: ['thrust-bearings.jpg'] },
-  { id: 'prod_ts8', category: 'Turbine Spares', title: 'Mechanical Governors', desc: 'Precision speed control linkage components ensuring reliable and steady turbine RPM.', usage: 'Regulating turbine speed and RPM under varying loads.', features: ['Woodward/OEM Compatible', 'Responsive Regulation', 'Flyweight Assemblies'], images: ['mechanical-governors.jpg'] },
-  { id: 'prod_ts9', category: 'Turbine Spares', title: 'Main Oil Pumps (MOP)', desc: 'Shaft-driven primary oil pumps ensuring critical lubrication flow during operation.', usage: 'Providing primary lubrication flow during turbine operation.', features: ['Gear/Centrifugal Types', 'High Reliability', 'Tested Flow Rates'], images: ['main-oil-pumps.jpg'] },
-  { id: 'prod_ts10', category: 'Turbine Spares', title: 'High-Grade Turbine Blades', desc: 'Reverse-engineered moving and stationary blades utilizing 3D scanning and CNC milling.', usage: 'Replacement of eroded or damaged moving/stationary blades.', features: ['Alloy Steel / Titanium', 'Root CNC Machining', 'Moment Weighed'], images: ['high-grade-turbine-blades.jpg'] },
-  { id: 'prod_ts11', category: 'Turbine Spares', title: 'Turbine Fasteners & Bolting', desc: 'High-tensile, heat-resistant studs and cap nuts designed for securing turbine casings.', usage: 'Securing high-pressure turbine upper and lower casings.', features: ['High-Tensile Alloys', 'Creep Resistant', 'Precise Threading'], images: ['turbine-fasteners-bolting.jpg'] },
-  { id: 'prod_ts12', category: 'Turbine Spares', title: 'White Metal Babbitt Remetalling', desc: 'Expert remetalling services and custom babbitt poured bearings for heavy industrial rotors.', usage: 'Reconditioning worn out heavy-duty industrial bearings.', features: ['Centrifugal Casting', 'Dye Penetrant Tested', 'Custom Alloy Mix'], images: ['white-metal-babbitt.jpg'] },
+  // --- TURBINE SPARES ---
+  { id: 'prod_ts1', category: 'Turbine Spares', title: 'Black Carbon Sealing Rings', desc: 'Precision machined black carbon and graphite rings offering superior steam turbine gland sealing.', usage: 'Steam turbine gland sealing for pressure retention.', features: ['Self-Lubricating Material', 'High Temp Resistance', 'Precise Clearances'], images: ['black-carbon-sealing-rings-1.webp', 'black-carbon-sealing-rings-2.webp', 'black-carbon-sealing-rings-3.webp'] },
+  { id: 'prod_ts2', category: 'Turbine Spares', title: 'Labyrinth Sealing Packings', desc: 'Custom manufactured labyrinth seals to prevent steam or gas leakage in rotating machinery.', usage: 'Steam turbine shaft sealing.', features: ['High Temperature Alloy', 'Tight Clearances', 'Erosion Resistant'], images: ['labyrinth-sealing-packings-1.webp', 'labyrinth-sealing-packings-2.webp', 'labyrinth-sealing-packings-3.webp'] },
+  { id: 'prod_ts3', category: 'Turbine Spares', title: 'Babbitt Bearings with Thrust Pads', desc: 'Precision machined white metal (babbitt) journal and thrust bearings for critical rotating equipment.', usage: 'High-speed rotor support in steam turbines and compressors.', features: ['High Load Capacity', 'Exact OEM Dimensions', 'Ultrasonic Bond Tested'], images: ['babbitt-bearings-1.webp', 'babbitt-bearings-2.webp', 'babbitt-bearings-3.webp'] },
+  { id: 'prod_ts4', category: 'Turbine Spares', title: 'Emergency Stop Valves (ESV)', desc: 'Mission-critical shut-off valves reverse-engineered and manufactured to precise OEM standards.', usage: 'Turbine over-speed protection and emergency shutdown.', features: ['Rapid Closure Response', 'High Pressure Tested', 'Stellite Hard-Faced Seats'], images: ['emergency-stop-valve-1.webp', 'emergency-stop-valve-2.webp', 'emergency-stop-valve-3.webp'] },
+  { id: 'prod_ts5', category: 'Turbine Spares', title: 'Turbine Oil Pumps & Seals', desc: 'OEM-grade replacement oil pumps and mechanical seals designed specifically for Triveni, Siemens, and Belliss turbines.', usage: 'Main and auxiliary lube oil systems in power generation turbines.', features: ['Exact OEM Match', 'High Volumetric Efficiency', 'Leak-Proof Mechanical Seals'], images: ['turbine-oil-pumps-1.webp', 'turbine-oil-pumps-2.webp', 'turbine-oil-pumps-3.webp'] },
+  { id: 'prod_ts6', category: 'Turbine Spares', title: 'High-Purity Graphite Rings', desc: 'Specialized graphite sealing rings designed for extreme temperature and pressure environments where standard carbon degrades.', usage: 'High-temperature steam and gas turbine sealing.', features: ['Excellent Thermal Conductivity', 'Extreme Temperature Resistance', 'Chemical Inertness'], images: ['high-purity-graphite-rings-1.webp', 'high-purity-graphite-rings-2.webp', 'high-purity-graphite-rings-3.webp'] },
+  { id: 'prod_ts7', category: 'Turbine Spares', title: 'Complete Rotor Assemblies', desc: 'Fully manufactured and dynamically balanced turbine rotor assemblies built to exact OEM tolerances.', usage: 'Core rotating component replacements for steam turbines.', features: ['ISO/API Standard Balancing', 'Precision Machined', 'Material Upgrades Available', 'Ready for Installation'], images: ['rotor-assembly-1.webp', 'rotor-assembly-2.webp', 'rotor-assembly-3.webp'] },
+  { id: 'prod_ts8', category: 'Turbine Spares', title: 'Gears & Worm Wheels', desc: 'High-precision gear sets and worm wheels reverse-engineered for heavy-duty industrial rotating equipment.', usage: 'Turbine gearboxes, speed reducers, and heavy machinery.', features: ['Exact OEM Gear Ratios', 'High Wear Resistance', 'Precision Hobbed', 'Heat Treated for Durability'], images: ['gears-worm-wheels-1.webp', 'gears-worm-wheels-2.webp', 'gears-worm-wheels-3.webp'] },
+  { id: 'prod_ts9', category: 'Turbine Spares', title: 'Nozzles & Diaphragms', desc: 'Critical steam path components engineered to direct steam flow and maximize turbine stage efficiency.', usage: 'Internal steam path of high-pressure industrial turbines.', features: ['Erosion/Corrosion Resistant', 'Optimized Steam Path Design', 'High Temperature Alloys', 'Precise Throat Dimensions'], images: ['nozzles-diaphragms-1.webp', 'nozzles-diaphragms-2.webp', 'nozzles-diaphragms-3.webp'] },
+  { id: 'prod_ts10', category: 'Turbine Spares', title: 'Mechanical Governors', desc: 'Speed regulation systems manufactured to maintain precise RPM control in rotating machinery.', usage: 'Turbine speed control and over-speed prevention.', features: ['High Sensitivity Response', 'Robust Mechanical Design', 'OEM Calibrated', 'Continuous Operation Rated'], images: ['mechanical-governors-1.webp', 'mechanical-governors-2.webp', 'mechanical-governors-3.webp'] },
+  { id: 'prod_ts11', category: 'Turbine Spares', title: 'Throttle Valves', desc: 'High-pressure throttle valves engineered for precise control of steam flow into turbine systems.', usage: 'Steam turbine inlet and stage control.', features: ['Stellite Internal Trims', 'High Pressure Sealing', 'Custom Flow Characteristics', 'Rapid Response Action'], images: ['throttle-valves-1.webp', 'throttle-valves-2.webp', 'throttle-valves-3.webp'] },
 
-  // --- CATEGORY 4: Hose Pipes & Flexible Tubing (6) ---
-  { id: 'prod_h1', category: 'Hose Pipes', title: 'Stainless Steel Corrugated Flexible Hose', desc: 'High-quality stainless steel corrugated hoses designed for conveying highly corrosive chemicals and extreme temperature fluids.', usage: 'High-temperature steam, chemical transfer, and vibration absorption in rigid piping.', features: ['SS 304/316L Construction', 'High Temperature Resistance', 'Braided for High Pressure'], images: ['ss-corrugated-flexible-hose.jpg'] },
-  { id: 'prod_h2', category: 'Hose Pipes', title: 'PTFE Smoothbore Flexible Hose', desc: 'Smoothbore PTFE lined hoses reinforced with stainless steel braiding for maximum chemical resistance and purity.', usage: 'Pharmaceutical, food processing, and aggressive chemical transport.', features: ['100% Virgin PTFE Liner', 'Non-Stick FDA Approved', 'SS 304 Outer Braid'], images: ['ptfe-smoothbore-hose.jpg'] },
-  { id: 'prod_h3', category: 'Hose Pipes', title: 'Industrial Rubber Hose', desc: 'Heavy-duty rubber hoses reinforced with synthetic yarn or steel wire for pneumatic, water, and abrasive material transfer.', usage: 'Pneumatic lines, cooling water systems, and industrial washdown.', features: ['EPDM / NBR Rubber', 'High Abrasion Resistance', 'Flexible & Kink-Resistant'], images: ['industrial-rubber-hose.jpg'] },
-  { id: 'prod_h4', category: 'Hose Pipes', title: 'Composite Chemical Transfer Hose', desc: 'Multi-layer thermoplastic composite hoses with inner and outer wire helixes for safe chemical and hydrocarbon transfer.', usage: 'Ship-to-shore chemical transfer and tank truck unloading.', features: ['Lightweight & Flexible', 'Chemical/Acid Resistant', 'Inner/Outer Steel Wire Helix'], images: ['composite-chemical-hose.jpg'] },
-  { id: 'prod_h5', category: 'Hose Pipes', title: 'High-Pressure Hydraulic Hose', desc: 'Steel-wire reinforced hydraulic hoses engineered to withstand extreme impulse pressures in hydraulic fluid power systems.', usage: 'Hydraulic control systems, heavy machinery, and earth-moving equipment.', features: ['SAE/EN Standard Compliant', 'High Burst Pressure', 'Oil & Weather Resistant Cover'], images: ['high-pressure-hydraulic-hose.jpg'] },
-  { id: 'prod_h6', category: 'Hose Pipes', title: 'Interlocked Exhaust Flexible Hose', desc: 'Fully interlocked metallic hoses designed specifically to absorb engine exhaust vibrations and thermal expansion.', usage: 'Diesel engine exhausts, generator sets, and heavy vehicle exhausts.', features: ['Galvanized or SS Material', 'High Flexibility', 'Absorbs Heavy Vibration'], images: ['interlocked-exhaust-hose.jpg'] },
+  // --- INDUSTRIAL RUBBER PRODUCTS ---
+  { id: 'prod_r1', category: 'Industrial Rubber Products', title: 'Extruded Rubber Profiles', desc: 'High-quality extruded rubber profiles customized for industrial sealing and dampening applications.', usage: 'Sealing panels, doors, and industrial enclosures.', features: ['Custom Extrusion Shapes', 'High Weather Resistance', 'Excellent Elasticity', 'Available in EPDM/Neoprene'], images: ['extruded-rubber-profile-1.webp', 'extruded-rubber-profile-2.webp', 'extruded-rubber-profile-3.webp'] },
+  { id: 'prod_r2', category: 'Industrial Rubber Products', title: 'Heavy Duty Rubber Mounts', desc: 'Anti-vibration rubber mounts designed to isolate heavy machinery and protect against structural damage.', usage: 'Vibration isolation for generators, compressors, and heavy industrial machinery.', features: ['High Load Bearing Capacity', 'Reduces Noise & Vibration', 'Durable Natural Rubber', 'Easy Installation'], images: ['rubber-mounts-1.webp', 'rubber-mounts-2.webp', 'rubber-mounts-3.webp'] },
 
-  // --- CATEGORY 5: Electronic Equipments (3) ---
-  { id: 'prod_ee1', category: 'Electronic Equipments', title: 'Vibration Probe (Shinkawa Make)', desc: 'High-precision non-contact eddy current vibration displacement sensors designed for continuous monitoring of turbine shaft vibration and axial position.', usage: 'Continuous monitoring of shaft vibration, thrust, and axial displacement in high-speed rotating machinery.', features: ['High Frequency Response', 'Extreme Temperature Tolerance', 'API 670 Standard Compliant'], images: ['vibration-probe-shinkawa.jpg'] },
-  { id: 'prod_ee2', category: 'Electronic Equipments', title: 'RPM Sensors (Woodward)', desc: 'Reliable magnetic pickup (MPU) and active speed sensors engineered for precise speed detection and turbine governor control systems.', usage: 'Critical speed sensing, regulation, and overspeed protection for steam and gas turbines.', features: ['Zero-Speed Detection Capability', 'High Signal-to-Noise Ratio', 'Seamless Woodward Governor Integration'], images: ['rpm-sensors-woodward.jpg'] },
-  { id: 'prod_ee3', category: 'Electronic Equipments', title: 'Industrial RTDs & Thermocouples', desc: 'Heavy-duty Resistance Temperature Detectors (RTDs) and thermocouples tailored for the accurate temperature measurement of turbine bearings and critical fluids.', usage: 'Real-time monitoring of bearing metal temperature, lube oil lines, and steam temperatures.', features: ['PT100 High-Accuracy Sensing', 'Vibration-Resistant Construction', 'Custom Sheath Lengths & Fittings'], images: ['industrial-rtd-thermocouples.jpg'] }
+  // --- FLEXIBLE HOSES & ASSEMBLIES ---
+  { id: 'prod_h1', category: 'Flexible Hoses & Assemblies', title: 'Stainless Steel Corrugated Flexible Hose', desc: 'High-quality stainless steel corrugated hoses designed for conveying highly corrosive chemicals and extreme temperature fluids.', usage: 'High-temperature steam, chemical transfer, and vibration absorption in rigid piping.', features: ['SS 304/316L Construction', 'High Temperature Resistance', 'Braided for High Pressure'], images: ['ss-corrugated-flexible-hose-1.webp', 'ss-corrugated-flexible-hose-2.webp', 'ss-corrugated-flexible-hose-3.webp'] },
+  { id: 'prod_h2', category: 'Flexible Hoses & Assemblies', title: 'PTFE Lined Smooth Bore Hoses', desc: 'Engineered with a smooth PTFE inner core and stainless steel braiding for maximum chemical resistance and hygiene.', usage: 'Aggressive chemicals, pharmaceuticals, and high-purity fluid transfer.', features: ['Chemically Inert PTFE Core', 'SS 304/316 Outer Braid', 'High Temperature Tolerance', 'Non-Stick Surface'], images: ['ptfe-lined-hose-1.webp', 'ptfe-lined-hose-2.webp', 'ptfe-lined-hose-3.webp'] },
+  { id: 'prod_h3', category: 'Flexible Hoses & Assemblies', title: 'Heavy-Duty Composite Hoses', desc: 'Multi-layer thermoplastic hoses designed for safe, flexible, and lightweight transfer of petroleum and aggressive chemicals.', usage: 'Petroleum transfer, chemical processing, and ship-to-shore operations.', features: ['Multi-Layer Thermoplastic', 'Extremely Lightweight & Flexible', 'Internal & External Wire Helices', '100% Aromatic Resistant'], images: ['composite-hose-1.webp', 'composite-hose-2.webp', 'composite-hose-3.webp'] },
+  { id: 'prod_h4', category: 'Flexible Hoses & Assemblies', title: 'Interlocked Galvanized Steel Hoses', desc: 'Highly durable strip-wound interlocked hoses providing excellent crush resistance and mechanical protection.', usage: 'Exhaust systems, ventilation, dry bulk material handling, and cable armor.', features: ['High Crush Resistance', 'Galvanized/Stainless Steel Options', 'Excellent Flexibility', 'Abrasion Resistant'], images: ['interlocked-steel-hose-1.webp', 'interlocked-steel-hose-2.webp', 'interlocked-steel-hose-3.webp'] },
+  { id: 'prod_h5', category: 'Flexible Hoses & Assemblies', title: 'High-Pressure Hydraulic Rubber Hoses', desc: 'Steel wire reinforced rubber hoses built to withstand extreme hydraulic pressures and severe environmental conditions.', usage: 'Heavy machinery, turbine hydraulic control systems, and industrial power units.', features: ['High-Tensile Steel Wire Braid', 'Oil & Weather Resistant Cover', 'Extreme Pressure Ratings', 'MSHA Approved'], images: ['hydraulic-rubber-hose-1.webp', 'hydraulic-rubber-hose-2.webp', 'hydraulic-rubber-hose-3.webp'] },
+
+  // --- OTHERS ---
+  { id: 'prod_ee1', category: 'Electronic Equipments', title: 'Vibration Probe (Shinkawa Make)', desc: 'High-precision non-contact eddy current vibration displacement sensors designed for continuous monitoring of turbine shaft vibration and axial position.', usage: 'Continuous monitoring of shaft vibration, thrust, and axial displacement in high-speed rotating machinery.', features: ['High Frequency Response', 'Extreme Temperature Tolerance', 'API 670 Standard Compliant'], images: ['vibration-probe-shinkawa-1.webp', 'vibration-probe-shinkawa-2.webp', 'vibration-probe-shinkawa-3.webp'] }
 ];
 
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map(p => p.category))];
 const OEMS = ['Triveni', 'Siemens', 'BHEL', 'Belliss & Morcom', 'Alstom', 'GE', 'Maxwatt', 'Man Turbo', 'Chola Turbo', 'DLF-Skoda', 'KKK', 'ABB'];
 
+// --- SEO & UX HELPERS ---
+
+const SEOHead = ({ title, description }) => {
+  useEffect(() => {
+    document.title = title ? `${title} | Keshav Enterprises` : 'Keshav Enterprises | Industrial Turbine Engineering';
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.name = 'description';
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.content = description || 'Keshav Enterprises delivers precision industrial turbine engineering, overhauling & maintenance, and OEM-compatible spares for power and processing plants.';
+  }, [title, description]);
+  return null;
+};
+
 // --- REUSABLE COMPONENTS ---
 
-const BrandLogo = ({ scrolled, forceWhite, onClick }) => {
+const BrandLogo = ({ scrolled, forceWhite, navigate }) => {
   const [imgError, setImgError] = useState(false);
   const textColor = forceWhite ? 'text-white' : (scrolled ? 'text-slate-900' : 'text-white');
 
   return (
-    <div className="flex items-center space-x-3 cursor-pointer group" onClick={onClick}>
+    <a 
+      href="#/" 
+      onClick={(e) => { e.preventDefault(); navigate('/'); }}
+      className="flex items-center space-x-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+    >
       {!imgError ? (
         <img 
           src="keshav-logo.png" 
-          alt="KESHAV ENTERPRISES Logo" 
-          className="h-10 sm:h-12 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 bg-white rounded p-1 shadow-sm"
+          alt="Keshav Enterprises Logo" 
+          className="h-10 sm:h-12 w-auto object-contain transform group-hover:scale-105 transition-transform duration-500 drop-shadow-md"
           onError={() => setImgError(true)} 
         />
       ) : (
-        <div className="h-10 w-10 bg-blue-600 rounded-sm flex items-center justify-center transform group-hover:rotate-90 transition-transform duration-500 shadow-sm">
-          <Settings className="w-6 h-6 text-white" />
+        <div className="relative flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 shadow-md transform group-hover:scale-105 transition-all duration-500 border border-blue-400/30 overflow-hidden">
+          <Settings className="w-6 h-6 sm:w-7 sm:h-7 text-white transform group-hover:rotate-90 transition-transform duration-700" />
         </div>
       )}
-      <div className={`font-black text-xl sm:text-2xl tracking-tight ${textColor}`}>
-        KESHAV ENTERPRISES<span className="text-blue-500">.</span>
+      <div className={`font-black text-xl sm:text-2xl tracking-tight ${textColor} flex items-center`}>
+        KESHAV ENTERPRISES<span className="text-blue-500 ml-0.5">.</span>
       </div>
-    </div>
+    </a>
   );
 };
 
 const MakeInIndiaBadge = () => {
   const [imgError, setImgError] = useState(false);
-
   return (
-    <div className="inline-flex items-center space-x-3 bg-white px-4 py-2 rounded-md border border-slate-200 shadow-md">
+    <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl">
       {!imgError ? (
-        <img 
-          src="make-in-india.png" 
-          alt="Make In India" 
-          className="h-8 object-contain"
-          onError={() => setImgError(true)}
-        />
+        <img src="make-in-india.png" alt="Make In India" className="h-8 object-contain" onError={() => setImgError(true)} />
       ) : (
         <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
             <Zap className="w-4 h-4 text-white" />
         </div>
       )}
-      <div className="flex flex-col justify-center border-l border-slate-200 pl-3">
-        <span className="text-slate-900 font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
-        <span className="text-slate-600 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
+      <div className="flex flex-col justify-center border-l border-white/20 pl-3">
+        <span className="text-white font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
+        <span className="text-slate-300 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
       </div>
     </div>
   );
 };
 
+const IndiaMartBadge = () => {
+  return (
+    <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer">
+      <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center border border-slate-700 group-hover:border-blue-400 transition-colors">
+        <CheckCircle2 className="w-4 h-4 text-green-400" />
+      </div>
+      <div className="flex flex-col justify-center border-l border-white/20 pl-3">
+        <span className="text-white font-black text-sm leading-none tracking-widest flex items-center">
+          IndiaMART Verified
+        </span>
+        <span className="text-yellow-400 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1.5 flex items-center">
+          ★★★★★ <span className="text-blue-200 ml-1.5 tracking-widest">4.3/5 RATING</span>
+        </span>
+      </div>
+    </a>
+  );
+};
+
 const getCategoryIcon = (category) => {
   switch(category) {
-    case 'Industrial Filtration': return <Droplets className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Industrial Filtration': return <Filter className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Industrial Strainers': return <Droplets className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
     case 'Expansion Joints': return <Layers className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
-    case 'Turbine Spares': return <Settings className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
-    case 'Hose Pipes': return <Activity className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Turbine Spares': return <Cog className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Flexible Hoses & Assemblies': return <Activity className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
+    case 'Industrial Rubber Products': return <Hexagon className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
     case 'Electronic Equipments': return <Cpu className="w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500" />;
     default: return <Settings className="w-16 h-16 text-slate-300 group-hover:scale-110 transition-transform duration-500" />;
   }
 };
 
-const ProductCard = ({ product, setCurrentRoute }) => {
+const ProductCard = ({ product, navigate }) => {
   const [imgError, setImgError] = useState(false);
   const primaryImage = product.images && product.images.length > 0 ? product.images[0] : null;
 
-  const handleCardClick = (e) => {
-    if (e.target.closest('a')) return;
-    setCurrentRoute(`/product/${product.id}`);
-    window.scrollTo(0,0);
-  };
+  const altText = `${product.title} manufactured by Keshav Enterprises`;
 
   return (
-    <div onClick={handleCardClick} className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-blue-900/5 hover:-translate-y-1 hover:border-blue-200 transition-all duration-300 group flex flex-col h-full w-full text-left cursor-pointer">
-      <div className="h-44 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent z-10 pointer-events-none"></div>
-        <span className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-wider rounded z-20 shadow-sm">
+    <a 
+      href={`#/product/${product.id}`}
+      onClick={(e) => { e.preventDefault(); navigate(`/product/${product.id}`); }}
+      className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full w-full text-left outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
+    >
+      <div className="h-48 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent z-10 pointer-events-none transition-opacity group-hover:opacity-0"></div>
+        <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm">
           {product.category}
         </span>
         
-        {/* Render Main Image with Icon Fallback & lazy loading */}
         {primaryImage && !imgError ? (
           <img 
             src={primaryImage} 
-            alt={product.title}
+            alt={altText}
             loading="lazy"
             decoding="async" 
-            className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110"
             onError={() => setImgError(true)}
           />
         ) : (
@@ -194,37 +220,40 @@ const ProductCard = ({ product, setCurrentRoute }) => {
         )}
       </div>
       
-      <div className="p-6 flex-1 flex flex-col pointer-events-auto">
-        <h3 className="text-xl font-black text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">{product.title}</h3>
-        <p className="text-slate-600 font-medium text-sm mb-5 leading-relaxed line-clamp-3">{product.desc}</p>
+      <div className="p-6 md:p-8 flex-1 flex flex-col pointer-events-auto bg-gradient-to-b from-white to-slate-50/50">
+        <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">{product.title}</h3>
+        <p className="text-slate-600 font-medium text-sm md:text-base mb-6 leading-relaxed line-clamp-2">{product.desc}</p>
         
-        <div className="mb-6 flex items-start bg-slate-50 p-4 rounded-lg border border-slate-100">
+        <div className="mb-6 flex items-start bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
           <Target className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0" />
           <p className="text-sm text-slate-700 font-medium leading-relaxed line-clamp-2">
-            <strong className="text-slate-900 font-bold">Usage: </strong> 
+            <strong className="text-slate-900 font-bold">Application: </strong> 
             {product.usage}
           </p>
         </div>
 
         <div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
-          <a 
-            href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I need a quotation and more details regarding your product: ${product.title}.`}
-            target="_blank"
-            rel="noreferrer"
-            className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-colors shadow-sm"
-          >
-            <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp
-          </a>
-          <div className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3 text-sm font-bold rounded-lg group-hover:bg-blue-600 transition-colors shadow-sm">
-             View Specs <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+          <object className="flex-1">
+             <a 
+               href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I need a quotation and more details regarding your product: ${product.title}.`}
+               target="_blank"
+               rel="noreferrer"
+               className="w-full bg-[#25D366] text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm hover:shadow-md"
+               aria-label={`Ask for quote for ${product.title} on WhatsApp`}
+             >
+               <MessageCircle className="w-4 h-4 mr-2" /> RFQ / WhatsApp
+             </a>
+          </object>
+          <div className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg group-hover:bg-blue-600 transition-all shadow-sm hover:shadow-md pointer-events-none">
+             Technical Specs <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 
-const Navbar = ({ currentRoute, setCurrentRoute }) => {
+const Navbar = ({ currentPath, navigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -238,14 +267,14 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
     { name: 'Products', path: '/products' },
-    { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
 
-  const handleNav = (path) => {
-    setCurrentRoute(path);
-    setIsOpen(false);
-    window.scrollTo(0,0);
+  const isActive = (path) => {
+    if (path === '/' && currentPath !== '/') return false;
+    if (currentPath.startsWith(path)) return true;
+    if (currentPath.startsWith('/product/') && path === '/products') return true;
+    return false;
   };
 
   return (
@@ -253,51 +282,55 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           
-          <BrandLogo scrolled={scrolled} onClick={() => handleNav('/')} />
+          <BrandLogo scrolled={scrolled} navigate={navigate} />
 
           <div className="hidden md:flex space-x-8 items-center">
             {navLinks.map((link) => (
-              <button 
+              <a 
                 key={link.name}
-                onClick={() => handleNav(link.path)}
-                className={`text-sm font-bold uppercase tracking-wider transition-colors ${
-                  currentRoute === link.path || (currentRoute.startsWith('/product/') && link.path === '/products')
+                href={`#${link.path}`}
+                onClick={(e) => { e.preventDefault(); navigate(link.path); }}
+                className={`text-sm font-bold uppercase tracking-widest transition-colors ${
+                  isActive(link.path)
                     ? (scrolled ? 'text-blue-600' : 'text-blue-400')
                     : (scrolled ? 'text-slate-600 hover:text-blue-600' : 'text-slate-300 hover:text-white')
                 }`}
               >
                 {link.name}
-              </button>
+              </a>
             ))}
-            <button 
-              onClick={() => handleNav('/contact')}
-              className="bg-blue-600 text-white px-6 py-2.5 rounded font-bold hover:bg-blue-500 transition-colors shadow-lg shadow-blue-600/30"
+            <a 
+              href="#/contact"
+              onClick={(e) => { e.preventDefault(); navigate('/contact'); }}
+              className="bg-blue-600 text-white px-7 py-2.5 rounded font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50"
             >
               Get Quote
-            </button>
+            </a>
           </div>
 
           <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)} className={scrolled ? 'text-slate-900' : 'text-white'}>
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <button onClick={() => setIsOpen(!isOpen)} className={scrolled ? 'text-slate-900' : 'text-white'} aria-label="Toggle Menu">
+              {isOpen ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
             </button>
           </div>
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-slate-100">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100">
+          <div className="px-4 py-6 space-y-2">
             {navLinks.map((link) => (
-              <button
+              <a
                 key={link.name}
-                onClick={() => handleNav(link.path)}
-                className={`block w-full text-left px-4 py-4 rounded-md text-base font-bold ${
-                  currentRoute === link.path ? 'text-blue-600 bg-blue-50' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+                href={`#${link.path}`}
+                onClick={(e) => { e.preventDefault(); navigate(link.path); setIsOpen(false); }}
+                className={`block w-full text-left px-5 py-4 rounded-xl text-lg font-black tracking-tight ${
+                  isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
                 }`}
               >
                 {link.name}
-              </button>
+              </a>
             ))}
           </div>
         </div>
@@ -306,21 +339,32 @@ const Navbar = ({ currentRoute, setCurrentRoute }) => {
   );
 };
 
-const Footer = ({ setCurrentRoute }) => (
+const Footer = ({ navigate }) => (
   <footer className="bg-[#0A192F] text-slate-300 pt-20 pb-8 border-t-[8px] border-blue-600">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div>
           <div className="mb-6">
-            <BrandLogo scrolled={false} forceWhite={true} onClick={() => {setCurrentRoute('/'); window.scrollTo(0,0);}} />
+            <BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
           </div>
           <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">
             20+ years of excellence in industrial turbine engineering, reverse engineering, and manufacturing. Delivering precision to power, sugar, and process industries.
           </p>
-          <div className="flex flex-col space-y-5">
-            <MakeInIndiaBadge />
-            <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="text-slate-300 hover:text-white font-bold transition-colors flex items-center underline decoration-blue-500 decoration-2 underline-offset-4 mt-2">
-              IndiaMART TrustSeal Profile <ExternalLink className="w-4 h-4 ml-1.5"/>
+          <div className="flex flex-col space-y-4">
+            <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/10 w-fit">
+              <Zap className="w-5 h-5 text-orange-500" />
+              <div className="flex flex-col justify-center border-l border-white/20 pl-3">
+                <span className="text-white font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
+              </div>
+            </div>
+            
+            <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="group flex flex-col space-y-2 bg-white/5 backdrop-blur-sm px-4 py-3 rounded-md border border-white/10 hover:border-blue-500/50 transition-colors w-fit">
+              <span className="text-white font-bold text-sm flex items-center tracking-wide">
+                IndiaMART TrustSeal <CheckCircle2 className="w-4 h-4 text-green-400 ml-2"/>
+              </span>
+              <span className="text-yellow-400 text-xs font-black flex items-center tracking-widest">
+                ★★★★★ <span className="text-slate-400 ml-2 font-medium tracking-normal">4.3/5 (90% Response)</span>
+              </span>
             </a>
           </div>
         </div>
@@ -329,11 +373,15 @@ const Footer = ({ setCurrentRoute }) => (
           <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Quick Links</h3>
           <div className="w-12 h-1 bg-blue-600 mb-6"></div>
           <ul className="space-y-4">
-            {['Home', 'Services', 'Products', 'About', 'Contact'].map(link => (
+            {['Home', 'Services', 'Products', 'Contact'].map(link => (
               <li key={link}>
-                <button onClick={() => {setCurrentRoute(link === 'Home' ? '/' : `/${link.toLowerCase()}`); window.scrollTo(0,0);}} className="text-slate-400 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm">
+                <a 
+                  href={`#${link === 'Home' ? '/' : `/${link.toLowerCase()}`}`}
+                  onClick={(e) => { e.preventDefault(); navigate(link === 'Home' ? '/' : `/${link.toLowerCase()}`); }} 
+                  className="text-slate-400 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm"
+                >
                   <ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> {link}
-                </button>
+                </a>
               </li>
             ))}
           </ul>
@@ -343,9 +391,9 @@ const Footer = ({ setCurrentRoute }) => (
           <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Our Services</h3>
           <div className="w-12 h-1 bg-blue-600 mb-6"></div>
           <ul className="space-y-4">
-            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Turnkey Overhauling</li>
+            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Overhauling & Maintenance</li>
             <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Reverse Engineering</li>
-            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Dynamic Balancing</li>
+            <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Turbine Erection</li>
             <li className="text-slate-400 font-medium text-sm flex items-center"><ChevronRight className="w-4 h-4 mr-2 text-blue-500" /> Spares Manufacturing</li>
           </ul>
         </div>
@@ -369,7 +417,7 @@ const Footer = ({ setCurrentRoute }) => (
               <Mail className="w-5 h-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" />
               <div className="text-slate-400 font-medium text-sm space-y-1">
                 <div>{CONTACT_INFO.email}</div>
-                <div>{CONTACT_INFO.secondaryEmail}</div>
+                <div>{CONTACT_INFO.marketingEmail}</div>
               </div>
             </li>
           </ul>
@@ -397,172 +445,162 @@ const WhatsAppFab = () => (
   </a>
 );
 
-const ProductSlideshow = ({ setCurrentRoute }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [itemsPerView, setItemsPerView] = useState(3);
+// --- PAGES ---
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) setItemsPerView(1);
-      else if (window.innerWidth < 1280) setItemsPerView(2);
-      else setItemsPerView(3);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex(prev => {
-        if (prev >= PRODUCTS.length - itemsPerView) return 0;
-        return prev + 1;
-      });
-    }, 4000); 
-    return () => clearInterval(timer);
-  }, [itemsPerView]);
-
-  return (
-    <section className="py-24 bg-slate-50 overflow-hidden border-t border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center flex flex-col items-center">
-        <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 tracking-tight">Explore Our Catalog</h2>
-        <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full"></div>
-        <p className="text-slate-600 font-medium text-lg max-w-2xl mx-auto">
-          Over 35+ precision-engineered components, including industrial filtration, expansion bellows, and OEM-compatible turbine spares.
-        </p>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="overflow-hidden rounded-xl pb-6 -mx-4 px-4">
-          <div 
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
-          >
-            {PRODUCTS.map(product => (
-              <div 
-                key={product.id} 
-                className="flex-shrink-0 px-4"
-                style={{ width: `${100 / itemsPerView}%` }}
-              >
-                <ProductCard product={product} setCurrentRoute={setCurrentRoute} />
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        <div className="flex justify-center mt-8 space-x-2 overflow-hidden max-w-xs mx-auto h-1.5 bg-slate-200 rounded-full">
-           <div className="bg-blue-600 h-full rounded-full transition-all duration-700 ease-in-out" style={{ width: `${((currentIndex + itemsPerView) / PRODUCTS.length) * 100}%` }}></div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// MULTIPLE IMAGE CAPABILITY: Redesigned Product Details Page to support advanced image formatting and scaling.
-const ProductDetailsPage = ({ product, setCurrentRoute }) => {
+const ProductDetailsPage = ({ productId, navigate }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [mainImgError, setMainImgError] = useState(false);
-  
-  if (!product) return null;
+
+  const product = PRODUCTS.find(p => p.id === productId);
+
+  // Scroll to top on mount
+  useEffect(() => { window.scrollTo(0,0); }, [productId]);
+
+  if (!product) {
+    return (
+      <main className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
+        <SEOHead title="Product Not Found" />
+        <div>
+          <Settings className="w-20 h-20 text-slate-300 mx-auto mb-6 animate-spin" />
+          <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Product Not Found</h1>
+          <button onClick={() => navigate('/products')} className="text-blue-600 font-bold hover:underline text-lg">
+            Return to Catalog
+          </button>
+        </div>
+      </main>
+    );
+  }
 
   const hasImages = product.images && product.images.length > 0;
   const activeImage = hasImages ? product.images[activeImageIndex] : null;
 
   return (
-    <main className="pt-32 pb-20 animate-in fade-in duration-500 bg-slate-50 min-h-screen">
+    <main className="pt-28 pb-20 animate-in fade-in duration-500 bg-slate-50 min-h-screen">
+      <SEOHead 
+        title={`${product.title} | ${product.category}`} 
+        description={`Keshav Enterprises manufactures ${product.title}. ${product.desc}`} 
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <button 
-          onClick={() => { setCurrentRoute('/products'); window.scrollTo(0,0); }}
-          className="flex items-center text-slate-500 hover:text-blue-600 font-bold mb-8 transition-colors text-sm uppercase tracking-wider"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Catalog
-        </button>
+        {/* Industry Standard Breadcrumbs */}
+        <div className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest">
+          <button onClick={() => navigate('/products')} className="hover:text-blue-600 transition-colors flex items-center">
+            <ArrowLeft className="w-4 h-4 mr-2" /> Catalog
+          </button>
+          <span className="mx-3">/</span>
+          <span className="text-slate-400">{product.category}</span>
+          <span className="mx-3">/</span>
+          <span className="text-slate-800 truncate max-w-[200px] md:max-w-full">{product.title}</span>
+        </div>
 
-        <div className="bg-white rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden border border-slate-200">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-200">
+          <div className="grid grid-cols-1 lg:grid-cols-12">
             
-            {/* Image Gallery */}
-            <div className="p-8 lg:p-12 bg-white flex flex-col items-center border-b lg:border-b-0 lg:border-r border-slate-100">
-              <div className="w-full aspect-square bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 group">
+            {/* Image Gallery (Left Side - 5 cols) */}
+            <div className="lg:col-span-5 p-8 lg:p-10 bg-white flex flex-col items-center border-b lg:border-b-0 lg:border-r border-slate-100">
+              <div className="w-full aspect-square bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 group shadow-inner">
                 {activeImage && !mainImgError ? (
                   <img 
                     src={activeImage} 
                     alt={`${product.title} - View ${activeImageIndex + 1}`}
                     loading="lazy"
                     decoding="async"
-                    className="w-full h-full object-contain p-8 transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-110 mix-blend-multiply"
                     onError={() => setMainImgError(true)}
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center opacity-30">
                     {getCategoryIcon(product.category)}
-                    <span className="mt-4 font-bold text-slate-500">Image not available</span>
+                    <span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">Image Pending</span>
                   </div>
                 )}
               </div>
 
               {hasImages && product.images.length > 1 && (
-                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2" style={{ scrollbarWidth: 'none' }}>
+                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2 scrollbar-hide">
                   {product.images.map((img, idx) => (
                     <button 
                       key={idx}
                       onClick={() => { setActiveImageIndex(idx); setMainImgError(false); }}
-                      className={`shrink-0 w-24 h-24 bg-white rounded-lg border-2 overflow-hidden transition-all ${activeImageIndex === idx ? 'border-blue-600 shadow-md scale-105' : 'border-slate-200 hover:border-blue-300 opacity-60 hover:opacity-100'}`}
+                      className={`shrink-0 w-20 h-20 bg-white rounded-xl border-2 overflow-hidden transition-all ${activeImageIndex === idx ? 'border-blue-600 shadow-lg scale-105' : 'border-slate-200 hover:border-blue-400 opacity-70 hover:opacity-100'}`}
                     >
-                      <img src={img} alt={`Thumbnail ${idx+1}`} loading="lazy" className="w-full h-full object-cover p-2" />
+                      <img 
+                        src={img} 
+                        alt={`Thumbnail ${idx+1}`} 
+                        loading="lazy" 
+                        className="w-full h-full object-cover p-2 mix-blend-multiply" 
+                        onError={(e) => { e.target.parentElement.style.display = 'none'; }} 
+                      />
                     </button>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Product Details */}
-            <div className="p-8 lg:p-12 flex flex-col">
-              <div className="mb-4">
-                <span className="bg-slate-100 text-slate-600 text-xs font-black px-3 py-1.5 uppercase tracking-wider rounded border border-slate-200">
+            {/* Product Details & Specs (Right Side - 7 cols) */}
+            <div className="lg:col-span-7 p-8 lg:p-12 flex flex-col bg-gradient-to-br from-white to-slate-50/50">
+              <div className="mb-5">
+                <span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-4 py-2 uppercase tracking-widest rounded-md shadow-sm">
                   {product.category}
                 </span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 leading-tight tracking-tight">{product.title}</h1>
-              <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">{product.desc}</p>
+              <h1 className="text-3xl md:text-5xl font-black text-slate-900 mb-6 leading-[1.1] tracking-tight">{product.title}</h1>
+              <p className="text-slate-600 font-medium text-lg md:text-xl mb-10 leading-relaxed">{product.desc}</p>
               
-              <div className="mb-10 bg-blue-50/50 p-6 rounded-xl border border-blue-100">
-                <h3 className="font-bold text-blue-600 text-sm uppercase tracking-widest mb-3 flex items-center">
-                  <Target className="w-5 h-5 mr-2" /> Primary Application
-                </h3>
-                <p className="text-slate-900 font-bold text-base leading-relaxed">{product.usage}</p>
+              <div className="mb-10 bg-slate-900 p-6 md:p-8 rounded-2xl shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                  <Factory className="w-32 h-32 text-white" />
+                </div>
+                <div className="relative z-10">
+                  <h3 className="font-black text-blue-400 text-sm uppercase tracking-widest mb-3 flex items-center">
+                    <Target className="w-5 h-5 mr-3" /> Primary Industrial Application
+                  </h3>
+                  <p className="text-white font-medium text-lg leading-relaxed">{product.usage}</p>
+                </div>
               </div>
 
+              {/* Professional Engineering Specs Table */}
               <div className="mb-12">
-                <h3 className="font-bold text-slate-400 text-sm uppercase tracking-widest mb-5">Technical Specifications</h3>
-                <ul className="space-y-4">
-                  {product.features.map((feature, i) => (
-                    <li key={i} className="text-base font-medium text-slate-800 flex items-start">
-                      <CheckCircle2 className="w-6 h-6 text-blue-500 mr-3 shrink-0" />
-                      <span className="leading-snug">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="flex justify-between items-end mb-6">
+                  <h3 className="font-black text-slate-900 text-xl tracking-tight">Technical Specifications</h3>
+                  <button className="hidden sm:flex items-center text-sm font-bold text-blue-600 hover:text-blue-800 transition-colors">
+                    <FileText className="w-4 h-4 mr-1.5" /> Download PDF Datasheet
+                  </button>
+                </div>
+                
+                <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                  <table className="w-full text-left border-collapse">
+                    <tbody className="divide-y divide-slate-100">
+                      {product.features.map((feature, i) => (
+                        <tr key={i} className="bg-white hover:bg-slate-50 transition-colors">
+                          <td className="p-4 md:p-5 text-slate-800 font-medium text-base flex items-center">
+                            <CheckCircle2 className="w-5 h-5 text-blue-500 mr-4 shrink-0" />
+                            {feature}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* CTAs */}
-              <div className="mt-auto pt-8 border-t border-slate-100 flex flex-col sm:flex-row gap-4">
+              <div className="mt-auto pt-8 border-t border-slate-200 flex flex-col sm:flex-row gap-5">
                 <a 
                   href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=Hello KESHAV ENTERPRISES, I am interested in purchasing or getting technical details for: *${product.title}*. Please assist.`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex-1 bg-[#25D366] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center"
+                  className="flex-1 bg-[#25D366] text-white py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center tracking-tight"
                 >
-                  <MessageCircle className="w-5 h-5 mr-2.5" /> Quote via WhatsApp
+                  <MessageCircle className="w-6 h-6 mr-3" /> Request Quote via WhatsApp
                 </a>
                 <a 
                   href={CONTACT_INFO.indiamart} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="flex-1 bg-white border-2 border-slate-900 text-slate-900 py-4 rounded-lg font-bold text-lg hover:bg-slate-900 hover:text-white transition-all shadow-sm flex items-center justify-center"
+                  className="flex-1 bg-white border-2 border-slate-900 text-slate-900 py-5 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center tracking-tight"
                 >
-                  <ExternalLink className="w-5 h-5 mr-2.5" /> View on IndiaMART
+                  <ExternalLink className="w-6 h-6 mr-3" /> View on IndiaMART
                 </a>
               </div>
             </div>
@@ -574,7 +612,7 @@ const ProductDetailsPage = ({ product, setCurrentRoute }) => {
   );
 };
 
-const HomePage = ({ setCurrentRoute }) => {
+const HomePage = ({ navigate }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [heroImgError, setHeroImgError] = useState(false);
 
@@ -584,59 +622,66 @@ const HomePage = ({ setCurrentRoute }) => {
   }, []);
 
   return (
-    <main className="animate-in fade-in duration-500 bg-[#FFFFFF]">
+    <main className="animate-in fade-in duration-700 bg-[#FFFFFF]">
+      <SEOHead title="Industrial Turbine Engineering & Spares" />
       
+      {/* Premium Hero Section */}
       <section className="relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden">
-        
-        {/* IMMERSIVE 90% VISIBLE BACKGROUND */}
+        {/* Immersive Background */}
         <div className="absolute inset-0 z-0 bg-[#0A192F]">
           {!heroImgError && (
             <img 
               src="hero-background.png" 
-              alt="Industrial Engineering" 
+              alt="Industrial Engineering Facility" 
               className="absolute inset-0 w-full h-full object-cover opacity-90"
               onError={() => setHeroImgError(true)}
             />
           )}
-          {/* Gradients softened to allow the 90% image to be highly visible while preserving text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/95 via-[#0A192F]/60 to-transparent z-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-transparent to-transparent z-10 opacity-80"></div>
+          
+          {/* Glowing Orbs for Modern Depth */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/40 rounded-full blur-[128px] pointer-events-none"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/30 rounded-full blur-[128px] pointer-events-none"></div>
+
+          {/* Elegant High-Tech Blueprint Grid */}
+          <div className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#ffffff1a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_80%,transparent_100%)]"></div>
+          
+          {/* Overlay Gradients to perfectly blend the 90% opacity image */}
+          <div className="absolute inset-0 bg-[#0A192F]/40 z-10 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/95 via-[#0A192F]/60 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/95 via-transparent to-transparent z-10 pointer-events-none"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 w-full flex flex-col lg:flex-row items-center justify-between gap-12">
-          
           <div className="w-full lg:w-3/5">
             <div className={`transform transition-all duration-1000 ease-out ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
               
-              <div className="flex flex-wrap items-center gap-5 mb-8">
+              {/* Trust Hook Tags */}
+              <div className="flex flex-wrap items-center gap-4 mb-8">
                 <MakeInIndiaBadge />
-                <div className="inline-flex items-center space-x-2 bg-blue-900/20 px-4 py-2.5 rounded-md border border-blue-500/30 backdrop-blur-md shadow-md">
-                  <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                  </span>
-                  <span className="text-white text-[11px] font-bold tracking-widest uppercase">IndiaMART TrustSeal Verified</span>
-                </div>
+                <IndiaMartBadge />
               </div>
               
-              <h1 className="text-5xl md:text-7xl font-black text-white leading-[1.05] tracking-tight mb-8">
-                Engineered for <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+              <h1 className="text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-[1.05] tracking-tighter mb-6 drop-shadow-2xl">
+                Precision Engineering for <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
                   Maximum Uptime.
                 </span>
               </h1>
               
-              <p className="text-lg md:text-xl text-slate-300 font-medium mb-10 max-w-xl leading-relaxed border-l-4 border-blue-500 pl-6">
-                No compromises. We deliver ISO-grade dynamic balancing, rapid reverse engineering, and OEM-compatible turbine spares designed to keep your plant running 24/7.
-              </p>
+              {/* Glassmorphism Descriptive Box */}
+              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-r-2xl border-l-4 border-l-cyan-400 p-5 mb-10 max-w-xl shadow-xl">
+                <p className="text-lg md:text-xl text-slate-200 font-medium leading-relaxed drop-shadow-md">
+                  We deliver complete overhauling & maintenance, rapid reverse engineering, and OEM-compatible turbine spares. Trusted by power generation and process industries across India.
+                </p>
+              </div>
               
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5">
-                <button onClick={() => setCurrentRoute('/contact')} className="bg-blue-600 text-white px-8 py-4 rounded-md font-bold hover:bg-blue-500 transition-all duration-300 flex items-center justify-center text-lg shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] group">
+                <button onClick={() => navigate('/contact')} className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1">
                   Request Technical Quote
-                  <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
+                  <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
                 </button>
-                <a href={`https://wa.me/${CONTACT_INFO.whatsapp}`} target="_blank" rel="noreferrer" className="bg-white/5 text-white border border-white/20 px-8 py-4 rounded-md font-bold hover:bg-white/10 transition-all duration-300 flex items-center justify-center text-lg backdrop-blur-sm">
-                  <Activity className="mr-3 w-5 h-5 text-green-400" />
+                <a href={`https://wa.me/${CONTACT_INFO.whatsapp}`} target="_blank" rel="noreferrer" className="bg-white/5 text-white border border-white/20 px-8 py-4 md:py-5 rounded-xl font-bold hover:bg-white/10 hover:border-white/40 transition-all duration-300 flex items-center justify-center text-lg backdrop-blur-md shadow-xl hover:-translate-y-1">
+                  <LifeBuoy className="mr-3 w-6 h-6 text-cyan-400" />
                   Emergency Breakdown
                 </a>
               </div>
@@ -644,128 +689,188 @@ const HomePage = ({ setCurrentRoute }) => {
           </div>
 
           <div className="w-full lg:w-2/5 hidden lg:flex flex-col gap-6 relative">
-            <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-xl shadow-2xl transform transition-all duration-1000 delay-300 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
-              <div className="flex justify-between items-start mb-2">
-                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">Service Capacity</div>
-                <Zap className="w-5 h-5 text-blue-400" />
+            {/* Hook Card 1 - Experience */}
+            <div className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-all duration-1000 delay-300 hover:border-blue-400/40 hover:-translate-y-2 group ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-blue-300 text-xs font-black uppercase tracking-widest group-hover:text-blue-200 transition-colors">Proven Experience</div>
+                <Shield className="w-6 h-6 text-blue-400 group-hover:text-cyan-300 transition-colors" />
               </div>
-              <div className="text-3xl font-black text-white tracking-tight">5 kW – 27 MW</div>
-              <div className="text-sm text-slate-300 font-medium mt-2">Full-spectrum steam turbine overhauling & commissioning.</div>
+              <div className="text-3xl font-black text-white tracking-tighter drop-shadow-sm mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all">10+ Years Expertise</div>
+              <div className="text-sm text-slate-400 font-medium">Trusted by power, sugar, and process industries nationwide.</div>
             </div>
 
-            <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-xl shadow-2xl transform transition-all duration-1000 delay-500 ml-12 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
-              <div className="flex justify-between items-start mb-2">
-                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">Dynamic Balancing</div>
-                <Settings className="w-5 h-5 text-blue-400 animate-spin" style={{ animationDuration: '3s' }} />
+            {/* Hook Card 2 - Service */}
+            <div className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-all duration-1000 delay-500 ml-12 hover:border-blue-400/40 hover:-translate-y-2 group ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-blue-300 text-xs font-black uppercase tracking-widest group-hover:text-blue-200 transition-colors">Technical Services</div>
+                <Wrench className="w-6 h-6 text-blue-400 group-hover:text-cyan-300 transition-colors" />
               </div>
-              <div className="text-3xl font-black text-white tracking-tight">50 – 2000 kg</div>
-              <div className="text-sm text-slate-300 font-medium mt-2">ISO/API standard precision rotor balancing.</div>
+              <div className="text-3xl font-black text-white tracking-tighter drop-shadow-sm mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all">Zero Downtime</div>
+              <div className="text-sm text-slate-400 font-medium">24/7 emergency support & complete overhauling & maintenance.</div>
             </div>
 
-            <div className={`bg-slate-900/40 backdrop-blur-md border border-slate-700/50 p-6 rounded-xl shadow-2xl transform transition-all duration-1000 delay-700 ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
-              <div className="flex justify-between items-start mb-2">
-                <div className="text-slate-400 text-xs font-bold uppercase tracking-widest">OEM Compatibility</div>
-                <Shield className="w-5 h-5 text-green-400" />
+            {/* Hook Card 3 - Products */}
+            <div className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-all duration-1000 delay-700 ml-4 hover:border-blue-400/40 hover:-translate-y-2 group ${isLoaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+              <div className="flex justify-between items-start mb-3">
+                <div className="text-blue-300 text-xs font-black uppercase tracking-widest group-hover:text-blue-200 transition-colors">Precision Products</div>
+                <Factory className="w-6 h-6 text-blue-400 group-hover:text-cyan-300 transition-colors" />
               </div>
-              <div className="text-3xl font-black text-white tracking-tight">100% Guaranteed</div>
-              <div className="text-sm text-slate-300 font-medium mt-2">Triveni, Siemens, BHEL, Belliss India & more.</div>
+              <div className="text-3xl font-black text-white tracking-tighter drop-shadow-sm mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all">OEM-Grade Spares</div>
+              <div className="text-sm text-slate-400 font-medium">Advanced reverse engineering & custom filtration systems.</div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-12 border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 overflow-hidden">
-          <p className="text-center text-sm font-bold text-slate-400 uppercase tracking-widest mb-8">Compatible With Major OEMs & Trusted By Industry Leaders</p>
-          <div className="flex justify-center flex-wrap gap-8 md:gap-14 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-            {OEMS.slice(0, 8).map((oem, i) => (
-              <div key={i} className="text-2xl md:text-3xl font-black text-slate-800 tracking-tighter">
-                {oem.toUpperCase()}
-              </div>
-            ))}
-          </div>
+      {/* Infinite Scrolling OEM Marquee (Industry Standard Upgrade) */}
+      <section className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden">
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+          }
+          .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 80s linear infinite;
+          }
+          .animate-marquee-slow {
+            display: flex;
+            width: max-content;
+            animation: marquee 160s linear infinite;
+          }
+          .animate-marquee:hover, .animate-marquee-slow:hover {
+            animation-play-state: paused;
+          }
+        `}</style>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+          <p className="text-center text-sm font-black text-slate-400 uppercase tracking-widest">Compatible With Major OEMs & Trusted By Industry Leaders</p>
         </div>
-      </section>
-
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-slate-900 text-3xl md:text-4xl font-black mb-4 tracking-tight">Core Engineering Capabilities</h2>
-            <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full"></div>
-            <p className="text-slate-600 font-medium text-lg leading-relaxed">Comprehensive mechanical solutions for rotating equipment, minimizing downtime and maximizing output up to 27 MW.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {SERVICES.slice(0, 4).map((service) => (
-              <div key={service.id} className="bg-slate-50 p-8 border border-slate-100 rounded-2xl shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-white rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-125"></div>
-                <div className="w-14 h-14 bg-white text-blue-600 rounded-lg flex items-center justify-center mb-6 relative z-10 shadow-sm border border-slate-100 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
-                  {service.icon}
-                </div>
-                <h3 className="text-xl font-black text-slate-900 mb-3 relative z-10 tracking-tight">{service.title}</h3>
-                <p className="text-slate-600 font-medium text-sm leading-relaxed relative z-10">{service.desc}</p>
-              </div>
-            ))}
-          </div>
+        
+        <div className="relative w-full overflow-hidden bg-white flex items-center">
+          {/* Left/Right Fade Masks */}
+          <div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
           
-          <div className="mt-16 text-center">
-            <button onClick={() => setCurrentRoute('/services')} className="text-blue-600 font-bold text-lg flex items-center justify-center mx-auto hover:text-blue-700 transition-colors group">
-              View All Services <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+          <div className="animate-marquee gap-8 md:gap-16 px-4">
+            {/* Render list twice for infinite loop effect */}
+            {[...OEMS, ...OEMS].map((oem, i) => (
+              <div key={i} className="group flex items-center justify-center shrink-0 w-48 md:w-64 h-24 p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-blue-200 hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                <img 
+                  src={`${oem.toLowerCase().replace(/[^a-z0-9]/g, '-')}-logo.png`} 
+                  alt={`${oem} Logo`} 
+                  className="max-h-full max-w-full object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.classList.remove('hidden');
+                    e.target.nextElementSibling.classList.add('flex');
+                  }}
+                />
+                <div className="hidden items-center justify-center space-x-3 w-full">
+                  <Factory className="w-8 h-8 text-slate-300 group-hover:text-blue-500 transition-colors duration-500 shrink-0" />
+                  <span className="text-sm md:text-base font-black text-slate-700 tracking-widest uppercase truncate group-hover:text-blue-600 transition-colors duration-300">
+                    {oem}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-24 bg-slate-50 relative border-t border-slate-200">
+      {/* Infinite Scrolling Products Marquee */}
+      <section className="bg-slate-50 py-20 border-b border-slate-200 overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 flex flex-col sm:flex-row justify-between items-end gap-6">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">Featured Engineering Products</h2>
+            <div className="w-20 h-1.5 bg-blue-600 rounded-full shadow-md"></div>
+          </div>
+          <button onClick={() => navigate('/products')} className="hidden sm:flex items-center font-black text-blue-600 hover:text-blue-800 transition-colors text-lg tracking-tight group">
+            View Complete Catalog <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
+        
+        <div className="relative w-full overflow-hidden flex items-center">
+          {/* Left/Right Fade Masks for Products */}
+          <div className="absolute left-0 top-0 w-16 md:w-32 h-full bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 w-16 md:w-32 h-full bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+          
+          <div className="animate-marquee-slow gap-6 px-4 py-4">
+            {[...PRODUCTS, ...PRODUCTS].map((product, i) => (
+              <a 
+                key={`${product.id}-${i}`}
+                href={`#/product/${product.id}`}
+                onClick={(e) => { e.preventDefault(); navigate(`/product/${product.id}`); }}
+                className="group flex flex-col shrink-0 w-72 md:w-80 bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-blue-400 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 focus-visible:ring-4 focus-visible:ring-blue-500/50 cursor-pointer"
+              >
+                <div className="h-48 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent z-10 pointer-events-none transition-opacity group-hover:opacity-0"></div>
+                  <span className="absolute top-4 left-4 bg-white/95 backdrop-blur-md text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm">
+                    {product.category}
+                  </span>
+                  
+                  {product.images && product.images.length > 0 ? (
+                    <img 
+                      src={product.images[0]} 
+                      alt={product.title}
+                      loading="lazy"
+                      decoding="async" 
+                      className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextElementSibling.classList.remove('hidden');
+                        e.target.nextElementSibling.classList.add('flex');
+                      }}
+                    />
+                  ) : null}
+                  <div className={`${product.images && product.images.length > 0 ? 'hidden' : 'flex'} z-0 relative flex-col items-center justify-center`}>
+                    {getCategoryIcon(product.category)}
+                  </div>
+                </div>
+                
+                <div className="p-6 flex-1 flex flex-col bg-gradient-to-b from-white to-slate-50/50">
+                  <h3 className="text-xl font-black text-slate-900 mb-2 leading-tight group-hover:text-blue-600 transition-colors tracking-tight line-clamp-2">{product.title}</h3>
+                  <p className="text-slate-600 font-medium text-sm mb-4 leading-relaxed line-clamp-2">{product.desc}</p>
+                  
+                  <div className="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-sm font-bold text-slate-500 group-hover:text-slate-900 transition-colors">Explore Details</span>
+                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shadow-sm">
+                      <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" />
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+        
+        <div className="mt-8 flex justify-center sm:hidden px-4">
+          <button onClick={() => navigate('/products')} className="w-full bg-slate-900 text-white px-6 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-md flex items-center justify-center text-base">
+            View Complete Catalog <ArrowRight className="ml-2 w-5 h-5" />
+          </button>
+        </div>
+      </section>
+
+      <section className="py-24 md:py-32 bg-white relative border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center md:text-left">
-            <h2 className="text-slate-900 text-3xl md:text-4xl font-black mb-4 tracking-tight">Precision Manufacturing</h2>
-            <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full mx-auto md:mx-0"></div>
-            <p className="text-slate-600 font-medium text-lg mb-10 leading-relaxed">
-              We manufacture high-tolerance turbine spares, 180 GPM / 850 LPM industrial filters, and expansion bellows (DN 15-12.000). Using advanced 3D scanning and PMI testing, we recreate obsolete components to exact OEM specifications.
+            <h2 className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight">Precision Manufacturing.</h2>
+            <div className="w-24 h-1.5 bg-blue-600 mb-8 rounded-full mx-auto md:mx-0"></div>
+            <p className="text-slate-600 font-medium text-xl mb-12 leading-relaxed">
+              We manufacture high-tolerance turbine spares, industrial strainers, and expansion bellows (DN 15-12.000). Using advanced 3D scanning and PMI testing, we recreate obsolete components to exact OEM specifications, drastically reducing plant downtime.
             </p>
-            <ul className="space-y-4 mb-10 text-left inline-block bg-white p-8 rounded-2xl shadow-sm border border-slate-100 w-full md:w-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
               {[
                 'Reduced lead times vs. OEM sourcing (Triveni, Siemens, BHEL)',
                 'Material upgrades (Glass fibre, SS mesh, Carbon Sealing Rings)',
-                'Stringent quality control & 50-2000kg dynamic balancing',
+                'Comprehensive Overhauling & Maintenance Services',
                 'Custom fabrication (Thick wall, Octagonal, Double Arch Bellows)'
               ].map((item, i) => (
-                <li key={i} className="flex items-center text-slate-800 font-bold text-base md:text-lg">
-                  <Shield className="w-6 h-6 text-blue-500 mr-4 shrink-0" /> {item}
-                </li>
+                <div key={i} className="flex items-start bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 hover:shadow-md hover:bg-white transition-all">
+                  <Shield className="w-7 h-7 text-blue-500 mr-4 shrink-0" /> 
+                  <span className="text-slate-800 font-bold text-base md:text-lg leading-snug">{item}</span>
+                </div>
               ))}
-            </ul>
-            <div className="flex flex-col md:flex-row flex-wrap gap-4 justify-center md:justify-start mt-4">
-              <button onClick={() => setCurrentRoute('/about')} className="bg-slate-900 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-600 transition-colors shadow-md">
-                Learn About Us
-              </button>
-              <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="flex items-center justify-center px-8 py-4 border-2 border-slate-300 rounded-lg text-slate-700 hover:text-blue-600 hover:border-blue-600 font-bold transition-colors bg-white shadow-sm">
-                View IndiaMART Profile <ExternalLink className="w-5 h-5 ml-2.5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <ProductSlideshow setCurrentRoute={setCurrentRoute} />
-
-      <section className="bg-[#0A192F] py-24 border-t-8 border-blue-600">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-6 tracking-tight">Ready to Optimize Your Plant?</h2>
-          <div className="w-20 h-1.5 bg-blue-500 mb-8 rounded-full"></div>
-          <p className="text-slate-300 font-medium text-xl mb-12 max-w-3xl mx-auto leading-relaxed">
-            Contact our engineering team for specialized consultation, 24x7 emergency breakdown support, or a technical quotation.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-            <button onClick={() => setCurrentRoute('/contact')} className="bg-blue-600 text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] w-full sm:w-auto">
-              Contact Engineering Team
-            </button>
-            <div className="text-white font-medium text-lg flex items-center bg-white/5 px-8 py-5 rounded-lg border border-white/10 backdrop-blur-sm w-full sm:w-auto justify-center">
-              <span className="mr-3 text-slate-400">or Call:</span> 
-              <a href={`tel:${CONTACT_INFO.phones[0].replace(/ /g, '')}`} className="font-black text-2xl hover:text-blue-400 transition-colors tracking-wider">
-                {CONTACT_INFO.phones[0]}
-              </a>
             </div>
           </div>
         </div>
@@ -774,59 +879,89 @@ const HomePage = ({ setCurrentRoute }) => {
   );
 };
 
-const ServicesPage = ({ setCurrentRoute }) => (
+const ServicesPage = ({ navigate }) => (
   <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#FFFFFF]">
-    <div className="bg-[#0A192F] text-white py-20 mb-20 border-b-8 border-blue-600">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-        <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Technical Services</h1>
-        <div className="w-20 h-1.5 bg-blue-500 mb-6 rounded-full"></div>
-        <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
+    <SEOHead title="Turbine Services & Overhauling" description="Complete overhauling & maintenance, reverse engineering, and erection services for steam turbines up to 27MW." />
+    
+    <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
+        <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">Technical Services</h1>
+        <div className="w-24 h-1.5 bg-blue-500 mb-8 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
+        <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">
           Specialized mechanical solutions for industrial rotating equipment (up to 27 MW), ensuring peak reliability across power generation, sugar mills, and refineries.
         </p>
       </div>
     </div>
 
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-32">
-      {SERVICES.map((service, index) => (
-        <div key={service.id} className={`flex flex-col md:flex-row gap-16 items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
-          <div className="md:w-1/2">
-            <div className="w-full aspect-video bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-center relative overflow-hidden group shadow-lg shadow-slate-200/50">
-               <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:16px_16px]"></div>
-               <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-500 border border-slate-100">
-                 {React.cloneElement(service.icon, { className: 'w-12 h-12 text-blue-600' })}
-               </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="space-y-32 mt-20">
+        {SERVICES.map((service, index) => (
+          <div key={service.id} className={`flex flex-col md:flex-row gap-16 items-center group ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+            <div className="md:w-1/2 w-full">
+              <div className="w-full aspect-[4/3] bg-slate-50 rounded-3xl border border-slate-200 flex items-center justify-center relative overflow-hidden shadow-xl shadow-slate-200/50 group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500">
+                 <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                 <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-700 border border-slate-100">
+                   {React.cloneElement(service.icon, { className: 'w-14 h-14 text-blue-600' })}
+                 </div>
+              </div>
+            </div>
+            <div className="md:w-1/2 w-full">
+              <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-5 flex items-center">
+                 <span className="w-10 h-0.5 bg-blue-600 mr-4"></span>
+                 Service {(index + 1).toString().padStart(2, '0')}
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">{service.title}</h2>
+              <p className="text-slate-600 font-medium text-lg md:text-xl mb-10 leading-relaxed">
+                {service.desc} We utilize state-of-the-art diagnostic tools and adhere strictly to OEM guidelines to deliver unparalleled service quality.
+              </p>
+              <button onClick={() => navigate('/contact')} className="border-2 border-slate-900 text-slate-900 px-8 py-4 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm hover:shadow-lg flex items-center group/btn">
+                Inquire About This Service <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+              </button>
             </div>
           </div>
-          <div className="md:w-1/2">
-            <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-4 flex items-center">
-               <span className="w-8 h-0.5 bg-blue-600 mr-3"></span>
-               Service {(index + 1).toString().padStart(2, '0')}
-            </div>
-            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-6 tracking-tight">{service.title}</h2>
-            <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">
-              {service.desc} We utilize state-of-the-art diagnostic tools and adhere strictly to OEM guidelines to deliver unparalleled service quality.
-            </p>
-            <ul className="space-y-4 mb-10 bg-slate-50 p-6 rounded-xl border border-slate-100">
-              {['Rigorous OEM Standard Compliance', 'Detailed Technical & Condition Reporting', 'Ex-OEM Engineering Expertise'].map((item, i) => (
-                <li key={i} className="flex items-start">
-                  <CheckCircle2 className="w-6 h-6 text-blue-500 mr-4 shrink-0 mt-0.5" />
-                  <span className="text-slate-800 font-bold text-lg">{item}</span>
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => setCurrentRoute('/contact')} className="border-2 border-slate-900 text-slate-900 px-8 py-3.5 rounded-lg font-bold text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm">
-              Inquire About This Service
-            </button>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </main>
 );
 
-const ProductsPage = ({ setCurrentRoute }) => {
+const ProductsPage = ({ navigate }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Custom Slider State & Refs
+  const categoryScrollRef = useRef(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+
+  const handleScroll = () => {
+    if (categoryScrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = categoryScrollRef.current;
+      setShowLeftArrow(scrollLeft > 5);
+      // Ensure robust cross-browser overflow check
+      setShowRightArrow(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
+    }
+  };
+
+  useEffect(() => {
+    // Initial check
+    handleScroll();
+    // Re-check after brief delay to allow layout and fonts to render
+    const timer = setTimeout(handleScroll, 250);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [activeCategory]);
+
+  const scrollCategories = (direction) => {
+    if (categoryScrollRef.current) {
+      const scrollAmount = direction === 'left' ? -350 : 350;
+      categoryScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const filteredProducts = PRODUCTS.filter(product => {
     const matchesCategory = activeCategory === 'All' || product.category === activeCategory;
@@ -838,71 +973,59 @@ const ProductsPage = ({ setCurrentRoute }) => {
 
   return (
     <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-slate-50 min-h-screen">
+       <SEOHead title="Product Catalog | Spares & Filtration" />
+       
        <div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
-        <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="2"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight">Industrial Products</h1>
-          <div className="w-20 h-1.5 bg-blue-500 mb-6 rounded-full"></div>
+          <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-md">Industrial Products</h1>
+          <div className="w-20 h-1.5 bg-blue-500 mb-6 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
           <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
-            Explore our comprehensive catalog of 35+ high-performance industrial components. 
+            Explore our comprehensive catalog of high-performance industrial components. 
             Precision engineered for mission-critical rotating equipment and fluid systems.
           </p>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white border border-slate-200 rounded-2xl p-8 mb-12 flex flex-col md:flex-row items-center justify-between shadow-sm">
-          <div>
-            <h3 className="text-slate-900 font-black text-2xl flex items-center mb-3 tracking-tight">
-              TrustSeal Verified Supplier
-              <CheckCircle2 className="w-7 h-7 text-green-500 ml-3" />
-            </h3>
-            <p className="text-slate-600 font-medium text-base">Explore our complete catalog of Carbon Sealing Rings, Lube Oil Filters, and Expansion Joints verified on our official IndiaMART portal.</p>
-          </div>
-          <a 
-            href={CONTACT_INFO.indiamart} 
-            target="_blank" 
-            rel="noreferrer"
-            className="mt-6 md:mt-0 bg-slate-900 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-600 transition-colors flex items-center whitespace-nowrap shadow-md text-lg"
-          >
-            View Store on IndiaMART <ExternalLink className="w-5 h-5 ml-3" />
-          </a>
-        </div>
-
-        <div className="mb-10 flex flex-col gap-6">
-          <div className="relative w-full max-w-xl mx-auto md:mx-0">
+        <div className="mb-12 flex flex-col gap-6">
+          <div className="relative w-full max-w-2xl mx-auto md:mx-0">
             <input 
               type="text" 
               placeholder="Search products, usage, or specs..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-14 pr-4 py-4 bg-white border-2 border-slate-200 rounded-xl text-base font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+              className="w-full pl-14 pr-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-lg font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
             />
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-7 h-7 text-slate-400" />
           </div>
 
-          <div className="relative w-full flex items-center">
+          {/* Interactive Category Slider */}
+          <div className="relative w-full flex items-center group mt-2">
+            
+            {/* Left Scroll Indicator & Button */}
+            <div className={`absolute left-0 top-0 bottom-6 w-16 md:w-24 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none transition-opacity duration-300 ${showLeftArrow ? 'opacity-100' : 'opacity-0'}`}></div>
+            <button
+              onClick={() => scrollCategories('left')}
+              className={`absolute left-0 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 hover:shadow-lg transition-all hover:scale-110 ${showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              aria-label="Scroll categories left"
+            >
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+
+            {/* Scrollable Container */}
             <div 
-              className="flex gap-3 overflow-x-auto w-full pb-3 pt-1 snap-x snap-mandatory" 
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              ref={categoryScrollRef}
+              onScroll={handleScroll}
+              className="flex gap-3 overflow-x-auto w-full pb-6 pt-2 px-12 md:px-16 snap-x snap-mandatory scroll-smooth relative z-0 scrollbar-hide" 
             >
               {PRODUCT_CATEGORIES.map(category => (
                 <button 
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`snap-start shrink-0 px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 border-2 ${
+                  className={`snap-start shrink-0 px-6 py-3.5 rounded-full text-base font-black whitespace-nowrap transition-all duration-300 border-2 ${
                     activeCategory === category 
-                      ? 'bg-slate-900 text-white border-slate-900 shadow-md scale-105' 
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-lg scale-105' 
                       : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'
                   }`}
                 >
@@ -910,30 +1033,31 @@ const ProductsPage = ({ setCurrentRoute }) => {
                 </button>
               ))}
             </div>
-            <div className="absolute right-0 top-0 bottom-3 w-16 bg-gradient-to-l from-slate-50 to-transparent pointer-events-none md:hidden"></div>
-          </div>
-        </div>
 
-        <div className="mb-8 flex items-center text-base font-bold text-slate-500 border-b border-slate-200 pb-4">
-           <SlidersHorizontal className="w-5 h-5 mr-3 text-blue-500" />
-           Showing <span className="text-slate-900 mx-1 font-black">{filteredProducts.length}</span> Product{filteredProducts.length !== 1 && 's'}
+            {/* Right Scroll Indicator & Button */}
+            <div className={`absolute right-0 top-0 bottom-6 w-16 md:w-24 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none transition-opacity duration-300 ${showRightArrow ? 'opacity-100' : 'opacity-0'}`}></div>
+            <button
+              onClick={() => scrollCategories('right')}
+              className={`absolute right-0 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 hover:shadow-lg transition-all hover:scale-110 ${showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              aria-label="Scroll categories right"
+            >
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+            </button>
+          </div>
         </div>
 
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} setCurrentRoute={setCurrentRoute} />
+              <ProductCard key={product.id} product={product} navigate={navigate} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-32 bg-white rounded-2xl border-2 border-dashed border-slate-300 shadow-sm">
-             <Settings className="w-16 h-16 text-slate-300 mx-auto mb-6 animate-spin" style={{ animationDuration: '3s' }} />
-             <h3 className="text-2xl font-black text-slate-900 tracking-tight">No products found</h3>
-             <p className="text-slate-500 font-medium text-lg mt-3">Try adjusting your search criteria or viewing a different category.</p>
-             <button 
-               onClick={() => {setSearchQuery(''); setActiveCategory('All');}}
-               className="mt-8 bg-slate-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-600 transition-colors shadow-md"
-             >
+          <div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm">
+             <Search className="w-20 h-20 text-slate-200 mx-auto mb-6" />
+             <h3 className="text-3xl font-black text-slate-900 tracking-tight mb-2">No products found</h3>
+             <p className="text-slate-500 font-medium text-lg">Try adjusting your search or category filter.</p>
+             <button onClick={() => {setSearchQuery(''); setActiveCategory('All');}} className="mt-8 bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-700 transition-colors shadow-lg">
                Clear all filters
              </button>
           </div>
@@ -943,254 +1067,211 @@ const ProductsPage = ({ setCurrentRoute }) => {
   );
 };
 
-const AboutPage = () => (
-  <main className="pt-24 pb-20 animate-in fade-in duration-500 bg-[#FFFFFF]">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-32 pt-10">
-        <div>
-          <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-4 flex items-center">
-             <span className="w-8 h-0.5 bg-blue-600 mr-3"></span>
-             About Us
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-8 leading-tight tracking-tight">Engineering Excellence, Rooted in Precision.</h1>
-          <p className="text-slate-600 font-medium text-lg mb-6 leading-relaxed">
-            Based in Shamli, Uttar Pradesh, KESHAV ENTERPRISES has established itself over the past two decades as a premier partner for heavy industries relying on rotating equipment. We bridge the gap between high OEM costs and the critical need for reliable, precision-engineered replacements.
-          </p>
-          <p className="text-slate-600 font-medium text-lg mb-10 leading-relaxed">
-            Our state-of-the-art facility is equipped for advanced metallurgical analysis, high-tolerance machining, 3D scanning, and dynamic balancing (up to 2000 kg). We ensure every component meets the rigorous demands of OEMs like Triveni, Siemens, BHEL, and Belliss India.
-          </p>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="border-l-4 border-blue-600 pl-5 bg-slate-50 py-5 rounded-r-xl border-y border-r border-slate-100">
-              <div className="text-4xl font-black text-slate-900 tracking-tight">20+</div>
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">Years Experience</div>
-            </div>
-            <div className="border-l-4 border-blue-600 pl-5 bg-slate-50 py-5 rounded-r-xl border-y border-r border-slate-100">
-              <div className="text-4xl font-black text-slate-900 tracking-tight">100%</div>
-              <div className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-2">OEM Compatibility</div>
-            </div>
-          </div>
-        </div>
-        <div className="relative">
-          <div className="aspect-square bg-slate-50 rounded-2xl relative z-10 border border-slate-200 overflow-hidden flex items-center justify-center shadow-2xl">
-             <Factory className="w-40 h-40 text-slate-300" />
-             <div className="absolute bottom-8 right-8 bg-white/90 backdrop-blur-md p-6 rounded-xl shadow-xl flex items-center space-x-5 border border-slate-100">
-               <div className="bg-blue-50 p-3 rounded-full">
-                 <MapPin className="w-8 h-8 text-blue-600" />
-               </div>
-               <div>
-                 <div className="font-black text-slate-900 text-sm uppercase tracking-widest">Headquarters</div>
-                 <div className="text-sm font-medium text-slate-600 mt-1">Shamli, U.P., India</div>
-               </div>
-             </div>
-          </div>
-          <div className="absolute -top-6 -right-6 w-full h-full bg-blue-600 rounded-2xl z-0 opacity-10"></div>
-        </div>
-      </div>
-
-      <div className="bg-[#0A192F] py-24 px-8 rounded-3xl text-center shadow-2xl shadow-blue-900/20 border border-slate-800 flex flex-col items-center">
-        <h2 className="text-3xl md:text-4xl font-black text-white mb-6 tracking-tight">Industries We Serve</h2>
-        <div className="w-16 h-1.5 bg-blue-500 mb-12 rounded-full"></div>
-        <div className="flex flex-wrap justify-center gap-4 max-w-4xl">
-          {['Power Generation', 'Sugar & Distilleries', 'Cement Plants', 'Paper & Pulp', 'Petrochemicals', 'Fertilizers', 'Steel', 'Nuclear', 'Oil & Gas'].map((industry, i) => (
-            <span key={i} className="px-6 py-3 bg-white/5 text-slate-200 border border-white/10 rounded-lg font-bold text-base hover:bg-blue-600 hover:text-white hover:border-blue-500 transition-all cursor-default shadow-sm backdrop-blur-sm">
-              {industry}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  </main>
-);
-
 const ContactPage = () => {
-  const [formState, setFormState] = useState({ status: 'idle', message: '' });
+  const [formState, setFormState] = useState({ status: 'idle', message: '', rfqBody: '' });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormState({ status: 'loading', message: '' });
+    setFormState({ ...formState, status: 'loading', message: '' });
     setTimeout(() => {
-      setFormState({ status: 'success', message: 'Technical Inquiry sent successfully. Our engineers will contact you shortly.' });
+      setFormState({ status: 'success', message: 'Technical Inquiry sent successfully. Our engineers will contact you shortly.', rfqBody: '' });
       e.target.reset();
     }, 1500);
   };
 
   return (
     <main className="pt-24 pb-20 bg-slate-50 min-h-screen animate-in fade-in duration-500">
+      <SEOHead title="Contact Engineering Team" description="Send RFQs or request a technical quote for turbine engineering and spares." />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">Contact Engineering</h1>
-          <div className="w-20 h-1.5 bg-blue-600 mb-6 rounded-full"></div>
-          <p className="text-slate-600 font-medium text-xl leading-relaxed">Send your technical RFQs, manufacturing drawings, or tender documents. Our engineering team provides rapid, precise responses for all industrial requirements.</p>
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight drop-shadow-sm">Contact Engineering</h1>
+          <div className="w-24 h-1.5 bg-blue-600 mb-6 rounded-full shadow-md"></div>
+          <p className="text-lg font-medium text-slate-500 max-w-2xl">
+            Reach out to our engineering and procurement team for technical specifications, reverse engineering quotes, or emergency overhauling support.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white p-8 border border-slate-200 rounded-2xl shadow-sm flex items-start space-x-5 hover:shadow-md transition-shadow">
-              <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
+            <div className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
+              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100">
                 <Phone className="w-7 h-7 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Direct Lines</h3>
-                <p className="text-slate-600 font-bold text-base hover:text-blue-600 cursor-pointer mb-1 transition-colors">{CONTACT_INFO.phones[0]}</p>
-                <p className="text-slate-600 font-bold text-base hover:text-blue-600 cursor-pointer transition-colors">{CONTACT_INFO.phones[1]}</p>
+                <h3 className="font-black text-slate-900 text-lg mb-2">Direct Lines</h3>
+                <p className="text-slate-600 font-bold text-base">{CONTACT_INFO.phones[0]}</p>
+                <p className="text-slate-600 font-bold text-base">{CONTACT_INFO.phones[1]}</p>
               </div>
             </div>
             
-            <div className="bg-white p-8 border border-slate-200 rounded-2xl shadow-sm flex items-start space-x-5 hover:shadow-md transition-shadow">
-              <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
+            <div className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
+              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100">
                 <Mail className="w-7 h-7 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Email (RFQs)</h3>
-                <a href={`mailto:${CONTACT_INFO.email}`} className="text-slate-600 font-bold text-base hover:text-blue-600 block mb-1 transition-colors">{CONTACT_INFO.email}</a>
-                <a href={`mailto:${CONTACT_INFO.secondaryEmail}`} className="text-slate-600 font-bold text-base hover:text-blue-600 block transition-colors">{CONTACT_INFO.secondaryEmail}</a>
+                <h3 className="font-black text-slate-900 text-lg mb-2">Email (RFQs)</h3>
+                <a href={`mailto:${CONTACT_INFO.email}`} className="text-slate-600 font-bold text-base hover:text-blue-600 block">{CONTACT_INFO.email}</a>
+                <a href={`mailto:${CONTACT_INFO.marketingEmail}`} className="text-slate-600 font-bold text-base hover:text-blue-600 block">{CONTACT_INFO.marketingEmail}</a>
+              </div>
+            </div>
+            
+            <div className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
+              <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100">
+                <MapPin className="w-7 h-7 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-black text-slate-900 text-lg mb-2">Facility</h3>
+                <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-              <div className="p-8 pb-6">
-                <div className="flex items-start space-x-5 mb-4">
-                  <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
-                    <MapPin className="w-7 h-7 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-black text-slate-900 text-lg mb-2 tracking-tight">Facility Location</h3>
-                    <p className="text-slate-600 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</p>
-                  </div>
-                </div>
+            <a href={CONTACT_INFO.indiamart} target="_blank" rel="noreferrer" className="bg-slate-900 p-8 border border-slate-800 rounded-3xl shadow-lg flex items-start space-x-5 hover:border-blue-500 transition-colors group block w-full">
+              <div className="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center shrink-0 border border-slate-700 group-hover:border-blue-500/50 transition-colors">
+                <CheckCircle2 className="w-7 h-7 text-green-400" />
               </div>
-              
-              <div className="w-full h-48 bg-slate-100 border-t border-slate-200 relative flex flex-col items-center justify-center p-6 text-center">
-                <MapPin className="w-10 h-10 text-slate-300 mb-3" />
-                <h4 className="text-slate-500 font-black text-lg tracking-tight">Shamli, Uttar Pradesh</h4>
+              <div>
+                <h3 className="font-black text-white text-lg mb-1 tracking-wide">IndiaMART Verified</h3>
+                <p className="text-yellow-400 font-bold text-sm mb-1.5 tracking-widest">★★★★★ <span className="text-slate-300 ml-1 tracking-normal">4.3/5 Rating</span></p>
+                <p className="text-blue-400 font-black text-xs uppercase tracking-widest">TrustSeal Supplier</p>
               </div>
-
-              <div className="p-4 bg-white border-t border-slate-100">
-                <a 
-                  href={CONTACT_INFO.gmapsShare} 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  className="w-full bg-slate-900 text-white py-4 rounded-lg flex items-center justify-center font-bold hover:bg-blue-600 transition-colors text-sm shadow-sm"
-                >
-                  <Navigation className="w-5 h-5 mr-2" /> Get Google Maps Directions
-                </a>
-              </div>
-            </div>
+            </a>
           </div>
 
           <div className="lg:col-span-2">
-            <form onSubmit={handleSubmit} className="bg-white p-8 md:p-12 border border-slate-200 rounded-2xl shadow-md">
+            <form onSubmit={handleSubmit} className="bg-white p-8 md:p-12 border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/50">
               <div className="flex flex-col mb-8 border-b border-slate-100 pb-6">
                  <h2 className="text-3xl font-black text-slate-900 tracking-tight">Request a Technical Quote</h2>
-                 <div className="w-12 h-1.5 bg-blue-600 mt-4 rounded-full"></div>
               </div>
               
               {formState.status === 'success' && (
-                <div className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 font-bold rounded-xl flex items-center shadow-sm text-lg">
+                <div className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 font-black rounded-xl flex items-center shadow-sm text-lg">
                   <CheckCircle2 className="w-8 h-8 mr-4 text-green-500 shrink-0" />
                   {formState.message}
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Company Name *</label>
-                  <input required type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Enter company name" />
+                  <label className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Company Name *</label>
+                  <input required type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Contact Person *</label>
-                  <input required type="text" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="Your full name" />
+                  <label className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Email Address *</label>
+                  <input required type="email" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Email Address *</label>
-                  <input required type="email" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="name@company.com" />
+                  <label className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Phone Number *</label>
+                  <input required type="tel" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Phone Number *</label>
-                  <input required type="tel" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" placeholder="+91 9149229448" />
+                  <label className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Inquiry Type *</label>
+                  <select required defaultValue="" className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all appearance-none cursor-pointer">
+                    <option value="" disabled>Select an option...</option>
+                    <option value="product">Product RFQ / Specification</option>
+                    <option value="service">Turbine Overhauling Service</option>
+                    <option value="reverse-engineering">Reverse Engineering</option>
+                    <option value="general">General Inquiry</option>
+                  </select>
                 </div>
               </div>
 
               <div className="mb-8">
-                <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Primary Inquiry Category</label>
-                <select className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
-                  <option>Turbine Spares (Carbon Rings, Seals, Bearings)</option>
-                  <option>Filtration (Siemens/Triveni Oil Filters)</option>
-                  <option>Expansion Joints & Bellows</option>
-                  <option>Maintenance & Overhauling Service</option>
-                  <option>Reverse Engineering Inquiry</option>
-                </select>
+                <div className="flex justify-between items-end mb-3">
+                  <label className="block text-xs font-black text-slate-500 uppercase tracking-widest">Requirements / RFQ Details *</label>
+                </div>
+
+                <textarea 
+                  required 
+                  rows="6"
+                  value={formState.rfqBody}
+                  onChange={(e) => setFormState({...formState, rfqBody: e.target.value})}
+                  className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none shadow-inner"
+                  placeholder="Enter your technical specifications or RFQ details here..."
+                ></textarea>
               </div>
 
-              <div className="mb-10">
-                <label className="block text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">Technical Requirements / Scope of Work *</label>
-                <textarea required rows={6} className="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-900 focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none" placeholder="Provide OEM details, part numbers, capacities (e.g. MW or RPM), or paste your RFQ scope here..."></textarea>
+              <div className="mb-10 p-6 bg-slate-50 border-2 border-slate-200 border-dashed rounded-2xl hover:border-blue-400 transition-colors group">
+                <label className="flex items-center text-sm font-black text-slate-700 mb-3 uppercase tracking-widest group-hover:text-blue-600 transition-colors">
+                  <Paperclip className="w-5 h-5 mr-3" /> Attach Technical Drawings (Optional)
+                </label>
+                <input type="file" multiple className="w-full text-slate-700 file:cursor-pointer file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-slate-900 file:text-white hover:file:bg-blue-600 transition-all cursor-pointer outline-none" />
               </div>
 
-              <button 
-                type="submit" 
-                disabled={formState.status === 'loading'}
-                className="w-full bg-blue-600 text-white py-5 rounded-xl font-bold text-lg hover:bg-blue-700 transition-colors flex items-center justify-center disabled:opacity-70 shadow-lg shadow-blue-600/30"
-              >
-                {formState.status === 'loading' ? (
-                  <span className="flex items-center">Transmitting Data <span className="animate-spin ml-3 w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span></span>
-                ) : (
-                  <span className="flex items-center">Submit Technical Inquiry <ArrowRight className="ml-3 w-6 h-6" /></span>
-                )}
+              <button type="submit" disabled={formState.status === 'loading'} className="w-full bg-blue-600 text-white py-5 rounded-xl font-black text-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)]">
+                Submit Technical Inquiry
               </button>
-              <p className="text-sm text-slate-500 font-medium text-center mt-6">By submitting, you agree to our data processing guidelines. Formal NDA available upon request.</p>
             </form>
           </div>
         </div>
+
+        {/* Immersive Google Maps Embed */}
+        <div className="mt-12 bg-white p-4 md:p-6 border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/50">
+          <div className="flex items-center mb-6 px-4 pt-4">
+            <MapPin className="w-6 h-6 text-blue-600 mr-3" />
+            <h3 className="text-2xl font-black text-slate-900 tracking-tight">Our Manufacturing Facility</h3>
+          </div>
+          <div className="w-full h-[400px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 relative">
+             <iframe 
+                title="Keshav Enterprises Location"
+                src="https://maps.google.com/maps?q=Keshav%20Enterprises,%20Shamli,%20Uttar%20Pradesh&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen="" 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"
+             ></iframe>
+          </div>
+        </div>
+
       </div>
     </main>
   );
 };
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState('/');
+  const [currentPath, setCurrentPath] = useState(() => {
+    const hash = window.location.hash.replace('#', '');
+    return hash || '/';
+  });
 
-  // NEW DYNAMIC ROUTING SYSTEM
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.hash.replace('#', '') || '/');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (path) => {
+    window.history.pushState(null, '', '#' + path);
+    setCurrentPath(path);
+  };
+
   const renderPage = () => {
-    // Intercept dynamic product routes (e.g. '/product/prod_f1')
-    if (currentRoute.startsWith('/product/')) {
-      const productId = currentRoute.split('/')[2];
-      const product = PRODUCTS.find(p => p.id === productId);
-      if (product) {
-        return <ProductDetailsPage product={product} setCurrentRoute={setCurrentRoute} />;
-      } else {
-        // Fallback if product not found
-        return <ProductsPage setCurrentRoute={setCurrentRoute} />;
-      }
+    if (currentPath.startsWith('/product/')) {
+      const productId = currentPath.split('/')[2];
+      return <ProductDetailsPage productId={productId} navigate={navigate} />;
     }
-
-    // Standard static routes
-    switch (currentRoute) {
-      case '/': return <HomePage setCurrentRoute={setCurrentRoute} />;
-      case '/services': return <ServicesPage setCurrentRoute={setCurrentRoute} />;
-      case '/products': return <ProductsPage setCurrentRoute={setCurrentRoute} />;
-      case '/about': return <AboutPage setCurrentRoute={setCurrentRoute} />;
+    switch (currentPath) {
+      case '/': return <HomePage navigate={navigate} />;
+      case '/services': return <ServicesPage navigate={navigate} />;
+      case '/products': return <ProductsPage navigate={navigate} />;
       case '/contact': return <ContactPage />;
-      default: return <HomePage setCurrentRoute={setCurrentRoute} />;
+      default: return <HomePage navigate={navigate} />;
     }
   };
 
   return (
     <div className="font-sans min-h-screen flex flex-col bg-[#FFFFFF] selection:bg-blue-600 selection:text-white text-[#111827]">
-      <style>{`
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
-      <Navbar currentRoute={currentRoute} setCurrentRoute={setCurrentRoute} />
-      
-      <div className="flex-1 flex flex-col">
-        {renderPage()}
-      </div>
-
-      <Footer setCurrentRoute={setCurrentRoute} />
+      <style>{`.scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
+      <Navbar currentPath={currentPath} navigate={navigate} />
+      <div className="flex-1 flex flex-col">{renderPage()}</div>
+      <Footer navigate={navigate} />
       <WhatsAppFab />
     </div>
   );
