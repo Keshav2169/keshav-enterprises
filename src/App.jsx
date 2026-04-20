@@ -7,7 +7,7 @@ import {
   CheckCircle2, ExternalLink, MessageCircle, Activity, Droplets,
   Search, Layers, Target, Cpu, ArrowLeft, Paperclip,
   Filter, Hexagon, Cog, LifeBuoy, ChevronLeft,
-  Award, Clock, TrendingUp, Users, Globe
+  Award, Clock, TrendingUp, Users, Globe, BookOpen, Tag, Calendar, User
 } from 'lucide-react';
 
 const CONTACT_INFO = {
@@ -20,12 +20,17 @@ const CONTACT_INFO = {
   indiamart: 'https://www.indiamart.com/keshav-enterprises-shamli/',
   gmapsShare: 'https://share.google/uLc4GwsGec5eM62Ep',
   gst: '09BRTPS5029K1ZC',
+  // ── SOCIAL MEDIA ── Update these URLs with your actual profile links
+  linkedin: 'https://www.linkedin.com/in/keshav-enterprises-825a473b8',
+  linkedinHandle: 'Keshav Enterprises',
+  instagram: 'https://www.instagram.com/ksengg007?igsh=b3BrNDRpdHhkMDBm',
+  instagramHandle: '@ksengg007',
 };
 
 // PERF FIX: nav links defined outside component to prevent re-creation on every render
 const NAV_LINKS = [
   { name: 'Home', path: '/' },
-  { name: 'About', path: '/about' },
+  { name: 'Blog', path: '/blog' },
   { name: 'Services', path: '/services' },
   { name: 'Products', path: '/products' },
   { name: 'Industries', path: '/industries' },
@@ -37,28 +42,49 @@ const OEMS = ['Triveni','Siemens','BHEL','Belliss & Morcom','Maxwatt','Man Turbo
 // PERF FIX: icon map instead of JSX in data arrays (prevents React serialization issues)
 const SERVICE_ICONS = { srv_1: Cog, srv_2: Wrench, srv_3: Hexagon, srv_4: Activity, srv_5: Droplets, srv_6: Target };
 
+// IMAGE FILENAMES FOR SERVICES — upload these to your /public folder
+// Each service card will show this as a background image with 90% opacity overlay
+// If image is not uploaded, the existing dot-pattern placeholder shows automatically
 const SERVICES = [
-  { id:'srv_1', title:'Turbine Erection & Commissioning',
+  { id:'srv_1',
+    // Upload a photo of turbine erection/installation work on site
+    image:'service-turbine-erection.webp',
+    title:'Turbine Erection & Commissioning',
     desc:'Expert erection and commissioning for steam turbines, pumps, compressors, fans, condensers, EOT cranes, and steam/water/air pipeline work. Includes complete OEM coordination and documentation.',
     details:['Steam turbines, pumps, compressors, fans, condensers','EOT cranes, steel structure & pipe line work','Construction supervision to OEM specs & applicable standards','Coordination with OEM throughout all phases','Complete documentation for handover to operations','Development & execution of pre-commissioning procedures','Assist with start-up and fine tuning to operational needs'],
     oems:['Triveni','Siemens','BHEL','Belliss India','Maxwatt'] },
-  { id:'srv_2', title:'Turnkey Overhauling & Maintenance',
+  { id:'srv_2',
+    // Upload a photo of turbine overhauling work — disassembled rotor, bearing inspection etc.
+    image:'service-overhauling.webp',
+    title:'Turnkey Overhauling & Maintenance',
     desc:'Executed by ex-OEM engineers from Triveni, Siemens, BHEL, Belliss, and more. Includes pre-shutdown planning, on-site condition reporting, comprehensive spares management, and 24x7 emergency troubleshooting.',
     details:['Pre-shutdown planning with detailed scope of rotating equipment','Onsite inspection of stocked spare parts with shortfall reports','Ex-OEM engineers: Triveni, Belliss, Maxwatt, Man Turbo, BHEL, Siemens, KKK, ABB','All clearances, gaps and sizes measured and recorded','Condition report with recommendations for each component','Turnkey basis: tools, tackles, consumables & manpower provided','24x7 emergency response with engineers at multiple locations'],
     oems:['Triveni','Belliss India','Maxwatt','Man Turbo','BHEL','Siemens','KKK','ABB'] },
-  { id:'srv_3', title:'Precision Reverse Engineering',
+  { id:'srv_3',
+    // Upload a photo of 3D scanning, CMM measurement, or engineering drawings
+    image:'service-reverse-engineering.webp',
+    title:'Precision Reverse Engineering',
     desc:'PMI-verified reverse engineering using 3D laser scanners, CMM, and copying lathes for turbines from 5 kW to 27 MW. Generate full manufacturing drawings with tolerances, concentricity, pre/post heat treatment specs.',
     details:['3D Laser Scanner, CMM & Coordinate Measuring Machine at site/workshop','PMI testing for exact identification of material composition','Copying lathe for precision dimensional replication','Engineering drawings with tolerances, finish, parallelity, concentricity','Pre/post heat treatment specifications included','Rough machining, pre-final and final machining drawings','Covers turbines from 5 kW to 27 MW (Back Pressure or Condensing)','Single/Multi stage, Drive or Power, Horizontal or Vertical'],
     oems:['Triveni','Siemens','BHEL','All Makes'] },
-  { id:'srv_4', title:'Dynamic Balancing & Rotor Machining',
+  { id:'srv_4',
+    // Upload a photo of the dynamic balancing machine or rotor being balanced
+    image:'service-dynamic-balancing.webp',
+    title:'Dynamic Balancing & Rotor Machining',
     desc:'Precision rotor machining (grinding, polishing, journal undersizing) at our workshop lathes, plus ISO/API standard dynamic balancing from 50 to 2000 kg with full compliance reporting.',
     details:['Journal grinding & polishing with minimum undersizing technique','Labyrinth portion machining on precision lathes','Rotor set concentric at all portions before machining','Dynamic balancing 50-2000 kg to ISO/API standards','Balancing machines with latest vibration monitoring systems','Mechanical and electrical run-out identification pre-installation','Comprehensive balancing report documenting ISO/API compliance'],
     oems:['All Turbine Makes'] },
-  { id:'srv_5', title:'Lube Oil Flushing',
+  { id:'srv_5',
+    // Upload a photo of the mobile centrifuge filter system or lube oil flushing rig
+    image:'service-lube-oil-flushing.webp',
+    title:'Lube Oil Flushing',
     desc:'ISO-compliant flushing using purpose-built mobile centrifuge filter systems. Achieves maximum cleanliness and de-watering following construction or during scheduled maintenance.',
     details:['Purpose-built mobile centrifuge filter system','Targets system cleanliness per ISO 4406:99 standards','Oil sampling and reporting undertaken per ISO standards','Effective for post-construction and scheduled maintenance','Superior de-watering and contamination removal','Solid particle removal from 4 to 25 microns','System flow rates handled up to 6,000 l/min'],
     oems:['All Systems'] },
-  { id:'srv_6', title:'Machine Alignment',
+  { id:'srv_6',
+    // Upload a photo of laser alignment equipment on a turbine-generator set
+    image:'service-machine-alignment.webp',
+    title:'Machine Alignment',
     desc:'Expert machine alignment using latest technology to eliminate misalignment, one of the primary causes of equipment failure. Covers turbines, gearboxes, pumps, fans, alternators, and induction generators.',
     details:['Turbine to gearbox & gearbox to mill gearbox alignment','Fan, pump, alternator, induction generator alignment','Machine levelling & pipe strain measurements on any frame size','Fiberizor, shredder alignment','Latest alignment technology for highest standards','Detailed alignment reporting with exact results','Covers any size machine frame in any location'],
     oems:['All Makes'] },
@@ -274,27 +300,45 @@ const PRODUCTS = [
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map(p => p.category))];
 
 const INDUSTRIES = [
-  { id:'ind_1', title:'Power Generation', Icon:Zap, color:'from-yellow-500/20 to-amber-600/10', border:'border-yellow-500/30', accent:'text-yellow-500',
+  { id:'ind_1', title:'Power Generation', Icon:Zap,
+    color:'from-yellow-500/20 to-amber-600/10', border:'border-yellow-500/30', accent:'text-yellow-500',
+    // Upload this image to your /public folder — e.g. a photo of a power plant turbine hall
+    image:'industry-power-generation.webp',
     desc:'Supplying critical overhauling services and OEM-compatible spares to thermal power plants operating steam turbines from 5 MW to 27 MW. Our ex-OEM engineers ensure maximum plant availability.',
     useCases:['Steam turbine major and minor overhauling','Turbine erection and commissioning','Lube oil system flushing per ISO 4406:99','Rotor dynamic balancing and alignment','Emergency stop valve manufacturing','Filter elements and strainers supply'],
     turbines:'5 MW – 27 MW' },
-  { id:'ind_2', title:'Sugar Mills & Distilleries', Icon:Factory, color:'from-green-500/20 to-emerald-600/10', border:'border-green-500/30', accent:'text-green-500',
+  { id:'ind_2', title:'Sugar Mills & Distilleries', Icon:Factory,
+    color:'from-green-500/20 to-emerald-600/10', border:'border-green-500/30', accent:'text-green-500',
+    // Upload a photo of a sugar mill or cane crushing plant
+    image:'industry-sugar-mills.webp',
     desc:"Serving India's sugar industry with specialized back-pressure steam turbine services. Scheduled overhauling during off-season and emergency breakdown support during crushing season.",
     useCases:['Back-pressure turbine overhauling (inter-season)','Triveni and Belliss turbine specialist services','Carbon and graphite gland ring supply','Labyrinth packing manufacturing','Lube oil filtration products supply','Emergency 24x7 breakdown support'],
     turbines:'Triveni, Belliss & Morcom, Maxwatt' },
-  { id:'ind_3', title:'Paper & Pulp Mills', Icon:Layers, color:'from-blue-500/20 to-cyan-600/10', border:'border-blue-500/30', accent:'text-blue-500',
+  { id:'ind_3', title:'Paper & Pulp Mills', Icon:Layers,
+    color:'from-blue-500/20 to-cyan-600/10', border:'border-blue-500/30', accent:'text-blue-500',
+    // Upload a photo of a paper mill or pulp processing facility
+    image:'industry-paper-mills.webp',
     desc:'Paper mills operate steam turbines continuously and require precision maintenance to maintain uptime. We provide planned shutdown overhauling and critical spare components.',
     useCases:['Continuous-operation turbine maintenance planning','Duplex basket strainer supply for process lines','Expansion joint and bellows supply','Turbine spares manufacturing to OEM standards','Machine alignment services','Vibration monitoring equipment supply'],
     turbines:'Siemens, BHEL, Triveni' },
-  { id:'ind_4', title:'Oil & Gas Industries', Icon:Droplets, color:'from-orange-500/20 to-red-600/10', border:'border-orange-500/30', accent:'text-orange-500',
+  { id:'ind_4', title:'Oil & Gas Industries', Icon:Droplets,
+    color:'from-orange-500/20 to-red-600/10', border:'border-orange-500/30', accent:'text-orange-500',
+    // Upload a photo of an oil refinery or gas processing plant
+    image:'industry-oil-gas.webp',
     desc:'Oil and gas facilities demand the highest standards of precision engineering for turbine-driven compressors and pumps. Our API-compliant products meet the stringent requirements of upstream and downstream facilities.',
     useCases:['API 614-compliant lube oil filter elements','API 670-compliant vibration monitoring probes','PTFE-lined hose assemblies for chemical transfer','High-pressure hydraulic rubber hose assemblies','Babbitt bearing manufacturing for compressor trains','Dynamic balancing per ISO 1940/API 670'],
     turbines:'Siemens, Man Turbo, KKK, ABB' },
-  { id:'ind_5', title:'Petrochemical & Refineries', Icon:Activity, color:'from-purple-500/20 to-violet-600/10', border:'border-purple-500/30', accent:'text-purple-500',
+  { id:'ind_5', title:'Petrochemical & Refineries', Icon:Activity,
+    color:'from-purple-500/20 to-violet-600/10', border:'border-purple-500/30', accent:'text-purple-500',
+    // Upload a photo of a petrochemical complex or refinery at night
+    image:'industry-petrochemical.webp',
     desc:'Petrochemical plants and refineries require specialized metallic expansion joints, high-performance strainers, and precision turbine spares capable of handling aggressive media at elevated temperatures.',
     useCases:['Metallic bellows expansion joints (DN 15-12,000)','High-temperature PTFE filter and hose products','ASME-code strainers for process pipelines','Inconel and Hastelloy expansion bellows','Turbine steam path component manufacturing','High-pressure control valve manufacturing'],
     turbines:'All major makes' },
-  { id:'ind_6', title:'Agro & Food Processing', Icon:Shield, color:'from-teal-500/20 to-cyan-600/10', border:'border-teal-500/30', accent:'text-teal-500',
+  { id:'ind_6', title:'Agro & Food Processing', Icon:Shield,
+    color:'from-teal-500/20 to-cyan-600/10', border:'border-teal-500/30', accent:'text-teal-500',
+    // Upload a photo of an agro-processing or food plant
+    image:'industry-agro-food.webp',
     desc:'Agro-processing industries rely on steam for power generation and process heating. We supply filtration products, rubber components, and turbine maintenance services to keep agro-industrial steam systems running.',
     useCases:['Steam turbine maintenance for agro co-gen plants','FDA-grade PTFE hose for food-grade transfer lines','Rubber expansion joints for pump connections','Anti-vibration mounts for machinery isolation','Tank breather filters for oil storage systems','Y-type strainers for process fluid lines'],
     turbines:'Triveni, Maxwatt, Chola Turbo' },
@@ -595,9 +639,63 @@ const Footer = memo(({navigate}) => (
           </address>
         </div>
       </div>
-      <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p className="text-slate-500 font-medium text-sm">© 2026 KESHAV ENTERPRISES. GST: {CONTACT_INFO.gst}. All rights reserved.</p>
-        <p className="text-slate-600 font-medium text-xs">Shamli, Uttar Pradesh, India — Power · Sugar · Process Industries</p>
+      {/* ── Social Media + Copyright Bar ── */}
+      <div className="border-t border-slate-700/60 pt-10 mb-8">
+        {/* "Follow Us" heading */}
+        <div className="flex flex-col items-center mb-8">
+          <p className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-5">Connect With Us</p>
+          <div className="flex flex-col sm:flex-row items-center gap-5">
+
+            {/* ── LinkedIn Card ── */}
+            <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer"
+              aria-label={`Keshav Enterprises on LinkedIn — ${CONTACT_INFO.linkedinHandle}`}
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#0A66C2]/15 to-[#004182]/10 hover:from-[#0A66C2] hover:to-[#004182] border border-[#0A66C2]/30 hover:border-[#0A66C2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(10,102,194,0.5)] min-w-[220px] overflow-hidden">
+              {/* Shine sweep on hover */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none"/>
+              {/* Logo box */}
+              <div className="w-11 h-11 bg-[#0A66C2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(10,102,194,0.6)] transition-shadow">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+              </div>
+              {/* Text */}
+              <div className="flex flex-col min-w-0">
+                <span className="text-[10px] font-black text-[#4FA3F7] group-hover:text-blue-200 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">LinkedIn</span>
+                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.linkedinHandle}</span>
+                <span className="text-[10px] text-slate-400 group-hover:text-blue-200/70 font-medium transition-colors mt-0.5">View Profile →</span>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true"/>
+            </a>
+
+            {/* ── Instagram Card ── */}
+            <a href={CONTACT_INFO.instagram} target="_blank" rel="noopener noreferrer"
+              aria-label={`Keshav Enterprises on Instagram — ${CONTACT_INFO.instagramHandle}`}
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#E1306C]/15 via-[#833ab4]/10 to-[#fcb045]/10 hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] border border-[#E1306C]/30 hover:border-transparent px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(225,48,108,0.45)] min-w-[220px] overflow-hidden">
+              {/* Shine sweep */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none"/>
+              {/* Logo box — Instagram gradient */}
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-lg flex-shrink-0 bg-gradient-to-br from-[#833ab4] via-[#fd1d1d] to-[#fcb045] group-hover:shadow-[0_0_15px_rgba(225,48,108,0.6)] transition-shadow">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+              </div>
+              {/* Text */}
+              <div className="flex flex-col min-w-0">
+                <span className="text-[10px] font-black text-[#f472b6] group-hover:text-pink-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Instagram</span>
+                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.instagramHandle}</span>
+                <span className="text-[10px] text-slate-400 group-hover:text-pink-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true"/>
+            </a>
+
+          </div>
+        </div>
+
+        {/* Copyright row */}
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-6 border-t border-slate-800/60">
+          <p className="text-slate-500 font-medium text-sm">© 2026 KESHAV ENTERPRISES. GST: {CONTACT_INFO.gst}. All rights reserved.</p>
+          <p className="text-slate-600 font-medium text-xs">Shamli, Uttar Pradesh, India — Power · Sugar · Process Industries</p>
+        </div>
       </div>
     </div>
   </footer>
@@ -992,95 +1090,329 @@ const HomePage = ({navigate}) => {
 };
 
 // ─── ABOUT PAGE ───────────────────────────────────────────────
-const AboutPage = ({navigate}) => (
-  <main id="main-content" className="pt-24 pb-20 bg-white">
-    <SEOHead title="About Keshav Enterprises | 20+ Years Turbine Engineering"
-      description="Keshav Enterprises — Shamli, UP. 20+ years delivering precision turbine engineering, overhauling, reverse engineering, and OEM-compatible spares to India's power and process industries."/>
+
+// ─── BLOG DATA (edit this array to update blog posts) ─────────
+// HOW TO UPDATE BLOGS:
+// 1. Add a new object to this BLOG_POSTS array following the same structure
+// 2. Set a unique id (e.g. 'post_4'), slug (url-friendly, e.g. 'my-new-post')
+// 3. Fill in title, excerpt, content (supports paragraphs as array), tags, date, author
+// 4. Save the file and redeploy — the new post appears automatically on /blog
+const BLOG_POSTS = [
+  {
+    id: 'post_1',
+    slug: 'steam-turbine-overhauling-checklist',
+    title: 'The Complete Steam Turbine Overhauling Checklist for Plant Engineers',
+    excerpt: 'A practical, step-by-step checklist covering pre-shutdown planning, inspection protocols, clearance recording, and post-overhaul commissioning for steam turbines up to 27 MW.',
+    date: '2026-03-15',
+    author: 'Keshav Enterprises Engineering Team',
+    readTime: '8 min read',
+    tags: ['Overhauling', 'Steam Turbines', 'Maintenance'],
+    coverImage: 'blog-turbine-overhaul.webp',
+    content: [
+      { type: 'h2', text: 'Why a Structured Checklist Matters' },
+      { type: 'p', text: 'Unplanned turbine shutdowns cost Indian power and sugar plants lakhs of rupees per hour. A structured overhauling checklist ensures nothing is missed during planned maintenance windows — reducing the risk of early failure after recommissioning and avoiding costly repeat shutdowns.' },
+      { type: 'h2', text: '1. Pre-Shutdown Planning (4–6 Weeks Before)' },
+      { type: 'p', text: 'Begin with a detailed scope of work covering all rotating equipment in the train. Inspect all stocked spare parts and generate a shortfall report. Order critical items — bearings, seals, labyrinth packings, carbon rings — with adequate lead time. Arrange for specialized tools: alignment laser, vibration analyser, dial indicators, and feeler gauges.' },
+      { type: 'list', items: ['Confirm OEM clearance data for all turbine stages', 'Arrange lube oil flushing equipment (mobile centrifuge filter unit)', 'Book ex-OEM engineers if required for major overhaul', 'Prepare condition monitoring baseline readings (vibration, temperature, pressure)'] },
+      { type: 'h2', text: '2. Shutdown & Isolation' },
+      { type: 'p', text: 'Follow the OEM-specified shutdown procedure. Allow adequate cool-down time before breaking any flanges. Lock out / tag out all energy sources including steam, lube oil, condensate, and control air. Drain the lube oil system completely before disassembly.' },
+      { type: 'h2', text: '3. Disassembly & Inspection' },
+      { type: 'p', text: 'Record all clearances, gaps, and fits before removing components — these are essential for comparison with OEM specification and for detecting wear trends. Photograph every stage. Measure rotor run-out at journal, thrust collar, and coupling faces.' },
+      { type: 'list', items: ['Bearing clearances (radial and axial)', 'Labyrinth seal diametral clearances', 'Coupling alignment offset and angularity', 'Carbon ring face condition and spring tension', 'Nozzle and diaphragm condition and throat dimensions', 'ESV seat and disc condition'] },
+      { type: 'h2', text: '4. Workshop Repairs & Replacements' },
+      { type: 'p', text: 'Send the rotor for journal grinding and dynamic balancing if run-out or vibration readings were outside tolerance. Replace carbon and graphite gland rings, labyrinth packings, and babbitt bearings as per condition report. All rotor balancing should be performed to ISO 1940 or API 670 standards.' },
+      { type: 'h2', text: '5. Reassembly & Alignment' },
+      { type: 'p', text: 'Reassemble in reverse order with new gaskets and fastener torque per OEM specifications. Perform final rotor alignment using laser alignment equipment — turbine to gearbox and gearbox to generator. Record all clearances post-assembly and confirm they are within OEM tolerance.' },
+      { type: 'h2', text: '6. Lube Oil Flushing' },
+      { type: 'p', text: 'Before commissioning, flush the lube oil system with a mobile centrifuge filter system targeting ISO 4406:99 cleanliness class 16/14/11 or better. Take oil samples before and after flushing and retain reports. Never commission a turbine without completing an oil flush — bearing failures from contaminated oil account for a significant portion of post-overhaul failures.' },
+      { type: 'h2', text: '7. Commissioning & First Run' },
+      { type: 'p', text: 'Follow the OEM pre-commissioning procedure step by step. Monitor vibration, bearing temperatures, and lube oil pressure continuously during the first run-up. Confirm ESV and governor operation. Fine-tune alignment if vibration levels are elevated. Document all commissioning readings for the plant maintenance record.' },
+      { type: 'cta', text: 'Need expert overhauling engineers for your next planned shutdown? Our ex-OEM team covers Triveni, Siemens, BHEL, Belliss & Morcom, and more.' },
+    ],
+  },
+  {
+    id: 'post_2',
+    slug: 'lube-oil-contamination-turbine-bearings',
+    title: 'How Lube Oil Contamination Destroys Turbine Bearings — And How to Prevent It',
+    excerpt: 'Water ingress, solid particles, and oxidation are the three leading causes of premature turbine bearing failure. Here is how to identify each contamination type and what filtration products to use to prevent damage.',
+    date: '2026-02-28',
+    author: 'Keshav Enterprises Engineering Team',
+    readTime: '6 min read',
+    tags: ['Lube Oil', 'Bearings', 'Filtration', 'Preventive Maintenance'],
+    coverImage: 'blog-lube-oil.webp',
+    content: [
+      { type: 'h2', text: 'The Hidden Bearing Killer' },
+      { type: 'p', text: 'Turbine babbitt bearings are precision components operating on a hydrodynamic oil film just a few microns thick. Any contamination of the lube oil system — solid particles, water, or degraded oil — destroys this film, leading to direct metal contact and accelerated wear. Studies show that over 70% of turbine bearing failures are lubrication-related.' },
+      { type: 'h2', text: 'Contamination Type 1: Solid Particles' },
+      { type: 'p', text: 'Particles above 10 microns can scratch bearing surfaces. Particles in the 1–10 micron range are most damaging — they enter the oil film clearance and cause three-body abrasion. Sources include post-construction debris, wear particles from gears, and dirt entering through tank breathers.' },
+      { type: 'p', text: 'Solution: Install high-efficiency lube oil filter elements (ISO 16889, beta-ratio ≥200 at 10 microns) in the main filter housing. Use tank breather filter elements (3 VL glass fibre) to prevent ingestion of airborne particulates. Target system cleanliness: ISO 4406:99 Class 16/14/11 or better for turbine bearings.' },
+      { type: 'h2', text: 'Contamination Type 2: Water Ingress' },
+      { type: 'p', text: 'Water in lube oil causes hydrogen embrittlement of babbitt, promotes oxidation, and supports bacterial growth. Even 200 ppm of free water significantly reduces oil film strength. Sources include steam gland leaks, condensation in the tank, and cooler tube failures.' },
+      { type: 'p', text: 'Solution: Install WaterSorp offline filter elements in the side-stream return line. These dual-function elements simultaneously remove solid particles and absorb free and emulsified water. Regular oil sampling (monthly) per ISO standards will detect water early.' },
+      { type: 'h2', text: 'Contamination Type 3: Oil Oxidation & Degradation' },
+      { type: 'p', text: 'High operating temperatures and the presence of metal catalysts cause turbine oil to oxidise, forming varnish deposits and acidic by-products. These deposits clog filter elements, stick to bearing surfaces, and accelerate wear.' },
+      { type: 'p', text: 'Solution: Monitor acid number (AN) and viscosity trends. WaterSorp offline filtration extends oil life by removing the water and particles that catalyse oxidation. Plan oil changes before the acid number exceeds OEM limits.' },
+      { type: 'list', items: ['Check filter differential pressure weekly — replace element at 3.5–4 bar ΔP', 'Inspect tank breather filter monthly', 'Conduct oil sampling every 30 days and trend results', 'Install WaterSorp elements if water contamination is detected', 'Flush the system with mobile centrifuge filter after any major repair'] },
+      { type: 'cta', text: 'We supply ISO 16889-compliant lube oil filter elements compatible with Triveni, Siemens, BHEL, and all major turbine makes. Request a quote via WhatsApp.' },
+    ],
+  },
+  {
+    id: 'post_3',
+    slug: 'reverse-engineering-turbine-spares-india',
+    title: 'Reverse Engineering Turbine Spares: How We Recreate Obsolete Components in India',
+    excerpt: 'When OEM spare parts are unavailable, have 18-month lead times, or are priced prohibitively, reverse engineering offers a reliable alternative. Here is the step-by-step process we use at Keshav Enterprises.',
+    date: '2026-01-20',
+    author: 'Keshav Enterprises Engineering Team',
+    readTime: '7 min read',
+    tags: ['Reverse Engineering', 'Turbine Spares', 'Manufacturing', '3D Scanning'],
+    coverImage: 'blog-reverse-engineering.webp',
+    content: [
+      { type: 'h2', text: 'Why Reverse Engineer Turbine Parts?' },
+      { type: 'p', text: 'Many Indian industrial plants operate turbines that are 20–40 years old. Original equipment manufacturers have discontinued certain models, merged with other companies, or simply stopped stocking spares for older machines. Lead times from overseas OEMs for machined components routinely exceed 12–18 months — unacceptable when a sugar mill has a fixed crushing season or a power plant has a contract penalty for each day offline.' },
+      { type: 'h2', text: 'Step 1: Component Acquisition & Initial Assessment' },
+      { type: 'p', text: 'We start with the worn or broken component itself — or the mating part if the original is beyond measurement. The component is cleaned and visually assessed to determine which surfaces are still measurable and which have been degraded by wear or damage.' },
+      { type: 'h2', text: 'Step 2: 3D Laser Scanning & CMM Measurement' },
+      { type: 'p', text: 'For complex profiles — rotor blades, nozzle blocks, diaphragms, governor components — we use a 3D laser scanner to capture the complete geometry as a point cloud. For simpler rotationally-symmetric parts — journal bearing housings, labyrinth ring grooves, seal rings — a coordinate measuring machine (CMM) captures critical dimensions with micron-level accuracy.' },
+      { type: 'list', items: ['All critical dimensions recorded with tolerances', 'Concentricity and parallelism of mating faces checked', 'Thread forms, keyway depths, and interference fits measured', 'Surface finish specifications noted where measurable'] },
+      { type: 'h2', text: 'Step 3: PMI Material Testing' },
+      { type: 'p', text: 'Positive Material Identification (PMI) using portable X-ray fluorescence (XRF) or optical emission spectrometry identifies the exact alloy composition of the original component. This is critical — a rotor shaft in 12% Cr steel behaves very differently from a 1% Cr-Mo shaft. Getting the material wrong means the reverse-engineered part will fail prematurely.' },
+      { type: 'h2', text: 'Step 4: Engineering Drawing Generation' },
+      { type: 'p', text: 'From the scan data, CMM measurements, and material test results, our engineers generate a complete manufacturing drawing. This includes all dimensions with tolerances, surface finish specifications, pre- and post-heat treatment procedures, material specification, and inspection requirements.' },
+      { type: 'h2', text: 'Step 5: Machining & Quality Control' },
+      { type: 'p', text: 'Machining is performed in three stages: rough machining to near-final dimensions, heat treatment if required (stress relieving, quench and temper, nitriding), and final precision machining. Each stage is inspected against the engineering drawing. Rotors are dynamically balanced to ISO 1940 / API 670 standards before dispatch.' },
+      { type: 'h2', text: 'Turbines We Cover' },
+      { type: 'p', text: 'We have reverse-engineered components for steam turbines from 5 kW to 27 MW across all major makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB. Both back-pressure and condensing turbines, horizontal and vertical, single and multi-stage.' },
+      { type: 'cta', text: 'Have an obsolete spare you need reverse-engineered? Send us a photo and your turbine details on WhatsApp — we will assess feasibility within 24 hours.' },
+    ],
+  },
+];
+
+// ─── BLOG LIST PAGE ────────────────────────────────────────────
+const BlogPage = ({navigate}) => (
+  <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <SEOHead
+      title="Engineering Blog — Turbine Maintenance & Industrial Insights"
+      description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."/>
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true"/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
-        <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">About Keshav Enterprises</h1>
+        <div className="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
+          <BookOpen className="w-8 h-8 text-blue-400" aria-hidden="true"/>
+        </div>
+        <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">Engineering Blog</h1>
         <div className="w-24 h-1.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true"/>
         <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">
-          20+ years of precision engineering excellence serving India's power generation, sugar, paper, and process industries from Shamli, Uttar Pradesh.
+          Technical insights on turbine maintenance, lube oil systems, reverse engineering, and industrial best practices — from our engineering team.
         </p>
       </div>
     </div>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <section className="mb-24" aria-labelledby="about-intro">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 id="about-intro" className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">Who We Are</h2>
-            <div className="w-20 h-1.5 bg-blue-600 mb-8" aria-hidden="true"/>
-            <p className="text-slate-600 font-medium text-lg leading-relaxed mb-6">Keshav Enterprises is a specialized industrial engineering company based in Shamli, Uttar Pradesh, India. Established with a mission to deliver precision turbine engineering services and OEM-compatible industrial components, we have served India's most demanding industrial sectors for over two decades.</p>
-            <p className="text-slate-600 font-medium text-lg leading-relaxed mb-6">Our team comprises ex-OEM engineers from Triveni, Siemens, BHEL, Belliss &amp; Morcom, Man Turbo, KKK, and ABB — engineers with deep hands-on experience with the specific machines they service. This OEM-level expertise, combined with state-of-the-art reverse engineering tools (3D laser scanners, CMM, PMI testing), makes Keshav Enterprises the preferred maintenance partner for hundreds of industrial plants across India.</p>
-            <p className="text-slate-600 font-medium text-lg leading-relaxed">We are a <strong className="text-slate-900">Make in India</strong> company and <strong className="text-slate-900">IndiaMART TrustSeal Verified</strong> supplier with a 4.3/5 customer rating.</p>
-          </div>
-          <div className="grid grid-cols-2 gap-6">
-            {[{Icon:Clock,stat:'20+',label:'Years Experience',color:'bg-blue-50 border-blue-200'},
-              {Icon:Settings,stat:'10+',label:'OEM Brands',color:'bg-green-50 border-green-200'},
-              {Icon:TrendingUp,stat:'27 MW',label:'Max Capacity',color:'bg-orange-50 border-orange-200'},
-              {Icon:Award,stat:'4.3 ★',label:'IndiaMART Rating',color:'bg-yellow-50 border-yellow-200'},
-            ].map(({Icon,stat,label,color},i)=>(
-              <div key={i} className={`${color} border rounded-2xl p-8 text-center`}>
-                <Icon className="w-8 h-8 text-blue-600 mx-auto mb-4" aria-hidden="true"/>
-                <div className="text-3xl font-black text-slate-900 tracking-tight mb-2">{stat}</div>
-                <div className="text-sm font-bold text-slate-600 uppercase tracking-wider">{label}</div>
+      {/* Featured post */}
+      {BLOG_POSTS.length > 0 && (
+        <div className="mb-16 group cursor-pointer" onClick={() => navigate(`/blog/${BLOG_POSTS[0].slug}`)}>
+          <article className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:border-blue-300 transition-all duration-300">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="h-72 lg:h-auto bg-slate-100 flex items-center justify-center relative overflow-hidden">
+                <img src={BLOG_POSTS[0].coverImage} alt={BLOG_POSTS[0].title} loading="eager" width="600" height="400"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  onError={e=>{e.target.style.display='none';}}/>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
+                  <BookOpen className="w-24 h-24 text-white/20" aria-hidden="true"/>
+                </div>
+                <span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-black px-3 py-1.5 uppercase tracking-widest rounded-full shadow-lg">Featured</span>
               </div>
+              <div className="p-10 lg:p-12 flex flex-col justify-center">
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {BLOG_POSTS[0].tags.map(tag=>(
+                    <span key={tag} className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">{tag}</span>
+                  ))}
+                </div>
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-tight tracking-tight group-hover:text-blue-600 transition-colors">
+                  <a href={`#/blog/${BLOG_POSTS[0].slug}`} onClick={e=>{e.stopPropagation();e.preventDefault();navigate(`/blog/${BLOG_POSTS[0].slug}`);}} className="focus:outline-none focus-visible:underline">
+                    {BLOG_POSTS[0].title}
+                  </a>
+                </h2>
+                <p className="text-slate-600 font-medium text-lg leading-relaxed mb-8">{BLOG_POSTS[0].excerpt}</p>
+                <div className="flex items-center gap-6 text-sm text-slate-500 font-medium mb-8 flex-wrap">
+                  <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-blue-500" aria-hidden="true"/>{new Date(BLOG_POSTS[0].date).toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'})}</span>
+                  <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" aria-hidden="true"/>{BLOG_POSTS[0].readTime}</span>
+                </div>
+                <button onClick={()=>navigate(`/blog/${BLOG_POSTS[0].slug}`)}
+                  className="self-start bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
+                  Read Article <ArrowRight className="w-5 h-5" aria-hidden="true"/>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      )}
+      {/* Remaining posts grid */}
+      {BLOG_POSTS.length > 1 && (
+        <div>
+          <h2 className="text-2xl font-black text-slate-900 mb-8 tracking-tight">More Articles</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {BLOG_POSTS.slice(1).map(post=>(
+              <article key={post.id} onClick={()=>navigate(`/blog/${post.slug}`)}
+                className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group cursor-pointer flex flex-col">
+                <div className="h-52 bg-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+                  <img src={post.coverImage} alt={post.title} loading="lazy" width="400" height="208"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onError={e=>{e.target.style.display='none';}}/>
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
+                    <BookOpen className="w-16 h-16 text-white/20" aria-hidden="true"/>
+                  </div>
+                </div>
+                <div className="p-7 flex flex-col flex-1">
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {post.tags.slice(0,2).map(tag=>(
+                      <span key={tag} className="bg-slate-100 text-slate-600 text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">{tag}</span>
+                    ))}
+                  </div>
+                  <h3 className="text-xl font-black text-slate-900 mb-3 leading-tight tracking-tight group-hover:text-blue-600 transition-colors">
+                    <a href={`#/blog/${post.slug}`} onClick={e=>{e.stopPropagation();e.preventDefault();navigate(`/blog/${post.slug}`);}} className="focus:outline-none focus-visible:underline">{post.title}</a>
+                  </h3>
+                  <p className="text-slate-600 font-medium text-sm leading-relaxed mb-5 line-clamp-3">{post.excerpt}</p>
+                  <div className="flex items-center justify-between mt-auto pt-5 border-t border-slate-100">
+                    <div className="flex items-center gap-4 text-xs text-slate-500 font-medium flex-wrap">
+                      <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5 text-blue-400" aria-hidden="true"/>{new Date(post.date).toLocaleDateString('en-IN',{month:'short',day:'numeric',year:'numeric'})}</span>
+                      <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-blue-400" aria-hidden="true"/>{post.readTime}</span>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shadow-sm">
+                      <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" aria-hidden="true"/>
+                    </div>
+                  </div>
+                </div>
+              </article>
             ))}
           </div>
         </div>
-      </section>
-      <section className="mb-24 bg-slate-900 rounded-3xl p-12 md:p-16" aria-labelledby="mission-heading">
-        <h2 id="mission-heading" className="text-4xl font-black text-white tracking-tight mb-6 text-center">Our Mission</h2>
-        <div className="w-20 h-1.5 bg-blue-500 mb-12 mx-auto" aria-hidden="true"/>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[{Icon:Target,title:'Maximum Uptime',desc:'To minimize unplanned downtime for our clients by providing rapid, precise turbine maintenance and a reliable supply of OEM-compatible spares — when and where they need them.'},
-            {Icon:Shield,title:'OEM-Level Precision',desc:'To reverse-engineer and manufacture turbine components to exact OEM dimensional and material standards, ensuring drop-in compatibility and reliable long-term performance.'},
-            {Icon:Globe,title:'Make in India',desc:"To contribute to India's industrial self-reliance by providing locally-manufactured, globally-competitive turbine spares and engineering services, reducing dependence on expensive overseas OEM sources."},
-          ].map(({Icon,title,desc},i)=>(
-            <div key={i} className="text-center">
-              <div className="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Icon className="w-8 h-8 text-blue-400" aria-hidden="true"/>
-              </div>
-              <h3 className="text-xl font-black text-white mb-4 tracking-tight">{title}</h3>
-              <p className="text-slate-400 font-medium text-sm leading-relaxed">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-      <section className="mb-24" aria-labelledby="why-heading">
-        <h2 id="why-heading" className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6 text-center">Why Choose Keshav Enterprises?</h2>
-        <div className="w-24 h-1.5 bg-blue-600 mb-12 mx-auto" aria-hidden="true"/>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[{Icon:Award,title:'Ex-OEM Engineers',desc:'Our team includes engineers with direct OEM experience from Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK, and ABB — providing genuine OEM-level insight on every job.'},
-            {Icon:Settings,title:'3D Reverse Engineering',desc:'We use 3D laser scanners, CMM measurement, and PMI material testing to reverse-engineer obsolete or unavailable components to exact OEM standards.'},
-            {Icon:Zap,title:'24x7 Emergency Response',desc:'Engineers stationed at multiple locations ensure rapid response to emergency turbine breakdowns — minimizing costly production stoppages.'},
-            {Icon:Shield,title:'ISO/API Compliance',desc:'All manufactured components and services comply with relevant ISO, API, ASME, and EN standards, providing traceable quality documentation.'},
-            {Icon:TrendingUp,title:'Reduced Lead Times',desc:'Our in-house manufacturing capability dramatically reduces delivery lead times versus ordering directly from overseas OEM sources.'},
-            {Icon:Globe,title:'Complete Lifecycle Support',desc:'From turbine erection and commissioning through to end-of-life reverse engineering and rotor replacement — a complete lifecycle engineering partner.'},
-          ].map(({Icon,title,desc},i)=>(
-            <div key={i} className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group">
-              <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                <Icon className="w-7 h-7 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true"/>
-              </div>
-              <h3 className="text-lg font-black text-slate-900 mb-3 tracking-tight">{title}</h3>
-              <p className="text-slate-600 font-medium text-sm leading-relaxed">{desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-      <section className="bg-blue-600 rounded-3xl p-12 text-center" aria-labelledby="about-cta">
-        <h2 id="about-cta" className="text-3xl md:text-4xl font-black text-white tracking-tight mb-6">Partner With Our Engineering Team</h2>
-        <p className="text-blue-100 font-medium text-lg max-w-2xl mx-auto mb-8">Contact us to discuss your turbine maintenance requirements or request a technical quote.</p>
-        <div className="flex flex-col sm:flex-row gap-5 justify-center">
-          <button onClick={()=>navigate('/contact')} className="bg-white text-blue-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-50 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white">Contact Engineering Team</button>
-          <button onClick={()=>navigate('/services')} className="bg-white/10 border border-white/30 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-white/20 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white">View Our Services</button>
-        </div>
-      </section>
+      )}
+      {/* CTA */}
+      <div className="mt-20 bg-slate-900 rounded-3xl p-12 text-center">
+        <h2 className="text-3xl font-black text-white tracking-tight mb-4">Have a Technical Question?</h2>
+        <p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto mb-8">Our engineering team is available 24x7. Reach us on WhatsApp for immediate technical assistance or project quotes.</p>
+        <a href={waMsg('Hi KESHAV ENTERPRISES, I read your blog and have a technical question.')} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
+          <MessageCircle className="w-6 h-6" aria-hidden="true"/> Ask Our Engineers
+        </a>
+      </div>
     </div>
   </main>
 );
+
+// ─── BLOG POST PAGE ────────────────────────────────────────────
+const BlogPostPage = ({slug, navigate}) => {
+  const post = useMemo(()=>BLOG_POSTS.find(p=>p.slug===slug),[slug]);
+  const others = useMemo(()=>post?BLOG_POSTS.filter(p=>p.id!==post.id).slice(0,2):[],[post]);
+  useEffect(()=>{window.scrollTo({top:0,behavior:'smooth'});},[slug]);
+  if(!post) return (
+    <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
+      <SEOHead title="Post Not Found"/>
+      <div>
+        <BookOpen className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true"/>
+        <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Post Not Found</h1>
+        <button onClick={()=>navigate('/blog')} className="text-blue-600 font-bold hover:underline text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">Back to Blog</button>
+      </div>
+    </main>
+  );
+  const renderBlock = (block, i) => {
+    switch(block.type) {
+      case 'h2': return <h2 key={i} className="text-2xl md:text-3xl font-black text-slate-900 mt-12 mb-5 tracking-tight">{block.text}</h2>;
+      case 'p': return <p key={i} className="text-slate-700 font-medium text-lg leading-relaxed mb-6">{block.text}</p>;
+      case 'list': return (
+        <ul key={i} className="mb-8 space-y-3">
+          {block.items.map((item,j)=>(
+            <li key={j} className="flex items-start gap-3 text-slate-700 font-medium text-base leading-relaxed">
+              <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" aria-hidden="true"/>{item}
+            </li>
+          ))}
+        </ul>
+      );
+      case 'cta': return (
+        <div key={i} className="my-10 bg-blue-600 rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6">
+          <p className="text-white font-bold text-lg leading-relaxed flex-1">{block.text}</p>
+          <a href={waMsg(`Hi KESHAV ENTERPRISES, I read your article "${post.title}" and would like to know more.`)} target="_blank" rel="noopener noreferrer"
+            className="shrink-0 bg-white text-blue-600 px-8 py-4 rounded-xl font-black hover:bg-blue-50 transition-all flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+            <MessageCircle className="w-5 h-5" aria-hidden="true"/>WhatsApp Us
+          </a>
+        </div>
+      );
+      default: return null;
+    }
+  };
+  return (
+    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+      <SEOHead title={post.title} description={post.excerpt}/>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav aria-label="Breadcrumb" className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2 pt-4">
+          <button onClick={()=>navigate('/blog')} className="hover:text-blue-600 transition-colors flex items-center focus:outline-none focus-visible:underline">
+            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true"/>Blog
+          </button>
+          <span aria-hidden="true" className="mx-1">/</span>
+          <span className="text-slate-800 truncate max-w-[250px] md:max-w-full normal-case" aria-current="page">{post.title}</span>
+        </nav>
+        {/* Hero */}
+        <div className="h-72 md:h-96 bg-slate-900 rounded-3xl overflow-hidden mb-10 flex items-center justify-center relative">
+          <img src={post.coverImage} alt={post.title} loading="eager" width="896" height="384"
+            className="w-full h-full object-cover opacity-60"
+            onError={e=>{e.target.style.display='none';}}/>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"/>
+          <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+            <div className="flex flex-wrap gap-2 mb-4">
+              {post.tags.map(tag=>(
+                <span key={tag} className="bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">{tag}</span>
+              ))}
+            </div>
+            <h1 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tight">{post.title}</h1>
+          </div>
+        </div>
+        {/* Meta */}
+        <div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 font-medium mb-10 pb-10 border-b border-slate-200">
+          <span className="flex items-center gap-2"><User className="w-4 h-4 text-blue-500" aria-hidden="true"/>{post.author}</span>
+          <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-blue-500" aria-hidden="true"/>{new Date(post.date).toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'})}</span>
+          <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-500" aria-hidden="true"/>{post.readTime}</span>
+        </div>
+        {/* Content */}
+        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 mb-12">
+          {post.content.map((block,i)=>renderBlock(block,i))}
+        </div>
+        {/* Share */}
+        <div className="bg-slate-900 rounded-2xl p-8 mb-12 flex flex-col sm:flex-row items-center gap-6">
+          <div className="flex-1">
+            <h3 className="text-xl font-black text-white mb-2">Found this article useful?</h3>
+            <p className="text-slate-400 font-medium text-sm">Share with your maintenance team or contact us for a technical consultation.</p>
+          </div>
+          <a href={waMsg(`Hi KESHAV ENTERPRISES, I read "${post.title}" on your website and would like to discuss.`)} target="_blank" rel="noopener noreferrer"
+            className="shrink-0 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
+            <MessageCircle className="w-5 h-5" aria-hidden="true"/>Discuss on WhatsApp
+          </a>
+        </div>
+        {/* Related posts */}
+        {others.length>0 && (
+          <section aria-labelledby="related-posts-heading">
+            <h2 id="related-posts-heading" className="text-2xl font-black text-slate-900 mb-6 tracking-tight">More Articles</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {others.map(op=>(
+                <article key={op.id} onClick={()=>navigate(`/blog/${op.slug}`)}
+                  className="bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all group cursor-pointer">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {op.tags.slice(0,2).map(t=><span key={t} className="bg-slate-100 text-slate-600 text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">{t}</span>)}
+                  </div>
+                  <h3 className="text-lg font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors">
+                    <a href={`#/blog/${op.slug}`} onClick={e=>{e.stopPropagation();e.preventDefault();navigate(`/blog/${op.slug}`);}} className="focus:outline-none focus-visible:underline">{op.title}</a>
+                  </h3>
+                  <p className="text-slate-500 font-medium text-sm leading-relaxed line-clamp-2 mb-4">{op.excerpt}</p>
+                  <span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Article <ArrowRight className="w-4 h-4" aria-hidden="true"/></span>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+    </main>
+  );
+};
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = ({navigate}) => (
@@ -1104,27 +1436,63 @@ const ServicesPage = ({navigate}) => (
           return (
             <div key={service.id} className={`flex flex-col md:flex-row gap-16 items-start group ${index%2!==0?'md:flex-row-reverse':''}`}>
               <div className="md:w-2/5 w-full shrink-0">
-                <div className="w-full aspect-[4/3] bg-slate-50 rounded-3xl border border-slate-200 flex items-center justify-center relative overflow-hidden shadow-xl group-hover:border-blue-200 group-hover:shadow-2xl transition-all duration-500 sticky top-28">
-                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#374151_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true"/>
-                  <div className="w-28 h-28 bg-white rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-700 border border-slate-100">
-                    <Icon className="w-14 h-14 text-blue-600" aria-hidden="true"/>
+                {/* Service image card — sticky while scrolling on desktop */}
+                <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 sticky top-28 relative bg-[#0A192F]">
+
+                  {/* Full-size service photo at full opacity — upload to /public */}
+                  {service.image && (
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                      width="560" height="420"
+                      onError={e=>{e.target.style.display='none';}}
+                    />
+                  )}
+
+                  {/* Dark fallback layer — visible only when no image */}
+                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true"/>
+
+                  {/* Bottom scrim — ensures OEM chips are always readable */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/95 via-[#0A192F]/20 to-transparent z-10"/>
+
+                  {/* Top-left service label badge */}
+                  <div className="absolute top-5 left-5 z-20">
+                    <div className="flex items-center gap-3 bg-[#0A192F]/70 backdrop-blur-md border border-white/10 px-4 py-2.5 rounded-xl shadow-lg">
+                      <div className="w-9 h-9 bg-blue-600/20 rounded-lg flex items-center justify-center border border-blue-500/30 shrink-0">
+                        <Icon className="w-5 h-5 text-blue-400" aria-hidden="true"/>
+                      </div>
+                      <span className="text-white font-black text-xs uppercase tracking-widest leading-tight">{service.title}</span>
+                    </div>
                   </div>
+
+                  {/* Fallback center icon — shows when no image uploaded yet */}
+                  {!service.image && (
+                    <div className="relative z-10 w-full h-full flex items-center justify-center">
+                      <div className="w-28 h-28 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20">
+                        <Icon className="w-14 h-14 text-blue-400" aria-hidden="true"/>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* OEM chips at bottom */}
                   {service.oems && (
-                    <div className="absolute bottom-4 left-4 right-4" aria-label={`OEM expertise: ${service.oems.join(', ')}`}>
-                      <div className="bg-slate-900/80 backdrop-blur-sm rounded-xl p-3">
-                        <p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-2">OEM Expertise</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {service.oems.slice(0,6).map(oem=>(
-                            <span key={oem} className="text-[10px] font-black text-slate-300 bg-slate-700/60 px-2 py-1 rounded uppercase tracking-wide">{oem}</span>
-                          ))}
-                          {service.oems.length>6&&<span className="text-[10px] font-black text-blue-400 bg-blue-900/40 px-2 py-1 rounded uppercase tracking-wide">+{service.oems.length-6} more</span>}
-                        </div>
+                    <div className="absolute bottom-0 left-0 right-0 z-20 p-5" aria-label={`OEM expertise: ${service.oems.join(', ')}`}>
+                      <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">OEM Expertise</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {service.oems.slice(0,6).map(oem=>(
+                          <span key={oem} className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10">{oem}</span>
+                        ))}
+                        {service.oems.length>6&&(
+                          <span className="text-[10px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">+{service.oems.length-6} more</span>
+                        )}
                       </div>
                     </div>
                   )}
                 </div>
               </div>
-              <div className="md:w-3/5 w-full">
+                            <div className="md:w-3/5 w-full">
                 <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-5 flex items-center" aria-hidden="true">
                   <span className="w-10 h-0.5 bg-blue-600 mr-4"/> Service {(index+1).toString().padStart(2,'0')}
                 </div>
@@ -1246,7 +1614,7 @@ const ProductsPage = ({navigate}) => {
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
 const IndustriesPage = ({navigate}) => (
-  <main id="main-content" className="pt-24 pb-20 bg-white">
+  <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical"
       description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, and agro industries with specialized turbine engineering and industrial products."/>
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -1258,42 +1626,91 @@ const IndustriesPage = ({navigate}) => (
       </div>
     </div>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="space-y-16">
+      <div className="space-y-12">
         {INDUSTRIES.map((ind,index)=>{
           const {Icon} = ind;
           return (
-            <article key={ind.id} className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group">
+            <article key={ind.id}
+              className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-300/60 transition-all duration-500 group border border-slate-200 bg-white">
               <div className={`flex flex-col ${index%2!==0?'lg:flex-row-reverse':'lg:flex-row'}`}>
-                <div className={`lg:w-2/5 bg-gradient-to-br ${ind.color} border-b lg:border-b-0 ${index%2!==0?'lg:border-l':'lg:border-r'} ${ind.border} p-12 flex flex-col items-center justify-center`}>
-                  <div className={`w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-xl border ${ind.border} mb-6 group-hover:scale-110 transition-transform duration-500`}>
-                    <Icon className={`w-12 h-12 ${ind.accent}`} aria-hidden="true"/>
+
+                {/* ── LEFT PANEL: full background image + overlay infographic ── */}
+                <div className="lg:w-2/5 relative overflow-hidden min-h-[380px] lg:min-h-[440px] flex-shrink-0">
+                  {/* Background photo at opacity 90% — upload image to /public with filename from ind.image */}
+                  {ind.image && (
+                    <img
+                      src={ind.image}
+                      alt=""
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover"
+                      style={{opacity: 0.90}}
+                      loading="lazy"
+                      width="560" height="440"
+                      onError={e=>{e.target.style.display='none';}}
+                    />
+                  )}
+                  {/* Fallback gradient when no image or image fails — always present as base */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${ind.color}`}/>
+                  {/* Dark scrim so white text is readable over any photo */}
+                  <div className="absolute inset-0 bg-[#0A192F]/60"/>
+                  {/* Subtle vignette at edges */}
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(10,25,47,0.5)_100%)]"/>
+
+                  {/* Infographic content — sits fully on top of image+overlays */}
+                  <div className="relative z-10 w-full h-full p-10 flex flex-col items-center justify-center gap-6">
+                    {/* Category icon badge */}
+                    <div className="w-24 h-24 bg-white/15 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/25 shadow-2xl group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500">
+                      <Icon className="w-12 h-12 text-white drop-shadow-lg" aria-hidden="true"/>
+                    </div>
+                    {/* Title */}
+                    <div className="text-center">
+                      <h2 className="text-3xl font-black text-white tracking-tight drop-shadow-lg leading-tight mb-3">{ind.title}</h2>
+                      {/* Accent rule */}
+                      <div className={`h-1 w-16 rounded-full mx-auto mb-4 bg-white/50`}/>
+                      <p className={`text-sm font-black ${ind.accent} bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full uppercase tracking-widest border border-white/10 drop-shadow`}>{ind.turbines}</p>
+                    </div>
+                    {/* Mini use-case pills shown on the image panel */}
+                    <div className="flex flex-wrap justify-center gap-2 max-w-xs">
+                      {ind.useCases.slice(0,3).map((uc,i)=>(
+                        <span key={i} className="text-[10px] font-black text-white/90 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full uppercase tracking-wide">
+                          {uc.split(' ').slice(0,3).join(' ')}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <h2 className="text-2xl font-black text-slate-900 text-center tracking-tight mb-3">{ind.title}</h2>
-                  <div className={`text-sm font-black ${ind.accent} uppercase tracking-widest text-center`}>{ind.turbines}</div>
                 </div>
-                <div className="lg:w-3/5 p-10 lg:p-12">
-                  <p className="text-slate-600 font-medium text-lg leading-relaxed mb-8">{ind.desc}</p>
-                  <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest mb-5">Key Applications & Products</h3>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+
+                {/* ── RIGHT PANEL: description, full use-cases, CTAs ── */}
+                <div className="lg:w-3/5 p-10 lg:p-14 flex flex-col justify-center bg-white">
+                  {/* Section label */}
+                  <div className={`inline-flex items-center gap-2 mb-6`}>
+                    <div className={`w-2 h-2 rounded-full ${ind.accent.replace('text-','bg-')}`}/>
+                    <span className={`text-xs font-black ${ind.accent} uppercase tracking-widest`}>Industry Focus</span>
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-900 tracking-tight mb-5 leading-tight">{ind.title}</h3>
+                  <p className="text-slate-600 font-medium text-base leading-relaxed mb-8 border-l-4 border-slate-200 pl-5">{ind.desc}</p>
+                  <h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-5">Key Applications &amp; Products</h4>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
                     {ind.useCases.map((uc,i)=>(
-                      <li key={i} className="flex items-start">
-                        <CheckCircle2 className={`w-5 h-5 mr-3 shrink-0 mt-0.5 ${ind.accent}`} aria-hidden="true"/>
-                        <span className="text-slate-700 font-medium text-sm leading-relaxed">{uc}</span>
+                      <li key={i} className="flex items-start gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100 hover:border-blue-200 hover:bg-blue-50/40 transition-colors">
+                        <CheckCircle2 className={`w-4 h-4 shrink-0 mt-0.5 ${ind.accent}`} aria-hidden="true"/>
+                        <span className="text-slate-700 font-medium text-sm leading-snug">{uc}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
                     <button onClick={()=>navigate('/contact')} aria-label={`Get a quote for ${ind.title} services`}
-                      className="bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
-                      Get a Quote <ArrowRight className="w-5 h-5" aria-hidden="true"/>
+                      className="flex-1 bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 group/btn">
+                      Get a Quote <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true"/>
                     </button>
                     <a href={waMsg(`Hello KESHAV ENTERPRISES, I need engineering services for my ${ind.title} facility.`)} target="_blank" rel="noopener noreferrer"
                       aria-label={`WhatsApp inquiry for ${ind.title}`}
-                      className="bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
+                      className="flex-1 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
                       <MessageCircle className="w-5 h-5" aria-hidden="true"/> WhatsApp
                     </a>
                   </div>
                 </div>
+
               </div>
             </article>
           );
@@ -1459,9 +1876,11 @@ export default function App() {
   // PERF FIX: useMemo for page rendering
   const page = useMemo(()=>{
     if(currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate}/>;
+    if(currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/','')} navigate={navigate}/>;
     switch(currentPath){
       case '/': return <HomePage navigate={navigate}/>;
-      case '/about': return <AboutPage navigate={navigate}/>;
+      case '/blog': return <BlogPage navigate={navigate}/>;
+      case '/blog/': return <BlogPage navigate={navigate}/>;
       case '/services': return <ServicesPage navigate={navigate}/>;
       case '/products': return <ProductsPage navigate={navigate}/>;
       case '/industries': return <IndustriesPage navigate={navigate}/>;
