@@ -356,16 +356,115 @@ const MARQUEE_CSS = `
 
 // ─── LOCAL BUSINESS JSON-LD SCHEMA ────────────────────────────
 const LOCAL_SCHEMA = {
-  '@context':'https://schema.org','@type':'LocalBusiness',
+  '@context':'https://schema.org',
+  '@type':['LocalBusiness','ProfessionalService'],
   name:'Keshav Enterprises',
-  description:'Industrial turbine engineering, overhauling, reverse engineering, and OEM-compatible spares manufacturer — Shamli, UP, India',
+  alternateName:'Keshav Engg',
+  description:'Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW. Serving power, sugar, paper, oil & gas, and petrochemical industries across India.',
   url:'https://keshaventerprises.in',
+  logo:'https://keshaventerprises.in/keshav-logo.png',
+  image:'https://keshaventerprises.in/og-image.webp',
   telephone:['+919149229448','+916397363268'],
   email:'ksengg007@gmail.com',
-  address:{'@type':'PostalAddress',streetAddress:'Dayanand Nagar Gali No.2, Near Subash Ki Chakki',addressLocality:'Shamli',addressRegion:'Uttar Pradesh',postalCode:'247776',addressCountry:'IN'},
-  geo:{'@type':'GeoCoordinates',latitude:29.4476,longitude:77.3003},
+  currenciesAccepted:'INR',
+  paymentAccepted:'Bank Transfer, Cheque',
+  priceRange:'₹₹₹',
+  address:{
+    '@type':'PostalAddress',
+    streetAddress:'Dayanand Nagar Gali No.2, Near Subash Ki Chakki',
+    addressLocality:'Shamli',
+    addressRegion:'Uttar Pradesh',
+    postalCode:'247776',
+    addressCountry:'IN'
+  },
+  geo:{
+    '@type':'GeoCoordinates',
+    latitude:29.4476,
+    longitude:77.3003
+  },
   openingHours:'Mo-Sa 09:00-18:00',
-  sameAs:['https://www.indiamart.com/keshav-enterprises-shamli/'],
+  openingHoursSpecification:{
+    '@type':'OpeningHoursSpecification',
+    dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+    opens:'09:00',closes:'18:00'
+  },
+  areaServed:[
+    {'@type':'Country','name':'India'},
+    {'@type':'State','name':'Uttar Pradesh'},
+    {'@type':'State','name':'Punjab'},
+    {'@type':'State','name':'Haryana'},
+    {'@type':'State','name':'Maharashtra'}
+  ],
+  hasOfferCatalog:{
+    '@type':'OfferCatalog',
+    name:'Industrial Turbine Engineering Services',
+    itemListElement:[
+      {'@type':'Offer','itemOffered':{'@type':'Service','name':'Turbine Overhauling & Maintenance'}},
+      {'@type':'Offer','itemOffered':{'@type':'Service','name':'Precision Reverse Engineering'}},
+      {'@type':'Offer','itemOffered':{'@type':'Service','name':'Dynamic Balancing & Rotor Machining'}},
+      {'@type':'Offer','itemOffered':{'@type':'Service','name':'Lube Oil Flushing'}},
+      {'@type':'Offer','itemOffered':{'@type':'Service','name':'Machine Alignment'}},
+      {'@type':'Offer','itemOffered':{'@type':'Service','name':'Turbine Erection & Commissioning'}}
+    ]
+  },
+  sameAs:[
+    'https://www.indiamart.com/keshav-enterprises-shamli/',
+    'https://www.linkedin.com/in/keshav-enterprises-825a473b8',
+    'https://www.instagram.com/ksengg007'
+  ],
+  knowsAbout:[
+    'Steam Turbine Maintenance','Turbine Reverse Engineering','Lube Oil Filtration',
+    'Industrial Expansion Joints','Turbine Spares Manufacturing','Dynamic Balancing',
+    'Triveni Turbines','Siemens Turbines','BHEL Turbines','Belliss and Morcom Turbines'
+  ]
+};
+
+// ─── FAQ SCHEMA for Services/Contact pages ───────────────────
+const FAQ_SCHEMA = {
+  '@context':'https://schema.org',
+  '@type':'FAQPage',
+  mainEntity:[
+    {
+      '@type':'Question',
+      name:'What turbine makes does Keshav Enterprises service?',
+      acceptedAnswer:{
+        '@type':'Answer',
+        text:'Keshav Enterprises services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW.'
+      }
+    },
+    {
+      '@type':'Question',
+      name:'Does Keshav Enterprises offer emergency turbine breakdown support?',
+      acceptedAnswer:{
+        '@type':'Answer',
+        text:'Yes. Keshav Enterprises provides 24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India. Contact us on WhatsApp at +91 6397363268 for immediate assistance.'
+      }
+    },
+    {
+      '@type':'Question',
+      name:'What is the power range of turbines Keshav Enterprises can overhaul?',
+      acceptedAnswer:{
+        '@type':'Answer',
+        text:'Keshav Enterprises handles steam turbines from 5 kW to 27 MW — both back-pressure and condensing types, horizontal and vertical, single and multi-stage.'
+      }
+    },
+    {
+      '@type':'Question',
+      name:'Can Keshav Enterprises reverse engineer obsolete turbine parts?',
+      acceptedAnswer:{
+        '@type':'Answer',
+        text:'Yes. Using 3D laser scanners, CMM coordinate measuring machines, and PMI material testing, Keshav Enterprises reverse engineers obsolete turbine components to exact OEM dimensional and material standards.'
+      }
+    },
+    {
+      '@type':'Question',
+      name:'Where is Keshav Enterprises located?',
+      acceptedAnswer:{
+        '@type':'Answer',
+        text:'Keshav Enterprises is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India.'
+      }
+    }
+  ]
 };
 
 // ─── UTILITY ──────────────────────────────────────────────────
@@ -386,27 +485,78 @@ const getCategoryIcon = (category) => {
 };
 
 // ─── SEO HEAD (Accessibility + SEO Fix) ──────────────────────
-const SEOHead = memo(({title, description, schema}) => {
+// ─── SEO HEAD ─────────────────────────────────────────────────
+// SITE_URL: Update this to your live domain once deployed
+const SITE_URL = 'https://keshaventerprises.in';
+const OG_IMAGE  = `${SITE_URL}/og-image.webp`; // Upload a 1200x630 px og-image.webp to /public
+const SITE_KEYWORDS = 'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering';
+
+const SEOHead = memo(({title, description, schema, pageType, canonicalPath, publishedTime}) => {
   useEffect(() => {
-    document.title = title ? `${title} | Keshav Enterprises` : 'Keshav Enterprises | Industrial Turbine Engineering — Shamli, UP';
-    const setMeta = (sel, attr, val, content) => {
-      let t = document.querySelector(sel); if(!t){t=document.createElement('meta');t.setAttribute(attr,val);document.head.appendChild(t);} t.content=content;
+    const fullTitle = title ? `${title} | Keshav Enterprises` : 'Keshav Enterprises | Industrial Turbine Engineering — Shamli, UP';
+    const fullDesc  = description || 'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Enterprises, Shamli, UP, India.';
+    const canonical = canonicalPath ? `${SITE_URL}${canonicalPath}` : SITE_URL;
+
+    document.title = fullTitle;
+
+    const sm = (sel, attr, val, content) => {
+      let t = document.querySelector(sel);
+      if(!t){ t = document.createElement('meta'); t.setAttribute(attr, val); document.head.appendChild(t); }
+      t.content = content;
     };
-    setMeta('meta[name="description"]','name','description', description || 'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Enterprises, Shamli, UP, India.');
-    setMeta('meta[property="og:title"]','property','og:title', title ? `${title} | Keshav Enterprises` : 'Keshav Enterprises | Industrial Turbine Engineering');
-    setMeta('meta[property="og:description"]','property','og:description', description || 'Precision turbine engineering and OEM-compatible industrial spares — Shamli, UP, India.');
-    setMeta('meta[property="og:type"]','property','og:type','website');
-    setMeta('meta[property="og:locale"]','property','og:locale','en_IN');
-    setMeta('meta[name="geo.region"]','name','geo.region','IN-UP');
-    setMeta('meta[name="geo.placename"]','name','geo.placename','Shamli, Uttar Pradesh');
-    setMeta('meta[name="geo.position"]','name','geo.position','29.4476;77.3003');
-    setMeta('meta[name="ICBM"]','name','ICBM','29.4476, 77.3003');
-    if(schema){
-      let ld=document.getElementById('ld-json');
-      if(!ld){ld=document.createElement('script');ld.id='ld-json';ld.type='application/ld+json';document.head.appendChild(ld);}
-      ld.textContent=JSON.stringify(schema);
+    const sl = (rel, href) => {
+      let t = document.querySelector(`link[rel="${rel}"]`);
+      if(!t){ t = document.createElement('link'); t.rel = rel; document.head.appendChild(t); }
+      t.href = href;
+    };
+
+    // ── Core ──
+    sm('meta[name="description"]',      'name','description',    fullDesc);
+    sm('meta[name="keywords"]',         'name','keywords',       SITE_KEYWORDS);
+    sm('meta[name="robots"]',           'name','robots',         'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+    sm('meta[name="author"]',           'name','author',         'Keshav Enterprises');
+    sm('meta[name="theme-color"]',      'name','theme-color',    '#0A192F');
+
+    // ── Canonical ──
+    sl('canonical', canonical);
+
+    // ── Open Graph ──
+    sm('meta[property="og:title"]',       'property','og:title',       fullTitle);
+    sm('meta[property="og:description"]', 'property','og:description', fullDesc);
+    sm('meta[property="og:type"]',        'property','og:type',        pageType === 'article' ? 'article' : 'website');
+    sm('meta[property="og:url"]',         'property','og:url',         canonical);
+    sm('meta[property="og:image"]',       'property','og:image',       OG_IMAGE);
+    sm('meta[property="og:image:width"]', 'property','og:image:width', '1200');
+    sm('meta[property="og:image:height"]','property','og:image:height','630');
+    sm('meta[property="og:image:alt"]',   'property','og:image:alt',   'Keshav Enterprises — Industrial Turbine Engineering, Shamli, UP');
+    sm('meta[property="og:locale"]',      'property','og:locale',      'en_IN');
+    sm('meta[property="og:site_name"]',   'property','og:site_name',   'Keshav Enterprises');
+    if(pageType === 'article' && publishedTime){
+      sm('meta[property="article:published_time"]','property','article:published_time', publishedTime);
+      sm('meta[property="article:author"]','property','article:author', 'Keshav Enterprises Engineering Team');
+      sm('meta[property="article:section"]','property','article:section', 'Industrial Engineering');
     }
-  },[title,description,schema]);
+
+    // ── Twitter Card ──
+    sm('meta[name="twitter:card"]',        'name','twitter:card',        'summary_large_image');
+    sm('meta[name="twitter:title"]',       'name','twitter:title',       fullTitle);
+    sm('meta[name="twitter:description"]', 'name','twitter:description', fullDesc);
+    sm('meta[name="twitter:image"]',       'name','twitter:image',       OG_IMAGE);
+    sm('meta[name="twitter:image:alt"]',   'name','twitter:image:alt',   'Keshav Enterprises — Industrial Turbine Engineering');
+
+    // ── Geo ──
+    sm('meta[name="geo.region"]',    'name','geo.region',    'IN-UP');
+    sm('meta[name="geo.placename"]', 'name','geo.placename', 'Shamli, Uttar Pradesh');
+    sm('meta[name="geo.position"]',  'name','geo.position',  '29.4476;77.3003');
+    sm('meta[name="ICBM"]',          'name','ICBM',          '29.4476, 77.3003');
+
+    // ── JSON-LD ──
+    if(schema){
+      let ld = document.getElementById('ld-json');
+      if(!ld){ ld = document.createElement('script'); ld.id = 'ld-json'; ld.type = 'application/ld+json'; document.head.appendChild(ld); }
+      ld.textContent = JSON.stringify(schema);
+    }
+  }, [title, description, schema, pageType, canonicalPath, publishedTime]);
   return null;
 });
 
@@ -439,7 +589,7 @@ const MakeInIndiaBadge = memo(() => {
       {!e ? <img src="make-in-india.png" alt="Make In India" width="32" height="32" className="h-8 object-contain" onError={()=>sE(true)}/> : <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"><Zap className="w-4 h-4 text-white" aria-hidden="true"/></div>}
       <div className="flex flex-col justify-center border-l border-white/20 pl-3">
         <span className="text-white font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
-        <span className="text-slate-300 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
+        <span className="text-white text-[11px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
       </div>
     </div>
   );
@@ -590,7 +740,7 @@ const Footer = memo(({navigate}) => (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div>
           <div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate}/></div>
-          <p className="text-slate-400 font-medium text-sm leading-relaxed mb-8">20+ years of excellence in industrial turbine engineering, reverse engineering, and precision manufacturing. Delivering reliability to power, sugar, and process industries across India.</p>
+          <p className="text-slate-300 font-medium text-sm leading-relaxed mb-8">20+ years of excellence in industrial turbine engineering, reverse engineering, and precision manufacturing. Delivering reliability to power, sugar, and process industries across India.</p>
           <div className="flex flex-col space-y-4 mt-6"><MakeInIndiaBadge/><IndiaMartBadge/></div>
         </div>
         <nav aria-label="Footer quick links">
@@ -600,7 +750,7 @@ const Footer = memo(({navigate}) => (
             {NAV_LINKS.map(link=>(
               <li key={link.name}>
                 <a href={`#${link.path}`} onClick={e=>{e.preventDefault();navigate(link.path);}}
-                  className="text-slate-400 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm focus:outline-none focus-visible:underline">
+                  className="text-slate-300 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm focus:outline-none focus-visible:underline">
                   <ChevronRight className="w-4 h-4 mr-2 text-blue-500" aria-hidden="true"/> {link.name}
                 </a>
               </li>
@@ -612,7 +762,7 @@ const Footer = memo(({navigate}) => (
           <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true"/>
           <ul className="space-y-4">
             {['Overhauling & Maintenance','Reverse Engineering','Turbine Erection','Spares Manufacturing','Dynamic Balancing','Lube Oil Flushing'].map(s=>(
-              <li key={s} className="text-slate-400 font-medium text-sm flex items-center">
+              <li key={s} className="text-slate-300 font-medium text-sm flex items-center">
                 <ChevronRight className="w-4 h-4 mr-2 text-blue-500 shrink-0" aria-hidden="true"/> {s}
               </li>
             ))}
@@ -623,14 +773,14 @@ const Footer = memo(({navigate}) => (
           <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true"/>
           <address className="not-italic">
             <ul className="space-y-6">
-              <li className="flex items-start"><MapPin className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true"/><span className="text-slate-400 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</span></li>
+              <li className="flex items-start"><MapPin className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true"/><span className="text-slate-300 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</span></li>
               <li className="flex items-start"><Phone className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true"/>
-                <div className="text-slate-400 font-medium text-sm space-y-1">
+                <div className="text-slate-300 font-medium text-sm space-y-1">
                   {CONTACT_INFO.phones.map(p=><div key={p}><a href={`tel:${p.replace(/\s/g,'')}`} className="hover:text-white transition-colors">{p}</a></div>)}
                 </div>
               </li>
               <li className="flex items-start"><Mail className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true"/>
-                <div className="text-slate-400 font-medium text-sm space-y-1">
+                <div className="text-slate-300 font-medium text-sm space-y-1">
                   <div><a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-white transition-colors">{CONTACT_INFO.email}</a></div>
                   <div><a href={`mailto:${CONTACT_INFO.marketingEmail}`} className="hover:text-white transition-colors">{CONTACT_INFO.marketingEmail}</a></div>
                 </div>
@@ -662,7 +812,7 @@ const Footer = memo(({navigate}) => (
               <div className="flex flex-col min-w-0">
                 <span className="text-[10px] font-black text-[#4FA3F7] group-hover:text-blue-200 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">LinkedIn</span>
                 <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.linkedinHandle}</span>
-                <span className="text-[10px] text-slate-400 group-hover:text-blue-200/70 font-medium transition-colors mt-0.5">View Profile →</span>
+                <span className="text-[10px] text-slate-300 group-hover:text-blue-200/70 font-medium transition-colors mt-0.5">View Profile →</span>
               </div>
               <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true"/>
             </a>
@@ -683,7 +833,7 @@ const Footer = memo(({navigate}) => (
               <div className="flex flex-col min-w-0">
                 <span className="text-[10px] font-black text-[#f472b6] group-hover:text-pink-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Instagram</span>
                 <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.instagramHandle}</span>
-                <span className="text-[10px] text-slate-400 group-hover:text-pink-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
+                <span className="text-[10px] text-slate-300 group-hover:text-pink-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
               </div>
               <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true"/>
             </a>
@@ -728,7 +878,34 @@ const ProductDetailPage = ({productId, navigate}) => {
   const product = useMemo(()=>PRODUCTS.find(p=>p.id===productId),[productId]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'smooth'});setActiveImg(0);setImgErr(false);setTab('specs');},[productId]);
   const related = useMemo(()=>product?PRODUCTS.filter(p=>p.category===product.category&&p.id!==product.id).slice(0,3):[],[product]);
-  const productSchema = useMemo(()=>product?{'@context':'https://schema.org','@type':'Product',name:product.title,description:product.desc,category:product.category,brand:{'@type':'Brand',name:'Keshav Enterprises'},offers:{'@type':'Offer',availability:'https://schema.org/InStock',seller:{'@type':'Organization',name:'Keshav Enterprises'},priceCurrency:'INR'}}:null,[product]);
+  const productSchema = useMemo(()=>product?{
+    '@context':'https://schema.org',
+    '@graph':[
+      {
+        '@type':'Product',
+        name:product.title,
+        description:product.desc,
+        category:product.category,
+        brand:{'@type':'Brand',name:'Keshav Enterprises'},
+        offers:{
+          '@type':'Offer',
+          availability:'https://schema.org/InStock',
+          seller:{'@type':'Organization',name:'Keshav Enterprises'},
+          priceCurrency:'INR',
+          priceSpecification:{'@type':'PriceSpecification',priceCurrency:'INR'}
+        },
+        manufacturer:{'@type':'Organization',name:'Keshav Enterprises',url:'https://keshaventerprises.in'}
+      },
+      {
+        '@type':'BreadcrumbList',
+        itemListElement:[
+          {'@type':'ListItem',position:1,name:'Products',item:'https://keshaventerprises.in/#/products'},
+          {'@type':'ListItem',position:2,name:product.category},
+          {'@type':'ListItem',position:3,name:product.title,item:`https://keshaventerprises.in/#/product/${product.id}`}
+        ]
+      }
+    ]
+  }:null,[product]);
   if(!product) return (
     <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Product Not Found"/>
@@ -741,7 +918,7 @@ const ProductDetailPage = ({productId, navigate}) => {
   const activeImage = product.images?.[activeImg];
   return (
     <main id="main-content" className="pt-28 pb-20 bg-slate-50 min-h-screen">
-      <SEOHead title={`${product.title} | ${product.category}`} description={`${product.desc} — Keshav Enterprises, Shamli, UP.`} schema={productSchema}/>
+      <SEOHead title={`${product.title} | ${product.category}`} description={`${product.desc} — Keshav Enterprises, Shamli, UP.`} schema={productSchema} canonicalPath={`/product/${product.id}`} pageType="website"/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2">
           <button onClick={()=>navigate('/products')} className="hover:text-blue-600 transition-colors flex items-center focus:outline-none focus-visible:underline">
@@ -865,7 +1042,7 @@ const HomePage = ({navigate}) => {
   const featuredProducts = useMemo(()=>PRODUCTS.slice(0,16),[]);
   return (
     <main id="main-content" className="bg-white">
-      <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA}/>
+      <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website"/>
       <style>{MARQUEE_CSS}</style>
       {/* Hero */}
       <section className="relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" aria-labelledby="hero-heading">
@@ -935,8 +1112,8 @@ const HomePage = ({navigate}) => {
               <div key={i} className="flex items-center justify-center shrink-0 w-40 md:w-56 h-20 p-2">
                 <img src={`${oem.toLowerCase().replace(/[^a-z0-9]/g,'-')}-logo.png`} alt={`${oem} logo`} width="160" height="60"
                   className="max-h-full max-w-full object-contain"
-                  onError={e=>{e.target.style.display='none';e.target.nextElementSibling?.classList.replace('hidden','flex');}}/>
-                <div className="hidden items-center justify-center space-x-3 w-full">
+                  onError={e=>{const p=e.target.parentElement;if(p){e.target.style.display='none';const fb=p.querySelector('.oem-fallback');if(fb)fb.style.display='flex';}}}/>
+                <div className="oem-fallback items-center justify-center space-x-3 w-full" style={{display:'none'}}>
                   <Factory className="w-8 h-8 text-slate-300 shrink-0"/>
                   <span className="text-sm md:text-base font-black text-slate-500 tracking-widest uppercase truncate">{oem}</span>
                 </div>
@@ -1192,7 +1369,7 @@ const BlogPage = ({navigate}) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead
       title="Engineering Blog — Turbine Maintenance & Industrial Insights"
-      description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."/>
+      description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises." canonicalPath="/blog" pageType="website"/>
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true"/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
@@ -1342,7 +1519,7 @@ const BlogPostPage = ({slug, navigate}) => {
   };
   return (
     <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
-      <SEOHead title={post.title} description={post.excerpt}/>
+      <SEOHead title={post.title} description={post.excerpt} canonicalPath={`/blog/${post.slug}`} pageType="article" publishedTime={post.date}/>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2 pt-4">
@@ -1418,7 +1595,7 @@ const BlogPostPage = ({slug, navigate}) => {
 const ServicesPage = ({navigate}) => (
   <main id="main-content" className="pt-24 pb-20 bg-white">
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
-      description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW."/>
+      description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA}/>
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true"/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
@@ -1557,7 +1734,7 @@ const ProductsPage = ({navigate}) => {
   return (
     <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
-        description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}/>
+        description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`} canonicalPath="/products" pageType="website"/>
       <div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true"/>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
@@ -1571,7 +1748,7 @@ const ProductsPage = ({navigate}) => {
           <div className="relative w-full max-w-2xl mx-auto md:mx-0">
             <label htmlFor="product-search" className="sr-only">Search products by name, specification, or application</label>
             <input id="product-search" type="search" placeholder="Search products, specs, applications..." value={searchQuery} onChange={e=>setSearchQuery(e.target.value)}
-              className="w-full pl-14 pr-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-lg font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"/>
+              className="w-full pl-14 pr-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-lg font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"/>
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-7 h-7 text-slate-400 pointer-events-none" aria-hidden="true"/>
             {searchQuery&&<button onClick={()=>setSearchQuery('')} aria-label="Clear search" className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"><X className="w-5 h-5" aria-hidden="true"/></button>}
           </div>
@@ -1616,7 +1793,7 @@ const ProductsPage = ({navigate}) => {
 const IndustriesPage = ({navigate}) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical"
-      description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, and agro industries with specialized turbine engineering and industrial products."/>
+      description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, and agro industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website"/>
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true"/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
@@ -1745,7 +1922,7 @@ const ContactPage = () => {
   return (
     <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Contact Engineering Team — Request a Technical Quote"
-        description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support. Phone: +91 9149229448."/>
+        description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support. Phone: +91 9149229448." canonicalPath="/contact" pageType="website" schema={FAQ_SCHEMA}/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
           <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">Contact Engineering</h1>
@@ -1801,7 +1978,7 @@ const ContactPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
                 <div>
                   <label htmlFor="c-phone" className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Phone Number <span aria-hidden="true">*</span></label>
-                  <input id="c-phone" type="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" aria-required="true" aria-invalid={!!errors.phone} aria-describedby={errors.phone?'err-phone':undefined} className={inputClass(errors.phone)}/>
+                  <input id="c-phone" type="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" className="placeholder:text-slate-500" aria-required="true" aria-invalid={!!errors.phone} aria-describedby={errors.phone?'err-phone':undefined} className={inputClass(errors.phone)}/>
                   {errors.phone&&<p id="err-phone" role="alert" className="text-red-600 text-xs font-bold mt-2">{errors.phone}</p>}
                 </div>
                 <div>
@@ -1852,7 +2029,7 @@ const ContactPage = () => {
             <iframe title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
               src="https://maps.google.com/maps?q=Keshav%20Enterprises,%20Shamli,%20Uttar%20Pradesh&t=&z=13&ie=UTF8&iwloc=&output=embed"
               width="100%" height="100%" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 grayscale hover:grayscale-0 transition-all duration-700"/>
+              className="absolute inset-0 rounded-2xl"/>
           </div>
         </div>
       </div>
