@@ -19,7 +19,7 @@ const CONTACT_INFO = {
   whatsapp: '6397363268',
   indiamart: 'https://www.indiamart.com/keshav-enterprises-shamli/',
   gmapsShare: 'https://share.google/uLc4GwsGec5eM62Ep',
-  gst: '09BOSPS3115K1ZC',
+  gst: '09BRTPS5029K1ZC',
   // ── SOCIAL MEDIA ── Update these URLs with your actual profile links
   linkedin: 'https://www.linkedin.com/in/keshav-enterprises-825a473b8',
   linkedinHandle: 'Keshav Enterprises',
