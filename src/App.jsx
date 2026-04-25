@@ -414,8 +414,34 @@ const GLOBAL_CSS = `
     --wa: #25D366;
   }
 
+  *, *::before, *::after { box-sizing: border-box; }
   * { font-family: 'Barlow', sans-serif; }
   .font-display { font-family: 'Barlow Condensed', sans-serif; }
+
+  /* Prevent horizontal overflow on mobile */
+  html, body { overflow-x: hidden; max-width: 100vw; }
+
+  /* Smooth scroll with offset for fixed navbar */
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  /* Improve tap targets on mobile */
+  @media (max-width: 768px) {
+    button, a { min-height: 44px; }
+    input, select, textarea { font-size: 16px !important; } /* Prevent iOS zoom */
+  }
+
+  /* Image rendering optimization */
+  img { max-width: 100%; height: auto; display: block; }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .ke-marquee, .ke-marquee-slow { animation: none; }
+  }
 
   @keyframes ke-marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
   @keyframes ke-marquee-slow { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
@@ -449,9 +475,9 @@ const GLOBAL_CSS = `
   .delay-700 { animation-delay:0.7s; }
   .delay-800 { animation-delay:0.8s; }
 
-  .glass { background:rgba(255,255,255,0.04); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); }
-  .glass-dark { background:rgba(10,22,40,0.85); backdrop-filter:blur(20px); border:1px solid rgba(30,111,255,0.12); }
-  .glass-card { background:rgba(255,255,255,0.03); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.06); }
+  .glass { background:rgba(255,255,255,0.04); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); }
+  .glass-dark { background:rgba(10,22,40,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(30,111,255,0.12); }
+  .glass-card { background:rgba(255,255,255,0.03); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.06); }
 
   .text-gradient { background:linear-gradient(135deg,#60a5fa,#3b82f6,#93c5fd); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
   .text-gradient-gold { background:linear-gradient(135deg,#fbbf24,#f59e0b,#fde68a); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
@@ -474,6 +500,20 @@ const GLOBAL_CSS = `
 
   .nav-link-active { color:#60a5fa !important; }
   .nav-link-active::after { content:''; display:block; height:2px; background:#3b82f6; border-radius:2px; margin-top:2px; }
+
+  /* Touch-friendly focus rings */
+  :focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; border-radius: 4px; }
+
+  /* Better mobile hero text sizing */
+  @media (max-width: 480px) {
+    .hero-h1 { font-size: 2.5rem !important; }
+  }
+
+  /* Floating buttons safe area on iOS */
+  .floating-buttons { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* Prevent content jump on mobile when scrolled */
+  .ke-marquee-slow:not(:hover) { animation-play-state: running !important; }
 `;
 
 /* ─────────────────────────────────────────────────────────────
@@ -481,14 +521,39 @@ const GLOBAL_CSS = `
    ───────────────────────────────────────────────────────────── */
 const SITE_URL = 'https://keshaventerprises.in';
 const OG_IMAGE  = `${SITE_URL}/og-image.webp`;
-const SITE_KEYWORDS = 'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering';
+const SITE_KEYWORDS = 'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering, turbine overhauling sugar mill, steam turbine maintenance contractor India, turbine erection commissioning India, dynamic balancing ISO 1940, lube oil flushing ISO 4406, turbine spares manufacturer India, industrial strainers ASME, metallic expansion bellows DN12000, turbine gland sealing rings, babbitt journal bearings, emergency turbine breakdown support, Keshav Enterprises Shamli, turbine service UP India';
 
 const LOCAL_SCHEMA = {
   '@context':'https://schema.org','@type':['LocalBusiness','ProfessionalService'],
-  name:'Keshav Enterprises',description:'Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW.',
-  url:'https://keshaventerprises.in',telephone:['+919149229448','+916397363268'],email:'ksengg007@gmail.com',
+  name:'Keshav Enterprises',
+  alternateName:'KS Engineering',
+  description:'Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW.',
+  url:'https://keshaventerprises.in',
+  telephone:['+919149229448','+916397363268'],
+  email:'ksengg007@gmail.com',
+  foundingDate:'2000',
+  currenciesAccepted:'INR',
+  paymentAccepted:'Bank Transfer, UPI, Cheque',
+  priceRange:'₹₹',
+  openingHours:'Mo-Sa 09:00-18:00',
   address:{'@type':'PostalAddress',streetAddress:'Dayanand Nagar Gali No.2, Near Subash Ki Chakki',addressLocality:'Shamli',addressRegion:'Uttar Pradesh',postalCode:'247776',addressCountry:'IN'},
   geo:{'@type':'GeoCoordinates',latitude:29.4476,longitude:77.3003},
+  hasMap:'https://share.google/uLc4GwsGec5eM62Ep',
+  aggregateRating:{'@type':'AggregateRating',ratingValue:'4.3',bestRating:'5',ratingCount:'50',reviewCount:'50'},
+  areaServed:[
+    {'@type':'Country',name:'India'},
+    {'@type':'State',name:'Uttar Pradesh'},
+    {'@type':'State',name:'Maharashtra'},
+    {'@type':'State',name:'Gujarat'},
+    {'@type':'State',name:'Punjab'},
+    {'@type':'State',name:'Haryana'},
+  ],
+  knowsAbout:['Steam Turbine Overhauling','Turbine Reverse Engineering','Dynamic Balancing','Lube Oil Flushing','Machine Alignment','Industrial Filtration','Expansion Joints','Turbine Spares','Triveni Turbine Service','BHEL Turbine Maintenance'],
+  hasOfferCatalog:{
+    '@type':'OfferCatalog',
+    name:'Turbine Engineering Services',
+    itemListElement:SERVICES.map(s=>({'@type':'Offer',itemOffered:{'@type':'Service',name:s.title,description:s.desc}}))
+  },
   sameAs:['https://www.indiamart.com/keshav-enterprises-shamli/','https://www.linkedin.com/in/keshav-enterprises-825a473b8','https://www.instagram.com/ksengg007'],
 };
 
@@ -496,7 +561,12 @@ const FAQ_SCHEMA = {
   '@context':'https://schema.org','@type':'FAQPage',
   mainEntity:[
     {'@type':'Question',name:'What turbine makes does Keshav Enterprises service?',acceptedAnswer:{'@type':'Answer',text:'Keshav Enterprises services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW.'}},
-    {'@type':'Question',name:'Does Keshav Enterprises offer emergency turbine breakdown support?',acceptedAnswer:{'@type':'Answer',text:'Yes. Keshav Enterprises provides 24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India.'}},
+    {'@type':'Question',name:'Does Keshav Enterprises offer emergency turbine breakdown support?',acceptedAnswer:{'@type':'Answer',text:'Yes. Keshav Enterprises provides 24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India. Contact us immediately on WhatsApp or phone for emergency response.'}},
+    {'@type':'Question',name:'Can Keshav Enterprises reverse engineer obsolete turbine spare parts?',acceptedAnswer:{'@type':'Answer',text:'Yes. We use 3D laser scanners, CMM coordinate measuring machines, and PMI material testing to reverse engineer any turbine component — rotors, nozzles, diaphragms, bearings, seals — to exact OEM tolerances. This eliminates 12–18 month OEM lead times.'}},
+    {'@type':'Question',name:'What is the turbine power range Keshav Enterprises covers?',acceptedAnswer:{'@type':'Answer',text:'We cover steam turbines from 5 kW to 27 MW — back-pressure and condensing, horizontal and vertical, single and multi-stage. Our dynamic balancing machines handle rotors from 50 to 2,000 kg.'}},
+    {'@type':'Question',name:'Where is Keshav Enterprises located?',acceptedAnswer:{'@type':'Answer',text:'Keshav Enterprises is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India. We serve clients pan-India with field engineers at multiple locations.'}},
+    {'@type':'Question',name:'What industries does Keshav Enterprises serve?',acceptedAnswer:{'@type':'Answer',text:'We serve power generation plants, sugar mills & distilleries, paper & pulp mills, oil & gas facilities, petrochemical plants & refineries, and agro & food processing industries across India.'}},
+    {'@type':'Question',name:'Does Keshav Enterprises supply lube oil filter elements?',acceptedAnswer:{'@type':'Answer',text:'Yes. We supply OEM-compatible lube oil filter elements for Triveni, Siemens, BHEL, and all major turbine makes. Filter fineness from 3 to 25 µm, with glass fiber and stainless steel mesh options.'}},
   ]
 };
 
@@ -520,6 +590,421 @@ const getCategoryIcon = (category) => {
 };
 
 /* ─────────────────────────────────────────────────────────────
+   SKELETON SCREENS
+   ───────────────────────────────────────────────────────────── */
+const SKELETON_CSS = `
+  @keyframes ske-wave {
+    0%   { background-position: -400px 0; }
+    100% { background-position:  400px 0; }
+  }
+  @keyframes ske-wave-dark {
+    0%   { background-position: -400px 0; }
+    100% { background-position:  400px 0; }
+  }
+  @keyframes ske-fade-in {
+    from { opacity:0; transform:translateY(8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .ske {
+    background: linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);
+    background-size: 800px 100%;
+    animation: ske-wave 1.4s ease-in-out infinite;
+    border-radius: 6px;
+  }
+  .ske-dark {
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0.04) 25%,
+      rgba(255,255,255,0.10) 50%,
+      rgba(255,255,255,0.04) 75%);
+    background-size: 800px 100%;
+    animation: ske-wave-dark 1.4s ease-in-out infinite;
+    border-radius: 6px;
+  }
+  .ske-page-enter { animation: ske-fade-in 0.35s ease-out both; }
+  .ske-overlay {
+    position:fixed; inset:0; z-index:9999;
+    background:#0A1628;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column; gap:16px;
+    animation: ske-fade-in 0.15s ease-out both;
+  }
+  .ske-overlay-bar {
+    width:180px; height:3px;
+    background: linear-gradient(90deg,#1E6FFF,#60a5fa,#1E6FFF);
+    background-size:200% 100%;
+    animation: ske-wave 1.2s ease-in-out infinite;
+    border-radius:99px;
+  }
+  .ske-delay-1{animation-delay:.05s}
+  .ske-delay-2{animation-delay:.10s}
+  .ske-delay-3{animation-delay:.15s}
+  .ske-delay-4{animation-delay:.20s}
+  .ske-delay-5{animation-delay:.25s}
+  .ske-delay-6{animation-delay:.30s}
+`;
+
+/* ── Single reusable shimmer block ───────────────────────── */
+const Ske=({cls='',dark=false})=><div className={`${dark?'ske-dark':'ske'} ${cls}`} aria-hidden="true"/>;
+
+/* ── Page-transition spinner shown between navigations ────── */
+const PageTransitionOverlay = memo(()=>(
+  <div className="ske-overlay" role="status" aria-label="Loading page…">
+    <style>{SKELETON_CSS}</style>
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-10 h-10 rounded-xl ske-dark ske-delay-1" style={{minWidth:40,minHeight:40}}/>
+      <div className="w-32 h-2.5 rounded ske-dark ske-delay-2"/>
+    </div>
+    <div className="ske-overlay-bar"/>
+    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest animate-pulse">Loading…</p>
+  </div>
+));
+
+/* ── Shared dark nav-banner skeleton used on most pages ───── */
+const DarkHeaderSke=({wide=false})=>(
+  <div className="bg-[#0A1628] py-24 mb-10 sm:mb-16">
+    <div className={`${wide?'max-w-7xl':'max-w-4xl'} mx-auto px-4 flex flex-col items-center gap-4`}>
+      <Ske cls="w-20 h-3 ske-delay-1" dark/>
+      <Ske cls="w-72 max-w-full h-8 ske-delay-2" dark/>
+      <Ske cls="w-48 h-2 ske-delay-3" dark/>
+      <Ske cls="w-80 max-w-full h-3 ske-delay-4" dark/>
+    </div>
+  </div>
+);
+
+/* ── Product card skeleton ────────────────────────────────── */
+const ProductCardSkeleton=memo(()=>(
+  <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden" aria-hidden="true">
+    <style>{SKELETON_CSS}</style>
+    <Ske cls="h-48 w-full rounded-none"/>
+    <div className="p-6 space-y-3">
+      <Ske cls="w-20 h-3 ske-delay-1"/>
+      <Ske cls="w-full h-5 ske-delay-2"/>
+      <Ske cls="w-4/5 h-4 ske-delay-2"/>
+      <Ske cls="w-full h-3 ske-delay-3"/>
+      <Ske cls="w-3/4 h-3 ske-delay-3"/>
+      <div className="pt-4 border-t border-slate-100 flex gap-3">
+        <Ske cls="flex-1 h-10 rounded-lg ske-delay-4"/>
+        <Ske cls="flex-1 h-10 rounded-lg ske-delay-5"/>
+      </div>
+    </div>
+  </div>
+));
+
+/* ── Products page skeleton ──────────────────────────────── */
+const ProductsPageSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-slate-50 min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading products catalog">
+    <style>{SKELETON_CSS}</style>
+    <DarkHeaderSke wide/>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <Ske cls="flex-1 h-12 rounded-xl"/>
+        <Ske cls="w-36 h-12 rounded-xl ske-delay-1"/>
+      </div>
+      <div className="flex gap-2 mb-8 flex-wrap">
+        {[80,110,90,120,100,95,85].map((w,i)=>(
+          <Ske key={i} cls={`h-9 rounded-full ske-delay-${Math.min(i+1,6)}`} style={{width:w}}/>
+        ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({length:9}).map((_,i)=><ProductCardSkeleton key={i}/>)}
+      </div>
+    </div>
+  </main>
+));
+
+/* ── Product detail skeleton ─────────────────────────────── */
+const ProductDetailSkeleton=memo(()=>(
+  <main id="main-content" className="pt-28 pb-20 bg-slate-50 min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading product details">
+    <style>{SKELETON_CSS}</style>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex gap-2 items-center mb-8 pt-4">
+        {[60,80,120].map((w,i)=>(
+          <React.Fragment key={i}>
+            <Ske cls="h-3 rounded" style={{width:w}}/>
+            {i<2&&<Ske cls="w-3 h-3 rounded"/>}
+          </React.Fragment>
+        ))}
+      </div>
+      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-12">
+          <div className="lg:col-span-5 p-6 bg-slate-50 border-b lg:border-b-0 lg:border-r border-slate-200">
+            <Ske cls="aspect-square w-full rounded-2xl mb-4"/>
+            <div className="grid grid-cols-3 gap-2">
+              {[0,1,2].map(i=><Ske key={i} cls={`aspect-square rounded-xl ske-delay-${i+1}`}/>)}
+            </div>
+          </div>
+          <div className="lg:col-span-7 p-8 lg:p-12 space-y-4">
+            <Ske cls="w-24 h-5 rounded-md"/>
+            <Ske cls="w-full h-8 rounded ske-delay-1"/>
+            <Ske cls="w-4/5 h-8 rounded ske-delay-2"/>
+            <Ske cls="w-full h-3 rounded ske-delay-3"/>
+            <Ske cls="w-3/4 h-3 rounded ske-delay-3"/>
+            <div className="bg-slate-900 rounded-2xl p-5 space-y-3">
+              <Ske cls="w-40 h-3 rounded ske-delay-1" dark/>
+              <Ske cls="w-full h-3 rounded ske-delay-2" dark/>
+              <Ske cls="w-5/6 h-3 rounded ske-delay-3" dark/>
+            </div>
+            <div className="flex gap-1">
+              <Ske cls="w-32 h-9 rounded-t-lg"/>
+              <Ske cls="w-32 h-9 rounded-t-lg ske-delay-1"/>
+            </div>
+            {Array.from({length:5}).map((_,i)=>(
+              <div key={i} className={`flex gap-3 ske-delay-${Math.min(i+1,6)}`}>
+                <Ske cls="w-2/5 h-8 rounded"/>
+                <Ske cls="w-3/5 h-8 rounded"/>
+              </div>
+            ))}
+            <div className="pt-7 border-t border-slate-200 flex gap-4 mt-4">
+              <Ske cls="flex-1 h-14 rounded-xl ske-delay-4"/>
+              <Ske cls="flex-1 h-14 rounded-xl ske-delay-5"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+));
+
+/* ── Blog listing skeleton ───────────────────────────────── */
+const BlogPageSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-white min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading blog">
+    <style>{SKELETON_CSS}</style>
+    <DarkHeaderSke wide/>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
+        <Ske cls="aspect-video rounded-3xl"/>
+        <div className="flex flex-col justify-center gap-4">
+          <Ske cls="w-24 h-4 rounded ske-delay-1"/>
+          <Ske cls="w-full h-7 rounded ske-delay-2"/>
+          <Ske cls="w-4/5 h-7 rounded ske-delay-2"/>
+          <Ske cls="w-full h-3 rounded ske-delay-3"/>
+          <Ske cls="w-3/4 h-3 rounded ske-delay-4"/>
+          <Ske cls="w-36 h-11 rounded-xl ske-delay-5"/>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {[0,1,2].map(i=>(
+          <div key={i} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <Ske cls="aspect-video rounded-none"/>
+            <div className="p-6 space-y-3">
+              <div className="flex gap-2"><Ske cls="w-16 h-3 rounded ske-delay-1"/><Ske cls="w-20 h-3 rounded ske-delay-2"/></div>
+              <Ske cls="w-full h-5 rounded ske-delay-2"/>
+              <Ske cls="w-4/5 h-4 rounded ske-delay-3"/>
+              <Ske cls="w-full h-3 rounded ske-delay-3"/>
+              <Ske cls="w-28 h-9 rounded-lg ske-delay-4"/>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+));
+
+/* ── Blog post skeleton ───────────────────────────────────── */
+const BlogPostSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-white min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading article">
+    <style>{SKELETON_CSS}</style>
+    <div className="bg-[#0A1628] py-24 mb-12">
+      <div className="max-w-4xl mx-auto px-4 flex flex-col items-center gap-4">
+        <div className="flex gap-2">
+          {[60,80,70].map((w,i)=><Ske key={i} cls="h-6 rounded-full ske-delay-1" dark style={{width:w}}/>)}
+        </div>
+        <Ske cls="w-full h-9 rounded ske-delay-2" dark/>
+        <Ske cls="w-4/5 h-7 rounded ske-delay-3" dark/>
+        <div className="flex gap-6 mt-2">
+          {[80,100,70].map((w,i)=><Ske key={i} cls="h-3 rounded ske-delay-4" dark style={{width:w}}/>)}
+        </div>
+      </div>
+    </div>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <Ske cls="w-full aspect-video rounded-3xl mb-12"/>
+      <div className="space-y-8">
+        {Array.from({length:6}).map((_,i)=>(
+          <div key={i} className={`space-y-3 ske-delay-${Math.min(i+1,6)}`}>
+            {i%3===0&&<Ske cls="w-2/3 h-7 rounded"/>}
+            <Ske cls="w-full h-3 rounded"/>
+            <Ske cls="w-full h-3 rounded ske-delay-1"/>
+            <Ske cls="w-4/5 h-3 rounded ske-delay-2"/>
+            {i%2===0&&<Ske cls="w-3/4 h-3 rounded ske-delay-3"/>}
+          </div>
+        ))}
+      </div>
+      <div className="mt-16 bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col items-center gap-4">
+        <Ske cls="w-48 h-6 rounded ske-delay-1"/>
+        <Ske cls="w-64 h-3 rounded ske-delay-2"/>
+        <Ske cls="w-40 h-12 rounded-xl ske-delay-3"/>
+      </div>
+    </div>
+  </main>
+));
+
+/* ── Home page skeleton ──────────────────────────────────── */
+const HomePageSkeleton=memo(()=>(
+  <main id="main-content" className="min-h-screen bg-[#0A1628] ske-page-enter" aria-busy="true" aria-label="Loading">
+    <style>{SKELETON_CSS}</style>
+    <section className="min-h-screen flex items-center pt-24 pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-5">
+            <div className="flex gap-3">
+              <Ske cls="w-28 h-8 rounded-lg" dark/>
+              <Ske cls="w-36 h-8 rounded-lg ske-delay-1" dark/>
+            </div>
+            <Ske cls="w-32 h-3 rounded ske-delay-1" dark/>
+            <Ske cls="w-full h-12 rounded ske-delay-2" dark/>
+            <Ske cls="w-4/5 h-12 rounded ske-delay-2" dark/>
+            <Ske cls="w-3/5 h-12 rounded ske-delay-3" dark/>
+            <Ske cls="w-full h-20 rounded-2xl ske-delay-3" dark/>
+            <div className="flex gap-4 pt-2">
+              <Ske cls="w-52 h-14 rounded-xl ske-delay-4" dark/>
+              <Ske cls="w-48 h-14 rounded-xl ske-delay-5" dark/>
+            </div>
+          </div>
+          <div className="hidden lg:flex flex-col gap-4">
+            {[0,1,2,3].map(i=><Ske key={i} cls={`h-20 rounded-2xl ske-delay-${i+1}`} dark/>)}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+));
+
+/* ── Services page skeleton ──────────────────────────────── */
+const ServicesPageSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-white min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading services">
+    <style>{SKELETON_CSS}</style>
+    <DarkHeaderSke wide/>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+      {[0,1,2].map(i=>(
+        <div key={i} className={`flex flex-col md:flex-row gap-16 items-start ${i%2!==0?'md:flex-row-reverse':''}`}>
+          <div className="md:w-2/5 w-full"><Ske cls="aspect-[4/3] rounded-3xl"/></div>
+          <div className="md:w-3/5 w-full space-y-4">
+            <Ske cls="w-24 h-3 rounded"/>
+            <Ske cls="w-3/4 h-9 rounded ske-delay-1"/>
+            <Ske cls="w-full h-4 rounded ske-delay-2"/>
+            <Ske cls="w-5/6 h-4 rounded ske-delay-3"/>
+            <div className="border border-slate-200 rounded-2xl overflow-hidden">
+              <Ske cls="h-12 rounded-none"/>
+              {[0,1,2,3,4].map(j=>(
+                <div key={j} className={`h-12 bg-white border-t border-slate-100 px-6 flex items-center gap-3 ske-delay-${j+1}`}>
+                  <Ske cls="w-4 h-4 rounded-full"/>
+                  <Ske cls="flex-1 h-3 rounded"/>
+                </div>
+              ))}
+            </div>
+            <Ske cls="w-44 h-12 rounded-xl ske-delay-5"/>
+          </div>
+        </div>
+      ))}
+    </div>
+  </main>
+));
+
+/* ── Industries page skeleton ────────────────────────────── */
+const IndustriesPageSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-white min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading industries">
+    <style>{SKELETON_CSS}</style>
+    <DarkHeaderSke wide/>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      {[0,1,2].map(i=>(
+        <div key={i} className={`flex flex-col md:flex-row gap-12 items-center ${i%2!==0?'md:flex-row-reverse':''}`}>
+          <div className="md:w-1/2 w-full"><Ske cls="aspect-[4/3] rounded-3xl"/></div>
+          <div className="md:w-1/2 w-full space-y-4">
+            <Ske cls="w-16 h-16 rounded-2xl"/>
+            <Ske cls="w-2/3 h-7 rounded ske-delay-1"/>
+            <Ske cls="w-full h-3 rounded ske-delay-2"/>
+            <Ske cls="w-5/6 h-3 rounded ske-delay-3"/>
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              {[0,1,2,3].map(j=><Ske key={j} cls={`h-8 rounded-lg ske-delay-${j+1}`}/>)}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </main>
+));
+
+/* ── Contact page skeleton ───────────────────────────────── */
+const ContactPageSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-slate-50 min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading contact">
+    <style>{SKELETON_CSS}</style>
+    <div className="bg-[#0A1628] py-20 mb-12">
+      <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-4">
+        <Ske cls="w-48 h-9 rounded ske-delay-1" dark/>
+        <Ske cls="w-64 h-3 rounded ske-delay-2" dark/>
+        <div className="flex gap-3 mt-4">
+          <Ske cls="w-36 h-11 rounded-xl ske-delay-3" dark/>
+          <Ske cls="w-36 h-11 rounded-xl ske-delay-4" dark/>
+        </div>
+      </div>
+    </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="space-y-4">
+          {Array.from({length:7}).map((_,i)=>(
+            <Ske key={i} cls={`h-14 rounded-xl ske-delay-${Math.min(i+1,6)}`}/>
+          ))}
+          <Ske cls="h-36 rounded-xl"/>
+          <Ske cls="h-14 rounded-xl ske-delay-1"/>
+        </div>
+        <div className="space-y-5">
+          {[0,1,2].map(i=>(
+            <Ske key={i} cls={`h-28 rounded-2xl ske-delay-${i+1}`}/>
+          ))}
+          <Ske cls="h-96 rounded-3xl ske-delay-4"/>
+        </div>
+      </div>
+    </div>
+  </main>
+));
+
+/* ── About page skeleton ─────────────────────────────────── */
+const AboutPageSkeleton=memo(()=>(
+  <main id="main-content" className="pb-20 bg-white min-h-screen ske-page-enter" aria-busy="true" aria-label="Loading about">
+    <style>{SKELETON_CSS}</style>
+    <div className="bg-[#0A1628] py-24">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="space-y-5">
+          <Ske cls="w-20 h-3 rounded" dark/>
+          <Ske cls="w-full h-10 rounded ske-delay-1" dark/>
+          <Ske cls="w-4/5 h-10 rounded ske-delay-2" dark/>
+          <Ske cls="w-20 h-0.5 rounded ske-delay-2" dark/>
+          <Ske cls="h-20 rounded-xl ske-delay-3" dark/>
+          <Ske cls="w-full h-3 rounded ske-delay-4" dark/>
+          <Ske cls="w-5/6 h-3 rounded ske-delay-4" dark/>
+          <div className="flex flex-wrap gap-2 pt-2">
+            {Array.from({length:6}).map((_,i)=>(
+              <Ske key={i} cls={`h-7 w-28 rounded-full ske-delay-${Math.min(i+1,6)}`} dark/>
+            ))}
+          </div>
+          <div className="flex gap-3 pt-2">
+            <Ske cls="w-36 h-11 rounded-xl ske-delay-4" dark/>
+            <Ske cls="w-44 h-11 rounded-xl ske-delay-5" dark/>
+          </div>
+        </div>
+        <div className="hidden lg:flex flex-col gap-4">
+          <Ske cls="h-56 rounded-3xl" dark/>
+          <div className="grid grid-cols-2 gap-4">
+            {[0,1,2,3].map(i=><Ske key={i} cls={`h-24 rounded-2xl ske-delay-${i+1}`} dark/>)}
+          </div>
+          <Ske cls="h-16 rounded-2xl ske-delay-5" dark/>
+        </div>
+      </div>
+    </div>
+    <div className="bg-blue-600 py-12">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+        {[0,1,2,3].map(i=>(
+          <div key={i} className="flex flex-col items-center gap-2">
+            <div className={`w-20 h-8 rounded bg-blue-500/50 ske-delay-${i+1}`}/>
+            <div className={`w-28 h-3 rounded bg-blue-500/40 ske-delay-${i+2}`}/>
+          </div>
+        ))}
+      </div>
+    </div>
+  </main>
+));
+
+/* ─────────────────────────────────────────────────────────────
    SEO HEAD
    ───────────────────────────────────────────────────────────── */
 const SEOHead = memo(({title, description, schema, pageType, canonicalPath, publishedTime}) => {
@@ -528,23 +1013,94 @@ const SEOHead = memo(({title, description, schema, pageType, canonicalPath, publ
     const fullDesc = description || 'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Enterprises, Shamli, UP, India.';
     const canonical = canonicalPath ? `${SITE_URL}${canonicalPath}` : SITE_URL;
     document.title = fullTitle;
-    const sm=(sel,attr,val,content)=>{let t=document.querySelector(sel);if(!t){t=document.createElement('meta');t.setAttribute(attr,val);document.head.appendChild(t);}t.content=content;};
-    const sl=(rel,href)=>{let t=document.querySelector(`link[rel="${rel}"]`);if(!t){t=document.createElement('link');t.rel=rel;document.head.appendChild(t);}t.href=href;};
+
+    const sm=(sel,attr,val,content)=>{
+      let t=document.querySelector(sel);
+      if(!t){t=document.createElement('meta');t.setAttribute(attr,val);document.head.appendChild(t);}
+      t.content=content;
+    };
+    const sl=(rel,href,extra)=>{
+      let t=document.querySelector(`link[rel="${rel}"]`);
+      if(!t){t=document.createElement('link');t.rel=rel;document.head.appendChild(t);}
+      t.href=href;
+      if(extra)Object.entries(extra).forEach(([k,v])=>t.setAttribute(k,v));
+    };
+
+    /* Core */
     sm('meta[name="description"]','name','description',fullDesc);
     sm('meta[name="keywords"]','name','keywords',SITE_KEYWORDS);
-    sm('meta[name="robots"]','name','robots','index, follow, max-snippet:-1, max-image-preview:large');
+    sm('meta[name="robots"]','name','robots','index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
     sm('meta[name="author"]','name','author','Keshav Enterprises');
     sm('meta[name="theme-color"]','name','theme-color','#0A1628');
+    sm('meta[name="format-detection"]','name','format-detection','telephone=yes');
+    sm('meta[name="mobile-web-app-capable"]','name','mobile-web-app-capable','yes');
+    sm('meta[name="apple-mobile-web-app-capable"]','name','apple-mobile-web-app-capable','yes');
+    sm('meta[name="apple-mobile-web-app-status-bar-style"]','name','apple-mobile-web-app-status-bar-style','black-translucent');
+
+    /* Canonical + hreflang */
     sl('canonical',canonical);
+    sl('alternate',canonical,{hreflang:'en-in'});
+
+    /* Open Graph */
     sm('meta[property="og:title"]','property','og:title',fullTitle);
     sm('meta[property="og:description"]','property','og:description',fullDesc);
     sm('meta[property="og:type"]','property','og:type',pageType==='article'?'article':'website');
     sm('meta[property="og:url"]','property','og:url',canonical);
     sm('meta[property="og:image"]','property','og:image',OG_IMAGE);
+    sm('meta[property="og:image:width"]','property','og:image:width','1200');
+    sm('meta[property="og:image:height"]','property','og:image:height','630');
+    sm('meta[property="og:image:alt"]','property','og:image:alt','Keshav Enterprises — Industrial Turbine Engineering, Shamli UP');
+    sm('meta[property="og:locale"]','property','og:locale','en_IN');
+    sm('meta[property="og:site_name"]','property','og:site_name','Keshav Enterprises');
+
+    /* Article meta (blog) */
+    if(pageType==='article'&&publishedTime){
+      sm('meta[property="article:published_time"]','property','article:published_time',publishedTime);
+      sm('meta[property="article:author"]','property','article:author','Keshav Enterprises Engineering Team');
+      sm('meta[property="article:section"]','property','article:section','Industrial Engineering');
+    }
+
+    /* Twitter */
     sm('meta[name="twitter:card"]','name','twitter:card','summary_large_image');
+    sm('meta[name="twitter:title"]','name','twitter:title',fullTitle);
+    sm('meta[name="twitter:description"]','name','twitter:description',fullDesc);
+    sm('meta[name="twitter:image"]','name','twitter:image',OG_IMAGE);
+    sm('meta[name="twitter:image:alt"]','name','twitter:image:alt','Keshav Enterprises — Industrial Turbine Engineering');
+
+    /* Geo */
     sm('meta[name="geo.region"]','name','geo.region','IN-UP');
     sm('meta[name="geo.placename"]','name','geo.placename','Shamli, Uttar Pradesh');
-    if(schema){let ld=document.getElementById('ld-json');if(!ld){ld=document.createElement('script');ld.id='ld-json';ld.type='application/ld+json';document.head.appendChild(ld);}ld.textContent=JSON.stringify(schema);}
+    sm('meta[name="geo.position"]','name','geo.position','29.4476;77.3003');
+    sm('meta[name="ICBM"]','name','ICBM','29.4476, 77.3003');
+
+    /* Business */
+    sm('meta[name="classification"]','name','classification','Industrial Engineering Services');
+    sm('meta[name="category"]','name','category','Industrial Turbine Engineering');
+    sm('meta[name="coverage"]','name','coverage','India');
+    sm('meta[name="distribution"]','name','distribution','Global');
+    sm('meta[name="target"]','name','target','industrial engineers, plant managers, procurement managers');
+
+    /* JSON-LD */
+    if(schema){
+      let ld=document.getElementById('ld-json');
+      if(!ld){ld=document.createElement('script');ld.id='ld-json';ld.type='application/ld+json';document.head.appendChild(ld);}
+      ld.textContent=JSON.stringify(schema);
+    }
+
+    /* Breadcrumb schema for inner pages */
+    if(canonicalPath&&canonicalPath!=='/'){
+      const pageLabel = title ? title.split('—')[0].trim() : canonicalPath.replace('/','').replace(/-/g,' ');
+      const breadcrumb = {
+        '@context':'https://schema.org','@type':'BreadcrumbList',
+        itemListElement:[
+          {'@type':'ListItem',position:1,name:'Home',item:SITE_URL},
+          {'@type':'ListItem',position:2,name:pageLabel,item:canonical}
+        ]
+      };
+      let bc=document.getElementById('ld-breadcrumb');
+      if(!bc){bc=document.createElement('script');bc.id='ld-breadcrumb';bc.type='application/ld+json';document.head.appendChild(bc);}
+      bc.textContent=JSON.stringify(breadcrumb);
+    }
   },[title,description,schema,pageType,canonicalPath,publishedTime]);
   return null;
 });
@@ -577,7 +1133,7 @@ const OEMLogoItem = memo(({oem, logoFile}) => {
         width="160" height="60"
         loading="lazy"
         decoding="async"
-        className="max-h-12 max-w-[140px] md:max-w-[160px] object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+        className="max-h-12 max-w-[140px] md:max-w-[160px] object-contain transition-all duration-300"
         onError={()=>setErr(true)}
       />
     );
@@ -585,7 +1141,7 @@ const OEMLogoItem = memo(({oem, logoFile}) => {
   /* Styled text fallback — matches reference image typography */
   return (
     <span
-      className="whitespace-nowrap select-none transition-all duration-300 opacity-60 hover:opacity-100"
+      className="whitespace-nowrap select-none transition-all duration-300"
       style={{
         color: s.color,
         fontSize: s.fontSize,
@@ -854,20 +1410,20 @@ const Footer = memo(({navigate}) => (
    FLOATING BUTTONS
    ───────────────────────────────────────────────────────────── */
 const FloatingButtons = memo(() => (
-  <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+  <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-3 floating-buttons" style={{paddingBottom:'env(safe-area-inset-bottom,0px)'}}>
     <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`}
-      className="flex items-center gap-2 bg-[#0A1628]/90 backdrop-blur-sm border border-blue-800/50 text-white px-4 py-3 rounded-full shadow-lg hover:bg-[#152B50] hover:scale-105 transition-all group font-bold text-sm"
+      className="flex items-center gap-2 bg-[#0A1628]/90 backdrop-blur-sm border border-blue-800/50 text-white px-4 py-3 rounded-full shadow-lg hover:bg-[#152B50] hover:scale-105 transition-all group font-bold text-sm min-h-[44px]"
       aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}>
-      <Phone className="w-4 h-4 text-blue-400" aria-hidden="true"/>
-      <span className="hidden group-hover:block">{CONTACT_INFO.phones[0]}</span>
+      <Phone className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true"/>
+      <span className="hidden group-hover:block whitespace-nowrap text-xs">{CONTACT_INFO.phones[0]}</span>
     </a>
     <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
       target="_blank" rel="noopener noreferrer"
       aria-label="Chat with Keshav Enterprises on WhatsApp"
-      className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_24px_rgba(37,211,102,0.5)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative">
+      className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_24px_rgba(37,211,102,0.5)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative min-h-[56px] min-w-[56px] flex items-center justify-center">
       <MessageCircle className="w-7 h-7" aria-hidden="true"/>
-      <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Chat with an Engineer</span>
-      <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white" aria-hidden="true"/>
+      <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none hidden sm:block">Chat with an Engineer</span>
+      <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white animate-pulse" aria-hidden="true"/>
     </a>
   </div>
 ));
@@ -881,6 +1437,19 @@ const ProductDetailPage = ({productId, navigate}) => {
   const [tab,setTab]=useState('specs');
   const product=useMemo(()=>PRODUCTS.find(p=>p.id===productId),[productId]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'smooth'});setActiveImg(0);setImgErr(false);setTab('specs');},[productId]);
+  const productSchema=useMemo(()=>product?{
+    '@context':'https://schema.org','@type':'Product',
+    name:product.title,
+    description:product.desc,
+    category:product.category,
+    brand:{'@type':'Brand',name:'Keshav Enterprises'},
+    manufacturer:{'@type':'Organization',name:'Keshav Enterprises',url:SITE_URL},
+    offers:{'@type':'Offer',availability:'https://schema.org/InStock',priceCurrency:'INR',seller:{'@type':'Organization',name:'Keshav Enterprises'},url:`${SITE_URL}/product/${product.id}`},
+    image:product.images?.[0]?`${SITE_URL}/${product.images[0]}`:OG_IMAGE,
+    url:`${SITE_URL}/product/${product.id}`,
+    sku:product.id,
+    additionalProperty:Object.entries(product.specs||{}).map(([k,v])=>({'@type':'PropertyValue',name:k,value:v})),
+  }:null,[product]);
   const related=useMemo(()=>product?PRODUCTS.filter(p=>p.category===product.category&&p.id!==product.id).slice(0,3):[],[product]);
   if(!product) return (
     <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
@@ -893,6 +1462,13 @@ const ProductDetailPage = ({productId, navigate}) => {
   const activeImage=product.images?.[activeImg];
   return (
     <main id="main-content" className="pt-28 pb-20 bg-slate-50 min-h-screen">
+      <SEOHead
+        title={`${product.title} | ${product.category}`}
+        description={`${product.desc} ${product.usage||''} — Keshav Enterprises, Shamli, UP. OEM-compatible turbine engineering products.`}
+        schema={productSchema}
+        canonicalPath={`/product/${product.id}`}
+        pageType="website"/>
+      <style>{GLOBAL_CSS}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="flex items-center text-xs font-black text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2 pt-4">
           <button onClick={()=>navigate('/products')} className="hover:text-blue-600 transition-colors flex items-center focus:outline-none focus-visible:underline">
@@ -1009,7 +1585,10 @@ const HomePage = ({navigate}) => {
 
   return (
     <main id="main-content" className="bg-white">
-      <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website"/>
+      <SEOHead
+        title="Industrial Turbine Engineering, Overhauling & Spares — Shamli, UP India"
+        description="Keshav Enterprises: 20+ years of steam turbine overhauling, reverse engineering, dynamic balancing (ISO 1940/API 670), and OEM-compatible spares for turbines 5 kW to 27 MW. Ex-OEM engineers from Triveni, Siemens, BHEL. 24x7 emergency support. Shamli, UP, India."
+        schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website"/>
       <style>{GLOBAL_CSS}</style>
 
       {/* ── HERO ── */}
@@ -1034,46 +1613,46 @@ const HomePage = ({navigate}) => {
           <div className="absolute bottom-0 right-1/3 w-[500px] h-[300px] bg-cyan-500/15 rounded-full blur-[100px]"/>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full pt-32 pb-20 flex flex-col lg:flex-row items-center justify-between gap-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full pt-28 pb-20 sm:pt-32 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16">
           {/* Left — text content */}
           <div className="w-full lg:w-[58%]">
             <div className={`transition-all duration-1000 ${loaded?'opacity-100 translate-y-0':'opacity-0 translate-y-8'}`}>
-              <div className="flex flex-wrap items-center gap-3 mb-8">
+              <div className="flex flex-wrap items-center gap-3 mb-6 sm:mb-8">
                 <MakeInIndiaBadge/><IndiaMartBadge/>
               </div>
               {/* Eyebrow */}
-              <div className="flex items-center gap-3 mb-5 anim-slide-right delay-100">
-                <div className="w-10 h-0.5 bg-blue-400 rounded-full"/>
-                <span className="font-display text-blue-400 font-black uppercase tracking-[0.25em] text-sm">Industrial Turbine Engineering</span>
+              <div className="flex items-center gap-3 mb-4 sm:mb-5 anim-slide-right delay-100">
+                <div className="w-8 sm:w-10 h-0.5 bg-blue-400 rounded-full"/>
+                <span className="font-display text-blue-400 font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] text-xs sm:text-sm">Industrial Turbine Engineering</span>
               </div>
-              <h1 id="hero-heading" className="font-display font-black text-white leading-[1.0] tracking-tight mb-6 anim-fade-up delay-200"
-                style={{fontSize:'clamp(3rem,7vw,5.5rem)'}}>
+              <h1 id="hero-heading" className="hero-h1 font-display font-black text-white leading-[1.0] tracking-tight mb-5 sm:mb-6 anim-fade-up delay-200"
+                style={{fontSize:'clamp(2.5rem,7vw,5.5rem)'}}>
                 PRECISION<br/>
                 <span className="text-gradient">ENGINEERING</span><br/>
                 FOR MAXIMUM<br/>
                 <span className="text-white/70">UPTIME.</span>
               </h1>
-              <div className="glass border-l-4 border-l-blue-400 p-5 mb-10 max-w-xl rounded-r-2xl anim-fade-up delay-400">
-                <p className="text-slate-200 text-lg leading-relaxed">
+              <div className="glass border-l-4 border-l-blue-400 p-4 sm:p-5 mb-8 sm:mb-10 max-w-xl rounded-r-2xl anim-fade-up delay-400">
+                <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
                   Complete turbine overhauling, rapid reverse engineering, and OEM-compatible spares for steam turbines <strong className="text-white">5 kW to 27 MW</strong>. Trusted across India's power generation and process industries.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 anim-fade-up delay-500">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 anim-fade-up delay-500">
                 <button onClick={()=>navigate('/contact')}
-                  className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all flex items-center justify-center shadow-[0_0_40px_rgba(30,111,255,0.4)] hover:shadow-[0_0_60px_rgba(30,111,255,0.6)] group hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
-                  Request Technical Quote <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" aria-hidden="true"/>
+                  className="bg-blue-600 text-white px-6 sm:px-8 py-4 rounded-xl font-black text-base sm:text-lg hover:bg-blue-500 transition-all flex items-center justify-center shadow-[0_0_40px_rgba(30,111,255,0.4)] hover:shadow-[0_0_60px_rgba(30,111,255,0.6)] group hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[52px]">
+                  Request Technical Quote <ArrowRight className="ml-2 sm:ml-3 w-5 h-5 group-hover:translate-x-2 transition-transform" aria-hidden="true"/>
                 </button>
                 <a href={waMsg('Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.')}
                   target="_blank" rel="noopener noreferrer"
-                  className="glass text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
-                  <LifeBuoy className="mr-3 w-5 h-5 text-cyan-400" aria-hidden="true"/> Emergency Breakdown
+                  className="glass text-white border border-white/20 px-6 sm:px-8 py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/10 transition-all flex items-center justify-center hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-[52px]">
+                  <LifeBuoy className="mr-2 sm:mr-3 w-5 h-5 text-cyan-400 shrink-0" aria-hidden="true"/> Emergency Breakdown
                 </a>
               </div>
             </div>
           </div>
 
           {/* Right — floating stat cards over the background image */}
-          <div className="w-full lg:w-[38%] flex flex-col gap-4 anim-fade-in delay-600" aria-hidden="true">
+          <div className="hidden lg:flex w-full lg:w-[38%] flex-col gap-4 anim-fade-in delay-600" aria-hidden="true">
             {[
               {label:'Turbine Range',value:'5 kW – 27 MW',sub:'Back-pressure & condensing',color:'text-blue-400',border:'border-blue-500/30'},
               {label:'OEM Brands',value:'10+ Covered',sub:'Triveni · Siemens · BHEL & more',color:'text-cyan-400',border:'border-cyan-500/30'},
@@ -1102,9 +1681,6 @@ const HomePage = ({navigate}) => {
           <p className="text-center text-xs font-black text-slate-400 uppercase tracking-[0.3em]">OEM-Compatible &amp; Trusted By Industry Leaders</p>
         </div>
         <div className="relative w-full overflow-hidden flex items-center" aria-hidden="true">
-          {/* Fade edges */}
-          <div className="absolute left-0 top-0 w-20 md:w-40 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"/>
-          <div className="absolute right-0 top-0 w-20 md:w-40 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"/>
           <div className="ke-marquee gap-0 px-4 items-center">
             {[...OEMS,...OEMS].map((oem,i)=>{
               /* Each OEM gets its exact logo filename — upload these PNGs to /public */
@@ -1396,56 +1972,140 @@ const AboutPage = ({navigate}) => {
         canonicalPath="/about" pageType="website"/>
       <style>{GLOBAL_CSS}</style>
 
-      {/* Hero banner */}
-      <div className="bg-[#0A1628] text-white py-24 mb-0 relative overflow-hidden">
+      {/* Hero banner — OUR STORY */}
+      <div className="bg-[#0A1628] text-white relative overflow-hidden">
         <div className="bg-grid absolute inset-0" aria-hidden="true"/>
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px]" aria-hidden="true"/>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-16 relative z-10">
-          <div className="flex-1">
-            <span className="text-blue-400 font-black text-xs uppercase tracking-[0.25em] mb-4 block">Our Story</span>
-            <h1 className="font-display font-black text-white leading-tight tracking-tight mb-6" style={{fontSize:'clamp(2.5rem,5vw,4rem)'}}>
-              TWO DECADES OF<br/>
-              <span className="text-gradient">PRECISION ENGINEERING</span>
-            </h1>
-            <div className="w-20 h-0.5 bg-blue-500 mb-6" aria-hidden="true"/>
-            <p className="text-slate-300 text-xl leading-relaxed max-w-2xl">
-              From a specialist turbine maintenance outfit in Shamli, Uttar Pradesh — to a trusted, pan-India engineering partner for power plants, sugar mills, refineries, and process industries. Built on ex-OEM expertise. Driven by zero-tolerance for plant downtime.
-            </p>
-            <div className="flex flex-wrap gap-4 mt-8">
-              <button onClick={()=>navigate('/services')} className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center gap-2 group">
-                Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"/>
-              </button>
-              <button onClick={()=>navigate('/contact')} className="glass text-white border border-white/20 px-7 py-3.5 rounded-xl font-black text-sm hover:bg-white/10 transition-all">
-                Contact Engineering Team
-              </button>
-            </div>
-          </div>
-          <div className="flex-shrink-0 hidden lg:block" aria-hidden="true">
-            <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_40px_rgba(30,111,255,0.2)]" style={{width:'320px',height:'320px'}}>
-              <img src="hero-background.png" alt="" width="320" height="320" className="w-full h-full object-cover opacity-50"/>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/70 via-transparent to-transparent"/>
-              <div className="absolute bottom-5 left-5 right-5">
-                <div className="font-display font-black text-white text-4xl mb-1">20+</div>
-                <div className="text-blue-300 text-xs font-black uppercase tracking-widest">Years of Engineering Excellence</div>
+        {/* Radial glows */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/8 rounded-full blur-[140px] pointer-events-none" aria-hidden="true"/>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-800/10 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"/>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20 lg:py-28">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* Left — headline + story text */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-8 h-0.5 bg-blue-400 rounded-full"/>
+                <span className="text-blue-400 font-black text-xs uppercase tracking-[0.25em]">Our Story</span>
+              </div>
+              <h1 className="font-display font-black text-white leading-[1.0] tracking-tight mb-6"
+                style={{fontSize:'clamp(2.6rem,5.5vw,4.4rem)'}}>
+                TWO DECADES OF<br/>
+                <span className="text-gradient">PRECISION<br/>ENGINEERING</span>
+              </h1>
+              <div className="w-20 h-0.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true"/>
+
+              {/* Pull quote */}
+              <div className="border-l-4 border-blue-500 pl-5 mb-8 glass rounded-r-xl py-4 pr-5">
+                <p className="text-white text-lg font-bold leading-relaxed italic">
+                  "Zero tolerance for plant downtime — that's not a slogan. It's the engineering standard every client holds us to."
+                </p>
+                <p className="text-blue-400 text-xs font-black uppercase tracking-widest mt-2">— Keshav Enterprises Engineering Leadership</p>
+              </div>
+
+              <p className="text-slate-300 text-base leading-relaxed mb-6">
+                From a specialist turbine maintenance outfit in Shamli, Uttar Pradesh — to a trusted, pan-India engineering partner for power plants, sugar mills, refineries, and process industries. Built on ex-OEM expertise from <strong className="text-white">Triveni, Siemens, BHEL, Man Turbo, KKK</strong> and ABB. Driven by one mandate: maximum uptime for our clients.
+              </p>
+              <p className="text-slate-400 text-sm leading-relaxed mb-8">
+                We combine OEM-level technical knowledge with the speed and flexibility of a specialist contractor — delivering the right solution in days, not the 12–18 month lead times of original manufacturers.
+              </p>
+
+              {/* USP tags */}
+              <div className="flex flex-wrap gap-2 mb-10">
+                {['Ex-OEM Engineers','3D Laser Scanning','CMM Precision','24×7 Response','IndiaMART TrustSeal','Make In India'].map(tag=>(
+                  <span key={tag} className="glass border border-blue-500/30 text-blue-200 text-[11px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full">{tag}</span>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <button onClick={()=>navigate('/services')}
+                  className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center gap-2 group shadow-[0_0_30px_rgba(30,111,255,0.3)] hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 min-h-[44px]">
+                  Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true"/>
+                </button>
+                <button onClick={()=>navigate('/contact')}
+                  className="glass text-white border border-white/20 px-7 py-3.5 rounded-xl font-black text-sm hover:bg-white/10 transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-[44px]">
+                  Contact Engineering Team
+                </button>
               </div>
             </div>
+
+            {/* Right — visual panel with stats */}
+            <div className="hidden lg:flex flex-col gap-5" aria-hidden="true">
+              {/* Large image card */}
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-[0_0_50px_rgba(30,111,255,0.15)]" style={{height:'260px'}}>
+                <img src="hero-background.png" alt="Industrial turbine facility — Keshav Enterprises" width="580" height="260"
+                  className="w-full h-full object-cover opacity-40" loading="eager"/>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628] via-[#0A1628]/40 to-transparent"/>
+                {/* Overlay content */}
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="flex items-end gap-4">
+                    <div>
+                      <div className="font-display font-black text-white text-5xl leading-none mb-1">20+</div>
+                      <div className="text-blue-300 text-xs font-black uppercase tracking-[0.2em]">Years of Engineering Excellence</div>
+                    </div>
+                    <div className="ml-auto glass-dark px-4 py-2.5 rounded-xl border border-blue-500/30">
+                      <div className="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-0.5">Since</div>
+                      <div className="text-white font-display font-black text-2xl">2000</div>
+                    </div>
+                  </div>
+                </div>
+                {/* Top badge */}
+                <div className="absolute top-5 left-5 glass-dark px-3 py-1.5 rounded-lg border border-blue-500/30">
+                  <span className="text-blue-300 text-[10px] font-black uppercase tracking-widest">Shamli, Uttar Pradesh · India</span>
+                </div>
+              </div>
+
+              {/* Stat grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  {val:'5 kW – 27 MW',label:'Turbine Range',color:'text-cyan-400',border:'border-cyan-500/25',bg:'bg-cyan-500/5'},
+                  {val:'50 – 2,000 kg',label:'Dynamic Balancing',color:'text-yellow-400',border:'border-yellow-500/25',bg:'bg-yellow-500/5'},
+                  {val:'ISO 4406:99',label:'Lube Oil Flushing',color:'text-green-400',border:'border-green-500/25',bg:'bg-green-500/5'},
+                  {val:'4.3 / 5',label:'IndiaMART Rating',color:'text-orange-400',border:'border-orange-500/25',bg:'bg-orange-500/5'},
+                ].map(({val,label,color,border,bg},i)=>(
+                  <div key={i} className={`glass-dark rounded-2xl p-5 border ${border} ${bg} hover:-translate-y-0.5 transition-transform`}>
+                    <div className={`font-display font-black text-xl mb-1 ${color}`}>{val}</div>
+                    <div className="text-slate-400 text-[10px] font-black uppercase tracking-wider">{label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Certification bar */}
+              <div className="glass-dark rounded-2xl p-5 border border-white/8 flex items-center gap-4">
+                <div className="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center border border-blue-500/30 shrink-0">
+                  <Shield className="w-5 h-5 text-blue-400" aria-hidden="true"/>
+                </div>
+                <div>
+                  <div className="text-white font-black text-sm">IndiaMART TrustSeal Verified</div>
+                  <div className="text-slate-400 text-xs mt-0.5">Verified supplier · 50+ buyer reviews · 4.3/5 rating</div>
+                </div>
+                <div className="ml-auto">
+                  <MakeInIndiaBadge/>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
+
+        {/* Bottom accent line */}
+        <div className="h-1 w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent" aria-hidden="true"/>
       </div>
 
       {/* Stats bar */}
-      <div className="bg-blue-600 py-12">
+      <div className="bg-blue-600 py-10 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              {stat:'20+',label:'Years in Business'},
-              {stat:'10+',label:'OEM Brands Covered'},
-              {stat:'27 MW',label:'Max Turbine Handled'},
-              {stat:'24×7',label:'Emergency Response'},
-            ].map(({stat,label},i)=>(
+              {stat:'20+',label:'Years in Business',sub:'Since 2000'},
+              {stat:'10+',label:'OEM Brands Covered',sub:'Triveni · Siemens · BHEL'},
+              {stat:'27 MW',label:'Max Turbine Handled',sub:'5 kW to 27 MW range'},
+              {stat:'24×7',label:'Emergency Response',sub:'Multi-location engineers'},
+            ].map(({stat,label,sub},i)=>(
               <div key={i}>
-                <div className="font-display font-black text-white text-3xl md:text-4xl mb-1">{stat}</div>
-                <div className="text-blue-100 text-xs font-black uppercase tracking-widest">{label}</div>
+                <div className="font-display font-black text-white text-3xl md:text-4xl mb-0.5">{stat}</div>
+                <div className="text-blue-100 text-xs font-black uppercase tracking-widest mb-0.5">{label}</div>
+                <div className="text-blue-200/70 text-xs">{sub}</div>
               </div>
             ))}
           </div>
@@ -1605,8 +2265,8 @@ const AboutPage = ({navigate}) => {
    ───────────────────────────────────────────────────────────── */
 const ServicesPage = ({navigate}) => (
   <main id="main-content" className="pt-24 pb-20 bg-white">
-    <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
-      description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW."
+    <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering India"
+      description="Expert steam turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing to ISO 1940, lube oil flushing to ISO 4406:99, and machine alignment for turbines 5 kW to 27 MW. Triveni, Siemens, BHEL compatible."
       canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA}/>
     <style>{GLOBAL_CSS}</style>
     <div className="bg-[#0A1628] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -1707,8 +2367,8 @@ const ProductsPage = ({navigate}) => {
   const counts=useMemo(()=>PRODUCT_CATEGORIES.reduce((a,c)=>{a[c]=c==='All'?PRODUCTS.length:PRODUCTS.filter(p=>p.category===c).length;return a;},{}),[]);
   return (
     <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
-      <SEOHead title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
-        description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}
+      <SEOHead title="Industrial Products Catalog — Turbine Spares, Filter Elements, Expansion Joints India"
+        description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares for Triveni/Siemens/BHEL, lube oil filter elements, metallic expansion joints DN 15–DN 12000, ASME strainers, flexible hoses, and vibration monitoring equipment. Keshav Enterprises, Shamli UP.`}
         canonicalPath="/products" pageType="website"/>
       <style>{GLOBAL_CSS}</style>
       <div className="bg-[#0A1628] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
@@ -1769,8 +2429,8 @@ const ProductsPage = ({navigate}) => {
    ───────────────────────────────────────────────────────────── */
 const IndustriesPage = ({navigate}) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
-    <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical"
-      description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, and agro industries with specialized turbine engineering and industrial products."
+    <SEOHead title="Industries Served — Power Plants, Sugar Mills, Oil & Gas, Petrochemical India"
+      description="Keshav Enterprises serves power generation plants, sugar mills & distilleries, paper mills, oil & gas, petrochemical, and agro industries across India with specialized turbine engineering, OEM-compatible spares, and industrial products."
       canonicalPath="/industries" pageType="website"/>
     <style>{GLOBAL_CSS}</style>
     <div className="bg-[#0A1628] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -1850,8 +2510,8 @@ const IndustriesPage = ({navigate}) => (
    ───────────────────────────────────────────────────────────── */
 const BlogPage = ({navigate}) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
-    <SEOHead title="Engineering Blog — Turbine Maintenance & Industrial Insights"
-      description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."
+    <SEOHead title="Engineering Blog — Turbine Maintenance, Reverse Engineering & Industrial Insights"
+      description="Technical articles on steam turbine overhauling, lube oil contamination, reverse engineering turbine spares, and industrial maintenance best practices from Keshav Enterprises engineering team."
       canonicalPath="/blog" pageType="website"/>
     <style>{GLOBAL_CSS}</style>
     <div className="bg-[#0A1628] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -1942,6 +2602,22 @@ const BlogPage = ({navigate}) => (
 const BlogPostPage = ({slug, navigate}) => {
   const post=useMemo(()=>BLOG_POSTS.find(p=>p.slug===slug),[slug]);
   const others=useMemo(()=>post?BLOG_POSTS.filter(p=>p.id!==post.id).slice(0,2):[],[post]);
+  const articleSchema=useMemo(()=>post?{
+    '@context':'https://schema.org','@type':'Article',
+    headline:post.title,
+    description:post.excerpt,
+    author:{'@type':'Organization',name:'Keshav Enterprises Engineering Team',url:SITE_URL},
+    publisher:{'@type':'Organization',name:'Keshav Enterprises',logo:{'@type':'ImageObject',url:`${SITE_URL}/keshav-logo.png`,width:48,height:48}},
+    datePublished:post.date,
+    dateModified:post.date,
+    image:`${SITE_URL}/${post.coverImage}`,
+    url:`${SITE_URL}/blog/${post.slug}`,
+    mainEntityOfPage:{'@type':'WebPage','@id':`${SITE_URL}/blog/${post.slug}`},
+    keywords:post.tags.join(', '),
+    articleSection:'Industrial Engineering',
+    inLanguage:'en-IN',
+    wordCount: post.content.reduce((acc,b)=>acc+(b.text?b.text.split(' ').length:b.items?b.items.join(' ').split(' ').length:0),0),
+  }:null,[post]);
   useEffect(()=>{window.scrollTo({top:0,behavior:'smooth'});},[slug]);
   if(!post) return (
     <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
@@ -1970,7 +2646,7 @@ const BlogPostPage = ({slug, navigate}) => {
   };
   return (
     <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
-      <SEOHead title={post.title} description={post.excerpt} canonicalPath={`/blog/${post.slug}`} pageType="article" publishedTime={post.date}/>
+      <SEOHead title={post.title} description={post.excerpt} schema={articleSchema} canonicalPath={`/blog/${post.slug}`} pageType="article" publishedTime={post.date}/>
       <style>{GLOBAL_CSS}</style>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="flex items-center text-xs font-black text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2 pt-4">
@@ -2038,17 +2714,29 @@ const ContactPage = () => {
   const handleSubmit=()=>{const e=validate();if(Object.keys(e).length>0){setErrors(e);return;}setErrors({});setStatus('loading');const msg=`*New RFQ from Keshav Enterprises Website*\n\n*Company:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n*Inquiry Type:* ${iType}\n\n*Details:*\n${details}`;setTimeout(()=>{window.open(waMsg(msg),'_blank','noopener');setStatus('success');},800);};
   const ic=(err)=>`w-full px-5 py-4 bg-slate-50 border rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err?'border-red-400 bg-red-50':'border-slate-200'}`;
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" className="pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Contact Engineering Team — Request a Technical Quote"
-        description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support."
+        description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support. Call +91 9149229448 or WhatsApp for instant response."
         canonicalPath="/contact" pageType="website" schema={FAQ_SCHEMA}/>
       <style>{GLOBAL_CSS}</style>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16 pt-8 flex flex-col items-center">
-          <h1 className="font-display font-black text-slate-900 text-4xl md:text-6xl mb-5 tracking-tight">Contact Engineering</h1>
-          <div className="w-20 h-1 bg-blue-600 mb-5 rounded-full" aria-hidden="true"/>
-          <p className="text-slate-600 text-lg max-w-xl leading-relaxed">Reach our engineering team for technical specifications, reverse engineering quotes, or 24×7 emergency overhauling support.</p>
+      <div className="bg-[#0A1628] text-white py-20 mb-12 border-b-8 border-blue-600 relative overflow-hidden">
+        <div className="bg-grid absolute inset-0" aria-hidden="true"/>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
+          <h1 className="font-display font-black text-white text-4xl md:text-6xl mb-4 tracking-tight">Contact Engineering</h1>
+          <div className="w-20 h-0.5 bg-blue-500 mb-5 rounded-full" aria-hidden="true"/>
+          <p className="text-slate-300 max-w-2xl mx-auto text-lg leading-relaxed">Reach our engineering team for technical specifications, reverse engineering quotes, or 24×7 emergency overhauling support.</p>
+          <div className="flex flex-wrap gap-4 justify-center mt-8">
+            <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="flex items-center gap-2 glass px-5 py-3 rounded-xl font-bold text-white hover:bg-white/10 transition-colors min-h-[44px]">
+              <Phone className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true"/> {CONTACT_INFO.phones[0]}
+            </a>
+            <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#25D366] px-5 py-3 rounded-xl font-black text-white hover:bg-[#1ebe5d] transition-colors min-h-[44px]">
+              <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true"/> WhatsApp Now
+            </a>
+          </div>
         </div>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-14">
           <div className="lg:col-span-1 space-y-5">
             {[
@@ -2161,16 +2849,76 @@ const ContactPage = () => {
    ───────────────────────────────────────────────────────────── */
 export default function App() {
   const [currentPath,setCurrentPath]=useState(()=>window.location.hash.replace('#','')||'/');
+  const [isTransitioning,setIsTransitioning]=useState(false);
+  const [appReady,setAppReady]=useState(false);
+  const pendingPath=useRef(null);
+
   useEffect(()=>{
-    const h=()=>setCurrentPath(window.location.hash.replace('#','')||'/');
+    const h=()=>{
+      const newPath=window.location.hash.replace('#','')||'/';
+      pendingPath.current=newPath;
+      setIsTransitioning(true);
+      setTimeout(()=>{
+        setCurrentPath(newPath);
+        setIsTransitioning(false);
+      },320);
+    };
     window.addEventListener('popstate',h);
-    return()=>window.removeEventListener('popstate',h);
+
+    /* Inject global Organization schema once */
+    const orgSchema = {
+      '@context':'https://schema.org','@type':'Organization',
+      name:'Keshav Enterprises',url:SITE_URL,logo:`${SITE_URL}/keshav-logo.png`,
+      contactPoint:[
+        {'@type':'ContactPoint',telephone:'+919149229448',contactType:'technical support',availableLanguage:['English','Hindi'],areaServed:'IN'},
+        {'@type':'ContactPoint',telephone:'+916397363268',contactType:'customer service',availableLanguage:['English','Hindi'],areaServed:'IN'},
+      ],
+      address:{'@type':'PostalAddress',streetAddress:'Dayanand Nagar Gali No.2, Near Subash Ki Chakki',addressLocality:'Shamli',addressRegion:'Uttar Pradesh',postalCode:'247776',addressCountry:'IN'},
+      sameAs:['https://www.indiamart.com/keshav-enterprises-shamli/','https://www.linkedin.com/in/keshav-enterprises-825a473b8','https://www.instagram.com/ksengg007'],
+    };
+    let ld=document.getElementById('ld-org');
+    if(!ld){ld=document.createElement('script');ld.id='ld-org';ld.type='application/ld+json';document.head.appendChild(ld);}
+    ld.textContent=JSON.stringify(orgSchema);
+
+    /* Inject viewport meta */
+    let vm=document.querySelector('meta[name="viewport"]');
+    if(!vm){vm=document.createElement('meta');vm.name='viewport';document.head.appendChild(vm);}
+    vm.content='width=device-width, initial-scale=1, maximum-scale=5';
+
+    /* Initial load delay — let fonts/CSS settle, then reveal real content */
+    const t=setTimeout(()=>setAppReady(true),400);
+    return()=>{window.removeEventListener('popstate',h);clearTimeout(t);};
   },[]);
+
   const navigate=useCallback((path)=>{
-    window.history.pushState(null,'',`#${path}`);
-    setCurrentPath(path);
-    requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+    pendingPath.current=path;
+    setIsTransitioning(true);
+    setTimeout(()=>{
+      window.history.pushState(null,'',`#${path}`);
+      setCurrentPath(path);
+      setIsTransitioning(false);
+      requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+    },300);
   },[]);
+
+  /* Per-route skeleton — shown during transitions */
+  const transitionSkeleton=useMemo(()=>{
+    const p=pendingPath.current||currentPath;
+    if(p.startsWith('/product/'))  return <ProductDetailSkeleton/>;
+    if(p.startsWith('/blog/'))     return <BlogPostSkeleton/>;
+    switch(p){
+      case '/':           return <HomePageSkeleton/>;
+      case '/about':      return <AboutPageSkeleton/>;
+      case '/blog':
+      case '/blog/':      return <BlogPageSkeleton/>;
+      case '/services':   return <ServicesPageSkeleton/>;
+      case '/products':   return <ProductsPageSkeleton/>;
+      case '/industries': return <IndustriesPageSkeleton/>;
+      case '/contact':    return <ContactPageSkeleton/>;
+      default:            return <HomePageSkeleton/>;
+    }
+  },[currentPath]);
+
   const page=useMemo(()=>{
     if(currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate}/>;
     if(currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/','')} navigate={navigate}/>;
@@ -2185,10 +2933,41 @@ export default function App() {
       default: return <HomePage navigate={navigate}/>;
     }
   },[currentPath,navigate]);
+
+  /* Initial full-page skeleton — shown for first 400ms while fonts/CSS load */
+  if(!appReady) return (
+    <div className="font-sans min-h-screen flex flex-col bg-[#0A1628] overflow-x-hidden">
+      <style>{SKELETON_CSS}</style>
+      {/* Skeleton navbar */}
+      <div className="fixed w-full z-50 py-5 bg-transparent border-b border-transparent" aria-hidden="true">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 ske-dark rounded-lg"/>
+            <div className="w-36 h-5 ske-dark rounded"/>
+          </div>
+          <div className="hidden lg:flex gap-2 items-center">
+            {[60,50,70,60,75,55].map((w,i)=>(
+              <div key={i} className={`h-7 ske-dark rounded-lg ske-delay-${Math.min(i+1,6)}`} style={{width:w}}/>
+            ))}
+            <div className="w-24 h-9 ske-dark rounded-lg ml-3 ske-delay-6"/>
+          </div>
+          <div className="lg:hidden w-8 h-8 ske-dark rounded"/>
+        </div>
+      </div>
+      {/* Page-specific initial skeleton */}
+      {transitionSkeleton}
+    </div>
+  );
+
   return (
-    <div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
+    <div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827] overflow-x-hidden">
+      <style>{SKELETON_CSS}</style>
       <Navbar currentPath={currentPath} navigate={navigate}/>
-      <div className="flex-1 flex flex-col">{page}</div>
+      <div className="flex-1 flex flex-col">
+        {isTransitioning ? transitionSkeleton : (
+          <div className="ske-page-enter flex-1 flex flex-col">{page}</div>
+        )}
+      </div>
       <Footer navigate={navigate}/>
       <FloatingButtons/>
     </div>
