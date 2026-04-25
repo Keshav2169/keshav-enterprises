@@ -413,6 +413,10 @@ const GLOBAL_CSS = `
   * { font-family: 'Barlow', sans-serif; }
   .font-display { font-family: 'Barlow Condensed', sans-serif; }
 
+  /* Hard-clamp navbar logo — prevents raw image size from overflowing before CSS loads */
+  .ke-logo-wrap { width:36px!important; height:36px!important; min-width:36px!important; min-height:36px!important; max-width:36px!important; max-height:36px!important; overflow:hidden!important; flex-shrink:0!important; }
+  .ke-logo-wrap img { width:100%!important; height:100%!important; object-fit:contain!important; display:block!important; max-width:36px!important; max-height:36px!important; }
+
   /* Prevent horizontal overflow on mobile */
   html, body { overflow-x: hidden; max-width: 100vw; }
 
@@ -1121,18 +1125,20 @@ const BrandLogo = memo(({navigate}) => {
   const [imgErr, setImgErr] = useState(false);
   return (
     <a href="#/" onClick={e=>{e.preventDefault();navigate('/');}} aria-label="Keshav Enterprises — Home"
-      className="flex items-center space-x-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm">
-      {!imgErr
-        ? <img src="keshav-logo.png" alt="Keshav Enterprises" width="40" height="40"
-            className="h-9 w-9 sm:h-10 sm:w-10 object-contain rounded-lg flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
-            style={{maxWidth:'40px',maxHeight:'40px'}}
-            onError={()=>setImgErr(true)}/>
-        : <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30 flex-shrink-0">
-            <Settings className="w-5 h-5 text-white" aria-hidden="true"/>
-          </div>}
-      <div className="font-display font-black text-lg sm:text-xl tracking-tight text-white flex items-center uppercase leading-none">
-        KESHAV<span className="text-blue-400 mx-1">·</span>ENTERPRISES
+      className="flex items-center gap-2.5 group outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm flex-shrink-0">
+      {/* Hard container — overflow:hidden is the physical wall that stops the image growing */}
+      <div className="ke-logo-wrap" style={{width:36,height:36,minWidth:36,minHeight:36,maxWidth:36,maxHeight:36,overflow:'hidden',borderRadius:8,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+        {!imgErr
+          ? <img src="keshav-logo.png" alt="Keshav Enterprises"
+              style={{width:'100%',height:'100%',objectFit:'contain',display:'block'}}
+              onError={()=>setImgErr(true)}/>
+          : <div style={{width:'100%',height:'100%',background:'linear-gradient(135deg,#1E6FFF,#1e40af)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <Settings className="w-4 h-4 text-white" aria-hidden="true"/>
+            </div>}
       </div>
+      <span className="font-display font-black text-lg sm:text-xl tracking-tight text-white uppercase leading-none whitespace-nowrap">
+        KESHAV<span className="text-blue-400 mx-1">·</span>ENTERPRISES
+      </span>
     </a>
   );
 });
@@ -1231,7 +1237,7 @@ const Navbar = memo(({currentPath, navigate}) => {
       className={`fixed w-full z-50 transition-all duration-400 ${scrolled?'py-3 bg-[#0A1628]/95 backdrop-blur-xl border-b border-blue-900/30 shadow-[0_4px_30px_rgba(0,0,0,0.4)]':'py-5 bg-transparent border-b border-transparent'}`}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold">Skip to main content</a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center overflow-hidden" style={{minHeight:0}}>
           <BrandLogo navigate={navigate}/>
           <div className="hidden lg:flex space-x-1 items-center">
             {NAV_LINKS.map(link=>(
