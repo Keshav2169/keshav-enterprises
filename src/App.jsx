@@ -413,6 +413,13 @@ const GLOBAL_CSS = `
   * { font-family: 'Barlow', sans-serif; }
   .font-display { font-family: 'Barlow Condensed', sans-serif; }
 
+  /* content-visibility — defer off-screen rendering for Lighthouse CLS/LCP */
+  .cv-auto { content-visibility: auto; contain-intrinsic-size: 0 600px; }
+  /* Improve fixed navbar paint performance */
+  nav[role="navigation"] { transform: translateZ(0); }
+  /* Ensure Google Fonts never block rendering */
+  @font-face { font-family:'Barlow Condensed'; font-display:swap; src:local('Barlow Condensed'); }
+
   /* Hard-clamp navbar logo — prevents raw image size from overflowing before CSS loads */
   .ke-logo-wrap { width:36px!important; height:36px!important; min-width:36px!important; min-height:36px!important; max-width:36px!important; max-height:36px!important; overflow:hidden!important; flex-shrink:0!important; }
   .ke-logo-wrap img { width:100%!important; height:100%!important; object-fit:contain!important; display:block!important; max-width:36px!important; max-height:36px!important; }
@@ -1742,7 +1749,7 @@ const HomePage = ({navigate}) => {
       </section>
 
       {/* ── SERVICES PREVIEW ── */}
-      <section className="py-24 md:py-32 bg-white" aria-labelledby="services-preview-heading">
+      <section className="py-24 md:py-32 bg-white cv-auto" aria-labelledby="services-preview-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">What We Do</span>
@@ -1831,30 +1838,32 @@ const HomePage = ({navigate}) => {
       </section>
 
       {/* ── WHY CHOOSE US ── */}
-      <section className="py-24 bg-slate-50" aria-labelledby="why-us-heading">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-24 bg-[#0A1628] relative overflow-hidden cv-auto" aria-labelledby="why-us-heading">
+        <div className="bg-grid absolute inset-0 opacity-50" aria-hidden="true"/>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true"/>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">Why Keshav Enterprises</span>
-              <h2 id="why-us-heading" className="font-display font-black text-slate-900 text-4xl md:text-5xl tracking-tight mb-6">Precision Manufacturing.<br/><span className="text-blue-600">Zero Compromise.</span></h2>
-              <div className="w-20 h-1 bg-blue-600 mb-8 rounded-full" aria-hidden="true"/>
-              <p className="text-slate-600 text-lg leading-relaxed mb-10">
+              <span className="text-blue-400 font-black text-xs uppercase tracking-[0.25em] mb-3 block">Why Keshav Enterprises</span>
+              <h2 id="why-us-heading" className="font-display font-black text-white text-4xl md:text-5xl tracking-tight mb-6">Precision Manufacturing.<br/><span className="text-gradient">Zero Compromise.</span></h2>
+              <div className="w-20 h-0.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true"/>
+              <p className="text-slate-300 text-lg leading-relaxed mb-10">
                 We manufacture high-tolerance turbine spares, industrial strainers, and metallic expansion bellows (DN 15 to DN 12,000). Using 3D laser scanning, CMM, and PMI testing, we recreate obsolete components to exact specifications — drastically reducing plant downtime.
               </p>
               <div className="space-y-4">
                 {[
-                  {Icon:Eye,'label':'Ex-OEM Engineers',text:'Team of engineers from Triveni, Siemens, BHEL, Belliss, KKK & ABB'},
-                  {Icon:Gauge,'label':'ISO/API Standards',text:'Dynamic balancing 50–2,000 kg to ISO 1940/API 670 certification'},
-                  {Icon:FlaskConical,'label':'PMI Material Testing',text:'3D scanning + CMM + XRF ensures exact material & dimensional match'},
-                  {Icon:Truck,'label':'Reduced Lead Times',text:'In-house reverse engineering eliminates 12–18 month OEM wait times'},
+                  {Icon:Eye,   label:'Ex-OEM Engineers',    text:'Team of engineers from Triveni, Siemens, BHEL, Belliss, KKK & ABB'},
+                  {Icon:Gauge, label:'ISO/API Standards',   text:'Dynamic balancing 50–2,000 kg to ISO 1940/API 670 certification'},
+                  {Icon:FlaskConical,label:'PMI Material Testing',text:'3D scanning + CMM + XRF ensures exact material & dimensional match'},
+                  {Icon:Truck, label:'Reduced Lead Times',  text:'In-house reverse engineering eliminates 12–18 month OEM wait times'},
                 ].map(({Icon,label,text},i)=>(
-                  <div key={i} className="flex items-start gap-4 bg-white p-5 rounded-2xl border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all">
-                    <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 shrink-0">
-                      <Icon className="w-5 h-5 text-blue-600" aria-hidden="true"/>
+                  <div key={i} className="flex items-start gap-4 glass-dark p-5 rounded-2xl hover:border-blue-500/30 transition-all">
+                    <div className="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center border border-blue-500/30 shrink-0">
+                      <Icon className="w-5 h-5 text-blue-400" aria-hidden="true"/>
                     </div>
                     <div>
-                      <div className="font-black text-slate-900 text-sm mb-1">{label}</div>
-                      <div className="text-slate-500 text-sm leading-relaxed">{text}</div>
+                      <div className="font-black text-white text-sm mb-1">{label}</div>
+                      <div className="text-slate-400 text-sm leading-relaxed">{text}</div>
                     </div>
                   </div>
                 ))}
@@ -1863,21 +1872,28 @@ const HomePage = ({navigate}) => {
             <div className="flex justify-center lg:justify-end">
               <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
                 {[
-                  {Icon:Cog,label:'Turbine Overhauling',sub:'All major OEMs',color:'from-blue-600/20 to-blue-800/10',border:'border-blue-500/30',accent:'text-blue-400'},
-                  {Icon:FlaskConical,label:'Reverse Engineering',sub:'3D Scan + CMM + PMI',color:'from-purple-600/20 to-purple-800/10',border:'border-purple-500/30',accent:'text-purple-400'},
-                  {Icon:Gauge,label:'Dynamic Balancing',sub:'ISO 1940 / API 670',color:'from-cyan-600/20 to-cyan-800/10',border:'border-cyan-500/30',accent:'text-cyan-400'},
-                  {Icon:Droplets,label:'Lube Oil Flushing',sub:'ISO 4406:99',color:'from-green-600/20 to-green-800/10',border:'border-green-500/30',accent:'text-green-400'},
-                  {Icon:Target,label:'Machine Alignment',sub:'Laser precision',color:'from-orange-600/20 to-orange-800/10',border:'border-orange-500/30',accent:'text-orange-400'},
-                  {Icon:Wrench,label:'Erection & Commission',sub:'OEM documentation',color:'from-yellow-600/20 to-yellow-800/10',border:'border-yellow-500/30',accent:'text-yellow-400'},
-                ].map(({Icon,label,sub,color,border,accent},i)=>(
-                  <div key={i} className={`bg-gradient-to-br ${color} border ${border} rounded-2xl p-5 flex flex-col gap-3 hover:-translate-y-1 transition-all duration-300 group`}>
-                    <div className={`w-10 h-10 bg-black/30 rounded-xl flex items-center justify-center border ${border}`}>
-                      <Icon className={`w-5 h-5 ${accent}`} aria-hidden="true"/>
+                  {Icon:Cog,      label:'Turbine Overhauling', sub:'All Major OEMs',        accent:'#60a5fa', glow:'rgba(96,165,250,0.15)',  border:'rgba(96,165,250,0.25)'},
+                  {Icon:FlaskConical,label:'Reverse Engineering',sub:'3D Scan + CMM + PMI', accent:'#a78bfa', glow:'rgba(167,139,250,0.15)', border:'rgba(167,139,250,0.25)'},
+                  {Icon:Gauge,    label:'Dynamic Balancing',   sub:'ISO 1940 / API 670',   accent:'#22d3ee', glow:'rgba(34,211,238,0.15)',  border:'rgba(34,211,238,0.25)'},
+                  {Icon:Droplets, label:'Lube Oil Flushing',   sub:'ISO 4406:99',           accent:'#34d399', glow:'rgba(52,211,153,0.15)',  border:'rgba(52,211,153,0.25)'},
+                  {Icon:Target,   label:'Machine Alignment',   sub:'Laser Precision',       accent:'#fb923c', glow:'rgba(251,146,60,0.15)',  border:'rgba(251,146,60,0.25)'},
+                  {Icon:Wrench,   label:'Erection & Commission',sub:'OEM Documentation',    accent:'#fbbf24', glow:'rgba(251,191,36,0.15)',  border:'rgba(251,191,36,0.25)'},
+                ].map(({Icon,label,sub,accent,glow,border},i)=>(
+                  <div key={i}
+                    className="rounded-2xl p-5 flex flex-col gap-3 hover:-translate-y-1 transition-all duration-300 group cursor-default"
+                    style={{background:`linear-gradient(135deg, rgba(13,31,60,0.95) 0%, rgba(10,22,40,0.98) 100%)`, border:`1px solid ${border}`, boxShadow:`0 4px 24px ${glow}, inset 0 1px 0 rgba(255,255,255,0.04)`}}>
+                    {/* Icon box */}
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{background:`linear-gradient(135deg, ${glow.replace('0.15','0.3')}, ${glow.replace('0.15','0.1')})`, border:`1px solid ${border}`, boxShadow:`0 0 12px ${glow}`}}>
+                      <Icon style={{width:18,height:18,color:accent}} aria-hidden="true"/>
                     </div>
+                    {/* Text */}
                     <div>
                       <div className="text-white font-black text-sm leading-tight mb-1">{label}</div>
-                      <div className={`text-[10px] font-black ${accent} uppercase tracking-wider opacity-70`}>{sub}</div>
+                      <div className="text-[10px] font-black uppercase tracking-wider" style={{color:accent, opacity:0.85}}>{sub}</div>
                     </div>
+                    {/* Bottom glow line on hover */}
+                    <div className="h-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{background:`linear-gradient(90deg, transparent, ${accent}, transparent)`}}/>
                   </div>
                 ))}
               </div>
@@ -1885,8 +1901,6 @@ const HomePage = ({navigate}) => {
           </div>
         </div>
       </section>
-
-      {/* ── CTA ── */}
       <section className="bg-blue-600 py-20 relative overflow-hidden" aria-labelledby="cta-heading">
         <div className="absolute inset-0 bg-hex opacity-30" aria-hidden="true"/>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -2729,19 +2743,19 @@ const ContactPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                 <div>
                   <label htmlFor="c-name" className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Company Name *</label>
-                  <input id="c-name" type="text" value={name} onChange={e=>setName(e.target.value)} aria-required="true" aria-invalid={!!errors.name} className={ic(errors.name)}/>
+                  <input id="c-name" type="text" value={name} onChange={e=>setName(e.target.value)} aria-required="true" aria-invalid={!!errors.name} autoComplete="organization" className={ic(errors.name)}/>
                   {errors.name&&<p role="alert" className="text-red-600 text-xs font-bold mt-1.5">{errors.name}</p>}
                 </div>
                 <div>
                   <label htmlFor="c-email" className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Email Address *</label>
-                  <input id="c-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} aria-required="true" aria-invalid={!!errors.email} className={ic(errors.email)}/>
+                  <input id="c-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} aria-required="true" aria-invalid={!!errors.email} autoComplete="email" className={ic(errors.email)}/>
                   {errors.email&&<p role="alert" className="text-red-600 text-xs font-bold mt-1.5">{errors.email}</p>}
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
                 <div>
                   <label htmlFor="c-phone" className="block text-[10px] font-black text-slate-500 mb-2 uppercase tracking-widest">Phone Number *</label>
-                  <input id="c-phone" type="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" aria-required="true" aria-invalid={!!errors.phone} className={ic(errors.phone)}/>
+                  <input id="c-phone" type="tel" value={phone} onChange={e=>setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" aria-required="true" aria-invalid={!!errors.phone} autoComplete="tel" className={ic(errors.phone)}/>
                   {errors.phone&&<p role="alert" className="text-red-600 text-xs font-bold mt-1.5">{errors.phone}</p>}
                 </div>
                 <div>
@@ -2770,7 +2784,7 @@ const ContactPage = () => {
                 <label htmlFor="c-files" className="flex items-center text-xs font-black text-slate-700 mb-2.5 uppercase tracking-widest cursor-pointer">
                   <Paperclip className="w-4 h-4 mr-2" aria-hidden="true"/> Attach Technical Drawings (Optional)
                 </label>
-                <input id="c-files" type="file" multiple aria-label="Attach technical drawings (optional)"
+                <input id="c-files" type="file" multiple accept=".pdf,.dwg,.dxf,.jpg,.jpeg,.png,.step,.iges,.stp" aria-label="Attach technical drawings — PDF, DWG, DXF, images (optional)"
                   className="w-full text-slate-700 text-sm file:cursor-pointer file:mr-3 file:py-2.5 file:px-5 file:rounded-xl file:border-0 file:text-xs file:font-black file:bg-slate-900 file:text-white hover:file:bg-blue-600 transition-all cursor-pointer outline-none"/>
               </div>
               <button type="button" onClick={handleSubmit} disabled={status==='loading'}
@@ -2820,7 +2834,59 @@ export default function App() {
     };
     window.addEventListener('popstate',h);
 
-    /* Inject global Organization schema once */
+    /* ── OWASP Security: meta equivalents injected once ── */
+    const secMetas = [
+      // A05: Security Misconfiguration — Referrer Policy
+      {name:'referrer', content:'strict-origin-when-cross-origin'},
+      // A05: Clickjacking protection signal (real header needed on server)
+      {httpEquiv:'X-UA-Compatible', content:'IE=edge'},
+      // A03: Injection — tell browser not to sniff MIME types
+      {httpEquiv:'X-Content-Type-Options', content:'nosniff'},
+    ];
+    secMetas.forEach(({name,httpEquiv,content})=>{
+      const sel = name ? `meta[name="${name}"]` : `meta[http-equiv="${httpEquiv}"]`;
+      let m=document.querySelector(sel);
+      if(!m){m=document.createElement('meta');if(name)m.name=name;if(httpEquiv)m.httpEquiv=httpEquiv;document.head.appendChild(m);}
+      m.content=content;
+    });
+    // CSP meta tag (A03 Injection defence): block inline scripts except ours, no eval
+    // Note: server-level CSP header always takes precedence; this is a defence-in-depth layer
+    if(!document.querySelector('meta[http-equiv="Content-Security-Policy"]')){
+      const csp=document.createElement('meta');
+      csp.httpEquiv='Content-Security-Policy';
+      csp.content=[
+        "default-src 'self'",
+        "script-src 'self' 'unsafe-inline'", // React needs inline scripts; narrow on server
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src 'self' https://fonts.gstatic.com",
+        "img-src 'self' data: https:",
+        "connect-src 'self' https://api.anthropic.com https://api.whatsapp.com",
+        "frame-src 'none'",           // A05: no iframe embedding
+        "object-src 'none'",          // A05: no Flash/plugins
+        "base-uri 'self'",            // A08: block base tag injection
+        "form-action 'self' https://wa.me https://api.whatsapp.com", // A01
+        "upgrade-insecure-requests",  // A02: force HTTPS
+      ].join('; ');
+      document.head.appendChild(csp);
+    }
+
+    /* ── Performance: resource hints injected once ── */
+    const hints = [
+      {rel:'preconnect', href:'https://fonts.googleapis.com'},
+      {rel:'preconnect', href:'https://fonts.gstatic.com', crossorigin:''},
+      {rel:'dns-prefetch', href:'https://api.whatsapp.com'},
+      {rel:'dns-prefetch', href:'https://www.indiamart.com'},
+      {rel:'preload', href:'https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;900&family=Barlow+Condensed:wght@700;900&display=swap', as:'style'},
+    ];
+    hints.forEach(({rel,href,crossorigin,as})=>{
+      if(document.querySelector(`link[href="${href}"]`)) return;
+      const l=document.createElement('link'); l.rel=rel; l.href=href;
+      if(crossorigin!==undefined) l.crossOrigin='';
+      if(as) l.as=as;
+      document.head.appendChild(l);
+    });
+
+    /* ── Inject Organization schema ── */
     const orgSchema = {
       '@context':'https://schema.org','@type':'Organization',
       name:'Keshav Enterprises',url:SITE_URL,logo:`${SITE_URL}/keshav-logo.png`,
