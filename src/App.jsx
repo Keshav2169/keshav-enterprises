@@ -7,7 +7,7 @@ import {
   CheckCircle2, ExternalLink, MessageCircle, Activity, Droplets,
   Search, Layers, Target, Cpu, ArrowLeft, Paperclip,
   Filter, Hexagon, Cog, LifeBuoy, ChevronLeft,
-  Award, Clock, TrendingUp, Users, Globe, BookOpen, Tag, Calendar, User
+  Award, Clock, TrendingUp, Users, Globe, BookOpen, Calendar, User
 } from 'lucide-react';
 
 const CONTACT_INFO = {
@@ -515,6 +515,23 @@ const FAQ_SCHEMA = {
 // ─── UTILITY ──────────────────────────────────────────────────
 const waMsg = (text) => `https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
 
+// PERF: useInView — returns ref + boolean, renders children only when element enters viewport
+// rootMargin controls how far ahead to start loading (200px = pre-load before visible)
+const useInView = (rootMargin = '150px') => {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(()=>{
+    const el = ref.current;
+    if(!el || inView) return;
+    const obs = new IntersectionObserver(([e])=>{
+      if(e.isIntersecting){ setInView(true); obs.disconnect(); }
+    },{rootMargin});
+    obs.observe(el);
+    return ()=>obs.disconnect();
+  },[inView,rootMargin]);
+  return [ref, inView];
+};
+
 const getCategoryIcon = (category) => {
   const cls = 'w-16 h-16 text-slate-300 group-hover:scale-110 group-hover:text-blue-500 transition-all duration-500';
   switch(category){
@@ -549,11 +566,22 @@ const SEOHead = memo(({title, description, schema, pageType, canonicalPath, publ
       if(!t){ t = document.createElement('meta'); t.setAttribute(attr, val); document.head.appendChild(t); }
       t.content = content;
     };
-    const sl = (rel, href) => {
-      let t = document.querySelector(`link[rel="${rel}"]`);
-      if(!t){ t = document.createElement('link'); t.rel = rel; document.head.appendChild(t); }
-      t.href = href;
+    const sl = (rel, href, extra) => {
+      const sel = extra ? `link[rel="${rel}"][href="${href}"]` : `link[rel="${rel}"]`;
+      let t = document.querySelector(sel);
+      if(!t){ t = document.createElement('link'); t.rel = rel; if(extra) Object.assign(t,extra); document.head.appendChild(t); }
+      if(!extra) t.href = href;
     };
+
+    // ── Preconnect / dns-prefetch (render-blocking fix — inject once) ──
+    if(!document.querySelector('link[rel="preconnect"][href="https://maps.google.com"]')){
+      ['https://maps.google.com','https://maps.gstatic.com','https://www.indiamart.com'].forEach(origin=>{
+        const pc=document.createElement('link'); pc.rel='preconnect'; pc.href=origin; pc.crossOrigin='anonymous';
+        document.head.appendChild(pc);
+        const dns=document.createElement('link'); dns.rel='dns-prefetch'; dns.href=origin;
+        document.head.appendChild(dns);
+      });
+    }
 
     // ── Core ──
     sm('meta[name="description"]',      'name','description',    fullDesc);
@@ -572,7 +600,7 @@ const SEOHead = memo(({title, description, schema, pageType, canonicalPath, publ
         pl.rel = 'preload';
         pl.as = 'image';
         pl.href = 'hero-background.png';
-        pl.setAttribute('fetchPriority', 'high');
+        pl.setAttribute('fetchpriority', 'high');
         document.head.appendChild(pl);
       }
     }
@@ -717,9 +745,16 @@ const Navbar = memo(({currentPath, navigate}) => {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
   useEffect(()=>{
-    const h=()=>setScrolled(window.scrollY>20);
+    let rafId = null;
+    const h=()=>{
+      if(rafId) return;
+      rafId = requestAnimationFrame(()=>{
+        setScrolled(window.scrollY>20);
+        rafId = null;
+      });
+    };
     window.addEventListener('scroll',h,{passive:true});
-    return ()=>window.removeEventListener('scroll',h);
+    return ()=>{ window.removeEventListener('scroll',h); if(rafId) cancelAnimationFrame(rafId); };
   },[]);
   useEffect(()=>{
     if(!isOpen)return;
@@ -1097,6 +1132,10 @@ const HomePage = ({navigate}) => {
   const [heroErr, setHeroErr] = useState(false);
   useEffect(()=>{const t=setTimeout(()=>setLoaded(true),100);return()=>clearTimeout(t);},[]);
   const featuredProducts = useMemo(()=>PRODUCTS.slice(0,16),[]);
+  // PERF: defer below-fold sections — only render when near viewport
+  const [productsRef, productsInView] = useInView('300px');
+  const [servicesRef, servicesInView] = useInView('200px');
+  const [capabilitiesRef, capabilitiesInView] = useInView('200px');
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website"/>
@@ -1110,7 +1149,7 @@ const HomePage = ({navigate}) => {
               alt=""
               width="1920"
               height="1080"
-              fetchPriority="high"
+              fetchpriority="high"
               decoding="async"
               className="absolute inset-0 w-full h-full object-cover"
               style={{ opacity: 0.92, objectPosition: 'center center' }}
@@ -1222,7 +1261,7 @@ const HomePage = ({navigate}) => {
         </div>
       </section>
       {/* Products Marquee */}
-      <section className="bg-slate-50 py-20 border-b border-slate-200 overflow-hidden" aria-labelledby="featured-products-heading">
+      <section ref={productsRef} className="bg-slate-50 py-20 border-b border-slate-200 overflow-hidden" aria-labelledby="featured-products-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 flex flex-col sm:flex-row justify-between items-end gap-6">
           <div>
             <h2 id="featured-products-heading" className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">Featured Engineering Products</h2>
@@ -1235,6 +1274,7 @@ const HomePage = ({navigate}) => {
         <div className="relative w-full overflow-hidden flex items-center" aria-hidden="true">
           <div className="absolute left-0 top-0 w-16 md:w-32 h-full bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"/>
           <div className="absolute right-0 top-0 w-16 md:w-32 h-full bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"/>
+          {productsInView && (
           <div className="ke-marquee-slow gap-6 px-4 py-4">
             {[...featuredProducts,...featuredProducts].map((product,i)=>(
               <div key={`${product.id}-${i}`} onClick={()=>navigate(`/product/${product.id}`)}
@@ -1260,6 +1300,7 @@ const HomePage = ({navigate}) => {
               </div>
             ))}
           </div>
+          )}
         </div>
         <div className="mt-8 flex justify-center sm:hidden px-4">
           <button onClick={()=>navigate('/products')} className="w-full bg-slate-900 text-white px-6 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-md flex items-center justify-center text-base">
@@ -1268,7 +1309,7 @@ const HomePage = ({navigate}) => {
         </div>
       </section>
       {/* Services Preview */}
-      <section className="py-24 md:py-32 bg-white border-t border-slate-200" aria-labelledby="services-preview-heading">
+      <section ref={servicesRef} className="py-24 md:py-32 bg-white border-t border-slate-200" aria-labelledby="services-preview-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 id="services-preview-heading" className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">Technical Services</h2>
@@ -1302,7 +1343,7 @@ const HomePage = ({navigate}) => {
         </div>
       </section>
       {/* Capabilities */}
-      <section className="py-24 md:py-32 bg-slate-50 border-t border-slate-200" aria-labelledby="capabilities-heading">
+      <section ref={capabilitiesRef} className="py-24 md:py-32 bg-slate-50 border-t border-slate-200" aria-labelledby="capabilities-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center md:text-left">
             <h2 id="capabilities-heading" className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight">Precision Manufacturing.</h2>
@@ -1884,17 +1925,24 @@ const ProductsPage = ({navigate}) => {
   const categoryScrollRef = useRef(null);
   const [showLeft, setShowLeft] = useState(false);
   const [showRight, setShowRight] = useState(true);
+  const scrollRafRef = useRef(null);
   const handleScroll = useCallback(()=>{
-    if(!categoryScrollRef.current)return;
-    const {scrollLeft,scrollWidth,clientWidth}=categoryScrollRef.current;
-    setShowLeft(scrollLeft>5);
-    setShowRight(Math.ceil(scrollLeft+clientWidth)<scrollWidth-5);
+    if(!categoryScrollRef.current) return;
+    if(scrollRafRef.current) return;
+    scrollRafRef.current = requestAnimationFrame(()=>{
+      if(categoryScrollRef.current){
+        const {scrollLeft,scrollWidth,clientWidth}=categoryScrollRef.current;
+        setShowLeft(scrollLeft>5);
+        setShowRight(Math.ceil(scrollLeft+clientWidth)<scrollWidth-5);
+      }
+      scrollRafRef.current = null;
+    });
   },[]);
   useEffect(()=>{
     handleScroll();
     const t=setTimeout(handleScroll,250);
     window.addEventListener('resize',handleScroll,{passive:true});
-    return()=>{clearTimeout(t);window.removeEventListener('resize',handleScroll);};
+    return()=>{clearTimeout(t);window.removeEventListener('resize',handleScroll);if(scrollRafRef.current)cancelAnimationFrame(scrollRafRef.current);};
   },[activeCategory,handleScroll]);
   const scrollCats = useCallback((dir)=>{
     categoryScrollRef.current?.scrollBy({left:dir==='left'?-350:350,behavior:'smooth'});
@@ -2073,6 +2121,37 @@ const IndustriesPage = ({navigate}) => (
   </main>
 );
 
+// ─── LAZY MAP (loads iframe only when scrolled into view — fixes render-blocking) ──
+const LazyMap = memo(() => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(()=>{
+    const el = ref.current;
+    if(!el) return;
+    const obs = new IntersectionObserver(([entry])=>{
+      if(entry.isIntersecting){ setVisible(true); obs.disconnect(); }
+    },{rootMargin:'200px'});
+    obs.observe(el);
+    return ()=>obs.disconnect();
+  },[]);
+  return (
+    <div ref={ref} className="absolute inset-0">
+      {visible
+        ? <iframe title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
+            src="https://maps.google.com/maps?q=Keshav%20Enterprises,%20Shamli,%20Uttar%20Pradesh&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            width="100%" height="100%" style={{border:0}} allowFullScreen referrerPolicy="no-referrer-when-downgrade"
+            className="absolute inset-0 rounded-2xl"/>
+        : <div className="absolute inset-0 flex items-center justify-center bg-slate-100 rounded-2xl">
+            <div className="text-center text-slate-400">
+              <MapPin className="w-10 h-10 mx-auto mb-2" aria-hidden="true"/>
+              <span className="text-sm font-medium">Map loading...</span>
+            </div>
+          </div>
+      }
+    </div>
+  );
+});
+
 // ─── CONTACT PAGE ─────────────────────────────────────────────
 const ContactPage = () => {
   const [name,setName]=useState(''); const [email,setEmail]=useState('');
@@ -2202,10 +2281,7 @@ const ContactPage = () => {
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Our Manufacturing Facility — Shamli, U.P.</h2>
           </div>
           <div className="w-full h-[400px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 relative">
-            <iframe title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
-              src="https://maps.google.com/maps?q=Keshav%20Enterprises,%20Shamli,%20Uttar%20Pradesh&t=&z=13&ie=UTF8&iwloc=&output=embed"
-              width="100%" height="100%" style={{border:0}} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 rounded-2xl"/>
+            <LazyMap/>
           </div>
         </div>
       </div>
@@ -2214,6 +2290,22 @@ const ContactPage = () => {
 };
 
 // ─── APP ROOT ─────────────────────────────────────────────────
+// PERF: PageShell defers rendering to next tick so navigation feels instant
+// and the browser can paint the Navbar/skeleton before heavy page components run
+const PageShell = memo(({children}) => {
+  const [ready, setReady] = useState(false);
+  useEffect(()=>{
+    const id = requestAnimationFrame(()=>setReady(true));
+    return ()=>cancelAnimationFrame(id);
+  },[]);
+  if(!ready) return (
+    <div className="flex-1 flex items-center justify-center min-h-[60vh]" aria-hidden="true">
+      <div className="w-10 h-10 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin"/>
+    </div>
+  );
+  return children;
+});
+
 export default function App() {
   const [currentPath, setCurrentPath] = useState(()=>window.location.hash.replace('#','')||'/');
   useEffect(()=>{
@@ -2226,7 +2318,7 @@ export default function App() {
     setCurrentPath(path);
     requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
   },[]);
-  // PERF FIX: useMemo for page rendering
+  // PERF FIX: useMemo for page rendering — only re-renders when path changes
   const page = useMemo(()=>{
     if(currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate}/>;
     if(currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/','')} navigate={navigate}/>;
@@ -2245,7 +2337,9 @@ export default function App() {
   return (
     <div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
       <Navbar currentPath={currentPath} navigate={navigate}/>
-      <div className="flex-1 flex flex-col">{page}</div>
+      <div className="flex-1 flex flex-col">
+        {currentPath === '/' ? page : <PageShell key={currentPath}>{page}</PageShell>}
+      </div>
       <Footer navigate={navigate}/>
       <FloatingButtons/>
     </div>
