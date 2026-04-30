@@ -461,14 +461,13 @@ const MARQUEE_CSS = `
   .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
 
   /* PERF: paint containment on heavy sections reduces repaint area */
-  section{contain:paint}
+  section:not(.hero-section){contain:paint}
 
   /* Hero image mobile display fix */
   .hero-mobile-vignette{display:none}
   @media(max-width:767px){
     .hero-desktop-grad{display:none!important}
     .hero-mobile-vignette{display:block!important}
-    .hero-bg-img{object-position:65% center!important}
     .hero-glow-orb{display:none!important}
     /* Reduce main-thread work on mobile - limit expensive blur filters */
     .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
@@ -1509,22 +1508,22 @@ const HomePage = ({ navigate }) => {
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
       <style>{MARQUEE_CSS}</style>
       {/* Hero */}
-      <section className="relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" aria-labelledby="hero-heading">
+      <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
         <div className="absolute inset-0 z-0" aria-hidden="true">
           {!heroErr && <img src="hero-background.png" alt="" width="1920" height="1080"
             fetchPriority="high" decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover hero-bg-img"
-            style={{ opacity: 0.92 }}
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0.90, objectPosition: 'center center' }}
             onError={() => setHeroErr(true)} />
           }
           {/* Mobile: top+bottom vignette — image centre stays fully visible */}
-          <div className="hero-mobile-vignette absolute inset-0" style={{ background: 'linear-gradient(to bottom,rgba(10,25,47,0.72) 0%,rgba(10,25,47,0.20) 30%,rgba(10,25,47,0.20) 60%,rgba(10,25,47,0.90) 100%)' }} />
+          <div className="hero-mobile-vignette absolute inset-0" style={{ background: 'linear-gradient(to bottom,rgba(10,25,47,0.55) 0%,rgba(10,25,47,0.10) 25%,rgba(10,25,47,0.10) 65%,rgba(10,25,47,0.80) 100%)' }}/>
 
           {/* Desktop: left-to-right fade for text panel readability */}
-          <div className="hero-desktop-grad absolute inset-0 bg-gradient-to-r from-[#0A192F] via-[#0A192F]/75 to-[#0A192F]/20" />
+          <div className="hero-desktop-grad absolute inset-0 bg-gradient-to-r from-[#0A192F]/90 via-[#0A192F]/55 to-[#0A192F]/10" />
 
           {/* Bottom ground — both viewports */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/95 via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/70 via-transparent to-transparent z-10" />
 
           {/* Glow orbs — desktop only */}
           <div className="hero-glow-orb absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[128px]" />
