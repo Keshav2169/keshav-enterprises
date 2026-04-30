@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+<<<<<<< HEAD
 Crawl-delay: 1
 
 # Google
@@ -56,3 +57,7 @@ Allow: /
 # Sitemap location
 Sitemap: https://keshaventerprises.in/sitemap.xml
 Sitemap: https://keshaventerprises.in/llms.txt
+=======
+
+Sitemap: https://keshaventerprises.in/sitemap.xml
+>>>>>>> c080cffb9339aeeac08de2cb0d31f072100f1e70
