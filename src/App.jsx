@@ -772,7 +772,6 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
 });
 
 // ─── BRAND LOGO ───────────────────────────────────────────────
-// ─── BRAND LOGO ───────────────────────────────────────────────
 const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
   const [imgErr, setImgErr] = useState(false);
   const tc = forceWhite ? 'text-white' : (scrolled ? 'text-slate-900' : 'text-white');
@@ -782,10 +781,10 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
       className="flex items-center space-x-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm">
 
       {/* HARD WRAPPER FIX */}
-      <div className="relative w-10 h-10 sm:w-12 sm:h-12 shrink-0 flex items-center justify-center">
+      <div className="relative w-10 h-10 sm:w-12 sm:h-12 shrink-0 overflow-hidden rounded-lg flex items-center justify-center">
         {!imgErr
           ? <img src="keshav-logo.png" alt="Keshav Enterprises" width="48" height="48"
-            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 drop-shadow-md"
+            className="w-full h-full object-contain group-hover:scale-105 ..."
             onError={() => setImgErr(true)} />
           : <div className="w-full h-full rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30">
             <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-white" aria-hidden="true" />
@@ -1513,11 +1512,11 @@ const HomePage = ({ navigate }) => {
       <section className="relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" aria-labelledby="hero-heading">
         <div className="absolute inset-0 z-0" aria-hidden="true">
           {!heroErr && <img src="hero-background.png" alt="" width="1920" height="1080"
-            fetchPriority="high" decoding="async"
+            fetchPriority="high" decoding="sync"
             className="absolute inset-0 w-full h-full object-cover hero-bg-img"
             style={{ opacity: 0.92 }}
-            onError={() => setHeroErr(true)} />}
-
+            onError={() => setHeroErr(true)} />
+          }
           {/* Mobile: top+bottom vignette — image centre stays fully visible */}
           <div className="hero-mobile-vignette absolute inset-0" style={{ background: 'linear-gradient(to bottom,rgba(10,25,47,0.72) 0%,rgba(10,25,47,0.20) 30%,rgba(10,25,47,0.20) 60%,rgba(10,25,47,0.90) 100%)' }} />
 
