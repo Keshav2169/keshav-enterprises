@@ -465,10 +465,20 @@ const MARQUEE_CSS = `
 
   /* Hero image mobile display fix */
   .hero-mobile-vignette{display:none}
+  .hero-bg-img{opacity:0.70;object-position:center center}
   @media(max-width:767px){
-    .hero-desktop-grad{display:none!important}
-    .hero-mobile-vignette{display:block!important}
+    /* Paint image on the full hero section for consistent mobile coverage */
+    .hero-section{
+      background-image:url('hero-background.png');
+      background-size:cover;
+      background-position:center center;
+      background-repeat:no-repeat;
+    }
+    .hero-bg-layer{display:none!important}
+    .hero-desktop-grad{display:block!important}
+    .hero-mobile-vignette{display:none!important}
     .hero-glow-orb{display:none!important}
+    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.45),transparent)!important}
     /* Reduce main-thread work on mobile - limit expensive blur filters */
     .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
@@ -1509,11 +1519,10 @@ const HomePage = ({ navigate }) => {
       <style>{MARQUEE_CSS}</style>
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
-        <div className="absolute inset-0 z-0" aria-hidden="true">
+        <div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
           {!heroErr && <img src="hero-background.png" alt="" width="1920" height="1080"
-            fetchPriority="high" decoding="sync"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ opacity: 0.90, objectPosition: 'center center' }}
+            fetchPriority="high" loading="eager" decoding="async" sizes="100vw"
+            className="hero-bg-img absolute inset-0 w-full h-full object-cover"
             onError={() => setHeroErr(true)} />
           }
           {/* Mobile: top+bottom vignette — image centre stays fully visible */}
@@ -1523,7 +1532,7 @@ const HomePage = ({ navigate }) => {
           <div className="hero-desktop-grad absolute inset-0 bg-gradient-to-r from-[#0A192F]/90 via-[#0A192F]/55 to-[#0A192F]/10" />
 
           {/* Bottom ground — both viewports */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/70 via-transparent to-transparent z-10" />
+          <div className="hero-bottom-overlay absolute inset-0 bg-gradient-to-t from-[#0A192F]/70 via-transparent to-transparent z-10" />
 
           {/* Glow orbs — desktop only */}
           <div className="hero-glow-orb absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[128px]" />
@@ -2684,7 +2693,7 @@ const ContactPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
                 <div>
                   <label htmlFor="c-phone" className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Phone Number <span aria-hidden="true">*</span></label>
-                  <input id="c-phone" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" className="placeholder:text-slate-500" aria-required="true" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? 'err-phone' : undefined} className={inputClass(errors.phone)} />
+                  <input id="c-phone" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 XXXXX XXXXX" aria-required="true" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? 'err-phone' : undefined} className={`${inputClass(errors.phone)} placeholder:text-slate-500`} />
                   {errors.phone && <p id="err-phone" role="alert" className="text-red-600 text-xs font-bold mt-2">{errors.phone}</p>}
                 </div>
                 <div>
