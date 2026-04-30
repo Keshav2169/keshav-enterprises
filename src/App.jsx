@@ -25,6 +25,12 @@ const CONTACT_INFO = {
   linkedinHandle: 'Keshav Enterprises',
   instagram: 'https://www.instagram.com/ksengg007?igsh=b3BrNDRpdHhkMDBm',
   instagramHandle: '@ksengg007',
+  reddit: 'https://www.reddit.com/user/NoDragonfly4979/',
+  redditHandle: 'Keshav Enterprises',
+  youtube: 'https://www.youtube.com/@ksengg007',
+  youtubeHandle: '@ksengg007',
+  facebook: 'https://www.facebook.com/ksengg007',
+  facebookHandle: 'Keshav Enterprises',
 };
 
 // PERF FIX: nav links defined outside component to prevent re-creation on every render
@@ -103,7 +109,7 @@ const SERVICES = [
   },
 ];
 
-const PRODUCTS = [
+const RAW_PRODUCTS = [
   {
     id: 'prod_f1', category: 'Industrial Filtration', title: 'Triveni Turbine Lube Oil Filter Elements',
     desc: 'OEM-compatible lube oil filter elements for Triveni steam turbine lubrication systems. Ensures optimum fluid cleanliness per API 614 for extended bearing life.',
@@ -239,6 +245,142 @@ const PRODUCTS = [
     features: ['In-line pressure balance design neutralizes pressure thrust', 'Absorbs axial movement while containing thrust', 'Absorbs lateral deflection without anchor overloading', 'Material: SS 304/316L, Incoloy, Inconel', 'Design per EN 14917, EJMA, ASME VIII Div.1', 'Full pressure, movement, and fatigue test certification'],
     specs: { 'Architecture': 'In-line pressure balance bellows assembly', 'Function': 'Neutralizes pressure thrust forces', 'Material': 'SS 304/316L, Incoloy, Inconel', 'Design Codes': 'EN 14917, EJMA, ASME VIII Div.1', 'Movement': 'Axial + Lateral (thrust-balanced)', 'Testing': 'Full pressure, movement, fatigue certification' },
     images: ['pressure-balance-joint-1.webp', 'pressure-balance-joint-2.webp', 'pressure-balance-joint-3.webp']
+  },
+  {
+    id: 'prod_e7', category: 'Expansion Joints', title: 'Ring Reinforced Metallic Expansion Joint',
+    desc: 'High-pressure metallic expansion joint with external equalizing rings fitted between convolutions to prevent squirm and improve pressure stability well beyond standard bellows limits.',
+    usage: 'High-pressure steam lines, refinery and petrochemical process lines, ammonia/fertilizer piping, and other services where standard bellows pressure capacity is insufficient.',
+    features: ['Equalizing rings support each convolution and resist pressure-induced instability', 'Suitable for axial, lateral, and angular movement compensation by design type', 'Multi-ply bellows plus ring reinforcement for pressure integrity and long cycle life', 'Field-proven in very high-pressure applications exceeding 16 bar and up to 185 bar class projects', 'Available in SS, duplex, Inconel, Incoloy, Hastelloy, and other high alloys', 'Designed and tested per EJMA, EN 14917, ASME VIII Div.1 / B31.3'],
+    specs: { 'Type': 'Ring reinforced metallic bellow assembly', 'Pressure Capability': 'High-pressure service; project-specific designs up to 185 bar class', 'Movement': 'Axial / Lateral / Angular (as configured)', 'Materials': 'SS 304/316/321, Duplex, Inconel, Incoloy, Hastelloy', 'Design Codes': 'EJMA, EN 14917, ASME VIII Div.1, ASME B31.3', 'Testing': 'Hydrostatic / pneumatic pressure test with full documentation' },
+    images: ['ring-reinforced-expansion-joint-1.webp', 'ring-reinforced-expansion-joint-2.webp', 'ring-reinforced-expansion-joint-3.webp']
+  },
+  {
+    id: 'prod_e8', category: 'Expansion Joints', title: 'Externally Pressurised Expansion Joint',
+    desc: 'Externally pressurised bellows design where system pressure acts on the outside of the convolutions, enabling very large axial movement under pressure without the instability limits of conventional internal-pressure bellows.',
+    usage: 'Long steam pipelines, buried district heating lines, underground process piping, and installations requiring large axial compensation in compact space.',
+    features: ['External pressure loading provides stabilizing effect on bellows geometry', 'Very large axial compression stroke capability for long thermal runs', 'Bellows protected inside outer housing for improved mechanical protection', 'Excellent solution for underground or externally insulated installations', 'Available across DN 15 to DN 12,000 project range', 'Supports high-alloy material options for severe temperature/corrosion duty'],
+    specs: { 'Type': 'Externally pressurised axial compensator', 'Primary Movement': 'Large axial compression / extension', 'Nominal Range': 'DN 15 to DN 12,000', 'Materials': 'SS 304/316/321, Duplex, Inconel, Incoloy, Hastelloy, Alloy 59', 'Design Standards': 'EJMA, EN 14917, ASME / EN code compliance per project', 'Typical Use': 'Buried lines, long pipe runs, district heating and steam networks' },
+    images: ['externally-pressurised-joint-1.webp', 'externally-pressurised-joint-2.webp', 'externally-pressurised-joint-3.webp']
+  },
+  {
+    id: 'prod_e9', category: 'Expansion Joints', title: 'Lateral Metallic Expansion Joint',
+    desc: 'Lateral expansion joint engineered to absorb perpendicular piping movement (offset/shear) with controlled pressure thrust transfer using tie rods.',
+    usage: 'Pump suction/discharge lines, compressor nozzles, offset process piping, and water/wastewater manifolds requiring sideways flexibility.',
+    features: ['Designed for lateral displacement in one or multiple planes', 'Single bellow for moderate movement and twin-bellow options for larger offset', 'Tie rods provided to control pressure thrust and protect connected equipment', 'Inner sleeve option available for high-velocity flow service', 'Suitable for DN 15 to DN 12,000 custom projects', 'Designed per EJMA with material selection to process media and temperature'],
+    specs: { 'Type': 'Lateral movement metallic expansion joint', 'Primary Movement': 'Lateral (perpendicular) displacement', 'Configuration': 'Single bellow or double lateral with intermediate spool', 'Tie Rods': 'Standard / recommended for pressure thrust control', 'Materials': 'SS 304/316/321, Duplex, high alloys', 'Design Code': 'EJMA / EN 14917 / ASME (project dependent)' },
+    images: ['lateral-expansion-joint-1.webp', 'lateral-expansion-joint-2.webp', 'lateral-expansion-joint-3.webp']
+  },
+  {
+    id: 'prod_e10', category: 'Expansion Joints', title: 'Angular Hinged / Gimbal Expansion Joint',
+    desc: 'Pin-restrained angular expansion joint (hinged or gimbal type) for controlled rotational movement in one or two planes while resisting pressure thrust loads.',
+    usage: 'High-temperature gas lines, steel plant ducting, power plant flue systems, and complex routed piping where angular compensation is preferred over axial loops.',
+    features: ['Hinged design controls rotation in one plane with pin support', 'Gimbal design permits multi-plane angular movement with ring frame stability', 'Typically installed in pairs or multi-joint systems for controlled thermal growth', 'Reduces nozzle and anchor loads in complex pipe stress layouts', 'Available with weld ends or flanged ends to match site standards', 'Compatible with high-temperature alloys including 321, 309, Inconel classes'],
+    specs: { 'Type': 'Angular restrained metallic expansion joint', 'Variants': 'Hinged (single plane) / Gimbal (multi-plane)', 'Primary Movement': 'Angular rotation', 'Pressure Thrust': 'Restrained by hinge/gimbal hardware', 'Temperature Capability': 'High-temperature service with suitable alloy selection', 'Standards': 'EJMA, EN 14917, ASME code-based design' },
+    images: ['angular-hinged-gimbal-joint-1.webp', 'angular-hinged-gimbal-joint-2.webp', 'angular-hinged-gimbal-joint-3.webp']
+  },
+  {
+    id: 'prod_e11', category: 'Expansion Joints', title: 'Metallic Vibration Absorber',
+    desc: 'Short-length metallic bellow assembly designed for vibration isolation at rotating equipment connections, minimizing transmission of vibration and structure-borne noise.',
+    usage: 'Pump and compressor connections, fan/blower lines, HVAC piping, and turbine auxiliary lines where high-frequency vibration control is required.',
+    features: ['High flexibility at short face-to-face lengths for machinery isolation', 'Absorbs micro-movements and cyclic vibration with low spring reaction', 'Available with or without tie rods depending on movement and pressure design', 'Helps protect seals, bearings, nozzles, and supports from vibration fatigue', 'Can be supplied as metallic bellow type or braided short flexible assembly', 'Custom-designed for frequency spectrum, pressure, and nozzle load limits'],
+    specs: { 'Type': 'Vibration isolation metallic bellow', 'Primary Function': 'Vibration damping + small axial/lateral compensation', 'Application Points': 'Pump, compressor, blower, fan nozzles', 'Construction': 'Short axial bellows; optional restraint hardware', 'Materials': 'SS 304/316/321 and process-suitable alloys', 'Design Basis': 'EJMA movement/stress criteria with project nozzle load checks' },
+    images: ['metallic-vibration-absorber-1.webp', 'metallic-vibration-absorber-2.webp', 'metallic-vibration-absorber-3.webp']
+  },
+  {
+    id: 'prod_e12', category: 'Expansion Joints', title: 'Elbow Pressure Balanced Expansion Joint',
+    desc: 'Pressure balanced elbow configuration with dual flow bellows and balancing element to absorb movement on two pipe legs while neutralizing pressure thrust at bend locations.',
+    usage: 'Steam crossover elbows, compressor house bends, refinery process elbows, and constrained pipe corridors where large anchors are impractical.',
+    features: ['Balances pressure thrust at elbow geometry to reduce structural anchor demand', 'Absorbs axial movement from both pipe legs in compact footprint', 'Improves flexibility where pipe loops are not feasible', 'Tie rods and limiters configured to suit design movement envelope', 'Suitable for high-temperature and moderate-to-high pressure lines', 'Delivered with calculation package and movement verification'],
+    specs: { 'Type': 'Elbow pressure balanced bellows assembly', 'Primary Movement': 'Axial movement in two legs (thrust balanced)', 'Pressure Thrust': 'Neutralized by balance chamber design', 'Configuration': 'Two flow bellows + balancing bellows at elbow', 'Materials': 'SS 304/316/321, duplex, high-alloy options', 'Design Standards': 'EJMA / EN / ASME code-based engineering' },
+    images: ['elbow-pressure-balance-joint-1.webp', 'elbow-pressure-balance-joint-2.webp', 'elbow-pressure-balance-joint-3.webp', 'elbow-pressure-balance-joint-4.webp', 'elbow-pressure-balance-joint-5.webp', 'elbow-pressure-balance-joint-6.webp']
+  },
+  {
+    id: 'prod_e13', category: 'Expansion Joints', title: 'Steam Crossover Piping Bellows',
+    desc: 'Large-diameter metallic bellows for turbine crossover and reheater piping where high temperature, differential casing growth, and strict reliability requirements govern design.',
+    usage: 'HP-IP / IP-LP steam crossover lines, reheater interconnections, extraction piping, and back-pressure exhaust runs.',
+    features: ['Engineered for high-temperature steam service and large thermal growth differentials', 'Can be configured as universal or pressure-balanced architecture', 'Low spring-rate design minimizes nozzle loading on connected equipment', 'Multi-ply bellows construction for fatigue life under cyclic start-stop duty', 'Inner sleeves and flow liners available for high-velocity steam', 'Project documentation includes movement, stress, and test records'],
+    specs: { 'Type': 'Crossover steam line expansion bellows', 'Service': 'High-temperature steam turbine piping', 'Movement': 'Axial / lateral / angular (as configured)', 'Construction': 'Single, universal, or pressure-balanced design', 'Materials': 'SS 321/316, high-temperature alloys', 'Design Compliance': 'EJMA + power/process piping code basis' },
+    images: ['steam-crossover-bellows-1.webp', 'steam-crossover-bellows-2.webp', 'steam-crossover-bellows-3.webp', 'steam-crossover-bellows-4.webp', 'steam-crossover-bellows-5.webp', 'steam-crossover-bellows-6.webp']
+  },
+  {
+    id: 'prod_e14', category: 'Expansion Joints', title: 'FCCU High-Temperature Expansion Joint',
+    desc: 'Severe-duty expansion joint for catalyst-laden high-temperature process gas systems, designed for thermal cycling, erosion resistance, and long service life in refinery cracking units.',
+    usage: 'Regenerator flue gas lines, reactor/riser sections, delayed coker connections, and high-temperature refinery gas ducting.',
+    features: ['Designed for elevated temperatures with erosive process media', 'Erosion-resistant liners and sleeves for particle-laden gas flow', 'Multi-layer bellows options for extended fatigue life', 'Refractory-compatible and externally insulated configurations available', 'High-alloy material selection for corrosion plus temperature resistance', 'Inspection and testing package supports critical-service QA requirements'],
+    specs: { 'Type': 'Heavy-duty FCCU metallic expansion joint', 'Temperature Class': 'High-temperature process gas duty', 'Media': 'Catalyst-laden / corrosive refinery gas streams', 'Construction': 'Multi-ply bellows with protective liner options', 'Alloys': '310/321 SS, Inconel, Incoloy, Hastelloy options', 'Design Basis': 'EJMA with refinery service-specific checks' },
+    images: ['fccu-expansion-joint-1.webp', 'fccu-expansion-joint-2.webp', 'fccu-expansion-joint-3.webp', 'fccu-expansion-joint-4.webp', 'fccu-expansion-joint-5.webp', 'fccu-expansion-joint-6.webp']
+  },
+  {
+    id: 'prod_e15', category: 'Expansion Joints', title: 'Jacketed Expansion Joint',
+    desc: 'Dual-path assembly with process medium in the inner line and heating/cooling utility in outer jacket, enabling controlled product temperature while compensating thermal movement.',
+    usage: 'Bitumen, wax, resin, polymer, viscous chemical lines, and temperature-controlled process transfer systems.',
+    features: ['Inner flow path and outer jacket engineered as integrated thermal system', 'Maintains media temperature to prevent solidification or condensation', 'Supports steam, hot-oil, or glycol utility jacket circuits', 'Accommodates axial and lateral expansion in both inner and outer shells', 'Designed for hygienic, chemical, or industrial process conditions', 'Custom nozzle/end configurations for retrofit or new installations'],
+    specs: { 'Type': 'Jacketed expansion bellows assembly', 'Process Paths': 'Inner process line + outer utility jacket', 'Utility Media': 'Steam / hot oil / thermal fluid / glycol', 'Primary Movement': 'Axial + lateral compensation', 'Materials': 'SS 304/316/321 and application-specific alloys', 'Design Standards': 'EJMA + pressure piping code requirements' },
+    images: ['jacketed-expansion-joint-1.webp', 'jacketed-expansion-joint-2.webp', 'jacketed-expansion-joint-3.webp', 'jacketed-expansion-joint-4.webp', 'jacketed-expansion-joint-5.webp', 'jacketed-expansion-joint-6.webp']
+  },
+  {
+    id: 'prod_e16', category: 'Expansion Joints', title: 'Clamshell Retrofit Bellows',
+    desc: 'Split-shell replacement bellows designed for in-situ installation around existing piping, minimizing shutdown time where full line dismantling is difficult.',
+    usage: 'Emergency replacement of failed bellows, confined maintenance zones, and large-diameter systems where pipe removal is costly.',
+    features: ['Two-piece clamshell construction for around-pipe installation', 'Reduces outage duration by avoiding major pipe disassembly', 'Suitable for retrofit in inaccessible plant locations', 'Welded in place by qualified procedures for pressure integrity', 'Can be tailored for temporary or long-term service strategy', 'Ideal for maintenance-critical lines requiring quick restoration'],
+    specs: { 'Type': 'Split-shell retrofit expansion bellows', 'Installation': 'In-situ around existing piping', 'Primary Benefit': 'Reduced shutdown and dismantling effort', 'Service': 'Repair / replacement / retrofit projects', 'Construction': 'Two half-shell sections welded on site', 'Engineering': 'Site-specific dimensions and movement validation' },
+    images: ['clamshell-bellows-1.webp', 'clamshell-bellows-2.webp', 'clamshell-bellows-3.webp', 'clamshell-bellows-4.webp', 'clamshell-bellows-5.webp', 'clamshell-bellows-6.webp']
+  },
+  {
+    id: 'prod_e17', category: 'Expansion Joints', title: 'Lens Type Expansion Joint',
+    desc: 'Single-convolution lens profile expansion joint offering robust, stiffer movement control for low-stroke and high-pressure applications.',
+    usage: 'Heat exchanger nozzles, short-stroke pressure lines, and services where conventional multi-convolution bellows are too flexible.',
+    features: ['Lens profile provides high structural stiffness', 'Suitable for limited movement with stronger pressure handling', 'Simple geometry supports robust operation in demanding duty', 'Lower movement per unit compared with multi-convolution bellows', 'Can be configured with weld ends or flanged connections', 'Optimized for compact installations with controlled flexibility requirements'],
+    specs: { 'Type': 'Lens profile metallic expansion joint', 'Primary Movement': 'Small axial and limited angular compensation', 'Spring Rate': 'Higher than standard multi-convolution bellows', 'Pressure Class': 'Well-suited for high-pressure low-stroke duty', 'Connections': 'Weld-end / flanged options', 'Applications': 'Heat exchangers and short movement runs' },
+    images: ['lens-expansion-joint-1.webp', 'lens-expansion-joint-2.webp', 'lens-expansion-joint-3.webp', 'lens-expansion-joint-4.webp', 'lens-expansion-joint-5.webp', 'lens-expansion-joint-6.webp']
+  },
+  {
+    id: 'prod_e18', category: 'Expansion Joints', title: 'Rectangular Expansion Joint',
+    desc: 'Rectangular or square-profile expansion joint engineered for duct systems, compensating thermal growth and vibration where circular bellows are not suitable.',
+    usage: 'Boiler flue ducts, ESP/bag filter connections, kiln/incinerator ducting, and large HVAC air handling trunks.',
+    features: ['Designed for rectangular/square duct geometry', 'Corner and convolution design optimized for thermal fatigue resistance', 'Absorbs axial, lateral, and angular movement in duct systems', 'Available with liners, insulation interfaces, and protective covers', 'Suitable for high-temperature gas and low-pressure large-area flow', 'Custom dimensions for retrofit and greenfield duct layouts'],
+    specs: { 'Type': 'Rectangular duct expansion joint', 'Movement': 'Axial + lateral + angular', 'Service': 'Gas/air/flue duct systems', 'Construction': 'Formed metallic convolutions with reinforced corners', 'Accessories': 'Liners / shrouds / insulation interfaces', 'Design Compliance': 'Duct movement and stress-based project calculations' },
+    images: ['rectangular-expansion-joint-1.webp', 'rectangular-expansion-joint-2.webp', 'rectangular-expansion-joint-3.webp', 'rectangular-expansion-joint-4.webp', 'rectangular-expansion-joint-5.webp', 'rectangular-expansion-joint-6.webp']
+  },
+  {
+    id: 'prod_e19', category: 'Expansion Joints', title: 'District Heating Expansion Joint',
+    desc: 'Expansion joint package for long buried hot-water networks, designed for reliable axial compensation, insulation compatibility, and long maintenance intervals.',
+    usage: 'Municipal heating loops, industrial hot-water distribution, CHP utility lines, and pre-insulated underground pipeline systems.',
+    features: ['Designed for underground and pre-insulated piping architecture', 'Externally pressurised options for large axial stroke compensation', 'Supports long thermal growth spans with fewer loop requirements', 'Corrosion-protected construction for buried service conditions', 'Engineered for long design life and low maintenance operation', 'Integrated with project-specific insulation and casing details'],
+    specs: { 'Type': 'District heating expansion compensator', 'Primary Movement': 'Large axial compensation', 'Typical Medium': 'Hot water / thermal water networks', 'Installation': 'Buried and pre-insulated systems', 'Pressure-Temperature Class': 'Utility network duty (project specific)', 'Design Standards': 'District heating and pressure piping design requirements' },
+    images: ['district-heating-joint-1.webp', 'district-heating-joint-2.webp', 'district-heating-joint-3.webp', 'district-heating-joint-4.webp', 'district-heating-joint-5.webp', 'district-heating-joint-6.webp']
+  },
+  {
+    id: 'prod_e20', category: 'Expansion Joints', title: 'Tank Farm Service Expansion Bellows',
+    desc: 'Expansion bellows for storage terminals to absorb tank settlement, nozzle offset, and thermal movement between fixed manifolds and tank-connected piping.',
+    usage: 'Crude/product tank farms, chemical storage terminals, LNG/LPG handling manifolds, and transfer/loading lines.',
+    features: ['Compensates differential settlement between tank shell and fixed piping', 'Handles combined thermal and mechanical displacement at terminal nozzles', 'Supports liquid and vapor duty lines with project-specific sealing design', 'Available for ambient, hot-service, and cryogenic terminal applications', 'Designed for operational flexibility during loading/unloading cycles', 'Can be supplied with restraint hardware to match nozzle load criteria'],
+    specs: { 'Type': 'Tank farm movement compensation bellows', 'Primary Duty': 'Settlement + thermal growth absorption', 'Service Media': 'Hydrocarbon / chemical / cryogenic terminal fluids', 'Movement': 'Axial + lateral + angular (as designed)', 'Materials': 'SS 304/316, duplex, low-temperature alloy options', 'Design Basis': 'Terminal piping load and movement calculations' },
+    images: ['tank-farm-bellows-1.webp', 'tank-farm-bellows-2.webp', 'tank-farm-bellows-3.webp', 'tank-farm-bellows-4.webp', 'tank-farm-bellows-5.webp', 'tank-farm-bellows-6.webp']
+  },
+  {
+    id: 'prod_e21', category: 'Expansion Joints', title: 'Cryogenic LNG / LPG Expansion Joint',
+    desc: 'Cryogenic-rated metallic expansion joint for very low-temperature liquefied gas service, maintaining ductility and sealing integrity under severe thermal contraction.',
+    usage: 'LNG/LPG transfer lines, cryogenic storage terminals, ship loading headers, and low-temperature process units.',
+    features: ['Engineered for cryogenic duty down to LNG service temperature ranges', 'Low-temperature material selection for toughness and fatigue resistance', 'Suitable for dynamic thermal cycling in loading and unloading operations', 'Can be designed for terminal, process, and marine-support infrastructure', 'Supports compact routing while reducing thermal stress on nozzles', 'Comes with full material traceability and cryogenic service documentation'],
+    specs: { 'Type': 'Cryogenic metallic expansion bellows', 'Temperature Capability': 'Low-temperature liquefied gas service', 'Primary Movement': 'Axial + lateral compensation', 'Material Options': 'Austenitic SS and cryogenic-grade alloys', 'Applications': 'LNG/LPG pipelines and transfer systems', 'Quality Package': 'Material certificates + test documentation' },
+    images: ['lng-lpg-expansion-joint-1.webp', 'lng-lpg-expansion-joint-2.webp', 'lng-lpg-expansion-joint-3.webp', 'lng-lpg-expansion-joint-4.webp', 'lng-lpg-expansion-joint-5.webp', 'lng-lpg-expansion-joint-6.webp']
+  },
+  {
+    id: 'prod_e22', category: 'Expansion Joints', title: 'Scrubber / Exhaust Gas Cleaning Expansion Joint',
+    desc: 'Corrosion-resistant expansion joint for wet and acidic exhaust gas cleaning systems, handling combined thermal load, condensate chemistry, and vibration.',
+    usage: 'Industrial flue gas cleaning lines, marine-equivalent scrubber loops, desulfurization systems, and hot-wet gas exhaust headers.',
+    features: ['Designed for hot gas plus wet acidic condensate environments', 'Material selection prioritizes corrosion resistance at operating temperature', 'Handles axial and angular displacement in exhaust treatment circuits', 'Liner and drain-conscious configurations available for condensate control', 'Suitable for large-diameter low-pressure exhaust duct service', 'Supports long-term reliability in sulfur- and moisture-bearing media'],
+    specs: { 'Type': 'Exhaust gas cleaning service expansion joint', 'Media': 'Hot gas with moisture/acid condensate', 'Primary Movement': 'Axial + angular compensation', 'Materials': '316L, duplex, and high-corrosion-resistance alloys', 'Service Range': 'Exhaust treatment and scrubber ducting', 'Design Focus': 'Corrosion + thermal cycling durability' },
+    images: ['scrubber-egc-joint-1.webp', 'scrubber-egc-joint-2.webp', 'scrubber-egc-joint-3.webp', 'scrubber-egc-joint-4.webp', 'scrubber-egc-joint-5.webp', 'scrubber-egc-joint-6.webp']
+  },
+  {
+    id: 'prod_e23', category: 'Expansion Joints', title: 'Hygienic Sanitary Expansion Joint',
+    desc: 'Sanitary-grade metallic expansion joint for hygienic process systems with smooth internal geometry, cleanability, and contamination-safe design.',
+    usage: 'Food, beverage, pharmaceutical, and biotech process pipelines requiring CIP/SIP-compatible thermal movement compensation.',
+    features: ['Smooth internal profile to minimize retention and contamination risk', 'Designed for clean-in-place and sterilize-in-place process practices', 'Sanitary materials and finishing for hygienic duty piping', 'Supports thermal growth without compromising process integrity', 'Optional polished internal surface grades for high-purity service', 'Suitable for aseptic and controlled-product transfer lines'],
+    specs: { 'Type': 'Hygienic process expansion bellows', 'Service': 'Sanitary and high-purity process piping', 'Primary Movement': 'Axial + lateral compensation', 'Design Priority': 'Cleanability and contamination control', 'Construction': 'Sanitary-finish metallic bellows assembly', 'Applications': 'Food, pharma, biotech, beverage lines' },
+    images: ['hygienic-expansion-joint-1.webp', 'hygienic-expansion-joint-2.webp', 'hygienic-expansion-joint-3.webp', 'hygienic-expansion-joint-4.webp', 'hygienic-expansion-joint-5.webp', 'hygienic-expansion-joint-6.webp']
   },
   {
     id: 'prod_ts1', category: 'Turbine Spares', title: 'Carbon & Graphite Gland Sealing Rings',
@@ -378,6 +520,24 @@ const PRODUCTS = [
   },
 ];
 
+const MAX_PRODUCT_IMAGES = 6;
+const buildExtraImageNames = (baseImage, totalCount) => {
+  const dot = baseImage.lastIndexOf('.');
+  if (dot <= 0) return [];
+  const ext = baseImage.slice(dot);
+  const root = baseImage.slice(0, dot).replace(/-\d+$/, '');
+  return Array.from({ length: totalCount }, (_, i) => `${root}-${i + 1}${ext}`);
+};
+
+const PRODUCTS = RAW_PRODUCTS.map((product) => {
+  const imgs = Array.isArray(product.images) ? product.images.filter(Boolean) : [];
+  if (imgs.length >= MAX_PRODUCT_IMAGES) return { ...product, images: imgs.slice(0, MAX_PRODUCT_IMAGES) };
+  if (imgs.length === 0) return { ...product, images: [] };
+  const generated = buildExtraImageNames(imgs[0], MAX_PRODUCT_IMAGES);
+  const merged = [...new Set([...imgs, ...generated])].slice(0, MAX_PRODUCT_IMAGES);
+  return { ...product, images: merged };
+});
+
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map(p => p.category))];
 
 const INDUSTRIES = [
@@ -446,6 +606,19 @@ const MARQUEE_CSS = `
   .ke-marquee:hover,.ke-marquee-slow:hover{animation-play-state:paused}
   .scrollbar-hide::-webkit-scrollbar{display:none}
   .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+  /* Keep content visible by default; JS reveal can still add .visible without hiding blocks */
+  .lazy-section{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+  .lazy-section.visible{opacity:1;transform:none}
+
+  @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+  .skeleton-shimmer{
+    position:absolute;inset:0;z-index:0;
+    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
+    background-size:200% 100%;
+    animation:ke-shimmer 1.25s linear infinite;
+  }
+  .media-img{opacity:0;transition:opacity .35s ease}
+  .media-img.is-loaded{opacity:1}
 
   /* font-display:swap prevents invisible-text Lighthouse warning */
   @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed')}
@@ -465,7 +638,7 @@ const MARQUEE_CSS = `
 
   /* Hero image mobile display fix */
   .hero-mobile-vignette{display:none}
-  .hero-bg-img{opacity:0.70;object-position:center center}
+  .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
     /* Paint image on the full hero section for consistent mobile coverage */
     .hero-section{
@@ -524,6 +697,7 @@ const MARQUEE_CSS = `
   /* Respect prefers-reduced-motion */
   @media(prefers-reduced-motion:reduce){
     .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
+    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
     *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
   }
 
@@ -592,7 +766,10 @@ const LOCAL_SCHEMA = {
   sameAs: [
     'https://www.indiamart.com/keshav-enterprises-shamli/',
     'https://www.linkedin.com/in/keshav-enterprises-825a473b8',
-    'https://www.instagram.com/ksengg007'
+    'https://www.instagram.com/ksengg007',
+    'https://www.reddit.com/user/NoDragonfly4979/',
+    'https://www.youtube.com/@ksengg007',
+    'https://www.facebook.com/ksengg007'
   ],
   knowsAbout: [
     'Steam Turbine Maintenance', 'Turbine Reverse Engineering', 'Lube Oil Filtration',
@@ -842,7 +1019,9 @@ const IndiaMartBadge = memo(() => {
 // ─── PRODUCT CARD (Memoized) ─────────────────────────────────
 const ProductCard = memo(({ product, navigate }) => {
   const [imgErr, setImgErr] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const pImg = product.images?.[0];
+  useEffect(() => { setImgErr(false); setImgLoaded(false); }, [pImg]);
   return (
     <article onClick={() => navigate(`/product/${product.id}`)}
       className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50">
@@ -851,13 +1030,17 @@ const ProductCard = memo(({ product, navigate }) => {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent z-10 group-hover:opacity-0 transition-opacity" aria-hidden="true" />
         <span className="absolute top-4 left-4 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm">{product.category}</span>
         {pImg && !imgErr
-          ? <img src={pImg} alt={product.title}
+          ? <>
+            {!imgLoaded && <div className="skeleton-shimmer" aria-hidden="true" />}
+            <img src={pImg} alt={product.title}
             loading="lazy" decoding="async"
             width="400" height="192"
             fetchPriority="low"
-            className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110"
+            className={`media-img w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
             style={{ aspectRatio: '400/192' }}
-            onError={() => setImgErr(true)} />
+            onLoad={() => setImgLoaded(true)}
+            onError={() => { setImgErr(true); setImgLoaded(false); }} />
+          </>
           : <div className="z-0 w-full h-full flex items-center justify-center bg-slate-100" aria-hidden="true">{getCategoryIcon(product.category)}</div>}
       </div>
       <div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
@@ -1069,6 +1252,60 @@ const Footer = memo(({ navigate }) => (
               <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
             </a>
 
+            {/* ── Reddit Card ── */}
+            <a href={CONTACT_INFO.reddit} target="_blank" rel="noopener noreferrer"
+              aria-label={`Keshav Enterprises on Reddit — ${CONTACT_INFO.redditHandle}`}
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF4500]/15 to-[#FF6A33]/10 hover:from-[#FF4500] hover:to-[#FF6A33] border border-[#FF4500]/30 hover:border-[#FF4500] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,69,0,0.45)] min-w-[220px] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
+              <div className="w-11 h-11 bg-[#FF4500] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-shadow">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z" />
+                </svg>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-[10px] font-black text-[#ffb08f] group-hover:text-orange-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Reddit</span>
+                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.redditHandle}</span>
+                <span className="text-[10px] text-slate-300 group-hover:text-orange-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
+            </a>
+
+            {/* ── YouTube Card ── */}
+            <a href={CONTACT_INFO.youtube} target="_blank" rel="noopener noreferrer"
+              aria-label={`Keshav Enterprises on YouTube — ${CONTACT_INFO.youtubeHandle}`}
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF0000]/15 to-[#CC0000]/10 hover:from-[#FF0000] hover:to-[#CC0000] border border-[#FF0000]/30 hover:border-[#FF0000] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,0,0,0.45)] min-w-[220px] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
+              <div className="w-11 h-11 bg-[#FF0000] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,0,0,0.6)] transition-shadow">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
+                </svg>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-[10px] font-black text-[#fca5a5] group-hover:text-red-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">YouTube</span>
+                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.youtubeHandle}</span>
+                <span className="text-[10px] text-slate-300 group-hover:text-red-100/70 font-medium transition-colors mt-0.5">View Channel →</span>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
+            </a>
+
+            {/* ── Facebook Card ── */}
+            <a href={CONTACT_INFO.facebook} target="_blank" rel="noopener noreferrer"
+              aria-label={`Keshav Enterprises on Facebook — ${CONTACT_INFO.facebookHandle}`}
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#1877F2]/15 to-[#145DBF]/10 hover:from-[#1877F2] hover:to-[#145DBF] border border-[#1877F2]/30 hover:border-[#1877F2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(24,119,242,0.45)] min-w-[220px] overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
+              <div className="w-11 h-11 bg-[#1877F2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(24,119,242,0.6)] transition-shadow">
+                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z" />
+                </svg>
+              </div>
+              <div className="flex flex-col min-w-0">
+                <span className="text-[10px] font-black text-[#93c5fd] group-hover:text-blue-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Facebook</span>
+                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.facebookHandle}</span>
+                <span className="text-[10px] text-slate-300 group-hover:text-blue-100/70 font-medium transition-colors mt-0.5">View Page →</span>
+              </div>
+              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
+            </a>
+
           </div>
         </div>
 
@@ -1105,9 +1342,11 @@ const FloatingButtons = memo(() => (
 const ProductDetailPage = ({ productId, navigate }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [imgErr, setImgErr] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
   const [tab, setTab] = useState('specs');
   const product = useMemo(() => PRODUCTS.find(p => p.id === productId), [productId]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveImg(0); setImgErr(false); setTab('specs'); }, [productId]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
+  useEffect(() => { setImgLoaded(false); setImgErr(false); }, [activeImg, productId]);
   const related = useMemo(() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [], [product]);
   const productSchema = useMemo(() => product ? {
     '@context': 'https://schema.org',
@@ -1166,13 +1405,17 @@ const ProductDetailPage = ({ productId, navigate }) => {
               <div className="w-full aspect-square bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 shadow-inner"
                 role="img" aria-label={`Product image of ${product.title}`}>
                 {activeImage && !imgErr
-                  ? <img src={activeImage} alt={`${product.title} view ${activeImg + 1}`}
+                  ? <>
+                    {!imgLoaded && <div className="skeleton-shimmer" aria-hidden="true" />}
+                    <img src={activeImage} alt={`${product.title} view ${activeImg + 1}`}
                     loading="eager" decoding="async"
                     fetchPriority="high"
                     width="500" height="500"
                     style={{ aspectRatio: '1/1' }}
-                    className="w-full h-full object-contain p-8 mix-blend-multiply"
-                    onError={() => setImgErr(true)} />
+                    className={`media-img w-full h-full object-contain p-8 mix-blend-multiply ${imgLoaded ? 'is-loaded' : ''}`}
+                    onLoad={() => setImgLoaded(true)}
+                    onError={() => { setImgErr(true); setImgLoaded(false); }} />
+                  </>
                   : <div className="flex flex-col items-center justify-center opacity-30" aria-hidden="true">
                     {getCategoryIcon(product.category)}
                     <span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">Image Pending</span>
@@ -1183,7 +1426,7 @@ const ProductDetailPage = ({ productId, navigate }) => {
                 <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2 scrollbar-hide" role="list" aria-label="Product thumbnails">
                   {product.images.map((img, idx) => (
                     <button key={idx} role="listitem"
-                      onClick={() => { setActiveImg(idx); setImgErr(false); }}
+                      onClick={() => { setActiveImg(idx); setImgErr(false); setImgLoaded(false); }}
                       aria-label={`View image ${idx + 1}`} aria-pressed={activeImg === idx}
                       className={`shrink-0 w-20 h-20 bg-white rounded-xl border-2 overflow-hidden transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeImg === idx ? 'border-blue-600 shadow-lg scale-105' : 'border-slate-200 hover:border-blue-400 opacity-70 hover:opacity-100'}`}>
                       <img src={img} alt="" loading="lazy" width="80" height="80" className="w-full h-full object-cover p-2 mix-blend-multiply"
@@ -1512,7 +1755,7 @@ const HomePage = ({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
-  const featuredProducts = useMemo(() => PRODUCTS.slice(0, 16), []);
+  const featuredProducts = useMemo(() => PRODUCTS, []);
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
@@ -2091,11 +2334,13 @@ const BlogPage = ({ navigate }) => (
           <article className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:border-blue-300 transition-all duration-300">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="h-72 lg:h-auto bg-slate-100 flex items-center justify-center relative overflow-hidden">
+                <div className="skeleton-shimmer" aria-hidden="true" />
                 <img src={BLOG_POSTS[0].coverImage} alt={BLOG_POSTS[0].title}
                   loading="eager" decoding="async" fetchPriority="high"
                   width="600" height="400"
                   style={{ aspectRatio: '600/400' }}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="media-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  onLoad={e => { e.currentTarget.classList.add('is-loaded'); }}
                   onError={e => { e.target.style.display = 'none'; }} />
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
                   <BookOpen className="w-24 h-24 text-white/20" aria-hidden="true" />
@@ -2136,11 +2381,13 @@ const BlogPage = ({ navigate }) => (
               <article key={post.id} onClick={() => navigate(`/blog/${post.slug}`)}
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group cursor-pointer flex flex-col">
                 <div className="h-52 bg-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+                  <div className="skeleton-shimmer" aria-hidden="true" />
                   <img src={post.coverImage} alt={post.title}
-                    loading="lazy" decoding="async" fetchpriority="low"
+                    loading="lazy" decoding="async" fetchPriority="low"
                     width="400" height="208"
                     style={{ aspectRatio: '400/208' }}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="media-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onLoad={e => { e.currentTarget.classList.add('is-loaded'); }}
                     onError={e => { e.target.style.display = 'none'; }} />
                   <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
                     <BookOpen className="w-16 h-16 text-white/20" aria-hidden="true" />
@@ -2238,11 +2485,13 @@ const BlogPostPage = ({ slug, navigate }) => {
         </nav>
         {/* Hero */}
         <div className="h-72 md:h-96 bg-slate-900 rounded-3xl overflow-hidden mb-10 flex items-center justify-center relative">
+          <div className="skeleton-shimmer" aria-hidden="true" />
           <img src={post.coverImage} alt={post.title}
-            loading="eager" decoding="async" fetchpriority="high"
+            loading="eager" decoding="async" fetchPriority="high"
             width="896" height="384"
             style={{ aspectRatio: '896/384' }}
-            className="w-full h-full object-cover opacity-60"
+            className="media-img w-full h-full object-cover opacity-60"
+            onLoad={e => { e.currentTarget.classList.add('is-loaded'); }}
             onError={e => { e.target.style.display = 'none'; }} />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
@@ -2334,7 +2583,7 @@ const ServicesPage = ({ navigate }) => (
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
                       decoding="async"
-                      fetchpriority="low"
+                      fetchPriority="low"
                       width="560" height="420"
                       style={{ aspectRatio: '560/420' }}
                       onError={e => { e.target.style.display = 'none'; }}
@@ -2536,7 +2785,7 @@ const IndustriesPage = ({ navigate }) => (
                       style={{ opacity: 0.90, aspectRatio: '560/440' }}
                       loading="lazy"
                       decoding="async"
-                      fetchpriority="low"
+                      fetchPriority="low"
                       width="560" height="440"
                       onError={e => { e.target.style.display = 'none'; }}
                     />
