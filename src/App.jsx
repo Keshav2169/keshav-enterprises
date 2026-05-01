@@ -383,6 +383,70 @@ const RAW_PRODUCTS = [
     images: ['hygienic-expansion-joint-1.webp', 'hygienic-expansion-joint-2.webp', 'hygienic-expansion-joint-3.webp', 'hygienic-expansion-joint-4.webp', 'hygienic-expansion-joint-5.webp', 'hygienic-expansion-joint-6.webp']
   },
   {
+    id: 'prod_e24', category: 'Expansion Joints', title: 'Hinged Single-Plane Expansion Joint',
+    desc: 'Single-plane angular expansion joint with hinge mechanism restraining axial and lateral movement while absorbing thermal rotation in one defined plane. Supplied in pairs or triplets for directional thermal management.',
+    usage: 'Power plant steam headers, industrial pipelines, and duct systems where directional thermal growth must be controlled in one plane.',
+    features: ['Hinge mechanism allows angular rotation in one plane only', 'Axial and lateral movement restrained by hinge hardware — no uncontrolled displacement', 'Reduces anchor and guide loads when used in pairs/triplet systems', 'Suitable for steam, gas, and liquid service at high temperatures', 'Available with weld ends or flanged connections', 'Compatible with high-temperature alloys for severe-duty applications', 'Designed per EJMA and EN 14917 for movement and fatigue life'],
+    specs: { 'Type': 'Hinged single-plane angular expansion joint', 'Primary Movement': 'Angular (single plane rotation)', 'Restrained Movements': 'Axial and Lateral RESTRAINED by hinge', 'Installation': 'In pairs or triplets for directional thermal management', 'Materials': 'SS 304/316/321, high-temperature alloys', 'Design Codes': 'EJMA, EN 14917, ASME B31.1/B31.3', 'Connections': 'Weld-end or flanged' },
+    images: ['hinged-expansion-joint-1.webp', 'hinged-expansion-joint-2.webp', 'hinged-expansion-joint-3.webp']
+  },
+  {
+    id: 'prod_e25', category: 'Expansion Joints', title: 'T-Type Pressure Balance Expansion Joint',
+    desc: 'T-configuration pressure balance expansion joint for branch or junction piping, absorbing axial movement while neutralizing pressure thrust at direction changes in T-shaped pipe layouts.',
+    usage: 'Branch piping junctions, T-piece connections in steam and process lines, and systems where pressure thrust at direction changes must be eliminated.',
+    features: ['T-shaped design addresses movement at branch/junction points in piping', 'Balances pressure thrust at direction changes — eliminates massive anchors', 'Absorbs axial thermal expansion from both main and branch legs', 'Minimizes structural anchor and support requirements at T-junctions', 'High-alloy bellows for steam and process gas duty', 'Full EJMA calculation package with movement and stress verification', 'Available with flanged or weld-end connections'],
+    specs: { 'Type': 'T-type pressure balance expansion joint', 'Configuration': 'T-shaped; balancing bellows + flow bellows at junction', 'Primary Movement': 'Axial from main and branch legs', 'Pressure Thrust': 'Balanced — T-configuration neutralizes thrust loads', 'Materials': 'SS 304/316/321, Duplex, Incoloy, Inconel', 'Design Standards': 'EJMA, EN 14917, ASME VIII Div.1', 'Applications': 'T-junction steam lines, process gas branch connections' },
+    images: ['t-pressure-balance-joint-1.webp', 't-pressure-balance-joint-2.webp', 't-pressure-balance-joint-3.webp']
+  },
+  {
+    id: 'prod_e26', category: 'Expansion Joints', title: 'Octagonal Profile Expansion Joint',
+    desc: 'Eight-sided octagonal bellows expansion joint offering enhanced structural strength over circular profiles, absorbing thermal expansion and mechanical vibration in demanding industrial piping and duct systems.',
+    usage: 'Heavy-duty piping systems, industrial ventilation, and process gas lines requiring improved structural integrity and vibration resistance beyond standard round bellows.',
+    features: ['Octagonal (eight-sided) cross-section — improves structural strength vs. round profile', 'Absorbs axial thermal expansion and contraction under cyclic duty', 'Handles mechanical vibration in addition to thermal movement', 'Suitable for high-pressure or reinforced industrial piping systems', 'Enhanced durability in demanding environments with heavy mechanical stress', 'Custom dimensions per project piping geometry and movement requirements', 'Available in SS 304/316 and high-alloy materials for temperature resistance'],
+    specs: { 'Type': 'Octagonal profile metallic expansion joint', 'Cross-Section': 'Eight-sided (octagonal) — higher strength than circular', 'Primary Movement': 'Axial (thermal expansion/contraction)', 'Additional Function': 'Mechanical vibration absorption', 'Materials': 'SS 304/316/321, process-suitable alloys', 'Design Codes': 'EJMA, EN 14917, project-specific calculations', 'Connections': 'Weld-end or flanged to match pipe geometry' },
+    images: ['octagonal-expansion-joint-1.webp', 'octagonal-expansion-joint-2.webp', 'octagonal-expansion-joint-3.webp']
+  },
+  {
+    id: 'prod_e27', category: 'Expansion Joints', title: 'Thick Wall Heavy-Duty Expansion Joint',
+    desc: 'Reinforced thick-wall expansion joint engineered for extreme pressure, high temperature, and heavy mechanical stress, delivering minimal deformation and superior durability in the most demanding industrial environments.',
+    usage: 'High-pressure steam lines, heavy process piping, chemical reactors, and industrial systems where standard bellows wall thickness is insufficient for operating conditions.',
+    features: ['Thick/reinforced wall construction for maximum pressure and stress resistance', 'Minimal deformation under extreme pressure and temperature cycles', 'Superior service life in harsh operating conditions vs. standard bellows', 'Suitable for applications with high mechanical loading and vibration', 'Available with internal sleeves and external protection shrouds', 'Full hydrostatic and pneumatic testing with pressure certification', 'Materials selected for combined pressure, temperature, and corrosion duty'],
+    specs: { 'Type': 'Thick wall heavy-duty metallic expansion joint', 'Construction': 'Reinforced bellows with increased wall thickness', 'Pressure Capability': 'High-pressure service beyond standard bellows limits', 'Temperature Class': 'High-temperature heavy industrial duty', 'Primary Function': 'Axial movement absorption with extreme durability', 'Materials': 'SS 316/321, Duplex, Inconel, Hastelloy options', 'Testing': 'Full hydrostatic + pneumatic pressure certification' },
+    images: ['thick-wall-expansion-joint-1.webp', 'thick-wall-expansion-joint-2.webp', 'thick-wall-expansion-joint-3.webp']
+  },
+  {
+    id: 'prod_e28', category: 'Expansion Joints', title: 'MS Slip Type Expansion Joint',
+    desc: 'Mild steel telescoping slip-type expansion joint using a sliding inner pipe within an outer sleeve to absorb linear thermal movement. Simpler construction than bellows type, ideal for large axial strokes in standard industrial piping.',
+    usage: 'Steam distribution lines, industrial process piping, and utility systems requiring straightforward linear thermal expansion absorption at moderate pressure conditions.',
+    features: ['Telescoping slip mechanism provides linear axial movement absorption', 'Mild steel (MS) construction — robust and cost-effective for standard conditions', 'Simpler design than bellows type — easier site maintenance and inspection', 'Packing gland provides sealing around sliding inner pipe', 'Suitable for steam, water, and industrial gas service at moderate pressures', 'Available in various nominal bore sizes to suit process piping standards', 'Custom end connections (flanged or weld-end) per site requirements'],
+    specs: { 'Type': 'MS slip-type (telescoping) expansion joint', 'Construction': 'Mild steel outer sleeve + sliding inner pipe', 'Primary Movement': 'Axial (thermal expansion/contraction)', 'Sealing': 'Packing gland around sliding pipe', 'Material': 'Mild Steel (MS) — IS 2062 / equivalent grade', 'Service': 'Steam, water, industrial gas at moderate pressure', 'Connections': 'Flanged or weld-end as specified' },
+    images: ['ms-slip-expansion-joint-1.webp', 'ms-slip-expansion-joint-2.webp', 'ms-slip-expansion-joint-3.webp']
+  },
+  {
+    id: 'prod_e29', category: 'Expansion Joints', title: 'Industrial Airflow Damper',
+    desc: 'Precision-engineered industrial damper for regulating or controlling airflow, gas flow, and flue gas within industrial duct and HVAC systems. Available in manual and motorized actuator configurations for energy-efficient flow management.',
+    usage: 'Industrial chimneys, boiler flue gas ducts, HVAC ventilation systems, process air handling units, and industrial exhaust systems requiring controlled airflow regulation.',
+    features: ['Manual or motorized/automatic actuation for precise flow control', 'Regulates volume, temperature, and pressure of air and gas flows', 'Suitable for hot flue gas, combustion air, and general ventilation ducts', 'Improves energy efficiency by optimizing airflow in system operation', 'Available in butterfly, louvre, and guillotine damper configurations', 'MS or SS construction — material selected per service temperature and media', 'Custom sizing for retrofit or new installation in industrial duct systems'],
+    specs: { 'Type': 'Industrial airflow and gas flow damper', 'Configurations': 'Butterfly / Louvre / Guillotine damper types', 'Actuation': 'Manual or motorized (pneumatic/electric actuator)', 'Materials': 'Mild Steel (MS) / Stainless Steel (SS) per service', 'Service': 'HVAC, flue gas, combustion air, ventilation ducts', 'Applications': 'Boilers, chimneys, HVAC, industrial ducts, boiler systems', 'Sizing': 'Custom to duct dimensions and flow requirements' },
+    images: ['industrial-damper-1.webp', 'industrial-damper-2.webp', 'industrial-damper-3.webp']
+  },
+  {
+    id: 'prod_e30', category: 'Expansion Joints', title: 'Dismantling Joint',
+    desc: 'Mechanical dismantling joint designed for easy disassembly and reassembly of piping sections during maintenance without damaging adjacent components. Provides axial adjustment for quick removal and reinstallation of pumps, valves, and equipment.',
+    usage: 'Pump and compressor suction/discharge connections, valve maintenance points, water treatment systems, and industrial piping requiring regular equipment removal and reinstallation.',
+    features: ['Designed for quick and damage-free disassembly of connected piping or equipment', 'Provides axial adjustment (typically 50–300 mm) for equipment removal clearance', 'Eliminates need for pipe cutting or flange grinding during maintenance', 'Reduces downtime significantly at regular maintenance points', 'Available in flanged connection configuration for standard piping', 'MS and SS material options for water, chemical, and industrial service', 'Suitable for pump connections, valve maintenance, and instrumentation takeoffs'],
+    specs: { 'Type': 'Mechanical dismantling joint (adjustable)', 'Primary Function': 'Easy maintenance disassembly without pipe damage', 'Adjustment Range': 'Typically 50–300 mm axial travel (project specific)', 'Construction': 'Mild Steel or Stainless Steel per service', 'Connections': 'Flanged ends (ANSI/PN as specified)', 'Applications': 'Pumps, valves, water treatment, industrial piping', 'Typical Bore Range': 'DN 50 to DN 600 (custom larger sizes available)' },
+    images: ['dismantling-joint-1.webp', 'dismantling-joint-2.webp', 'dismantling-joint-3.webp']
+  },
+  {
+    id: 'prod_e31', category: 'Expansion Joints', title: 'MS & SS Industrial Duct Systems',
+    desc: 'Custom-fabricated mild steel and stainless steel duct systems for industrial air, gas, and fume conveyance. MS ducts deliver cost-effective strength for standard environments while SS ducts provide superior corrosion resistance for aggressive and hygienic applications.',
+    usage: 'Industrial ventilation systems, fume extraction, exhaust air handling, chemical plant gas conveyance, food and pharmaceutical manufacturing, and boiler or furnace gas duct connections.',
+    features: ['MS Ducts: Cost-effective Mild Steel construction for standard industrial environments', 'SS Ducts: Stainless Steel for corrosive, high-temperature, or hygienic environments', 'Custom fabricated to exact site dimensions and layout requirements', 'Available in rectangular, circular, and special cross-section profiles', 'Welded, flanged, or clamped joint options per system design', 'Compatible with expansion joints, dampers, and filtration equipment', 'Suitable for high-temperature flue gas, chemical fumes, and clean-room ventilation'],
+    specs: { 'Type': 'Custom fabricated industrial duct systems', 'MS Material': 'Mild Steel IS 2062 — cost-effective, strong, standard environments', 'SS Material': 'SS 304 / 316 — corrosion resistant, long lifespan, hygienic', 'Cross-Sections': 'Rectangular, circular, and special profiles', 'Joint Types': 'Welded, flanged, clamped connections', 'Service Media': 'Air, gas, fumes, exhaust, chemical vapour, hot flue gas', 'Applications': 'Industrial ventilation, fume extraction, HVAC, boiler gas ducts' },
+    images: ['ms-ss-duct-1.webp', 'ms-ss-duct-2.webp', 'ms-ss-duct-3.webp']
+  },
+  {
     id: 'prod_ts1', category: 'Turbine Spares', title: 'Carbon & Graphite Gland Sealing Rings',
     desc: 'Precision machined carbon and graphite seal rings for steam turbine gland sealing. Self-lubricating material maintains tight clearances at extreme temperatures.',
     usage: 'Steam turbine gland sealing for pressure retention at shaft exits; gas turbine labyrinth shaft sealing.',
