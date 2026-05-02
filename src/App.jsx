@@ -19,7 +19,7 @@ const CONTACT_INFO = {
   whatsapp: '6397363268',
   indiamart: 'https://www.indiamart.com/keshav-enterprises-shamli/',
   gmapsShare: 'https://share.google/uLc4GwsGec5eM62Ep',
-  gst: '09BRTPS5029K1ZC',
+  gst: '09BOSPS3115K1ZC',
   // ── SOCIAL MEDIA ── Update these URLs with your actual profile links
   linkedin: 'https://www.linkedin.com/in/keshav-enterprises-825a473b8',
   linkedinHandle: 'Keshav Enterprises',
@@ -76,8 +76,8 @@ const SERVICES = [
     // Upload a photo of 3D scanning, CMM measurement, or engineering drawings
     image: 'service-reverse-engineering.webp',
     title: 'Precision Reverse Engineering',
-    desc: 'PMI-verified reverse engineering using 3D laser scanners, CMM, and copying lathes for turbines from 5 kW to 27 MW. Generate full manufacturing drawings with tolerances, concentricity, pre/post heat treatment specs.',
-    details: ['3D Laser Scanner, CMM & Coordinate Measuring Machine at site/workshop', 'PMI testing for exact identification of material composition', 'Copying lathe for precision dimensional replication', 'Engineering drawings with tolerances, finish, parallelity, concentricity', 'Pre/post heat treatment specifications included', 'Rough machining, pre-final and final machining drawings', 'Covers turbines from 5 kW to 27 MW (Back Pressure or Condensing)', 'Single/Multi stage, Drive or Power, Horizontal or Vertical'],
+    desc: 'PMI-verified reverse engineering using 3D laser scanners, CMM, and copying lathes for turbines from Upto 27M.W. Generate full manufacturing drawings with tolerances, concentricity, pre/post heat treatment specs.',
+    details: ['3D Laser Scanner, CMM & Coordinate Measuring Machine at site/workshop', 'PMI testing for exact identification of material composition', 'Copying lathe for precision dimensional replication', 'Engineering drawings with tolerances, finish, parallelity, concentricity', 'Pre/post heat treatment specifications included', 'Rough machining, pre-final and final machining drawings', 'Covers turbines from Upto 27M.W. (Back Pressure or Condensing)', 'Single/Multi stage, Drive or Power, Horizontal or Vertical'],
     oems: ['Triveni', 'Siemens', 'BHEL', 'All Makes']
   },
   {
@@ -197,6 +197,46 @@ const RAW_PRODUCTS = [
     features: ['Cast and welded design — horizontal & vertical configurations', 'MOC: Cast Iron, Cast Steel, SS 304/316', 'Pressure ratings: ASME Class 125, 150, 300, 600', 'Easy blow-off cleanout port — no full disassembly', 'Mesh element size per application requirement', 'Service: Steam, water, gas, oil, chemical media'],
     specs: { 'Design': 'Cast & Welded Y-configuration', 'MOC': 'Cast Iron, Cast Steel, SS 304/316', 'Pressure Rating': 'ASME Class 125, 150, 300, 600', 'Cleanout': 'Blow-off port', 'Media': 'Steam, water, gas, oil, chemicals', 'End Connections': 'Flanged, Butt-Weld, Screwed' },
     images: ['y-type-strainer-1.webp', 'y-type-strainer-2.webp', 'y-type-strainer-3.webp']
+  },
+  {
+    id: 'prod_st5', category: 'Industrial Strainers', title: 'T-Type Strainer',
+    desc: 'T-configuration inline strainer integrating directly into T-junction pipelines. Large filtration area and easy mesh plate removal without full pipeline disassembly.',
+    usage: 'Pipeline protection at T-junctions; water, oil, gas, and viscous liquid service requiring high filtration area in compact installation.',
+    features: ['T-shape integrates directly into T-junction pipeline layouts', 'Easy mesh plate removal and cleaning — no pipeline disassembly required', 'Large filtration area per pipe bore — low pressure drop', 'Horizontal and vertical orientation options', 'Optional: cover pivot hinge, quick-look window, DP display, thermometer, heating jacket', 'MOC: Cast Steel, SS 304/316; others on request', 'Pressure rating: ASME Class 150 and higher', 'Mesh size customizable per application requirement'],
+    specs: { 'Design': 'Welded T-configuration with mesh element', 'MOC': 'Cast Steel, SS 304/316', 'Pressure Rating': 'ASME Class 150 and higher', 'Connections': 'Flanged or Butt-Weld ends', 'Orientation': 'Horizontal and Vertical', 'Mesh': 'Customizable per application', 'Media': 'Water, Oil, Gas, Viscous liquids' },
+    images: ['t-type-strainer-1.webp', 't-type-strainer-2.webp', 't-type-strainer-3.webp']
+  },
+  {
+    id: 'prod_st6', category: 'Industrial Strainers', title: 'Bag Filter Housing',
+    desc: 'Single and multi-bag filter housings providing fine filtration down to 0.5 µm. Low pressure drop, high dirt-holding capacity, and reusable filter bags minimize operating cost.',
+    usage: 'Fine liquid filtration in process, chemical, pharmaceutical, food & beverage, and industrial lines where basket strainers are insufficient.',
+    features: ['Single bag and multi-bag configurations available', 'Filtration accuracy: Down to 0.5 µm', 'Standard bag sizes: 4"×10", 4"×17", 7"×17", 7"×32"', 'Minimal side-bag leakage — guaranteed filtering quality', 'Low pressure drop — energy efficient operation', 'High dirt-holding capacity for extended service intervals', 'Filter bags reusable after cleaning; easy top-access replacement', 'Optional: quick-open cover, pedestal/bracket, differential pressure display, thermometer, heating jacket', 'MOC: SS 304/316 fabricated; Monel/Hastelloy/Duplex on request', 'Connections: Flanged ASME Class 150 and higher'],
+    specs: { 'Configurations': 'Single Bag / Multi Bag housing', 'Filtration Accuracy': 'Down to 0.5 µm', 'Bag Sizes': '4"×10", 4"×17", 7"×17", 7"×32"', 'MOC': 'SS 304/316 (Monel, Hastelloy, Duplex on request)', 'Pressure Rating': 'ASME Class 150 and higher', 'Connections': 'Flanged end / Butt-Weld end', 'Monitoring': 'DP display, thermometer (optional)' },
+    images: ['bag-filter-housing-1.webp', 'bag-filter-housing-2.webp', 'bag-filter-housing-3.webp']
+  },
+  {
+    id: 'prod_st7', category: 'Industrial Strainers', title: 'Jacketed Basket Strainer',
+    desc: 'Basket strainer with external heating or cooling jacket maintaining process fluid temperature during filtration. Essential for viscous media that solidify at ambient temperatures.',
+    usage: 'Viscous fluids, bitumen, wax, resins, and temperature-sensitive media in oil, chemical, and petrochemical pipelines.',
+    features: ['External heating/cooling jacket for temperature control during filtration', 'Jacket medium: Steam, hot oil, or cooling water', 'Maintains flowability of viscous process media', 'Standard basket strainer internals with SS perforated basket', 'MOC: SS 316L / CS jacketed construction per application', 'ASME VIII Div.1 compliant design', 'Pressure rating: ASME Class 150 and higher', 'Flanged end connections; horizontal orientation'],
+    specs: { 'Design': 'Basket strainer with external utility jacket', 'Jacket Medium': 'Steam / Hot oil / Cooling water', 'MOC': 'SS 316L / CS per application', 'Design Standard': 'ASME VIII Div.1', 'Pressure Rating': 'ASME Class 150 and higher', 'Applications': 'Viscous fluids, bitumen, wax, resins, polymers' },
+    images: ['jacketed-basket-strainer-1.webp', 'jacketed-basket-strainer-2.webp', 'jacketed-basket-strainer-3.webp']
+  },
+  {
+    id: 'prod_st8', category: 'Industrial Strainers', title: 'Magnetic Basket Strainer / Filter',
+    desc: 'Dual-action basket strainer with internal magnetic bars capturing both physical particulate via mesh and fine ferrous metal particles via magnets. Critical protection for precision rotating equipment.',
+    usage: 'Lube oil, hydraulic, and cooling systems where ferrous metallic contamination from wear or construction debris must be removed to protect precision equipment.',
+    features: ['Dual-action filtration: mesh removes physical particles; magnets capture ferrous fines', 'Internal magnetic bars — removes fine iron particles that pass through mesh', 'SS 304 fabricated basket body with SS perforated basket internals', 'Protects precision bearings, pumps, and control valves from metallic contamination', 'Easy magnet cleaning without special tools', 'Horizontal and vertical configurations available', 'Optional DP gauge for monitoring fouling status', 'Pressure rating: ASME Class 150 and higher'],
+    specs: { 'Filtration Principle': 'Physical mesh + Magnetic capture (dual action)', 'Magnet Type': 'Internal permanent magnet bars', 'MOC': 'SS 304 fabricated', 'Basket': 'SS perforated basket internals', 'Pressure Rating': 'ASME Class 150 and higher', 'Media': 'Lube oil, hydraulic oil, cooling water, process fluids', 'Applications': 'Turbine lube oil, hydraulic control, precision equipment protection' },
+    images: ['magnetic-basket-strainer-1.webp', 'magnetic-basket-strainer-2.webp', 'magnetic-basket-strainer-3.webp']
+  },
+  {
+    id: 'prod_st9', category: 'Industrial Strainers', title: 'Self-Cleaning (Auto Backwash) Filter',
+    desc: 'Automatic backwash filter cleaning the filter element by reverse flow during operation without stopping the process stream. Zero manual intervention required for cleaning cycles.',
+    usage: 'Continuous production processes where manual filter maintenance causes downtime; large-volume water treatment, cooling systems, and industrial fluid handling.',
+    features: ['Automatic backwash mechanism cleans element during full operation', 'Zero process shutdown required for cleaning cycles — continuous production', 'No manual intervention needed for cleaning', 'Significant reduction in maintenance labor vs. manual basket strainers', 'Suitable for large flow volumes with variable contamination levels', 'MOC: SS 304/316 or CS per service requirements', 'Optional differential pressure switch triggers backwash cycle automatically', 'Available in various flow capacities and filtration ratings'],
+    specs: { 'Cleaning Method': 'Automatic backwash (reverse flow)', 'Operation': 'Continuous — no shutdown for cleaning', 'MOC': 'SS 304/316 / CS per application', 'Trigger': 'Differential pressure switch or timed cycle', 'Applications': 'Water treatment, cooling systems, industrial fluid circuits', 'Benefit': 'Zero maintenance downtime vs. manual cleaning' },
+    images: ['self-cleaning-filter-1.webp', 'self-cleaning-filter-2.webp', 'self-cleaning-filter-3.webp']
   },
   {
     id: 'prod_e1', category: 'Expansion Joints', title: 'Stainless Steel Metallic Bellows Expansion Joint',
@@ -610,9 +650,9 @@ const INDUSTRIES = [
     color: 'from-yellow-500/20 to-amber-600/10', border: 'border-yellow-500/30', accent: 'text-yellow-500',
     // Upload this image to your /public folder — e.g. a photo of a power plant turbine hall
     image: 'industry-power-generation.webp',
-    desc: 'Supplying critical overhauling services and OEM-compatible spares to thermal power plants operating steam turbines from 5 MW to 27 MW. Our ex-OEM engineers ensure maximum plant availability.',
+    desc: 'Supplying critical overhauling services and OEM-compatible spares to thermal power plants operating steam turbines Upto 27M.W. Our ex-OEM engineers ensure maximum plant availability.',
     useCases: ['Steam turbine major and minor overhauling', 'Turbine erection and commissioning', 'Lube oil system flushing per ISO 4406:99', 'Rotor dynamic balancing and alignment', 'Emergency stop valve manufacturing', 'Filter elements and strainers supply'],
-    turbines: '5 MW – 27 MW'
+    turbines: 'Upto 27M.W.'
   },
   {
     id: 'ind_2', title: 'Sugar Mills & Distilleries', Icon: Factory,
@@ -780,7 +820,7 @@ const LOCAL_SCHEMA = {
   '@type': ['LocalBusiness', 'ProfessionalService'],
   name: 'Keshav Enterprises',
   alternateName: 'Keshav Engg',
-  description: 'Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW. Serving power, sugar, paper, oil & gas, and petrochemical industries across India.',
+  description: 'Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines Upto 27M.W. Serving power, sugar, paper, oil & gas, and petrochemical industries across India.',
   url: 'https://keshaventerprises.in',
   logo: 'https://keshaventerprises.in/keshav-logo.png',
   image: 'https://keshaventerprises.in/og-image.webp',
@@ -852,7 +892,7 @@ const FAQ_SCHEMA = {
       name: 'What turbine makes does Keshav Enterprises service?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Keshav Enterprises services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW.'
+        text: 'Keshav Enterprises services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from Upto 27M.W.'
       }
     },
     {
@@ -868,7 +908,7 @@ const FAQ_SCHEMA = {
       name: 'What is the power range of turbines Keshav Enterprises can overhaul?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Keshav Enterprises handles steam turbines from 5 kW to 27 MW — both back-pressure and condensing types, horizontal and vertical, single and multi-stage.'
+        text: 'Keshav Enterprises handles steam turbines from Upto 27M.W. — both back-pressure and condensing types, horizontal and vertical, single and multi-stage.'
       }
     },
     {
@@ -1213,170 +1253,172 @@ const Navbar = memo(({ currentPath, navigate }) => {
 
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
-  <footer className="bg-[#0A192F] text-slate-300 pt-20 pb-8 border-t-[8px] border-blue-600" role="contentinfo">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-        <div>
-          <div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
-          <p className="text-slate-300 font-medium text-sm leading-relaxed mb-8">20+ years of excellence in industrial turbine engineering, reverse engineering, and precision manufacturing. Delivering reliability to power, sugar, and process industries across India.</p>
-          <div className="flex flex-col space-y-4 mt-6"><MakeInIndiaBadge /><IndiaMartBadge /></div>
+  <footer className="relative bg-[#060F1E] text-slate-300 overflow-hidden" role="contentinfo">
+    {/* Top accent bar with gradient */}
+    <div className="h-1.5 w-full bg-gradient-to-r from-blue-700 via-blue-400 to-blue-700" />
+
+    {/* Subtle background grid pattern */}
+    <div className="absolute inset-0 opacity-[0.03]" style={{backgroundImage:'linear-gradient(rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px)',backgroundSize:'40px 40px'}} aria-hidden="true" />
+
+    {/* ── UPPER FOOTER ── */}
+    <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10 lg:gap-14">
+
+        {/* Col 1 — Brand */}
+        <div className="xl:col-span-1">
+          <div className="mb-5"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
+          <p className="text-slate-400 text-sm leading-relaxed mb-7">20+ years of precision turbine engineering — overhauling, reverse engineering, and manufacturing. Trusted by power, sugar, paper, and process industries across India.</p>
+          {/* Trust badges */}
+          <div className="flex flex-col gap-3">
+            <MakeInIndiaBadge />
+            <IndiaMartBadge />
+          </div>
+          {/* GST badge */}
+          <div className="mt-5 inline-flex items-center gap-2 bg-blue-950/60 border border-blue-800/40 rounded-lg px-3 py-2">
+            <Shield className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
+            <span className="text-[11px] font-bold text-blue-300 tracking-wide">GST: {CONTACT_INFO.gst}</span>
+          </div>
         </div>
-        <nav aria-label="Footer quick links">
-          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Quick Links</h3>
-          <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true" />
-          <ul className="space-y-4">
+
+        {/* Col 2 — Quick Links */}
+        <div>
+          <h3 className="text-sm font-black text-white uppercase tracking-[0.18em] mb-1">Quick Links</h3>
+          <div className="w-8 h-0.5 bg-blue-500 mb-5 rounded-full" aria-hidden="true" />
+          <ul className="space-y-2.5">
             {NAV_LINKS.map(link => (
               <li key={link.name}>
                 <a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
-                  className="text-slate-300 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm focus:outline-none focus-visible:underline">
-                  <ChevronRight className="w-4 h-4 mr-2 text-blue-500" aria-hidden="true" /> {link.name}
+                  className="group flex items-center gap-2 text-slate-400 hover:text-white text-sm font-medium transition-colors focus:outline-none focus-visible:underline">
+                  <span className="w-5 h-5 rounded bg-blue-900/50 group-hover:bg-blue-600 flex items-center justify-center transition-colors shrink-0">
+                    <ChevronRight className="w-3 h-3 text-blue-400 group-hover:text-white" aria-hidden="true" />
+                  </span>
+                  {link.name}
                 </a>
               </li>
             ))}
           </ul>
-        </nav>
+        </div>
+
+        {/* Col 3 — Services */}
         <div>
-          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Our Services</h3>
-          <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true" />
-          <ul className="space-y-4">
-            {['Overhauling & Maintenance', 'Reverse Engineering', 'Turbine Erection', 'Spares Manufacturing', 'Dynamic Balancing', 'Lube Oil Flushing'].map(s => (
-              <li key={s} className="text-slate-300 font-medium text-sm flex items-center">
-                <ChevronRight className="w-4 h-4 mr-2 text-blue-500 shrink-0" aria-hidden="true" /> {s}
+          <h3 className="text-sm font-black text-white uppercase tracking-[0.18em] mb-1">Our Services</h3>
+          <div className="w-8 h-0.5 bg-blue-500 mb-5 rounded-full" aria-hidden="true" />
+          <ul className="space-y-2.5">
+            {[
+              {label:'Turbine Overhauling & Maintenance', path:'/services'},
+              {label:'Precision Reverse Engineering', path:'/services'},
+              {label:'Turbine Erection & Commissioning', path:'/services'},
+              {label:'Dynamic Balancing & Machining', path:'/services'},
+              {label:'Lube Oil Flushing', path:'/services'},
+              {label:'Machine Alignment', path:'/services'},
+            ].map(s => (
+              <li key={s.label}>
+                <a href={`#${s.path}`} onClick={e => { e.preventDefault(); navigate(s.path); }}
+                  className="group flex items-center gap-2 text-slate-400 hover:text-white text-sm font-medium transition-colors focus:outline-none focus-visible:underline">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 group-hover:bg-blue-400 shrink-0 transition-colors" aria-hidden="true" />
+                  {s.label}
+                </a>
               </li>
             ))}
           </ul>
         </div>
+
+        {/* Col 4 — Contact */}
         <div>
-          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Contact Us</h3>
-          <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true" />
-          <address className="not-italic">
-            <ul className="space-y-6">
-              <li className="flex items-start"><MapPin className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" /><span className="text-slate-300 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</span></li>
-              <li className="flex items-start"><Phone className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
-                <div className="text-slate-300 font-medium text-sm space-y-1">
-                  {CONTACT_INFO.phones.map(p => <div key={p}><a href={`tel:${p.replace(/\s/g, '')}`} className="hover:text-white transition-colors">{p}</a></div>)}
-                </div>
-              </li>
-              <li className="flex items-start"><Mail className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
-                <div className="text-slate-300 font-medium text-sm space-y-1">
-                  <div><a href={`mailto:${CONTACT_INFO.email}`} className="hover:text-white transition-colors">{CONTACT_INFO.email}</a></div>
-                  <div><a href={`mailto:${CONTACT_INFO.marketingEmail}`} className="hover:text-white transition-colors">{CONTACT_INFO.marketingEmail}</a></div>
-                </div>
-              </li>
-            </ul>
+          <h3 className="text-sm font-black text-white uppercase tracking-[0.18em] mb-1">Contact Us</h3>
+          <div className="w-8 h-0.5 bg-blue-500 mb-5 rounded-full" aria-hidden="true" />
+          <address className="not-italic space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-900/60 flex items-center justify-center shrink-0 mt-0.5">
+                <MapPin className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              </div>
+              <a href={CONTACT_INFO.gmapsShare} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white text-sm leading-relaxed transition-colors">
+                {CONTACT_INFO.address}
+              </a>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-900/60 flex items-center justify-center shrink-0">
+                <Phone className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              </div>
+              <div className="space-y-1">
+                {CONTACT_INFO.phones.map(p => (
+                  <div key={p}><a href={`tel:${p.replace(/\s/g,'')}`} className="text-slate-300 hover:text-white text-sm font-semibold transition-colors">{p}</a></div>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-900/60 flex items-center justify-center shrink-0">
+                <Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              </div>
+              <div className="space-y-1">
+                <div><a href={`mailto:${CONTACT_INFO.email}`} className="text-slate-300 hover:text-white text-sm transition-colors break-all">{CONTACT_INFO.email}</a></div>
+                <div><a href={`mailto:${CONTACT_INFO.marketingEmail}`} className="text-slate-400 hover:text-white text-xs transition-colors break-all">{CONTACT_INFO.marketingEmail}</a></div>
+              </div>
+            </div>
           </address>
         </div>
       </div>
-      {/* ── Social Media + Copyright Bar ── */}
-      <div className="border-t border-slate-700/60 pt-10 mb-8">
-        {/* "Follow Us" heading */}
-        <div className="flex flex-col items-center mb-8">
-          <p className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-5">Connect With Us</p>
-          <div className="flex flex-col sm:flex-row items-center gap-5">
+    </div>
 
-            {/* ── LinkedIn Card ── */}
-            <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on LinkedIn — ${CONTACT_INFO.linkedinHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#0A66C2]/15 to-[#004182]/10 hover:from-[#0A66C2] hover:to-[#004182] border border-[#0A66C2]/30 hover:border-[#0A66C2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(10,102,194,0.5)] min-w-[220px] overflow-hidden">
-              {/* Shine sweep on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              {/* Logo box */}
-              <div className="w-11 h-11 bg-[#0A66C2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(10,102,194,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-              </div>
-              {/* Text */}
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#4FA3F7] group-hover:text-blue-200 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">LinkedIn</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.linkedinHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-blue-200/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
+    {/* ── SOCIAL MEDIA STRIP ── */}
+    <div className="relative border-t border-white/[0.06] bg-[#040C18]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p className="text-center text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] mb-6">Follow Us</p>
+        <div className="flex flex-wrap justify-center gap-3">
 
-            {/* ── Instagram Card ── */}
-            <a href={CONTACT_INFO.instagram} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on Instagram — ${CONTACT_INFO.instagramHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#E1306C]/15 via-[#833ab4]/10 to-[#fcb045]/10 hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] border border-[#E1306C]/30 hover:border-transparent px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(225,48,108,0.45)] min-w-[220px] overflow-hidden">
-              {/* Shine sweep */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              {/* Logo box — Instagram gradient */}
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-lg flex-shrink-0 bg-gradient-to-br from-[#833ab4] via-[#fd1d1d] to-[#fcb045] group-hover:shadow-[0_0_15px_rgba(225,48,108,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-              </div>
-              {/* Text */}
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#f472b6] group-hover:text-pink-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Instagram</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.instagramHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-pink-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
+          {/* LinkedIn */}
+          <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`Keshav Enterprises on LinkedIn`}
+            className="group flex items-center gap-2.5 bg-[#0A66C2]/10 hover:bg-[#0A66C2] border border-[#0A66C2]/25 hover:border-[#0A66C2] px-4 py-2.5 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-[#0A66C2]/30">
+            <svg className="w-4 h-4 text-[#4FA3F7] group-hover:text-white shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">LinkedIn</span>
+          </a>
 
-            {/* ── Reddit Card ── */}
-            <a href={CONTACT_INFO.reddit} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on Reddit — ${CONTACT_INFO.redditHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF4500]/15 to-[#FF6A33]/10 hover:from-[#FF4500] hover:to-[#FF6A33] border border-[#FF4500]/30 hover:border-[#FF4500] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,69,0,0.45)] min-w-[220px] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-[#FF4500] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z" />
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#ffb08f] group-hover:text-orange-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Reddit</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.redditHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-orange-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
+          {/* Instagram */}
+          <a href={CONTACT_INFO.instagram} target="_blank" rel="noopener noreferrer" aria-label={`Keshav Enterprises on Instagram`}
+            className="group flex items-center gap-2.5 bg-[#E1306C]/10 hover:bg-gradient-to-br hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] border border-[#E1306C]/25 hover:border-transparent px-4 py-2.5 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-pink-600/30">
+            <svg className="w-4 h-4 text-[#f472b6] group-hover:text-white shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">Instagram</span>
+          </a>
 
-            {/* ── YouTube Card ── */}
-            <a href={CONTACT_INFO.youtube} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on YouTube — ${CONTACT_INFO.youtubeHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF0000]/15 to-[#CC0000]/10 hover:from-[#FF0000] hover:to-[#CC0000] border border-[#FF0000]/30 hover:border-[#FF0000] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,0,0,0.45)] min-w-[220px] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-[#FF0000] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,0,0,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#fca5a5] group-hover:text-red-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">YouTube</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.youtubeHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-red-100/70 font-medium transition-colors mt-0.5">View Channel →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
+          {/* YouTube */}
+          <a href={CONTACT_INFO.youtube} target="_blank" rel="noopener noreferrer" aria-label={`Keshav Enterprises on YouTube`}
+            className="group flex items-center gap-2.5 bg-[#FF0000]/10 hover:bg-[#FF0000] border border-[#FF0000]/25 hover:border-[#FF0000] px-4 py-2.5 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-red-600/30">
+            <svg className="w-4 h-4 text-[#fca5a5] group-hover:text-white shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+            <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">YouTube</span>
+          </a>
 
-            {/* ── Facebook Card ── */}
-            <a href={CONTACT_INFO.facebook} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on Facebook — ${CONTACT_INFO.facebookHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#1877F2]/15 to-[#145DBF]/10 hover:from-[#1877F2] hover:to-[#145DBF] border border-[#1877F2]/30 hover:border-[#1877F2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(24,119,242,0.45)] min-w-[220px] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-[#1877F2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(24,119,242,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z" />
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#93c5fd] group-hover:text-blue-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Facebook</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.facebookHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-blue-100/70 font-medium transition-colors mt-0.5">View Page →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
+          {/* Facebook */}
+          <a href={CONTACT_INFO.facebook} target="_blank" rel="noopener noreferrer" aria-label={`Keshav Enterprises on Facebook`}
+            className="group flex items-center gap-2.5 bg-[#1877F2]/10 hover:bg-[#1877F2] border border-[#1877F2]/25 hover:border-[#1877F2] px-4 py-2.5 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-blue-600/30">
+            <svg className="w-4 h-4 text-[#93c5fd] group-hover:text-white shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg>
+            <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">Facebook</span>
+          </a>
 
-          </div>
+          {/* Reddit */}
+          <a href={CONTACT_INFO.reddit} target="_blank" rel="noopener noreferrer" aria-label={`Keshav Enterprises on Reddit`}
+            className="group flex items-center gap-2.5 bg-[#FF4500]/10 hover:bg-[#FF4500] border border-[#FF4500]/25 hover:border-[#FF4500] px-4 py-2.5 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-orange-600/30">
+            <svg className="w-4 h-4 text-[#ffb08f] group-hover:text-white shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z"/></svg>
+            <span className="text-xs font-bold text-slate-300 group-hover:text-white transition-colors">Reddit</span>
+          </a>
+
         </div>
+      </div>
+    </div>
 
-        {/* Copyright row */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-6 border-t border-slate-800/60">
-          <p className="text-slate-500 font-medium text-sm">© 2026 KESHAV ENTERPRISES. GST: {CONTACT_INFO.gst}. All rights reserved.</p>
-          <p className="text-slate-600 font-medium text-xs">Shamli, Uttar Pradesh, India — Power · Sugar · Process Industries</p>
+    {/* ── COPYRIGHT BAR ── */}
+    <div className="relative bg-[#020810] border-t border-white/[0.04]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-slate-600 text-xs font-medium text-center sm:text-left">
+            © 2026 <span className="text-slate-500 font-bold">KESHAV ENTERPRISES</span>. All rights reserved.
+            <span className="mx-2 text-slate-700">·</span>
+            GST: <span className="text-slate-500 font-semibold">{CONTACT_INFO.gst}</span>
+          </p>
+          <p className="text-slate-700 text-xs font-medium text-center sm:text-right">
+            Shamli, Uttar Pradesh, India
+            <span className="mx-2 text-slate-800">·</span>
+            Power · Sugar · Process Industries
+          </p>
         </div>
       </div>
     </div>
@@ -1855,7 +1897,7 @@ const HomePage = ({ navigate }) => {
               </h1>
               <div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl border-l-4 border-l-cyan-400 p-5 mb-10 max-w-xl shadow-xl mx-auto lg:mx-0">
                 <p className="text-lg md:text-xl text-slate-200 font-medium leading-relaxed">
-                  Complete overhauling &amp; maintenance, rapid reverse engineering, and OEM-compatible turbine spares for turbines from 5 kW to 27 MW. Trusted across India's power generation and process industries.
+                  Complete overhauling &amp; maintenance, rapid reverse engineering, and OEM-compatible turbine spares for turbines from Upto 27M.W. Trusted across India's power generation and process industries.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start">
@@ -1873,7 +1915,7 @@ const HomePage = ({ navigate }) => {
           </div>
           <div className="w-full lg:w-2/5 hidden lg:flex flex-col gap-6" aria-hidden="true">
             {[
-              { delay: 'delay-300', label: 'Proven Experience', Icon: Shield, title: '5 kW – 27 MW', sub: 'Power range for erection, overhauling, and reverse engineering.' },
+              { delay: 'delay-300', label: 'Proven Experience', Icon: Shield, title: 'Upto 27M.W.', sub: 'Power range for erection, overhauling, and reverse engineering.' },
               { delay: 'delay-500', label: 'Technical Services', Icon: Wrench, title: 'Zero Downtime', sub: '24x7 emergency support & 10 OEM-compatible turbine brands covered.' },
               { delay: 'delay-700', label: 'Precision Products', Icon: Factory, title: 'OEM-Grade Spares', sub: '3D scanning, CMM & PMI for reverse-engineered ISO/API parts.' },
             ].map(({ delay, label, Icon, title, sub }, i) => (
@@ -1921,7 +1963,7 @@ const HomePage = ({ navigate }) => {
             {[
               { Icon: Clock, stat: '20+', label: 'Years Experience', sub: 'In turbine engineering' },
               { Icon: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
-              { Icon: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: '5 kW to 27 MW range' },
+              { Icon: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W. range' },
               { Icon: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
             ].map(({ Icon, stat, label, sub }, i) => (
               <div key={i} className="text-center">
@@ -2100,7 +2142,7 @@ const AboutPage = ({ navigate }) => {
               {[
                 { stat: '20+', label: 'Years in Business', sub: 'Since 2000' },
                 { stat: '10+', label: 'OEM Brands', sub: 'Triveni · Siemens · BHEL' },
-                { stat: '27 MW', label: 'Max Turbine', sub: '5 kW to 27 MW range' },
+                { stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W. range' },
                 { stat: '24×7', label: 'Emergency Support', sub: 'Multi-location engineers' },
               ].map(({ stat, label, sub }, i) => (
                 <div key={i} className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:-translate-y-1 transition-transform">
@@ -2129,7 +2171,7 @@ const AboutPage = ({ navigate }) => {
             {[
               { stat: '20+', label: 'Years in Business', sub: 'Since 2000' },
               { stat: '10+', label: 'OEM Brands Covered', sub: 'Triveni · Siemens · BHEL' },
-              { stat: '27 MW', label: 'Max Turbine Handled', sub: '5 kW to 27 MW range' },
+              { stat: '27 MW', label: 'Max Turbine Handled', sub: 'Upto 27M.W. range' },
               { stat: '24×7', label: 'Emergency Response', sub: 'Multi-location engineers' },
             ].map(({ stat, label, sub }, i) => (
               <div key={i}>
@@ -2154,7 +2196,7 @@ const AboutPage = ({ navigate }) => {
             <div className="space-y-4 text-slate-600 text-base leading-relaxed keep-left">
               <p>Keshav Enterprises is a precision industrial engineering company headquartered in Shamli, Uttar Pradesh. For over two decades, we have provided specialist turbine maintenance, reverse engineering, and OEM-compatible spare parts to India's most demanding industrial sectors.</p>
               <p>Our engineering team includes ex-OEM specialists from Triveni, Siemens, BHEL, Belliss & Morcom, Man Turbo, KKK, and ABB — providing clients with the same level of technical expertise as the original equipment manufacturers, at a fraction of the lead time and cost.</p>
-              <p>We cover steam turbines from 5 kW to 27 MW — back-pressure and condensing, horizontal and vertical, single and multi-stage. Our workshop is equipped with 3D laser scanners, CMM coordinate measuring machines, dynamic balancing machines (50–2,000 kg), and precision CNC lathes.</p>
+              <p>We cover steam turbines from Upto 27M.W. — back-pressure and condensing, horizontal and vertical, single and multi-stage. Our workshop is equipped with 3D laser scanners, CMM coordinate measuring machines, dynamic balancing machines (50–2,000 kg), and precision CNC lathes.</p>
             </div>
           </div>
           <div className="space-y-5">
@@ -2366,7 +2408,7 @@ const BLOG_POSTS = [
       { type: 'h2', text: 'Step 5: Machining & Quality Control' },
       { type: 'p', text: 'Machining is performed in three stages: rough machining to near-final dimensions, heat treatment if required (stress relieving, quench and temper, nitriding), and final precision machining. Each stage is inspected against the engineering drawing. Rotors are dynamically balanced to ISO 1940 / API 670 standards before dispatch.' },
       { type: 'h2', text: 'Turbines We Cover' },
-      { type: 'p', text: 'We have reverse-engineered components for steam turbines from 5 kW to 27 MW across all major makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB. Both back-pressure and condensing turbines, horizontal and vertical, single and multi-stage.' },
+      { type: 'p', text: 'We have reverse-engineered components for steam turbines from Upto 27M.W. across all major makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB. Both back-pressure and condensing turbines, horizontal and vertical, single and multi-stage.' },
       { type: 'cta', text: 'Have an obsolete spare you need reverse-engineered? Send us a photo and your turbine details on WhatsApp — we will assess feasibility within 24 hours.' },
     ],
   },
@@ -2618,14 +2660,14 @@ const BlogPostPage = ({ slug, navigate }) => {
 const ServicesPage = ({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-white">
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
-      description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
+      description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines Upto 27M.W." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
         <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">Technical Services</h1>
         <div className="section-divider w-24 h-1.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true" />
         <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">
-          Specialized mechanical solutions for industrial rotating equipment from 5 kW to 27 MW. Ensuring peak reliability across power generation, sugar mills, paper mills, refineries, and petrochemical industries.
+          Specialized mechanical solutions for industrial rotating equipment from Upto 27M.W. Ensuring peak reliability across power generation, sugar mills, paper mills, refineries, and petrochemical industries.
         </p>
       </div>
     </div>
