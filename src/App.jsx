@@ -817,7 +817,7 @@ const MARQUEE_CSS = `
     .hero-desktop-grad{display:none!important}
     .hero-mobile-vignette{display:none!important}
     .hero-glow-orb{display:none!important}
-    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.45),transparent)!important}
+    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
     /* Reduce main-thread work on mobile - limit expensive blur filters */
     .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
@@ -3143,6 +3143,60 @@ const INDUSTRY_DETAILS = {
   },
 };
 
+// Maps industry product names to their product IDs for direct deep-linking
+const INDUSTRY_PRODUCT_IDS = {
+  // ind_1 — Power Generation
+  'Lube Oil Filter Elements (180 GPM)': 'prod_f1',
+  'Steam Crossover Bellows': 'prod_e13',
+  'Babbitt Journal & Thrust Bearings': 'prod_ts3',
+  'Emergency Stop Valves': 'prod_ts4',
+  'Vibration Monitoring Probes (Shinkawa-compatible)': 'prod_ee1',
+  'Turbine Oil Pumps (Main & Aux)': 'prod_ts5',
+  // ind_2 — Sugar Mills
+  'Carbon & Graphite Gland Sealing Rings': 'prod_ts1',
+  'Labyrinth Sealing Packings': 'prod_ts2',
+  'Lube Oil Filter Elements (Triveni-compatible)': 'prod_f1',
+  'Air Breather Filters': 'prod_f4',
+  'Simplex & Duplex Basket Strainers': 'prod_st2',
+  'Rotor Balancing Service': null,
+  // ind_3 — Paper Mills
+  'Duplex Basket Strainers': 'prod_st2',
+  'SS Metallic Bellows Expansion Joints': 'prod_e1',
+  'Rubber Expansion Joints (Double-Arch)': 'prod_e2',
+  'PTFE-Lined Hose Assemblies': 'prod_h2',
+  'Anti-Vibration Mounts': 'prod_r2',
+  'Turbine Spares (Siemens, BHEL, Triveni)': null,
+  // ind_4 — Oil & Gas
+  'Control Oil Filter Elements (IS27 Anti-Static)': 'prod_f2',
+  'Babbitt Bearing Manufacturing': 'prod_ts3',
+  'Hydraulic Rubber Hose Assemblies': 'prod_h3',
+  'Duplex Fabricated Filter Housings': 'prod_f10',
+  'Vibration Monitoring Probes': 'prod_ee1',
+  // ind_5 — Petrochemical
+  'FCCU Expansion Joints': 'prod_e14',
+  'Axial & Universal Metallic Expansion Joints': 'prod_e4',
+  'High-Pressure Simplex & Duplex Strainers': 'prod_st2',
+  'Jacketed Expansion Joints': 'prod_e15',
+  'Turbine Steam Path Components': 'prod_ts9',
+  'Pressure-Balanced Expansion Joints': 'prod_e6',
+  // ind_6 — Agro & Food
+  'FDA-Grade PTFE Hose Assemblies': 'prod_h2',
+  'Air Breather & Tank Breather Filters': 'prod_f4',
+  'Y-Type & Conical Strainers': 'prod_st4',
+  'Rubber Anti-Vibration Mounts': 'prod_r2',
+  'Rubber Expansion Joints (Single-Arch)': 'prod_e3',
+  'Steam Turbine Maintenance (Triveni, Maxwatt)': null,
+  // ind_7 — Cement
+  'Lube Oil Filter Elements (Kiln & Mill Gearboxes)': 'prod_f1',
+  'Duplex Basket Strainers (Cooling Water & Process Lines)': 'prod_st2',
+  'Axial Metallic Expansion Joints (Kiln Exhaust Ducts)': 'prod_e1b',
+  'Rectangular Non-Metallic (Fabric) Expansion Joints': 'prod_e18',
+  'Rubber Anti-Vibration Mounts & Pads': 'prod_r2',
+  'Air Breather & Tank Breather Filters (Lube Oil Reservoirs)': 'prod_f4',
+  'SS Corrugated Flexible Hose Assemblies': 'prod_h1',
+  'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)': 'prod_st3',
+};
+
 const IndustryDetailPage = ({ industryId, navigate }) => {
   const ind = INDUSTRIES.find(i => i.id === industryId);
   const detail = INDUSTRY_DETAILS[industryId];
@@ -3172,9 +3226,11 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
         {ind.image && (
           <img src={ind.image} alt="" aria-hidden="true" loading="eager"
-            className="absolute inset-0 w-full h-full object-cover opacity-10"
+            className="absolute inset-0 w-full h-full object-cover opacity-35"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
+        {/* Reduced overlay so industry image is visible — gradient fades left edge only */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/80 via-[#0A192F]/55 to-[#0A192F]/25" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10">
@@ -3191,15 +3247,15 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
             <div>
               <div className={`inline-block text-xs font-black ${ind.accent} uppercase tracking-widest mb-3 bg-white/5 px-3 py-1 rounded-full border border-white/10`}>Industry Focus</div>
               <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">{ind.title}</h1>
-              <p className="text-slate-300 font-medium text-lg">{detail.heroSub}</p>
+              <p className="text-slate-100 font-medium text-lg">{detail.heroSub}</p>
             </div>
           </div>
           {/* Key Facts Strip */}
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
             {detail.keyFacts.map((fact, i) => (
-              <div key={i} className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 flex items-start gap-3">
+              <div key={i} className="bg-white/[0.07] border border-white/[0.14] rounded-xl px-5 py-4 flex items-start gap-3">
                 <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-                <span className="text-slate-200 font-semibold text-sm leading-snug">{fact}</span>
+                <span className="text-white/90 font-semibold text-sm leading-snug">{fact}</span>
               </div>
             ))}
           </div>
@@ -3262,33 +3318,49 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Products We Supply for {ind.title}</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {detail.products.map((prod, i) => (
-              <div key={i} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all group flex flex-col">
-                <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${ind.color.replace('/20', '').replace('/10', '')} from-blue-600 to-blue-400`} />
-                <div className="p-7 flex flex-col flex-1">
-                  <div className="flex items-start gap-3 mb-4">
-                    <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 mt-0.5`}>
-                      <Settings className={`w-4 h-4 ${ind.accent}`} />
+            {detail.products.map((prod, i) => {
+              const prodId = INDUSTRY_PRODUCT_IDS[prod.name];
+              const isClickable = !!prodId;
+              return (
+                <div key={i}
+                  className={`bg-white rounded-2xl border border-slate-200 shadow-sm transition-all flex flex-col ${isClickable ? 'hover:shadow-lg hover:border-blue-300 cursor-pointer group' : ''}`}
+                  onClick={isClickable ? () => navigate(`/product/${prodId}`) : undefined}
+                  role={isClickable ? 'button' : undefined}
+                  tabIndex={isClickable ? 0 : undefined}
+                  onKeyDown={isClickable ? (e) => { if (e.key === 'Enter' || e.key === ' ') navigate(`/product/${prodId}`); } : undefined}
+                  aria-label={isClickable ? `View product: ${prod.name}` : undefined}>
+                  <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${ind.color.replace('/20', '').replace('/10', '')} from-blue-600 to-blue-400`} />
+                  <div className="p-7 flex flex-col flex-1">
+                    <div className="flex items-start gap-3 mb-4">
+                      <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 mt-0.5`}>
+                        <Settings className={`w-4 h-4 ${ind.accent}`} />
+                      </div>
+                      <h3 className="font-black text-slate-900 text-base leading-snug">{prod.name}</h3>
                     </div>
-                    <h3 className="font-black text-slate-900 text-base leading-snug">{prod.name}</h3>
+                    <p className="text-slate-600 font-medium text-sm leading-relaxed mb-5 flex-1">{prod.purpose}</p>
+                    <ul className="space-y-1.5 mb-6">
+                      {prod.features.map((f, j) => (
+                        <li key={j} className="flex items-start gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${ind.accent.replace('text-', 'bg-')}`} />
+                          <span className="text-slate-600 text-xs font-semibold leading-snug">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {isClickable ? (
+                      <div className={`mt-auto text-xs font-black uppercase tracking-widest ${ind.accent} flex items-center gap-1`}>
+                        View Product <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => navigate('/products')}
+                        className={`mt-auto text-xs font-black uppercase tracking-widest ${ind.accent} hover:underline flex items-center gap-1 focus:outline-none`}>
+                        View in Catalog <ChevronRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
-                  <p className="text-slate-600 font-medium text-sm leading-relaxed mb-5 flex-1">{prod.purpose}</p>
-                  <ul className="space-y-1.5 mb-6">
-                    {prod.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-2">
-                        <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${ind.accent.replace('text-', 'bg-')}`} />
-                        <span className="text-slate-600 text-xs font-semibold leading-snug">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={() => navigate('/products')}
-                    className={`mt-auto text-xs font-black uppercase tracking-widest ${ind.accent} hover:underline flex items-center gap-1 focus:outline-none`}>
-                    View in Catalog <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
