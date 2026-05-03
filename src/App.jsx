@@ -7,7 +7,8 @@ import {
   CheckCircle2, ExternalLink, MessageCircle, Activity, Droplets,
   Search, Layers, Target, Cpu, ArrowLeft, Paperclip,
   Filter, Hexagon, Cog, LifeBuoy, ChevronLeft,
-  Award, Clock, TrendingUp, Users, Globe, BookOpen, Tag, Calendar, User
+  Award, Clock, TrendingUp, Users, Globe, BookOpen, Tag, Calendar, User,
+  Building2, Copy, Check, PhoneCall
 } from 'lucide-react';
 
 const CONTACT_INFO = {
@@ -120,7 +121,7 @@ const RAW_PRODUCTS = [
     usage: 'Primary lube oil filtration in Triveni steam turbines used in sugar mills, power plants, paper mills, distilleries and agro industries.',
     features: ['Triveni OEM Compatible — 180 GPM (approx. 680 LPM) rated flow', 'Filter media: Glass Fiber Fleece (VG) multilayer pleated construction', 'Filtration fineness: 6 VG, 10 VG, 16 VG, 25 VG grades available', 'High dirt-holding capacity; consistent efficiency at elevated differential pressure', 'High collapse resistance per ISO 2941', 'Material compatibility verified per ISO 2943', 'Sealing options: Nitrile (P) or Viton (V)', 'IS27 anti-static specification for oils below 300 pS/m conductivity', 'Compatible with mineral oils, emulsions, synthetic hydraulic/lube fluids', 'HSN Code: 8421'],
     specs: { 'Flow Capacity': '180 GPM (680 LPM rated)', 'Filtration Fineness': '6-25 µm (beta20µm(c) >= 200 per ISO 16889)', 'Max Operating Pressure': '10 bar (145 psi)', 'Filter Media': 'Glass Fiber Fleece (VG); SS Wire Mesh (G) available', 'Sealing Material': 'Nitrile (P) / Viton (V)', 'OEM Compatibility': 'Triveni Steam Turbines — all models', 'Standards': 'ISO 16889, API 614', 'Anti-Static Option': 'IS27 spec — oils below 300 pS/m conductivity', 'HSN Code': '8421' },
-    images: ['180-gpm-lube-filter-1.webp', '180-gpm-lube-filter-2.webp', '180-gpm-lube-filter-3.webp']
+    images: ['180-gpm-lube-filter-1.webp', '180-gpm-lube-filter-2.webp', '180-gpm-lube-filter-3.webp', '180-gpm-lube-filter-4.webp', '180-gpm-lube-filter-5.webp', '180-gpm-lube-filter-6.webp']
   },
   {
     id: 'prod_f2', category: 'Industrial Filtration', title: 'Siemens Turbine Filter Elements',
@@ -128,7 +129,7 @@ const RAW_PRODUCTS = [
     usage: 'Hydraulic control systems in Siemens industrial turbines; prevents electrostatic discharge in low-conductivity synthetic control oils.',
     features: ['850 LPM flow rating for duplex turbine control filter applications', 'Microglass deep media — Eaton 01.E series dimensional compatible', 'IS27 Electrostatic Critical Application specification', 'Anti-static prevents discharge in synthetic oils below 300 pS/m', 'High collapse pressure per ISO 2941', 'Filtration fineness: 3 VG, 6 VG, 10 VG, 16 VG, 25 VG', 'Operating pressure: up to 16 bar (DWF series) / 63 bar (DU duplex series)', 'Sealing: Nitrile or Viton', 'ASME compliant: EN13445, AD2000, ASME Sec. VIII Div. 1', 'PED/CE certified housings available'],
     specs: { 'Flow Capacity': '850 LPM (duplex control filter)', 'Filtration Fineness': '3-25 µm (microglass VG)', 'Max Operating Pressure': 'Up to 63 bar (DU duplex housing)', 'Filter Media': 'Microglass (VG) with IS27 anti-static treatment', 'Anti-Static Spec': 'IS27 — oils below 300 pS/m conductivity', 'Housing Series': 'DWF / DU / DA/EDA Duplex series compatible', 'Standards': 'EN13445, AD2000, ASME Sec. VIII Div. 1, PED 2014/68/EC', 'OEM Compatibility': 'Siemens industrial turbine control systems' },
-    images: ['850-lpm-siemens-filter-1.webp', '850-lpm-siemens-filter-2.webp', '850-lpm-siemens-filter-3.webp']
+    images: ['850-lpm-siemens-filter-1.webp', '850-lpm-siemens-filter-2.webp', '850-lpm-siemens-filter-3.webp', '850-lpm-siemens-filter-4.webp', '850-lpm-siemens-filter-5.webp', '850-lpm-siemens-filter-6.webp']
   },
   {
     id: 'prod_f3', category: 'Industrial Filtration', title: 'SS Wire Mesh (CEP) Centrifugal Filter Elements',
@@ -136,7 +137,7 @@ const RAW_PRODUCTS = [
     usage: 'High-temperature fluid and gas filtration, hydraulic and lubrication systems where cleanable/reusable elements are preferred.',
     features: ['SS 304 / SS 316 stainless steel wire mesh construction', 'Single or multi-layer pleated weave designs', 'Surface filtration principle (vs. depth filtration)', 'Available rating: 5-1500 µm or per special requirement', 'High collapse resistance and high burst strength', 'Compatible with wide range of hydraulic & lubrication fluids', 'Cleanable and reusable — reduced lifecycle cost', 'HSN Code: 8421'],
     specs: { 'Material': 'SS 304 / SS 316 Wire Mesh', 'Filtration Range': '5-1500 µm (custom available)', 'Construction': 'Single or multi-layer pleated weave', 'Filtration Type': 'Surface filtration', 'Reusability': 'Cleanable & reusable', 'Fluid Compatibility': 'All hydraulic & lubrication fluids', 'HSN Code': '8421' },
-    images: ['wire-mesh-centrifugal-filter-1.webp', 'wire-mesh-centrifugal-filter-2.webp', 'wire-mesh-centrifugal-filter-3.webp']
+    images: ['wire-mesh-centrifugal-filter-1.webp', 'wire-mesh-centrifugal-filter-2.webp', 'wire-mesh-centrifugal-filter-3.webp', 'wire-mesh-centrifugal-filter-4.webp', 'wire-mesh-centrifugal-filter-5.webp', 'wire-mesh-centrifugal-filter-6.webp']
   },
   {
     id: 'prod_f4', category: 'Industrial Filtration', title: 'Tank Breather Filter Elements (NBF Series)',
@@ -144,7 +145,7 @@ const RAW_PRODUCTS = [
     usage: 'Hydraulic tanks, gearboxes, and lube oil reservoirs for all steam turbine, compressor, and industrial machinery applications.',
     features: ['Eaton 01.NBF series dimensional compatible — nominal sizes 25-125', 'Filter media: Glass fiber fleece (VL) — hydrophobic construction', 'Prevents airborne particulate and moisture ingestion', 'High dirt-holding capacity for extended service intervals', 'Viton (V) sealing for chemical resistance', 'Filtration grade: 3 VL micron for fine airborne contamination', 'Protects system cleanliness per ISO 4406:99', 'Tank-mount design with easy one-hand servicing'],
     specs: { 'Series Compatibility': 'Eaton 01.NBF (Sizes: 25, 40, 55, 85, 125)', 'Filter Media': 'Glass Fiber Fleece (VL) — hydrophobic', 'Filtration Grade': '3 VL', 'Sealing': 'Viton (V)', 'Installation': 'Tank breather mount', 'Standards': 'ISO 16889, ISO 4406:99 compatible' },
-    images: ['air-breather-filter-1.webp', 'air-breather-filter-2.webp', 'air-breather-filter-3.webp']
+    images: ['air-breather-filter-1.webp', 'air-breather-filter-2.webp', 'air-breather-filter-3.webp', 'air-breather-filter-4.webp', 'air-breather-filter-5.webp', 'air-breather-filter-6.webp']
   },
   {
     id: 'prod_f5', category: 'Industrial Filtration', title: 'Hydraulic Suction Strainer Elements (AS/TS Series)',
@@ -152,7 +153,7 @@ const RAW_PRODUCTS = [
     usage: 'Immersed in hydraulic reservoirs protecting system pumps; turbine auxiliary lube oil pump suction protection.',
     features: ['Eaton 01.AS (sizes 180-631) / 01.TS (sizes 210-625) dimensional compatible', 'SS Wire Mesh (G) media — 10, 25, 40, 80 µm grades', 'Inside-to-outside flow configuration (unique to suction elements)', 'Low pressure drop prevents pump cavitation', 'Cleanable and reusable construction', 'Double open end (B) design for secure tank mounting', 'IS27 anti-static spec available for special applications'],
     specs: { 'Series Compatibility': 'Eaton 01.AS (180-631) / 01.TS (210-625)', 'Filter Media': 'SS Wire Mesh (G)', 'Filtration Grades': '10, 25, 40, 80 µm', 'Flow Direction': 'Inside-to-outside (suction)', 'End Design': 'Double open end (B)', 'Application': 'Tank-immersed suction pump protection' },
-    images: ['hydraulic-suction-strainer-1.webp', 'hydraulic-suction-strainer-2.webp', 'hydraulic-suction-strainer-3.webp']
+    images: ['hydraulic-suction-strainer-1.webp', 'hydraulic-suction-strainer-2.webp', 'hydraulic-suction-strainer-3.webp', 'hydraulic-suction-strainer-4.webp', 'hydraulic-suction-strainer-5.webp', 'hydraulic-suction-strainer-6.webp']
   },
   {
     id: 'prod_f6', category: 'Industrial Filtration', title: 'WaterSorp Offline Filter Elements (WSNR Series)',
@@ -160,7 +161,7 @@ const RAW_PRODUCTS = [
     usage: 'Offline filtration in side-stream return lines of turbine lube oil systems; extends oil life and protects bearings from water-induced damage.',
     features: ['Eaton 01.WSNR WaterSorp dimensional compatible — sizes 250, 630, 1000', 'Media: Glass fiber fleece with integrated water absorption layer (WVG)', 'Dual-action: removes solids AND absorbs free/emulsified water simultaneously', 'Significantly reduces oil aging — extends drain intervals', 'High particulate retention via microglass pre-filter layer', 'Max operating pressure: 10 bar (145 psi)', 'Double open end (B) for WSNR housings', 'Sealing: Nitrile or Viton'],
     specs: { 'Series Compatibility': 'Eaton 01.WSNR (Sizes: 250, 630, 1000)', 'Filter Media': 'Glass fiber fleece + water absorption layer (WVG)', 'Filtration Grades': '3 WVG, 10 WVG', 'Max Pressure': '10 bar (145 psi)', 'End Design': 'Double open end (B)', 'Sealing': 'Nitrile / Viton', 'Function': 'Particulate removal + water absorption' },
-    images: ['watersorp-filter-1.webp', 'watersorp-filter-2.webp', 'watersorp-filter-3.webp']
+    images: ['watersorp-filter-1.webp', 'watersorp-filter-2.webp', 'watersorp-filter-3.webp', 'watersorp-filter-4.webp', 'watersorp-filter-5.webp', 'watersorp-filter-6.webp']
   },
   {
     id: 'prod_f7', category: 'Industrial Filtration', title: 'PTFE Hydrophobic Air & Gas Filter Elements',
@@ -168,7 +169,7 @@ const RAW_PRODUCTS = [
     usage: 'Compressed air systems, process gases, instrument air, and venting applications where moisture and chemical resistance are critical.',
     features: ['Hydrophobic PTFE (Polytetrafluoroethylene) filter media', 'Moisture-repellent — water droplets cannot pass through media', 'High chemical resistance — compatible with aggressive gases', 'High flow rates at low differential pressure', 'Temperature range: -20 to +260 deg C', 'Cleanable and regenerable in most applications'],
     specs: { 'Filter Media': 'Hydrophobic PTFE', 'Temperature Range': '-20 to +260 deg C', 'Function': 'Fine particulate + moisture separation', 'Chemical Resistance': 'Excellent — wide pH range', 'Application': 'Compressed air, process gas, instrument air', 'Key Feature': 'Hydrophobic — water cannot penetrate media' },
-    images: ['ptfe-air-filter-1.webp', 'ptfe-air-filter-2.webp', 'ptfe-air-filter-3.webp']
+    images: ['ptfe-air-filter-1.webp', 'ptfe-air-filter-2.webp', 'ptfe-air-filter-3.webp', 'ptfe-air-filter-4.webp', 'ptfe-air-filter-5.webp', 'ptfe-air-filter-6.webp']
   },
   {
     id: 'prod_f8', category: 'Industrial Filtration', title: 'Return-Line Filter Elements',
@@ -208,7 +209,7 @@ const RAW_PRODUCTS = [
     usage: 'Liquid, viscous, and gaseous media filtration in high-pressure pipelines; protects valves, meters, and process equipment.',
     features: ['Design standard: ASME VIII Div.1, ASME B31.3', 'MOC: Cast Steel or Stainless Steel; others on request', 'Pressure ratings: ASME Class 125, 150, 300, 600', 'Standard SS perforated basket internals', 'Low pressure drop at high flow velocities', 'Vents and drain connections as standard', 'Optional: Davit lifts, quick-open closures, DP gauges', 'Horizontal and vertical configurations', 'End connections: Flanged, butt-weld, screwed'],
     specs: { 'Design Standard': 'ASME VIII Div.1, ASME B31.3', 'MOC': 'Cast Steel, SS 304/316 (others on request)', 'Pressure Rating': 'ASME Class 125, 150, 300, 600', 'Basket Internals': 'SS Perforated Basket (standard)', 'End Connections': 'Flanged, Butt-Weld, Screwed', 'Orientation': 'Horizontal or Vertical', 'Optional': 'Davit lifts, Quick-open closures, DP Gauges' },
-    images: ['simplex-basket-strainer-1.webp', 'simplex-basket-strainer-2.webp', 'simplex-basket-strainer-3.webp']
+    images: ['simplex-basket-strainer-1.webp', 'simplex-basket-strainer-2.webp', 'simplex-basket-strainer-3.webp', 'simplex-basket-strainer-4.webp', 'simplex-basket-strainer-5.webp', 'simplex-basket-strainer-6.webp']
   },
   {
     id: 'prod_st2', category: 'Industrial Strainers', title: 'Duplex Basket Strainer',
@@ -216,7 +217,7 @@ const RAW_PRODUCTS = [
     usage: 'Continuous flow systems requiring zero-downtime operation; critical process lines where shutdown is unacceptable.',
     features: ['Continuous service — no shutdown or flow interruption required', 'Three-way changeover valve for fast chamber switching', 'Design: ASME VIII Div.1, ASME B31.3', 'MOC: Cast Steel or Stainless Steel', 'Pressure ratings: ASME Class 125, 150, 300, 600', 'SS perforated basket internals as standard', 'DP gauges available for clogging monitoring', 'Integrated pressure balance valve for easy changeover'],
     specs: { 'Operation Mode': 'Continuous (no shutdown)', 'Changeover': 'Three-way ball valve', 'Design Standard': 'ASME VIII Div.1, ASME B31.3', 'MOC': 'Cast Steel, SS 304/316', 'Pressure Rating': 'ASME Class 125, 150, 300, 600', 'Monitoring': 'DP Gauges available' },
-    images: ['duplex-basket-strainer-1.webp', 'duplex-basket-strainer-2.webp', 'duplex-basket-strainer-3.webp']
+    images: ['duplex-basket-strainer-1.webp', 'duplex-basket-strainer-2.webp', 'duplex-basket-strainer-3.webp', 'duplex-basket-strainer-4.webp', 'duplex-basket-strainer-5.webp', 'duplex-basket-strainer-6.webp']
   },
   {
     id: 'prod_st3', category: 'Industrial Strainers', title: 'Conical (Temporary) Strainer',
@@ -224,7 +225,7 @@ const RAW_PRODUCTS = [
     usage: 'Pipeline protection for downstream equipment; commissioning to catch weld splatter and construction debris.',
     features: ['Welded conical mesh element', 'Installed between standard pipeline flanges', 'MOC: Stainless Steel SS 304/316 standard', 'Mesh size: Customizable per application', 'ASME Class 125, 150, 300, 600 available', 'Horizontal and vertical installation', 'End connections: Flanged, butt-weld, screwed'],
     specs: { 'Design': 'Welded conical wire mesh element', 'MOC': 'SS 304/316', 'Mesh': 'Customizable per requirement', 'Pressure Rating': 'ASME Class 125-600', 'End Connections': 'Flanged, Butt-Weld, Screwed', 'Installation': 'Horizontal or Vertical' },
-    images: ['conical-strainer-1.webp', 'conical-strainer-2.webp', 'conical-strainer-3.webp']
+    images: ['conical-strainer-1.webp', 'conical-strainer-2.webp', 'conical-strainer-3.webp', 'conical-strainer-4.webp', 'conical-strainer-5.webp', 'conical-strainer-6.webp']
   },
   {
     id: 'prod_st4', category: 'Industrial Strainers', title: 'Y-Type Strainer',
@@ -232,7 +233,7 @@ const RAW_PRODUCTS = [
     usage: 'General pipeline protection; steam, water, gas, oil, and chemical service lines protecting downstream equipment.',
     features: ['Cast and welded design — horizontal & vertical configurations', 'MOC: Cast Iron, Cast Steel, SS 304/316', 'Pressure ratings: ASME Class 125, 150, 300, 600', 'Easy blow-off cleanout port — no full disassembly', 'Mesh element size per application requirement', 'Service: Steam, water, gas, oil, chemical media'],
     specs: { 'Design': 'Cast & Welded Y-configuration', 'MOC': 'Cast Iron, Cast Steel, SS 304/316', 'Pressure Rating': 'ASME Class 125, 150, 300, 600', 'Cleanout': 'Blow-off port', 'Media': 'Steam, water, gas, oil, chemicals', 'End Connections': 'Flanged, Butt-Weld, Screwed' },
-    images: ['y-type-strainer-1.webp', 'y-type-strainer-2.webp', 'y-type-strainer-3.webp']
+    images: ['y-type-strainer-1.webp', 'y-type-strainer-2.webp', 'y-type-strainer-3.webp', 'y-type-strainer-4.webp', 'y-type-strainer-5.webp', 'y-type-strainer-6.webp']
   },
   {
     id: 'prod_st5', category: 'Industrial Strainers', title: 'Pot / Bucket Type Strainer',
@@ -248,7 +249,7 @@ const RAW_PRODUCTS = [
     usage: 'High-pressure steam exhaust systems, chemical process pipes, heat exchanger connections, and piping requiring thermal movement compensation.',
     features: ['Material: SS 304/316L, Duplex, Incoloy 825/925, Inconel 625, Titanium, Hastelloy', 'Dimension range: DN 15 to DN 12,000', 'Pressure: Up to 150 barg (2176 psi); higher with ring reinforcement', 'Design codes: EN 14917, EJMA, ASME VIII Div.1, ASME B31.1/B31.3', 'Testing: Pneumatic, hydrostatic, airjet, vacuum, dye penetrant', 'Movement tests: Axial, lateral, angular; fatigue life cycle test', 'Forming: Rolling, punch, hydraulic bellows forming', 'Compliance: PED 2014/68/EC, AD2000'],
     specs: { 'Material': 'SS 304/316L, Duplex, Incoloy, Inconel, Hastelloy, Titanium', 'Dimension Range': 'DN 15 to DN 12,000', 'Max Pressure': '150 barg (2176 psi); higher with reinforcement', 'Design Codes': 'EN 14917, EJMA, ASME VIII Div.1, ASME B31.1/B31.3', 'Testing': 'Pneumatic, hydrostatic, vacuum, dye penetrant, movement', 'Compliance': 'PED 2014/68/EC, AD2000', 'Forming Methods': 'Rolling, Punch, Hydraulic' },
-    images: ['ss-metallic-bellows-1.webp', 'ss-metallic-bellows-2.webp', 'ss-metallic-bellows-3.webp']
+    images: ['ss-metallic-bellows-1.webp', 'ss-metallic-bellows-2.webp', 'ss-metallic-bellows-3.webp', 'ss-metallic-bellows-4.webp', 'ss-metallic-bellows-5.webp', 'ss-metallic-bellows-6.webp']
   },
   {
     id: 'prod_e1b', category: 'Expansion Joints', title: 'Axial Expansion Joint',
@@ -264,7 +265,7 @@ const RAW_PRODUCTS = [
     usage: 'Pumps, chillers, cooling towers, heavy fluid systems requiring greater movement than single arch allows.',
     features: ['Double arch design: ~2x movement vs. single arch', 'Simultaneously absorbs axial, lateral, and angular movements', 'Reduces system noise and vibration', 'Compensates pipeline misalignment or offset', 'High-quality rubber compound', 'Tie rod assembly available and recommended', 'Flanged ends for standard installation'],
     specs: { 'Architecture': 'Double arch (twin convolution) rubber', 'Movement': 'Axial, Lateral, Angular (dual-arch capacity)', 'Ends': 'Flanged (standard)', 'Tie Rods': 'Available — specially recommended', 'Applications': 'Pumps, chillers, cooling towers' },
-    images: ['double-arch-rubber-joint-1.webp', 'double-arch-rubber-joint-2.webp', 'double-arch-rubber-joint-3.webp']
+    images: ['double-arch-rubber-joint-1.webp', 'double-arch-rubber-joint-2.webp', 'double-arch-rubber-joint-3.webp', 'double-arch-rubber-joint-4.webp', 'double-arch-rubber-joint-5.webp', 'double-arch-rubber-joint-6.webp']
   },
   {
     id: 'prod_e3', category: 'Expansion Joints', title: 'Single Arch Rubber Expansion Joint',
@@ -272,7 +273,7 @@ const RAW_PRODUCTS = [
     usage: 'HVAC systems, water piping, light industrial fluid lines, pump discharge and suction connections.',
     features: ['Single arch convolution rubber construction', 'Absorbs thermal expansion and contraction', 'Reduces mechanical vibration transmission', 'Corrosion-resistant rubber compound', 'Available with or without internal sleeve', 'Flanged ends standard (PN10/PN16)', 'Wide arch variant available for larger movements'],
     specs: { 'Architecture': 'Single arch convolution', 'Compounds': 'EPDM / Neoprene (CR) / NBR', 'End Connections': 'Flanged (PN10/PN16)', 'Sleeve': 'Optional — protects against particle impingement', 'Applications': 'HVAC, water, light industrial' },
-    images: ['single-arch-rubber-joint-1.webp', 'single-arch-rubber-joint-2.webp', 'single-arch-rubber-joint-3.webp']
+    images: ['single-arch-rubber-joint-1.webp', 'single-arch-rubber-joint-2.webp', 'single-arch-rubber-joint-3.webp', 'single-arch-rubber-joint-4.webp', 'single-arch-rubber-joint-5.webp', 'single-arch-rubber-joint-6.webp']
   },
   {
     id: 'prod_e3b', category: 'Expansion Joints', title: 'Wide Arch Rubber Expansion Bellow',
@@ -296,7 +297,7 @@ const RAW_PRODUCTS = [
     usage: 'Complex piping requiring multi-axis movement; cryogenic lines, power plant crossovers.',
     features: ['Twin bellows + intermediate pipe (universal configuration)', 'Absorbs axial, lateral, angular in any combination', 'Can absorb contraction in cryogenic applications', 'Tie rod assembly recommended for pressure thrust control', 'Material: SS 304/316L, Duplex, Incoloy, Inconel', 'Dimension range: DN 15 to DN 12,000', 'Design per EN 14917, EJMA, ASME VIII Div.1'],
     specs: { 'Architecture': 'Twin bellows + intermediate pipe', 'Movement': 'Axial + Lateral + Angular (combined)', 'Material': 'SS 304/316L, Duplex, Incoloy, Inconel', 'Dimension Range': 'DN 15 to DN 12,000', 'Tie Rods': 'Recommended (pressure thrust)', 'Design Codes': 'EN 14917, EJMA, ASME VIII Div.1' },
-    images: ['universal-expansion-joint-1.webp', 'universal-expansion-joint-2.webp', 'universal-expansion-joint-3.webp']
+    images: ['universal-expansion-joint-1.webp', 'universal-expansion-joint-2.webp', 'universal-expansion-joint-3.webp', 'universal-expansion-joint-4.webp', 'universal-expansion-joint-5.webp', 'universal-expansion-joint-6.webp']
   },
   {
     id: 'prod_e5', category: 'Expansion Joints', title: 'Non-Metallic Fabric Expansion Joint',
@@ -304,7 +305,7 @@ const RAW_PRODUCTS = [
     usage: 'Boilers, bag filters, ESPs, gas turbine installations, cement plants, incineration, power station flue gas ductwork.',
     features: ['5-layer construction: abrasion liner + insulation + PTFE foil + cover + reinforcement', 'Temperature capability: up to 1200 deg C (refractory-lined duct)', 'Styles: Belt, convoluted, vertical flange, floating sleeve, insulation bolster', 'Materials: PTFE, rubber, ceramic fiber, fiberglass, Nomex', 'Large axial, lateral, and angular movement capacity', 'Maximum vibration damping vs. metallic alternatives'],
     specs: { 'Construction': '5-layer multi-material composite', 'Max Temperature': 'Up to 1200 deg C (refractory-lined)', 'Materials': 'PTFE, rubber, ceramic fiber, fiberglass, Nomex', 'Available Styles': 'Belt, convoluted, vertical flange, floating sleeve, bolster', 'Applications': 'Boilers, ESP, bag filters, gas turbines, cement, incineration', 'Movement': 'Axial + Lateral + Angular (large capacity)' },
-    images: ['non-metallic-expansion-joint-1.webp', 'non-metallic-expansion-joint-2.webp', 'non-metallic-expansion-joint-3.webp']
+    images: ['non-metallic-expansion-joint-1.webp', 'non-metallic-expansion-joint-2.webp', 'non-metallic-expansion-joint-3.webp', 'non-metallic-expansion-joint-4.webp', 'non-metallic-expansion-joint-5.webp', 'non-metallic-expansion-joint-6.webp']
   },
   {
     id: 'prod_e6', category: 'Expansion Joints', title: 'Pressure Balance Expansion Joint',
@@ -312,7 +313,7 @@ const RAW_PRODUCTS = [
     usage: 'Turbine steam crossovers, pump connections, piping loops where pressure thrust must be contained.',
     features: ['In-line pressure balance design neutralizes pressure thrust', 'Absorbs axial movement while containing thrust', 'Absorbs lateral deflection without anchor overloading', 'Material: SS 304/316L, Incoloy, Inconel', 'Design per EN 14917, EJMA, ASME VIII Div.1', 'Full pressure, movement, and fatigue test certification'],
     specs: { 'Architecture': 'In-line pressure balance bellows assembly', 'Function': 'Neutralizes pressure thrust forces', 'Material': 'SS 304/316L, Incoloy, Inconel', 'Design Codes': 'EN 14917, EJMA, ASME VIII Div.1', 'Movement': 'Axial + Lateral (thrust-balanced)', 'Testing': 'Full pressure, movement, fatigue certification' },
-    images: ['pressure-balance-joint-1.webp', 'pressure-balance-joint-2.webp', 'pressure-balance-joint-3.webp']
+    images: ['pressure-balance-joint-1.webp', 'pressure-balance-joint-2.webp', 'pressure-balance-joint-3.webp', 'pressure-balance-joint-4.webp', 'pressure-balance-joint-5.webp', 'pressure-balance-joint-6.webp']
   },
   {
     id: 'prod_e7', category: 'Expansion Joints', title: 'Ring Reinforced Metallic Expansion Joint',
@@ -320,7 +321,7 @@ const RAW_PRODUCTS = [
     usage: 'High-pressure steam lines, refinery and petrochemical process lines, ammonia/fertilizer piping, and other services where standard bellows pressure capacity is insufficient.',
     features: ['Equalizing rings support each convolution and resist pressure-induced instability', 'Suitable for axial, lateral, and angular movement compensation by design type', 'Multi-ply bellows plus ring reinforcement for pressure integrity and long cycle life', 'Field-proven in very high-pressure applications exceeding 16 bar and up to 185 bar class projects', 'Available in SS, duplex, Inconel, Incoloy, Hastelloy, and other high alloys', 'Designed and tested per EJMA, EN 14917, ASME VIII Div.1 / B31.3'],
     specs: { 'Type': 'Ring reinforced metallic bellow assembly', 'Pressure Capability': 'High-pressure service; project-specific designs up to 185 bar class', 'Movement': 'Axial / Lateral / Angular (as configured)', 'Materials': 'SS 304/316/321, Duplex, Inconel, Incoloy, Hastelloy', 'Design Codes': 'EJMA, EN 14917, ASME VIII Div.1, ASME B31.3', 'Testing': 'Hydrostatic / pneumatic pressure test with full documentation' },
-    images: ['ring-reinforced-expansion-joint-1.webp', 'ring-reinforced-expansion-joint-2.webp', 'ring-reinforced-expansion-joint-3.webp']
+    images: ['ring-reinforced-expansion-joint-1.webp', 'ring-reinforced-expansion-joint-2.webp', 'ring-reinforced-expansion-joint-3.webp', 'ring-reinforced-expansion-joint-4.webp', 'ring-reinforced-expansion-joint-5.webp', 'ring-reinforced-expansion-joint-6.webp']
   },
   {
     id: 'prod_e8', category: 'Expansion Joints', title: 'Externally Pressurised Expansion Joint',
@@ -328,7 +329,7 @@ const RAW_PRODUCTS = [
     usage: 'Long steam pipelines, buried district heating lines, underground process piping, and installations requiring large axial compensation in compact space.',
     features: ['External pressure loading provides stabilizing effect on bellows geometry', 'Very large axial compression stroke capability for long thermal runs', 'Bellows protected inside outer housing for improved mechanical protection', 'Excellent solution for underground or externally insulated installations', 'Available across DN 15 to DN 12,000 project range', 'Supports high-alloy material options for severe temperature/corrosion duty'],
     specs: { 'Type': 'Externally pressurised axial compensator', 'Primary Movement': 'Large axial compression / extension', 'Nominal Range': 'DN 15 to DN 12,000', 'Materials': 'SS 304/316/321, Duplex, Inconel, Incoloy, Hastelloy, Alloy 59', 'Design Standards': 'EJMA, EN 14917, ASME / EN code compliance per project', 'Typical Use': 'Buried lines, long pipe runs, district heating and steam networks' },
-    images: ['externally-pressurised-joint-1.webp', 'externally-pressurised-joint-2.webp', 'externally-pressurised-joint-3.webp']
+    images: ['externally-pressurised-joint-1.webp', 'externally-pressurised-joint-2.webp', 'externally-pressurised-joint-3.webp', 'externally-pressurised-joint-4.webp', 'externally-pressurised-joint-5.webp', 'externally-pressurised-joint-6.webp']
   },
   {
     id: 'prod_e9', category: 'Expansion Joints', title: 'Lateral Metallic Expansion Joint',
@@ -336,7 +337,7 @@ const RAW_PRODUCTS = [
     usage: 'Pump suction/discharge lines, compressor nozzles, offset process piping, and water/wastewater manifolds requiring sideways flexibility.',
     features: ['Designed for lateral displacement in one or multiple planes', 'Single bellow for moderate movement and twin-bellow options for larger offset', 'Tie rods provided to control pressure thrust and protect connected equipment', 'Inner sleeve option available for high-velocity flow service', 'Suitable for DN 15 to DN 12,000 custom projects', 'Designed per EJMA with material selection to process media and temperature'],
     specs: { 'Type': 'Lateral movement metallic expansion joint', 'Primary Movement': 'Lateral (perpendicular) displacement', 'Configuration': 'Single bellow or double lateral with intermediate spool', 'Tie Rods': 'Standard / recommended for pressure thrust control', 'Materials': 'SS 304/316/321, Duplex, high alloys', 'Design Code': 'EJMA / EN 14917 / ASME (project dependent)' },
-    images: ['lateral-expansion-joint-1.webp', 'lateral-expansion-joint-2.webp', 'lateral-expansion-joint-3.webp']
+    images: ['lateral-expansion-joint-1.webp', 'lateral-expansion-joint-2.webp', 'lateral-expansion-joint-3.webp', 'lateral-expansion-joint-4.webp', 'lateral-expansion-joint-5.webp', 'lateral-expansion-joint-6.webp']
   },
   {
     id: 'prod_e10', category: 'Expansion Joints', title: 'Angular Hinged / Gimbal Expansion Joint',
@@ -344,7 +345,7 @@ const RAW_PRODUCTS = [
     usage: 'High-temperature gas lines, steel plant ducting, power plant flue systems, and complex routed piping where angular compensation is preferred over axial loops.',
     features: ['Hinged design controls rotation in one plane with pin support', 'Gimbal design permits multi-plane angular movement with ring frame stability', 'Typically installed in pairs or multi-joint systems for controlled thermal growth', 'Reduces nozzle and anchor loads in complex pipe stress layouts', 'Available with weld ends or flanged ends to match site standards', 'Compatible with high-temperature alloys including 321, 309, Inconel classes'],
     specs: { 'Type': 'Angular restrained metallic expansion joint', 'Variants': 'Hinged (single plane) / Gimbal (multi-plane)', 'Primary Movement': 'Angular rotation', 'Pressure Thrust': 'Restrained by hinge/gimbal hardware', 'Temperature Capability': 'High-temperature service with suitable alloy selection', 'Standards': 'EJMA, EN 14917, ASME code-based design' },
-    images: ['angular-hinged-gimbal-joint-1.webp', 'angular-hinged-gimbal-joint-2.webp', 'angular-hinged-gimbal-joint-3.webp']
+    images: ['angular-hinged-gimbal-joint-1.webp', 'angular-hinged-gimbal-joint-2.webp', 'angular-hinged-gimbal-joint-3.webp', 'angular-hinged-gimbal-joint-4.webp', 'angular-hinged-gimbal-joint-5.webp', 'angular-hinged-gimbal-joint-6.webp']
   },
   {
     id: 'prod_e11', category: 'Expansion Joints', title: 'Metallic Vibration Absorber',
@@ -352,7 +353,7 @@ const RAW_PRODUCTS = [
     usage: 'Pump and compressor connections, fan/blower lines, HVAC piping, and turbine auxiliary lines where high-frequency vibration control is required.',
     features: ['High flexibility at short face-to-face lengths for machinery isolation', 'Absorbs micro-movements and cyclic vibration with low spring reaction', 'Available with or without tie rods depending on movement and pressure design', 'Helps protect seals, bearings, nozzles, and supports from vibration fatigue', 'Can be supplied as metallic bellow type or braided short flexible assembly', 'Custom-designed for frequency spectrum, pressure, and nozzle load limits'],
     specs: { 'Type': 'Vibration isolation metallic bellow', 'Primary Function': 'Vibration damping + small axial/lateral compensation', 'Application Points': 'Pump, compressor, blower, fan nozzles', 'Construction': 'Short axial bellows; optional restraint hardware', 'Materials': 'SS 304/316/321 and process-suitable alloys', 'Design Basis': 'EJMA movement/stress criteria with project nozzle load checks' },
-    images: ['metallic-vibration-absorber-1.webp', 'metallic-vibration-absorber-2.webp', 'metallic-vibration-absorber-3.webp']
+    images: ['metallic-vibration-absorber-1.webp', 'metallic-vibration-absorber-2.webp', 'metallic-vibration-absorber-3.webp', 'metallic-vibration-absorber-4.webp', 'metallic-vibration-absorber-5.webp', 'metallic-vibration-absorber-6.webp']
   },
   {
     id: 'prod_e12', category: 'Expansion Joints', title: 'Elbow Pressure Balanced Expansion Joint',
@@ -456,7 +457,7 @@ const RAW_PRODUCTS = [
     usage: 'Power plant steam headers, industrial pipelines, and duct systems where directional thermal growth must be controlled in one plane.',
     features: ['Hinge mechanism allows angular rotation in one plane only', 'Axial and lateral movement restrained by hinge hardware — no uncontrolled displacement', 'Reduces anchor and guide loads when used in pairs/triplet systems', 'Suitable for steam, gas, and liquid service at high temperatures', 'Available with weld ends or flanged connections', 'Compatible with high-temperature alloys for severe-duty applications', 'Designed per EJMA and EN 14917 for movement and fatigue life'],
     specs: { 'Type': 'Hinged single-plane angular expansion joint', 'Primary Movement': 'Angular (single plane rotation)', 'Restrained Movements': 'Axial and Lateral RESTRAINED by hinge', 'Installation': 'In pairs or triplets for directional thermal management', 'Materials': 'SS 304/316/321, high-temperature alloys', 'Design Codes': 'EJMA, EN 14917, ASME B31.1/B31.3', 'Connections': 'Weld-end or flanged' },
-    images: ['hinged-expansion-joint-1.webp', 'hinged-expansion-joint-2.webp', 'hinged-expansion-joint-3.webp']
+    images: ['hinged-expansion-joint-1.webp', 'hinged-expansion-joint-2.webp', 'hinged-expansion-joint-3.webp', 'hinged-expansion-joint-4.webp', 'hinged-expansion-joint-5.webp', 'hinged-expansion-joint-6.webp']
   },
   {
     id: 'prod_e25', category: 'Expansion Joints', title: 'T-Type Pressure Balance Expansion Joint',
@@ -464,7 +465,7 @@ const RAW_PRODUCTS = [
     usage: 'Branch piping junctions, T-piece connections in steam and process lines, and systems where pressure thrust at direction changes must be eliminated.',
     features: ['T-shaped design addresses movement at branch/junction points in piping', 'Balances pressure thrust at direction changes — eliminates massive anchors', 'Absorbs axial thermal expansion from both main and branch legs', 'Minimizes structural anchor and support requirements at T-junctions', 'High-alloy bellows for steam and process gas duty', 'Full EJMA calculation package with movement and stress verification', 'Available with flanged or weld-end connections'],
     specs: { 'Type': 'T-type pressure balance expansion joint', 'Configuration': 'T-shaped; balancing bellows + flow bellows at junction', 'Primary Movement': 'Axial from main and branch legs', 'Pressure Thrust': 'Balanced — T-configuration neutralizes thrust loads', 'Materials': 'SS 304/316/321, Duplex, Incoloy, Inconel', 'Design Standards': 'EJMA, EN 14917, ASME VIII Div.1', 'Applications': 'T-junction steam lines, process gas branch connections' },
-    images: ['t-pressure-balance-joint-1.webp', 't-pressure-balance-joint-2.webp', 't-pressure-balance-joint-3.webp']
+    images: ['t-pressure-balance-joint-1.webp', 't-pressure-balance-joint-2.webp', 't-pressure-balance-joint-3.webp', 't-pressure-balance-joint-4.webp', 't-pressure-balance-joint-5.webp', 't-pressure-balance-joint-6.webp']
   },
   {
     id: 'prod_e26', category: 'Expansion Joints', title: 'Octagonal Profile Expansion Joint',
@@ -472,7 +473,7 @@ const RAW_PRODUCTS = [
     usage: 'Heavy-duty piping systems, industrial ventilation, and process gas lines requiring improved structural integrity and vibration resistance beyond standard round bellows.',
     features: ['Octagonal (eight-sided) cross-section — improves structural strength vs. round profile', 'Absorbs axial thermal expansion and contraction under cyclic duty', 'Handles mechanical vibration in addition to thermal movement', 'Suitable for high-pressure or reinforced industrial piping systems', 'Enhanced durability in demanding environments with heavy mechanical stress', 'Custom dimensions per project piping geometry and movement requirements', 'Available in SS 304/316 and high-alloy materials for temperature resistance'],
     specs: { 'Type': 'Octagonal profile metallic expansion joint', 'Cross-Section': 'Eight-sided (octagonal) — higher strength than circular', 'Primary Movement': 'Axial (thermal expansion/contraction)', 'Additional Function': 'Mechanical vibration absorption', 'Materials': 'SS 304/316/321, process-suitable alloys', 'Design Codes': 'EJMA, EN 14917, project-specific calculations', 'Connections': 'Weld-end or flanged to match pipe geometry' },
-    images: ['octagonal-expansion-joint-1.webp', 'octagonal-expansion-joint-2.webp', 'octagonal-expansion-joint-3.webp']
+    images: ['octagonal-expansion-joint-1.webp', 'octagonal-expansion-joint-2.webp', 'octagonal-expansion-joint-3.webp', 'octagonal-expansion-joint-4.webp', 'octagonal-expansion-joint-5.webp', 'octagonal-expansion-joint-6.webp']
   },
   {
     id: 'prod_e27', category: 'Expansion Joints', title: 'Thick Wall Heavy-Duty Expansion Joint',
@@ -480,7 +481,7 @@ const RAW_PRODUCTS = [
     usage: 'High-pressure steam lines, heavy process piping, chemical reactors, and industrial systems where standard bellows wall thickness is insufficient for operating conditions.',
     features: ['Thick/reinforced wall construction for maximum pressure and stress resistance', 'Minimal deformation under extreme pressure and temperature cycles', 'Superior service life in harsh operating conditions vs. standard bellows', 'Suitable for applications with high mechanical loading and vibration', 'Available with internal sleeves and external protection shrouds', 'Full hydrostatic and pneumatic testing with pressure certification', 'Materials selected for combined pressure, temperature, and corrosion duty'],
     specs: { 'Type': 'Thick wall heavy-duty metallic expansion joint', 'Construction': 'Reinforced bellows with increased wall thickness', 'Pressure Capability': 'High-pressure service beyond standard bellows limits', 'Temperature Class': 'High-temperature heavy industrial duty', 'Primary Function': 'Axial movement absorption with extreme durability', 'Materials': 'SS 316/321, Duplex, Inconel, Hastelloy options', 'Testing': 'Full hydrostatic + pneumatic pressure certification' },
-    images: ['thick-wall-expansion-joint-1.webp', 'thick-wall-expansion-joint-2.webp', 'thick-wall-expansion-joint-3.webp']
+    images: ['thick-wall-expansion-joint-1.webp', 'thick-wall-expansion-joint-2.webp', 'thick-wall-expansion-joint-3.webp', 'thick-wall-expansion-joint-4.webp', 'thick-wall-expansion-joint-5.webp', 'thick-wall-expansion-joint-6.webp']
   },
   {
     id: 'prod_e28', category: 'Expansion Joints', title: 'MS Slip Type Expansion Joint',
@@ -488,7 +489,7 @@ const RAW_PRODUCTS = [
     usage: 'Steam distribution lines, industrial process piping, and utility systems requiring straightforward linear thermal expansion absorption at moderate pressure conditions.',
     features: ['Telescoping slip mechanism provides linear axial movement absorption', 'Mild steel (MS) construction — robust and cost-effective for standard conditions', 'Simpler design than bellows type — easier site maintenance and inspection', 'Packing gland provides sealing around sliding inner pipe', 'Suitable for steam, water, and industrial gas service at moderate pressures', 'Available in various nominal bore sizes to suit process piping standards', 'Custom end connections (flanged or weld-end) per site requirements'],
     specs: { 'Type': 'MS slip-type (telescoping) expansion joint', 'Construction': 'Mild steel outer sleeve + sliding inner pipe', 'Primary Movement': 'Axial (thermal expansion/contraction)', 'Sealing': 'Packing gland around sliding pipe', 'Material': 'Mild Steel (MS) — IS 2062 / equivalent grade', 'Service': 'Steam, water, industrial gas at moderate pressure', 'Connections': 'Flanged or weld-end as specified' },
-    images: ['ms-slip-expansion-joint-1.webp', 'ms-slip-expansion-joint-2.webp', 'ms-slip-expansion-joint-3.webp']
+    images: ['ms-slip-expansion-joint-1.webp', 'ms-slip-expansion-joint-2.webp', 'ms-slip-expansion-joint-3.webp', 'ms-slip-expansion-joint-4.webp', 'ms-slip-expansion-joint-5.webp', 'ms-slip-expansion-joint-6.webp']
   },
   {
     id: 'prod_e29', category: 'Expansion Joints', title: 'Industrial Airflow Damper',
@@ -496,7 +497,7 @@ const RAW_PRODUCTS = [
     usage: 'Industrial chimneys, boiler flue gas ducts, HVAC ventilation systems, process air handling units, and industrial exhaust systems requiring controlled airflow regulation.',
     features: ['Manual or motorized/automatic actuation for precise flow control', 'Regulates volume, temperature, and pressure of air and gas flows', 'Suitable for hot flue gas, combustion air, and general ventilation ducts', 'Improves energy efficiency by optimizing airflow in system operation', 'Available in butterfly, louvre, and guillotine damper configurations', 'MS or SS construction — material selected per service temperature and media', 'Custom sizing for retrofit or new installation in industrial duct systems'],
     specs: { 'Type': 'Industrial airflow and gas flow damper', 'Configurations': 'Butterfly / Louvre / Guillotine damper types', 'Actuation': 'Manual or motorized (pneumatic/electric actuator)', 'Materials': 'Mild Steel (MS) / Stainless Steel (SS) per service', 'Service': 'HVAC, flue gas, combustion air, ventilation ducts', 'Applications': 'Boilers, chimneys, HVAC, industrial ducts, boiler systems', 'Sizing': 'Custom to duct dimensions and flow requirements' },
-    images: ['industrial-damper-1.webp', 'industrial-damper-2.webp', 'industrial-damper-3.webp']
+    images: ['industrial-damper-1.webp', 'industrial-damper-2.webp', 'industrial-damper-3.webp', 'industrial-damper-4.webp', 'industrial-damper-5.webp', 'industrial-damper-6.webp']
   },
   {
     id: 'prod_e30', category: 'Expansion Joints', title: 'Dismantling Joint',
@@ -504,7 +505,7 @@ const RAW_PRODUCTS = [
     usage: 'Pump and compressor suction/discharge connections, valve maintenance points, water treatment systems, and industrial piping requiring regular equipment removal and reinstallation.',
     features: ['Designed for quick and damage-free disassembly of connected piping or equipment', 'Provides axial adjustment (typically 50–300 mm) for equipment removal clearance', 'Eliminates need for pipe cutting or flange grinding during maintenance', 'Reduces downtime significantly at regular maintenance points', 'Available in flanged connection configuration for standard piping', 'MS and SS material options for water, chemical, and industrial service', 'Suitable for pump connections, valve maintenance, and instrumentation takeoffs'],
     specs: { 'Type': 'Mechanical dismantling joint (adjustable)', 'Primary Function': 'Easy maintenance disassembly without pipe damage', 'Adjustment Range': 'Typically 50–300 mm axial travel (project specific)', 'Construction': 'Mild Steel or Stainless Steel per service', 'Connections': 'Flanged ends (ANSI/PN as specified)', 'Applications': 'Pumps, valves, water treatment, industrial piping', 'Typical Bore Range': 'DN 50 to DN 600 (custom larger sizes available)' },
-    images: ['dismantling-joint-1.webp', 'dismantling-joint-2.webp', 'dismantling-joint-3.webp']
+    images: ['dismantling-joint-1.webp', 'dismantling-joint-2.webp', 'dismantling-joint-3.webp', 'dismantling-joint-4.webp', 'dismantling-joint-5.webp', 'dismantling-joint-6.webp']
   },
   {
     id: 'prod_e31', category: 'Expansion Joints', title: 'MS & SS Industrial Duct Systems',
@@ -512,7 +513,7 @@ const RAW_PRODUCTS = [
     usage: 'Industrial ventilation systems, fume extraction, exhaust air handling, chemical plant gas conveyance, food and pharmaceutical manufacturing, and boiler or furnace gas duct connections.',
     features: ['MS Ducts: Cost-effective Mild Steel construction for standard industrial environments', 'SS Ducts: Stainless Steel for corrosive, high-temperature, or hygienic environments', 'Custom fabricated to exact site dimensions and layout requirements', 'Available in rectangular, circular, and special cross-section profiles', 'Welded, flanged, or clamped joint options per system design', 'Compatible with expansion joints, dampers, and filtration equipment', 'Suitable for high-temperature flue gas, chemical fumes, and clean-room ventilation'],
     specs: { 'Type': 'Custom fabricated industrial duct systems', 'MS Material': 'Mild Steel IS 2062 — cost-effective, strong, standard environments', 'SS Material': 'SS 304 / 316 — corrosion resistant, long lifespan, hygienic', 'Cross-Sections': 'Rectangular, circular, and special profiles', 'Joint Types': 'Welded, flanged, clamped connections', 'Service Media': 'Air, gas, fumes, exhaust, chemical vapour, hot flue gas', 'Applications': 'Industrial ventilation, fume extraction, HVAC, boiler gas ducts' },
-    images: ['ms-ss-duct-1.webp', 'ms-ss-duct-2.webp', 'ms-ss-duct-3.webp']
+    images: ['ms-ss-duct-1.webp', 'ms-ss-duct-2.webp', 'ms-ss-duct-3.webp', 'ms-ss-duct-4.webp', 'ms-ss-duct-5.webp', 'ms-ss-duct-6.webp']
   },
   {
     id: 'prod_ts1', category: 'Turbine Spares', title: 'Carbon & Graphite Gland Sealing Rings',
@@ -520,7 +521,7 @@ const RAW_PRODUCTS = [
     usage: 'Steam turbine gland sealing for pressure retention at shaft exits; gas turbine labyrinth shaft sealing.',
     features: ['Self-lubricating carbon/graphite — no additional lubrication required', 'Precision CNC machined to OEM dimensional specifications', 'High temperature resistance: up to 600 deg C continuous', 'Low coefficient of friction — minimal shaft wear', 'Chemical inertness with steam, gases, most process media', 'Grades: Carbon graphite, electrographite, silicon carbide', 'Manufactured to tight clearances per OEM drawings'],
     specs: { 'Material Grades': 'Carbon graphite / Electrographite / Silicon Carbide', 'Max Temperature': 'Up to 600 deg C continuous', 'Lubrication': 'Self-lubricating (no oil required)', 'Application': 'Turbine gland sealing at shaft exits', 'Machining': 'Precision CNC to OEM dimensions' },
-    images: ['black-carbon-sealing-rings-1.webp', 'black-carbon-sealing-rings-2.webp', 'black-carbon-sealing-rings-3.webp']
+    images: ['black-carbon-sealing-rings-1.webp', 'black-carbon-sealing-rings-2.webp', 'black-carbon-sealing-rings-3.webp', 'black-carbon-sealing-rings-4.webp', 'black-carbon-sealing-rings-5.webp', 'black-carbon-sealing-rings-6.webp']
   },
   {
     id: 'prod_ts2', category: 'Turbine Spares', title: 'Labyrinth Shaft Sealing Packings',
@@ -528,7 +529,7 @@ const RAW_PRODUCTS = [
     usage: 'Steam turbine shaft sealing between rotating and stationary components; prevents steam leakage along shaft at multiple pressure stages.',
     features: ['High-temperature alloy: 410SS, Monel, Stellite options', 'Erosion-resistant labyrinth teeth profile', 'Precision machined to OEM diametral clearance specs', 'Radial, axial, and combined labyrinth configurations', 'Caulked-in and spring-back (retractable) designs available', 'Manufactured from reverse-engineered OEM drawings', 'PMI material verification before machining', 'Dimensional inspection report provided'],
     specs: { 'Material': '410SS, Monel, Stellite — per OEM specification', 'Configurations': 'Radial, Axial, Combined labyrinth', 'Design Types': 'Caulked-in or Spring-back (retractable)', 'Clearances': 'Precision OEM diametral clearance specification', 'Verification': 'PMI material testing + dimensional inspection' },
-    images: ['labyrinth-sealing-packings-1.webp', 'labyrinth-sealing-packings-2.webp', 'labyrinth-sealing-packings-3.webp']
+    images: ['labyrinth-sealing-packings-1.webp', 'labyrinth-sealing-packings-2.webp', 'labyrinth-sealing-packings-3.webp', 'labyrinth-sealing-packings-4.webp', 'labyrinth-sealing-packings-5.webp', 'labyrinth-sealing-packings-6.webp']
   },
   {
     id: 'prod_ts3', category: 'Turbine Spares', title: 'Babbitt Journal Bearings & Thrust Pads',
@@ -536,7 +537,7 @@ const RAW_PRODUCTS = [
     usage: 'High-speed rotor support in steam turbines, compressors, and gearboxes; thrust load management in turbine thrust bearing housings.',
     features: ['White metal (babbitt) — Tin-base or Lead-base per OEM specification', 'Precision CNC machined journal bearing bores to OEM tolerance', 'Thrust pads: Tilting pad or fixed profile designs available', 'Ultrasonic bond testing verifies babbitt adhesion — 100% tested', 'Shell material: Cast steel, bronze, or SS per application', 'Oil distribution grooves and feed holes machined precisely', 'High load capacity with hydrodynamic oil film support', 'Exact OEM dimensional replication via 3D scanning and CMM'],
     specs: { 'Babbitt Metal': 'White Metal — Tin-base or Lead-base', 'Shell Material': 'Cast Steel, Bronze, SS (per OEM)', 'Bearing Types': 'Journal bearing + Thrust Pad (tilting or fixed)', 'Bond Integrity Test': 'Ultrasonic bond integrity verification — 100%', 'Machining': 'Precision CNC to OEM tolerance', 'Dimensional Verification': '3D scanning + CMM measurement' },
-    images: ['babbitt-bearings-1.webp', 'babbitt-bearings-2.webp', 'babbitt-bearings-3.webp']
+    images: ['babbitt-bearings-1.webp', 'babbitt-bearings-2.webp', 'babbitt-bearings-3.webp', 'babbitt-bearings-4.webp', 'babbitt-bearings-5.webp', 'babbitt-bearings-6.webp']
   },
   {
     id: 'prod_ts4', category: 'Turbine Spares', title: 'Emergency Stop Valves (ESV)',
@@ -544,7 +545,7 @@ const RAW_PRODUCTS = [
     usage: 'Turbine over-speed protection; primary emergency shutdown valve in steam admission circuit.',
     features: ['Reverse-engineered from OEM samples using 3D scanning and CMM', 'Stellite hard-faced seat and plug internals for erosion resistance', 'Spring-loaded rapid-closure mechanism — fail-safe closed', 'High-pressure pneumatic/hydraulic actuation available', 'Body material: Alloy steel (Cr-Mo) or SS 316', 'Hydrotest: 1.5x design pressure', 'Seat leakage test conducted per applicable standards', 'PMI verification + dimensional inspection report supplied'],
     specs: { 'Function': 'Emergency shutdown — fail-safe closed position', 'Actuation': 'Spring-loaded + pneumatic or hydraulic trip', 'Seat/Plug Material': 'Stellite hard-faced (erosion resistant)', 'Body Material': 'Alloy steel Cr-Mo / SS 316', 'Pressure Testing': 'Hydrotest at 1.5x design pressure', 'Seat Leakage': 'Tested per applicable standards', 'Verification': 'PMI certification + dimensional inspection report' },
-    images: ['emergency-stop-valve-1.webp', 'emergency-stop-valve-2.webp', 'emergency-stop-valve-3.webp']
+    images: ['emergency-stop-valve-1.webp', 'emergency-stop-valve-2.webp', 'emergency-stop-valve-3.webp', 'emergency-stop-valve-4.webp', 'emergency-stop-valve-5.webp', 'emergency-stop-valve-6.webp']
   },
   {
     id: 'prod_ts5', category: 'Turbine Spares', title: 'Turbine Lube Oil Pumps & Mechanical Seals',
@@ -552,7 +553,7 @@ const RAW_PRODUCTS = [
     usage: 'Main and auxiliary lube oil systems in power generation turbines; supplying pressurized oil to bearings, governors, and control systems.',
     features: ['Exact OEM dimensional match verified against drawing', 'Gear pump type — high volumetric efficiency', 'Precision mechanical face seal assembly — no packing', 'Shaft and gear dimensions verified per OEM drawing', 'Materials: Cast iron body, SS shaft, bronze bushing', 'Performance tested at rated pressure and flow before dispatch', 'Engineering drawing supplied with each pump'],
     specs: { 'Pump Type': 'Gear pump (main / auxiliary lube oil service)', 'Shaft Sealing': 'Precision mechanical face seal', 'Materials': 'Cast iron body / SS shaft / Bronze bushing', 'Testing': 'Pressure and flow performance test at rated conditions', 'Documentation': 'Engineering drawing supplied with each unit' },
-    images: ['turbine-oil-pumps-1.webp', 'turbine-oil-pumps-2.webp', 'turbine-oil-pumps-3.webp']
+    images: ['turbine-oil-pumps-1.webp', 'turbine-oil-pumps-2.webp', 'turbine-oil-pumps-3.webp', 'turbine-oil-pumps-4.webp', 'turbine-oil-pumps-5.webp', 'turbine-oil-pumps-6.webp']
   },
   {
     id: 'prod_ts6', category: 'Turbine Spares', title: 'High-Purity Electrographite Sealing Rings',
@@ -560,7 +561,7 @@ const RAW_PRODUCTS = [
     usage: 'High-temperature steam gland sealing in power generation turbines; extreme pressure shaft sealing where standard carbon grades are inadequate.',
     features: ['High-purity electrographite material grade', 'Excellent thermal conductivity for efficient gland heat dissipation', 'Extreme temperature resistance: up to 700 deg C and above', 'Chemical inertness with superheated steam and all process gases', 'Superior oxidation resistance versus standard carbon grades', 'Low friction coefficient — extends seal and shaft service life', 'Precision CNC machined to OEM dimensional specifications', 'Self-lubricating — eliminates need for external lubrication'],
     specs: { 'Material': 'High-purity electrographite', 'Max Temperature': 'Up to 700 deg C+ (superheated steam service)', 'Thermal Conductivity': 'High — effective gland heat dissipation', 'Chemical Resistance': 'Steam, all process gases, chemicals', 'Lubrication': 'Self-lubricating', 'Machining': 'Precision CNC to OEM specification' },
-    images: ['high-purity-graphite-rings-1.webp', 'high-purity-graphite-rings-2.webp', 'high-purity-graphite-rings-3.webp']
+    images: ['high-purity-graphite-rings-1.webp', 'high-purity-graphite-rings-2.webp', 'high-purity-graphite-rings-3.webp', 'high-purity-graphite-rings-4.webp', 'high-purity-graphite-rings-5.webp', 'high-purity-graphite-rings-6.webp']
   },
   {
     id: 'prod_ts7', category: 'Turbine Spares', title: 'Complete Turbine Rotor Assemblies',
@@ -568,7 +569,7 @@ const RAW_PRODUCTS = [
     usage: 'Complete rotating element replacement for steam turbines; re-wheeling of existing shafts with new discs and blades.',
     features: ['Manufactured from reverse-engineered OEM drawings with PMI material verification', 'Material: Alloy steel (CrMoV, 12% Cr) per steam conditions', 'Precision machined: rough machining > pre-final > final', 'Dynamic balancing 50-2,000 kg to ISO 1940 / API 670', 'Complete balancing report with mechanical and electrical run-out data', 'Blade attachment options: Finger-tree, T-root, or dove-tail', 'Material upgrades available for life extension programs', 'Ready for immediate installation with full inspection certificates'],
     specs: { 'Rotor Material': 'Alloy Steel (CrMoV, 12% Cr) per steam conditions', 'Dynamic Balancing': 'ISO 1940 / API 670 (capacity: 50-2,000 kg)', 'Machining Stages': 'Rough machining > Pre-final > Final machining', 'Blade Root Options': 'Finger-tree, T-root, Dove-tail', 'Documentation': 'Full inspection certificate + balancing report', 'Material Upgrades': 'Available for life extension programs' },
-    images: ['rotor-assembly-1.webp', 'rotor-assembly-2.webp', 'rotor-assembly-3.webp']
+    images: ['rotor-assembly-1.webp', 'rotor-assembly-2.webp', 'rotor-assembly-3.webp', 'rotor-assembly-4.webp', 'rotor-assembly-5.webp', 'rotor-assembly-6.webp']
   },
   {
     id: 'prod_ts8', category: 'Turbine Spares', title: 'Precision Turbine Gears & Worm Wheels',
@@ -576,7 +577,7 @@ const RAW_PRODUCTS = [
     usage: 'Turbine gearboxes, speed reducers, governor drive gear trains, and auxiliary equipment gear drives.',
     features: ['Exact OEM gear ratios replicated via precision reverse engineering', 'Gear types: Spur, helical, bevel, and worm gear configurations', 'Precision hobbing and gear grinding to DIN Grade 6-8 quality', 'Heat treatment: Case hardening, through hardening, or nitriding', 'Material: Alloy steel (20MnCr5, 42CrMo4) per OEM specification', 'Surface hardness: 58-62 HRC (case hardened) or 250-320 HB (through hardened)', 'Gear profile and tooth geometry verified against OEM sample', 'Noise and vibration tests conducted post-assembly'],
     specs: { 'Gear Types': 'Spur, Helical, Bevel, Worm', 'Quality Grade': 'DIN Grade 6-8 (precision hobbed/ground)', 'Material': 'Alloy Steel — 20MnCr5, 42CrMo4', 'Heat Treatment': 'Case hardening, through hardening, nitriding', 'Surface Hardness': '58-62 HRC (case) / 250-320 HB (through)', 'Verification': 'Profile, tooth geometry, noise/vibration tests' },
-    images: ['gears-worm-wheels-1.webp', 'gears-worm-wheels-2.webp', 'gears-worm-wheels-3.webp']
+    images: ['gears-worm-wheels-1.webp', 'gears-worm-wheels-2.webp', 'gears-worm-wheels-3.webp', 'gears-worm-wheels-4.webp', 'gears-worm-wheels-5.webp', 'gears-worm-wheels-6.webp']
   },
   {
     id: 'prod_ts9', category: 'Turbine Spares', title: 'Turbine Nozzles & Diaphragms',
@@ -584,7 +585,7 @@ const RAW_PRODUCTS = [
     usage: 'Internal steam path of high-pressure industrial steam turbines; each pressure stage nozzle block and stationary diaphragm.',
     features: ['Steam path design optimized for efficiency — nozzle angle and throat area per OEM', 'Material: 13% Cr steel, 316L SS, Incoloy for high-temperature stages', 'Erosion and corrosion-resistant surface treatment', 'Precise throat dimensions maintained per OEM specification', 'Diaphragm construction: Welded or cast per application', 'Integral or replaceable nozzle block designs available', 'Material upgrade available: Titanium or higher-alloy for life extension', 'Full dimensional inspection + PMI material certificate supplied'],
     specs: { 'Material': '13% Cr Steel, 316L SS, Incoloy (stage-dependent)', 'Nozzle Design': 'Optimized nozzle angle + throat area per OEM', 'Surface Treatment': 'Erosion and corrosion resistant', 'Diaphragm Type': 'Welded or cast; integral/replaceable nozzle block', 'Material Upgrades': 'Titanium/high-alloy for life extension', 'Documentation': 'Dimensional inspection + PMI material certificate' },
-    images: ['nozzles-diaphragms-1.webp', 'nozzles-diaphragms-2.webp', 'nozzles-diaphragms-3.webp']
+    images: ['nozzles-diaphragms-1.webp', 'nozzles-diaphragms-2.webp', 'nozzles-diaphragms-3.webp', 'nozzles-diaphragms-4.webp', 'nozzles-diaphragms-5.webp', 'nozzles-diaphragms-6.webp']
   },
   {
     id: 'prod_ts10', category: 'Turbine Spares', title: 'Mechanical Centrifugal Speed Governors',
@@ -592,7 +593,7 @@ const RAW_PRODUCTS = [
     usage: 'Turbine speed control and over-speed prevention; primary speed governing device in steam turbines without electronic governors.',
     features: ['Fly-weight centrifugal mechanism with calibrated speeder springs', 'Pilot valve assembly for hydraulic amplification of control signal', 'High sensitivity: detects speed deviations within +/-1% RPM', 'Over-speed trip setpoint: typically 10% above rated speed', 'Robust all-mechanical design for continuous unattended operation', 'Calibrated setpoint before dispatch from workshop', 'Complete dimensional and performance test report provided'],
     specs: { 'Governor Type': 'Mechanical centrifugal fly-weight', 'Speed Sensitivity': '+/-1% RPM deviation detection', 'Over-speed Trip': 'Typically 10% above rated operating speed', 'Control Amplification': 'Hydraulic pilot valve (oil pressure signal)', 'Calibration': 'Setpoint calibrated before dispatch', 'Documentation': 'Performance test report supplied' },
-    images: ['mechanical-governors-1.webp', 'mechanical-governors-2.webp', 'mechanical-governors-3.webp']
+    images: ['mechanical-governors-1.webp', 'mechanical-governors-2.webp', 'mechanical-governors-3.webp', 'mechanical-governors-4.webp', 'mechanical-governors-5.webp', 'mechanical-governors-6.webp']
   },
   {
     id: 'prod_ts11', category: 'Turbine Spares', title: 'Turbine Throttle (Control) Valves',
@@ -600,7 +601,7 @@ const RAW_PRODUCTS = [
     usage: 'Steam turbine inlet throttle control and multi-valve admission for power and back-pressure control.',
     features: ['Stellite-trimmed stem, seat and plug internals', 'Body: Alloy steel (Cr-Mo) or SS 316 per steam conditions', 'Custom equal-percentage or linear flow characteristics', 'High-pressure rated (to turbine design pressure)', 'Rapid response action for governor integration', 'Hydraulic or pneumatic actuator options', 'Seat and plug hardness: 40-45 HRC (Stellite 6)', 'Hydrotest at 1.5x DP; seat leakage tested'],
     specs: { 'Internals': 'Stellite 6 trimmed (seat + plug + stem)', 'Body': 'Alloy steel Cr-Mo / SS 316', 'Flow Characteristics': 'Equal-percentage or linear (custom)', 'Actuation': 'Hydraulic or pneumatic', 'Hardness': '40-45 HRC (Stellite 6)', 'Testing': 'Hydrotest 1.5x DP + seat leakage test' },
-    images: ['throttle-valves-1.webp', 'throttle-valves-2.webp', 'throttle-valves-3.webp']
+    images: ['throttle-valves-1.webp', 'throttle-valves-2.webp', 'throttle-valves-3.webp', 'throttle-valves-4.webp', 'throttle-valves-5.webp', 'throttle-valves-6.webp']
   },
   {
     id: 'prod_r1', category: 'Industrial Rubber Products', title: 'Custom Extruded Rubber Profiles & Seals',
@@ -608,7 +609,7 @@ const RAW_PRODUCTS = [
     usage: 'Sealing panels, machine covers, door and window seals, industrial enclosure gaskets, vibration damping strip applications.',
     features: ['Custom cross-section extrusion to customer drawing or sample', 'Materials: EPDM, Neoprene (CR), Nitrile (NBR), Natural Rubber', 'EPDM: Excellent weathering, ozone, UV resistance for outdoor use', 'Neoprene: Oil and flame resistant properties', 'Nitrile: Superior oil and fuel resistance', 'Hardness range: 40-80 Shore A per application', 'Operating temperature: -40 to +150 deg C (EPDM grade)', 'Available with pressure-sensitive adhesive backing'],
     specs: { 'Material Options': 'EPDM, Neoprene (CR), Nitrile (NBR), Natural Rubber', 'Hardness Range': '40-80 Shore A (customizable)', 'Operating Temperature': '-40 to +150 deg C (EPDM grade)', 'Profile': 'Custom cross-section per drawing or sample', 'Backing Option': 'Pressure-sensitive adhesive backing available', 'Supply Format': 'Standard rolls or cut-to-length' },
-    images: ['extruded-rubber-profile-1.webp', 'extruded-rubber-profile-2.webp', 'extruded-rubber-profile-3.webp']
+    images: ['extruded-rubber-profile-1.webp', 'extruded-rubber-profile-2.webp', 'extruded-rubber-profile-3.webp', 'extruded-rubber-profile-4.webp', 'extruded-rubber-profile-5.webp', 'extruded-rubber-profile-6.webp']
   },
   {
     id: 'prod_r2', category: 'Industrial Rubber Products', title: 'Heavy Duty Anti-Vibration Rubber Mounts',
@@ -616,7 +617,7 @@ const RAW_PRODUCTS = [
     usage: 'Vibration isolation for turbine-generator sets, compressors, diesel generators, cooling tower fans, and heavy industrial machinery.',
     features: ['Natural rubber to steel plate bonded (vulcanized) construction', 'High load bearing capacity per mounting point', 'Significantly reduces structure-borne noise and vibration', 'Protects foundations from dynamic machinery loads', 'Operating temperature: -30 to +70 deg C (continuous)', 'Types: Cylindrical, sandwich, conical, and bobbin mounts', 'Custom load ratings and natural frequency specifications available'],
     specs: { 'Construction': 'Rubber-to-steel bonded (vulcanized)', 'Mount Types': 'Cylindrical, sandwich, conical, bobbin', 'Material': 'Natural Rubber / Neoprene + Mild Steel', 'Operating Temperature': '-30 to +70 deg C continuous', 'Load Rating': 'Custom per application requirement', 'Applications': 'Turbine-generator, compressor, heavy machinery isolation' },
-    images: ['rubber-mounts-1.webp', 'rubber-mounts-2.webp', 'rubber-mounts-3.webp']
+    images: ['rubber-mounts-1.webp', 'rubber-mounts-2.webp', 'rubber-mounts-3.webp', 'rubber-mounts-4.webp', 'rubber-mounts-5.webp', 'rubber-mounts-6.webp']
   },
   {
     id: 'prod_h1', category: 'Flexible Hoses & Assemblies', title: 'SS Corrugated Flexible Metal Hose Assemblies',
@@ -624,7 +625,7 @@ const RAW_PRODUCTS = [
     usage: 'High-temperature steam lines, chemical transfer, vibration absorption at pump/compressor connections, cryogenic lines.',
     features: ['SS 304 / SS 316L corrugated inner hose', 'Single or double SS braided outer sheath', 'OD range: 1/2 to 14 inch (DN 15 to DN 350)', 'Temperature: -20 to +350 deg C', 'Working pressure: 0.6 to 1.6 MPa (standard)', 'Ends: SS 304/316 BSP, NPT, BSPP threaded or flanged', 'Tested per ISO 10380 and SAE J1610', 'Absorbs axial, lateral, and angular movements simultaneously'],
     specs: { 'Hose Material': 'SS 304 / SS 316L corrugated + SS wire braid', 'Size Range': '1/2 to 14 inch (DN 15 to DN 350)', 'Temperature Range': '-20 to +350 deg C', 'Working Pressure': '0.6-1.6 MPa (single braid); higher with double braid', 'End Fittings': 'BSP, NPT, Flanged — SS 304/316', 'Test Standards': 'ISO 10380, SAE J1610' },
-    images: ['ss-corrugated-flexible-hose-1.webp', 'ss-corrugated-flexible-hose-2.webp', 'ss-corrugated-flexible-hose-3.webp']
+    images: ['ss-corrugated-flexible-hose-1.webp', 'ss-corrugated-flexible-hose-2.webp', 'ss-corrugated-flexible-hose-3.webp', 'ss-corrugated-flexible-hose-4.webp', 'ss-corrugated-flexible-hose-5.webp', 'ss-corrugated-flexible-hose-6.webp']
   },
   {
     id: 'prod_h1b', category: 'Flexible Hoses & Assemblies', title: 'SS Hose Pre-Fitted Assemblies',
@@ -648,7 +649,7 @@ const RAW_PRODUCTS = [
     usage: 'Pharmaceutical fluid transfer, aggressive acids/alkalis, solvents, semiconductor chemicals, food-grade process lines.',
     features: ['Smooth bore PTFE inner tube — non-stick, non-contaminating', 'SS 304 / SS 316 outer braided sheath', 'Chemically inert to virtually all industrial chemicals', 'FDA-compliant PTFE grade available for food and pharma', 'Operating temperature: -60 to +260 deg C', 'Working pressure: Up to 40 bar (size-dependent)', 'Anti-static conductive PTFE available', 'End fittings: NPT, BSP, flanged, tri-clamp'],
     specs: { 'Inner Tube': 'Smooth bore PTFE (FDA grade available)', 'Outer Braid': 'SS 304 / SS 316', 'Temperature Range': '-60 to +260 deg C', 'Max Working Pressure': 'Up to 40 bar (size-dependent)', 'Chemical Resistance': 'Virtually all industrial chemicals', 'End Fittings': 'Swaged SS — NPT, BSP, flanged, tri-clamp' },
-    images: ['ptfe-lined-hose-1.webp', 'ptfe-lined-hose-2.webp', 'ptfe-lined-hose-3.webp']
+    images: ['ptfe-lined-hose-1.webp', 'ptfe-lined-hose-2.webp', 'ptfe-lined-hose-3.webp', 'ptfe-lined-hose-4.webp', 'ptfe-lined-hose-5.webp', 'ptfe-lined-hose-6.webp']
   },
   {
     id: 'prod_h3', category: 'Flexible Hoses & Assemblies', title: 'High-Pressure Hydraulic Rubber Hose Assemblies',
@@ -656,7 +657,7 @@ const RAW_PRODUCTS = [
     usage: 'Heavy machinery hydraulic systems, turbine hydraulic control lines, industrial power units, mobile equipment hydraulics.',
     features: ['Inner tube: Oil-resistant nitrile rubber', 'Reinforcement: High-tensile steel wire braid or 4-wire spiral wrap', 'Outer cover: Oil, weather, and abrasion-resistant black rubber', 'Working pressure: Up to 420 bar (4-spiral wrap, size-dependent)', 'MSHA approval for mining and hazardous location applications', 'Standards: EN 853, EN 856, SAE 100R1/R2/R12/R13', 'Operating temperature: -40 to +120 deg C', 'End fittings: Crimped CS/SS — JIC, BSP, NPT, SAE flange'],
     specs: { 'Inner Tube': 'Oil-resistant Nitrile (NBR) rubber', 'Reinforcement': 'Steel wire braid / 4-wire spiral wrap', 'Outer Cover': 'Oil/weather/abrasion-resistant rubber', 'Max Working Pressure': 'Up to 420 bar (4-spiral, size-dependent)', 'Temperature Range': '-40 to +120 deg C', 'Standards': 'EN 853, EN 856, SAE 100R1/R2/R12/R13, MSHA' },
-    images: ['hydraulic-rubber-hose-1.webp', 'hydraulic-rubber-hose-2.webp', 'hydraulic-rubber-hose-3.webp']
+    images: ['hydraulic-rubber-hose-1.webp', 'hydraulic-rubber-hose-2.webp', 'hydraulic-rubber-hose-3.webp', 'hydraulic-rubber-hose-4.webp', 'hydraulic-rubber-hose-5.webp', 'hydraulic-rubber-hose-6.webp']
   },
   {
     id: 'prod_ee1', category: 'Electronic Equipments', title: 'Vibration Sensors (Shinkawa)',
@@ -664,7 +665,7 @@ const RAW_PRODUCTS = [
     usage: 'Continuous monitoring of shaft radial vibration, thrust position, and axial displacement in high-speed steam turbines, compressors, and rotating machinery.',
     features: ['Non-contact eddy current measurement principle — no physical shaft contact', 'Measures shaft radial vibration amplitude and axial displacement', 'API 670 Standard compliant for machinery protection systems', 'Frequency response: DC to 10 kHz measurement bandwidth', 'Signal output: 4-20 mA (4-wire) or -24V DC voltage per driver', 'Probe measurement range: 0.25-2.5 mm (calibrated at 1.0 mm nominally)', 'Temperature: Probe -50 to +175 deg C; driver electronics -40 to +85 deg C', 'Sensitivity: 8 mV per µm standard calibration', 'Integral cable: Armoured stainless steel for harsh industrial environments'],
     specs: { 'Measurement Principle': 'Non-contact eddy current displacement', 'Standard Compliance': 'API 670 — Machinery Protection Systems', 'Frequency Response': 'DC to 10 kHz bandwidth', 'Signal Output': '4-20 mA or -24V DC (driver-dependent)', 'Sensitivity': '8 mV/µm (standard calibration)', 'Probe Gap Range': '0.25-2.5 mm (calibrated at 1.0 mm nominal)', 'Probe Temperature Rating': '-50 to +175 deg C', 'Cable Type': 'Armoured stainless steel' },
-    images: ['vibration-probe-shinkawa-1.webp', 'vibration-probe-shinkawa-2.webp', 'vibration-probe-shinkawa-3.webp']
+    images: ['vibration-probe-shinkawa-1.webp', 'vibration-probe-shinkawa-2.webp', 'vibration-probe-shinkawa-3.webp', 'vibration-probe-shinkawa-4.webp', 'vibration-probe-shinkawa-5.webp', 'vibration-probe-shinkawa-6.webp']
   },
 ];
 
@@ -742,6 +743,23 @@ const INDUSTRIES = [
     desc: 'Agro-processing industries rely on steam for power generation and process heating. We supply filtration products, rubber components, and turbine maintenance services to keep agro-industrial steam systems running.',
     useCases: ['Steam turbine maintenance for agro co-gen plants', 'FDA-grade PTFE hose for food-grade transfer lines', 'Rubber expansion joints for pump connections', 'Anti-vibration mounts for machinery isolation', 'Tank breather filters for oil storage systems', 'Y-type strainers for process fluid lines'],
     turbines: 'Triveni, Maxwatt, Chola Turbo'
+  },
+  {
+    id: 'ind_7', title: 'Cement & Construction', Icon: Building2,
+    color: 'from-stone-500/20 to-gray-600/10', border: 'border-stone-500/30', accent: 'text-stone-400',
+    image: 'industry-cement.webp',
+    desc: 'Cement plants operate in some of the most abrasive and dust-laden environments in industry. Rotary kilns, ball mills, vertical roller mills, and compressors demand precision-grade filtration, sealing, and flexible piping solutions to sustain 24×7 continuous operation at 330+ days per year.',
+    useCases: [
+      'Lube oil filter elements for kiln gearbox & mill circulation systems',
+      'Duplex basket strainers for cooling water & process pipelines',
+      'Axial & universal metallic expansion joints for kiln exhaust ducts',
+      'Rubber expansion joints for pump discharge & cooling tower piping',
+      'Anti-vibration mounts for crusher, mill & compressor isolation',
+      'SS corrugated hose assemblies for high-temp & abrasive media transfer',
+      'Y-type & conical strainers for raw meal slurry lines',
+      'Babbitt bearings for kiln support rollers & compressor trains',
+    ],
+    turbines: 'Kiln Drives · Ball Mills · VRMs · Compressors'
   },
 ];
 
@@ -1353,16 +1371,38 @@ const Footer = memo(({ navigate }) => (
           <address className="not-italic">
             <ul className="space-y-6">
               <li className="flex items-start"><MapPin className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" /><span className="text-slate-300 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</span></li>
-              <li className="flex items-start"><Phone className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
-                <div className="text-slate-300 font-medium text-sm space-y-1">
-                  {CONTACT_INFO.phones.map(p => <div key={p}><a href={`tel:${p.replace(/\s/g, '')}`} className="inline-block py-1 hover:text-white transition-colors">{p}</a></div>)}
+              <li className="flex items-start">
+                <div className="text-sm space-y-2 w-full">
+                  {CONTACT_INFO.phones.map(p => (
+                    <div key={p} className="flex items-center gap-2 group/phone">
+                      <a href={`tel:${p.replace(/\s/g, '')}`}
+                        className="flex items-center gap-2.5 flex-1 bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/50 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        <PhoneCall className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+                        <span className="text-slate-200 font-semibold tracking-wide">{p}</span>
+                        <span className="ml-auto text-[10px] text-blue-400 font-black uppercase tracking-widest opacity-0 group-hover/phone:opacity-100 transition-opacity">Tap to Call</span>
+                      </a>
+                      <CopyBtn text={p} />
+                    </div>
+                  ))}
                 </div>
               </li>
-              <li className="flex items-start"><Mail className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
-                <div className="text-slate-300 font-medium text-sm space-y-1">
-                  <div><a href={`mailto:${CONTACT_INFO.email}`} className="inline-block py-1 hover:text-white transition-colors">{CONTACT_INFO.email}</a></div>
-                  <div><a href={`mailto:${CONTACT_INFO.infoEmail}`} className="inline-block py-1 hover:text-white transition-colors">{CONTACT_INFO.infoEmail}</a></div>
-                  <div><a href={`mailto:${CONTACT_INFO.marketingEmail}`} className="inline-block py-1 hover:text-white transition-colors">{CONTACT_INFO.marketingEmail}</a></div>
+              <li className="flex items-start">
+                <div className="text-sm space-y-2 w-full">
+                  {[
+                    { addr: CONTACT_INFO.email, label: 'General' },
+                    { addr: CONTACT_INFO.infoEmail, label: 'Info' },
+                    { addr: CONTACT_INFO.marketingEmail, label: 'Sales' },
+                  ].map(({ addr, label }) => (
+                    <div key={addr} className="flex items-center gap-2 group/mail">
+                      <a href={`mailto:${addr}`}
+                        className="flex items-center gap-2.5 flex-1 min-w-0 bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/50 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                        <Mail className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+                        <span className="text-slate-200 font-semibold truncate">{addr}</span>
+                        <span className="ml-auto shrink-0 text-[10px] text-blue-400 font-black uppercase tracking-widest bg-blue-900/40 px-2 py-0.5 rounded-full">{label}</span>
+                      </a>
+                      <CopyBtn text={addr} />
+                    </div>
+                  ))}
                 </div>
               </li>
             </ul>
@@ -1607,7 +1647,7 @@ const ProductDetailPage = ({ productId, navigate }) => {
                 }
               </div>
               {product.images?.length > 1 && (
-                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2 scrollbar-hide" role="list" aria-label="Product thumbnails">
+                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" role="list" aria-label="Product thumbnails">
                   {product.images.map((img, idx) => (
                     <button key={idx} role="listitem"
                       onClick={() => { setActiveImg(idx); setImgErr(false); setImgLoaded(false); }}
@@ -2946,17 +2986,345 @@ const ProductsPage = ({ navigate }) => {
   );
 };
 
+// ─── COPY BUTTON (used in footer contact infographics) ───────────────
+const CopyBtn = ({ text }) => {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [text]);
+  return (
+    <button onClick={handleCopy} aria-label={`Copy ${text}`}
+      className={`shrink-0 w-9 h-9 flex items-center justify-center rounded-xl border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+        ${copied ? 'bg-green-500/20 border-green-500/50 text-green-400' : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:border-blue-500/40 hover:text-blue-400'}`}>
+      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+    </button>
+  );
+};
+
+// ─── INDUSTRY DETAIL PAGE ─────────────────────────────────────────────
+const INDUSTRY_DETAILS = {
+  ind_1: {
+    heroSub: 'Steam turbines from 5 MW to 27 MW — thermal, co-gen & captive power',
+    overview: `India's thermal and captive power sector depends on the uninterrupted performance of steam turbines operating under continuous load. Keshav Enterprises has deep OEM-era expertise — our engineers were trained by turbine manufacturers before founding the company — giving us the ability to reverse-engineer, manufacture, and overhaul every major sub-system of a power plant steam turbine to OEM tolerances.`,
+    challenges: [
+      { title: 'Continuous High-Load Operation', desc: 'Steam turbines in power plants run at 3000–3600 RPM under sustained full-load conditions, placing extreme stress on bearings, seals, and rotating assemblies.' },
+      { title: 'Lube Oil Contamination', desc: 'Particulate and water ingression into the lube oil system can rapidly degrade bearing surfaces. ISO 4406:99 cleanliness targets must be maintained continuously.' },
+      { title: 'Thermal Expansion in Steam Lines', desc: 'High-temperature steam piping undergoes significant thermal cycling. Without properly engineered expansion joints, piping stress causes flange leaks and turbine nozzle damage.' },
+      { title: 'Rotor Vibration & Balance Drift', desc: 'Deposit build-up and erosion cause progressive balance shift in rotors, increasing vibration and accelerating bearing wear if not caught early.' },
+    ],
+    products: [
+      { name: 'Lube Oil Filter Elements (180 GPM)', purpose: 'Maintains ISO 4406:99 cleanliness in turbine lube oil systems, protecting journal bearings and thrust bearings from abrasive wear.', features: ['Glass fiber fleece VG media, 6–25 µm fineness', 'IS27 anti-static spec for synthetic oils', 'Triveni, Siemens, BHEL OEM compatible'] },
+      { name: 'Steam Crossover Bellows', purpose: 'Absorbs thermal expansion between HP/LP turbine sections and the crossover pipe, eliminating stress transfer to turbine nozzle flanges.', features: ['High-cycle SS bellows, EJMA standard', 'Operating temp up to 550°C', 'Custom flanged ends to OEM dimensions'] },
+      { name: 'Babbitt Journal & Thrust Bearings', purpose: 'White-metal lined bearings precisely machined to OEM profiles for turbine rotors — critical for shaft stability at high speed.', features: ['White metal (Babbitt) poured & precision-machined', 'All turbine makes: Triveni, Siemens, BHEL, KKK', 'Interference fit verified on CMM'] },
+      { name: 'Emergency Stop Valves', purpose: 'Safety-critical valve that trips the turbine on overspeed or lube oil low pressure — manufactured to OEM trip pressure settings.', features: ['CNC machined body from EN8/EN19 forgings', 'Spring-loaded trip mechanism', 'Tested at 1.5× working pressure before dispatch'] },
+      { name: 'Vibration Monitoring Probes (Shinkawa-compatible)', purpose: 'Proximity probes for continuous rotor vibration monitoring per API 670, enabling predictive maintenance before bearing failure occurs.', features: ['Shinkawa, Bently Nevada compatible', 'Eddy-current non-contact sensing', 'Alert and danger setpoints per API 670'] },
+      { name: 'Turbine Oil Pumps (Main & Aux)', purpose: 'Supplies pressurized lube oil to all bearings. Auxiliary pump takes over during run-up and run-down when main shaft-driven pump output is insufficient.', features: ['Gear pump design, fitted to turbine skid', 'All major OEM dimensions available', 'Relief valve set to OEM pressure specification'] },
+    ],
+    keyFacts: ['27 MW maximum turbine capacity handled', '20+ years OEM-trained engineering experience', 'API 614 & ISO 4406:99 compliant products', '24×7 emergency breakdown support'],
+  },
+  ind_2: {
+    heroSub: 'Back-pressure & extraction-condensing turbines in sugar & distillery co-gen',
+    overview: `India's sugar industry runs intensive 150–180 day crushing seasons where turbine availability is directly tied to cane crushing throughput. Keshav Enterprises specialises in inter-season overhauling for back-pressure turbines — the workhorses of sugar co-generation — and provides 24×7 emergency spares support during the crushing season when shutdowns are most costly.`,
+    challenges: [
+      { title: 'Short Inter-Season Overhaul Window', desc: 'Turbines must be completely overhauled, parts replaced, and commissioned before the next crushing season starts — often a window of just 90–120 days.' },
+      { title: 'Carbon & Gland Seal Wear', desc: 'Back-pressure turbines use carbon gland rings to prevent steam leakage. These wear continuously and require accurate replacement at every overhaul.' },
+      { title: 'Molasses & Juice Contamination', desc: 'Process areas generate sticky airborne particulates. Breather filters and strainers on lube oil systems must be maintained to prevent contamination.' },
+      { title: 'Emergency Season Breakdowns', desc: 'A turbine trip during peak crushing causes immediate cane pile-up. Emergency spares and rapid response can mean the difference between a 4-hour and 4-day stoppage.' },
+    ],
+    products: [
+      { name: 'Carbon & Graphite Gland Sealing Rings', purpose: 'Prevents steam leakage past the turbine shaft at gland areas. Precision-machined to OEM shaft and housing dimensions.', features: ['High-purity carbon/graphite grades', 'All turbine makes: Triveni, Belliss & Morcom, Maxwatt', 'Machined in-house to ±0.01 mm tolerance'] },
+      { name: 'Labyrinth Sealing Packings', purpose: 'Inter-stage and shaft-end labyrinth seals that reduce steam leakage between turbine stages, directly improving thermal efficiency.', features: ['SS, brass or monel material options', 'OEM tooth profile maintained', 'New or repaired strips fitted to existing housings'] },
+      { name: 'Lube Oil Filter Elements (Triveni-compatible)', purpose: 'Ensures clean lube oil supply to turbine bearings throughout the crushing season, preventing bearing failures during critical production periods.', features: ['180 GPM flow rating', 'IS27 anti-static specification', 'Inter-season replacement recommended'] },
+      { name: 'Air Breather Filters', purpose: 'Protects the lube oil reservoir from airborne dust and sugar particulates — critical in sugar mill environments where ambient dust loading is extreme.', features: ['Fine-mesh desiccant breather design', 'Prevents moisture and dust ingression', 'Visual saturation indicator'] },
+      { name: 'Simplex & Duplex Basket Strainers', purpose: 'Installed in lube oil and cooling water circuits to catch debris before it reaches bearings and heat exchangers.', features: ['SS mesh baskets, cleanable and reusable', 'ANSI flanged or screwed ends', 'Duplex for zero-downtime strainer cleaning'] },
+      { name: 'Rotor Balancing Service', purpose: 'Dynamic balancing of turbine rotors after re-blading or bearing replacement, restoring smooth operation within ISO 1940 G1.0 specification.', features: ['Dynamic balancing to ISO 1940/1 G1.0', 'Two-plane balancing on all rotor types', 'Balance certificate issued with job report'] },
+    ],
+    keyFacts: ['Triveni & Belliss turbine specialist services', '24×7 emergency season support', 'All carbon/graphite grades machined in-house', 'Inter-season overhauls completed within window'],
+  },
+  ind_3: {
+    heroSub: 'Continuous-run turbines, expansion joints & process filtration for paper mills',
+    overview: `Paper and pulp mills operate steam turbines around the clock, 350+ days per year, making planned maintenance windows extremely tight. The process also involves corrosive bleach, hot water, and high-pressure steam — all demanding filtration and sealing products rated for aggressive media. Keshav Enterprises supplies the complete range of products needed to keep paper mill steam and process systems running.`,
+    challenges: [
+      { title: 'Minimal Downtime Windows', desc: 'A paper machine shutdown costs lakhs per hour. Turbine overhauls must be planned months ahead and executed with zero rework — every component must be right the first time.' },
+      { title: 'Corrosive Process Media', desc: 'Bleach, chlorinated compounds, and caustic process fluids attack standard materials. Filtration and hose products must use compatible media and seals.' },
+      { title: 'High-Temperature Steam Piping', desc: 'Paper mill boilers generate high-pressure steam at 250–400°C. Steam piping expansion joints must handle both high temperature and cycle fatigue.' },
+      { title: 'Vibration from Paper Machines', desc: 'High-speed paper machines generate continuous broadband vibration. Anti-vibration mounts and flexible hose connections are essential to isolate equipment.' },
+    ],
+    products: [
+      { name: 'Duplex Basket Strainers', purpose: 'Installed on process water, white water, and cooling water lines. Duplex design allows basket cleaning without stopping flow — critical in continuous-run plants.', features: ['SS316 baskets for corrosive media', 'Plug cock bypass valve included', 'ANSI 150 to 600 flange ratings available'] },
+      { name: 'SS Metallic Bellows Expansion Joints', purpose: 'Absorbs thermal expansion in high-pressure steam piping, pulp process lines, and bleach plant piping without transferring stress to equipment nozzles.', features: ['SS316L bellows for corrosion resistance', 'DN15 to DN1200 range', 'EJMA design standard, pressure tested'] },
+      { name: 'Rubber Expansion Joints (Double-Arch)', purpose: 'Provides flexible connection on pump suction and discharge in water treatment, white water, and effluent systems — isolates pump vibration from piping.', features: ['Natural rubber or EPDM tube options', 'PN10/16 flanged ends', 'Up to 150°C service temperature'] },
+      { name: 'PTFE-Lined Hose Assemblies', purpose: 'Chemical transfer hoses for bleach, caustic, and acid lines in the bleach plant — PTFE lining provides total resistance to aggressive process chemicals.', features: ['PTFE inner core, SS braid reinforcement', 'Full vacuum rated', 'EN14420-compliant end fittings'] },
+      { name: 'Anti-Vibration Mounts', purpose: 'Resilient mounts fitted under paper machine drives, pumps, and turbine pedestals to isolate and dampen machinery vibration transmitted to the building structure.', features: ['Neoprene-steel sandwich design', 'Load range 50 kg to 5000 kg per mount', 'Frequency tuned to machine RPM'] },
+      { name: 'Turbine Spares (Siemens, BHEL, Triveni)', purpose: 'OEM-equivalent turbine spares manufactured from certified materials for planned overhaul kits — nozzles, diaphragms, gland rings, and bearing housings.', features: ['Reverse-engineered from OEM drawings', 'Material certificates supplied', 'CMM dimensional inspection report'] },
+    ],
+    keyFacts: ['350+ days per year continuous operation supported', 'SS316L products for corrosive media', 'Zero-downtime duplex strainer solutions', 'Complete overhaul kits planned and supplied'],
+  },
+  ind_4: {
+    heroSub: 'API 614-compliant filtration, Babbitt bearings & precision hose for oil & gas facilities',
+    overview: `Upstream, midstream, and downstream oil and gas facilities operate turbine-driven compressors and pumps under some of the harshest conditions in industry. Every component in the lube oil and control oil system must meet API standards. Keshav Enterprises supplies API 614-compliant filter elements, Babbitt bearings, and precision-engineered hose assemblies qualified for use in hazardous-area equipment.`,
+    challenges: [
+      { title: 'API 614 Lube Oil System Compliance', desc: 'All lube oil system components for turbine-driven equipment in oil and gas must comply with API 614, specifying materials, cleanliness, and pressure ratings.' },
+      { title: 'Hazardous Area Filtration', desc: 'Synthetic control oils in turbine control systems have low conductivity. Filter elements must carry IS27 anti-static specification to prevent electrostatic discharge.' },
+      { title: 'High-Pressure Hose Integrity', desc: 'Hydraulic and instrument hose assemblies in oil and gas carry pressures up to 420 bar. Failure means spill and fire risk — zero compromise on quality or certification.' },
+      { title: 'Remote Location Rapid Supply', desc: 'Offshore platforms and remote upstream facilities need fast spares supply. Critical spares held in stock and dispatched same day on emergency orders.' },
+    ],
+    products: [
+      { name: 'Control Oil Filter Elements (IS27 Anti-Static)', purpose: 'For turbine electro-hydraulic control (EHC) systems using synthetic phosphate-ester or ester-based control oils with conductivity below 300 pS/m.', features: ['IS27 anti-static certification', 'Microglass VG media, 3–25 µm', 'Siemens, Man Turbo, KKK compatible'] },
+      { name: 'Babbitt Bearing Manufacturing', purpose: 'Journal and thrust bearings for turbine-driven compressors and pumps, white-metal lined to precise profiles matching the original OEM bearing geometry.', features: ['White metal composition per ASTM B23', 'Precision-bored to <0.01 mm tolerance', 'All makes: Man Turbo, KKK, Siemens, ABB'] },
+      { name: 'PTFE-Lined Hose Assemblies', purpose: 'Chemical and instrumentation hose for aggressive fluid transfer in oil and gas processing — resistant to crude oil, H2S, methanol, and inhibitors.', features: ['PTFE core, SS316 braid or stainless overbraid', 'Pressure rated to 420 bar (selected assemblies)', 'BS EN ISO 10380 compliant assemblies available'] },
+      { name: 'Hydraulic Rubber Hose Assemblies', purpose: 'High-pressure hydraulic hose for control actuators, BOP systems, and hydraulic power units on drilling and processing equipment.', features: ['4-wire and 6-wire spiral construction', 'Working pressure up to 400 bar', 'Parker, Gates, Manuli-compatible fittings'] },
+      { name: 'Duplex Fabricated Filter Housings', purpose: 'Custom-fabricated duplex filter vessels for lube oil and control oil systems, ASME code stamped for compliance with API 614 vessels requirements.', features: ['ASME Sec. VIII Div. 1 code stamped', 'Material: CS, SS304, SS316 per service', 'PED/CE certified for export projects'] },
+      { name: 'Vibration Monitoring Probes', purpose: 'Proximity probes and monitoring systems compatible with API 670 turbomachinery protection systems for compressor and turbine trains.', features: ['Bently Nevada, Shinkawa-compatible', 'IP67 rated probe housing', 'Alert and danger relay outputs'] },
+    ],
+    keyFacts: ['API 614 & IS27 compliant products', 'Babbitt bearings for all major OEMs', 'Same-day emergency dispatch available', 'ASME code-stamped pressure vessels'],
+  },
+  ind_5: {
+    heroSub: 'Metallic expansion joints, high-temp strainers & precision spares for refineries & petrochemical plants',
+    overview: `Refineries and petrochemical complexes handle hydrocarbons, acids, and aggressive chemicals at extreme temperatures and pressures. Metallic expansion joints, process strainers, and precision turbine spares must withstand thermal cycling, corrosive media, and high-cycle fatigue. Keshav Enterprises manufactures these products to EJMA, ASME, and API standards for the most demanding refinery applications.`,
+    challenges: [
+      { title: 'Extreme Temperature Cycling', desc: 'Refinery steam cracking and distillation columns cycle between ambient and 600°C+ service temperatures. Expansion joints must survive millions of flex cycles without fatigue failure.' },
+      { title: 'Corrosive & Hydrogen-Rich Media', desc: 'H2S, HF, amine solvents, and hydrogen service require Inconel, Hastelloy, or duplex stainless bellows — standard SS304/316 is insufficient.' },
+      { title: 'ASME & API Code Compliance', desc: 'Pressure vessels, piping, and bellows in refineries must comply with ASME Sec. VIII and API codes. Third-party inspection and material traceability are mandatory.' },
+      { title: 'FCCU Catalyst Erosion', desc: 'Fluid Catalytic Cracking Units carry entrained catalyst particles at 700°C+. Expansion joints in regenerator and reactor lines face extreme erosion and thermal shock.' },
+    ],
+    products: [
+      { name: 'FCCU Expansion Joints', purpose: 'Purpose-designed for the extreme service conditions of regenerator-reactor transfer lines — high temperature, catalyst erosion, and thermal shock resistance.', features: ['Inconel 625 or 800HT bellows material', 'Refractory lined for catalyst service', 'Cycle-life analysis per EJMA 10th edition'] },
+      { name: 'Axial & Universal Metallic Expansion Joints', purpose: 'Standard process line bellows for absorbing thermal expansion in crude oil, product, and steam piping throughout the refinery complex.', features: ['DN15 to DN12,000 manufacturing range', 'SS316L, Inconel, Hastelloy, Duplex SS grades', 'ASME Sec. VIII Div. 1 design code'] },
+      { name: 'High-Pressure Simplex & Duplex Strainers', purpose: 'In-line strainers on crude oil charge lines, product transfer lines, and compressor suction piping to protect equipment from scale and debris.', features: ['ASME pressure vessel code design', 'Perforated plate + mesh basket construction', 'PN40 to PN160 pressure classes available'] },
+      { name: 'Jacketed Expansion Joints', purpose: 'For heat-traced and cryogenic service piping where the process medium must be maintained at temperature — LNG, molten sulfur, and bitumen lines.', features: ['Inner bellows + outer jacket construction', 'Steam trace or electric trace connection ports', 'Cryogenic-grade SS321 option for LNG service'] },
+      { name: 'Turbine Steam Path Components', purpose: 'Nozzle blocks, diaphragms, and blade carriers for turbine-driven compressor drives — manufactured from alloy steel to OEM profiles.', features: ['CNC machined from certified forgings', 'Material: Cr-Mo alloy steel, 17-4PH SS', 'Profile verified by 3D CMM measurement'] },
+      { name: 'Pressure-Balanced Expansion Joints', purpose: 'Eliminates pressure thrust forces on sensitive equipment nozzles in high-pressure refinery service — protects compressor and pump flanges.', features: ['Tie-rod eliminated pressure thrust design', 'Reduces nozzle loads to near zero', 'Available in tied and untied configurations'] },
+    ],
+    keyFacts: ['Inconel, Hastelloy & duplex SS bellows', 'EJMA 10th edition design standard', 'ASME code pressure vessels & bellows', 'FCCU and extreme service specialists'],
+  },
+  ind_6: {
+    heroSub: 'Steam turbine co-gen, filtration & rubber products for agro-processing facilities',
+    overview: `Agro-processing — from rice milling and solvent extraction to dairy and food manufacturing — increasingly uses captive steam co-generation to reduce energy costs. These facilities need reliable turbine maintenance, food-grade hose and filter products, and vibration isolation solutions for sensitive processing machinery. Keshav Enterprises provides the full range of products and services needed across the agro-industrial sector.`,
+    challenges: [
+      { title: 'Food-Grade Material Requirements', desc: 'Hose, seals, and filtration in food contact areas must use FDA-approved materials — PTFE, food-grade EPDM, and stainless steel with polished surfaces.' },
+      { title: 'Seasonal Load Variation', desc: 'Agro co-gen turbines see wide load variation with crop seasons. This leads to faster blade erosion and thermal cycling fatigue than in constant-load power plants.' },
+      { title: 'Tank Breathing Contamination', desc: 'Edible oil storage tanks must be protected from airborne dust and moisture through the breather path — contamination affects product quality and shelf life.' },
+      { title: 'Machinery Vibration in Food Plants', desc: 'Hammer mills, centrifuges, and packaging machinery transmit vibration to floors and adjacent equipment. Isolation is required to maintain hygienic connections.' },
+    ],
+    products: [
+      { name: 'FDA-Grade PTFE Hose Assemblies', purpose: 'Flexible hose for food-grade fluid transfer — CIP/SIP chemical circulation, product lines, and steam injection in food-grade environments.', features: ['PTFE inner core, FDA 21 CFR 177.1550 compliant', 'Electro-polished SS316 end fittings', 'Tri-clover (sanitary) end connections available'] },
+      { name: 'Air Breather & Tank Breather Filters', purpose: 'Protects edible oil storage tanks from dust and moisture ingression through the vent path — prevents contamination of stored product.', features: ['Desiccant silica gel + fine particulate media', 'Visual saturation colour indicator', 'Replacement cartridge design for easy servicing'] },
+      { name: 'Y-Type & Conical Strainers', purpose: 'Inline strainers on process fluid lines, pump suction, and boiler feed water systems — protect equipment from scale and process debris.', features: ['SS mesh basket, mesh size 40 to 400 µm', 'Screwed or flanged connections', 'Simple inline cleanout without line break'] },
+      { name: 'Rubber Anti-Vibration Mounts', purpose: 'Isolates vibration from hammer mills, centrifuges, compressors, and packaging machinery — protects both the machine and adjacent food processing areas.', features: ['Neoprene or natural rubber compound options', 'Conical, bobbin, and sandwich mount profiles', 'Rated load from 30 kg to 3000 kg per mount'] },
+      { name: 'Rubber Expansion Joints (Single-Arch)', purpose: 'Flexible pump connector on cooling water, chilled water, and process water circuits — absorbs pump vibration and thermal movement.', features: ['EPDM or natural rubber tube', 'PN10/16 flanged, also screwed ends', 'Working temperature –20°C to +130°C'] },
+      { name: 'Steam Turbine Maintenance (Triveni, Maxwatt)', purpose: 'Planned overhaul of agro co-gen back-pressure steam turbines — gland ring replacement, bearing inspection, and rotor balance check.', features: ['Inter-season overhaul scheduling', 'Carbon gland ring machined in-house', 'Trial run and vibration sign-off included'] },
+    ],
+    keyFacts: ['FDA 21 CFR compliant hose products', 'Agro co-gen turbine specialist', 'Tank breather filters for edible oil storage', 'Complete pump vibration isolation solutions'],
+  },
+  ind_7: {
+    heroSub: 'Lube oil filtration, expansion joints, strainers & vibration isolation for cement plant machinery',
+    overview: `Cement manufacturing is one of the most abrasive and dust-laden industrial environments on earth. Rotary kilns operating at 200–400°C shell temperature, ball mills running continuously for months, and crusher trains generating massive dust clouds place extreme demands on every lubrication, sealing, and piping component. Keshav Enterprises supplies the precision-grade filtration, expansion joints, and anti-vibration solutions that keep cement plants running at 330+ days per year.`,
+    challenges: [
+      { title: 'Extreme Dust & Abrasive Contamination', desc: 'Cement plants generate 1–3 tonnes of dust per day per kiln. This airborne abrasive enters lube oil systems, breather vents, and filter housings — accelerating wear and causing filter bypass if not properly managed.' },
+      { title: 'Kiln Gearbox Oil Contamination', desc: 'Rotary kiln gearboxes operate on circulation lubrication systems at ISO VG 220–460. Clinker dust and thermal contamination degrade oil rapidly — high-efficiency filtration is critical to extending oil change intervals and protecting expensive gear sets.' },
+      { title: 'Thermal Expansion in Kiln Exhaust Ducting', desc: 'Kiln exhaust gas ducts operate at 250–450°C and undergo significant thermal expansion. Without properly designed metallic or fabric expansion joints, duct sections crack, leak, and allow hot gas escape — a safety and efficiency hazard.' },
+      { title: 'Crusher & Mill Vibration', desc: 'Ball mills, vertical roller mills, and jaw crushers generate intense broadband vibration that transmits through foundations to adjacent equipment and instrumentation, causing fatigue failures and measurement errors.' },
+    ],
+    products: [
+      { name: 'Lube Oil Filter Elements (Kiln & Mill Gearboxes)', purpose: 'High-efficiency filter elements for kiln gearbox oil circulation systems — removes abrasive clinker particles and wear debris before they damage gear teeth and roller bearings.', features: ['Glass fiber fleece media, 6–25 µm fineness', 'High dirt-holding capacity for dust-laden environments', 'ISO VG 220–460 synthetic & mineral oil compatible', 'Beta efficiency ≥200 per ISO 16889'] },
+      { name: 'Duplex Basket Strainers (Cooling Water & Process Lines)', purpose: 'Installed on kiln cooling water systems, compressor water cooling, and raw meal slurry pipelines to protect pumps, heat exchangers, and instrumentation from scale and debris.', features: ['SS mesh baskets, 100–1000 µm mesh options', 'Duplex design: zero-downtime basket cleaning', 'ANSI 150 to ANSI 600 flange ratings', 'SS316 for corrosive cooling water service'] },
+      { name: 'Axial Metallic Expansion Joints (Kiln Exhaust Ducts)', purpose: 'Compensates thermal expansion in hot gas ductwork between the kiln, cyclone pre-heater tower, and waste heat boiler — eliminates thermally induced stress cracking in duct sections.', features: ['SS321 bellows for high-temperature service', 'Single and universal (dual-bellows) configurations', 'Flanged to match existing duct dimensions', 'Flow liner included to protect bellows from gas erosion'] },
+      { name: 'Rectangular Non-Metallic (Fabric) Expansion Joints', purpose: 'Used in large rectangular ductwork at clinker cooler vent, raw mill fan connections, and electrostatic precipitator (ESP) ductwork — handles misalignment and thermal movement in non-circular sections.', features: ['PTFE-coated glass fabric or Nomex composite', 'Temperature capability to 450°C continuous', 'Custom-made to rectangular duct dimensions', 'Bolted frame assembly for on-site installation'] },
+      { name: 'Rubber Anti-Vibration Mounts & Pads', purpose: 'Fitted under ball mill drive units, vertical roller mill gearboxes, and crusher bearing housings to isolate and attenuate machinery vibration transmitted to plant structures.', features: ['Natural rubber or neoprene compound', 'Sandwich, bobbin, and anti-vibration pad profiles', 'Load capacity from 200 kg to 10,000 kg per mount', 'Frequency-tuned to mill and crusher operating RPM'] },
+      { name: 'Air Breather & Tank Breather Filters (Lube Oil Reservoirs)', purpose: 'Prevents airborne cement dust and moisture from entering lube oil reservoirs through the vent path — the leading cause of premature oil and bearing failure in cement plants.', features: ['High-efficiency particulate media + silica gel desiccant', 'Rated to ISO cleanliness requirements', 'Colour-change saturation indicator', 'Direct-mount and remote-mount configurations'] },
+      { name: 'SS Corrugated Flexible Hose Assemblies', purpose: 'High-pressure flexible connections on kiln cooling water inlets, hydraulic slide gate actuators, and compressed air lines — resists heat, pressure, and vibration where rigid piping would fail.', features: ['SS316L corrugated inner hose, SS braid reinforcement', 'Working pressure to 200 bar (selected assemblies)', 'End fittings: ANSI flanged, BSP/NPT screwed, or hydraulic', 'Temperature range –196°C to +600°C'] },
+      { name: 'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)', purpose: 'Temporary and permanent strainers on raw material slurry pumps, kiln water spray systems, and compressed air supply lines — protect downstream valves and instruments.', features: ['Perforated basket, mesh lining available', 'Winged or screwed flush plug for cleaning', 'CS, SS304, SS316 body materials', 'In stock for rapid dispatch'] },
+    ],
+    keyFacts: ['330+ days/year continuous operation supported', 'Dust-resistant filtration products stocked', 'High-temp expansion joints up to 450°C', 'Complete vibration isolation solutions'],
+  },
+};
+
+const IndustryDetailPage = ({ industryId, navigate }) => {
+  const ind = INDUSTRIES.find(i => i.id === industryId);
+  const detail = INDUSTRY_DETAILS[industryId];
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [industryId]);
+
+  if (!ind || !detail) return (
+    <main id="main-content" className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="text-center">
+        <Building2 className="w-20 h-20 text-slate-300 mx-auto mb-6" />
+        <h1 className="text-3xl font-black text-slate-900 mb-4">Industry Not Found</h1>
+        <button onClick={() => navigate('/industries')} className="text-blue-600 font-bold hover:underline">Back to Industries</button>
+      </div>
+    </main>
+  );
+
+  const { Icon } = ind;
+  return (
+    <main id="main-content" className="bg-slate-50 min-h-screen">
+      <SEOHead
+        title={`${ind.title} | Industrial Solutions — Keshav Enterprises`}
+        description={`${ind.desc} — Keshav Enterprises, Shamli, UP.`}
+        canonicalPath={`/industry/${ind.id}`} pageType="website"
+      />
+
+      {/* ── Hero ── */}
+      <div className="bg-[#0A192F] text-white pt-28 pb-20 relative overflow-hidden border-b-8 border-blue-600">
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
+        {ind.image && (
+          <img src={ind.image} alt="" aria-hidden="true" loading="eager"
+            className="absolute inset-0 w-full h-full object-cover opacity-10"
+            onError={e => { e.target.style.display = 'none'; }} />
+        )}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10">
+            <button onClick={() => navigate('/industries')} className="hover:text-blue-400 transition-colors flex items-center gap-1 focus:outline-none focus-visible:underline">
+              <ArrowLeft className="w-3.5 h-3.5" /> Industries
+            </button>
+            <ChevronRight className="w-3.5 h-3.5 opacity-40" />
+            <span className={ind.accent}>{ind.title}</span>
+          </nav>
+          <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8">
+            <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 shadow-2xl`}>
+              <Icon className={`w-10 h-10 ${ind.accent}`} />
+            </div>
+            <div>
+              <div className={`inline-block text-xs font-black ${ind.accent} uppercase tracking-widest mb-3 bg-white/5 px-3 py-1 rounded-full border border-white/10`}>Industry Focus</div>
+              <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">{ind.title}</h1>
+              <p className="text-slate-300 font-medium text-lg">{detail.heroSub}</p>
+            </div>
+          </div>
+          {/* Key Facts Strip */}
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+            {detail.keyFacts.map((fact, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-xl px-5 py-4 flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                <span className="text-slate-200 font-semibold text-sm leading-snug">{fact}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+
+        {/* ── Overview ── */}
+        <section aria-label="Industry overview">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2">
+              <div className="flex items-center gap-3 mb-5">
+                <div className={`w-1.5 h-8 rounded-full ${ind.accent.replace('text-', 'bg-')}`} />
+                <h2 className="text-2xl font-black text-slate-900 tracking-tight">Industry Overview</h2>
+              </div>
+              <p className="text-slate-600 font-medium text-lg leading-relaxed">{detail.overview}</p>
+            </div>
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7">
+              <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-5">Key Applications</h3>
+              <ul className="space-y-3">
+                {ind.useCases.slice(0, 6).map((uc, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className={`w-4 h-4 shrink-0 mt-0.5 ${ind.accent}`} />
+                    <span className="text-slate-700 font-medium text-sm leading-snug">{uc}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Challenges ── */}
+        <section aria-label="Industry challenges">
+          <div className="flex items-center gap-3 mb-8">
+            <div className={`w-1.5 h-8 rounded-full ${ind.accent.replace('text-', 'bg-')}`} />
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Key Challenges We Solve</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {detail.challenges.map((c, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7 hover:border-blue-200 hover:shadow-md transition-all">
+                <div className="flex items-start gap-4">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0`}>
+                    <span className={`text-lg font-black ${ind.accent}`}>{i + 1}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-black text-slate-900 text-base mb-2">{c.title}</h3>
+                    <p className="text-slate-600 font-medium text-sm leading-relaxed">{c.desc}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Products ── */}
+        <section aria-label="Products we supply">
+          <div className="flex items-center gap-3 mb-8">
+            <div className={`w-1.5 h-8 rounded-full ${ind.accent.replace('text-', 'bg-')}`} />
+            <h2 className="text-2xl font-black text-slate-900 tracking-tight">Products We Supply for {ind.title}</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {detail.products.map((prod, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all group flex flex-col">
+                <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${ind.color.replace('/20', '').replace('/10', '')} from-blue-600 to-blue-400`} />
+                <div className="p-7 flex flex-col flex-1">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 mt-0.5`}>
+                      <Settings className={`w-4 h-4 ${ind.accent}`} />
+                    </div>
+                    <h3 className="font-black text-slate-900 text-base leading-snug">{prod.name}</h3>
+                  </div>
+                  <p className="text-slate-600 font-medium text-sm leading-relaxed mb-5 flex-1">{prod.purpose}</p>
+                  <ul className="space-y-1.5 mb-6">
+                    {prod.features.map((f, j) => (
+                      <li key={j} className="flex items-start gap-2">
+                        <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${ind.accent.replace('text-', 'bg-')}`} />
+                        <span className="text-slate-600 text-xs font-semibold leading-snug">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    onClick={() => navigate('/products')}
+                    className={`mt-auto text-xs font-black uppercase tracking-widest ${ind.accent} hover:underline flex items-center gap-1 focus:outline-none`}>
+                    View in Catalog <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── CTA ── */}
+        <section aria-label="Get in touch" className="bg-slate-900 rounded-3xl p-10 md:p-14 flex flex-col md:flex-row items-center gap-8 shadow-xl">
+          <div className="flex-1">
+            <h2 className="text-3xl font-black text-white mb-3 tracking-tight">Ready to Discuss Your {ind.title} Requirements?</h2>
+            <p className="text-slate-300 font-medium text-base leading-relaxed">Our engineers have hands-on experience with the unique challenges of your industry. Contact us for a technical consultation or request a quote today.</p>
+          </div>
+          <div className="flex flex-col sm:flex-row md:flex-col gap-4 shrink-0">
+            <button onClick={() => navigate('/contact')}
+              className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400">
+              Get a Quote <ArrowRight className="w-5 h-5" />
+            </button>
+            <a href={waMsg(`Hello KESHAV ENTERPRISES, I need solutions for my ${ind.title} facility.`)} target="_blank" rel="noopener noreferrer"
+              className="bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
+              <MessageCircle className="w-5 h-5" /> WhatsApp Us
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+};
+
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
 const IndustriesPage = ({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
-    <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical"
-      description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, and agro industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
+    <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
+      description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
         <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">Industries We Serve</h1>
         <div className="section-divider w-24 h-1.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true" />
-        <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">Specialized turbine engineering and industrial product solutions across six major industry verticals.</p>
+        <p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">Specialized turbine engineering and industrial product solutions across seven major industry verticals.</p>
       </div>
     </div>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2965,7 +3333,11 @@ const IndustriesPage = ({ navigate }) => (
           const { Icon } = ind;
           return (
             <article key={ind.id}
-              className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-300/60 transition-all duration-500 group border border-slate-200 bg-white">
+              className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-300/60 transition-all duration-500 group border border-slate-200 bg-white cursor-pointer"
+              onClick={() => navigate(`/industry/${ind.id}`)}
+              role="button" tabIndex={0}
+              onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && navigate(`/industry/${ind.id}`)}
+              aria-label={`Read more about our ${ind.title} solutions`}>
               <div className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
 
                 {/* ── LEFT PANEL: full background image + overlay infographic ── */}
@@ -3035,11 +3407,16 @@ const IndustriesPage = ({ navigate }) => (
                     ))}
                   </ul>
                   <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
-                    <button onClick={() => navigate('/contact')} aria-label={`Get a quote for ${ind.title} services`}
+                    <button onClick={e => { e.stopPropagation(); navigate(`/industry/${ind.id}`); }} aria-label={`Explore ${ind.title} solutions in detail`}
+                      className="flex-1 bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all shadow-sm flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 group/btn">
+                      Explore Solutions <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+                    </button>
+                    <button onClick={e => { e.stopPropagation(); navigate('/contact'); }} aria-label={`Get a quote for ${ind.title} services`}
                       className="flex-1 bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 group/btn">
                       Get a Quote <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
                     </button>
                     <a href={waMsg(`Hello KESHAV ENTERPRISES, I need engineering services for my ${ind.title} facility.`)} target="_blank" rel="noopener noreferrer"
+                      onClick={e => e.stopPropagation()}
                       aria-label={`WhatsApp inquiry for ${ind.title}`}
                       className="flex-1 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
                       <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp
@@ -3245,6 +3622,7 @@ export default function App() {
   const page = useMemo(() => {
     if (currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate} />;
     if (currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/', '')} navigate={navigate} />;
+    if (currentPath.startsWith('/industry/')) return <IndustryDetailPage industryId={currentPath.split('/')[2]} navigate={navigate} />;
     switch (currentPath) {
       case '/': return <HomePage navigate={navigate} />;
       case '/about': return <AboutPage navigate={navigate} />;
