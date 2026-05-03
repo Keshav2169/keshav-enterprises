@@ -667,6 +667,41 @@ const RAW_PRODUCTS = [
     specs: { 'Measurement Principle': 'Non-contact eddy current displacement', 'Standard Compliance': 'API 670 — Machinery Protection Systems', 'Frequency Response': 'DC to 10 kHz bandwidth', 'Signal Output': '4-20 mA or -24V DC (driver-dependent)', 'Sensitivity': '8 mV/µm (standard calibration)', 'Probe Gap Range': '0.25-2.5 mm (calibrated at 1.0 mm nominal)', 'Probe Temperature Rating': '-50 to +175 deg C', 'Cable Type': 'Armoured stainless steel' },
     images: ['vibration-probe-shinkawa-1.webp', 'vibration-probe-shinkawa-2.webp', 'vibration-probe-shinkawa-3.webp', 'vibration-probe-shinkawa-4.webp', 'vibration-probe-shinkawa-5.webp', 'vibration-probe-shinkawa-6.webp']
   },
+  {
+    id: 'prod_ee2', category: 'Electronic Equipments', title: 'Magnetic Pickup Sensor (Woodward)',
+    desc: 'Genuine Woodward variable reluctance magnetic speed pickup (MPU) for precise shaft speed feedback to Woodward governors and digital turbine control systems. Passive, self-powered, zero-maintenance design for continuous duty on steam turbines running at 3000–3600 RPM.',
+    usage: 'Primary speed sensing input for Woodward 505/505D/505E digital governors, 2301 and 7206 governor amplifiers, and standalone overspeed trip systems on Triveni, BHEL, Siemens, KKK, and Maxwatt steam turbines. Monitors turbine rotor speed via the governor gear wheel (tooth gear / flywheel) to provide closed-loop speed regulation, load control, and overspeed protection throughout startup, synchronisation, and full-load operation.',
+    features: [
+      'Variable reluctance (passive) sensor — generates its own AC voltage signal from gear tooth motion; no external power supply required',
+      'Compatible with Woodward 505, 505D, 505E, 2301, 7206, and MicroNet governor systems — drop-in replacement for OEM speed sensors',
+      'Stainless steel housing — resists turbine lube oil, steam condensate, high ambient temperatures up to +100 deg C, and mechanical vibration',
+      'Air gap setting: 0.25–1.02 mm (0.010–0.040 inch) from gear tooth OD; output ≥ 1.5 V ac rms at minimum governing speed',
+      'Thread options: 5/8–18 UNF (standard short/long), 3/4–20 UNF (heavy duty), and M18×1.5 metric models for Indian OEM turbine housings',
+      'DC coil resistance: 114–250 Ω depending on model (short standard 220 Ω max; long standard / metric 250 Ω max)',
+      'CSA/ATEX explosion-proof models available — rated Ex d IIC T5, Class I Div 1 Group A-D for hazardous area installations',
+      'SIL 3 certified versions available for safety-instrumented overspeed shutdown loops per IEC 61511',
+      'Compatible gear tooth pitch: diametral pitch 8–20 (gear module 1.27–3.2); suitable for governor gear wheels on all common Indian steam turbine designs',
+      'Mating connector: MS3106A-10SL-4S (standard models); flying leads with 1/2-inch NPT conduit entry on explosion-proof models',
+    ],
+    specs: {
+      'Sensor Type': 'Variable Reluctance (Passive Magnetic Pickup)',
+      'OEM Compatibility': 'Woodward 505 / 505D / 505E / 2301 / 7206 / MicroNet governors',
+      'Turbine Compatibility': 'Triveni, BHEL, Siemens, KKK, Maxwatt, Man Turbo, Belliss & Morcom',
+      'Output Signal': 'AC voltage — amplitude proportional to shaft speed (≥ 1.5 V ac rms at min speed)',
+      'Air Gap (Installation)': '0.25–1.02 mm (0.010–0.040 inch) radial to gear OD',
+      'Gear Tooth Pitch': 'Diametral pitch 8–20 / Gear module 1.27–3.2',
+      'Ambient Temperature': '-40 deg C to +100 deg C (standard); up to +120 deg C conduit seal compound',
+      'Coil Resistance': '114–250 Ω DC (model-dependent; short std 220 Ω max)',
+      'Operating Pressure (tip)': '3 bar max (CSA/ATEX); 10 bar at NPT fitting',
+      'Thread Standard': '5/8-18 UNF / 3/4-20 UNF / M18×1.5 metric',
+      'Housing Material': 'Stainless steel',
+      'Hazardous Area Rating': 'Ex d IIC T5 / ATEX EN60079-0 & -1 / CSA Class I Div 1 Grp A-D (ATEX models)',
+      'SIL Rating': 'SIL 3 (certified .SIL variants per IEC 61511)',
+      'Maintenance': 'Zero — no periodic maintenance required; not field-repairable',
+      'Reference Manual': 'Woodward Manual 82510 Rev V (Aug 2022)',
+    },
+    images: ['woodward-magnetic-pickup-1.webp', 'woodward-magnetic-pickup-2.webp', 'woodward-magnetic-pickup-3.webp', 'woodward-magnetic-pickup-4.webp', 'woodward-magnetic-pickup-5.webp', 'woodward-magnetic-pickup-6.webp']
+  },
 ];
 
 const MAX_PRODUCT_IMAGES = 6;
