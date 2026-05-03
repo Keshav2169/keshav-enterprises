@@ -806,15 +806,15 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
-    /* Paint image on the full hero section for consistent mobile coverage */
+    /* Paint image with a built-in dark overlay for consistent mobile coverage and text readability */
     .hero-section{
-      background-image:url('hero-background.png');
+      background-image: linear-gradient(to right, rgba(10,25,47,0.95), rgba(10,25,47,0.7), rgba(10,25,47,0.4)), url('hero-background.png');
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
     }
     .hero-bg-layer{display:none!important}
-    .hero-desktop-grad{display:block!important}
+    .hero-desktop-grad{display:none!important}
     .hero-mobile-vignette{display:none!important}
     .hero-glow-orb{display:none!important}
     .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.45),transparent)!important}
