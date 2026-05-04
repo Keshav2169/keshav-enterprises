@@ -1409,15 +1409,12 @@ const Footer = memo(({ navigate }) => (
               <li className="flex items-start">
                 <div className="text-sm space-y-2 w-full">
                   {CONTACT_INFO.phones.map(p => (
-                    <div key={p} className="flex items-center gap-2 group/phone">
-                      <a href={`tel:${p.replace(/\s/g, '')}`}
-                        className="flex items-center gap-2.5 flex-1 bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/50 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                        <PhoneCall className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
-                        <span className="text-slate-200 font-semibold tracking-wide">{p}</span>
-                        <span className="ml-auto text-[10px] text-blue-400 font-black uppercase tracking-widest opacity-0 group-hover/phone:opacity-100 transition-opacity">Tap to Call</span>
-                      </a>
-                      <CopyBtn text={p} />
-                    </div>
+                    <a key={p} href={`tel:${p.replace(/\s/g, '')}`}
+                      className="flex items-center gap-2.5 w-full bg-white/[0.08] hover:bg-blue-500/20 border border-white/[0.15] hover:border-blue-400/60 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group/phone">
+                      <PhoneCall className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+                      <span className="text-slate-100 font-semibold tracking-wide whitespace-nowrap">{p}</span>
+                      <span className="ml-auto text-[10px] text-blue-400 font-black uppercase tracking-widest opacity-0 group-hover/phone:opacity-100 transition-opacity">Tap to Call</span>
+                    </a>
                   ))}
                 </div>
               </li>
@@ -1428,15 +1425,12 @@ const Footer = memo(({ navigate }) => (
                     { addr: CONTACT_INFO.infoEmail, label: 'Info' },
                     { addr: CONTACT_INFO.marketingEmail, label: 'Sales' },
                   ].map(({ addr, label }) => (
-                    <div key={addr} className="flex items-center gap-2 group/mail">
-                      <a href={`mailto:${addr}`}
-                        className="flex items-center gap-2.5 flex-1 min-w-0 bg-white/5 hover:bg-blue-600/20 border border-white/10 hover:border-blue-500/50 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                        <Mail className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
-                        <span className="text-slate-200 font-semibold truncate">{addr}</span>
-                        <span className="ml-auto shrink-0 text-[10px] text-blue-400 font-black uppercase tracking-widest bg-blue-900/40 px-2 py-0.5 rounded-full">{label}</span>
-                      </a>
-                      <CopyBtn text={addr} />
-                    </div>
+                    <a key={addr} href={`mailto:${addr}`}
+                      className="flex items-center gap-2.5 w-full min-w-0 bg-white/[0.08] hover:bg-blue-500/20 border border-white/[0.15] hover:border-blue-400/60 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                      <Mail className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+                      <span className="text-slate-100 font-semibold truncate">{addr}</span>
+                      <span className="ml-auto shrink-0 text-[10px] text-blue-400 font-black uppercase tracking-widest bg-blue-500/20 border border-blue-400/30 px-2 py-0.5 rounded-full">{label}</span>
+                    </a>
                   ))}
                 </div>
               </li>
