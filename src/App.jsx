@@ -702,6 +702,135 @@ const RAW_PRODUCTS = [
     },
     images: ['woodward-magnetic-pickup-1.webp', 'woodward-magnetic-pickup-2.webp', 'woodward-magnetic-pickup-3.webp', 'woodward-magnetic-pickup-4.webp', 'woodward-magnetic-pickup-5.webp', 'woodward-magnetic-pickup-6.webp']
   },
+  // ── NEW PRODUCTS ADDED MAY 2026 ──
+  {
+    id: 'prod_f12', category: 'Industrial Filtration', title: 'Siemens Turbine Control Oil Filters',
+    desc: 'OEM-compatible control oil filter elements for Siemens industrial steam turbine hydraulic governing systems. Microglass deep-bed media with IS27 anti-static specification protects sensitive electrohydraulic servo valves.',
+    usage: 'Control oil filtration in Siemens turbine hydraulic governing circuits protecting servo valves, actuators, and pilot valves from particle contamination.',
+    features: ['Siemens turbine control oil system compatible — duplex filter housings', 'Microglass deep-bed media with IS27 anti-static treatment', 'Flow rating: 350–850 LPM depending on turbine model', 'Filtration fineness: 3, 6, 10, 16, 25 µm (beta ratings per ISO 16889)', 'Anti-static IS27 spec prevents electrostatic discharge in synthetic control oils below 300 pS/m', 'Max operating pressure: up to 63 bar (duplex housing)', 'Sealing: Nitrile (standard) or Viton for high-temperature synthetic oils', 'ASME / PED / CE compliant housing options', 'Dimensional compatible with Eaton / Parker / HYDAC standard elements', 'HSN Code: 8421'],
+    specs: { 'Flow Capacity': '350–850 LPM (model dependent)', 'Filtration Fineness': '3–25 µm (microglass deep bed)', 'Anti-Static Rating': 'IS27 — for oils below 300 pS/m', 'Max Pressure': 'Up to 63 bar (duplex configuration)', 'Seal Material': 'Nitrile or Viton', 'Standards': 'ISO 16889, PED 2014/68/EC, ASME Sec VIII', 'OEM Compatibility': 'Siemens industrial steam turbines — all models', 'HSN Code': '8421' },
+    images: ['siemens-control-oil-filter-1.webp', 'siemens-control-oil-filter-2.webp', 'siemens-control-oil-filter-3.webp', 'siemens-control-oil-filter-4.webp', 'siemens-control-oil-filter-5.webp', 'siemens-control-oil-filter-6.webp']
+  },
+  {
+    id: 'prod_f13', category: 'Industrial Filtration', title: 'Triveni Turbine Control Oil Filters',
+    desc: 'OEM-matched control oil filter elements for Triveni steam turbine electrohydraulic governing systems. Designed to maintain ISO 4406 cleanliness class 16/14/11 protecting high-sensitivity servo valves.',
+    usage: 'Control oil filtration in Triveni turbine governing systems — particularly critical during commissioning and post-overhaul startup to protect servo valves from particle-induced failure.',
+    features: ['Triveni turbine governing system compatible — drop-in element replacement', 'Filtration fineness: 6, 10, 16, 25 µm (ISO 16889 beta ratings)', 'Glass fiber fleece (VG) or Microglass media options', 'Targets system cleanliness: ISO 4406 Class 16/14/11', 'High collapse resistance per ISO 2941; high burst integrity', 'IS27 anti-static specification where synthetic oils are used', 'Sealing: Nitrile (P) or Viton (V) end caps', 'Compatible with mineral and synthetic turbine control oils', 'Exact OEM dimensional replacement — no housing modification required', 'HSN Code: 8421'],
+    specs: { 'Flow Capacity': '120–350 LPM (turbine model dependent)', 'Filtration Grade': '6–25 µm glass fiber fleece (ISO 16889)', 'Target Cleanliness': 'ISO 4406 Class 16/14/11', 'Seal Options': 'Nitrile / Viton end caps', 'Collapse Rating': 'Per ISO 2941 (high)', 'OEM Compatibility': 'Triveni steam turbines — all models', 'Oil Compatibility': 'Mineral & synthetic turbine control oils', 'HSN Code': '8421' },
+    images: ['triveni-control-oil-filter-1.webp', 'triveni-control-oil-filter-2.webp', 'triveni-control-oil-filter-3.webp', 'triveni-control-oil-filter-4.webp', 'triveni-control-oil-filter-5.webp', 'triveni-control-oil-filter-6.webp']
+  },
+  {
+    id: 'prod_ts12', category: 'Turbine Spares', title: 'High/Low Speed Couplings for Turbines',
+    desc: 'Precision-manufactured high-speed and low-speed flexible couplings for turbine-gearbox and gearbox-driven equipment connections. Reverse-engineered to exact OEM dimensions with full dimensional and PMI verification.',
+    usage: 'Turbine to gearbox (high-speed) and gearbox to generator or mill (low-speed) shaft coupling applications in power generation and process industries.',
+    features: ['Covers high-speed (turbine-to-gearbox) and low-speed (gearbox-to-load) coupling positions', 'Types: Gear couplings, disc pack couplings, jaw/flexible element couplings', 'Reverse-engineered to OEM dimensions using 3D scanning and CMM measurement', 'PMI material verification: Alloy steel (40CrMo4, 42CrMo4) with heat treatment certificates', 'Dynamic balancing of assembled coupling to ISO 1940 Grade G2.5', 'High-speed coupling: Precision crowned gear teeth — allows up to 1.5 deg angular misalignment', 'Low-speed coupling: Rubber or polyurethane flexible element for vibration damping', 'Torque ratings from 500 Nm to 500 kNm available on request', 'Interference-fit hub bores with keyway to DIN 6885 or OEM specification', 'Full documentation: Material certificate, balancing report, dimensional inspection'],
+    specs: { 'Coupling Types': 'Gear, Disc Pack, Jaw / Flexible Element', 'Speed Range': 'High-speed (up to 12,000 RPM) / Low-speed (up to 1,500 RPM)', 'Material': '40CrMo4 / 42CrMo4 alloy steel — per OEM spec', 'Torque Range': '500 Nm to 500 kNm (application specific)', 'Balance Grade': 'ISO 1940 Grade G2.5', 'Bore Type': 'Interference fit + keyway (DIN 6885 / OEM spec)', 'Angular Misalignment': 'Up to 1.5 deg (gear coupling)', 'Documentation': 'Material cert + PMI + balancing report + dim inspection' },
+    images: ['turbine-coupling-high-low-1.webp', 'turbine-coupling-high-low-2.webp', 'turbine-coupling-high-low-3.webp', 'turbine-coupling-high-low-4.webp', 'turbine-coupling-high-low-5.webp', 'turbine-coupling-high-low-6.webp']
+  },
+  {
+    id: 'prod_ts13', category: 'Turbine Spares', title: 'Flexible Disc Pack (MetaFlex)',
+    desc: 'High-performance flexible disc pack coupling elements for turbine-generator sets. Laminated stainless steel disc packs transmit high torque while accommodating angular, axial, and radial misalignment without lubrication.',
+    usage: 'Turbine-generator flexible coupling intermediate element; used where maintenance-free, zero-backlash torque transmission is required between turbine output shaft and alternator.',
+    features: ['Laminated stainless steel disc construction — no lubrication required', 'Zero backlash — suitable for precision speed control and torsional sensitive drives', 'Accommodates angular misalignment up to 1 deg, axial ±2 mm, radial 0.1 mm', 'Torque capacity: 200 Nm to 200 kNm (disc pack size dependent)', 'Material: SS 301 or SS 17-7PH spring-hardened stainless steel discs', 'Fatigue-rated for 10^7 cycles — suitable for continuous turbine operation', 'Temperature rated: -40 deg C to +200 deg C without performance degradation', 'Replaces OEM MetaFlex, Bibby, Lovejoy, Rexnord disc pack designs', 'Bolt pattern and disc OD matched to OEM coupling hub dimensions', 'Inspection report and material traceability certificate supplied'],
+    specs: { 'Type': 'Laminated stainless steel flexible disc pack', 'Disc Material': 'SS 301 / SS 17-7PH spring hardened', 'Torque Range': '200 Nm – 200 kNm (size dependent)', 'Angular Misalignment': 'Up to 1 deg', 'Axial Displacement': '±2 mm', 'Fatigue Life': '10^7 cycles (continuous turbine duty)', 'Operating Temperature': '-40 deg C to +200 deg C', 'OEM Equivalents': 'MetaFlex, Bibby, Lovejoy, Rexnord disc pack designs', 'Lubrication': 'None required — maintenance-free' },
+    images: ['metaflex-disc-pack-1.webp', 'metaflex-disc-pack-2.webp', 'metaflex-disc-pack-3.webp', 'metaflex-disc-pack-4.webp', 'metaflex-disc-pack-5.webp', 'metaflex-disc-pack-6.webp']
+  },
+  {
+    id: 'prod_ts14', category: 'Turbine Spares', title: 'Boiler Sight Glass — Round / Reflex',
+    desc: 'Industrial boiler sight glasses in round and reflex pattern for visual water level indication in steam boilers, pressure vessels, and condensate systems. Rated for high-pressure, high-temperature steam service.',
+    usage: 'Steam boiler water level gauges, pressure vessel liquid level indication, condensate drum observation, and deaerator level monitoring.',
+    features: ['Round sight glass: 360 deg viewing, ideal for pressure vessel and tank applications', 'Reflex sight glass: Utilizes prism optics — steam appears dark, water appears bright for clear level reading', 'Borosilicate glass (Type I) — rated for continuous high-temperature and thermal shock service', 'Pressure rating: Up to 64 bar (PN64) depending on size and design', 'Temperature rating: Up to 400 deg C (steam service)', 'Body materials: Carbon steel, SS 304, SS 316 per process conditions', 'Connections: Flanged (ANSI / DIN) or screwed BSP / NPT', 'Mica shields available for chemical protection of glass in corrosive condensates', 'Full face or raised face gasket options per ASME B16.5 / DIN 2543', 'Safety shield available for personnel protection in high-pressure service'],
+    specs: { 'Glass Type': 'Borosilicate (Type I) — thermal shock resistant', 'Style': 'Round (360 deg) / Reflex (prism optic)', 'Pressure Rating': 'Up to PN64 (64 bar)', 'Temperature Rating': 'Up to 400 deg C (steam)', 'Body Material': 'CS / SS 304 / SS 316', 'Connection Types': 'Flanged ANSI/DIN / Screwed BSP-NPT', 'Mica Shield': 'Available for corrosive condensate protection', 'Applications': 'Steam boilers, pressure vessels, condensate drums' },
+    images: ['boiler-sight-glass-1.webp', 'boiler-sight-glass-2.webp', 'boiler-sight-glass-3.webp', 'boiler-sight-glass-4.webp', 'boiler-sight-glass-5.webp', 'boiler-sight-glass-6.webp']
+  },
+  {
+    id: 'prod_ee3', category: 'Electronic Equipments', title: 'ASCO 8210 Series Explosion-Proof Solenoid Valve',
+    desc: 'ASCO 8210 series general purpose explosion-proof solenoid valves for turbine trip, lube oil, steam seal, and process control applications. ATEX/IECEx and NEMA 7/9 rated for hazardous area installation.',
+    usage: 'Turbine emergency trip oil drain, steam admission/trip solenoids, lube oil system control, process media isolation, and safety instrumented system (SIS) actuating valves in Zone 1/Zone 2 hazardous areas.',
+    features: ['ASCO 8210 series — two-way normally closed or normally open configurations', 'Explosion-proof: ATEX Ex d IIC T4/T5, IECEx certified; NEMA 7 & 9 rated', 'Coil ratings: 24V DC, 110V AC, 220V AC (50/60 Hz) — specify at order', 'Orifice sizes: 1/4 to 2 inch (DN6 to DN50) per pilot or direct-acting design', 'Body materials: Brass, SS 316, or NBR/Viton seals per process media', 'Ambient temperature: -20 to +50 deg C standard; -40 deg C low-temp option', 'Response time: 10–60 ms (direct acting) for fast turbine trip applications', 'IP65 / IP66 minimum enclosure protection', 'SIL 2 certified versions available for SIS loop integrity', 'Suitable for steam, air, water, oil, gas, and chemical service per seal material'],
+    specs: { 'Series': 'ASCO 8210 General Purpose Solenoid', 'Configuration': '2-way NC or NO; pilot or direct acting', 'Voltage': '24V DC / 110V AC / 220V AC (50/60 Hz)', 'Orifice Range': '1/4 to 2 inch (DN6 to DN50)', 'Body Material': 'Brass / SS 316', 'Seal Material': 'NBR / Viton (per process media)', 'Explosion Proof': 'ATEX Ex d IIC T4/T5, IECEx, NEMA 7/9', 'IP Rating': 'IP65 / IP66', 'Ambient Temp': '-20 to +50 deg C (std); -40 deg C option', 'SIL Rating': 'SIL 2 available', 'Response Time': '10–60 ms (direct acting)' },
+    images: ['asco-solenoid-valve-8210-1.webp', 'asco-solenoid-valve-8210-2.webp', 'asco-solenoid-valve-8210-3.webp', 'asco-solenoid-valve-8210-4.webp', 'asco-solenoid-valve-8210-5.webp', 'asco-solenoid-valve-8210-6.webp']
+  },
+  {
+    id: 'prod_ts15', category: 'Turbine Spares', title: 'Spherical White Metal Bearing — TDPS Alternator',
+    desc: 'Precision spherical (self-aligning) white metal journal bearings for TDPS alternators used with Triveni and other steam turbine-generator sets. Babbitt-lined with ultrasonic bond integrity verification.',
+    usage: 'Journal bearing support for alternator rotors in TDPS (Triveni-Driven Power Station) turbine-generator sets; accommodates shaft deflection and alignment tolerance in generator bearing housings.',
+    features: ['Spherical outer surface allows self-alignment within housing — compensates for shaft sag and misalignment', 'White metal (babbitt) lining: Tin-base alloy per BS3332 / ASTM B23 Grade 2', 'Precision CNC machined to OEM diametral clearance specifications', 'Ultrasonic bond test: 100% babbitt-to-shell bond integrity verification', 'Shell material: Cast steel or LM2 aluminium alloy per OEM design', 'Oil distribution grooves and pressure dam machined per OEM drawing', 'Radial clearance: 0.10–0.25 mm (application dependent)', 'Dimensional verification via CMM against OEM drawing', 'Supplied with full inspection report and material certificate'],
+    specs: { 'Bearing Type': 'Spherical self-aligning white metal journal bearing', 'Babbitt Alloy': 'Tin-base (BS3332 / ASTM B23 Grade 2)', 'Shell Material': 'Cast steel / LM2 aluminium alloy', 'Bond Test': 'Ultrasonic 100% bond integrity verification', 'Radial Clearance': '0.10–0.25 mm (OEM specification)', 'Machining': 'Precision CNC to OEM tolerance + CMM verification', 'Application': 'TDPS alternator generator bearing', 'Documentation': 'Full inspection report + material certificate' },
+    images: ['tdps-alternator-bearing-1.webp', 'tdps-alternator-bearing-2.webp', 'tdps-alternator-bearing-3.webp', 'tdps-alternator-bearing-4.webp', 'tdps-alternator-bearing-5.webp', 'tdps-alternator-bearing-6.webp']
+  },
+  {
+    id: 'prod_ee4', category: 'Electronic Equipments', title: 'Beacon Industrial Analog Tachometer Gauge',
+    desc: 'Robust industrial analog panel tachometer for direct shaft speed indication in turbine control panels. Robust movement with IP54 sealed case for steam turbine house environments.',
+    usage: 'Local turbine speed indication on turbine control panels, operator consoles, and local instrument enclosures in sugar mills, power plants, and paper mills.',
+    features: ['Analog moving-iron or D\'Arsonval movement for turbine speed display', 'Input from magnetic pickup (MPU) or proximity sensor — 4-20 mA or pulse input options', 'Scale ranges: 0-1500, 0-3000, 0-3600, 0-5000, 0-6000 RPM (specify)', 'Dial size: 96x96 mm or 144x144 mm panel-mount square bezel', 'Accuracy: ±1% full scale deflection', 'IP54 front bezel protection — suitable for turbine house environments', 'Alarm contacts: Optional 1 or 2 set-point SPDT relay outputs for overspeed alarm', 'Operating temperature: 0 to +55 deg C', 'Panel cutout: 92x92 mm (96mm case) or 138x138 mm (144mm case)', 'Compatible makes: Beacon, Yokins, Elmeasure, Automatic Systems'],
+    specs: { 'Type': 'Industrial analog panel tachometer', 'Input Signal': 'MPU pulse / 4-20 mA (selectable)', 'Scale Range': '0–3000 / 0–6000 RPM (custom available)', 'Dial Size': '96x96 mm or 144x144 mm', 'Accuracy': '±1% FSD', 'IP Rating': 'IP54 (front)', 'Alarm Output': 'Optional 1–2 SPDT relay contacts', 'Operating Temp': '0 to +55 deg C', 'Compatible Brands': 'Beacon, Yokins, Elmeasure, Automatic Systems' },
+    images: ['beacon-tachometer-gauge-1.webp', 'beacon-tachometer-gauge-2.webp', 'beacon-tachometer-gauge-3.webp', 'beacon-tachometer-gauge-4.webp', 'beacon-tachometer-gauge-5.webp', 'beacon-tachometer-gauge-6.webp']
+  },
+  {
+    id: 'prod_ts16', category: 'Turbine Spares', title: 'Leaf Springs for Turbine Governors',
+    desc: 'Precision-manufactured flat leaf springs for turbine mechanical centrifugal governors, trip mechanisms, and valve actuating linkages. Manufactured from spring steel to exact OEM temper, thickness, and width specifications.',
+    usage: 'Speeder spring assemblies in mechanical centrifugal governors, governor fly-weight return springs, trip reset mechanisms, and valve-closing spring packs on Triveni, BHEL, Belliss, and Maxwatt steam turbines.',
+    features: ['Material: EN45A / 55SiCr7 spring steel — hardened and tempered to HRC 44–48', 'Manufactured to exact OEM thickness (±0.01 mm) and width (±0.1 mm) dimensions', 'Custom profile: straight, tapered, and multi-leaf pack configurations available', 'Shot peened surface for improved fatigue resistance and longer service life', 'Spring rate (stiffness) verified against OEM specification or measured from original', 'Operating temperature: -20 to +120 deg C (spring steel grade)', 'Surface treatment: Cadmium plate, phosphate, or oil-quench per OEM', 'Batch material certification: EN 10204 Type 3.1 mill certificate', 'Used in: Speeder spring packs, trip spring assemblies, valve return springs', 'Dimensional inspection report provided with each order'],
+    specs: { 'Material': 'EN45A / 55SiCr7 spring steel — H&T HRC 44–48', 'Thickness Tolerance': '±0.01 mm to OEM specification', 'Profile Options': 'Straight, tapered, multi-leaf pack', 'Surface Treatment': 'Shot peened + cadmium / phosphate / oil coat', 'Operating Temperature': '-20 to +120 deg C', 'Material Certificate': 'EN 10204 Type 3.1 mill certificate', 'Applications': 'Governor speeder springs, trip springs, valve return springs', 'OEM Compatibility': 'Triveni, BHEL, Belliss, Maxwatt, Siemens turbines' },
+    images: ['turbine-leaf-springs-1.webp', 'turbine-leaf-springs-2.webp', 'turbine-leaf-springs-3.webp', 'turbine-leaf-springs-4.webp', 'turbine-leaf-springs-5.webp', 'turbine-leaf-springs-6.webp']
+  },
+  {
+    id: 'prod_ts17', category: 'Turbine Spares', title: 'Rotor Journal Polishing Service',
+    desc: 'In-situ or workshop precision journal polishing service for turbine and alternator rotors. Restores bearing surface finish to Ra 0.4 µm or better without removal of the rotor from the machine — minimizing outage duration.',
+    usage: 'Restoration of turbine rotor journal surfaces after bearing failure, contaminated oil damage, or corrosion; alternator rotor slip ring and journal polishing during planned maintenance.',
+    features: ['In-situ polishing using purpose-built on-site grinding and polishing equipment', 'Achieves surface finish Ra ≤ 0.4 µm (N5) — OEM bearing seating specification', 'Minimum material removal technique: 0.005–0.025 mm per pass for undersizing control', 'Roundness and taper check via dial gauge before and after polishing', 'Vibration measurement pre/post polishing to verify improvement', 'Can be performed with rotor in-situ (without full disassembly) in most turbine configurations', 'Workshop journal grinding on lathes available for more severe damage cases', 'Polishing report: before/after surface finish (Ra), roundness, and taper measurements', 'Compatible with all turbine makes: Triveni, BHEL, Siemens, KKK, Man Turbo, Belliss', 'Emergency breakdown polishing service available 24x7'],
+    specs: { 'Process': 'In-situ or workshop journal grinding and polishing', 'Surface Finish Achieved': 'Ra ≤ 0.4 µm (N5) — OEM specification', 'Material Removal': '0.005–0.025 mm per pass (minimum undersizing)', 'Measurement': 'Roundness + taper + Ra before/after verification', 'Availability': '24x7 emergency breakdown response', 'OEM Compatibility': 'All turbine makes — Triveni, BHEL, Siemens, KKK, Man Turbo, Belliss', 'Documentation': 'Full polishing report with before/after measurements' },
+    images: ['rotor-journal-polishing-1.webp', 'rotor-journal-polishing-2.webp', 'rotor-journal-polishing-3.webp', 'rotor-journal-polishing-4.webp', 'rotor-journal-polishing-5.webp', 'rotor-journal-polishing-6.webp']
+  },
+  {
+    id: 'prod_ee5', category: 'Electronic Equipments', title: 'RTD & Sensors for Power Plants & Steam Turbines',
+    desc: 'Complete range of Resistance Temperature Detectors (RTDs), thermocouples, and process sensors for turbine bearing temperature, lube oil temperature, steam temperature, and exhaust gas monitoring.',
+    usage: 'Bearing metal temperature (babbitt), lube oil inlet/outlet temperature, steam chest temperature, exhaust temperature, and cooling water temperature monitoring in steam turbines and power plant auxiliaries.',
+    features: ['PT100 RTD (3-wire or 4-wire) — IEC 60751 Class A and Class B accuracy', 'Thermocouples: Type K, J, T, E per IEC 60584 — for high-temperature steam and exhaust', 'Bearing RTDs: Embedded babbitt type — direct white metal temperature measurement', 'Simplex and duplex element configurations for SIS redundancy requirements', 'Thermowell designs: Tapered, straight, flanged per ASME B16.20 / IEC 61010', 'Connection heads: IP65 die-cast aluminium or SS — with HART or MODBUS transmitters', 'Temperature range: -50 to +600 deg C (RTD); up to +1200 deg C (thermocouple)', 'ATEX Ex d / Ex ia rated versions for hazardous area steam turbine house', 'Response time: 5–30 seconds (insertion probe); 1–5 seconds (surface mount)', 'Compatible DCS/PLC: Yokogawa, ABB, Siemens, Honeywell, Emerson systems'],
+    specs: { 'RTD Type': 'PT100 — IEC 60751 Class A / Class B (3-wire/4-wire)', 'Thermocouple Types': 'K, J, T, E (IEC 60584)', 'Temperature Range': 'RTD: -50 to +600 deg C; TC: up to +1200 deg C', 'Accuracy (PT100)': 'Class A: ±(0.15 + 0.002|T|) deg C', 'Element Config': 'Simplex / Duplex (for SIS redundancy)', 'Connection Head': 'IP65 die-cast Al / SS with optional HART transmitter', 'ATEX Rating': 'Ex d / Ex ia (hazardous area versions)', 'DCS Compatibility': 'Yokogawa, ABB, Siemens, Honeywell, Emerson' },
+    images: ['rtd-sensors-turbine-1.webp', 'rtd-sensors-turbine-2.webp', 'rtd-sensors-turbine-3.webp', 'rtd-sensors-turbine-4.webp', 'rtd-sensors-turbine-5.webp', 'rtd-sensors-turbine-6.webp']
+  },
+  {
+    id: 'prod_ee6', category: 'Electronic Equipments', title: 'SEMIKRON SKN240/16 Rectifier Diode',
+    desc: 'SEMIKRON SKN240/16 stud-mount power rectifier diode for alternator AVR excitation circuits and turbine-generator rectifier bridges. 240 A average forward current, 1600 V peak reverse voltage.',
+    usage: 'Rotating diode bridge rectifiers in brushless alternators, static AVR excitation panels, turbine-driven generator control circuits, and industrial power rectification in sugar mill and power plant alternators.',
+    features: ['Average forward current IFAV: 240 A (standard recovery stud diode)', 'Repetitive peak reverse voltage VRRM: 1600 V', 'Peak non-repetitive surge current IFSM: 6000 A (10 ms half-sine)', 'Forward voltage VF: 1.4 V at rated current', 'ISO M16 threaded stud mount — anode to stud (SKN designation)', 'Hermetic metal case with glass insulator — vibration and humidity resistant', 'Max junction temperature Tj: 180 deg C; case temperature Tc: 130 deg C', 'Suitable for cooling via air or water-cooled heatsinks', 'Direct replacement for legacy Westcode, International Rectifier stud diodes', 'Supplied singly or in matched sets for 3-phase bridge configurations'],
+    specs: { 'Part Number': 'SEMIKRON SKN240/16', 'Average Forward Current (IFAV)': '240 A', 'Peak Reverse Voltage (VRRM)': '1600 V', 'Surge Current (IFSM)': '6000 A (10 ms)', 'Forward Voltage (VF)': '1.4 V at rated If', 'Mount Type': 'ISO M16 threaded stud — anode to stud', 'Max Junction Temp (Tj)': '180 deg C', 'Max Case Temp (Tc)': '130 deg C', 'Case Style': 'Hermetic metal / glass insulator', 'Application': 'Alternator AVR excitation, generator rectifier bridges' },
+    images: ['semikron-skn240-16-1.webp', 'semikron-skn240-16-2.webp', 'semikron-skn240-16-3.webp', 'semikron-skn240-16-4.webp', 'semikron-skn240-16-5.webp', 'semikron-skn240-16-6.webp']
+  },
+  {
+    id: 'prod_ts18', category: 'Turbine Spares', title: 'Fulcrum Pins — Blade Locking / Trip Mechanism Linkage',
+    desc: 'Precision hardened fulcrum pins for turbine trip mechanism linkages, blade locking assemblies, and governor valve pivot points. Manufactured from alloy steel with hard chrome or nitride surface treatment for maximum wear resistance.',
+    usage: 'Trip latch fulcrum pivots, governor valve linkage pivot pins, blade locking pin mechanisms, and all rotating/oscillating pin joints in steam turbine trip and governing systems.',
+    features: ['Hardened alloy steel: EN24 / EN36 / 17-4PH stainless per application', 'Case hardened: 58–62 HRC surface, tough core for impact resistance', 'Hard chrome plating (25–50 µm) or ion nitriding for wear and corrosion resistance', 'Dimensional tolerance: h6/h7 shaft fit for precision pin joints', 'Surface finish: Ra ≤ 0.4 µm (ground and polished bearing surface)', 'Custom profiles: straight, stepped, grooved, and flanged fulcrum pin designs', 'Reverse-engineered from OEM sample using CMM dimensional measurement', 'PMI material verification before hardening and surface treatment', 'Fatigue rated for high-cycle oscillating duty in governor mechanisms', 'Supplied individually or as matched sets with retaining clips per OEM design'],
+    specs: { 'Material': 'EN24 / EN36 / 17-4PH SS — per OEM specification', 'Surface Hardness': '58–62 HRC (case hardened)', 'Surface Treatment': 'Hard chrome 25–50 µm or ion nitriding', 'Dimensional Tolerance': 'h6/h7 shaft fit', 'Surface Finish': 'Ra ≤ 0.4 µm (ground + polished)', 'Profile Options': 'Straight, stepped, grooved, flanged', 'Material Verification': 'PMI test before heat treatment', 'Applications': 'Trip latch pivots, governor linkages, blade locking mechanisms' },
+    images: ['turbine-fulcrum-pins-1.webp', 'turbine-fulcrum-pins-2.webp', 'turbine-fulcrum-pins-3.webp', 'turbine-fulcrum-pins-4.webp', 'turbine-fulcrum-pins-5.webp', 'turbine-fulcrum-pins-6.webp']
+  },
+  {
+    id: 'prod_ts19', category: 'Turbine Spares', title: 'Spiral Conveyor Screw (Turbine Auxilaries)',
+    desc: 'Precision fabricated spiral screw conveyors for turbine auxiliary and power plant material handling systems. Custom-manufactured to OEM pitch, diameter, and helix angle specifications in carbon steel, SS, or wear-resistant alloy.',
+    usage: 'Ash conveying, biomass feeding, chemical dosing screws, boiler bed material handling, and turbine auxiliary system material conveyors in power plants and process industries.',
+    features: ['Custom helical screw fabrication: diameter 100 mm to 600 mm, length up to 12 m per section', 'Materials: MS (mild steel), SS 304/316, AISI 410 or Hardox for abrasive media', 'Screw pitch: Standard (pitch = OD) or customized for flow rate requirements', 'Shaft options: Solid, hollow, or sectional with bolted couplings for field assembly', 'Blade thickness: 4–16 mm depending on abrasion and load requirements', 'Hard-face weld overlays: Chromium carbide or tungsten carbide for abrasive ash/sand media', 'Trough, inlet, and discharge assemblies fabricated to match OEM layout', 'Surface treatment: Hot-dip galvanizing, epoxy paint, or SS cladding per media', 'Dimensional tolerance per CEMA Standard or customer specification', 'Static balance check on assembled screw before dispatch'],
+    specs: { 'Diameter Range': '100 mm to 600 mm', 'Max Length per Section': 'Up to 12 m', 'Materials': 'MS / SS 304/316 / Hardox (abrasive service)', 'Blade Thickness': '4–16 mm (load and abrasion dependent)', 'Hard-face Option': 'Chromium carbide / tungsten carbide overlay', 'Shaft Type': 'Solid / hollow / sectional bolted', 'Standard': 'CEMA Standard or per customer spec', 'Applications': 'Ash conveying, biomass feed, boiler bed material, chemical dosing' },
+    images: ['spiral-conveyor-screw-1.webp', 'spiral-conveyor-screw-2.webp', 'spiral-conveyor-screw-3.webp', 'spiral-conveyor-screw-4.webp', 'spiral-conveyor-screw-5.webp', 'spiral-conveyor-screw-6.webp']
+  },
+  {
+    id: 'prod_ts20', category: 'Turbine Spares', title: 'Nylon Sleeve for Gear Coupling',
+    desc: 'Precision injection-moulded and machined nylon (polyamide) sleeves for gear couplings used in turbine auxiliary and driven equipment connections. Replaces OEM nylon/polyurethane flexible elements.',
+    usage: 'Gear coupling nylon sleeve replacement in turbine-auxiliary drives, pump couplings, fan drives, and compressor coupling assemblies where flexible nylon element is the standard OEM design.',
+    features: ['Material: Nylon 6 / Nylon 66 (PA6/PA66) or Polyurethane per application', 'Precision machined internal gear profile — exact tooth count, module, and pressure angle to OEM', 'Hardness: 90–100 Shore D (Nylon 66); 40–80 Shore A (PU flexible grade)', 'Operating temperature: -20 to +100 deg C (PA66); -40 to +80 deg C (PU)', 'High torsional flexibility — absorbs shock loads and angular misalignment', 'Self-lubricating polyamide — no external lubrication required for normal service', 'Replaces OEM sleeves for Fenner, Lovejoy, KTR, Bibby, and local make couplings', 'Available in split (two-piece) or solid designs for easy installation without shaft removal', 'Custom colours available for visual maintenance identification', 'Dimensional inspection report against OEM or sample dimensions'],
+    specs: { 'Material': 'PA6 / PA66 Nylon or Polyurethane (PU)', 'Gear Profile': 'Internal gear — exact OEM tooth count, module, pressure angle', 'Hardness': '90–100 Shore D (Nylon) / 40–80 Shore A (PU)', 'Operating Temperature': '-20 to +100 deg C (PA66)', 'Design': 'Split (2-piece) or solid — OEM profile match', 'Lubrication': 'Self-lubricating (no grease required)', 'OEM Equivalents': 'Fenner, Lovejoy, KTR, Bibby, local make sleeves', 'Application': 'Turbine-auxiliary, pump, fan, compressor gear coupling drives' },
+    images: ['nylon-coupling-sleeve-1.webp', 'nylon-coupling-sleeve-2.webp', 'nylon-coupling-sleeve-3.webp', 'nylon-coupling-sleeve-4.webp', 'nylon-coupling-sleeve-5.webp', 'nylon-coupling-sleeve-6.webp']
+  },
+  {
+    id: 'prod_ts21', category: 'Turbine Spares', title: 'KTR BoWex Curved-Tooth Gear Coupling',
+    desc: 'KTR BoWex® series curved-tooth gear couplings — maintenance-free, torsionally stiff flexible couplings for turbine and pump drives. Polyamide (nylon) sleeve with steel hub construction. Accommodates axial, radial, and angular misalignment via double-cardanic curved-tooth principle.',
+    usage: 'Turbine auxiliary drives, hydraulic pump couplings, fan drives, generator coupling, and general industrial power transmission applications where maintenance-free operation and misalignment compensation are required.',
+    features: ['KTR BoWex® double-cardanic curved-tooth gear principle — no restoring forces from angular/radial displacement', 'Polyamide (PA66) sleeve with crowned curved-tooth internal gear profile — maintenance-free (no lubrication)', 'Zero periodic fluctuation of angular velocity — suitable for speed-sensitive applications', 'Accommodates angular misalignment: up to 1.5 deg; radial: up to 0.35 mm; axial: ±1.5 mm', 'Torque range: 8 Nm (BoWex junior 14) to 9,200 Nm (BoWex 160) — specify size', 'Speed range: up to 12,000 RPM (size dependent)', 'Hub material: Cast iron (EN-GJL-250) or steel (C45) per application', 'Bore options: Cylindrical plain bore or taper bore to DIN 6885 Sheet 1', 'Can be assembled in horizontal or vertical shaft orientation', 'Drop-in replacement for KTR BoWex M, M-C, junior, and I series couplings'],
+    specs: { 'Brand': 'KTR Systems — BoWex® Series', 'Coupling Principle': 'Double-cardanic curved-tooth gear', 'Sleeve Material': 'Polyamide PA66 (self-lubricating)', 'Hub Material': 'Cast iron EN-GJL-250 or C45 steel', 'Torque Range': '8 Nm to 9,200 Nm (size dependent)', 'Max Speed': 'Up to 12,000 RPM (size dependent)', 'Angular Misalignment': 'Up to 1.5 deg', 'Radial Displacement': 'Up to 0.35 mm', 'Bore Type': 'Cylindrical or taper bore (DIN 6885 Sheet 1)', 'Lubrication': 'None — maintenance-free (PA66 sleeve)', 'Orientation': 'Horizontal or vertical assembly' },
+    images: ['ktr-bowex-coupling-1.webp', 'ktr-bowex-coupling-2.webp', 'ktr-bowex-coupling-3.webp', 'ktr-bowex-coupling-4.webp', 'ktr-bowex-coupling-5.webp', 'ktr-bowex-coupling-6.webp']
+  },
 ];
 
 const MAX_PRODUCT_IMAGES = 6;
@@ -2139,17 +2268,19 @@ const HomePage = ({ navigate }) => {
             {SERVICES.map(service => {
               const Icon = SERVICE_ICONS[service.id];
               return (
-                <div key={service.id} className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group">
+                <button key={service.id}
+                  onClick={() => navigate(`/service/${service.id}`)}
+                  className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-left w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  aria-label={`View details for ${service.title}`}>
                   <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
                     <Icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
                   </div>
-                  <h3 className="text-xl font-black text-slate-900 mb-4 tracking-tight">{service.title}</h3>
+                  <h3 className="text-xl font-black text-slate-900 mb-4 tracking-tight group-hover:text-blue-600 transition-colors">{service.title}</h3>
                   <p className="text-slate-600 font-medium text-sm leading-relaxed mb-6">{service.desc}</p>
-                  <button onClick={() => navigate('/services')} aria-label={`Learn more about ${service.title}`}
-                    className="text-blue-600 font-bold text-sm flex items-center group-hover:gap-2 transition-all focus:outline-none focus-visible:underline">
-                    Learn More <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                  </button>
-                </div>
+                  <span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                    View Full Details <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                  </span>
+                </button>
               );
             })}
           </div>
@@ -2832,8 +2963,12 @@ const ServicesPage = ({ navigate }) => (
           return (
             <div key={service.id} className={`flex flex-col md:flex-row gap-16 items-start group ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
               <div className="md:w-2/5 w-full shrink-0">
-                {/* Service image card — sticky while scrolling on desktop */}
-                <div className="w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 sticky top-28 relative bg-[#0A192F]">
+                {/* Service image card — sticky while scrolling on desktop — clickable */}
+                <button
+                  onClick={() => navigate(`/service/${service.id}`)}
+                  className="w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 sticky top-28 relative bg-[#0A192F] focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 cursor-pointer"
+                  aria-label={`View full details for ${service.title}`}
+                >
 
                   {/* Full-size service photo at full opacity — upload to /public */}
                   {service.image && (
@@ -2889,13 +3024,20 @@ const ServicesPage = ({ navigate }) => (
                       </div>
                     </div>
                   )}
-                </div>
+                </button>
               </div>
               <div className="md:w-3/5 w-full">
                 <div className="text-blue-600 font-black tracking-widest text-sm uppercase mb-5 flex items-center" aria-hidden="true">
                   <span className="w-10 h-0.5 bg-blue-600 mr-4" /> Service {(index + 1).toString().padStart(2, '0')}
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight leading-tight">{service.title}</h2>
+                <button onClick={() => navigate(`/service/${service.id}`)}
+                  className="text-left group/title focus:outline-none focus-visible:underline mb-6 block w-full"
+                  aria-label={`View full details for ${service.title}`}>
+                  <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight group-hover/title:text-blue-600 transition-colors duration-300 flex items-start gap-3">
+                    {service.title}
+                    <ArrowRight className="w-8 h-8 mt-2 shrink-0 opacity-0 -translate-x-2 group-hover/title:opacity-100 group-hover/title:translate-x-0 transition-all duration-300 text-blue-600" aria-hidden="true" />
+                  </h2>
+                </button>
                 <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">{service.desc}</p>
                 <div className="mb-8 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                   <div className="bg-slate-900 px-6 py-4">
@@ -2910,10 +3052,16 @@ const ServicesPage = ({ navigate }) => (
                     ))}
                   </ul>
                 </div>
-                <button onClick={() => navigate('/contact')} aria-label={`Inquire about ${service.title}`}
-                  className="border-2 border-slate-900 text-slate-900 px-8 py-4 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm hover:shadow-lg flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
-                  Inquire About This Service <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
-                </button>
+                <div className="flex flex-wrap gap-4">
+                  <button onClick={() => navigate(`/service/${service.id}`)} aria-label={`View full details for ${service.title}`}
+                    className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-md hover:shadow-xl flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+                    View Full Details <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+                  </button>
+                  <button onClick={() => navigate('/contact')} aria-label={`Inquire about ${service.title}`}
+                    className="border-2 border-slate-900 text-slate-900 px-8 py-4 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm hover:shadow-lg flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
+                    Inquire About This Service <ArrowRight className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+                  </button>
+                </div>
               </div>
             </div>
           );
@@ -2922,6 +3070,541 @@ const ServicesPage = ({ navigate }) => (
     </div>
   </main>
 );
+
+// ─── SERVICE DETAIL DATA ──────────────────────────────
+const SERVICE_DETAIL_DATA = {
+  srv_1: {
+    tagline: "OEM-Coordinated Erection from First Foundation Bolt to First Steam",
+    overview: "Turbine erection and commissioning is the most critical phase of any power plant or industrial project. Errors during erection — incorrect alignment, improper clearances, wrong torques — compound into expensive failures within the first year of operation. Keshav Enterprises brings ex-OEM field engineers who have commissioned Triveni, Siemens, BHEL, Belliss, and Maxwatt turbines across power plants, sugar mills, paper mills, and process industries.",
+    procedures: [
+      { step: "01", title: "Pre-Erection Engineering Review", desc: "Detailed review of OEM erection manual, GA drawings, P&IDs, and civil foundation drawings. Identification of all hold points, witness points, and documentation requirements before first equipment lift." },
+      { step: "02", title: "Foundation & Baseplate Preparation", desc: "Precision levelling and grouting of turbine baseplate. Chock machining and installation. Foundation bolt tensioning to OEM-specified torques. Epoxy grout preparation and cure monitoring." },
+      { step: "03", title: "Equipment Setting & Rough Alignment", desc: "Positioning of turbine casing, gearbox, and driven equipment on baseplates. Rough shaft alignment using dial gauges and laser equipment to within 0.1 mm before coupling fit." },
+      { step: "04", title: "Internal Assembly & Clearance Setting", desc: "Rotor drop measurement, gland clearance setting, labyrinth seal fit, bearing installation, and oil system flush. All clearances recorded against OEM specification in the site clearance register." },
+      { step: "05", title: "Piping & Auxiliary Systems Connection", desc: "Steam inlet, exhaust, extraction, and drain piping connections with correct pipe support and no imposed loads on turbine nozzles beyond OEM limits. Lube oil, control oil, and instrumentation piping." },
+      { step: "06", title: "Pre-Commissioning Checks & Flushing", desc: "Lube oil system flush to ISO 4406 cleanliness standard. Control and trip system functional checks. Safety system proof tests: over-speed trip, low oil pressure trip, and all protective devices." },
+      { step: "07", title: "First Fire, Run-Up & Commissioning", desc: "Controlled first start, listening test at slow roll. Speed run-up in stages with vibration monitoring. Governor response and over-speed trip test at 110% rated speed. Load acceptance and operational handover." },
+    ],
+    tools: ["Laser shaft alignment systems (Pruftechnik Rotalign / SKF TKSA series)", "CMM and precision dial gauge sets for bearing and clearance measurement", "Hydraulic torque wrenches and calibrated torque multipliers", "Portable vibration analyser (real-time FFT) for run-up monitoring", "Borescope and optical instruments for internal inspection", "Thermocouple data-loggers for thermal survey during first run", "Ultrasonic flow meters for pipeline commissioning verification"],
+    standards: ["OEM erection and commissioning manuals (Triveni, Siemens, BHEL, Belliss, Maxwatt)", "ASME PTC 6 — Steam Turbines Performance Test Code", "ISO 10816 / ISO 20816 — Mechanical vibration limits for rotating machinery", "API 670 — Machinery protection systems for over-speed and vibration trips", "IS 3639 — Foundation bolt standards", "Client pre-commissioning and commissioning procedures"],
+  },
+  srv_2: {
+    tagline: "Turnkey Shutdown Planning to Zero-Defect Restart",
+    overview: "Turbine overhauling is not a maintenance activity — it is a precision engineering intervention. A poorly executed overhaul can cause premature bearing failure, increased vibration, seal leaks, and unplanned shutdowns within weeks. Keshav Enterprises deploys ex-OEM engineers — engineers who built and commissioned these machines — to execute overhauls on Triveni, Siemens, BHEL, Belliss, Maxwatt, Man Turbo, KKK, and ABB turbines with the discipline and documentation standards of the original manufacturer.",
+    procedures: [
+      { step: "01", title: "Pre-Shutdown Planning & Scope Finalization", desc: "Review of previous overhaul records, operational history, and vibration/performance trends. Definition of scope, critical spares list, and manpower mobilization 4 to 6 weeks ahead of shutdown date." },
+      { step: "02", title: "Site Mobilization & Tooling Setup", desc: "Deployment of full overhaul tool kit: hydraulic jacks, chain blocks, rotor handling slings, precision measurement instruments, lapping tools, and dedicated overhaul documentation package." },
+      { step: "03", title: "Disassembly & Initial Inspection", desc: "Controlled disassembly with all critical pre-disassembly measurements recorded: bearing clearances, shaft runout, gland clearances, coupling alignment. Photographic condition documentation of every component." },
+      { step: "04", title: "Component Inspection & Condition Reporting", desc: "Visual, dimensional, and NDT inspection of rotor, blades, bearings, glands, casing, valves, and coupling. Written condition report with recommendations for each component: replace, repair, or reuse." },
+      { step: "05", title: "Component Repair & Spare Part Installation", desc: "Babbitt re-metalling and machining, labyrinth seal replacement, blade inspection and replacement, journal polishing, casing joint face lapping, gland packing replacement, valve seat lapping." },
+      { step: "06", title: "Reassembly & Clearance Setting", desc: "Precise reassembly with all clearances set and recorded against OEM specification: bearing clearances, labyrinth seal radial and axial clearances, gland clearances, coupling alignment, and rotor end float." },
+      { step: "07", title: "Recommissioning & Handover", desc: "Lube oil system recommissioning flush. Safety system proof test (over-speed, low oil pressure). Monitored start-up with vibration and temperature trending. Handover with complete overhaul documentation package." },
+    ],
+    tools: ["Precision dial gauge sets and bore gauges for clearance measurement (0.001 mm resolution)", "Laser shaft alignment system for final coupling alignment", "Portable dynamic balancing machine for in-situ rotor trim balancing", "Babbitt melting and centrifugal casting equipment for bearing re-metalling", "Surface lapping plates and precision lapping compound (all grades)", "Ultrasonic thickness gauges for casing wall measurement", "Portable vibration analyser with 8-channel data acquisition"],
+    standards: ["OEM overhaul manuals (Triveni, Siemens, BHEL, Belliss, Maxwatt, Man Turbo, KKK, ABB)", "ISO 1940 — Dynamic balancing quality grades for rotating components", "API 670 — Vibration and over-speed protection system standards", "API 614 — Lubrication, shaft sealing, and oil-control systems", "ASME B31.1 — Power piping for steam connections", "Client quality plans and overhaul procedures"],
+  },
+  srv_3: {
+    tagline: "3D Scanning to Production Drawing in the Shortest Lead Time",
+    overview: "When OEM drawings are unavailable, obsolete, or the OEM no longer supports the machine, Keshav Enterprises can reverse-engineer any turbine component from 5 kW to 27 MW to full production-ready drawings. Our process uses 3D laser scanners, CMM (Coordinate Measuring Machines), and PMI material identification — the same tools used by major OEM engineering teams — to generate complete manufacturing drawings with all tolerances, surface finishes, and material specifications.",
+    procedures: [
+      { step: "01", title: "Component Receipt & Initial Assessment", desc: "Safe receipt of the worn or original component. Initial visual inspection, cleaning, and photography. Assessment of damage, wear, and critical measurement surfaces to determine the measurement strategy." },
+      { step: "02", title: "PMI Material Identification", desc: "Positive Material Identification (PMI) using XRF (X-ray fluorescence) analyzer to identify the exact alloy composition. Hardness testing to determine heat treatment condition. Material specification confirmed before measurement begins." },
+      { step: "03", title: "3D Laser Scanning & CMM Measurement", desc: "Full 3D scan of the component exterior using portable laser scanner. Critical internal dimensions and tolerances (bore, keyway, spline, thread) measured using CMM. Datum scheme established from functional surfaces." },
+      { step: "04", title: "Engineering Drawing Generation", desc: "CAD model developed from scan data. Full 2D manufacturing drawing produced with: all linear dimensions, GD&T tolerances (concentricity, parallelism, roundness), surface finish callouts (Ra values), thread standards, and datum references." },
+      { step: "05", title: "Heat Treatment & Surface Treatment Specification", desc: "Specification of pre-machining, rough machining, pre-heat treatment, and final machining sequences. Heat treatment conditions (hardening, tempering, annealing, nitriding) specified with temperature, time, and quench medium." },
+      { step: "06", title: "Material Procurement & Manufacturing", desc: "Material procurement against PMI-identified specification with EN 10204 3.1 mill certificate. CNC machining through defined stages. In-process dimensional inspection at each machining stage." },
+      { step: "07", title: "Final Inspection & Delivery", desc: "Dimensional inspection report against the engineering drawing. PMI re-verification on finished component. Surface finish measurement. Hardness testing. Full documentation pack supplied with the component." },
+    ],
+    tools: ["Portable 3D laser scanner (Faro Focus / Creaform HandySCAN class)", "CMM (Coordinate Measuring Machine) — bridge type and portable arm", "XRF PMI analyzer (Olympus Vanta / similar) for alloy identification", "Hardness tester (Rockwell, Brinell, Vickers) for heat treatment verification", "Surface roughness tester (profilometer) for Ra measurement", "Copying lathe with digital readout for rotational component replication", "CAD software: SolidWorks / AutoCAD for drawing generation"],
+    standards: ["ISO 1101 — Geometrical tolerances (GD&T)", "ISO 286 — Limits and fits system for shafts and bores", "ISO 1302 — Surface texture indication on drawings", "ASTM E1417 / EN 1330 — PMI and NDT standards", "EN 10204 — Material traceability certificates", "Client engineering drawing approval procedures"],
+  },
+  srv_4: {
+    tagline: "Precision Machining and ISO-Grade Balancing for Zero-Vibration Rotors",
+    overview: "Rotor imbalance is one of the most common causes of turbine bearing failure, increased vibration, and shortened rotor life. Even a small mass eccentricity in a high-speed rotor generates forces that grow with the square of speed — a rotor running at 3,000 RPM generates 100 times more force from the same imbalance than at 300 RPM. Keshav Enterprises performs precision journal machining and ISO 1940 / API 670 standard dynamic balancing for rotors from 50 kg to 2,000 kg at our dedicated workshop facility.",
+    procedures: [
+      { step: "01", title: "Rotor Receipt & Initial Measurement", desc: "Rotor received and cleaned. Initial mechanical and electrical runout measurement using precision dial gauges on a static balancing stand. All journal diameters measured and recorded versus OEM specification." },
+      { step: "02", title: "Journal Condition Assessment", desc: "Surface finish measurement (profilometer), visual inspection for scoring, corrosion, and wear patterns. Hardness check. Assessment of minimum material removal required to restore bearing surface finish and geometry." },
+      { step: "03", title: "Journal Grinding & Polishing", desc: "Precision cylindrical grinding of journals to restore roundness (0.005 mm max) and taper (0.005 mm/100 mm max). Ground surface polished to Ra 0.4 um or better — OEM bearing surface specification. Minimum material removed." },
+      { step: "04", title: "Labyrinth & Gland Portion Machining", desc: "Concentric re-machining of labyrinth seal lands, gland areas, and coupling fits on precision CNC lathes. All surfaces set concentric to journal datum before machining to maintain rotor geometric integrity." },
+      { step: "05", title: "Dynamic Balancing — Two-Plane Correction", desc: "Rotor mounted in hard-bearing dynamic balancing machine. Initial unbalance measured in two correction planes. Correction weights removed or added. Balancing repeated until residual unbalance meets ISO 1940 / API 670 grade." },
+      { step: "06", title: "Post-Balance Runout Check", desc: "Mechanical and electrical runout re-measured post-balancing. Comparison against pre-balance readings confirms improvement. Final measurements recorded in the balancing report." },
+      { step: "07", title: "Documentation & Dispatch", desc: "Complete balancing report: initial unbalance, correction planes, correction masses, final residual unbalance, balance grade achieved (G1.0, G2.5, etc.), and runout measurements. PMI and hardness certificates attached." },
+    ],
+    tools: ["Hard-bearing dynamic balancing machine: 50 to 2,000 kg capacity, 100 to 10,000 RPM", "CNC cylindrical grinding machine with precision dressing system", "Precision polishing lathe with microfinish capability", "Profilometer (surface roughness tester) — Ra 0.001 um resolution", "Precision dial gauges (0.001 mm) and runout stands", "Portable balancing analyzer for in-situ field balancing", "Digital stroboscope and phase angle measurement equipment"],
+    standards: ["ISO 1940-1 — Balance quality requirements for rigid rotors", "API 670 — Vibration, axial-position, and bearing-temperature monitoring", "ISO 21940 — Mechanical vibration: Rotor balancing", "API 612 — Special-purpose steam turbines (balancing requirements)", "OEM balancing specification (Triveni, Siemens, BHEL, Man Turbo, KKK)"],
+  },
+  srv_5: {
+    tagline: "ISO 4406 Cleanliness Class 16/14/11 — Guaranteed Before Oil-In",
+    overview: "Lube oil system contamination is the primary cause of bearing failures in new and recently overhauled turbines. Construction debris — weld slag, pipe scale, sand, metal swarf — that enters the lube oil system during installation or overhaul can destroy bearings and journal surfaces within hours of startup. Keshav Enterprises performs professional lube oil flushing using purpose-built mobile centrifuge filter systems to achieve ISO 4406:99 cleanliness class 16/14/11 — the minimum standard for steam turbine bearing lubrication.",
+    procedures: [
+      { step: "01", title: "System Survey & Flushing Plan", desc: "Review of system P&ID, oil volume, pipe bore sizes, and heat exchanger configuration. Development of flushing flow path to achieve turbulent flow (Reynolds number above 4,000) in every pipe section. Temporary bypass spools designed where required." },
+      { step: "02", title: "Temporary Flushing Circuit Installation", desc: "Installation of temporary bypass pipework around bearings, control valves, and other sensitive equipment. Connection of mobile flushing unit. Installation of temporary wire mesh target strainers at flush return points." },
+      { step: "03", title: "Initial Flush — High Flow Rate", desc: "System charged with flushing oil (or process oil if compatible). Flushing pump operated at maximum flow rate. Oil temperature cycled 30 to 70 deg C to thermally stress pipe walls and dislodge adhered debris. Target strainer inspected at intervals." },
+      { step: "04", title: "Contamination Monitoring & Particle Count", desc: "Oil samples taken per ISO 4021 (clean sample extraction). Particle count measured using automatic particle counter per ISO 11500. Results compared to flushing progress target and ISO 4406 cleanliness class chart." },
+      { step: "05", title: "Progressive Filter Upgrade", desc: "As gross contamination is removed, filter element micron rating progressively reduced: 25 um to 10 um to 6 um to 3 um. Centrifuge de-watering operated continuously to remove free water. Target: 16/14/11 or better." },
+      { step: "06", title: "Final Acceptance Particle Count", desc: "Minimum three consecutive oil samples must achieve the target cleanliness class. Samples sent to accredited laboratory for confirmation. Written certificate of oil cleanliness issued." },
+      { step: "07", title: "System Restoration & Oil Fill", desc: "Temporary bypass spools removed. All bearings and critical equipment reconnected. System refilled with filtered, clean process oil through a 3 um filter. Final particle count verification of system oil after refill." },
+    ],
+    tools: ["Mobile centrifuge filter unit (flow rates up to 6,000 L/min)", "Automatic particle counter (ISO 11500 compliant) for online cleanliness monitoring", "Karl Fischer titrator for free water content measurement", "Oil sampling kit per ISO 4021 (clean extraction)", "Temporary bypass spools and flexible hose connections", "Oil heater for thermal cycling (temperature cycling 30 to 70 deg C)", "Wire mesh target strainers in multiple mesh ratings (25, 10, 3 um)"],
+    standards: ["ISO 4406:99 — Hydraulic fluid cleanliness classification (target 16/14/11)", "ISO 11500 — Particle count determination using automatic methods", "ISO 4021 — Hydraulic fluid contamination analysis — sampling from lines", "API 614 — Lubrication, shaft sealing, and oil-control systems for turbomachinery", "OEM lube oil system cleanliness requirements (Triveni, Siemens, BHEL, Man Turbo)"],
+  },
+  srv_6: {
+    tagline: "Laser-Precision Alignment — Eliminating the No.1 Cause of Bearing Failure",
+    overview: "Shaft misalignment is responsible for up to 50% of all rotating equipment bearing failures. Even misalignments as small as 0.05 mm at the coupling can generate forces that reduce bearing life by 80% and cause seal failures, coupling wear, and increased vibration. Keshav Enterprises performs precision laser shaft alignment using the latest Pruftechnik and SKF alignment technology for turbines, gearboxes, pumps, fans, alternators, and induction generators of any frame size.",
+    procedures: [
+      { step: "01", title: "Pre-Alignment Checks", desc: "Verification of soft foot condition (machine frame distortion) using dial gauges. Pipe strain measurement to identify piping forces imposed on machine nozzles. Bearing clearance check and thermal growth calculation for operating conditions." },
+      { step: "02", title: "Laser Alignment System Setup", desc: "Mounting of laser transmitter and receiver heads on shafts using precision magnetic brackets. System zeroed and shaft rotation tolerance verified. All relevant dimensions entered: coupling diameter, shaft separation, measurement distance." },
+      { step: "03", title: "Initial Misalignment Measurement", desc: "Shafts rotated through the measurement arc (typically 3 measurement positions at 12, 3, and 9 o-clock). Software calculates actual misalignment: angular (mrad) and offset (mm) at coupling, and at each bearing foot." },
+      { step: "04", title: "Shim & Jackscrew Correction", desc: "Calculated shim corrections applied to stationary machine feet. Stainless steel precision shims installed or removed to correct vertical misalignment. Horizontal correction made using alignment jackscrews at machine feet." },
+      { step: "05", title: "Hot Alignment Compensation", desc: "Thermal growth of machine casing between cold and operating temperature calculated from OEM data or measured via DBSE (distance between shaft ends) monitoring. Cold alignment target offset to achieve correct hot running alignment." },
+      { step: "06", title: "Final Measurement & Tolerance Verification", desc: "Final laser measurement confirms alignment is within OEM tolerance. Typical acceptance: angular 0.05 mrad max, offset 0.05 mm max at coupling. All feet checked for residual soft foot 0.05 mm or less." },
+      { step: "07", title: "Alignment Report & Bolt Torque", desc: "Detailed alignment report generated: before/after readings, shim changes, correction vectors, and achieved final values versus OEM tolerance. Coupling bolts torqued to OEM specification. Foundation bolts torqued and checked." },
+    ],
+    tools: ["Pruftechnik Rotalign Pro / OPTALIGN series laser alignment system", "SKF TKSA 71 wireless laser alignment equipment", "Precision dial gauge set for soft foot measurement", "Stainless steel precision shim sets (0.025 to 3.0 mm thickness)", "Digital torque wrenches for coupling and foundation bolt torquing", "Vibration analyser for pre and post alignment vibration comparison", "Thermal imaging camera for hot bearing and coupling temperature survey"],
+    standards: ["ISO 10816 / ISO 20816 — Mechanical vibration of machines — evaluation criteria", "API 686 — Recommended practice for machinery installation", "OEM alignment tolerances (Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK)", "ISO 1940 — Residual imbalance limits post-alignment correction", "ASME B31.3 — Process piping nozzle load limits at machine connections"],
+  },
+};
+
+// ─── SERVICE DETAIL PAGE ─────────────────────────────────────
+// CSS for scroll-reveal animations injected once
+const SERVICE_DETAIL_CSS = `
+@keyframes sdFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes sdFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes sdSlideRight {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes sdScaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.sd-reveal {
+  opacity: 0;
+}
+.sd-reveal.sd-visible {
+  animation: sdFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.sd-reveal-fade.sd-visible {
+  animation: sdFadeIn 0.5s ease forwards;
+}
+.sd-reveal-slide.sd-visible {
+  animation: sdSlideRight 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.sd-reveal-scale.sd-visible {
+  animation: sdScaleIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.sd-step-line {
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+}
+.sd-step-line.sd-visible {
+  transform: scaleY(1);
+}
+`;
+
+const ServiceDetailPage = memo(({ serviceId, navigate }) => {
+  const service = SERVICES.find(s => s.id === serviceId);
+  const detail = SERVICE_DETAIL_DATA[serviceId];
+  const Icon = SERVICE_ICONS[serviceId];
+  const serviceIndex = SERVICES.findIndex(s => s.id === serviceId);
+  const prevService = serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null;
+  const nextService = serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null;
+  const heroRef = useRef(null);
+  const [heroVisible, setHeroVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  // Scroll to top instantly when serviceId changes, then trigger hero animation
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setHeroVisible(false);
+    setScrollY(0);
+    const t = setTimeout(() => setHeroVisible(true), 60);
+    return () => clearTimeout(t);
+  }, [serviceId]);
+
+  // Parallax on hero image + track scroll for progress bar
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // IntersectionObserver for scroll-reveal of all .sd-reveal elements
+  useEffect(() => {
+    const styleId = 'sd-css';
+    if (!document.getElementById(styleId)) {
+      const s = document.createElement('style');
+      s.id = styleId;
+      s.textContent = SERVICE_DETAIL_CSS;
+      document.head.appendChild(s);
+    }
+    const els = document.querySelectorAll('.sd-reveal, .sd-step-line');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          // stagger siblings by their index
+          const siblings = Array.from(e.target.parentElement?.children || []);
+          const idx = siblings.indexOf(e.target);
+          const delay = Math.min(idx * 80, 400);
+          setTimeout(() => e.target.classList.add('sd-visible'), delay);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, [serviceId]);
+
+  // Scroll progress bar width
+  const docH = typeof document !== 'undefined' ? document.documentElement.scrollHeight - window.innerHeight : 1;
+  const progress = Math.min(100, docH > 0 ? (scrollY / docH) * 100 : 0);
+
+  if (!service || !detail) {
+    return (
+      <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-black text-slate-900 mb-4">Service Not Found</h1>
+          <button onClick={() => navigate('/services')} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-black hover:bg-blue-500 transition-all">
+            Back to Services
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  return (
+    <main id="main-content" className="pt-24 pb-20 bg-white">
+      <SEOHead
+        title={`${service.title} — Keshav Enterprises`}
+        description={`${service.desc} Ex-OEM engineers, ISO/API standard procedures, 24x7 availability.`}
+        canonicalPath={`/service/${serviceId}`}
+        pageType="website"
+      />
+
+      {/* Reading progress bar */}
+      <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-slate-200/60" aria-hidden="true">
+        <div className="h-full bg-blue-600 transition-[width] duration-100 ease-out" style={{ width: `${progress}%` }} />
+      </div>
+
+      {/* Hero banner with parallax photo */}
+      <div
+        ref={heroRef}
+        className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600 min-h-[380px] flex items-center"
+      >
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
+        {service.image && (
+          <img src={service.image} alt="" aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-25 will-change-transform"
+            style={{ transform: `translateY(${scrollY * 0.18}px)` }}
+            loading="eager" decoding="async" width="1200" height="400"
+            onError={e => { e.target.style.display = 'none'; }} />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/95 via-[#0A192F]/80 to-[#0A192F]/50" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb"
+            className="mb-8"
+            style={{
+              opacity: heroVisible ? 1 : 0,
+              transform: heroVisible ? 'translateY(0)' : 'translateY(10px)',
+              transition: 'opacity 0.4s ease, transform 0.4s ease',
+            }}>
+            <ol className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-400">
+              <li><button onClick={() => navigate('/')} className="hover:text-white transition-colors focus:outline-none focus-visible:underline">Home</button></li>
+              <li aria-hidden="true"><ChevronRight className="w-4 h-4" /></li>
+              <li><button onClick={() => navigate('/services')} className="hover:text-white transition-colors focus:outline-none focus-visible:underline">Services</button></li>
+              <li aria-hidden="true"><ChevronRight className="w-4 h-4" /></li>
+              <li className="text-blue-300">{service.title}</li>
+            </ol>
+          </nav>
+
+          <div className="flex items-start gap-6">
+            {Icon && (
+              <div
+                className="hidden sm:flex w-20 h-20 bg-blue-600/20 rounded-2xl items-center justify-center border border-blue-500/30 shrink-0 mt-1"
+                style={{
+                  opacity: heroVisible ? 1 : 0,
+                  transform: heroVisible ? 'scale(1)' : 'scale(0.8)',
+                  transition: 'opacity 0.5s ease 0.1s, transform 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s',
+                }}>
+                <Icon className="w-10 h-10 text-blue-400" aria-hidden="true" />
+              </div>
+            )}
+            <div style={{ flex: 1 }}>
+              <p
+                className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3"
+                style={{
+                  opacity: heroVisible ? 1 : 0,
+                  transform: heroVisible ? 'translateY(0)' : 'translateY(12px)',
+                  transition: 'opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s',
+                }}>
+                Engineering Service
+              </p>
+              <h1
+                className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4"
+                style={{
+                  opacity: heroVisible ? 1 : 0,
+                  transform: heroVisible ? 'translateY(0)' : 'translateY(18px)',
+                  transition: 'opacity 0.55s ease 0.22s, transform 0.55s cubic-bezier(0.22,1,0.36,1) 0.22s',
+                }}>
+                {service.title}
+              </h1>
+              <p
+                className="text-slate-300 font-medium text-lg md:text-xl max-w-3xl leading-relaxed italic"
+                style={{
+                  opacity: heroVisible ? 1 : 0,
+                  transform: heroVisible ? 'translateY(0)' : 'translateY(14px)',
+                  transition: 'opacity 0.5s ease 0.32s, transform 0.5s ease 0.32s',
+                }}>
+                {detail.tagline}
+              </p>
+
+              {/* Quick stat chips */}
+              <div
+                className="flex flex-wrap gap-3 mt-6"
+                style={{
+                  opacity: heroVisible ? 1 : 0,
+                  transition: 'opacity 0.5s ease 0.42s',
+                }}>
+                {service.oems && service.oems.slice(0, 4).map(oem => (
+                  <span key={oem} className="text-[11px] font-black text-slate-300 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full uppercase tracking-wide border border-white/15">
+                    {oem}
+                  </span>
+                ))}
+                {service.oems && service.oems.length > 4 && (
+                  <span className="text-[11px] font-black text-blue-300 bg-blue-600/20 px-3 py-1.5 rounded-full uppercase tracking-wide border border-blue-500/20">
+                    +{service.oems.length - 4} more
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+          {/* ── Main content column ── */}
+          <div className="lg:col-span-2 space-y-16">
+
+            {/* Overview */}
+            <section aria-labelledby="overview-heading">
+              <div className="sd-reveal flex items-center gap-4 mb-6">
+                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
+                <h2 id="overview-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Overview</h2>
+              </div>
+              <p className="sd-reveal text-slate-700 font-medium text-lg leading-relaxed">{detail.overview}</p>
+            </section>
+
+            {/* Step-by-step procedure */}
+            <section aria-labelledby="procedure-heading">
+              <div className="sd-reveal flex items-center gap-4 mb-8">
+                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
+                <h2 id="procedure-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Step-by-Step Procedure</h2>
+              </div>
+              <h3 className="sd-reveal text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-12">
+                How Our Engineers Execute This Service
+              </h3>
+              <div className="space-y-0">
+                {detail.procedures.map((proc, i) => (
+                  <div key={i} className="sd-reveal flex gap-6 group/step" style={{ animationDelay: `${i * 70}ms` }}>
+                    <div className="flex flex-col items-center shrink-0">
+                      {/* Step circle */}
+                      <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-lg shadow-blue-600/25 shrink-0 group-hover/step:scale-110 group-hover/step:shadow-blue-600/40 transition-all duration-300">
+                        {proc.step}
+                      </div>
+                      {/* Connector line */}
+                      {i < detail.procedures.length - 1 && (
+                        <div
+                          className="sd-step-line w-0.5 flex-1 min-h-[32px] my-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-100"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </div>
+                    <div className="pb-10 pt-1 flex-1">
+                      <h4 className="text-base font-black text-slate-900 mb-2 tracking-tight group-hover/step:text-blue-700 transition-colors">
+                        {proc.title}
+                      </h4>
+                      <p className="text-slate-600 font-medium text-sm leading-relaxed">{proc.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Tools & Equipment */}
+            <section aria-labelledby="tools-heading" className="sd-reveal bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-10">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
+                <h2 id="tools-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Tools & Equipment</h2>
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 mb-6 tracking-tight">Latest Technology Used</h3>
+              <ul className="space-y-3" role="list">
+                {detail.tools.map((tool, i) => (
+                  <li key={i} className="sd-reveal flex items-start gap-3" style={{ animationDelay: `${i * 55}ms` }}>
+                    <div className="w-2 h-2 rounded-full bg-blue-600 mt-2 shrink-0" aria-hidden="true" />
+                    <span className="text-slate-700 font-medium text-sm leading-relaxed">{tool}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* Standards & Compliance */}
+            <section aria-labelledby="standards-heading">
+              <div className="sd-reveal flex items-center gap-4 mb-6">
+                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
+                <h2 id="standards-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Standards & Compliance</h2>
+              </div>
+              <h3 className="sd-reveal text-2xl font-black text-slate-900 mb-6 tracking-tight">International Standards We Work To</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {detail.standards.map((std, i) => (
+                  <div key={i}
+                    className="sd-reveal flex items-start gap-4 bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+                    style={{ animationDelay: `${i * 60}ms` }}>
+                    <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
+                      <Shield className="w-4 h-4 text-blue-600" aria-hidden="true" />
+                    </div>
+                    <span className="text-slate-700 font-medium text-sm leading-relaxed">{std}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Bottom CTA banner */}
+            <section aria-labelledby="cta-service-heading"
+              className="sd-reveal bg-[#0A192F] rounded-3xl p-8 md:p-10 text-white relative overflow-hidden">
+              <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#fff1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:2rem_2rem]" aria-hidden="true" />
+              <div className="relative z-10">
+                <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">Ready to Start?</p>
+                <h3 id="cta-service-heading" className="text-2xl md:text-3xl font-black tracking-tight mb-3">{service.title}</h3>
+                <p className="text-slate-300 font-medium mb-8 max-w-lg leading-relaxed">
+                  Talk to our ex-OEM engineers about your specific turbine make, site conditions, and shutdown window.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-7 py-4 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
+                    <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" /> WhatsApp Us Now
+                  </a>
+                  <button onClick={() => navigate('/contact')}
+                    className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-7 py-4 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
+                    Submit Formal RFQ
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          {/* ── Sidebar ── */}
+          <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
+
+            {/* What we deliver */}
+            <div className="sd-reveal bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-md">
+              <div className="bg-slate-900 px-6 py-4">
+                <h3 className="font-black text-white text-sm uppercase tracking-widest">What We Deliver</h3>
+              </div>
+              <ul className="divide-y divide-slate-100">
+                {service.details.map((d, i) => (
+                  <li key={i} className="flex items-start px-6 py-4 hover:bg-blue-50/40 transition-colors group/li">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 mr-3 shrink-0 mt-0.5 group-hover/li:text-blue-600 transition-colors" aria-hidden="true" />
+                    <span className="text-slate-700 font-medium text-sm leading-relaxed">{d}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* OEM expertise */}
+            {service.oems && (
+              <div className="sd-reveal bg-[#0A192F] rounded-3xl p-6 shadow-lg">
+                <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">OEM Expertise</p>
+                <div className="flex flex-wrap gap-2">
+                  {service.oems.map(oem => (
+                    <span key={oem} className="text-xs font-black text-slate-200 bg-slate-800/80 px-3 py-1.5 rounded-full uppercase tracking-wide border border-white/10 hover:border-blue-400/40 hover:text-white transition-colors cursor-default">{oem}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* WhatsApp CTA */}
+            <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
+              target="_blank" rel="noopener noreferrer"
+              className="sd-reveal flex items-center justify-center gap-3 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-5 rounded-2xl font-black text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
+              <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" /> Get a Quote on WhatsApp
+            </a>
+
+            <button onClick={() => navigate('/contact')}
+              className="sd-reveal w-full border-2 border-slate-900 text-slate-900 px-6 py-4 rounded-2xl font-black text-base hover:bg-slate-900 hover:text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
+              Submit Formal RFQ
+            </button>
+
+            {/* All services nav */}
+            <div className="sd-reveal bg-slate-50 border border-slate-200 rounded-3xl p-6">
+              <h4 className="font-black text-slate-900 text-sm uppercase tracking-widest mb-4">All Services</h4>
+              <nav aria-label="Service navigation">
+                <ul className="space-y-1.5" role="list">
+                  {SERVICES.map(s => {
+                    const SIcon = SERVICE_ICONS[s.id];
+                    const isActive = s.id === serviceId;
+                    return (
+                      <li key={s.id}>
+                        <button onClick={() => navigate(`/service/${s.id}`)}
+                          className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-black transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-left ${isActive ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'text-slate-700 hover:bg-white hover:shadow-sm hover:text-blue-600 hover:translate-x-0.5'}`}
+                          aria-current={isActive ? 'page' : undefined}>
+                          {SIcon && <SIcon className="w-4 h-4 shrink-0" aria-hidden="true" />}
+                          <span className="leading-tight">{s.title}</span>
+                          {isActive && <ChevronRight className="w-3.5 h-3.5 ml-auto shrink-0" aria-hidden="true" />}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </nav>
+            </div>
+          </aside>
+        </div>
+
+        {/* Prev / Next navigation */}
+        {(prevService || nextService) && (
+          <nav aria-label="Adjacent service navigation" className="mt-16 pt-8 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {prevService ? (
+              <button onClick={() => navigate(`/service/${prevService.id}`)}
+                className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shrink-0">
+                  <ChevronLeft className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">Previous</p>
+                  <p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors truncate">{prevService.title}</p>
+                </div>
+              </button>
+            ) : <div />}
+            {nextService && (
+              <button onClick={() => navigate(`/service/${nextService.id}`)}
+                className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-right justify-end sm:col-start-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                <div className="min-w-0 text-right">
+                  <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">Next</p>
+                  <p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors truncate">{nextService.title}</p>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shrink-0">
+                  <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors" aria-hidden="true" />
+                </div>
+              </button>
+            )}
+          </nav>
+        )}
+      </div>
+    </main>
+  );
+});
 
 // ─── PRODUCTS PAGE ────────────────────────────────────────────
 const ProductsPage = ({ navigate }) => {
@@ -3724,6 +4407,7 @@ export default function App() {
     if (currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate} />;
     if (currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/', '')} navigate={navigate} />;
     if (currentPath.startsWith('/industry/')) return <IndustryDetailPage industryId={currentPath.split('/')[2]} navigate={navigate} />;
+    if (currentPath.startsWith('/service/')) return <ServiceDetailPage serviceId={currentPath.split('/')[2]} navigate={navigate} />;
     switch (currentPath) {
       case '/': return <HomePage navigate={navigate} />;
       case '/about': return <AboutPage navigate={navigate} />;
