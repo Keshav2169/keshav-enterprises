@@ -961,16 +961,16 @@ const MARQUEE_CSS = `
   @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
 
   /* PERF: content-visibility on below-fold sections reduces render cost */
-  .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
+  .cv-auto{content-visibility:auto;contain-intrinsic-size:auto 600px}
 
   /* PERF: image delivery - explicit dimensions prevent layout shifts */
   img{max-width:100%;height:auto;display:block}
 
   /* PERF: Reduce forced reflow - GPU-composited transforms only */
-  .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
+  .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden;isolation:isolate}
 
-  /* PERF: paint containment on heavy sections reduces repaint area */
-  section:not(.hero-section){contain:paint}
+  /* PERF: layout+style containment — safe alternative to paint that doesn't break sticky/z-index */
+  section:not(.hero-section){contain:layout style}
 
   /* Hero image mobile display fix */
   .hero-mobile-vignette{display:none}
@@ -1191,8 +1191,50 @@ const SITE_URL = 'https://keshaventerprises.in';
 const OG_IMAGE = `${SITE_URL}/og-image.webp`; // Upload a 1200x630 px og-image.webp to /public
 const SITE_KEYWORDS = 'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering';
 
+// PERF FIX: One-time <head> setup extracted from SEOHead useEffect.
+// Previously these querySelector calls ran on every page navigation.
+// Running them once at module load means zero repeated DOM queries per route.
+(() => {
+  if (typeof document === 'undefined') return;
+  const addLink = (rel, href, extra) => {
+    if (document.querySelector(`link[rel="${rel}"][href="${href}"]`)) return;
+    const l = document.createElement('link'); l.rel = rel; l.href = href;
+    if (extra) Object.entries(extra).forEach(([k, v]) => { if (k === 'crossOrigin') l.crossOrigin = v; else l.setAttribute(k, v); });
+    document.head.appendChild(l);
+  };
+  addLink('preconnect', 'https://fonts.googleapis.com');
+  addLink('preconnect', 'https://fonts.gstatic.com', { crossOrigin: '' });
+  addLink('dns-prefetch', 'https://api.whatsapp.com');
+  addLink('dns-prefetch', 'https://www.indiamart.com');
+  addLink('dns-prefetch', 'https://wa.me');
+  if (!document.querySelector('meta[name="viewport"]')) {
+    const vm = document.createElement('meta'); vm.name = 'viewport';
+    vm.content = 'width=device-width, initial-scale=1, maximum-scale=5';
+    document.head.appendChild(vm);
+  }
+})();
+
+// PERF FIX: Inject MARQUEE_CSS once at module load — prevents per-render style recalculation
+(() => {
+  if (typeof document === 'undefined') return;
+  const styleId = 'ke-marquee-css';
+  if (!document.getElementById(styleId)) {
+    const s = document.createElement('style');
+    s.id = styleId;
+    s.textContent = MARQUEE_CSS;
+    document.head.appendChild(s);
+  }
+})();
+
 const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, publishedTime }) => {
   useEffect(() => {
+    // CSS guard — MARQUEE_CSS injected at module load by IIFE; this only fires if somehow missed (e.g. SSR hydration)
+    if (!document.getElementById('ke-marquee-css')) {
+      const s = document.createElement('style');
+      s.id = 'ke-marquee-css';
+      s.textContent = MARQUEE_CSS;
+      document.head.appendChild(s);
+    }
     const fullTitle = title ? `${title} | Keshav Enterprises` : 'Keshav Enterprises | Industrial Turbine Engineering — Shamli, UP';
     const fullDesc = description || 'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Enterprises, Shamli, UP, India.';
     const canonical = canonicalPath ? `${SITE_URL}${canonicalPath}` : SITE_URL;
@@ -1222,24 +1264,8 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
     // ── Canonical ──
     sl('canonical', canonical);
 
-    // ── PERF: Network dependency tree fix — preconnect critical origins early ──
-    // These tell the browser to establish TCP+TLS connections before HTML finishes parsing
-    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.googleapis.com"]')) {
-      sl('preconnect', 'https://fonts.googleapis.com');
-    }
-    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.gstatic.com"]')) {
-      const pc = document.createElement('link');
-      pc.rel = 'preconnect'; pc.href = 'https://fonts.gstatic.com'; pc.crossOrigin = '';
-      document.head.appendChild(pc);
-    }
-    if (!document.querySelector('link[rel="dns-prefetch"][href="https://api.whatsapp.com"]')) {
-      sl('dns-prefetch', 'https://api.whatsapp.com');
-    }
-    if (!document.querySelector('link[rel="dns-prefetch"][href="https://www.indiamart.com"]')) {
-      sl('dns-prefetch', 'https://www.indiamart.com');
-    }
-
     // ── PERF: LCP request discovery — preload hero image on homepage ──
+    // Without this, the browser discovers the image only after CSS/JS parse
     // Without this, the browser discovers the image only after CSS/JS parse
     if (!canonicalPath || canonicalPath === '/') {
       if (!document.querySelector('link[rel="preload"][as="image"]')) {
@@ -1249,13 +1275,6 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
         pl.setAttribute('type', 'image/png');
         document.head.appendChild(pl);
       }
-    }
-
-    // ── Viewport meta ──
-    if (!document.querySelector('meta[name="viewport"]')) {
-      const vm = document.createElement('meta'); vm.name = 'viewport';
-      vm.content = 'width=device-width, initial-scale=1, maximum-scale=5';
-      document.head.appendChild(vm);
     }
 
     // ── Open Graph ──
@@ -1431,9 +1450,16 @@ const Navbar = memo(({ currentPath, navigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 20);
+    let rafId = null;
+    const h = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setScrolled(window.scrollY > 20);
+      });
+    };
     window.addEventListener('scroll', h, { passive: true });
-    return () => window.removeEventListener('scroll', h);
+    return () => { window.removeEventListener('scroll', h); if (rafId) cancelAnimationFrame(rafId); };
   }, []);
   useEffect(() => {
     if (!isOpen) return;
@@ -1843,13 +1869,13 @@ const FloatingButtons = memo(() => (
 ));
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
-const ProductDetailPage = ({ productId, navigate }) => {
+const ProductDetailPage = memo(({ productId, navigate }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [tab, setTab] = useState('specs');
   const product = useMemo(() => PRODUCTS.find(p => p.id === productId), [productId]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
   useEffect(() => { setImgLoaded(false); setImgErr(false); }, [activeImg, productId]);
   const related = useMemo(() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [], [product]);
   const productSchema = useMemo(() => product ? {
@@ -2015,7 +2041,7 @@ const ProductDetailPage = ({ productId, navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 // ─── FEATURED PRODUCTS STRIP ─────────────────────────────────
 // rAF auto-scroll + seamless infinite loop + touch drag + nav arrows
@@ -2030,6 +2056,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   const dragStartX = useRef(0);      // pointer x when drag began
   const dragStartSL = useRef(0);      // scrollLeft when drag began
   const resumeTimer = useRef(null);   // debounce timer for arrow resume
+  const arrowFrameCount = useRef(0);  // PERF: throttle arrow state updates
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
 
@@ -2046,9 +2073,12 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       // seamless reset: when we've scrolled past the first copy, snap back
       if (el.scrollLeft >= halfW) el.scrollLeft -= halfW;
     }
-    // update arrow visibility
-    setCanLeft(el.scrollLeft > 4);
-    setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    // update arrow visibility — only every 30 frames (~2/s) to avoid 60 re-renders/sec
+    arrowFrameCount.current = (arrowFrameCount.current + 1) % 30;
+    if (arrowFrameCount.current === 0) {
+      setCanLeft(el.scrollLeft > 4);
+      setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    }
     rafRef.current = requestAnimationFrame(tick);
   }, [halfW]);
 
@@ -2255,15 +2285,16 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 });
 
 // ─── HOME PAGE ────────────────────────────────────────────────
-const HomePage = ({ navigate }) => {
+const HomePage = memo(({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
+  // PERF FIX: PRODUCTS is module-level constant — useMemo([]) gives FeaturedProductsStrip
+  // a stable reference so its memo() never triggers an unnecessary re-render
   const featuredProducts = useMemo(() => PRODUCTS, []);
+  useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
-      <style>{MARQUEE_CSS}</style>
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
         <div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
@@ -2453,10 +2484,10 @@ const HomePage = ({ navigate }) => {
       </section>
     </main>
   );
-};
+});
 
 // ─── ABOUT PAGE ───────────────────────────────────────────────
-const AboutPage = ({ navigate }) => {
+const AboutPage = memo(({ navigate }) => {
   const milestones = [
     { year: '2000s', title: 'Foundation', desc: 'Founded in Shamli, UP as a specialist turbine maintenance outfit serving local sugar mills with hands-on overhauling expertise.' },
     { year: '2005', title: 'OEM Expertise', desc: 'Built a dedicated team of ex-OEM engineers from Triveni, BHEL, and Belliss & Morcom — enabling true like-for-like OEM maintenance standards.' },
@@ -2723,7 +2754,7 @@ const AboutPage = ({ navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 
 // HOW TO UPDATE BLOGS:
@@ -2822,7 +2853,7 @@ const BLOG_POSTS = [
 ];
 
 // ─── BLOG LIST PAGE ────────────────────────────────────────────
-const BlogPage = ({ navigate }) => (
+const BlogPage = memo(({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead
       title="Engineering Blog — Turbine Maintenance & Industrial Insights"
@@ -2942,13 +2973,13 @@ const BlogPage = ({ navigate }) => (
       </div>
     </div>
   </main>
-);
+));
 
 // ─── BLOG POST PAGE ────────────────────────────────────────────
-const BlogPostPage = ({ slug, navigate }) => {
+const BlogPostPage = memo(({ slug, navigate }) => {
   const post = useMemo(() => BLOG_POSTS.find(p => p.slug === slug), [slug]);
   const others = useMemo(() => post ? BLOG_POSTS.filter(p => p.id !== post.id).slice(0, 2) : [], [post]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [slug]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [slug]);
   if (!post) return (
     <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Post Not Found" />
@@ -3061,10 +3092,10 @@ const BlogPostPage = ({ slug, navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
-const ServicesPage = ({ navigate }) => (
+const ServicesPage = memo(({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-white">
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
       description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
@@ -3191,7 +3222,7 @@ const ServicesPage = ({ navigate }) => (
       </div>
     </div>
   </main>
-);
+));
 
 // ─── SERVICE DETAIL DATA ──────────────────────────────
 const SERVICE_DETAIL_DATA = {
@@ -3332,30 +3363,49 @@ const SERVICE_DETAIL_CSS = `
 `;
 
 const ServiceDetailPage = memo(({ serviceId, navigate }) => {
-  const service = SERVICES.find(s => s.id === serviceId);
-  const detail = SERVICE_DETAIL_DATA[serviceId];
-  const Icon = SERVICE_ICONS[serviceId];
-  const serviceIndex = SERVICES.findIndex(s => s.id === serviceId);
-  const prevService = serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null;
-  const nextService = serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null;
+  const service = useMemo(() => SERVICES.find(s => s.id === serviceId), [serviceId]);
+  const detail = useMemo(() => SERVICE_DETAIL_DATA[serviceId], [serviceId]);
+  const Icon = useMemo(() => SERVICE_ICONS[serviceId], [serviceId]);
+  const serviceIndex = useMemo(() => SERVICES.findIndex(s => s.id === serviceId), [serviceId]);
+  const prevService = useMemo(() => serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null, [serviceIndex]);
+  const nextService = useMemo(() => serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null, [serviceIndex]);
   const heroRef = useRef(null);
+  const parallaxImgRef = useRef(null);
+  const progressBarRef = useRef(null);
   const [heroVisible, setHeroVisible] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
 
   // Scroll to top instantly when serviceId changes, then trigger hero animation
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     setHeroVisible(false);
-    setScrollY(0);
     const t = setTimeout(() => setHeroVisible(true), 60);
     return () => clearTimeout(t);
   }, [serviceId]);
 
-  // Parallax on hero image + track scroll for progress bar
+  // PERF FIX: Parallax + progress bar via rAF — zero React re-renders on scroll
+  // scrollY state caused a full component re-render on every pixel of scroll (~60/s)
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
+    let rafId = null;
+    const onScroll = () => {
+      if (rafId) return; // coalesce — only one rAF per frame
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const sy = window.scrollY;
+        if (parallaxImgRef.current) {
+          parallaxImgRef.current.style.transform = `translateY(${sy * 0.18}px)`;
+        }
+        if (progressBarRef.current) {
+          const docH = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = docH > 0 ? Math.min(100, (sy / docH) * 100) : 0;
+          progressBarRef.current.style.width = `${pct}%`;
+        }
+      });
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // IntersectionObserver for scroll-reveal of all .sd-reveal elements
@@ -3368,6 +3418,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
       document.head.appendChild(s);
     }
     const els = document.querySelectorAll('.sd-reveal, .sd-step-line');
+    const timers = [];
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -3375,18 +3426,14 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
           const siblings = Array.from(e.target.parentElement?.children || []);
           const idx = siblings.indexOf(e.target);
           const delay = Math.min(idx * 80, 400);
-          setTimeout(() => e.target.classList.add('sd-visible'), delay);
+          timers.push(setTimeout(() => e.target.classList.add('sd-visible'), delay));
           io.unobserve(e.target);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     els.forEach(el => io.observe(el));
-    return () => io.disconnect();
+    return () => { io.disconnect(); timers.forEach(clearTimeout); };
   }, [serviceId]);
-
-  // Scroll progress bar width
-  const docH = typeof document !== 'undefined' ? document.documentElement.scrollHeight - window.innerHeight : 1;
-  const progress = Math.min(100, docH > 0 ? (scrollY / docH) * 100 : 0);
 
   if (!service || !detail) {
     return (
@@ -3412,7 +3459,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
       {/* Reading progress bar */}
       <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-slate-200/60" aria-hidden="true">
-        <div className="h-full bg-blue-600 transition-[width] duration-100 ease-out" style={{ width: `${progress}%` }} />
+        <div ref={progressBarRef} className="h-full bg-blue-600 transition-[width] duration-100 ease-out" style={{ width: '0%' }} />
       </div>
 
       {/* Hero banner with parallax photo */}
@@ -3422,9 +3469,9 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
       >
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
         {service.image && (
-          <img src={service.image} alt="" aria-hidden="true"
+          <img ref={parallaxImgRef} src={service.image} alt="" aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-25 will-change-transform"
-            style={{ transform: `translateY(${scrollY * 0.18}px)` }}
+            style={{ transform: 'translateY(0px)' }}
             loading="eager" decoding="async" width="1200" height="400"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
@@ -3729,7 +3776,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 });
 
 // ─── PRODUCTS PAGE ────────────────────────────────────────────
-const ProductsPage = ({ navigate }) => {
+const ProductsPage = memo(({ navigate }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const categoryScrollRef = useRef(null);
@@ -3818,17 +3865,21 @@ const ProductsPage = ({ navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 // ─── COPY BUTTON (used in footer contact infographics) ───────────────
-const CopyBtn = ({ text }) => {
+const CopyBtn = memo(({ text }) => {
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef(null);
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(() => setCopied(false), 2000);
     });
   }, [text]);
+  // cleanup timer on unmount
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
   return (
     <button onClick={handleCopy} aria-label={`Copy ${text}`}
       className={`shrink-0 w-9 h-9 flex items-center justify-center rounded-xl border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
@@ -3836,7 +3887,7 @@ const CopyBtn = ({ text }) => {
       {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
     </button>
   );
-};
+});
 
 // ─── INDUSTRY DETAIL PAGE ─────────────────────────────────────────────
 const INDUSTRY_DETAILS = {
@@ -4031,10 +4082,10 @@ const INDUSTRY_PRODUCT_IDS = {
   'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)': 'prod_st3',
 };
 
-const IndustryDetailPage = ({ industryId, navigate }) => {
-  const ind = INDUSTRIES.find(i => i.id === industryId);
-  const detail = INDUSTRY_DETAILS[industryId];
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [industryId]);
+const IndustryDetailPage = memo(({ industryId, navigate }) => {
+  const ind = useMemo(() => INDUSTRIES.find(i => i.id === industryId), [industryId]);
+  const detail = useMemo(() => INDUSTRY_DETAILS[industryId], [industryId]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [industryId]);
 
   if (!ind || !detail) return (
     <main id="main-content" className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
@@ -4218,10 +4269,10 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
-const IndustriesPage = ({ navigate }) => (
+const IndustriesPage = memo(({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
       description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
@@ -4337,10 +4388,10 @@ const IndustriesPage = ({ navigate }) => (
       </div>
     </div>
   </main>
-);
+));
 
 // ─── CONTACT PAGE ─────────────────────────────────────────────
-const ContactPage = () => {
+const ContactPage = memo(() => {
   const [name, setName] = useState(''); const [email, setEmail] = useState('');
   const [phone, setPhone] = useState(''); const [iType, setIType] = useState('');
   const [details, setDetails] = useState(''); const [status, setStatus] = useState('idle');
@@ -4521,7 +4572,7 @@ const ContactPage = () => {
       </div>
     </main>
   );
-};
+});
 
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
@@ -4548,24 +4599,28 @@ export default function App() {
     const observeLazy = () => {
       document.querySelectorAll('.lazy-section').forEach(el => io.observe(el));
     };
-    // Run after first paint
+    // Run after first paint — store handle for cleanup
+    let idleId = null;
+    let fallbackId = null;
     if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(observeLazy);
+      idleId = requestIdleCallback(observeLazy);
     } else {
-      setTimeout(observeLazy, 200);
+      fallbackId = setTimeout(observeLazy, 200);
     }
 
     return () => {
       window.removeEventListener('popstate', h);
       window.removeEventListener('pagehide', handlePageHide);
       io.disconnect();
+      if (idleId !== null && typeof cancelIdleCallback !== 'undefined') cancelIdleCallback(idleId);
+      if (fallbackId !== null) clearTimeout(fallbackId);
     };
   }, []);
 
   const navigate = useCallback((path) => {
     window.history.pushState(null, '', `#${path}`);
     setCurrentPath(path);
-    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }, []);
 
   // PERF: useMemo prevents re-creating page component on every render
