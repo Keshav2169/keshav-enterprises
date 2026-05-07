@@ -2107,21 +2107,55 @@ const ProductCard = memo(({ product, navigate }) => {
 // ─── NAVBAR ───────────────────────────────────────────────────
 const Navbar = memo(({ currentPath, navigate }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [query, setQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
+  const searchInputRef = useRef(null);
+
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', h, { passive: true });
     return () => window.removeEventListener('scroll', h);
   }, []);
+
   useEffect(() => {
-    if (!isOpen) return;
-    const h = (e) => { if (menuRef.current && !menuRef.current.contains(e.target)) setIsOpen(false); };
+    if (isSearchOpen && window.innerWidth >= 1024) {
+      setTimeout(() => searchInputRef.current?.focus(), 100);
+    } else if (!isSearchOpen) {
+      setQuery('');
+    }
+  }, [isSearchOpen]);
+
+  const q = query.toLowerCase().trim();
+  const searchResults = useMemo(() => {
+    if (!q) return [];
+    return [
+      ...SERVICES.filter(s => s.title?.toLowerCase().includes(q) || s.desc?.toLowerCase().includes(q))
+        .map(s => ({ id: s.id, title: s.title, desc: s.desc, type: 'Service', path: `/service/${s.id}` })),
+      ...RAW_PRODUCTS.filter(p => p.title?.toLowerCase().includes(q) || p.desc?.toLowerCase().includes(q) || p.category?.toLowerCase().includes(q))
+        .map(p => ({ id: p.id, title: p.title, desc: p.desc, type: 'Product', category: p.category, path: `/product/${p.id}` }))
+    ].slice(0, 8);
+  }, [q]);
+
+  useEffect(() => {
+    const h = (e) => { 
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+        if (!query) setIsSearchOpen(false);
+      }
+    };
     document.addEventListener('mousedown', h);
     return () => document.removeEventListener('mousedown', h);
-  }, [isOpen]);
+  }, [query]);
+
   useEffect(() => {
-    const h = (e) => { if (e.key === 'Escape') setIsOpen(false); };
+    const h = (e) => { 
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        setIsSearchOpen(false);
+      }
+    };
     document.addEventListener('keydown', h);
     return () => document.removeEventListener('keydown', h);
   }, []);
@@ -2132,6 +2166,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
   }, [currentPath]);
   const handleNav = useCallback((path) => { navigate(path); setIsOpen(false); }, [navigate]);
   return (
+    <>
     <nav ref={menuRef} role="navigation" aria-label="Main navigation"
       className={`fixed w-full z-50 transition-all duration-300 border-b ${scrolled ? 'bg-white/95 backdrop-blur-md border-slate-200 shadow-sm py-3' : 'bg-[#0A192F] border-transparent py-5'}`}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold">Skip to main content</a>
@@ -2147,12 +2182,80 @@ const Navbar = memo(({ currentPath, navigate }) => {
                 {link.name}
               </a>
             ))}
+            <div 
+              className="relative flex items-center"
+              onMouseEnter={() => setIsSearchOpen(true)}
+              onMouseLeave={() => { if (!query) setIsSearchOpen(false); }}
+            >
+              <div className={`flex items-center overflow-hidden transition-all duration-500 ease-in-out ${isSearchOpen ? 'w-56 lg:w-72 opacity-100' : 'w-0 opacity-0'}`}>
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search products & services..."
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  className={`w-full border rounded-full py-2 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${scrolled ? 'bg-slate-100 border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-white/10 border-white/20 text-white placeholder:text-white/60'}`}
+                />
+              </div>
+              <button 
+                onClick={() => {
+                  if (isSearchOpen) {
+                    setIsSearchOpen(false);
+                    setQuery('');
+                  } else {
+                    setIsSearchOpen(true);
+                  }
+                }}
+                aria-label="Search"
+                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-md active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-600 hover:text-blue-600 hover:bg-slate-100' : 'text-slate-300 hover:text-white hover:bg-white/10 hover:shadow-white/20'} ${isSearchOpen ? 'ml-1' : ''}`}
+              >
+                <Search className="w-5 h-5" aria-hidden="true" />
+              </button>
+
+              {isSearchOpen && query && (
+                <div className="absolute top-full right-0 mt-6 w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
+                  <div className="max-h-[60vh] overflow-y-auto p-2">
+                    {searchResults.length === 0 ? (
+                      <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
+                    ) : (
+                      <ul className="space-y-1">
+                        {searchResults.map(r => (
+                          <li key={r.id}>
+                            <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                              <div className="flex justify-between items-start">
+                                <span className="font-bold text-slate-900 text-sm line-clamp-1">{r.title}</span>
+                                <div className="flex items-center gap-1 shrink-0 ml-2">
+                                  {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
+                                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                                </div>
+                              </div>
+                              <span className="text-xs text-slate-500 line-clamp-1">{r.desc}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
             <a href="#/contact" onClick={e => { e.preventDefault(); handleNav('/contact'); }}
               className="bg-blue-600 text-white px-7 py-2.5 rounded font-bold hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
               Get Quote
             </a>
           </div>
-          <div className="lg:hidden flex items-center">
+          <div className="lg:hidden flex items-center gap-1">
+            <button onClick={() => {
+                if (isSearchOpen) {
+                  setIsSearchOpen(false);
+                  setQuery('');
+                } else {
+                  setIsSearchOpen(true);
+                }
+              }} aria-label="Search products and services"
+              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' : 'text-slate-300 hover:text-white hover:bg-white/10'}`}>
+              <Search className="h-6 w-6" aria-hidden="true" />
+            </button>
             <button onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isOpen} aria-controls="mobile-nav"
               className={`p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-900' : 'text-white'}`}>
@@ -2161,25 +2264,63 @@ const Navbar = memo(({ currentPath, navigate }) => {
           </div>
         </div>
       </div>
-      {isOpen && (
+      {(isOpen || isSearchOpen) && (
         <div id="mobile-nav" className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100" role="menu">
-          <div className="px-4 py-6 space-y-2">
-            {NAV_LINKS.map(link => (
-              <a key={link.name} href={`#${link.path}`} role="menuitem"
-                onClick={e => { e.preventDefault(); handleNav(link.path); }}
-                aria-current={isActive(link.path) ? 'page' : undefined}
-                className={`block w-full text-left px-5 py-4 rounded-xl text-lg font-black tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}>
-                {link.name}
+          {isSearchOpen && (
+            <div className="px-4 py-4 border-b border-slate-100">
+              <div className="relative">
+                <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Search products & services..."
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500"
+                />
+              </div>
+              {query && (
+                <div className="max-h-[50vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
+                  {searchResults.length === 0 ? (
+                    <div className="p-4 text-center text-slate-500 text-sm">No results found for "{query}"</div>
+                  ) : (
+                    <ul className="divide-y divide-slate-100">
+                      {searchResults.map(r => (
+                        <li key={r.id}>
+                          <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:bg-slate-50">
+                            <div className="flex justify-between items-start">
+                              <span className="font-bold text-slate-900 text-sm line-clamp-1">{r.title}</span>
+                              <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0 ml-2 ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                            </div>
+                            <span className="text-xs text-slate-500 line-clamp-1">{r.desc}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+          {isOpen && !query && (
+            <div className="px-4 py-6 space-y-2">
+              {NAV_LINKS.map(link => (
+                <a key={link.name} href={`#${link.path}`} role="menuitem"
+                  onClick={e => { e.preventDefault(); handleNav(link.path); }}
+                  aria-current={isActive(link.path) ? 'page' : undefined}
+                  className={`block w-full text-left px-5 py-4 rounded-xl text-lg font-black tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}>
+                  {link.name}
+                </a>
+              ))}
+              <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')} target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 mt-4 bg-[#25D366] text-white px-5 py-4 rounded-xl text-lg font-black">
+                <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp Us
               </a>
-            ))}
-            <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')} target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 mt-4 bg-[#25D366] text-white px-5 py-4 rounded-xl text-lg font-black">
-              <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp Us
-            </a>
-          </div>
+            </div>
+          )}
         </div>
       )}
     </nav>
+    </>
   );
 });
 
@@ -2399,14 +2540,7 @@ const DigitalProfilesStrip = memo(() => {
       badge: 'Google Verified',
       badgeColor: '#1a56db',
       badgeBg: '#e8f0fe',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-      ),
+      icon: <img src="google-business.webp" alt="Google Business" className="w-7 h-7 object-contain" loading="lazy" />,
     },
     {
       name: 'IndiaMART',
@@ -2414,11 +2548,7 @@ const DigitalProfilesStrip = memo(() => {
       badge: '4.3★ TrustSeal',
       badgeColor: '#b45309',
       badgeBg: '#fef3c7',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="#e85d26" aria-hidden="true">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-        </svg>
-      ),
+      icon: <img src="indiamart.webp" alt="IndiaMART" className="w-7 h-7 object-contain" loading="lazy" />,
     },
     {
       name: 'TradeIndia',
@@ -2426,11 +2556,7 @@ const DigitalProfilesStrip = memo(() => {
       badge: 'Verified Supplier',
       badgeColor: '#1e40af',
       badgeBg: '#dbeafe',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="#1565c0" aria-hidden="true">
-          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/>
-        </svg>
-      ),
+      icon: <img src="tradeindia.webp" alt="TradeIndia" className="w-7 h-7 object-contain" loading="lazy" />,
     },
     {
       name: 'ExporterIndia',
@@ -2438,11 +2564,7 @@ const DigitalProfilesStrip = memo(() => {
       badge: 'Export Ready',
       badgeColor: '#166534',
       badgeBg: '#dcfce7',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-      ),
+      icon: <img src="exportersindia.webp" alt="ExporterIndia" className="w-7 h-7 object-contain" loading="lazy" />,
     },
     {
       name: 'JustDial',
@@ -2450,11 +2572,7 @@ const DigitalProfilesStrip = memo(() => {
       badge: 'Local Verified',
       badgeColor: '#9a3412',
       badgeBg: '#ffedd5',
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="#f97316" aria-hidden="true">
-          <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-        </svg>
-      ),
+      icon: <img src="justdial.webp" alt="JustDial" className="w-7 h-7 object-contain" loading="lazy" />,
     },
   ];
 
@@ -2938,7 +3056,14 @@ const HomePage = ({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
-  const featuredProducts = useMemo(() => PRODUCTS, []);
+  const featuredProducts = useMemo(() => {
+    const shuffled = [...PRODUCTS];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }, []);
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
