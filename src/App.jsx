@@ -2213,7 +2213,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
               </button>
 
               {isSearchOpen && query && (
-                <div className="absolute top-full right-0 mt-6 w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
+                <div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
                   <div className="max-h-[60vh] overflow-y-auto p-2">
                     {searchResults.length === 0 ? (
                       <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
@@ -2223,7 +2223,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
                           <li key={r.id}>
                             <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                               <div className="flex justify-between items-start">
-                                <span className="font-bold text-slate-900 text-sm line-clamp-1">{r.title}</span>
+                                <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
                                 <div className="flex items-center gap-1 shrink-0 ml-2">
                                   {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
                                   <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
@@ -2288,7 +2288,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
                         <li key={r.id}>
                           <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:bg-slate-50">
                             <div className="flex justify-between items-start">
-                              <span className="font-bold text-slate-900 text-sm line-clamp-1">{r.title}</span>
+                              <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
                               <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0 ml-2 ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
                             </div>
                             <span className="text-xs text-slate-500 line-clamp-1">{r.desc}</span>
@@ -2402,7 +2402,7 @@ const Footer = memo(({ navigate }) => (
         {/* "Follow Us" heading */}
         <div className="flex flex-col items-center mb-8">
           <p className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-5">Connect With Us</p>
-          <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl social-cards-grid">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-5xl">
 
             {/* ── LinkedIn Card ── */}
             <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer"
