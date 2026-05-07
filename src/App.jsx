@@ -665,8 +665,57 @@ const RAW_PRODUCTS = [
     specs: { 'Inner Tube': 'Oil-resistant Nitrile (NBR) rubber', 'Reinforcement': 'Steel wire braid / 4-wire spiral wrap', 'Outer Cover': 'Oil/weather/abrasion-resistant rubber', 'Max Working Pressure': 'Up to 420 bar (4-spiral, size-dependent)', 'Temperature Range': '-40 to +120 deg C', 'Standards': 'EN 853, EN 856, SAE 100R1/R2/R12/R13, MSHA' },
     images: ['hydraulic-rubber-hose-1.webp', 'hydraulic-rubber-hose-2.webp', 'hydraulic-rubber-hose-3.webp', 'hydraulic-rubber-hose-4.webp', 'hydraulic-rubber-hose-5.webp', 'hydraulic-rubber-hose-6.webp']
   },
+  // ── NEW PRODUCTS — FLEXIBLE HOSES & ASSEMBLIES (from FlexhoseIndia catalog) ──
   {
-    id: 'prod_ee1', category: 'Electronic Equipments', title: 'Vibration Sensors (Shinkawa)',
+    id: 'prod_h4', category: 'Flexible Hoses & Assemblies', title: 'PTFE Braided Corrugated Transfer Hose',
+    desc: 'Premium PTFE-core corrugated hose with stainless steel outer braid for chemical-resistant fluid transfer. Combines PTFE chemical inertness with corrugated flexibility and SS304/316 braid reinforcement for high-pressure duty.',
+    usage: 'Pharmaceutical liquid and gas transfer, aggressive chemical lines (acids, alkalis, solvents), food-grade process lines, and high-purity fluid transfer in refineries and chemical plants.',
+    features: ['PTFE corrugated inner core — inert to virtually all industrial chemicals', 'SS304 or SS316 single/double wire braid outer reinforcement', 'Working pressure: up to 100 bar (single braid); higher with double braid', 'Temperature range: -60 deg C to +260 deg C continuous service', 'FDA-compliant PTFE grade available for food and pharmaceutical applications', 'Anti-static conductive PTFE option for flammable media', 'End fittings: NPT, BSP, flanged, tri-clamp, camlock per application', 'ISO 10380 compliant — pressure-tested assembly before dispatch', 'Zero product contamination — smooth PTFE bore, non-stick surface', 'Custom lengths and end connections per site specification'],
+    specs: { 'Inner Tube': 'PTFE corrugated (FDA grade available)', 'Braid': 'SS 304 / SS 316 single or double wire braid', 'Working Pressure': 'Up to 100 bar (single braid, size-dependent)', 'Temperature Range': '-60 deg C to +260 deg C', 'Size Range': '1/4 inch to 4 inch (DN 6 to DN 100)', 'Chemical Resistance': 'Virtually all industrial chemicals — PTFE inert', 'Standards': 'ISO 10380, FDA 21 CFR 177.1550 (food grade)', 'End Connections': 'NPT, BSP, Flanged, Tri-clamp, Camlock' },
+    images: ['ptfe-braided-hose-1.webp', 'ptfe-braided-hose-2.webp', 'ptfe-braided-hose-3.webp', 'ptfe-braided-hose-4.webp', 'ptfe-braided-hose-5.webp', 'ptfe-braided-hose-6.webp']
+  },
+  {
+    id: 'prod_h5', category: 'Flexible Hoses & Assemblies', title: 'Metallic Flexible Hose (Corrugated Core)',
+    desc: 'General-purpose corrugated stainless steel flexible hose for industrial fluid and gas transfer. Helical or annular corrugated core in SS304/316L with optional single wire braid. Cost-effective and stocked in standard sizes for rapid dispatch.',
+    usage: 'Industrial piping flexibility connections, vibration absorption at pump and compressor nozzles, steam lines, water and gas transfer, HVAC thermal systems, and boiler feed connections.',
+    features: ['Corrugated SS inner hose — helical or annular corrugation per application', 'Materials: SS 304, SS 316, SS 316L per service requirements', 'Size range: 1/2 inch to 6 inch nominal bore (DN 12 to DN 150)', 'Pressure rating: 25 to 63 bar depending on bore and braid configuration', 'Single SS wire braid standard — double braid for higher pressure', 'Temperature range: -40 deg C to +400 deg C (SS316L grade)', 'End connections: flanged, threaded (BSP/NPT), nipple, or plain end', 'Unit lengths: 300 mm, 500 mm, 1 m, 1.5 m, 2 m, 3 m, 6 m, custom', 'ISO 10380 compliant with pressure and leak test before dispatch', 'Stocked sizes available for same-day dispatch on standard requirements'],
+    specs: { 'Core Material': 'SS 304 / SS 316 / SS 316L corrugated', 'Corrugation Type': 'Helical (standard) or Annular (high-pressure)', 'Nominal Bore': '1/2 inch to 6 inch (DN 12 to DN 150)', 'Pressure Rating': '25–63 bar (size and braid dependent)', 'Temperature Range': '-40 deg C to +400 deg C (SS316L)', 'Braid': 'Single or Double SS wire braid', 'End Connections': 'Flanged / Threaded BSP/NPT / Nipple / Plain', 'Standard': 'ISO 10380' },
+    images: ['metallic-flexible-hose-1.webp', 'metallic-flexible-hose-2.webp', 'metallic-flexible-hose-3.webp', 'metallic-flexible-hose-4.webp', 'metallic-flexible-hose-5.webp', 'metallic-flexible-hose-6.webp']
+  },
+  {
+    id: 'prod_h6', category: 'Flexible Hoses & Assemblies', title: 'Steam Hose — High Temperature Service',
+    desc: 'Purpose-built high-temperature steam hose rated for continuous saturated and superheated steam service. SS316L corrugated core with braid reinforcement handles thermal cycling, condensate, and steam pressures in industrial boiler and heat exchanger applications.',
+    usage: 'Steam injection lines, boiler connections, heat exchanger flexible connections, steam trap bypass lines, and high-temperature process steam in power plants, sugar mills, paper mills, and distilleries.',
+    features: ['Dedicated steam service design — rated for saturated and superheated steam', 'Inner core: SS316L corrugated — resists chloride stress corrosion cracking', 'Operating temperature: continuous service up to 350 deg C steam', 'Working pressure: up to 100 bar (size-dependent; high-pressure steam duty)', 'Single or double SS wire braid reinforcement for pressure retention', 'End fittings: heavy-duty flanged or screwed for secure steam connections', 'Thermal cycling rated — withstands repeated start-stop duty on boiler lines', 'Condensate-resistant construction — no deterioration from wet steam service', 'All assemblies pressure-tested at 1.5× working pressure before dispatch', 'Available bore sizes: 1/2 inch to 4 inch in standard lengths'],
+    specs: { 'Service': 'Saturated and superheated steam — dedicated duty', 'Core Material': 'SS 316L corrugated', 'Max Temperature': 'Up to 350 deg C (superheated steam service)', 'Working Pressure': 'Up to 100 bar (size-dependent)', 'Bore Range': '1/2 inch to 4 inch (DN 12 to DN 100)', 'Braid': 'Single or Double SS wire braid', 'End Connections': 'Heavy-duty flanged or screwed BSP/NPT', 'Pressure Test': '1.5× working pressure before dispatch' },
+    images: ['steam-hose-1.webp', 'steam-hose-2.webp', 'steam-hose-3.webp', 'steam-hose-4.webp', 'steam-hose-5.webp', 'steam-hose-6.webp']
+  },
+  {
+    id: 'prod_h7', category: 'Flexible Hoses & Assemblies', title: 'Flexible Food Grade Hose',
+    desc: 'FDA-compliant food-grade flexible hose for hygienic fluid and gas transfer in food processing, beverage, dairy, and pharmaceutical plants. Smooth polished bore, CIP/SIP compatible construction with sanitary end fittings.',
+    usage: 'Food-grade liquid and gas transfer in dairy plants, breweries, beverage production, edible oil processing, pharmaceutical fluid handling, and any application requiring hygienic piping with FDA-approved materials.',
+    features: ['Food-grade materials: FDA 21 CFR compliant inner tube and seals', 'Smooth polished bore — minimises retention and microbial growth risk', 'CIP (Clean-In-Place) and SIP (Sterilize-In-Place) compatible construction', 'Inner tube: food-grade PTFE, silicone, or polished SS316L per service', 'Operating temperature: -40 deg C to +150 deg C (EPDM/SS grades)', 'Working pressure: up to 16 bar (food-grade service)', 'Sanitary end fittings: tri-clamp (DIN/SMS/ISO), plain end, or flanged', 'Electro-polished internal surface available for highest hygiene rating', 'Non-toxic, non-tainting, odourless — no product contamination', 'EHEDG and 3-A Sanitary Standards compatible on request'],
+    specs: { 'Inner Tube': 'Food-grade PTFE / Silicone / Polished SS316L', 'Compliance': 'FDA 21 CFR — food and pharmaceutical grade', 'Temperature Range': '-40 deg C to +150 deg C', 'Working Pressure': 'Up to 16 bar', 'Surface': 'Electro-polished internal bore (Ra ≤ 0.8 µm)', 'End Fittings': 'Tri-clamp DIN/SMS/ISO / Flanged / Plain end', 'CIP/SIP': 'Compatible', 'Standards': 'FDA 21 CFR, EHEDG, 3-A Sanitary (on request)' },
+    images: ['food-grade-hose-1.webp', 'food-grade-hose-2.webp', 'food-grade-hose-3.webp', 'food-grade-hose-4.webp', 'food-grade-hose-5.webp', 'food-grade-hose-6.webp']
+  },
+  {
+    id: 'prod_h8', category: 'Flexible Hoses & Assemblies', title: 'Oxygen & Specialty Gas Hose',
+    desc: 'Stainless steel corrugated hose for oxygen, nitrogen, LPG, and specialty industrial gas transfer. Cleaned and degreased for oxygen service with oil-free construction. Suitable for cryogenic service on liquid nitrogen and LOX lines.',
+    usage: 'Oxygen distribution systems, liquid nitrogen transfer, LPG flexible connections, industrial gas cylinder pigtails, cryogenic plant connections, and specialty gas transfer in pharmaceutical and chemical plants.',
+    features: ['Oxygen-service cleaned and degreased — no hydrocarbon contamination', 'Inner core: SS316L corrugated — compatible with all industrial gases', 'Cryogenic-rated to -200 deg C for liquid oxygen and nitrogen service', 'Working pressure: up to 100 bar (gas cylinder duty)', 'Single SS braid — meets gas industry hose safety requirements', 'End fittings: CGA, DIN 477, BS341, NPT, BSP or flanged per gas type', 'Oil-free construction throughout — mandatory for oxidising gas service', 'Pressure-tested and certified before dispatch with gas tightness verification', 'UV and ozone resistant outer cover on rubber-sheathed variants', 'Available bore sizes: 1/4 inch to 2 inch for standard gas service'],
+    specs: { 'Service': 'Oxygen, nitrogen, LPG, specialty industrial gases', 'Core Material': 'SS 316L corrugated — gas-cleaned and degreased', 'Cryogenic Rating': 'Down to -200 deg C (liquid oxygen / nitrogen service)', 'Working Pressure': 'Up to 100 bar (size-dependent)', 'Bore Range': '1/4 inch to 2 inch', 'End Connections': 'CGA / DIN 477 / BS341 / NPT / BSP / Flanged', 'Oil-Free': 'Yes — mandatory for oxidising gas service', 'Test': 'Pressure and gas-tightness certified before dispatch' },
+    images: ['oxygen-gas-hose-1.webp', 'oxygen-gas-hose-2.webp', 'oxygen-gas-hose-3.webp', 'oxygen-gas-hose-4.webp', 'oxygen-gas-hose-5.webp', 'oxygen-gas-hose-6.webp']
+  },
+  // ── NEW PRODUCT — INDUSTRIAL FILTRATION ──
+  {
+    id: 'prod_f14', category: 'Industrial Filtration', title: 'Filter Bag & Support Cage Assembly',
+    desc: 'Complete baghouse filter bag and support cage assembly for industrial dust collection systems. Filter bags retain particulate from process gas streams while the structural wire cage maintains bag shape under filtration and pulse-jet cleaning loads. Supplied as matched bag-and-cage sets or separately as replacement components.',
+    usage: 'Dust collection in cement plants (kiln exhaust, raw mill, clinker cooler), power plants (fly ash collection, ESP bypass), steel mills (furnace fume extraction), chemical plants, grain handling facilities, and any pulse-jet or reverse-air baghouse dust collector installation.',
+    features: ['Filter Bag — fabric media options: polyester, polypropylene, PTFE, PPS, fibreglass, aramid (Nomex) per process temperature and chemistry', 'Filtration efficiency: ≥99.9% at 1–10 µm particle size (media-dependent)', 'Temperature range: up to 150 deg C (polyester/polypropylene); up to 260 deg C (PTFE membrane/PPS); up to 300 deg C+ (fibreglass, aramid)', 'PTFE membrane-coated bags available for sub-micron and sticky dust applications', 'Support Cage — rigid wire construction in low-carbon steel, galvanised steel, SS304, or SS316L', 'Cage wire: 10, 12, or 20 vertical stringer wires welded to horizontal support rings (4, 6, or 8 inch spacing)', 'Cage surface treatments: galvanised (standard), epoxy powder-coated, silicon-coated, or SS for corrosive and high-humidity service', 'Cage top designs: rolled flange (top-load), split ring (bottom-load), snap-band, or collar-venturi per baghouse design', 'Two-piece cage option for 150 inch and 300 inch long bags with finger, slide-lock, or twist-lock connectors', 'Venturi insert supplied with cage for pulse-jet cleaning efficiency improvement', 'Custom dimensions: cage diameter 4 to 8 inch; cage length 1,000 to 9,000 mm per OEM baghouse specification', 'Compatible with pulse-jet, shaker, and reverse-air cleaning systems', 'Dimensional tolerance: vertical wire spacing ±2 mm; no burrs or sharp edges per quality standard', 'Seam options: sewn, welded, or heat-set with reinforced ring hardware and anti-blowout collar'],
+    specs: { 'Bag Fabrics': 'Polyester / PP / PTFE Membrane / PPS / Fibreglass / Aramid (Nomex)', 'Temperature (bag)': 'Up to 150 deg C (polyester); 260 deg C (PTFE/PPS); 300 deg C+ (fibreglass)', 'Filtration Efficiency': '≥99.9% at 1–10 µm (PTFE membrane grade)', 'Cage Material': 'Galvanised CS / Epoxy-coated CS / SS 304 / SS 316L', 'Cage Diameter': '4 inch to 8 inch (100 mm to 200 mm)', 'Cage Length': '1,000 to 9,000 mm (custom to baghouse spec)', 'Vertical Wires': '10, 12, or 20 stringers (application dependent)', 'Ring Spacing': '4 inch, 6 inch, or 8 inch horizontal support rings', 'Cage Top': 'Rolled flange / Split ring / Snap-band / Collar-venturi', 'Cleaning System': 'Pulse-jet / Shaker / Reverse-air compatible', 'Venturi': 'Included for pulse-jet installations', 'Custom': 'Dimensions per OEM baghouse drawing' },
+    images: ['filter-bag-cage-1.webp', 'filter-bag-cage-2.webp', 'filter-bag-cage-3.webp', 'filter-bag-cage-4.webp', 'filter-bag-cage-5.webp', 'filter-bag-cage-6.webp']
+  },
+  {
     desc: 'High-precision non-contact eddy current displacement sensors for continuous turbine shaft vibration and axial position monitoring. API 670 standard compliant.',
     usage: 'Continuous monitoring of shaft radial vibration, thrust position, and axial displacement in high-speed steam turbines, compressors, and rotating machinery.',
     features: ['Non-contact eddy current measurement principle — no physical shaft contact', 'Measures shaft radial vibration amplitude and axial displacement', 'API 670 Standard compliant for machinery protection systems', 'Frequency response: DC to 10 kHz measurement bandwidth', 'Signal output: 4-20 mA (4-wire) or -24V DC voltage per driver', 'Probe measurement range: 0.25-2.5 mm (calibrated at 1.0 mm nominally)', 'Temperature: Probe -50 to +175 deg C; driver electronics -40 to +85 deg C', 'Sensitivity: 8 mV per µm standard calibration', 'Integral cable: Armoured stainless steel for harsh industrial environments'],
@@ -961,16 +1010,16 @@ const MARQUEE_CSS = `
   @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
 
   /* PERF: content-visibility on below-fold sections reduces render cost */
-  .cv-auto{content-visibility:auto;contain-intrinsic-size:auto 600px}
+  .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
 
   /* PERF: image delivery - explicit dimensions prevent layout shifts */
   img{max-width:100%;height:auto;display:block}
 
   /* PERF: Reduce forced reflow - GPU-composited transforms only */
-  .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden;isolation:isolate}
+  .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
 
-  /* PERF: layout+style containment — safe alternative to paint that doesn't break sticky/z-index */
-  section:not(.hero-section){contain:layout style}
+  /* PERF: paint containment on heavy sections reduces repaint area */
+  section:not(.hero-section){contain:paint}
 
   /* Hero image mobile display fix */
   .hero-mobile-vignette{display:none}
@@ -1191,50 +1240,8 @@ const SITE_URL = 'https://keshaventerprises.in';
 const OG_IMAGE = `${SITE_URL}/og-image.webp`; // Upload a 1200x630 px og-image.webp to /public
 const SITE_KEYWORDS = 'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering';
 
-// PERF FIX: One-time <head> setup extracted from SEOHead useEffect.
-// Previously these querySelector calls ran on every page navigation.
-// Running them once at module load means zero repeated DOM queries per route.
-(() => {
-  if (typeof document === 'undefined') return;
-  const addLink = (rel, href, extra) => {
-    if (document.querySelector(`link[rel="${rel}"][href="${href}"]`)) return;
-    const l = document.createElement('link'); l.rel = rel; l.href = href;
-    if (extra) Object.entries(extra).forEach(([k, v]) => { if (k === 'crossOrigin') l.crossOrigin = v; else l.setAttribute(k, v); });
-    document.head.appendChild(l);
-  };
-  addLink('preconnect', 'https://fonts.googleapis.com');
-  addLink('preconnect', 'https://fonts.gstatic.com', { crossOrigin: '' });
-  addLink('dns-prefetch', 'https://api.whatsapp.com');
-  addLink('dns-prefetch', 'https://www.indiamart.com');
-  addLink('dns-prefetch', 'https://wa.me');
-  if (!document.querySelector('meta[name="viewport"]')) {
-    const vm = document.createElement('meta'); vm.name = 'viewport';
-    vm.content = 'width=device-width, initial-scale=1, maximum-scale=5';
-    document.head.appendChild(vm);
-  }
-})();
-
-// PERF FIX: Inject MARQUEE_CSS once at module load — prevents per-render style recalculation
-(() => {
-  if (typeof document === 'undefined') return;
-  const styleId = 'ke-marquee-css';
-  if (!document.getElementById(styleId)) {
-    const s = document.createElement('style');
-    s.id = styleId;
-    s.textContent = MARQUEE_CSS;
-    document.head.appendChild(s);
-  }
-})();
-
 const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, publishedTime }) => {
   useEffect(() => {
-    // CSS guard — MARQUEE_CSS injected at module load by IIFE; this only fires if somehow missed (e.g. SSR hydration)
-    if (!document.getElementById('ke-marquee-css')) {
-      const s = document.createElement('style');
-      s.id = 'ke-marquee-css';
-      s.textContent = MARQUEE_CSS;
-      document.head.appendChild(s);
-    }
     const fullTitle = title ? `${title} | Keshav Enterprises` : 'Keshav Enterprises | Industrial Turbine Engineering — Shamli, UP';
     const fullDesc = description || 'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Enterprises, Shamli, UP, India.';
     const canonical = canonicalPath ? `${SITE_URL}${canonicalPath}` : SITE_URL;
@@ -1264,8 +1271,24 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
     // ── Canonical ──
     sl('canonical', canonical);
 
+    // ── PERF: Network dependency tree fix — preconnect critical origins early ──
+    // These tell the browser to establish TCP+TLS connections before HTML finishes parsing
+    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.googleapis.com"]')) {
+      sl('preconnect', 'https://fonts.googleapis.com');
+    }
+    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.gstatic.com"]')) {
+      const pc = document.createElement('link');
+      pc.rel = 'preconnect'; pc.href = 'https://fonts.gstatic.com'; pc.crossOrigin = '';
+      document.head.appendChild(pc);
+    }
+    if (!document.querySelector('link[rel="dns-prefetch"][href="https://api.whatsapp.com"]')) {
+      sl('dns-prefetch', 'https://api.whatsapp.com');
+    }
+    if (!document.querySelector('link[rel="dns-prefetch"][href="https://www.indiamart.com"]')) {
+      sl('dns-prefetch', 'https://www.indiamart.com');
+    }
+
     // ── PERF: LCP request discovery — preload hero image on homepage ──
-    // Without this, the browser discovers the image only after CSS/JS parse
     // Without this, the browser discovers the image only after CSS/JS parse
     if (!canonicalPath || canonicalPath === '/') {
       if (!document.querySelector('link[rel="preload"][as="image"]')) {
@@ -1275,6 +1298,13 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
         pl.setAttribute('type', 'image/png');
         document.head.appendChild(pl);
       }
+    }
+
+    // ── Viewport meta ──
+    if (!document.querySelector('meta[name="viewport"]')) {
+      const vm = document.createElement('meta'); vm.name = 'viewport';
+      vm.content = 'width=device-width, initial-scale=1, maximum-scale=5';
+      document.head.appendChild(vm);
     }
 
     // ── Open Graph ──
@@ -1450,16 +1480,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
   useEffect(() => {
-    let rafId = null;
-    const h = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        setScrolled(window.scrollY > 20);
-      });
-    };
+    const h = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', h, { passive: true });
-    return () => { window.removeEventListener('scroll', h); if (rafId) cancelAnimationFrame(rafId); };
+    return () => window.removeEventListener('scroll', h);
   }, []);
   useEffect(() => {
     if (!isOpen) return;
@@ -1869,13 +1892,13 @@ const FloatingButtons = memo(() => (
 ));
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
-const ProductDetailPage = memo(({ productId, navigate }) => {
+const ProductDetailPage = ({ productId, navigate }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [tab, setTab] = useState('specs');
   const product = useMemo(() => PRODUCTS.find(p => p.id === productId), [productId]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
   useEffect(() => { setImgLoaded(false); setImgErr(false); }, [activeImg, productId]);
   const related = useMemo(() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [], [product]);
   const productSchema = useMemo(() => product ? {
@@ -2041,7 +2064,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
       </div>
     </main>
   );
-});
+};
 
 // ─── FEATURED PRODUCTS STRIP ─────────────────────────────────
 // rAF auto-scroll + seamless infinite loop + touch drag + nav arrows
@@ -2056,7 +2079,6 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   const dragStartX = useRef(0);      // pointer x when drag began
   const dragStartSL = useRef(0);      // scrollLeft when drag began
   const resumeTimer = useRef(null);   // debounce timer for arrow resume
-  const arrowFrameCount = useRef(0);  // PERF: throttle arrow state updates
   const [canLeft, setCanLeft] = useState(false);
   const [canRight, setCanRight] = useState(true);
 
@@ -2073,12 +2095,9 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       // seamless reset: when we've scrolled past the first copy, snap back
       if (el.scrollLeft >= halfW) el.scrollLeft -= halfW;
     }
-    // update arrow visibility — only every 30 frames (~2/s) to avoid 60 re-renders/sec
-    arrowFrameCount.current = (arrowFrameCount.current + 1) % 30;
-    if (arrowFrameCount.current === 0) {
-      setCanLeft(el.scrollLeft > 4);
-      setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-    }
+    // update arrow visibility
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
     rafRef.current = requestAnimationFrame(tick);
   }, [halfW]);
 
@@ -2285,16 +2304,15 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 });
 
 // ─── HOME PAGE ────────────────────────────────────────────────
-const HomePage = memo(({ navigate }) => {
+const HomePage = ({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
-  // PERF FIX: PRODUCTS is module-level constant — useMemo([]) gives FeaturedProductsStrip
-  // a stable reference so its memo() never triggers an unnecessary re-render
-  const featuredProducts = useMemo(() => PRODUCTS, []);
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
+  const featuredProducts = useMemo(() => PRODUCTS, []);
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
+      <style>{MARQUEE_CSS}</style>
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
         <div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
@@ -2484,10 +2502,10 @@ const HomePage = memo(({ navigate }) => {
       </section>
     </main>
   );
-});
+};
 
 // ─── ABOUT PAGE ───────────────────────────────────────────────
-const AboutPage = memo(({ navigate }) => {
+const AboutPage = ({ navigate }) => {
   const milestones = [
     { year: '2000s', title: 'Foundation', desc: 'Founded in Shamli, UP as a specialist turbine maintenance outfit serving local sugar mills with hands-on overhauling expertise.' },
     { year: '2005', title: 'OEM Expertise', desc: 'Built a dedicated team of ex-OEM engineers from Triveni, BHEL, and Belliss & Morcom — enabling true like-for-like OEM maintenance standards.' },
@@ -2754,7 +2772,7 @@ const AboutPage = memo(({ navigate }) => {
       </div>
     </main>
   );
-});
+};
 
 
 // HOW TO UPDATE BLOGS:
@@ -2853,7 +2871,7 @@ const BLOG_POSTS = [
 ];
 
 // ─── BLOG LIST PAGE ────────────────────────────────────────────
-const BlogPage = memo(({ navigate }) => (
+const BlogPage = ({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead
       title="Engineering Blog — Turbine Maintenance & Industrial Insights"
@@ -2973,13 +2991,13 @@ const BlogPage = memo(({ navigate }) => (
       </div>
     </div>
   </main>
-));
+);
 
 // ─── BLOG POST PAGE ────────────────────────────────────────────
-const BlogPostPage = memo(({ slug, navigate }) => {
+const BlogPostPage = ({ slug, navigate }) => {
   const post = useMemo(() => BLOG_POSTS.find(p => p.slug === slug), [slug]);
   const others = useMemo(() => post ? BLOG_POSTS.filter(p => p.id !== post.id).slice(0, 2) : [], [post]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [slug]);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [slug]);
   if (!post) return (
     <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Post Not Found" />
@@ -3092,10 +3110,10 @@ const BlogPostPage = memo(({ slug, navigate }) => {
       </div>
     </main>
   );
-});
+};
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
-const ServicesPage = memo(({ navigate }) => (
+const ServicesPage = ({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-white">
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
       description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
@@ -3222,7 +3240,7 @@ const ServicesPage = memo(({ navigate }) => (
       </div>
     </div>
   </main>
-));
+);
 
 // ─── SERVICE DETAIL DATA ──────────────────────────────
 const SERVICE_DETAIL_DATA = {
@@ -3363,49 +3381,30 @@ const SERVICE_DETAIL_CSS = `
 `;
 
 const ServiceDetailPage = memo(({ serviceId, navigate }) => {
-  const service = useMemo(() => SERVICES.find(s => s.id === serviceId), [serviceId]);
-  const detail = useMemo(() => SERVICE_DETAIL_DATA[serviceId], [serviceId]);
-  const Icon = useMemo(() => SERVICE_ICONS[serviceId], [serviceId]);
-  const serviceIndex = useMemo(() => SERVICES.findIndex(s => s.id === serviceId), [serviceId]);
-  const prevService = useMemo(() => serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null, [serviceIndex]);
-  const nextService = useMemo(() => serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null, [serviceIndex]);
+  const service = SERVICES.find(s => s.id === serviceId);
+  const detail = SERVICE_DETAIL_DATA[serviceId];
+  const Icon = SERVICE_ICONS[serviceId];
+  const serviceIndex = SERVICES.findIndex(s => s.id === serviceId);
+  const prevService = serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null;
+  const nextService = serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null;
   const heroRef = useRef(null);
-  const parallaxImgRef = useRef(null);
-  const progressBarRef = useRef(null);
   const [heroVisible, setHeroVisible] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   // Scroll to top instantly when serviceId changes, then trigger hero animation
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     setHeroVisible(false);
+    setScrollY(0);
     const t = setTimeout(() => setHeroVisible(true), 60);
     return () => clearTimeout(t);
   }, [serviceId]);
 
-  // PERF FIX: Parallax + progress bar via rAF — zero React re-renders on scroll
-  // scrollY state caused a full component re-render on every pixel of scroll (~60/s)
+  // Parallax on hero image + track scroll for progress bar
   useEffect(() => {
-    let rafId = null;
-    const onScroll = () => {
-      if (rafId) return; // coalesce — only one rAF per frame
-      rafId = requestAnimationFrame(() => {
-        rafId = null;
-        const sy = window.scrollY;
-        if (parallaxImgRef.current) {
-          parallaxImgRef.current.style.transform = `translateY(${sy * 0.18}px)`;
-        }
-        if (progressBarRef.current) {
-          const docH = document.documentElement.scrollHeight - window.innerHeight;
-          const pct = docH > 0 ? Math.min(100, (sy / docH) * 100) : 0;
-          progressBarRef.current.style.width = `${pct}%`;
-        }
-      });
-    };
+    const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (rafId) cancelAnimationFrame(rafId);
-    };
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // IntersectionObserver for scroll-reveal of all .sd-reveal elements
@@ -3418,7 +3417,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
       document.head.appendChild(s);
     }
     const els = document.querySelectorAll('.sd-reveal, .sd-step-line');
-    const timers = [];
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -3426,14 +3424,18 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
           const siblings = Array.from(e.target.parentElement?.children || []);
           const idx = siblings.indexOf(e.target);
           const delay = Math.min(idx * 80, 400);
-          timers.push(setTimeout(() => e.target.classList.add('sd-visible'), delay));
+          setTimeout(() => e.target.classList.add('sd-visible'), delay);
           io.unobserve(e.target);
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     els.forEach(el => io.observe(el));
-    return () => { io.disconnect(); timers.forEach(clearTimeout); };
+    return () => io.disconnect();
   }, [serviceId]);
+
+  // Scroll progress bar width
+  const docH = typeof document !== 'undefined' ? document.documentElement.scrollHeight - window.innerHeight : 1;
+  const progress = Math.min(100, docH > 0 ? (scrollY / docH) * 100 : 0);
 
   if (!service || !detail) {
     return (
@@ -3459,7 +3461,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
       {/* Reading progress bar */}
       <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-slate-200/60" aria-hidden="true">
-        <div ref={progressBarRef} className="h-full bg-blue-600 transition-[width] duration-100 ease-out" style={{ width: '0%' }} />
+        <div className="h-full bg-blue-600 transition-[width] duration-100 ease-out" style={{ width: `${progress}%` }} />
       </div>
 
       {/* Hero banner with parallax photo */}
@@ -3469,9 +3471,9 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
       >
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
         {service.image && (
-          <img ref={parallaxImgRef} src={service.image} alt="" aria-hidden="true"
+          <img src={service.image} alt="" aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-25 will-change-transform"
-            style={{ transform: 'translateY(0px)' }}
+            style={{ transform: `translateY(${scrollY * 0.18}px)` }}
             loading="eager" decoding="async" width="1200" height="400"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
@@ -3776,7 +3778,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 });
 
 // ─── PRODUCTS PAGE ────────────────────────────────────────────
-const ProductsPage = memo(({ navigate }) => {
+const ProductsPage = ({ navigate }) => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const categoryScrollRef = useRef(null);
@@ -3865,21 +3867,17 @@ const ProductsPage = memo(({ navigate }) => {
       </div>
     </main>
   );
-});
+};
 
 // ─── COPY BUTTON (used in footer contact infographics) ───────────────
-const CopyBtn = memo(({ text }) => {
+const CopyBtn = ({ text }) => {
   const [copied, setCopied] = useState(false);
-  const timerRef = useRef(null);
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true);
-      if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 2000);
     });
   }, [text]);
-  // cleanup timer on unmount
-  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
   return (
     <button onClick={handleCopy} aria-label={`Copy ${text}`}
       className={`shrink-0 w-9 h-9 flex items-center justify-center rounded-xl border transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
@@ -3887,7 +3885,7 @@ const CopyBtn = memo(({ text }) => {
       {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
     </button>
   );
-});
+};
 
 // ─── INDUSTRY DETAIL PAGE ─────────────────────────────────────────────
 const INDUSTRY_DETAILS = {
@@ -4082,10 +4080,10 @@ const INDUSTRY_PRODUCT_IDS = {
   'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)': 'prod_st3',
 };
 
-const IndustryDetailPage = memo(({ industryId, navigate }) => {
-  const ind = useMemo(() => INDUSTRIES.find(i => i.id === industryId), [industryId]);
-  const detail = useMemo(() => INDUSTRY_DETAILS[industryId], [industryId]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [industryId]);
+const IndustryDetailPage = ({ industryId, navigate }) => {
+  const ind = INDUSTRIES.find(i => i.id === industryId);
+  const detail = INDUSTRY_DETAILS[industryId];
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [industryId]);
 
   if (!ind || !detail) return (
     <main id="main-content" className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
@@ -4269,10 +4267,10 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
       </div>
     </main>
   );
-});
+};
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
-const IndustriesPage = memo(({ navigate }) => (
+const IndustriesPage = ({ navigate }) => (
   <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
       description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
@@ -4388,10 +4386,10 @@ const IndustriesPage = memo(({ navigate }) => (
       </div>
     </div>
   </main>
-));
+);
 
 // ─── CONTACT PAGE ─────────────────────────────────────────────
-const ContactPage = memo(() => {
+const ContactPage = () => {
   const [name, setName] = useState(''); const [email, setEmail] = useState('');
   const [phone, setPhone] = useState(''); const [iType, setIType] = useState('');
   const [details, setDetails] = useState(''); const [status, setStatus] = useState('idle');
@@ -4568,11 +4566,10 @@ const ContactPage = memo(() => {
             </div>
           </div>
         </div>
-        <DigitalProfilesStrip />
       </div>
     </main>
   );
-});
+};
 
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
@@ -4599,28 +4596,24 @@ export default function App() {
     const observeLazy = () => {
       document.querySelectorAll('.lazy-section').forEach(el => io.observe(el));
     };
-    // Run after first paint — store handle for cleanup
-    let idleId = null;
-    let fallbackId = null;
+    // Run after first paint
     if (typeof requestIdleCallback !== 'undefined') {
-      idleId = requestIdleCallback(observeLazy);
+      requestIdleCallback(observeLazy);
     } else {
-      fallbackId = setTimeout(observeLazy, 200);
+      setTimeout(observeLazy, 200);
     }
 
     return () => {
       window.removeEventListener('popstate', h);
       window.removeEventListener('pagehide', handlePageHide);
       io.disconnect();
-      if (idleId !== null && typeof cancelIdleCallback !== 'undefined') cancelIdleCallback(idleId);
-      if (fallbackId !== null) clearTimeout(fallbackId);
     };
   }, []);
 
   const navigate = useCallback((path) => {
     window.history.pushState(null, '', `#${path}`);
     setCurrentPath(path);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }, []);
 
   // PERF: useMemo prevents re-creating page component on every render
