@@ -991,7 +991,6 @@ const MARQUEE_CSS = `
   .ke-marquee:hover,.ke-marquee-slow:hover{animation-play-state:paused}
   .scrollbar-hide::-webkit-scrollbar{display:none}
   .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
-  /* Keep content visible by default; JS reveal can still add .visible without hiding blocks */
   .lazy-section{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
   .lazy-section.visible{opacity:1;transform:none}
 
@@ -1009,25 +1008,24 @@ const MARQUEE_CSS = `
   @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed')}
   @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
 
-  /* PERF: content-visibility on below-fold sections reduces render cost */
+  /* PERF: content-visibility on below-fold sections */
   .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
 
-  /* PERF: image delivery - explicit dimensions prevent layout shifts */
+  /* Prevent all images from overflowing */
   img{max-width:100%;height:auto;display:block}
 
-  /* PERF: Reduce forced reflow - GPU-composited transforms only */
+  /* GPU compositing for marquees */
   .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
 
-  /* PERF: paint containment on heavy sections reduces repaint area */
+  /* Paint containment */
   section:not(.hero-section){contain:paint}
 
-  /* Hero image mobile display fix */
+  /* ─── HERO MOBILE ─── */
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
-    /* Paint image with a built-in dark overlay for consistent mobile coverage and text readability */
     .hero-section{
-      background-image: linear-gradient(to right, rgba(10,25,47,0.95), rgba(10,25,47,0.7), rgba(10,25,47,0.4)), url('hero-background.png');
+      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
       background-size:cover;
       background-position:center center;
       background-repeat:no-repeat;
@@ -1037,11 +1035,10 @@ const MARQUEE_CSS = `
     .hero-mobile-vignette{display:none!important}
     .hero-glow-orb{display:none!important}
     .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
-    /* Reduce main-thread work on mobile - limit expensive blur filters */
     .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
-  /* Font visibility on mobile — only boost contrast inside dark sections, not globally */
+  /* ─── MOBILE TYPOGRAPHY BOOST ─── */
   @media(max-width:640px){
     .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
     .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
@@ -1051,7 +1048,7 @@ const MARQUEE_CSS = `
     .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
 
-  /* Centre section headings on mobile with targeted exceptions */
+  /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
     section h1,section h2,section h3,
     main>div>h1,main>div>h2{text-align:center}
@@ -1068,31 +1065,122 @@ const MARQUEE_CSS = `
     .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
   }
 
-  /* CLS-safe aspect-ratio containers */
+  /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
   .product-img-wrap{aspect-ratio:1/1;contain:layout style;overflow:hidden}
   .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
   .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
 
-  /* Tap targets and safe area on mobile */
+  /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
+  /* Social cards collapse gracefully on small screens */
+  .social-card{
+    min-width:0!important;
+    width:100%;
+    max-width:100%;
+    flex-shrink:1;
+  }
+  @media(max-width:640px){
+    /* Social card grid: 1 column on phones, 2 on wider phones */
+    .social-cards-grid{
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:0.75rem;
+      width:100%;
+    }
+    .social-card{
+      min-width:0!important;
+      padding:0.75rem!important;
+      gap:0.625rem!important;
+    }
+    .social-card .social-handle{font-size:13px!important}
+    .social-card .social-sub{display:none}
+  }
+  @media(max-width:380px){
+    .social-cards-grid{grid-template-columns:1fr}
+  }
+
+  /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
+  .dir-card{
+    min-width:0!important;
+    flex-shrink:1;
+  }
+  @media(max-width:640px){
+    .dir-cards-grid{
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:0.625rem;
+      width:100%;
+    }
+    .dir-card{
+      padding:0.75rem 0.875rem!important;
+      gap:0.5rem!important;
+      min-width:0!important;
+    }
+    .dir-card .dir-badge{font-size:10px!important}
+  }
+  @media(max-width:380px){
+    .dir-cards-grid{grid-template-columns:1fr}
+  }
+
+  /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
+  @media(max-width:640px){
+    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
+    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
+  }
+
+  /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
+  @media(max-width:480px){
+    .fp-card{width:13rem!important}
+  }
+
+  /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
+  @media(max-width:640px){
+    .sd-step-gap{gap:0.875rem!important}
+    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
+  }
+
+  /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
+  .email-link{
+    word-break:break-all;
+    overflow-wrap:anywhere;
+    min-width:0;
+  }
+
+  /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
+  @media(max-width:767px){
+    .timeline-connector{left:1rem!important}
+    .timeline-card{margin-left:3rem!important;margin-right:0!important}
+  }
+
+  /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
+  @media(max-width:480px){
+    .ind-oem-chips{gap:0.375rem!important}
+    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
+  }
+
+  /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
     a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
     .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
-  /* Respect prefers-reduced-motion */
+  /* ─── REDUCED MOTION ─── */
   @media(prefers-reduced-motion:reduce){
     .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
     .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
     *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
   }
 
-  /* Consolidated reusable button patterns - reduces CSS payload */
+  /* ─── REUSABLE BUTTON UTILITIES ─── */
   .btn-primary{background:#2563eb;color:#fff;font-weight:900;border-radius:0.75rem;transition:background 0.2s,transform 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem}
   .btn-primary:hover{background:#3b82f6;transform:translateY(-2px)}
   .btn-wa{background:#25D366;color:#fff;font-weight:900;border-radius:0.75rem;transition:background 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem}
   .btn-wa:hover{background:#1ebe5d}
   .card-hover{transition:box-shadow 0.3s,transform 0.3s,border-color 0.3s}
   .card-hover:hover{box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transform:translateY(-4px)}
+
+  /* ─── GLOBAL OVERFLOW GUARD ─── */
+  html,body{overflow-x:hidden;max-width:100vw}
+  *{box-sizing:border-box}
 `;
 
 // ─── LOCAL BUSINESS JSON-LD SCHEMA ────────────────────────────
@@ -1600,7 +1688,7 @@ const Footer = memo(({ navigate }) => (
                     <a key={p} href={`tel:${p.replace(/\s/g, '')}`}
                       className="flex items-center gap-2.5 w-full bg-white/[0.08] hover:bg-blue-500/20 border border-white/[0.15] hover:border-blue-400/60 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group/phone">
                       <PhoneCall className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
-                      <span className="text-slate-100 font-semibold tracking-wide whitespace-nowrap">{p}</span>
+                      <span className="text-slate-100 font-semibold tracking-wide truncate">{p}</span>
                       <span className="ml-auto text-[10px] text-blue-400 font-black uppercase tracking-widest opacity-0 group-hover/phone:opacity-100 transition-opacity">Tap to Call</span>
                     </a>
                   ))}
@@ -1631,12 +1719,12 @@ const Footer = memo(({ navigate }) => (
         {/* "Follow Us" heading */}
         <div className="flex flex-col items-center mb-8">
           <p className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-5">Connect With Us</p>
-          <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl">
+          <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl social-cards-grid">
 
             {/* ── LinkedIn Card ── */}
             <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer"
               aria-label={`Keshav Enterprises on LinkedIn — ${CONTACT_INFO.linkedinHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#0A66C2]/15 to-[#004182]/10 hover:from-[#0A66C2] hover:to-[#004182] border border-[#0A66C2]/30 hover:border-[#0A66C2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(10,102,194,0.5)] min-w-[220px] overflow-hidden">
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#0A66C2]/15 to-[#004182]/10 hover:from-[#0A66C2] hover:to-[#004182] border border-[#0A66C2]/30 hover:border-[#0A66C2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(10,102,194,0.5)] social-card overflow-hidden">
               {/* Shine sweep on hover */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
               {/* Logo box */}
@@ -1657,7 +1745,7 @@ const Footer = memo(({ navigate }) => (
             {/* ── Instagram Card ── */}
             <a href={CONTACT_INFO.instagram} target="_blank" rel="noopener noreferrer"
               aria-label={`Keshav Enterprises on Instagram — ${CONTACT_INFO.instagramHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#E1306C]/15 via-[#833ab4]/10 to-[#fcb045]/10 hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] border border-[#E1306C]/30 hover:border-transparent px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(225,48,108,0.45)] min-w-[220px] overflow-hidden">
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#E1306C]/15 via-[#833ab4]/10 to-[#fcb045]/10 hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] border border-[#E1306C]/30 hover:border-transparent px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(225,48,108,0.45)] social-card overflow-hidden">
               {/* Shine sweep */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
               {/* Logo box — Instagram gradient */}
@@ -1678,7 +1766,7 @@ const Footer = memo(({ navigate }) => (
             {/* ── Reddit Card ── */}
             <a href={CONTACT_INFO.reddit} target="_blank" rel="noopener noreferrer"
               aria-label={`Keshav Enterprises on Reddit — ${CONTACT_INFO.redditHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF4500]/15 to-[#FF6A33]/10 hover:from-[#FF4500] hover:to-[#FF6A33] border border-[#FF4500]/30 hover:border-[#FF4500] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,69,0,0.45)] min-w-[220px] overflow-hidden">
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF4500]/15 to-[#FF6A33]/10 hover:from-[#FF4500] hover:to-[#FF6A33] border border-[#FF4500]/30 hover:border-[#FF4500] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,69,0,0.45)] social-card overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
               <div className="w-11 h-11 bg-[#FF4500] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-shadow">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -1696,7 +1784,7 @@ const Footer = memo(({ navigate }) => (
             {/* ── YouTube Card ── */}
             <a href={CONTACT_INFO.youtube} target="_blank" rel="noopener noreferrer"
               aria-label={`Keshav Enterprises on YouTube — ${CONTACT_INFO.youtubeHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF0000]/15 to-[#CC0000]/10 hover:from-[#FF0000] hover:to-[#CC0000] border border-[#FF0000]/30 hover:border-[#FF0000] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,0,0,0.45)] min-w-[220px] overflow-hidden">
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF0000]/15 to-[#CC0000]/10 hover:from-[#FF0000] hover:to-[#CC0000] border border-[#FF0000]/30 hover:border-[#FF0000] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,0,0,0.45)] social-card overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
               <div className="w-11 h-11 bg-[#FF0000] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,0,0,0.6)] transition-shadow">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -1714,7 +1802,7 @@ const Footer = memo(({ navigate }) => (
             {/* ── Facebook Card ── */}
             <a href={CONTACT_INFO.facebook} target="_blank" rel="noopener noreferrer"
               aria-label={`Keshav Enterprises on Facebook — ${CONTACT_INFO.facebookHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#1877F2]/15 to-[#145DBF]/10 hover:from-[#1877F2] hover:to-[#145DBF] border border-[#1877F2]/30 hover:border-[#1877F2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(24,119,242,0.45)] min-w-[220px] overflow-hidden">
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#1877F2]/15 to-[#145DBF]/10 hover:from-[#1877F2] hover:to-[#145DBF] border border-[#1877F2]/30 hover:border-[#1877F2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(24,119,242,0.45)] social-card overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
               <div className="w-11 h-11 bg-[#1877F2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(24,119,242,0.6)] transition-shadow">
                 <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -1732,7 +1820,7 @@ const Footer = memo(({ navigate }) => (
             {/* ── Twitter / X Card ── */}
             <a href={CONTACT_INFO.twitter} target="_blank" rel="noopener noreferrer"
               aria-label={`Keshav Enterprises on X (Twitter) — ${CONTACT_INFO.twitterHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-slate-800/60 to-slate-900/40 hover:from-slate-900 hover:to-slate-800 border border-slate-600/30 hover:border-slate-400 px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,255,255,0.1)] min-w-[220px] overflow-hidden">
+              className="group relative flex items-center gap-4 bg-gradient-to-br from-slate-800/60 to-slate-900/40 hover:from-slate-900 hover:to-slate-800 border border-slate-600/30 hover:border-slate-400 px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,255,255,0.1)] social-card overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
               <div className="w-11 h-11 bg-slate-900 border border-slate-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -1840,7 +1928,7 @@ const DigitalProfilesStrip = memo(() => {
             Our business profile is verified and active on every major B2B and local search platform in India.
           </p>
         </div>
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-4 dir-cards-grid">
           {profiles.map((p) => (
             <a
               key={p.name}
@@ -1848,7 +1936,7 @@ const DigitalProfilesStrip = memo(() => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`View Keshav Enterprises on ${p.name}`}
-              className="group flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl px-5 py-4 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[190px]"
+              className="group flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl px-5 py-4 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dir-card"
             >
               <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
                 style={{ backgroundColor: p.badgeBg }}>
@@ -1976,7 +2064,7 @@ const ProductDetailPage = ({ productId, navigate }) => {
                 }
               </div>
               {product.images?.length > 1 && (
-                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]" role="list" aria-label="Product thumbnails">
+                <div className="flex gap-4 w-full overflow-x-auto pb-4 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] thumb-strip" role="list" aria-label="Product thumbnails">
                   {product.images.map((img, idx) => (
                     <button key={idx} role="listitem"
                       onClick={() => { setActiveImg(idx); setImgErr(false); setImgLoaded(false); }}
@@ -2243,7 +2331,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
               key={`${product.id}-${i}`}
               role="listitem"
               onClick={guardClick(() => navigate(`/product/${product.id}`))}
-              className="group flex flex-col shrink-0 w-64 md:w-72 bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-blue-400 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer"
+              className="group flex flex-col shrink-0 w-64 md:w-72 bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-blue-400 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer fp-card"
               aria-label={product.title}>
 
               {/* Image — fixed height prevents CLS */}
@@ -2644,7 +2732,7 @@ const AboutPage = ({ navigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
 
         {/* Company overview */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start mb-16 lg:mb-24">
           <div>
             <span className="eyebrow-label text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">Who We Are</span>
             <h2 className="keep-left text-4xl font-black text-slate-900 tracking-tight mb-5">Engineering Partners for India's Industrial Backbone</h2>
@@ -2718,12 +2806,12 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
           </div>
           <div className="relative">
-            <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-600 via-blue-400 to-blue-200 rounded-full" aria-hidden="true" />
+            <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-600 via-blue-400 to-blue-200 rounded-full timeline-connector" aria-hidden="true" />
             <div className="space-y-10">
               {milestones.map(({ year, title, desc }, i) => (
                 <div key={i} className={`relative flex flex-col md:flex-row gap-8 md:gap-0 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                   <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-md" style={{ top: '1.5rem' }} aria-hidden="true" />
-                  <div className={`ml-12 md:ml-0 md:w-[45%] ${i % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'}`}>
+                  <div className={`ml-12 md:ml-0 md:w-[45%] timeline-card ${i % 2 === 0 ? 'md:mr-auto md:pr-12' : 'md:ml-auto md:pl-12'}`}>
                     <div className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-200 hover:shadow-lg transition-all keep-left">
                       <span className="text-blue-600 text-2xl font-black block mb-1">{year}</span>
                       <h3 className="keep-left font-black text-slate-900 text-lg mb-2 tracking-tight">{title}</h3>
@@ -3187,7 +3275,7 @@ const ServicesPage = ({ navigate }) => (
                       <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">OEM Expertise</p>
                       <div className="flex flex-wrap gap-1.5">
                         {service.oems.slice(0, 6).map(oem => (
-                          <span key={oem} className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10">{oem}</span>
+                          <span key={oem} className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip">{oem}</span>
                         ))}
                         {service.oems.length > 6 && (
                           <span className="text-[10px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">+{service.oems.length - 6} more</span>
@@ -3587,10 +3675,10 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
               </h3>
               <div className="space-y-0">
                 {detail.procedures.map((proc, i) => (
-                  <div key={i} className="sd-reveal flex gap-6 group/step" style={{ animationDelay: `${i * 70}ms` }}>
+                  <div key={i} className="sd-reveal flex gap-6 group/step sd-step-gap" style={{ animationDelay: `${i * 70}ms` }}>
                     <div className="flex flex-col items-center shrink-0">
                       {/* Step circle */}
-                      <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-lg shadow-blue-600/25 shrink-0 group-hover/step:scale-110 group-hover/step:shadow-blue-600/40 transition-all duration-300">
+                      <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-lg shadow-blue-600/25 shrink-0 group-hover/step:scale-110 group-hover/step:shadow-blue-600/40 transition-all duration-300 sd-step-num">
                         {proc.step}
                       </div>
                       {/* Connector line */}
@@ -3833,7 +3921,7 @@ const ProductsPage = ({ navigate }) => {
               <div className="absolute left-0 top-0 bottom-6 w-20 md:w-28 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none" aria-hidden="true" />
             )}
             <button onClick={() => scrollCats('left')} aria-label="Scroll categories left" className={`absolute left-1 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronLeft className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
-            <div ref={categoryScrollRef} onScroll={handleScroll} style={{ scrollPaddingInline: '3.5rem' }} className="flex gap-3 overflow-x-auto w-full pb-6 pt-2 px-14 md:px-16 snap-x snap-mandatory scroll-smooth relative z-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div ref={categoryScrollRef} onScroll={handleScroll} style={{ scrollPaddingInline: '3rem' }} className="flex gap-2 sm:gap-3 overflow-x-auto w-full pb-6 pt-2 px-12 sm:px-14 md:px-16 snap-x snap-mandatory scroll-smooth relative z-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {PRODUCT_CATEGORIES.map(cat => (
                 <button key={cat} onClick={() => setActiveCategory(cat)} aria-pressed={activeCategory === cat}
                   className={`snap-start shrink-0 px-5 py-3 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeCategory === cat ? 'bg-slate-900 text-white border-slate-900 shadow-lg scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'}`}>
@@ -4296,7 +4384,7 @@ const IndustriesPage = ({ navigate }) => (
               <div className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
 
                 {/* ── LEFT PANEL: full background image + overlay infographic ── */}
-                <div className="lg:w-2/5 relative overflow-hidden min-h-[380px] lg:min-h-[440px] flex-shrink-0">
+                <div className="lg:w-2/5 relative overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[440px] flex-shrink-0">
                   {/* Background photo at opacity 90% — upload image to /public with filename from ind.image */}
                   {ind.image && (
                     <img
@@ -4333,7 +4421,7 @@ const IndustriesPage = ({ navigate }) => (
                       <p className={`text-sm font-black ${ind.accent} bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full uppercase tracking-widest border border-white/10 drop-shadow`}>{ind.turbines}</p>
                     </div>
                     {/* Mini use-case pills shown on the image panel */}
-                    <div className="flex flex-wrap justify-center gap-2 max-w-xs">
+                    <div className="flex flex-wrap justify-center gap-2 max-w-xs ind-oem-chips">
                       {ind.useCases.slice(0, 3).map((uc, i) => (
                         <span key={i} className="text-[10px] font-black text-white/90 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full uppercase tracking-wide">
                           {uc.split(' ').slice(0, 3).join(' ')}
@@ -4344,7 +4432,7 @@ const IndustriesPage = ({ navigate }) => (
                 </div>
 
                 {/* ── RIGHT PANEL: description, full use-cases, CTAs ── */}
-                <div className="lg:w-3/5 p-10 lg:p-14 flex flex-col justify-center bg-white">
+                <div className="lg:w-3/5 p-6 sm:p-10 lg:p-14 flex flex-col justify-center bg-white">
                   {/* Section label */}
                   <div className={`inline-flex items-center gap-2 mb-6`}>
                     <div className={`w-2 h-2 rounded-full ${ind.accent.replace('text-', 'bg-')}`} />
@@ -4361,20 +4449,20 @@ const IndustriesPage = ({ navigate }) => (
                       </li>
                     ))}
                   </ul>
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100">
                     <button onClick={e => { e.stopPropagation(); navigate(`/industry/${ind.id}`); }} aria-label={`Explore ${ind.title} solutions in detail`}
-                      className="flex-1 bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all shadow-sm flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 group/btn">
-                      Explore Solutions <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+                      className="bg-blue-600 text-white px-5 py-3.5 rounded-xl font-black hover:bg-blue-500 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 group/btn text-sm">
+                      Explore Solutions <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
                     </button>
                     <button onClick={e => { e.stopPropagation(); navigate('/contact'); }} aria-label={`Get a quote for ${ind.title} services`}
-                      className="flex-1 bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 group/btn">
-                      Get a Quote <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
+                      className="bg-slate-900 text-white px-5 py-3.5 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 group/btn text-sm">
+                      Get a Quote <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" aria-hidden="true" />
                     </button>
                     <a href={waMsg(`Hello KESHAV ENTERPRISES, I need engineering services for my ${ind.title} facility.`)} target="_blank" rel="noopener noreferrer"
                       onClick={e => e.stopPropagation()}
                       aria-label={`WhatsApp inquiry for ${ind.title}`}
-                      className="flex-1 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
-                      <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp
+                      className="bg-[#25D366] text-white px-5 py-3.5 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-2 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 text-sm">
+                      <MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp
                     </a>
                   </div>
                 </div>
@@ -4409,7 +4497,7 @@ const ContactPage = () => {
     const msg = `*New RFQ from Keshav Enterprises Website*\n\n*Company:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n*Inquiry Type:* ${iType}\n\n*Details:*\n${details}`;
     setTimeout(() => { window.open(waMsg(msg), '_blank', 'noopener'); setStatus('success'); }, 800);
   };
-  const inputClass = (err) => `w-full px-5 py-4 bg-slate-50 border rounded-xl font-medium text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
+  const inputClass = (err) => `w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50 border rounded-xl font-medium text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
   return (
     <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Contact Engineering Team — Request a Technical Quote"
