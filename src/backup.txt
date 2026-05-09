@@ -1863,6 +1863,32 @@ const getCategoryIcon = (category) => {
   }
 };
 
+// PERF: preconnect and dns-prefetch injected once at module level —
+// avoids re-querying/creating DOM nodes on every page transition.
+if (typeof document !== 'undefined') {
+  const addLink = (rel, href, crossOrigin) => {
+    const sel = `link[rel="${rel}"][href="${href}"]`;
+    if (!document.querySelector(sel)) {
+      const el = document.createElement('link');
+      el.rel = rel; el.href = href;
+      if (crossOrigin !== undefined) el.crossOrigin = crossOrigin;
+      document.head.appendChild(el);
+    }
+  };
+  addLink('preconnect', 'https://fonts.googleapis.com');
+  addLink('preconnect', 'https://fonts.gstatic.com', '');
+  addLink('dns-prefetch', 'https://api.whatsapp.com');
+  addLink('dns-prefetch', 'https://www.indiamart.com');
+  // Preload hero image for LCP
+  if (!document.querySelector('link[rel="preload"][as="image"]')) {
+    const pl = document.createElement('link');
+    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
+    pl.setAttribute('fetchpriority', 'high');
+    pl.setAttribute('type', 'image/png');
+    document.head.appendChild(pl);
+  }
+}
+
 // ─── SEO HEAD (Accessibility + SEO Fix) ──────────────────────
 // ─── SEO HEAD ─────────────────────────────────────────────────
 // SITE_URL: Update this to your live domain once deployed
@@ -1900,35 +1926,6 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
 
     // ── Canonical ──
     sl('canonical', canonical);
-
-    // ── PERF: Network dependency tree fix — preconnect critical origins early ──
-    // These tell the browser to establish TCP+TLS connections before HTML finishes parsing
-    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.googleapis.com"]')) {
-      sl('preconnect', 'https://fonts.googleapis.com');
-    }
-    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.gstatic.com"]')) {
-      const pc = document.createElement('link');
-      pc.rel = 'preconnect'; pc.href = 'https://fonts.gstatic.com'; pc.crossOrigin = '';
-      document.head.appendChild(pc);
-    }
-    if (!document.querySelector('link[rel="dns-prefetch"][href="https://api.whatsapp.com"]')) {
-      sl('dns-prefetch', 'https://api.whatsapp.com');
-    }
-    if (!document.querySelector('link[rel="dns-prefetch"][href="https://www.indiamart.com"]')) {
-      sl('dns-prefetch', 'https://www.indiamart.com');
-    }
-
-    // ── PERF: LCP request discovery — preload hero image on homepage ──
-    // Without this, the browser discovers the image only after CSS/JS parse
-    if (!canonicalPath || canonicalPath === '/') {
-      if (!document.querySelector('link[rel="preload"][as="image"]')) {
-        const pl = document.createElement('link');
-        pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
-        pl.setAttribute('fetchPriority', 'high');
-        pl.setAttribute('type', 'image/png');
-        document.head.appendChild(pl);
-      }
-    }
 
     // ── Viewport meta ──
     if (!document.querySelector('meta[name="viewport"]')) {
@@ -2112,6 +2109,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
+  // PERF: ref mirrors query so outside-click handler reads current value without
+  // needing query in its dependency array (which would re-register on every keystroke)
+  const queryRef = useRef('');
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
@@ -2128,6 +2128,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
   }, [isSearchOpen]);
 
   const q = query.toLowerCase().trim();
+  // keep ref in sync for the event handler
+  queryRef.current = query;
   const searchResults = useMemo(() => {
     if (!q) return [];
     return [
@@ -2138,26 +2140,24 @@ const Navbar = memo(({ currentPath, navigate }) => {
     ].slice(0, 8);
   }, [q]);
 
+  // PERF: combine outside-click and Escape into one effect with one pair of listeners
   useEffect(() => {
-    const h = (e) => { 
+    const onMouse = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setIsOpen(false);
-        if (!query) setIsSearchOpen(false);
+        // read latest query via ref to avoid adding query to deps (would re-register on every keystroke)
+        setIsSearchOpen(prev => { if (!queryRef.current) return false; return prev; });
       }
     };
-    document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
-  }, [query]);
-
-  useEffect(() => {
-    const h = (e) => { 
-      if (e.key === 'Escape') {
-        setIsOpen(false);
-        setIsSearchOpen(false);
-      }
+    const onKey = (e) => {
+      if (e.key === 'Escape') { setIsOpen(false); setIsSearchOpen(false); }
     };
-    document.addEventListener('keydown', h);
-    return () => document.removeEventListener('keydown', h);
+    document.addEventListener('mousedown', onMouse);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onMouse);
+      document.removeEventListener('keydown', onKey);
+    };
   }, []);
   const isActive = useCallback((path) => {
     if (path === '/' && currentPath !== '/') return false;
@@ -2207,7 +2207,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
                   }
                 }}
                 aria-label="Search"
-                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-md active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-600 hover:text-blue-600 hover:bg-slate-100' : 'text-slate-300 hover:text-white hover:bg-white/10 hover:shadow-white/20'} ${isSearchOpen ? 'ml-1' : ''}`}
+                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60] ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-md'} ${isSearchOpen ? 'ml-1' : ''}`}
               >
                 <Search className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -2263,7 +2263,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
                   setIsSearchOpen(true);
                 }
               }} aria-label="Search products and services"
-              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' : 'text-slate-300 hover:text-white hover:bg-white/10'}`}>
+              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)]' : 'bg-white/20 text-white backdrop-blur-md'}`}>
               <Search className="h-6 w-6" aria-hidden="true" />
             </button>
             <button onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
@@ -2552,49 +2552,57 @@ const Footer = memo(({ navigate }) => (
 ));
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
+// PERF: Defined outside component — constant data, no reason to recreate on every render
+const DIGITAL_PROFILES = [
+  {
+    name: 'Google Business',
+    href: CONTACT_INFO.googleBusiness,
+    badge: 'Google Verified',
+    badgeColor: '#1a56db',
+    badgeBg: '#e8f0fe',
+    imgSrc: 'google-business.webp',
+    imgAlt: 'Google Business',
+  },
+  {
+    name: 'IndiaMART',
+    href: CONTACT_INFO.indiamart,
+    badge: '4.3★ TrustSeal',
+    badgeColor: '#b45309',
+    badgeBg: '#fef3c7',
+    imgSrc: 'indiamart.webp',
+    imgAlt: 'IndiaMART',
+  },
+  {
+    name: 'TradeIndia',
+    href: CONTACT_INFO.tradeindia,
+    badge: 'Verified Supplier',
+    badgeColor: '#1e40af',
+    badgeBg: '#dbeafe',
+    imgSrc: 'tradeindia.webp',
+    imgAlt: 'TradeIndia',
+  },
+  {
+    name: 'ExporterIndia',
+    href: CONTACT_INFO.exportersindia,
+    badge: 'Export Ready',
+    badgeColor: '#166534',
+    badgeBg: '#dcfce7',
+    imgSrc: 'exportersindia.webp',
+    imgAlt: 'ExporterIndia',
+  },
+  {
+    name: 'JustDial',
+    href: CONTACT_INFO.justdial,
+    badge: 'Local Verified',
+    badgeColor: '#9a3412',
+    badgeBg: '#ffedd5',
+    imgSrc: 'justdial.webp',
+    imgAlt: 'JustDial',
+  },
+];
+
 const DigitalProfilesStrip = memo(() => {
-  const profiles = [
-    {
-      name: 'Google Business',
-      href: CONTACT_INFO.googleBusiness,
-      badge: 'Google Verified',
-      badgeColor: '#1a56db',
-      badgeBg: '#e8f0fe',
-      icon: <img src="google-business.webp" alt="Google Business" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'IndiaMART',
-      href: CONTACT_INFO.indiamart,
-      badge: '4.3★ TrustSeal',
-      badgeColor: '#b45309',
-      badgeBg: '#fef3c7',
-      icon: <img src="indiamart.webp" alt="IndiaMART" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'TradeIndia',
-      href: CONTACT_INFO.tradeindia,
-      badge: 'Verified Supplier',
-      badgeColor: '#1e40af',
-      badgeBg: '#dbeafe',
-      icon: <img src="tradeindia.webp" alt="TradeIndia" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'ExporterIndia',
-      href: CONTACT_INFO.exportersindia,
-      badge: 'Export Ready',
-      badgeColor: '#166534',
-      badgeBg: '#dcfce7',
-      icon: <img src="exportersindia.webp" alt="ExporterIndia" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'JustDial',
-      href: CONTACT_INFO.justdial,
-      badge: 'Local Verified',
-      badgeColor: '#9a3412',
-      badgeBg: '#ffedd5',
-      icon: <img src="justdial.webp" alt="JustDial" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-  ];
+  const profiles = DIGITAL_PROFILES;
 
   return (
     <section aria-labelledby="digital-profiles-heading" className="bg-slate-50 py-14 border-t border-slate-200">
@@ -2620,7 +2628,7 @@ const DigitalProfilesStrip = memo(() => {
             >
               <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
                 style={{ backgroundColor: p.badgeBg }}>
-                {p.icon}
+                <img src={p.imgSrc} alt={p.imgAlt} className="w-7 h-7 object-contain" loading="lazy" width="28" height="28" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="font-black text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors truncate">
@@ -2660,7 +2668,8 @@ const FloatingButtons = memo(() => (
 ));
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
-const ProductDetailPage = ({ productId, navigate }) => {
+// PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
+const ProductDetailPage = memo(({ productId, navigate }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -2832,7 +2841,7 @@ const ProductDetailPage = ({ productId, navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 // ─── FEATURED PRODUCTS STRIP ─────────────────────────────────
 // rAF auto-scroll + seamless infinite loop + touch drag + nav arrows
@@ -2855,6 +2864,9 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   const halfW = useMemo(() => products.length * CARD_W, [products.length]);
 
   // ── rAF loop ─────────────────────────────────────────────────
+  // PERF: arrow state is sampled every 12 frames (~5x/s) instead of 60fps
+  // to avoid triggering 60 React re-renders per second from the rAF loop.
+  const frameCount = useRef(0);
   const tick = useCallback(() => {
     const el = trackRef.current;
     if (!el) { rafRef.current = requestAnimationFrame(tick); return; }
@@ -2863,9 +2875,13 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       // seamless reset: when we've scrolled past the first copy, snap back
       if (el.scrollLeft >= halfW) el.scrollLeft -= halfW;
     }
-    // update arrow visibility
-    setCanLeft(el.scrollLeft > 4);
-    setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    // update arrow visibility only every 12 frames (~5 updates/s) to avoid
+    // calling setState 60 times/s which forces 60 full React re-renders/s
+    frameCount.current = (frameCount.current + 1) % 12;
+    if (frameCount.current === 0) {
+      setCanLeft(el.scrollLeft > 4);
+      setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    }
     rafRef.current = requestAnimationFrame(tick);
   }, [halfW]);
 
@@ -3072,22 +3088,31 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 });
 
 // ─── HOME PAGE ────────────────────────────────────────────────
-const HomePage = ({ navigate }) => {
+// PERF: inject global CSS once at module parse time — avoids re-injecting
+// on every HomePage mount and eliminates the <style> element inside JSX.
+if (typeof document !== 'undefined' && !document.getElementById('ke-global-css')) {
+  const styleEl = document.createElement('style');
+  styleEl.id = 'ke-global-css';
+  styleEl.textContent = MARQUEE_CSS;
+  document.head.appendChild(styleEl);
+}
+const FEATURED_PRODUCTS = (() => {
+  const shuffled = [...PRODUCTS];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+})();
+
+const HomePage = memo(({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
-  const featuredProducts = useMemo(() => {
-    const shuffled = [...PRODUCTS];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }, []);
+  const featuredProducts = FEATURED_PRODUCTS;
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
-      <style>{MARQUEE_CSS}</style>
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
         <div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
@@ -3277,7 +3302,7 @@ const HomePage = ({ navigate }) => {
       </section>
     </main>
   );
-};
+});
 
 // ─── ABOUT PAGE ───────────────────────────────────────────────
 const AboutPage = ({ navigate }) => {
@@ -5350,45 +5375,48 @@ const ContactPage = () => {
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash.replace('#', '') || '/');
 
+  // Stable window listeners — registered once
   useEffect(() => {
     const h = () => setCurrentPath(window.location.hash.replace('#', '') || '/');
     window.addEventListener('popstate', h);
 
     // ── PERF: Back/Forward Cache (bfcache) fix ──
     // Prevents "Page prevented back/forward cache restoration" Lighthouse warning.
-    // The main blocker is unload event listeners — we use pagehide instead.
-    // Also ensure no beforeunload listeners are added elsewhere.
     const handlePageHide = () => {/* intentionally empty — keeps bfcache eligible */ };
     window.addEventListener('pagehide', handlePageHide);
 
-    // ── PERF: Intersection Observer for below-fold sections ──
-    // Adds .visible class when sections enter viewport → CSS fade-in
-    // This defers rendering work until content is actually needed
+    return () => {
+      window.removeEventListener('popstate', h);
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, []);
+
+  // ── PERF: Intersection Observer — re-observe after each route change ──
+  // Adds .visible class when sections enter viewport → CSS fade-in.
+  // Runs on every currentPath change so newly mounted lazy-sections are picked up.
+  useEffect(() => {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
-    // Observe all lazy sections (added after paint)
+
     const observeLazy = () => {
-      document.querySelectorAll('.lazy-section').forEach(el => io.observe(el));
+      document.querySelectorAll('.lazy-section:not(.visible)').forEach(el => io.observe(el));
     };
-    // Run after first paint
+
     if (typeof requestIdleCallback !== 'undefined') {
       requestIdleCallback(observeLazy);
     } else {
       setTimeout(observeLazy, 200);
     }
 
-    return () => {
-      window.removeEventListener('popstate', h);
-      window.removeEventListener('pagehide', handlePageHide);
-      io.disconnect();
-    };
-  }, []);
+    return () => { io.disconnect(); };
+  }, [currentPath]);
 
   const navigate = useCallback((path) => {
     window.history.pushState(null, '', `#${path}`);
     setCurrentPath(path);
-    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    // scrollTo does not need rAF wrapping — it is already async and safe to call synchronously
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   // PERF: useMemo prevents re-creating page component on every render

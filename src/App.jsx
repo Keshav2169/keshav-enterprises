@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useRef, useCallback, useMemo, memo, Suspense, lazy
+  useState, useEffect, useRef, useCallback, useMemo, memo, Suspense
 } from 'react';
 import {
   Menu, X, ChevronRight, Phone, Mail, MapPin,
@@ -58,7 +58,7 @@ const NAV_LINKS = [
 const OEMS = ['Triveni', 'Siemens', 'BHEL', 'Belliss & Morcom', 'Maxwatt', 'Man Turbo', 'Chola Turbo', 'DLF-Skoda', 'KKK', 'ABB'];
 
 // PERF FIX: icon map instead of JSX in data arrays (prevents React serialization issues)
-const SERVICE_ICONS = { srv_1: Cog, srv_2: Wrench, srv_3: Hexagon, srv_4: Activity, srv_5: Droplets, srv_6: Target };
+const SERVICE_ICONS = { srv_1: Cog, srv_2: Wrench, srv_3: Hexagon, srv_4: Activity, srv_5: Droplets, srv_6: Target, srv_7: Search };
 
 // IMAGE FILENAMES FOR SERVICES — upload these to your /public folder
 // Each service card will show this as a background image with 90% opacity overlay
@@ -117,6 +117,15 @@ const SERVICES = [
     desc: 'Expert machine alignment using latest technology to eliminate misalignment, one of the primary causes of equipment failure. Covers turbines, gearboxes, pumps, fans, alternators, and induction generators.',
     details: ['Turbine to gearbox & gearbox to mill gearbox alignment', 'Fan, pump, alternator, induction generator alignment', 'Machine levelling & pipe strain measurements on any frame size', 'Fiberizor, shredder alignment', 'Latest alignment technology for highest standards', 'Detailed alignment reporting with exact results', 'Covers any size machine frame in any location'],
     oems: ['All Makes']
+  },
+  {
+    id: 'srv_7',
+    // Upload a photo of engineers diagnosing turbine with vibration analyser / laptop on-site
+    image: 'service-troubleshooting.webp',
+    title: 'Troubleshooting Service',
+    desc: 'Rapid on-site fault diagnosis for steam turbines experiencing vibration, bearing failure, governor instability, steam leakage, oil contamination, or unexpected trips. Ex-OEM engineers deploy with full diagnostic instrumentation for root-cause identification and corrective action.',
+    details: ['High vibration — imbalance, misalignment, bearing wear, rub diagnosis', 'Governor hunting, speed instability & overspeed trip investigation', 'Bearing oil contamination — carbon ring seal & lube system analysis', 'Steam gland leakage — labyrinth seal, packing & gland steam pressure issues', 'Blade fouling, erosion & steam path efficiency loss analysis', 'Unexpected trip investigation — oil pressure, temperature & control system faults', '24x7 emergency deployment across India with all diagnostic equipment'],
+    oems: ['Triveni', 'Siemens', 'BHEL', 'Belliss India', 'Maxwatt', 'Man Turbo', 'KKK', 'ABB']
   },
 ];
 
@@ -1863,6 +1872,32 @@ const getCategoryIcon = (category) => {
   }
 };
 
+// PERF: preconnect and dns-prefetch injected once at module level —
+// avoids re-querying/creating DOM nodes on every page transition.
+if (typeof document !== 'undefined') {
+  const addLink = (rel, href, crossOrigin) => {
+    const sel = `link[rel="${rel}"][href="${href}"]`;
+    if (!document.querySelector(sel)) {
+      const el = document.createElement('link');
+      el.rel = rel; el.href = href;
+      if (crossOrigin !== undefined) el.crossOrigin = crossOrigin;
+      document.head.appendChild(el);
+    }
+  };
+  addLink('preconnect', 'https://fonts.googleapis.com');
+  addLink('preconnect', 'https://fonts.gstatic.com', '');
+  addLink('dns-prefetch', 'https://api.whatsapp.com');
+  addLink('dns-prefetch', 'https://www.indiamart.com');
+  // Preload hero image for LCP
+  if (!document.querySelector('link[rel="preload"][as="image"]')) {
+    const pl = document.createElement('link');
+    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
+    pl.setAttribute('fetchpriority', 'high');
+    pl.setAttribute('type', 'image/png');
+    document.head.appendChild(pl);
+  }
+}
+
 // ─── SEO HEAD (Accessibility + SEO Fix) ──────────────────────
 // ─── SEO HEAD ─────────────────────────────────────────────────
 // SITE_URL: Update this to your live domain once deployed
@@ -1900,35 +1935,6 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
 
     // ── Canonical ──
     sl('canonical', canonical);
-
-    // ── PERF: Network dependency tree fix — preconnect critical origins early ──
-    // These tell the browser to establish TCP+TLS connections before HTML finishes parsing
-    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.googleapis.com"]')) {
-      sl('preconnect', 'https://fonts.googleapis.com');
-    }
-    if (!document.querySelector('link[rel="preconnect"][href="https://fonts.gstatic.com"]')) {
-      const pc = document.createElement('link');
-      pc.rel = 'preconnect'; pc.href = 'https://fonts.gstatic.com'; pc.crossOrigin = '';
-      document.head.appendChild(pc);
-    }
-    if (!document.querySelector('link[rel="dns-prefetch"][href="https://api.whatsapp.com"]')) {
-      sl('dns-prefetch', 'https://api.whatsapp.com');
-    }
-    if (!document.querySelector('link[rel="dns-prefetch"][href="https://www.indiamart.com"]')) {
-      sl('dns-prefetch', 'https://www.indiamart.com');
-    }
-
-    // ── PERF: LCP request discovery — preload hero image on homepage ──
-    // Without this, the browser discovers the image only after CSS/JS parse
-    if (!canonicalPath || canonicalPath === '/') {
-      if (!document.querySelector('link[rel="preload"][as="image"]')) {
-        const pl = document.createElement('link');
-        pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
-        pl.setAttribute('fetchPriority', 'high');
-        pl.setAttribute('type', 'image/png');
-        document.head.appendChild(pl);
-      }
-    }
 
     // ── Viewport meta ──
     if (!document.querySelector('meta[name="viewport"]')) {
@@ -2112,6 +2118,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
+  // PERF: ref mirrors query so outside-click handler reads current value without
+  // needing query in its dependency array (which would re-register on every keystroke)
+  const queryRef = useRef('');
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 20);
@@ -2128,6 +2137,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
   }, [isSearchOpen]);
 
   const q = query.toLowerCase().trim();
+  // keep ref in sync for the event handler
+  queryRef.current = query;
   const searchResults = useMemo(() => {
     if (!q) return [];
     return [
@@ -2138,26 +2149,24 @@ const Navbar = memo(({ currentPath, navigate }) => {
     ].slice(0, 8);
   }, [q]);
 
+  // PERF: combine outside-click and Escape into one effect with one pair of listeners
   useEffect(() => {
-    const h = (e) => { 
+    const onMouse = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setIsOpen(false);
-        if (!query) setIsSearchOpen(false);
+        // read latest query via ref to avoid adding query to deps (would re-register on every keystroke)
+        setIsSearchOpen(prev => { if (!queryRef.current) return false; return prev; });
       }
     };
-    document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
-  }, [query]);
-
-  useEffect(() => {
-    const h = (e) => { 
-      if (e.key === 'Escape') {
-        setIsOpen(false);
-        setIsSearchOpen(false);
-      }
+    const onKey = (e) => {
+      if (e.key === 'Escape') { setIsOpen(false); setIsSearchOpen(false); }
     };
-    document.addEventListener('keydown', h);
-    return () => document.removeEventListener('keydown', h);
+    document.addEventListener('mousedown', onMouse);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onMouse);
+      document.removeEventListener('keydown', onKey);
+    };
   }, []);
   const isActive = useCallback((path) => {
     if (path === '/' && currentPath !== '/') return false;
@@ -2552,49 +2561,57 @@ const Footer = memo(({ navigate }) => (
 ));
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
+// PERF: Defined outside component — constant data, no reason to recreate on every render
+const DIGITAL_PROFILES = [
+  {
+    name: 'Google Business',
+    href: CONTACT_INFO.googleBusiness,
+    badge: 'Google Verified',
+    badgeColor: '#1a56db',
+    badgeBg: '#e8f0fe',
+    imgSrc: 'google-business.webp',
+    imgAlt: 'Google Business',
+  },
+  {
+    name: 'IndiaMART',
+    href: CONTACT_INFO.indiamart,
+    badge: '4.3★ TrustSeal',
+    badgeColor: '#b45309',
+    badgeBg: '#fef3c7',
+    imgSrc: 'indiamart.webp',
+    imgAlt: 'IndiaMART',
+  },
+  {
+    name: 'TradeIndia',
+    href: CONTACT_INFO.tradeindia,
+    badge: 'Verified Supplier',
+    badgeColor: '#1e40af',
+    badgeBg: '#dbeafe',
+    imgSrc: 'tradeindia.webp',
+    imgAlt: 'TradeIndia',
+  },
+  {
+    name: 'ExporterIndia',
+    href: CONTACT_INFO.exportersindia,
+    badge: 'Export Ready',
+    badgeColor: '#166534',
+    badgeBg: '#dcfce7',
+    imgSrc: 'exportersindia.webp',
+    imgAlt: 'ExporterIndia',
+  },
+  {
+    name: 'JustDial',
+    href: CONTACT_INFO.justdial,
+    badge: 'Local Verified',
+    badgeColor: '#9a3412',
+    badgeBg: '#ffedd5',
+    imgSrc: 'justdial.webp',
+    imgAlt: 'JustDial',
+  },
+];
+
 const DigitalProfilesStrip = memo(() => {
-  const profiles = [
-    {
-      name: 'Google Business',
-      href: CONTACT_INFO.googleBusiness,
-      badge: 'Google Verified',
-      badgeColor: '#1a56db',
-      badgeBg: '#e8f0fe',
-      icon: <img src="google-business.webp" alt="Google Business" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'IndiaMART',
-      href: CONTACT_INFO.indiamart,
-      badge: '4.3★ TrustSeal',
-      badgeColor: '#b45309',
-      badgeBg: '#fef3c7',
-      icon: <img src="indiamart.webp" alt="IndiaMART" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'TradeIndia',
-      href: CONTACT_INFO.tradeindia,
-      badge: 'Verified Supplier',
-      badgeColor: '#1e40af',
-      badgeBg: '#dbeafe',
-      icon: <img src="tradeindia.webp" alt="TradeIndia" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'ExporterIndia',
-      href: CONTACT_INFO.exportersindia,
-      badge: 'Export Ready',
-      badgeColor: '#166534',
-      badgeBg: '#dcfce7',
-      icon: <img src="exportersindia.webp" alt="ExporterIndia" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-    {
-      name: 'JustDial',
-      href: CONTACT_INFO.justdial,
-      badge: 'Local Verified',
-      badgeColor: '#9a3412',
-      badgeBg: '#ffedd5',
-      icon: <img src="justdial.webp" alt="JustDial" className="w-7 h-7 object-contain" loading="lazy" />,
-    },
-  ];
+  const profiles = DIGITAL_PROFILES;
 
   return (
     <section aria-labelledby="digital-profiles-heading" className="bg-slate-50 py-14 border-t border-slate-200">
@@ -2620,7 +2637,7 @@ const DigitalProfilesStrip = memo(() => {
             >
               <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
                 style={{ backgroundColor: p.badgeBg }}>
-                {p.icon}
+                <img src={p.imgSrc} alt={p.imgAlt} className="w-7 h-7 object-contain" loading="lazy" width="28" height="28" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="font-black text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors truncate">
@@ -2660,7 +2677,8 @@ const FloatingButtons = memo(() => (
 ));
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
-const ProductDetailPage = ({ productId, navigate }) => {
+// PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
+const ProductDetailPage = memo(({ productId, navigate }) => {
   const [activeImg, setActiveImg] = useState(0);
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -2832,7 +2850,7 @@ const ProductDetailPage = ({ productId, navigate }) => {
       </div>
     </main>
   );
-};
+});
 
 // ─── FEATURED PRODUCTS STRIP ─────────────────────────────────
 // rAF auto-scroll + seamless infinite loop + touch drag + nav arrows
@@ -2855,6 +2873,9 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   const halfW = useMemo(() => products.length * CARD_W, [products.length]);
 
   // ── rAF loop ─────────────────────────────────────────────────
+  // PERF: arrow state is sampled every 12 frames (~5x/s) instead of 60fps
+  // to avoid triggering 60 React re-renders per second from the rAF loop.
+  const frameCount = useRef(0);
   const tick = useCallback(() => {
     const el = trackRef.current;
     if (!el) { rafRef.current = requestAnimationFrame(tick); return; }
@@ -2863,9 +2884,13 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       // seamless reset: when we've scrolled past the first copy, snap back
       if (el.scrollLeft >= halfW) el.scrollLeft -= halfW;
     }
-    // update arrow visibility
-    setCanLeft(el.scrollLeft > 4);
-    setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    // update arrow visibility only every 12 frames (~5 updates/s) to avoid
+    // calling setState 60 times/s which forces 60 full React re-renders/s
+    frameCount.current = (frameCount.current + 1) % 12;
+    if (frameCount.current === 0) {
+      setCanLeft(el.scrollLeft > 4);
+      setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    }
     rafRef.current = requestAnimationFrame(tick);
   }, [halfW]);
 
@@ -3072,22 +3097,31 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 });
 
 // ─── HOME PAGE ────────────────────────────────────────────────
-const HomePage = ({ navigate }) => {
+// PERF: inject global CSS once at module parse time — avoids re-injecting
+// on every HomePage mount and eliminates the <style> element inside JSX.
+if (typeof document !== 'undefined' && !document.getElementById('ke-global-css')) {
+  const styleEl = document.createElement('style');
+  styleEl.id = 'ke-global-css';
+  styleEl.textContent = MARQUEE_CSS;
+  document.head.appendChild(styleEl);
+}
+const FEATURED_PRODUCTS = (() => {
+  const shuffled = [...PRODUCTS];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+})();
+
+const HomePage = memo(({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
-  const featuredProducts = useMemo(() => {
-    const shuffled = [...PRODUCTS];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }, []);
+  const featuredProducts = FEATURED_PRODUCTS;
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
-      <style>{MARQUEE_CSS}</style>
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
         <div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
@@ -3277,7 +3311,7 @@ const HomePage = ({ navigate }) => {
       </section>
     </main>
   );
-};
+});
 
 // ─── ABOUT PAGE ───────────────────────────────────────────────
 const AboutPage = ({ navigate }) => {
@@ -4109,6 +4143,94 @@ const SERVICE_DETAIL_DATA = {
     tools: ["Pruftechnik Rotalign Pro / OPTALIGN series laser alignment system", "SKF TKSA 71 wireless laser alignment equipment", "Precision dial gauge set for soft foot measurement", "Stainless steel precision shim sets (0.025 to 3.0 mm thickness)", "Digital torque wrenches for coupling and foundation bolt torquing", "Vibration analyser for pre and post alignment vibration comparison", "Thermal imaging camera for hot bearing and coupling temperature survey"],
     standards: ["ISO 10816 / ISO 20816 — Mechanical vibration of machines — evaluation criteria", "API 686 — Recommended practice for machinery installation", "OEM alignment tolerances (Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK)", "ISO 1940 — Residual imbalance limits post-alignment correction", "ASME B31.3 — Process piping nozzle load limits at machine connections"],
   },
+  srv_7: {
+    tagline: "Root Cause Found. Corrective Action Deployed. Turbine Back Online.",
+    overview: "Unplanned turbine trips and unexplained performance degradation cost industrial plants millions in lost production every year. A misdiagnosed fault repaired without identifying its root cause will fail again — often sooner than the first time. Keshav Enterprises deploys ex-OEM troubleshooting engineers with full diagnostic instrumentation to identify, document, and rectify the precise root cause of any steam turbine fault — from high vibration and bearing failure to governor instability, oil contamination, and steam leakage. We cover all turbine makes from 5 kW to 27 MW across the full spectrum of India's process and power industries.",
+    procedures: [
+      { step: "01", title: "Emergency Mobilisation & Site Data Collection", desc: "24x7 response deployment to site with full diagnostic kit. Collection of all available operational data: vibration history, trip logs, oil analysis reports, bearing temperature trends, steam condition logs, and maintenance records. Interview of operations and maintenance personnel." },
+      { step: "02", title: "Baseline Vibration & Performance Measurement", desc: "Online vibration measurement at all bearing housings: overall vibration level (mm/s RMS), FFT spectrum analysis, 1X and 2X amplitude and phase, sub-synchronous and high-frequency components. Steam inlet/exhaust pressure, temperature, and flow benchmarked against design duty." },
+      { step: "03", title: "Fault Signature Identification & Hypothesis", desc: "Analysis of vibration spectrum, phase data, bearing temperature map, and oil sample results to build the fault signature. Each potential root cause mapped against the measured evidence: imbalance (dominant 1X), misalignment (2X), bearing wear (sub-synchronous, bearing frequency), rub (sub-harmonics), looseness (harmonics 3X+), or steam path fouling (thermal bow)." },
+      { step: "04", title: "Targeted Strip-Down & Physical Inspection", desc: "Minimum-invasive disassembly targeting the suspected fault zone. Physical measurement of bearing clearances, shaft runout, coupling alignment, gland seal clearances, and labyrinth seal fits compared against OEM specification. Photographic and dimensional documentation of all findings." },
+      { step: "05", title: "Root Cause Confirmation & Report", desc: "Formal root cause analysis (RCA) report combining on-machine data, strip-down measurements, and OEM specification comparison. Root cause classified and confirmed. Contributing factors identified. Corrective action plan with priority ranking and estimated downtime prepared." },
+      { step: "06", title: "Corrective Action Execution", desc: "Direct execution of the corrective action by the same troubleshooting team: rotor re-balancing, bearing replacement, alignment correction, gland seal replacement, lube oil system flush, governor overhaul, or control system calibration. All corrective work documented against OEM specifications." },
+      { step: "07", title: "Post-Repair Commissioning & Trend Monitoring", desc: "Monitored restart with continuous vibration and bearing temperature logging during run-up. Comparison of post-repair vibration levels against pre-fault baseline and OEM acceptance limits. 48-hour trend monitoring with written clearance report before return to full load." },
+    ],
+    tools: [
+      "Multi-channel portable vibration analyser with real-time FFT spectrum (CSI 2140 / SKF Microlog class)",
+      "Proximity probes and eddy current sensors for shaft vibration measurement (API 670)",
+      "Thermal imaging camera (FLIR / Testo class) for bearing and steam path thermal survey",
+      "Stroboscope and phase reference trigger for 1X amplitude and phase angle measurement",
+      "Portable oil particle counter (ISO 11500) for lube oil contamination assessment",
+      "Karl Fischer titrator for free water content measurement in lube oil",
+      "Precision dial gauges and bore gauges for bearing clearance and shaft runout measurement",
+      "Laser shaft alignment system for coupling and bearing alignment confirmation",
+      "Borescope (rigid and flexible) for internal steam path and blade inspection without full strip-down",
+      "XRF PMI analyser for alloy identification of failed components",
+      "Ultrasonic thickness gauge for casing and pipe wall measurement",
+      "Governor calibration equipment and speed reference instruments",
+    ],
+    standards: [
+      "ISO 10816-3 / ISO 20816-3 — Vibration severity limits for industrial machines above 15 kW",
+      "API 670 — Machinery protection: vibration, axial position, and bearing temperature monitoring",
+      "API 612 — Special-purpose steam turbines for petroleum, chemical, and gas service",
+      "ISO 4406:99 — Lube oil cleanliness classification",
+      "ISO 4021 — Hydraulic fluid contamination analysis and sampling",
+      "ASME PTC 6 — Steam turbine performance test code (efficiency benchmarking)",
+      "OEM maintenance and troubleshooting manuals — Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK, ABB",
+    ],
+    faultMatrix: [
+      {
+        symptom: "High vibration — 1X dominant",
+        causes: ["Rotor imbalance (residual or deposit-induced)", "Rotor bow (thermal or mechanical)", "Excessive bearing clearance"],
+        action: "Dynamic balancing, rotor inspection, bearing replacement"
+      },
+      {
+        symptom: "High vibration — 2X dominant",
+        causes: ["Shaft misalignment (angular or offset)", "Coupling fault", "Casing distortion / pipe strain"],
+        action: "Laser alignment, coupling inspection, pipe strain measurement"
+      },
+      {
+        symptom: "Sub-synchronous vibration",
+        causes: ["Oil whirl / oil whip in journal bearings", "Rub-induced instability", "Loose bearing fit"],
+        action: "Bearing clearance reset, lube oil pressure/viscosity check, rub clearance inspection"
+      },
+      {
+        symptom: "High-frequency vibration (>3X)",
+        causes: ["Blade fouling or erosion", "Looseness in foundation or bearing cap", "Gear mesh fault (gearbox)"],
+        action: "Blade inspection (borescope), bearing cap torque check, gearbox inspection"
+      },
+      {
+        symptom: "Bearing oil contamination / water in oil",
+        causes: ["Carbon ring gland seal wear", "Gland steam pressure too high", "Condensate ingress via exhaust"],
+        action: "Carbon ring replacement, gland steam pressure reset, lube oil system flush"
+      },
+      {
+        symptom: "Steam gland leakage",
+        causes: ["Labyrinth seal wear (excessive clearance)", "Gland packing worn or damaged", "Gland steam pressure incorrectly set"],
+        action: "Labyrinth seal replacement, gland packing replacement, gland steam controller calibration"
+      },
+      {
+        symptom: "Governor hunting / speed instability",
+        causes: ["Governor linkage wear or sticktion", "Dirty oil / sludge in PG-PL governor", "Compensation needle valve maladjustment"],
+        action: "Governor linkage overhaul, governor oil flush and refill, needle valve re-calibration"
+      },
+      {
+        symptom: "Low lube oil pressure trip",
+        causes: ["Oil pump wear", "Oil cooler fouling / high oil temperature", "Pressure relief valve stuck open", "Low oil level or cavitation"],
+        action: "Oil pump inspection, cooler cleaning, PRV inspection, oil level and system check"
+      },
+      {
+        symptom: "Overspeed trip — spurious or actual",
+        causes: ["Trip pin wear or incorrect setting", "Governor valve passing steam", "Actuator or control oil fault"],
+        action: "Trip pin inspection and re-setting, governor valve seat inspection, control system check"
+      },
+      {
+        symptom: "Power output / efficiency loss",
+        causes: ["Blade fouling (steam purity / attemperating water contamination)", "Seal strip wear (increased steam bypass)", "Nozzle erosion or blockage"],
+        action: "Borescope inspection, seal strip replacement, nozzle inspection and cleaning"
+      },
+    ],
+  },
 };
 
 // ─── SERVICE DETAIL PAGE ─────────────────────────────────────
@@ -4403,6 +4525,56 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                 ))}
               </ul>
             </section>
+
+            {/* Fault Diagnosis Matrix — only for Troubleshooting Service */}
+            {detail.faultMatrix && (
+              <section aria-labelledby="fault-matrix-heading">
+                <div className="sd-reveal flex items-center gap-4 mb-8">
+                  <span className="w-12 h-0.5 bg-red-500" aria-hidden="true" />
+                  <h2 id="fault-matrix-heading" className="text-red-600 font-black uppercase tracking-widest text-sm">Fault Diagnosis Matrix</h2>
+                </div>
+                <h3 className="sd-reveal text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">
+                  Symptom → Root Cause → Action
+                </h3>
+                <p className="sd-reveal text-slate-500 font-medium text-base mb-10 leading-relaxed">
+                  Our engineers use this systematic fault matrix — built from decades of OEM and field experience — to move from symptom to confirmed root cause in the shortest time possible.
+                </p>
+                <div className="space-y-4">
+                  {detail.faultMatrix.map((row, i) => (
+                    <div key={i}
+                      className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-red-300 hover:shadow-lg transition-all duration-300 group/fm"
+                      style={{ animationDelay: `${i * 60}ms` }}>
+                      {/* Symptom header */}
+                      <div className="flex items-center gap-4 px-6 py-4 bg-slate-900 group-hover/fm:bg-red-950 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/30 flex items-center justify-center shrink-0">
+                          <Activity className="w-4 h-4 text-red-400" aria-hidden="true" />
+                        </div>
+                        <h4 className="font-black text-white text-sm tracking-tight">{row.symptom}</h4>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
+                        {/* Causes */}
+                        <div className="p-5">
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Possible Root Causes</p>
+                          <ul className="space-y-2">
+                            {row.causes.map((c, ci) => (
+                              <li key={ci} className="flex items-start gap-2 text-sm text-slate-700 font-medium leading-relaxed">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" aria-hidden="true" />
+                                {c}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        {/* Action */}
+                        <div className="p-5 bg-blue-50/40">
+                          <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3">Corrective Action</p>
+                          <p className="text-sm text-slate-800 font-semibold leading-relaxed">{row.action}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Standards & Compliance */}
             <section aria-labelledby="standards-heading">
@@ -5350,45 +5522,48 @@ const ContactPage = () => {
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash.replace('#', '') || '/');
 
+  // Stable window listeners — registered once
   useEffect(() => {
     const h = () => setCurrentPath(window.location.hash.replace('#', '') || '/');
     window.addEventListener('popstate', h);
 
     // ── PERF: Back/Forward Cache (bfcache) fix ──
     // Prevents "Page prevented back/forward cache restoration" Lighthouse warning.
-    // The main blocker is unload event listeners — we use pagehide instead.
-    // Also ensure no beforeunload listeners are added elsewhere.
     const handlePageHide = () => {/* intentionally empty — keeps bfcache eligible */ };
     window.addEventListener('pagehide', handlePageHide);
 
-    // ── PERF: Intersection Observer for below-fold sections ──
-    // Adds .visible class when sections enter viewport → CSS fade-in
-    // This defers rendering work until content is actually needed
+    return () => {
+      window.removeEventListener('popstate', h);
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, []);
+
+  // ── PERF: Intersection Observer — re-observe after each route change ──
+  // Adds .visible class when sections enter viewport → CSS fade-in.
+  // Runs on every currentPath change so newly mounted lazy-sections are picked up.
+  useEffect(() => {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
-    // Observe all lazy sections (added after paint)
+
     const observeLazy = () => {
-      document.querySelectorAll('.lazy-section').forEach(el => io.observe(el));
+      document.querySelectorAll('.lazy-section:not(.visible)').forEach(el => io.observe(el));
     };
-    // Run after first paint
+
     if (typeof requestIdleCallback !== 'undefined') {
       requestIdleCallback(observeLazy);
     } else {
       setTimeout(observeLazy, 200);
     }
 
-    return () => {
-      window.removeEventListener('popstate', h);
-      window.removeEventListener('pagehide', handlePageHide);
-      io.disconnect();
-    };
-  }, []);
+    return () => { io.disconnect(); };
+  }, [currentPath]);
 
   const navigate = useCallback((path) => {
     window.history.pushState(null, '', `#${path}`);
     setCurrentPath(path);
-    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    // scrollTo does not need rAF wrapping — it is already async and safe to call synchronously
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   // PERF: useMemo prevents re-creating page component on every render
