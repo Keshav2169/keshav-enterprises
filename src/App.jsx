@@ -2132,9 +2132,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
     if (!q) return [];
     return [
       ...SERVICES.filter(s => s.title?.toLowerCase().includes(q) || s.desc?.toLowerCase().includes(q))
-        .map(s => ({ id: s.id, title: s.title, desc: s.desc, type: 'Service', path: `/service/${s.id}` })),
+        .map(s => ({ id: s.id, title: s.title, desc: s.desc, type: 'Service', path: `/service/${s.id}`, image: s.image })),
       ...RAW_PRODUCTS.filter(p => p.title?.toLowerCase().includes(q) || p.desc?.toLowerCase().includes(q) || p.category?.toLowerCase().includes(q))
-        .map(p => ({ id: p.id, title: p.title, desc: p.desc, type: 'Product', category: p.category, path: `/product/${p.id}` }))
+        .map(p => ({ id: p.id, title: p.title, desc: p.desc, type: 'Product', category: p.category, path: `/product/${p.id}`, image: p.images?.[0] }))
     ].slice(0, 8);
   }, [q]);
 
@@ -2187,14 +2187,14 @@ const Navbar = memo(({ currentPath, navigate }) => {
               onMouseEnter={() => setIsSearchOpen(true)}
               onMouseLeave={() => { if (!query) setIsSearchOpen(false); }}
             >
-              <div className={`flex items-center overflow-hidden transition-all duration-500 ease-in-out ${isSearchOpen ? 'w-56 lg:w-72 opacity-100' : 'w-0 opacity-0'}`}>
+              <div className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-56 lg:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}>
                 <input
                   ref={searchInputRef}
                   type="text"
                   placeholder="Search products & services..."
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  className={`w-full border rounded-full py-2 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${scrolled ? 'bg-slate-100 border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-white/10 border-white/20 text-white placeholder:text-white/60'}`}
+                  className={`w-56 lg:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
                 />
               </div>
               <button 
@@ -2207,7 +2207,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
                   }
                 }}
                 aria-label="Search"
-                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-md active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-600 hover:text-blue-600 hover:bg-slate-100' : 'text-slate-300 hover:text-white hover:bg-white/10 hover:shadow-white/20'} ${isSearchOpen ? 'ml-1' : ''}`}
+                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60] ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-md'} ${isSearchOpen ? 'ml-1' : ''}`}
               >
                 <Search className="w-5 h-5" aria-hidden="true" />
               </button>
@@ -2222,14 +2222,24 @@ const Navbar = memo(({ currentPath, navigate }) => {
                         {searchResults.map(r => (
                           <li key={r.id}>
                             <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                              <div className="flex justify-between items-start">
-                                <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
-                                <div className="flex items-center gap-1 shrink-0 ml-2">
-                                  {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
-                                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                              <div className="flex gap-3 w-full items-center">
+                                <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
+                                  <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
+                                  {r.image && (
+                                    <img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                  <div className="flex justify-between items-start">
+                                    <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
+                                    <div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
+                                      {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
+                                      <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                                    </div>
+                                  </div>
+                                  <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
                                 </div>
                               </div>
-                              <span className="text-xs text-slate-500 line-clamp-1">{r.desc}</span>
                             </button>
                           </li>
                         ))}
@@ -2253,7 +2263,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
                   setIsSearchOpen(true);
                 }
               }} aria-label="Search products and services"
-              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-700 hover:text-blue-600 hover:bg-slate-100' : 'text-slate-300 hover:text-white hover:bg-white/10'}`}>
+              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)]' : 'bg-white/20 text-white backdrop-blur-md'}`}>
               <Search className="h-6 w-6" aria-hidden="true" />
             </button>
             <button onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
@@ -2287,11 +2297,21 @@ const Navbar = memo(({ currentPath, navigate }) => {
                       {searchResults.map(r => (
                         <li key={r.id}>
                           <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:bg-slate-50">
-                            <div className="flex justify-between items-start">
-                              <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
-                              <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0 ml-2 ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                            <div className="flex gap-3 w-full items-center">
+                              <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
+                                <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
+                                {r.image && (
+                                  <img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                <div className="flex justify-between items-start">
+                                  <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
+                                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0 ml-2 mt-0.5 ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                                </div>
+                                <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
+                              </div>
                             </div>
-                            <span className="text-xs text-slate-500 line-clamp-1">{r.desc}</span>
                           </button>
                         </li>
                       ))}
