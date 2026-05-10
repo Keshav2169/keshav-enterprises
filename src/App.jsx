@@ -3340,8 +3340,7 @@ const AboutPage = ({ navigate }) => {
 
         {/* About story background image — upload about-story-bg.webp to /public/
             Recommended: wide industrial turbine workshop/factory floor photo
-            Size: 1920×900px, compressed WebP < 250KB
-            Shows at 18% opacity — adds depth without competing with text */}
+            Size: 1920×900px, compressed WebP < 250KB */}
         <img
           src="about-story-bg.webp"
           alt=""
@@ -3350,14 +3349,14 @@ const AboutPage = ({ navigate }) => {
           height="900"
           loading="eager"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
-          style={{ opacity: 0.18, objectPosition: 'center 40%' }}
+          className="absolute inset-0 w-full h-full pointer-events-none select-none"
+          style={{ opacity: 0.45, objectFit: 'cover', objectPosition: 'center center' }}
           onError={e => { e.target.style.display = 'none'; }}
         />
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/95 via-[#0A192F]/70 to-[#0A192F]/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-transparent to-[#0A192F]/30" />
+        {/* Gradient overlays — left side darker for text legibility, right opens up */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/92 via-[#0A192F]/60 to-[#0A192F]/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/80 via-transparent to-[#0A192F]/40" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 lg:py-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -4055,128 +4054,272 @@ const ServicesPage = ({ navigate }) => (
 const SERVICE_DETAIL_DATA = {
   srv_1: {
     tagline: "OEM-Coordinated Erection from First Foundation Bolt to First Steam",
-    overview: "Turbine erection and commissioning is the most critical phase of any power plant or industrial project. Errors during erection — incorrect alignment, improper clearances, wrong torques — compound into expensive failures within the first year of operation. Keshav Enterprises brings ex-OEM field engineers who have commissioned Triveni, Siemens, BHEL, Belliss, and Maxwatt turbines across power plants, sugar mills, paper mills, and process industries.",
-    procedures: [
-      { step: "01", title: "Pre-Erection Engineering Review", desc: "Detailed review of OEM erection manual, GA drawings, P&IDs, and civil foundation drawings. Identification of all hold points, witness points, and documentation requirements before first equipment lift." },
-      { step: "02", title: "Foundation & Baseplate Preparation", desc: "Precision levelling and grouting of turbine baseplate. Chock machining and installation. Foundation bolt tensioning to OEM-specified torques. Epoxy grout preparation and cure monitoring." },
-      { step: "03", title: "Equipment Setting & Rough Alignment", desc: "Positioning of turbine casing, gearbox, and driven equipment on baseplates. Rough shaft alignment using dial gauges and laser equipment to within 0.1 mm before coupling fit." },
-      { step: "04", title: "Internal Assembly & Clearance Setting", desc: "Rotor drop measurement, gland clearance setting, labyrinth seal fit, bearing installation, and oil system flush. All clearances recorded against OEM specification in the site clearance register." },
-      { step: "05", title: "Piping & Auxiliary Systems Connection", desc: "Steam inlet, exhaust, extraction, and drain piping connections with correct pipe support and no imposed loads on turbine nozzles beyond OEM limits. Lube oil, control oil, and instrumentation piping." },
-      { step: "06", title: "Pre-Commissioning Checks & Flushing", desc: "Lube oil system flush to ISO 4406 cleanliness standard. Control and trip system functional checks. Safety system proof tests: over-speed trip, low oil pressure trip, and all protective devices." },
-      { step: "07", title: "First Fire, Run-Up & Commissioning", desc: "Controlled first start, listening test at slow roll. Speed run-up in stages with vibration monitoring. Governor response and over-speed trip test at 110% rated speed. Load acceptance and operational handover." },
+    accentColor: "#2563eb",
+    keyStats: [
+      { value: "10+", label: "OEM Makes Commissioned" },
+      { value: "5kW–27MW", label: "Power Range Handled" },
+      { value: "100%", label: "OEM-Spec Documentation" },
+      { value: "24×7", label: "Site Support Available" },
     ],
-    tools: ["Laser shaft alignment systems (Pruftechnik Rotalign / SKF TKSA series)", "CMM and precision dial gauge sets for bearing and clearance measurement", "Hydraulic torque wrenches and calibrated torque multipliers", "Portable vibration analyser (real-time FFT) for run-up monitoring", "Borescope and optical instruments for internal inspection", "Thermocouple data-loggers for thermal survey during first run", "Ultrasonic flow meters for pipeline commissioning verification"],
-    standards: ["OEM erection and commissioning manuals (Triveni, Siemens, BHEL, Belliss, Maxwatt)", "ASME PTC 6 — Steam Turbines Performance Test Code", "ISO 10816 / ISO 20816 — Mechanical vibration limits for rotating machinery", "API 670 — Machinery protection systems for over-speed and vibration trips", "IS 3639 — Foundation bolt standards", "Client pre-commissioning and commissioning procedures"],
+    whyUs: "A single clearance set wrong during erection can destroy a bearing within hours of first steam. Our ex-OEM field engineers have personally commissioned the same machine types you're installing — they know exactly what the OEM specification means in practice, not just on paper.",
+    overview: "Turbine erection and commissioning is the most critical phase of any power plant or industrial project. Errors during erection — incorrect alignment, improper clearances, wrong torques — compound into expensive failures within the first year of operation. Keshav Enterprises brings ex-OEM field engineers who have commissioned Triveni, Siemens, BHEL, Belliss, and Maxwatt turbines across power plants, sugar mills, paper mills, and process industries. Every hold point is witnessed, every clearance is recorded, and every safety system is proof-tested before steam is admitted. Our documentation package meets client, insurer, and OEM handover requirements.",
+    procedures: [
+      { step: "01", title: "Pre-Erection Engineering Review", icon: BookOpen, desc: "Detailed review of OEM erection manual, GA drawings, P&IDs, and civil foundation drawings. Identification of all hold points, witness points, and documentation requirements before first equipment lift. Erection sequence and critical path agreed with client project team." },
+      { step: "02", title: "Foundation & Baseplate Preparation", icon: Layers, desc: "Precision levelling and grouting of turbine baseplate to within 0.05 mm/m. Chock machining and installation. Foundation bolt tensioning to OEM-specified torques using calibrated hydraulic wrenches. Epoxy grout preparation, pouring, and cure monitoring with temperature logging." },
+      { step: "03", title: "Equipment Setting & Rough Alignment", icon: Target, desc: "Precision positioning of turbine casing, gearbox, and driven equipment on baseplates. Rough shaft alignment using dial gauges and laser equipment to within 0.1 mm before coupling fit. Soft foot check and correction at all machine feet before final alignment." },
+      { step: "04", title: "Internal Assembly & Clearance Setting", icon: Cog, desc: "Rotor drop measurement, gland clearance setting (radial and axial), labyrinth seal fit, thrust bearing installation, and journal bearing clearance setting. All clearances recorded against OEM specification in the site clearance register. Rotor end float measured and confirmed within OEM limits." },
+      { step: "05", title: "Piping & Auxiliary Systems Connection", icon: Activity, desc: "Steam inlet, exhaust, extraction, and drain piping connections with correct pipe support and spring hangers. Nozzle loads verified within OEM limits — pipe strain eliminated before final connection. Lube oil, control oil, gland steam, and instrumentation piping completed and leak-tested." },
+      { step: "06", title: "Pre-Commissioning Checks & Flushing", icon: Droplets, desc: "Lube oil system flush to ISO 4406 cleanliness standard, confirmed by particle count. Control and trip system functional checks. Safety system proof tests performed and documented: over-speed trip, low oil pressure trip, high bearing temperature trip, emergency stop valve operation." },
+      { step: "07", title: "First Fire, Run-Up & Commissioning", icon: Zap, desc: "Controlled first start with listening test at slow roll. Speed run-up in defined stages with continuous vibration and bearing temperature monitoring. Governor response and dead-band testing. Over-speed trip test at 110% rated speed. Load acceptance testing and full-load operational handover with commissioning report." },
+    ],
+    tools: [
+      { name: "Laser Shaft Alignment", detail: "Pruftechnik Rotalign Pro / SKF TKSA series", icon: Target },
+      { name: "Vibration Analyser", detail: "Real-time FFT, 8-channel data acquisition", icon: Activity },
+      { name: "Precision Dial Gauges", detail: "0.001 mm resolution, CMM-grade", icon: Cog },
+      { name: "Hydraulic Torque Wrenches", detail: "Calibrated torque multipliers for foundation bolts", icon: Wrench },
+      { name: "Borescope", detail: "Rigid & flexible for internal inspection", icon: Search },
+      { name: "Thermocouple Loggers", detail: "Multi-point thermal survey during first run", icon: TrendingUp },
+      { name: "Ultrasonic Flow Meters", detail: "Pipeline commissioning flow verification", icon: Droplets },
+    ],
+    standards: [
+      { code: "ASME PTC 6", desc: "Steam Turbines Performance Test Code", body: "ASME" },
+      { code: "ISO 10816 / 20816", desc: "Mechanical vibration limits for rotating machinery", body: "ISO" },
+      { code: "API 670", desc: "Machinery protection: over-speed and vibration trips", body: "API" },
+      { code: "API 686", desc: "Recommended practice for machinery installation", body: "API" },
+      { code: "IS 3639", desc: "Foundation bolt and anchor standards", body: "BIS" },
+      { code: "OEM Manuals", desc: "Triveni, Siemens, BHEL, Belliss, Maxwatt erection procedures", body: "OEM" },
+    ],
   },
   srv_2: {
     tagline: "Turnkey Shutdown Planning to Zero-Defect Restart",
-    overview: "Turbine overhauling is not a maintenance activity — it is a precision engineering intervention. A poorly executed overhaul can cause premature bearing failure, increased vibration, seal leaks, and unplanned shutdowns within weeks. Keshav Enterprises deploys ex-OEM engineers — engineers who built and commissioned these machines — to execute overhauls on Triveni, Siemens, BHEL, Belliss, Maxwatt, Man Turbo, KKK, and ABB turbines with the discipline and documentation standards of the original manufacturer.",
-    procedures: [
-      { step: "01", title: "Pre-Shutdown Planning & Scope Finalization", desc: "Review of previous overhaul records, operational history, and vibration/performance trends. Definition of scope, critical spares list, and manpower mobilization 4 to 6 weeks ahead of shutdown date." },
-      { step: "02", title: "Site Mobilization & Tooling Setup", desc: "Deployment of full overhaul tool kit: hydraulic jacks, chain blocks, rotor handling slings, precision measurement instruments, lapping tools, and dedicated overhaul documentation package." },
-      { step: "03", title: "Disassembly & Initial Inspection", desc: "Controlled disassembly with all critical pre-disassembly measurements recorded: bearing clearances, shaft runout, gland clearances, coupling alignment. Photographic condition documentation of every component." },
-      { step: "04", title: "Component Inspection & Condition Reporting", desc: "Visual, dimensional, and NDT inspection of rotor, blades, bearings, glands, casing, valves, and coupling. Written condition report with recommendations for each component: replace, repair, or reuse." },
-      { step: "05", title: "Component Repair & Spare Part Installation", desc: "Babbitt re-metalling and machining, labyrinth seal replacement, blade inspection and replacement, journal polishing, casing joint face lapping, gland packing replacement, valve seat lapping." },
-      { step: "06", title: "Reassembly & Clearance Setting", desc: "Precise reassembly with all clearances set and recorded against OEM specification: bearing clearances, labyrinth seal radial and axial clearances, gland clearances, coupling alignment, and rotor end float." },
-      { step: "07", title: "Recommissioning & Handover", desc: "Lube oil system recommissioning flush. Safety system proof test (over-speed, low oil pressure). Monitored start-up with vibration and temperature trending. Handover with complete overhaul documentation package." },
+    accentColor: "#0891b2",
+    keyStats: [
+      { value: "8+", label: "OEM Makes Overhauled" },
+      { value: "20+", label: "Years Field Experience" },
+      { value: "0.001mm", label: "Clearance Resolution" },
+      { value: "24×7", label: "Emergency Response" },
     ],
-    tools: ["Precision dial gauge sets and bore gauges for clearance measurement (0.001 mm resolution)", "Laser shaft alignment system for final coupling alignment", "Portable dynamic balancing machine for in-situ rotor trim balancing", "Babbitt melting and centrifugal casting equipment for bearing re-metalling", "Surface lapping plates and precision lapping compound (all grades)", "Ultrasonic thickness gauges for casing wall measurement", "Portable vibration analyser with 8-channel data acquisition"],
-    standards: ["OEM overhaul manuals (Triveni, Siemens, BHEL, Belliss, Maxwatt, Man Turbo, KKK, ABB)", "ISO 1940 — Dynamic balancing quality grades for rotating components", "API 670 — Vibration and over-speed protection system standards", "API 614 — Lubrication, shaft sealing, and oil-control systems", "ASME B31.1 — Power piping for steam connections", "Client quality plans and overhaul procedures"],
+    whyUs: "A poorly executed overhaul is worse than no overhaul — it introduces new clearance errors, contamination, and re-assembly faults. Our engineers were trained by the OEMs. They know what tolerances actually mean at operating temperature and speed, not just what they say in the manual.",
+    overview: "Turbine overhauling is not a maintenance activity — it is a precision engineering intervention. Keshav Enterprises deploys ex-OEM engineers from Triveni, Siemens, BHEL, Belliss, Maxwatt, Man Turbo, KKK, and ABB to execute turnkey overhauls with the same discipline and documentation standards as the original manufacturer. Every overhaul begins 4–6 weeks before shutdown with scope finalisation, spares pre-inspection, and manpower mobilisation planning. Every component is measured before disassembly, during strip-down, and after reassembly. A written condition report, clearance register, and photographic record is produced for every overhaul — creating a baseline for the next outage.",
+    procedures: [
+      { step: "01", title: "Pre-Shutdown Planning & Scope Finalization", icon: BookOpen, desc: "Review of previous overhaul records, operational data, vibration history, and performance trends 4–6 weeks before shutdown. Definition of scope, critical spares list, consumables list, and manpower mobilisation plan. Pre-shutdown inspection of stocked spare parts with shortfall report issued to client." },
+      { step: "02", title: "Site Mobilization & Tooling Setup", icon: Wrench, desc: "Full overhaul tool kit deployed: hydraulic jacks, precision chain blocks, rotor handling slings, dedicated measurement instruments, lapping tools, and the complete overhaul documentation package. Tool condition checks and instrument calibration verification before work begins." },
+      { step: "03", title: "Disassembly & Initial Inspection", icon: Search, desc: "Controlled disassembly with all pre-disassembly measurements recorded: bearing clearances, shaft runout, gland clearances, coupling alignment, and rotor end float. Every component photographed. Condition noted against OEM specification before cleaning." },
+      { step: "04", title: "Component Inspection & Condition Reporting", icon: Activity, desc: "Visual, dimensional, and NDT inspection of rotor, blades, bearings, glands, casing, all valves, and coupling. Crack detection using dye penetrant or magnetic particle methods on critical components. Written condition report with specific recommendation for each component: replace, repair, or reuse with justification." },
+      { step: "05", title: "Component Repair & Spare Part Installation", icon: Cog, desc: "Babbitt re-metalling and precision machining of journal bearings, labyrinth seal replacement, blade inspection and selective replacement, journal polishing (Ra 0.4 μm), casing joint face lapping, gland packing replacement, and valve seat lapping to blue-match standard." },
+      { step: "06", title: "Reassembly & Clearance Setting", icon: Target, desc: "Precise reassembly with all clearances set and recorded against OEM specification: journal bearing clearances (diametral and axial), labyrinth seal radial and axial clearances, gland clearances, coupling alignment, and rotor end float. All readings entered in the clearance register and compared against previous overhaul baseline." },
+      { step: "07", title: "Recommissioning & Handover", icon: Zap, desc: "Post-overhaul lube oil system recommissioning flush to ISO 4406. Safety system proof test: over-speed trip, low oil pressure trip, emergency stop valve. Monitored start-up with vibration and bearing temperature trending. Written clearance for full load with complete overhaul documentation package handed to client." },
+    ],
+    tools: [
+      { name: "Precision Dial & Bore Gauges", detail: "0.001 mm resolution clearance measurement", icon: Target },
+      { name: "Laser Shaft Alignment", detail: "Final coupling alignment verification", icon: Activity },
+      { name: "Portable Balancing Machine", detail: "In-situ rotor trim balancing", icon: Cog },
+      { name: "Babbitt Casting Equipment", detail: "Centrifugal casting for bearing re-metalling", icon: Factory },
+      { name: "Surface Lapping Plates", detail: "All grades for valve seats and casing faces", icon: Layers },
+      { name: "Ultrasonic Thickness Gauge", detail: "Casing wall erosion measurement", icon: Search },
+      { name: "8-Channel Vibration Analyser", detail: "Real-time FFT during monitored restart", icon: TrendingUp },
+    ],
+    standards: [
+      { code: "API 614", desc: "Lubrication, shaft sealing, and oil-control systems", body: "API" },
+      { code: "API 670", desc: "Vibration and over-speed protection systems", body: "API" },
+      { code: "ISO 1940", desc: "Dynamic balancing quality grades for rotating components", body: "ISO" },
+      { code: "ASME B31.1", desc: "Power piping for steam connections", body: "ASME" },
+      { code: "ISO 9001", desc: "Quality management system for overhaul documentation", body: "ISO" },
+      { code: "OEM Manuals", desc: "Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK, ABB", body: "OEM" },
+    ],
   },
   srv_3: {
-    tagline: "3D Scanning to Production Drawing in the Shortest Lead Time",
-    overview: "When OEM drawings are unavailable, obsolete, or the OEM no longer supports the machine, Keshav Enterprises can reverse-engineer any turbine component from 5 kW to 27 MW to full production-ready drawings. Our process uses 3D laser scanners, CMM (Coordinate Measuring Machines), and PMI material identification — the same tools used by major OEM engineering teams — to generate complete manufacturing drawings with all tolerances, surface finishes, and material specifications.",
-    procedures: [
-      { step: "01", title: "Component Receipt & Initial Assessment", desc: "Safe receipt of the worn or original component. Initial visual inspection, cleaning, and photography. Assessment of damage, wear, and critical measurement surfaces to determine the measurement strategy." },
-      { step: "02", title: "PMI Material Identification", desc: "Positive Material Identification (PMI) using XRF (X-ray fluorescence) analyzer to identify the exact alloy composition. Hardness testing to determine heat treatment condition. Material specification confirmed before measurement begins." },
-      { step: "03", title: "3D Laser Scanning & CMM Measurement", desc: "Full 3D scan of the component exterior using portable laser scanner. Critical internal dimensions and tolerances (bore, keyway, spline, thread) measured using CMM. Datum scheme established from functional surfaces." },
-      { step: "04", title: "Engineering Drawing Generation", desc: "CAD model developed from scan data. Full 2D manufacturing drawing produced with: all linear dimensions, GD&T tolerances (concentricity, parallelism, roundness), surface finish callouts (Ra values), thread standards, and datum references." },
-      { step: "05", title: "Heat Treatment & Surface Treatment Specification", desc: "Specification of pre-machining, rough machining, pre-heat treatment, and final machining sequences. Heat treatment conditions (hardening, tempering, annealing, nitriding) specified with temperature, time, and quench medium." },
-      { step: "06", title: "Material Procurement & Manufacturing", desc: "Material procurement against PMI-identified specification with EN 10204 3.1 mill certificate. CNC machining through defined stages. In-process dimensional inspection at each machining stage." },
-      { step: "07", title: "Final Inspection & Delivery", desc: "Dimensional inspection report against the engineering drawing. PMI re-verification on finished component. Surface finish measurement. Hardness testing. Full documentation pack supplied with the component." },
+    tagline: "3D Scanning to Production Drawing — Eliminating OEM Dependency",
+    accentColor: "#7c3aed",
+    keyStats: [
+      { value: "5kW–27MW", label: "Turbine Range Covered" },
+      { value: "0.001mm", label: "CMM Measurement Resolution" },
+      { value: "100%", label: "PMI Material Verified" },
+      { value: "GD&T", label: "Full Tolerance Drawings" },
     ],
-    tools: ["Portable 3D laser scanner (Faro Focus / Creaform HandySCAN class)", "CMM (Coordinate Measuring Machine) — bridge type and portable arm", "XRF PMI analyzer (Olympus Vanta / similar) for alloy identification", "Hardness tester (Rockwell, Brinell, Vickers) for heat treatment verification", "Surface roughness tester (profilometer) for Ra measurement", "Copying lathe with digital readout for rotational component replication", "CAD software: SolidWorks / AutoCAD for drawing generation"],
-    standards: ["ISO 1101 — Geometrical tolerances (GD&T)", "ISO 286 — Limits and fits system for shafts and bores", "ISO 1302 — Surface texture indication on drawings", "ASTM E1417 / EN 1330 — PMI and NDT standards", "EN 10204 — Material traceability certificates", "Client engineering drawing approval procedures"],
+    whyUs: "When an OEM stops supporting a machine, a simple worn rotor or broken diaphragm can force a plant shutdown for months. Our reverse engineering process recreates the exact material, geometry, and heat treatment specification — with full manufacturing drawings — so any competent machine shop can manufacture the part.",
+    overview: "When OEM drawings are unavailable, the OEM is no longer active, or lead times are measured in years, Keshav Enterprises can reverse-engineer any turbine component from 5 kW to 27 MW to a full production-ready drawing set. Our process uses 3D laser scanners, CMM coordinate measuring machines, and XRF PMI material identification — the same tools used by major OEM engineering teams — to generate complete manufacturing drawings with all tolerances, surface finishes, heat treatment sequences, and material specifications. We have successfully reverse-engineered rotors, diaphragms, nozzle blocks, labyrinth seals, bearings, governors, and steam path components for Triveni, Siemens, BHEL, DLF-Skoda, Belliss, and Maxwatt turbines.",
+    procedures: [
+      { step: "01", title: "Component Receipt & Initial Assessment", icon: Search, desc: "Safe receipt of the worn or original reference component. Initial visual inspection, cleaning, and comprehensive photography. Assessment of damage, wear zones, and critical measurement surfaces to determine the optimal measurement strategy and datum scheme before any measurement begins." },
+      { step: "02", title: "PMI Material Identification", icon: Shield, desc: "Positive Material Identification using XRF (X-ray fluorescence) analyser on multiple locations to identify exact alloy composition. Hardness testing (Rockwell, Brinell, Vickers) to determine heat treatment condition. Material grade confirmed and matched to nearest current standard before measurement begins — no guessing on alloy." },
+      { step: "03", title: "3D Laser Scanning & CMM Measurement", icon: Hexagon, desc: "Full 3D scan of component exterior using portable laser scanner — point cloud accuracy to 0.05 mm. Critical internal dimensions and tolerances (bore, keyway, spline, thread form, pitch, and lead) measured on CMM with 0.001 mm resolution. Datum scheme established from functional bearing surfaces." },
+      { step: "04", title: "Engineering Drawing Generation", icon: BookOpen, desc: "CAD model developed from scan data and CMM measurements. Full 2D manufacturing drawing produced with: all linear and angular dimensions, GD&T tolerances (concentricity, cylindricity, parallelism, roundness, runout), surface finish callouts (Ra values in μm), thread form and class standards, and a complete datum reference frame." },
+      { step: "05", title: "Heat Treatment & Surface Treatment Specification", icon: Zap, desc: "Full machining sequence defined: pre-machining stress relief, rough machining, normalising or hardening, pre-final and final machining stages. Heat treatment conditions specified with temperature (°C), soak time, quench medium, and target hardness. Surface treatment specs: nitriding depth, case hardness, carburising, or hard chrome plating as required." },
+      { step: "06", title: "Material Procurement & Manufacturing", icon: Factory, desc: "Material procured against PMI-identified specification with EN 10204 Type 3.1 mill certificate. CNC machining executed through each defined stage with in-process dimensional inspection at each stage. All inspection data recorded in a manufacturing data pack." },
+      { step: "07", title: "Final Inspection & Delivery", icon: CheckCircle2, desc: "Complete dimensional inspection report against the engineering drawing. PMI re-verification on the finished component confirms correct alloy was used throughout. Surface finish measurement. Hardness testing on critical surfaces. Full traceability documentation pack supplied with every component." },
+    ],
+    tools: [
+      { name: "3D Laser Scanner", detail: "Faro Focus / Creaform HandySCAN — 0.05 mm accuracy", icon: Hexagon },
+      { name: "CMM — Coordinate Measuring Machine", detail: "Bridge type & portable arm, 0.001 mm resolution", icon: Target },
+      { name: "XRF PMI Analyser", detail: "Olympus Vanta — alloy identification on-site", icon: Search },
+      { name: "Hardness Tester", detail: "Rockwell, Brinell, Vickers — heat treatment verification", icon: Shield },
+      { name: "Profilometer", detail: "Surface roughness tester — Ra 0.001 μm resolution", icon: Activity },
+      { name: "Copying Lathe", detail: "Digital readout for rotational component replication", icon: Cog },
+      { name: "CAD Software", detail: "SolidWorks / AutoCAD — GD&T drawing generation", icon: BookOpen },
+    ],
+    standards: [
+      { code: "ISO 1101", desc: "Geometrical tolerancing (GD&T) for drawings", body: "ISO" },
+      { code: "ISO 286", desc: "Limits and fits system for shafts and bores", body: "ISO" },
+      { code: "ISO 1302", desc: "Surface texture indication on engineering drawings", body: "ISO" },
+      { code: "EN 10204", desc: "Material traceability certificates (Type 3.1)", body: "EN" },
+      { code: "ASTM E1417", desc: "PMI and NDT testing standards", body: "ASTM" },
+      { code: "OEM Specification", desc: "Matched to original OEM material and tolerance intent", body: "OEM" },
+    ],
   },
   srv_4: {
-    tagline: "Precision Machining and ISO-Grade Balancing for Zero-Vibration Rotors",
-    overview: "Rotor imbalance is one of the most common causes of turbine bearing failure, increased vibration, and shortened rotor life. Even a small mass eccentricity in a high-speed rotor generates forces that grow with the square of speed — a rotor running at 3,000 RPM generates 100 times more force from the same imbalance than at 300 RPM. Keshav Enterprises performs precision journal machining and ISO 1940 / API 670 standard dynamic balancing for rotors from 50 kg to 2,000 kg at our dedicated workshop facility.",
-    procedures: [
-      { step: "01", title: "Rotor Receipt & Initial Measurement", desc: "Rotor received and cleaned. Initial mechanical and electrical runout measurement using precision dial gauges on a static balancing stand. All journal diameters measured and recorded versus OEM specification." },
-      { step: "02", title: "Journal Condition Assessment", desc: "Surface finish measurement (profilometer), visual inspection for scoring, corrosion, and wear patterns. Hardness check. Assessment of minimum material removal required to restore bearing surface finish and geometry." },
-      { step: "03", title: "Journal Grinding & Polishing", desc: "Precision cylindrical grinding of journals to restore roundness (0.005 mm max) and taper (0.005 mm/100 mm max). Ground surface polished to Ra 0.4 um or better — OEM bearing surface specification. Minimum material removed." },
-      { step: "04", title: "Labyrinth & Gland Portion Machining", desc: "Concentric re-machining of labyrinth seal lands, gland areas, and coupling fits on precision CNC lathes. All surfaces set concentric to journal datum before machining to maintain rotor geometric integrity." },
-      { step: "05", title: "Dynamic Balancing — Two-Plane Correction", desc: "Rotor mounted in hard-bearing dynamic balancing machine. Initial unbalance measured in two correction planes. Correction weights removed or added. Balancing repeated until residual unbalance meets ISO 1940 / API 670 grade." },
-      { step: "06", title: "Post-Balance Runout Check", desc: "Mechanical and electrical runout re-measured post-balancing. Comparison against pre-balance readings confirms improvement. Final measurements recorded in the balancing report." },
-      { step: "07", title: "Documentation & Dispatch", desc: "Complete balancing report: initial unbalance, correction planes, correction masses, final residual unbalance, balance grade achieved (G1.0, G2.5, etc.), and runout measurements. PMI and hardness certificates attached." },
+    tagline: "ISO-Grade Balancing — Because Rotor Forces Grow With the Square of Speed",
+    accentColor: "#d97706",
+    keyStats: [
+      { value: "50–2000kg", label: "Rotor Capacity" },
+      { value: "G1.0", label: "Balance Grade Achievable" },
+      { value: "0.001mm", label: "Dial Gauge Resolution" },
+      { value: "ISO/API", label: "Certified Standards" },
     ],
-    tools: ["Hard-bearing dynamic balancing machine: 50 to 2,000 kg capacity, 100 to 10,000 RPM", "CNC cylindrical grinding machine with precision dressing system", "Precision polishing lathe with microfinish capability", "Profilometer (surface roughness tester) — Ra 0.001 um resolution", "Precision dial gauges (0.001 mm) and runout stands", "Portable balancing analyzer for in-situ field balancing", "Digital stroboscope and phase angle measurement equipment"],
-    standards: ["ISO 1940-1 — Balance quality requirements for rigid rotors", "API 670 — Vibration, axial-position, and bearing-temperature monitoring", "ISO 21940 — Mechanical vibration: Rotor balancing", "API 612 — Special-purpose steam turbines (balancing requirements)", "OEM balancing specification (Triveni, Siemens, BHEL, Man Turbo, KKK)"],
+    whyUs: "A rotor at 3,000 RPM generates 100× more imbalance force than at 300 RPM. The same residual imbalance that is invisible at slow speed will destroy a bearing at full speed. We balance to ISO 1940 Grade G1.0 where required — not just 'good enough'.",
+    overview: "Rotor imbalance is one of the most common and most preventable causes of turbine bearing failure, seal damage, and shortened rotor life. Keshav Enterprises performs precision journal machining and ISO 1940 / API 670 dynamic balancing for rotors from 50 kg to 2,000 kg at our dedicated workshop facility. The rotor is first machined to restore geometric integrity — round journals, concentric labyrinth lands, correct surface finish — before balancing. This sequence matters: balancing a geometrically distorted rotor merely masks the problem. Our balancing reports document initial unbalance, correction planes, mass corrections, residual unbalance, and the ISO balance grade achieved, providing full traceability for your maintenance records.",
+    procedures: [
+      { step: "01", title: "Rotor Receipt & Initial Measurement", icon: Search, desc: "Rotor received and cleaned. Initial mechanical runout measured using precision dial gauges at all journals, coupling fits, and labyrinth lands on a precision static stand. Electrical runout checked. All diameters measured and recorded versus OEM specification — out-of-round, taper, and journal undersizing documented." },
+      { step: "02", title: "Journal Condition Assessment", icon: Activity, desc: "Surface finish measured using profilometer at 3 positions around each journal circumference. Visual inspection for scoring, Babbitt transfer, corrosion pitting, and wear patterns. Hardness checked. Minimum material removal calculated to restore geometry and finish within OEM limits." },
+      { step: "03", title: "Journal Grinding & Polishing", icon: Cog, desc: "Precision cylindrical grinding of journals on CNC grinding machine: roundness restored to 0.005 mm max, taper to 0.005 mm per 100 mm max. Ground surface polished to Ra 0.4 μm (OEM bearing surface specification) using precision polishing lathe. Absolute minimum material removed to preserve shaft life." },
+      { step: "04", title: "Labyrinth & Gland Portion Machining", icon: Hexagon, desc: "Re-machining of labyrinth seal lands, gland areas, balance disc faces, and coupling fits on precision CNC lathes. All surfaces set concentric to journal datum before machining using a 4-jaw chuck and dial gauge zeroing — essential to maintain rotor geometric integrity and avoid introducing new runout." },
+      { step: "05", title: "Dynamic Balancing — Two-Plane Correction", icon: Target, desc: "Rotor mounted in hard-bearing dynamic balancing machine. Initial unbalance measured simultaneously in two correction planes (coupling end and governor/impeller end). Trial masses applied and removed. Balancing iterations repeated until residual unbalance in each plane meets ISO 1940 / API 670 grade specified for this rotor service." },
+      { step: "06", title: "Post-Balance Runout Check", icon: TrendingUp, desc: "Mechanical and electrical runout re-measured post-balancing at all journal positions. Comparison against pre-balance baseline confirms improvement from machining and balancing. Any residual runout exceeding OEM limits is investigated — if caused by bent shaft, straightening or replacement is recommended." },
+      { step: "07", title: "Documentation & Dispatch", icon: BookOpen, desc: "Complete balancing report issued: initial unbalance (g·mm), correction plane locations, correction masses applied, final residual unbalance in each plane, balance grade achieved (G1.0, G2.5, G6.3), and all runout measurements. PMI certificate and hardness test results attached. Rotor packed and dispatched with documentation." },
+    ],
+    tools: [
+      { name: "Hard-Bearing Balancing Machine", detail: "50–2,000 kg, 100–10,000 RPM capacity", icon: Activity },
+      { name: "CNC Cylindrical Grinding Machine", detail: "Precision dressing system, 0.001 mm control", icon: Cog },
+      { name: "Precision Polishing Lathe", detail: "Microfinish to Ra 0.4 μm journal surface", icon: Hexagon },
+      { name: "Profilometer", detail: "Surface roughness — Ra 0.001 μm resolution", icon: TrendingUp },
+      { name: "Precision Dial Gauges", detail: "0.001 mm — runout and diameter measurement", icon: Target },
+      { name: "Portable Balancing Analyser", detail: "In-situ field balancing capability", icon: Search },
+      { name: "Digital Stroboscope", detail: "Phase angle measurement for balancing corrections", icon: Zap },
+    ],
+    standards: [
+      { code: "ISO 1940-1", desc: "Balance quality requirements for rigid rotors", body: "ISO" },
+      { code: "ISO 21940", desc: "Mechanical vibration: rotor balancing vocabulary and procedures", body: "ISO" },
+      { code: "API 670", desc: "Vibration, axial-position, and bearing temperature monitoring", body: "API" },
+      { code: "API 612", desc: "Special-purpose steam turbines — balancing requirements", body: "API" },
+      { code: "ISO 1101", desc: "Geometrical tolerancing applied to machining drawings", body: "ISO" },
+      { code: "OEM Specification", desc: "Triveni, Siemens, BHEL, Man Turbo, KKK balance grades", body: "OEM" },
+    ],
   },
   srv_5: {
-    tagline: "ISO 4406 Cleanliness Class 16/14/11 — Guaranteed Before Oil-In",
-    overview: "Lube oil system contamination is the primary cause of bearing failures in new and recently overhauled turbines. Construction debris — weld slag, pipe scale, sand, metal swarf — that enters the lube oil system during installation or overhaul can destroy bearings and journal surfaces within hours of startup. Keshav Enterprises performs professional lube oil flushing using purpose-built mobile centrifuge filter systems to achieve ISO 4406:99 cleanliness class 16/14/11 — the minimum standard for steam turbine bearing lubrication.",
-    procedures: [
-      { step: "01", title: "System Survey & Flushing Plan", desc: "Review of system P&ID, oil volume, pipe bore sizes, and heat exchanger configuration. Development of flushing flow path to achieve turbulent flow (Reynolds number above 4,000) in every pipe section. Temporary bypass spools designed where required." },
-      { step: "02", title: "Temporary Flushing Circuit Installation", desc: "Installation of temporary bypass pipework around bearings, control valves, and other sensitive equipment. Connection of mobile flushing unit. Installation of temporary wire mesh target strainers at flush return points." },
-      { step: "03", title: "Initial Flush — High Flow Rate", desc: "System charged with flushing oil (or process oil if compatible). Flushing pump operated at maximum flow rate. Oil temperature cycled 30 to 70 deg C to thermally stress pipe walls and dislodge adhered debris. Target strainer inspected at intervals." },
-      { step: "04", title: "Contamination Monitoring & Particle Count", desc: "Oil samples taken per ISO 4021 (clean sample extraction). Particle count measured using automatic particle counter per ISO 11500. Results compared to flushing progress target and ISO 4406 cleanliness class chart." },
-      { step: "05", title: "Progressive Filter Upgrade", desc: "As gross contamination is removed, filter element micron rating progressively reduced: 25 um to 10 um to 6 um to 3 um. Centrifuge de-watering operated continuously to remove free water. Target: 16/14/11 or better." },
-      { step: "06", title: "Final Acceptance Particle Count", desc: "Minimum three consecutive oil samples must achieve the target cleanliness class. Samples sent to accredited laboratory for confirmation. Written certificate of oil cleanliness issued." },
-      { step: "07", title: "System Restoration & Oil Fill", desc: "Temporary bypass spools removed. All bearings and critical equipment reconnected. System refilled with filtered, clean process oil through a 3 um filter. Final particle count verification of system oil after refill." },
+    tagline: "ISO 4406 Cleanliness Class 16/14/11 — Certified Before Oil-In",
+    accentColor: "#0284c7",
+    keyStats: [
+      { value: "16/14/11", label: "ISO 4406 Target Class" },
+      { value: "6,000 L/min", label: "Max System Flow Rate" },
+      { value: "3μm", label: "Final Filtration Rating" },
+      { value: "100%", label: "Lab-Certified Particle Count" },
     ],
-    tools: ["Mobile centrifuge filter unit (flow rates up to 6,000 L/min)", "Automatic particle counter (ISO 11500 compliant) for online cleanliness monitoring", "Karl Fischer titrator for free water content measurement", "Oil sampling kit per ISO 4021 (clean extraction)", "Temporary bypass spools and flexible hose connections", "Oil heater for thermal cycling (temperature cycling 30 to 70 deg C)", "Wire mesh target strainers in multiple mesh ratings (25, 10, 3 um)"],
-    standards: ["ISO 4406:99 — Hydraulic fluid cleanliness classification (target 16/14/11)", "ISO 11500 — Particle count determination using automatic methods", "ISO 4021 — Hydraulic fluid contamination analysis — sampling from lines", "API 614 — Lubrication, shaft sealing, and oil-control systems for turbomachinery", "OEM lube oil system cleanliness requirements (Triveni, Siemens, BHEL, Man Turbo)"],
+    whyUs: "New and recently overhauled turbines are destroyed by construction debris — weld slag, pipe scale, sand, and metal swarf — within hours of first startup. Oil flushing is not optional: it is the single most cost-effective insurance against a catastrophic bearing failure on a brand-new overhaul.",
+    overview: "Lube oil system contamination is the primary cause of bearing failures in new and recently overhauled turbines. Construction debris entering the lube oil system during installation or overhaul can destroy bearings and journal surfaces within hours of startup. Keshav Enterprises performs professional lube oil flushing using purpose-built mobile centrifuge filter systems to achieve ISO 4406:99 cleanliness class 16/14/11 — the minimum standard for steam turbine bearing lubrication. Our process is fully documented: oil sample results at every stage, progressive filter upgrade records, and a final laboratory-certified particle count certificate are provided before the system is handed back for oil-in.",
+    procedures: [
+      { step: "01", title: "System Survey & Flushing Plan", icon: Search, desc: "Review of system P&ID, oil volume, pipe bore sizes, heat exchanger configuration, and bearing housing layout. Development of flushing flow path using hydraulic calculations to achieve turbulent flow (Reynolds number above 4,000) in every pipe section. Temporary bypass spools and blind flanges identified and designed where required." },
+      { step: "02", title: "Temporary Flushing Circuit Installation", icon: Wrench, desc: "Installation of temporary bypass pipework around bearings, control valves, instrumentation, and other sensitive equipment that must not see flush debris. Connection of mobile flushing unit. Installation of temporary wire mesh target strainers at flush return points for debris monitoring." },
+      { step: "03", title: "Initial Flush — High Flow Rate", icon: Droplets, desc: "System charged with flushing oil (or process oil if compatible). Flushing pump operated at maximum achievable flow rate for maximum turbulence. Oil temperature thermally cycled between 30°C and 70°C at 30-minute intervals — thermal cycling stresses pipe walls and dislodges adhered scale and debris. Target strainers inspected and cleaned at each interval." },
+      { step: "04", title: "Contamination Monitoring & Particle Count", icon: Activity, desc: "Oil samples drawn per ISO 4021 clean sample extraction procedure at each stage. Particle count measured using automatic particle counter per ISO 11500 — reporting counts at ≥4μm, ≥6μm, ≥14μm, and ≥21μm. Results plotted on a cleanliness progress chart against the ISO 4406 target class." },
+      { step: "05", title: "Progressive Filter Upgrade", icon: Layers, desc: "As gross contamination is removed, filter element micron rating progressively reduced through stages: 25μm → 10μm → 6μm → 3μm absolute. Centrifuge de-watering unit operated continuously throughout flushing to remove free and emulsified water. Karl Fischer water content tested to confirm de-watering effectiveness." },
+      { step: "06", title: "Final Acceptance Particle Count", icon: CheckCircle2, desc: "Minimum three consecutive clean oil samples drawn at intervals must all achieve the target ISO 4406 class 16/14/11. Final samples submitted to accredited laboratory for independent verification. Written certificate of oil cleanliness — signed, stamped, and traceable to the laboratory — issued to client." },
+      { step: "07", title: "System Restoration & Oil Fill", icon: Zap, desc: "All temporary bypass spools and blind flanges removed. All bearings, sensitive instruments, and critical equipment reconnected. System refilled with filtered, new process oil passed through a 3μm absolute filter during filling. Final particle count on system oil after fill confirms target maintained. System handed over for startup." },
+    ],
+    tools: [
+      { name: "Mobile Centrifuge Filter Unit", detail: "Up to 6,000 L/min system flow rates", icon: Droplets },
+      { name: "Automatic Particle Counter", detail: "ISO 11500 compliant — online real-time monitoring", icon: Activity },
+      { name: "Karl Fischer Titrator", detail: "Free water content measurement in lube oil", icon: Layers },
+      { name: "Oil Sampling Kit", detail: "ISO 4021 clean extraction from pressurised lines", icon: Search },
+      { name: "Oil Heater", detail: "Thermal cycling: 30°C to 70°C for debris dislodging", icon: Zap },
+      { name: "Target Strainer Set", detail: "25, 10, 3μm mesh for stage debris monitoring", icon: Filter },
+      { name: "Bypass Spool Set", detail: "Custom fabricated bypass spools and blind flanges", icon: Wrench },
+    ],
+    standards: [
+      { code: "ISO 4406:99", desc: "Hydraulic fluid cleanliness classification — target 16/14/11", body: "ISO" },
+      { code: "ISO 11500", desc: "Particle count determination using automatic methods", body: "ISO" },
+      { code: "ISO 4021", desc: "Hydraulic fluid contamination analysis and sampling", body: "ISO" },
+      { code: "API 614", desc: "Lubrication, shaft sealing, and oil-control systems", body: "API" },
+      { code: "ASTM D6304", desc: "Karl Fischer water content measurement in lubricating oils", body: "ASTM" },
+      { code: "OEM Specification", desc: "Triveni, Siemens, BHEL, Man Turbo lube oil cleanliness requirements", body: "OEM" },
+    ],
   },
   srv_6: {
-    tagline: "Laser-Precision Alignment — Eliminating the No.1 Cause of Bearing Failure",
-    overview: "Shaft misalignment is responsible for up to 50% of all rotating equipment bearing failures. Even misalignments as small as 0.05 mm at the coupling can generate forces that reduce bearing life by 80% and cause seal failures, coupling wear, and increased vibration. Keshav Enterprises performs precision laser shaft alignment using the latest Pruftechnik and SKF alignment technology for turbines, gearboxes, pumps, fans, alternators, and induction generators of any frame size.",
-    procedures: [
-      { step: "01", title: "Pre-Alignment Checks", desc: "Verification of soft foot condition (machine frame distortion) using dial gauges. Pipe strain measurement to identify piping forces imposed on machine nozzles. Bearing clearance check and thermal growth calculation for operating conditions." },
-      { step: "02", title: "Laser Alignment System Setup", desc: "Mounting of laser transmitter and receiver heads on shafts using precision magnetic brackets. System zeroed and shaft rotation tolerance verified. All relevant dimensions entered: coupling diameter, shaft separation, measurement distance." },
-      { step: "03", title: "Initial Misalignment Measurement", desc: "Shafts rotated through the measurement arc (typically 3 measurement positions at 12, 3, and 9 o-clock). Software calculates actual misalignment: angular (mrad) and offset (mm) at coupling, and at each bearing foot." },
-      { step: "04", title: "Shim & Jackscrew Correction", desc: "Calculated shim corrections applied to stationary machine feet. Stainless steel precision shims installed or removed to correct vertical misalignment. Horizontal correction made using alignment jackscrews at machine feet." },
-      { step: "05", title: "Hot Alignment Compensation", desc: "Thermal growth of machine casing between cold and operating temperature calculated from OEM data or measured via DBSE (distance between shaft ends) monitoring. Cold alignment target offset to achieve correct hot running alignment." },
-      { step: "06", title: "Final Measurement & Tolerance Verification", desc: "Final laser measurement confirms alignment is within OEM tolerance. Typical acceptance: angular 0.05 mrad max, offset 0.05 mm max at coupling. All feet checked for residual soft foot 0.05 mm or less." },
-      { step: "07", title: "Alignment Report & Bolt Torque", desc: "Detailed alignment report generated: before/after readings, shim changes, correction vectors, and achieved final values versus OEM tolerance. Coupling bolts torqued to OEM specification. Foundation bolts torqued and checked." },
+    tagline: "Laser-Precision Alignment — Eliminating the #1 Cause of Bearing Failure",
+    accentColor: "#059669",
+    keyStats: [
+      { value: "0.05mm", label: "Alignment Tolerance Achieved" },
+      { value: "50%", label: "Bearing Failures From Misalignment" },
+      { value: "80%", label: "Bearing Life Lost at 0.05mm Offset" },
+      { value: "Any Size", label: "Machine Frame Covered" },
     ],
-    tools: ["Pruftechnik Rotalign Pro / OPTALIGN series laser alignment system", "SKF TKSA 71 wireless laser alignment equipment", "Precision dial gauge set for soft foot measurement", "Stainless steel precision shim sets (0.025 to 3.0 mm thickness)", "Digital torque wrenches for coupling and foundation bolt torquing", "Vibration analyser for pre and post alignment vibration comparison", "Thermal imaging camera for hot bearing and coupling temperature survey"],
-    standards: ["ISO 10816 / ISO 20816 — Mechanical vibration of machines — evaluation criteria", "API 686 — Recommended practice for machinery installation", "OEM alignment tolerances (Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK)", "ISO 1940 — Residual imbalance limits post-alignment correction", "ASME B31.3 — Process piping nozzle load limits at machine connections"],
+    whyUs: "Misalignment as small as 0.05 mm at the coupling can reduce bearing life by 80% and generate forces that propagate through seals, couplings, and the entire drivetrain. Laser alignment takes hours — a bearing failure takes weeks and costs far more. We align hot, not just cold.",
+    overview: "Shaft misalignment is responsible for up to 50% of all rotating equipment bearing failures in Indian industry. Even misalignments invisible to the naked eye generate enormous cyclic forces on bearings, seals, and couplings at operating speed. Keshav Enterprises performs precision laser shaft alignment using Pruftechnik and SKF systems for turbines, gearboxes, pumps, fans, alternators, and induction generators of any frame size. Critically, we calculate and apply hot alignment offsets — the cold alignment is deliberately set to account for thermal growth, so the machine runs straight at operating temperature. Our alignment reports show before/after readings, shim history, and final values against OEM tolerance.",
+    procedures: [
+      { step: "01", title: "Pre-Alignment Checks", icon: Search, desc: "Verification of soft foot condition (machine frame distortion when bolts are tightened) using precision dial gauges at all feet — 0.05 mm or less required before alignment proceeds. Pipe strain measurement to identify forces imposed on machine nozzles by connected pipework. Bearing clearance check and thermal growth calculation from OEM data or site measurements." },
+      { step: "02", title: "Laser Alignment System Setup", icon: Target, desc: "Mounting of laser transmitter and receiver heads on shafts using precision magnetic brackets. System zeroed and shaft rotation tolerance verified. All relevant dimensions entered into alignment software: coupling diameter, hub-to-hub shaft separation, and measurement distance. Bracket sag compensation verified and applied." },
+      { step: "03", title: "Initial Misalignment Measurement", icon: Activity, desc: "Shafts rotated through the measurement arc (three positions: 12, 3, and 9 o'clock). Software calculates actual misalignment: angular misalignment (mrad) and offset (mm) at the coupling face, and the required correction at each machine foot in the vertical and horizontal planes simultaneously." },
+      { step: "04", title: "Shim & Jackscrew Correction", icon: Layers, desc: "Calculated shim corrections applied to the stationary machine feet. Stainless steel precision shims installed or removed in the correct configuration to correct vertical misalignment. Horizontal correction made using alignment jackscrews at machine feet with the laser still active for real-time feedback during correction." },
+      { step: "05", title: "Hot Alignment Compensation", icon: Zap, desc: "Thermal growth of machine casing from cold to operating temperature calculated from OEM thermal growth data or measured using DBSE (distance between shaft ends) monitoring and thermal imaging. Cold alignment target deliberately offset so the machine achieves the correct hot running alignment at full load and temperature." },
+      { step: "06", title: "Final Measurement & Tolerance Verification", icon: CheckCircle2, desc: "Final laser measurement confirms alignment within OEM tolerance — typically: angular misalignment 0.05 mrad max, offset 0.05 mm max at coupling. All four feet re-checked for soft foot 0.05 mm or less. Coupling bolts torqued to OEM specification using calibrated digital torque wrench." },
+      { step: "07", title: "Alignment Report & Bolt Torque", icon: BookOpen, desc: "Detailed alignment report generated by the laser system software: pre-alignment readings, shim changes at each foot, correction vectors applied, and final achieved values against OEM tolerance. Foundation bolt torques recorded. Report signed and issued — forms part of the maintenance record baseline for future alignments." },
+    ],
+    tools: [
+      { name: "Pruftechnik Rotalign Pro", detail: "OPTALIGN series — wireless laser alignment", icon: Target },
+      { name: "SKF TKSA 71", detail: "Wireless laser alignment with app-based reporting", icon: Activity },
+      { name: "Precision Dial Gauges", detail: "Soft foot measurement — 0.001 mm resolution", icon: Cog },
+      { name: "SS Precision Shim Sets", detail: "0.025 to 3.0 mm in 0.025 mm increments", icon: Layers },
+      { name: "Digital Torque Wrenches", detail: "Coupling and foundation bolt torquing", icon: Wrench },
+      { name: "Vibration Analyser", detail: "Pre and post alignment vibration comparison", icon: TrendingUp },
+      { name: "Thermal Imaging Camera", detail: "Hot bearing and coupling temperature survey", icon: Zap },
+    ],
+    standards: [
+      { code: "ISO 10816-3 / 20816-3", desc: "Vibration severity evaluation for machines >15 kW", body: "ISO" },
+      { code: "API 686", desc: "Recommended practice for machinery installation and alignment", body: "API" },
+      { code: "ASME B31.3", desc: "Process piping nozzle load limits at machine connections", body: "ASME" },
+      { code: "ISO 1940", desc: "Residual imbalance limits post-alignment correction", body: "ISO" },
+      { code: "API 612", desc: "Special-purpose steam turbines — alignment requirements", body: "API" },
+      { code: "OEM Tolerance", desc: "Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK alignment specs", body: "OEM" },
+    ],
   },
   srv_7: {
     tagline: "Root Cause Found. Corrective Action Deployed. Turbine Back Online.",
-    overview: "Unplanned turbine trips and unexplained performance degradation cost industrial plants millions in lost production every year. A misdiagnosed fault repaired without identifying its root cause will fail again — often sooner than the first time. Keshav Enterprises deploys ex-OEM troubleshooting engineers with full diagnostic instrumentation to identify, document, and rectify the precise root cause of any steam turbine fault — from high vibration and bearing failure to governor instability, oil contamination, and steam leakage. We cover all turbine makes from 5 kW to 27 MW across the full spectrum of India's process and power industries.",
+    accentColor: "#dc2626",
+    keyStats: [
+      { value: "24×7", label: "Emergency Deployment" },
+      { value: "10+", label: "OEM Makes Diagnosed" },
+      { value: "FFT+Thermal", label: "Dual Diagnostic Method" },
+      { value: "48hr", label: "Post-Repair Trend Monitoring" },
+    ],
+    whyUs: "A misdiagnosed fault repaired without finding its root cause will fail again — often sooner than the first time. We do not guess. We measure, analyse the spectrum, strip only what the data tells us to strip, confirm the root cause physically, and fix it with the same team that found it.",
+    overview: "Unplanned turbine trips and unexplained performance degradation cost industrial plants millions in lost production every year. Keshav Enterprises deploys ex-OEM troubleshooting engineers with full diagnostic instrumentation to identify, document, and rectify the precise root cause of any steam turbine fault — from high vibration and bearing failure to governor instability, oil contamination, and steam leakage. We cover all turbine makes from 5 kW to 27 MW across the full spectrum of India's process and power industries. Our methodology is systematic: online measurement first, physical inspection targeted by the data, root cause confirmed in writing, and corrective action executed by the same team that diagnosed the fault.",
     procedures: [
-      { step: "01", title: "Emergency Mobilisation & Site Data Collection", desc: "24x7 response deployment to site with full diagnostic kit. Collection of all available operational data: vibration history, trip logs, oil analysis reports, bearing temperature trends, steam condition logs, and maintenance records. Interview of operations and maintenance personnel." },
-      { step: "02", title: "Baseline Vibration & Performance Measurement", desc: "Online vibration measurement at all bearing housings: overall vibration level (mm/s RMS), FFT spectrum analysis, 1X and 2X amplitude and phase, sub-synchronous and high-frequency components. Steam inlet/exhaust pressure, temperature, and flow benchmarked against design duty." },
-      { step: "03", title: "Fault Signature Identification & Hypothesis", desc: "Analysis of vibration spectrum, phase data, bearing temperature map, and oil sample results to build the fault signature. Each potential root cause mapped against the measured evidence: imbalance (dominant 1X), misalignment (2X), bearing wear (sub-synchronous, bearing frequency), rub (sub-harmonics), looseness (harmonics 3X+), or steam path fouling (thermal bow)." },
-      { step: "04", title: "Targeted Strip-Down & Physical Inspection", desc: "Minimum-invasive disassembly targeting the suspected fault zone. Physical measurement of bearing clearances, shaft runout, coupling alignment, gland seal clearances, and labyrinth seal fits compared against OEM specification. Photographic and dimensional documentation of all findings." },
-      { step: "05", title: "Root Cause Confirmation & Report", desc: "Formal root cause analysis (RCA) report combining on-machine data, strip-down measurements, and OEM specification comparison. Root cause classified and confirmed. Contributing factors identified. Corrective action plan with priority ranking and estimated downtime prepared." },
-      { step: "06", title: "Corrective Action Execution", desc: "Direct execution of the corrective action by the same troubleshooting team: rotor re-balancing, bearing replacement, alignment correction, gland seal replacement, lube oil system flush, governor overhaul, or control system calibration. All corrective work documented against OEM specifications." },
-      { step: "07", title: "Post-Repair Commissioning & Trend Monitoring", desc: "Monitored restart with continuous vibration and bearing temperature logging during run-up. Comparison of post-repair vibration levels against pre-fault baseline and OEM acceptance limits. 48-hour trend monitoring with written clearance report before return to full load." },
+      { step: "01", title: "Emergency Mobilisation & Site Data Collection", icon: Zap, desc: "24×7 response deployment to site with full diagnostic kit. Collection of all available operational data: vibration history, DCS trip logs, oil analysis reports, bearing temperature trends, steam condition logs, and maintenance records. Interview of operations and maintenance personnel who witnessed the fault event." },
+      { step: "02", title: "Baseline Vibration & Performance Measurement", icon: Activity, desc: "Online vibration measurement at all bearing housings: overall vibration level (mm/s RMS), real-time FFT spectrum analysis, 1X and 2X amplitude and phase angle, sub-synchronous and high-frequency components. Steam inlet/exhaust pressure, temperature, and flow benchmarked against design duty. Bearing temperatures mapped using thermal imaging camera." },
+      { step: "03", title: "Fault Signature Identification & Hypothesis", icon: Search, desc: "Analysis of vibration spectrum, phase data, bearing temperature map, and oil sample results to build the fault signature. Each potential root cause systematically mapped against measured evidence: imbalance (dominant 1X), misalignment (dominant 2X), bearing wear (sub-synchronous or bearing defect frequencies), rub (sub-harmonics, high 1X), looseness (multiple harmonics), or steam path fouling (thermal bow)." },
+      { step: "04", title: "Targeted Strip-Down & Physical Inspection", icon: Wrench, desc: "Minimum-invasive disassembly targeting only the suspected fault zone — not a full strip unless data demands it. Physical measurement of bearing clearances, shaft runout, coupling alignment, gland seal clearances, and labyrinth seal fits compared against OEM specification. All findings photographed and dimensionally documented." },
+      { step: "05", title: "Root Cause Confirmation & Written RCA Report", icon: BookOpen, desc: "Formal root cause analysis (RCA) report combining on-machine data, strip-down measurements, and OEM specification comparison. Root cause classified and confirmed in writing. Contributing factors identified. Corrective action plan with priority ranking, parts required, estimated downtime, and recommended preventive measures issued to client before work begins." },
+      { step: "06", title: "Corrective Action Execution", icon: Cog, desc: "Direct execution of the corrective action by the same troubleshooting team: rotor re-balancing, bearing replacement and clearance setting, laser alignment correction, gland seal and labyrinth packing replacement, lube oil system flush to ISO 4406, governor overhaul and calibration, or control system calibration. All corrective work documented against OEM specification." },
+      { step: "07", title: "Post-Repair Commissioning & 48-Hour Trend Monitoring", icon: TrendingUp, desc: "Monitored restart with continuous vibration and bearing temperature data logging during speed run-up. Post-repair vibration levels compared against pre-fault baseline and OEM acceptance limits (ISO 10816-3). 48-hour continuous trend monitoring at full load before written clearance report issued and turbine returned to unattended operation." },
     ],
     tools: [
-      "Multi-channel portable vibration analyser with real-time FFT spectrum (CSI 2140 / SKF Microlog class)",
-      "Proximity probes and eddy current sensors for shaft vibration measurement (API 670)",
-      "Thermal imaging camera (FLIR / Testo class) for bearing and steam path thermal survey",
-      "Stroboscope and phase reference trigger for 1X amplitude and phase angle measurement",
-      "Portable oil particle counter (ISO 11500) for lube oil contamination assessment",
-      "Karl Fischer titrator for free water content measurement in lube oil",
-      "Precision dial gauges and bore gauges for bearing clearance and shaft runout measurement",
-      "Laser shaft alignment system for coupling and bearing alignment confirmation",
-      "Borescope (rigid and flexible) for internal steam path and blade inspection without full strip-down",
-      "XRF PMI analyser for alloy identification of failed components",
-      "Ultrasonic thickness gauge for casing and pipe wall measurement",
-      "Governor calibration equipment and speed reference instruments",
+      { name: "Multi-Channel Vibration Analyser", detail: "Real-time FFT — CSI 2140 / SKF Microlog class", icon: Activity },
+      { name: "Proximity Probes", detail: "Eddy current shaft vibration — API 670 standard", icon: TrendingUp },
+      { name: "Thermal Imaging Camera", detail: "FLIR / Testo — bearing and steam path thermal survey", icon: Zap },
+      { name: "Stroboscope + Phase Reference", detail: "1X amplitude and phase angle measurement", icon: Search },
+      { name: "Portable Oil Particle Counter", detail: "ISO 11500 — lube oil contamination on-site", icon: Droplets },
+      { name: "Borescope", detail: "Rigid & flexible — blade inspection without full strip", icon: Hexagon },
+      { name: "XRF PMI Analyser", detail: "Alloy identification of failed components", icon: Shield },
+      { name: "Laser Shaft Alignment System", detail: "Coupling and bearing alignment confirmation", icon: Target },
+      { name: "Karl Fischer Titrator", detail: "Free water content in lube oil — contamination check", icon: Layers },
+      { name: "Governor Calibration Equipment", detail: "Speed reference and control system instruments", icon: Cog },
     ],
     standards: [
-      "ISO 10816-3 / ISO 20816-3 — Vibration severity limits for industrial machines above 15 kW",
-      "API 670 — Machinery protection: vibration, axial position, and bearing temperature monitoring",
-      "API 612 — Special-purpose steam turbines for petroleum, chemical, and gas service",
-      "ISO 4406:99 — Lube oil cleanliness classification",
-      "ISO 4021 — Hydraulic fluid contamination analysis and sampling",
-      "ASME PTC 6 — Steam turbine performance test code (efficiency benchmarking)",
-      "OEM maintenance and troubleshooting manuals — Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK, ABB",
+      { code: "ISO 10816-3 / 20816-3", desc: "Vibration severity limits for industrial machines >15 kW", body: "ISO" },
+      { code: "API 670", desc: "Machinery protection: vibration, axial position, temperature", body: "API" },
+      { code: "API 612", desc: "Special-purpose steam turbines for petroleum and chemical service", body: "API" },
+      { code: "ISO 4406:99", desc: "Lube oil cleanliness classification", body: "ISO" },
+      { code: "ASME PTC 6", desc: "Steam turbine performance test code for efficiency benchmarking", body: "ASME" },
+      { code: "ISO 14224", desc: "Reliability and maintenance data collection for equipment", body: "ISO" },
+      { code: "OEM Manuals", desc: "Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK, ABB", body: "OEM" },
     ],
     faultMatrix: [
       {
@@ -4234,341 +4377,379 @@ const SERVICE_DETAIL_DATA = {
 };
 
 // ─── SERVICE DETAIL PAGE ─────────────────────────────────────
-// CSS for scroll-reveal animations injected once
+// CSS injected once. Matches site theme: #0A192F navy, blue-600 primary,
+// slate-200 borders, rounded-2xl cards, blue-50 hover tints.
 const SERVICE_DETAIL_CSS = `
-@keyframes sdFadeUp {
-  from { opacity: 0; transform: translateY(28px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes sdFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes sdSlideRight {
-  from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes sdScaleIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
-}
-.sd-reveal {
-  opacity: 0;
-}
-.sd-reveal.sd-visible {
-  animation: sdFadeUp 0.55s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-.sd-reveal-fade.sd-visible {
-  animation: sdFadeIn 0.5s ease forwards;
-}
-.sd-reveal-slide.sd-visible {
-  animation: sdSlideRight 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-.sd-reveal-scale.sd-visible {
-  animation: sdScaleIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-.sd-step-line {
-  transform-origin: top;
-  transform: scaleY(0);
-  transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
-}
-.sd-step-line.sd-visible {
-  transform: scaleY(1);
+@keyframes sdFadeUp  { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+@keyframes sdBarFill { from { width:0 }  to { width:56px } }
+
+.sd-reveal      { opacity:0 }
+.sd-reveal-stat { opacity:0 }
+.sd-step-line   { transform-origin:top; transform:scaleY(0);
+                  transition:transform 0.5s ease 0.1s }
+
+.sd-reveal.sd-visible      { animation:sdFadeUp 0.45s ease forwards }
+.sd-reveal-stat.sd-visible { animation:sdFadeUp 0.35s ease forwards }
+.sd-step-line.sd-visible   { transform:scaleY(1) }
+
+/* Matches site .section-divider: rounded pill, blue-600 */
+.sd-accent-bar { width:0; height:6px; border-radius:9999px; background:#2563eb;
+  animation:sdBarFill 0.6s ease 0.2s forwards }
+
+/* Procedure card — matches site card hover: border-blue-300 shadow lift */
+.sd-proc-row { transition:border-color 0.2s, box-shadow 0.2s, transform 0.2s }
+.sd-proc-row:hover { border-color:#93c5fd; box-shadow:0 8px 24px -4px rgba(37,99,235,0.12); transform:translateY(-2px) }
+
+/* Tool / Standard rows — blue-50 tint matches site hover */
+.sd-tool-row { transition:background 0.15s }
+.sd-tool-row:hover { background:#eff6ff }
+.sd-std-row  { transition:background 0.15s }
+.sd-std-row:hover  { background:#eff6ff }
+.sd-fault-row { transition:background 0.15s }
+.sd-fault-row:hover { background:#f8fafc }
+
+/* Stat block separator — white/10 on dark bg matches site stats bar */
+.sd-stat-block { border-right:1px solid rgba(255,255,255,0.08) }
+.sd-stat-block:last-child { border-right:none }
+
+/* Sidebar nav — active = blue-600 matching CTA button */
+.sd-sidenav-active { background:#2563eb; color:#fff }
+.sd-sidenav-item   { transition:background 0.15s, color 0.15s }
+.sd-sidenav-item:hover:not(.sd-sidenav-active) { background:#eff6ff; color:#1d4ed8 }
+
+@media(prefers-reduced-motion:reduce){
+  .sd-reveal,.sd-reveal-stat { opacity:1!important; animation:none!important }
+  .sd-step-line { transform:scaleY(1)!important; transition:none!important }
+  .sd-accent-bar { width:56px!important; animation:none!important }
 }
 `;
 
-const ServiceDetailPage = memo(({ serviceId, navigate }) => {
-  const service = SERVICES.find(s => s.id === serviceId);
-  const detail = SERVICE_DETAIL_DATA[serviceId];
-  const Icon = SERVICE_ICONS[serviceId];
-  const serviceIndex = SERVICES.findIndex(s => s.id === serviceId);
-  const prevService = serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null;
-  const nextService = serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null;
-  const heroRef = useRef(null);
-  const [heroVisible, setHeroVisible] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+const STD_BODY_COLORS = {
+  ISO: 'ISO', API: 'API', ASME: 'ASME', ASTM: 'ASTM', EN: 'EN', BIS: 'BIS', OEM: 'OEM',
+};
 
-  // Scroll to top instantly when serviceId changes, then trigger hero animation
+// ─── SERVICE DETAIL PAGE ─────────────────────────────────────
+// SERVICE_DETAIL_CSS defined above
+
+const ServiceDetailPage = memo(({ serviceId, navigate }) => {
+  const service      = SERVICES.find(s => s.id === serviceId);
+  const detail       = SERVICE_DETAIL_DATA[serviceId];
+  const Icon         = SERVICE_ICONS[serviceId];
+  const serviceIndex = SERVICES.findIndex(s => s.id === serviceId);
+  const prevService  = serviceIndex > 0 ? SERVICES[serviceIndex - 1] : null;
+  const nextService  = serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null;
+  const [heroVisible, setHeroVisible] = useState(false);
+  const [scrollY, setScrollY]         = useState(0);
+
+  // Inject CSS once
+  useEffect(() => {
+    const id = 'sd-css';
+    if (!document.getElementById(id)) {
+      const s = document.createElement('style');
+      s.id = id; s.textContent = SERVICE_DETAIL_CSS;
+      document.head.appendChild(s);
+    }
+  }, []);
+
+  // Scroll-to-top + hero entrance on service change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    setHeroVisible(false);
-    setScrollY(0);
+    setHeroVisible(false); setScrollY(0);
     const t = setTimeout(() => setHeroVisible(true), 60);
     return () => clearTimeout(t);
   }, [serviceId]);
 
-  // Parallax on hero image + track scroll for progress bar
+  // Reading progress + parallax
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const h = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
   }, []);
 
-  // IntersectionObserver for scroll-reveal of all .sd-reveal elements
+  // IntersectionObserver — reveal sd-reveal* and sd-step-line
   useEffect(() => {
-    const styleId = 'sd-css';
-    if (!document.getElementById(styleId)) {
-      const s = document.createElement('style');
-      s.id = styleId;
-      s.textContent = SERVICE_DETAIL_CSS;
-      document.head.appendChild(s);
-    }
-    const els = document.querySelectorAll('.sd-reveal, .sd-step-line');
+    const selectors = '.sd-reveal, .sd-reveal-stat, .sd-step-line';
+    const els = document.querySelectorAll(selectors);
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
-        if (e.isIntersecting) {
-          // stagger siblings by their index
-          const siblings = Array.from(e.target.parentElement?.children || []);
-          const idx = siblings.indexOf(e.target);
-          const delay = Math.min(idx * 80, 400);
-          setTimeout(() => e.target.classList.add('sd-visible'), delay);
-          io.unobserve(e.target);
-        }
+        if (!e.isIntersecting) return;
+        const siblings = Array.from(e.target.parentElement?.children || []);
+        const idx   = siblings.indexOf(e.target);
+        const delay = Math.min(idx * 55, 330);
+        setTimeout(() => e.target.classList.add('sd-visible'), delay);
+        io.unobserve(e.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
     els.forEach(el => io.observe(el));
     return () => io.disconnect();
   }, [serviceId]);
 
-  // Scroll progress bar width
-  const docH = typeof document !== 'undefined' ? document.documentElement.scrollHeight - window.innerHeight : 1;
+  const docH     = typeof document !== 'undefined' ? document.documentElement.scrollHeight - window.innerHeight : 1;
   const progress = Math.min(100, docH > 0 ? (scrollY / docH) * 100 : 0);
 
-  if (!service || !detail) {
-    return (
-      <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-black text-slate-900 mb-4">Service Not Found</h1>
-          <button onClick={() => navigate('/services')} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-black hover:bg-blue-500 transition-all">
-            Back to Services
-          </button>
-        </div>
-      </main>
-    );
-  }
+  const hs = (delay) => ({
+    opacity:    heroVisible ? 1 : 0,
+    transform:  heroVisible ? 'translateY(0)' : 'translateY(14px)',
+    transition: `opacity 0.45s ease ${delay}s, transform 0.45s ease ${delay}s`,
+  });
+
+  if (!service || !detail) return (
+    <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-black text-slate-900 mb-4">Service Not Found</h1>
+        <button onClick={() => navigate('/services')} className="bg-blue-600 text-white px-6 py-3 rounded font-bold hover:bg-blue-500 transition-all">
+          Back to Services
+        </button>
+      </div>
+    </main>
+  );
 
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-white">
+    <main id="main-content" className="pt-24 pb-24 bg-white">
       <SEOHead
         title={`${service.title} — Keshav Enterprises`}
-        description={`${service.desc} Ex-OEM engineers, ISO/API standard procedures, 24x7 availability.`}
+        description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
         canonicalPath={`/service/${serviceId}`}
         pageType="website"
       />
 
-      {/* Reading progress bar */}
-      <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-slate-200/60" aria-hidden="true">
-        <div className="h-full bg-blue-600 transition-[width] duration-100 ease-out" style={{ width: `${progress}%` }} />
+      {/* Reading progress bar — blue-600 matching site CTA */}
+      <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-slate-200" aria-hidden="true">
+        <div className="h-full bg-blue-600 transition-[width] duration-75 ease-linear" style={{ width: `${progress}%` }} />
       </div>
 
-      {/* Hero banner with parallax photo */}
-      <div
-        ref={heroRef}
-        className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600 min-h-[380px] flex items-center"
-      >
+      {/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
+      <div className="bg-[#0A192F] text-white relative overflow-hidden" style={{ borderBottom: '8px solid #2563eb', minHeight: '480px' }}>
+        {/* Grid texture — matches ServicesPage hero */}
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
+
+        {/* Service photo — object-contain shows full image, navy bg fills letterbox gaps */}
         {service.image && (
           <img src={service.image} alt="" aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-25 will-change-transform"
-            style={{ transform: `translateY(${scrollY * 0.18}px)` }}
-            loading="eager" decoding="async" width="1200" height="400"
+            className="absolute inset-0 w-full h-full opacity-[0.55]"
+            style={{
+              objectFit: 'contain',
+              objectPosition: 'center center',
+            }}
+            loading="eager" decoding="async" width="1200" height="420"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/95 via-[#0A192F]/80 to-[#0A192F]/50" />
+        {/* Gradient — left dark for text legibility, right opens up to show image */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/90 via-[#0A192F]/60 to-[#0A192F]/30" />
+        {/* Bottom fade — ensures stat bar reads cleanly over image */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A192F]/70 to-transparent" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb"
-            className="mb-8"
-            style={{
-              opacity: heroVisible ? 1 : 0,
-              transform: heroVisible ? 'translateY(0)' : 'translateY(10px)',
-              transition: 'opacity 0.4s ease, transform 0.4s ease',
-            }}>
-            <ol className="flex flex-wrap items-center gap-2 text-sm font-bold text-slate-400">
-              <li><button onClick={() => navigate('/')} className="hover:text-white transition-colors focus:outline-none focus-visible:underline">Home</button></li>
-              <li aria-hidden="true"><ChevronRight className="w-4 h-4" /></li>
-              <li><button onClick={() => navigate('/services')} className="hover:text-white transition-colors focus:outline-none focus-visible:underline">Services</button></li>
-              <li aria-hidden="true"><ChevronRight className="w-4 h-4" /></li>
-              <li className="text-blue-300">{service.title}</li>
+          <nav aria-label="Breadcrumb" className="mb-10" style={hs(0)}>
+            <ol className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest">
+              <li><button onClick={() => navigate('/')} className="hover:text-slate-300 transition-colors focus:outline-none focus-visible:underline">Home</button></li>
+              <li aria-hidden="true" className="text-slate-700">/</li>
+              <li><button onClick={() => navigate('/services')} className="hover:text-slate-300 transition-colors focus:outline-none focus-visible:underline">Services</button></li>
+              <li aria-hidden="true" className="text-slate-700">/</li>
+              <li className="text-slate-400">{service.title}</li>
             </ol>
           </nav>
 
-          <div className="flex items-start gap-6">
+          <div className="flex items-start gap-8">
+            {/* Icon box — matches site stat icon wells: bg-blue-600/20 border-blue-500/30 */}
             {Icon && (
-              <div
-                className="hidden sm:flex w-20 h-20 bg-blue-600/20 rounded-2xl items-center justify-center border border-blue-500/30 shrink-0 mt-1"
-                style={{
-                  opacity: heroVisible ? 1 : 0,
-                  transform: heroVisible ? 'scale(1)' : 'scale(0.8)',
-                  transition: 'opacity 0.5s ease 0.1s, transform 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s',
-                }}>
-                <Icon className="w-10 h-10 text-blue-400" aria-hidden="true" />
+              <div className="hidden sm:flex shrink-0 mt-1 w-16 h-16 rounded-2xl items-center justify-center bg-blue-600/20 border border-blue-500/30"
+                style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'none' : 'scale(0.85)', transition: 'opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s' }}>
+                <Icon className="w-8 h-8 text-blue-400" aria-hidden="true" />
               </div>
             )}
-            <div style={{ flex: 1 }}>
-              <p
-                className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3"
-                style={{
-                  opacity: heroVisible ? 1 : 0,
-                  transform: heroVisible ? 'translateY(0)' : 'translateY(12px)',
-                  transition: 'opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s',
-                }}>
-                Engineering Service
+
+            <div className="flex-1 min-w-0">
+              {/* Label — matches site blue-400 label style */}
+              <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-4" style={hs(0.1)}>
+                Technical Service
               </p>
-              <h1
-                className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4"
-                style={{
-                  opacity: heroVisible ? 1 : 0,
-                  transform: heroVisible ? 'translateY(0)' : 'translateY(18px)',
-                  transition: 'opacity 0.55s ease 0.22s, transform 0.55s cubic-bezier(0.22,1,0.36,1) 0.22s',
-                }}>
+              <h1 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5 text-white drop-shadow-lg" style={hs(0.18)}>
                 {service.title}
               </h1>
-              <p
-                className="text-slate-300 font-medium text-lg md:text-xl max-w-3xl leading-relaxed italic"
-                style={{
-                  opacity: heroVisible ? 1 : 0,
-                  transform: heroVisible ? 'translateY(0)' : 'translateY(14px)',
-                  transition: 'opacity 0.5s ease 0.32s, transform 0.5s ease 0.32s',
-                }}>
+              {/* Section divider — matches site .section-divider pill */}
+              <div className="sd-accent-bar mb-6" aria-hidden="true" />
+              <p className="text-slate-300 font-medium text-base md:text-xl max-w-2xl leading-relaxed" style={hs(0.26)}>
                 {detail.tagline}
               </p>
 
-              {/* Quick stat chips */}
-              <div
-                className="flex flex-wrap gap-3 mt-6"
-                style={{
-                  opacity: heroVisible ? 1 : 0,
-                  transition: 'opacity 0.5s ease 0.42s',
-                }}>
-                {service.oems && service.oems.slice(0, 4).map(oem => (
-                  <span key={oem} className="text-[11px] font-black text-slate-300 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full uppercase tracking-wide border border-white/15">
-                    {oem}
-                  </span>
-                ))}
-                {service.oems && service.oems.length > 4 && (
-                  <span className="text-[11px] font-black text-blue-300 bg-blue-600/20 px-3 py-1.5 rounded-full uppercase tracking-wide border border-blue-500/20">
-                    +{service.oems.length - 4} more
-                  </span>
-                )}
-              </div>
+              {/* Key stats — matches site stats bar pattern (bg-blue-600/20 icon wells on slate-900) */}
+              {detail.keyStats && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-px mt-10 overflow-hidden rounded-xl border border-white/10" style={hs(0.34)}>
+                  {detail.keyStats.map((stat, i) => (
+                    <div key={i} className="sd-stat-block bg-slate-800/60 backdrop-blur-sm px-4 py-5 text-center">
+                      <div className="text-xl md:text-2xl font-black text-white leading-tight tracking-tight">{stat.value}</div>
+                      <div className="text-[10px] font-bold text-blue-400 uppercase tracking-wider mt-1 leading-tight">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* OEM chips — matches site OEM chips on ServicesPage card */}
+              {service.oems && (
+                <div className="mt-6" style={hs(0.42)}>
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">OEM Expertise</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {service.oems.map(oem => (
+                      <span key={oem} className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10">
+                        {oem}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
+      {/* ══ BODY ══ */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-16">
 
-          {/* ── Main content column ── */}
-          <div className="lg:col-span-2 space-y-16">
+          {/* ── MAIN COLUMN ── */}
+          <div className="lg:col-span-2 space-y-20">
+
+            {/* Why Us — matches site blue-50 bg callout blocks */}
+            {detail.whyUs && (
+              <div className="sd-reveal bg-blue-50 border border-blue-100 rounded-2xl p-6 flex gap-4">
+                <div className="w-10 h-10 bg-blue-600/20 rounded-xl flex items-center justify-center shrink-0 border border-blue-500/30">
+                  <Shield className="w-5 h-5 text-blue-600" aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-600 mb-1">Why Keshav Enterprises</p>
+                  <p className="text-slate-800 font-semibold text-sm leading-relaxed">{detail.whyUs}</p>
+                </div>
+              </div>
+            )}
 
             {/* Overview */}
             <section aria-labelledby="overview-heading">
-              <div className="sd-reveal flex items-center gap-4 mb-6">
-                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
-                <h2 id="overview-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Overview</h2>
+              <div className="sd-reveal flex items-center gap-4 mb-5">
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
+                <h2 id="overview-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Service Overview</h2>
               </div>
-              <p className="sd-reveal text-slate-700 font-medium text-lg leading-relaxed">{detail.overview}</p>
+              <p className="sd-reveal text-slate-600 font-medium text-base leading-relaxed">{detail.overview}</p>
             </section>
 
-            {/* Step-by-step procedure */}
+            {/* Procedures */}
             <section aria-labelledby="procedure-heading">
-              <div className="sd-reveal flex items-center gap-4 mb-8">
-                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
-                <h2 id="procedure-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Step-by-Step Procedure</h2>
+              <div className="sd-reveal flex items-center gap-4 mb-4">
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
+                <h2 id="procedure-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Step-by-Step Procedure</h2>
               </div>
-              <h3 className="sd-reveal text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-12">
-                How Our Engineers Execute This Service
+              <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-10">
+                How Our Engineers Execute This
               </h3>
-              <div className="space-y-0">
-                {detail.procedures.map((proc, i) => (
-                  <div key={i} className="sd-reveal flex gap-6 group/step sd-step-gap" style={{ animationDelay: `${i * 70}ms` }}>
-                    <div className="flex flex-col items-center shrink-0">
-                      {/* Step circle */}
-                      <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-black text-sm shadow-lg shadow-blue-600/25 shrink-0 group-hover/step:scale-110 group-hover/step:shadow-blue-600/40 transition-all duration-300 sd-step-num">
-                        {proc.step}
+
+              <div className="space-y-4">
+                {detail.procedures.map((proc, i) => {
+                  const PIcon = proc.icon;
+                  return (
+                    <div key={i}
+                      className="sd-reveal sd-proc-row bg-white border border-slate-200 rounded-2xl overflow-hidden flex gap-0 shadow-sm"
+                      style={{ animationDelay: `${i * 50}ms` }}>
+                      {/* Step column — #0A192F matching site dark headers */}
+                      <div className="w-16 shrink-0 bg-[#0A192F] flex flex-col items-center justify-start pt-5 gap-2 pb-5">
+                        <span className="text-xs font-black text-blue-400 leading-none">{proc.step}</span>
+                        {PIcon && <PIcon className="w-4 h-4 text-slate-500 mt-1" aria-hidden="true" />}
+                        {i < detail.procedures.length - 1 && (
+                          <div className="sd-step-line w-px flex-1 bg-slate-700 mt-2" aria-hidden="true" />
+                        )}
                       </div>
-                      {/* Connector line */}
-                      {i < detail.procedures.length - 1 && (
-                        <div
-                          className="sd-step-line w-0.5 flex-1 min-h-[32px] my-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-100"
-                          aria-hidden="true"
-                        />
-                      )}
+                      {/* Content */}
+                      <div className="flex-1 min-w-0 px-6 py-5">
+                        <h4 className="text-sm font-black text-slate-900 mb-2 tracking-tight">{proc.title}</h4>
+                        <p className="text-slate-600 font-medium text-sm leading-relaxed">{proc.desc}</p>
+                      </div>
                     </div>
-                    <div className="pb-10 pt-1 flex-1">
-                      <h4 className="text-base font-black text-slate-900 mb-2 tracking-tight group-hover/step:text-blue-700 transition-colors">
-                        {proc.title}
-                      </h4>
-                      <p className="text-slate-600 font-medium text-sm leading-relaxed">{proc.desc}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 
             {/* Tools & Equipment */}
-            <section aria-labelledby="tools-heading" className="sd-reveal bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-10">
-              <div className="flex items-center gap-4 mb-6">
-                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
-                <h2 id="tools-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Tools & Equipment</h2>
+            <section aria-labelledby="tools-heading">
+              <div className="sd-reveal flex items-center gap-4 mb-4">
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
+                <h2 id="tools-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Tools & Equipment</h2>
               </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-6 tracking-tight">Latest Technology Used</h3>
-              <ul className="space-y-3" role="list">
-                {detail.tools.map((tool, i) => (
-                  <li key={i} className="sd-reveal flex items-start gap-3" style={{ animationDelay: `${i * 55}ms` }}>
-                    <div className="w-2 h-2 rounded-full bg-blue-600 mt-2 shrink-0" aria-hidden="true" />
-                    <span className="text-slate-700 font-medium text-sm leading-relaxed">{tool}</span>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-8">Instrumentation We Deploy</h3>
+
+              {/* Table matches site "What We Deliver" pattern */}
+              <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <div className="bg-[#0A192F] px-6 py-4 flex gap-6">
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest w-8">No.</span>
+                  <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Equipment / Instrument</span>
+                </div>
+                <ul className="divide-y divide-slate-100" role="list">
+                  {detail.tools.map((tool, i) => {
+                    const TIcon = tool.icon;
+                    return (
+                      <li key={i}
+                        className="sd-reveal sd-tool-row flex items-start px-6 py-4 gap-4"
+                        style={{ animationDelay: `${i * 40}ms` }}>
+                        <span className="text-[11px] font-black text-slate-400 w-8 pt-0.5 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                        <div className="flex items-start gap-3 flex-1 min-w-0">
+                          {TIcon && (
+                            <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center shrink-0 border border-blue-100">
+                              <TIcon className="w-4 h-4 text-blue-600" aria-hidden="true" />
+                            </div>
+                          )}
+                          <div>
+                            <p className="font-black text-slate-900 text-sm">{tool.name}</p>
+                            <p className="text-slate-500 text-xs font-medium mt-0.5">{tool.detail}</p>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </section>
 
-            {/* Fault Diagnosis Matrix — only for Troubleshooting Service */}
+            {/* Fault Diagnosis Matrix — srv_7 only */}
             {detail.faultMatrix && (
               <section aria-labelledby="fault-matrix-heading">
-                <div className="sd-reveal flex items-center gap-4 mb-8">
-                  <span className="w-12 h-0.5 bg-red-500" aria-hidden="true" />
-                  <h2 id="fault-matrix-heading" className="text-red-600 font-black uppercase tracking-widest text-sm">Fault Diagnosis Matrix</h2>
+                <div className="sd-reveal flex items-center gap-4 mb-4">
+                  <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
+                  <h2 id="fault-matrix-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Fault Diagnosis Matrix</h2>
                 </div>
-                <h3 className="sd-reveal text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">
-                  Symptom → Root Cause → Action
+                <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-3">
+                  Symptom → Root Cause → Corrective Action
                 </h3>
-                <p className="sd-reveal text-slate-500 font-medium text-base mb-10 leading-relaxed">
-                  Our engineers use this systematic fault matrix — built from decades of OEM and field experience — to move from symptom to confirmed root cause in the shortest time possible.
+                <p className="sd-reveal text-slate-500 font-medium text-sm mb-10 leading-relaxed">
+                  Systematic reference built from decades of OEM and field experience. Used to move from symptom to confirmed root cause in minimum time.
                 </p>
-                <div className="space-y-4">
+                <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F]">
+                    {['Symptom Observed', 'Possible Root Causes', 'Corrective Action'].map(h => (
+                      <div key={h} className="px-5 py-3.5 border-r border-slate-700 last:border-r-0">
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{h}</span>
+                      </div>
+                    ))}
+                  </div>
                   {detail.faultMatrix.map((row, i) => (
                     <div key={i}
-                      className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-red-300 hover:shadow-lg transition-all duration-300 group/fm"
-                      style={{ animationDelay: `${i * 60}ms` }}>
-                      {/* Symptom header */}
-                      <div className="flex items-center gap-4 px-6 py-4 bg-slate-900 group-hover/fm:bg-red-950 transition-colors">
-                        <div className="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/30 flex items-center justify-center shrink-0">
-                          <Activity className="w-4 h-4 text-red-400" aria-hidden="true" />
-                        </div>
-                        <h4 className="font-black text-white text-sm tracking-tight">{row.symptom}</h4>
+                      className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0"
+                      style={{ animationDelay: `${i * 45}ms` }}>
+                      <div className="px-5 py-4">
+                        <p className="text-sm font-black text-slate-900">{row.symptom}</p>
                       </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
-                        {/* Causes */}
-                        <div className="p-5">
-                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Possible Root Causes</p>
-                          <ul className="space-y-2">
-                            {row.causes.map((c, ci) => (
-                              <li key={ci} className="flex items-start gap-2 text-sm text-slate-700 font-medium leading-relaxed">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" aria-hidden="true" />
-                                {c}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        {/* Action */}
-                        <div className="p-5 bg-blue-50/40">
-                          <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3">Corrective Action</p>
-                          <p className="text-sm text-slate-800 font-semibold leading-relaxed">{row.action}</p>
-                        </div>
+                      <div className="px-5 py-4">
+                        <ul className="space-y-1.5">
+                          {row.causes.map((c, ci) => (
+                            <li key={ci} className="flex items-start gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 shrink-0" aria-hidden="true" />
+                              <span className="text-xs text-slate-600 font-medium leading-snug">{c}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="px-5 py-4 bg-blue-50/40">
+                        <p className="text-xs text-slate-700 font-semibold leading-snug">{row.action}</p>
                       </div>
                     </div>
                   ))}
@@ -4578,108 +4759,104 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
             {/* Standards & Compliance */}
             <section aria-labelledby="standards-heading">
-              <div className="sd-reveal flex items-center gap-4 mb-6">
-                <span className="w-12 h-0.5 bg-blue-600" aria-hidden="true" />
-                <h2 id="standards-heading" className="text-blue-600 font-black uppercase tracking-widest text-sm">Standards & Compliance</h2>
+              <div className="sd-reveal flex items-center gap-4 mb-4">
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
+                <h2 id="standards-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Standards & Compliance</h2>
               </div>
-              <h3 className="sd-reveal text-2xl font-black text-slate-900 mb-6 tracking-tight">International Standards We Work To</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {detail.standards.map((std, i) => (
-                  <div key={i}
-                    className="sd-reveal flex items-start gap-4 bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
-                    style={{ animationDelay: `${i * 60}ms` }}>
-                    <div className="w-9 h-9 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 border border-blue-100">
-                      <Shield className="w-4 h-4 text-blue-600" aria-hidden="true" />
-                    </div>
-                    <span className="text-slate-700 font-medium text-sm leading-relaxed">{std}</span>
-                  </div>
-                ))}
+              <h3 className="sd-reveal text-2xl font-black text-slate-900 tracking-tight mb-8">International Standards We Work To</h3>
+              <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <ul className="divide-y divide-slate-100" role="list">
+                  {detail.standards.map((std, i) => (
+                    <li key={i}
+                      className="sd-reveal sd-std-row flex items-start gap-4 px-6 py-4"
+                      style={{ animationDelay: `${i * 40}ms` }}>
+                      {/* Body badge — blue-50 matches site card accent pattern */}
+                      <span className="text-[10px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded uppercase tracking-wider shrink-0 mt-0.5 min-w-[44px] text-center">
+                        {std.body}
+                      </span>
+                      <div>
+                        <p className="font-black text-slate-900 text-sm">{std.code}</p>
+                        <p className="text-slate-500 font-medium text-xs mt-0.5">{std.desc}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </section>
 
-            {/* Bottom CTA banner */}
-            <section aria-labelledby="cta-service-heading"
-              className="sd-reveal bg-[#0A192F] rounded-3xl p-8 md:p-10 text-white relative overflow-hidden">
-              <div className="absolute inset-0 opacity-5 bg-[linear-gradient(to_right,#fff1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:2rem_2rem]" aria-hidden="true" />
-              <div className="relative z-10">
-                <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">Ready to Start?</p>
-                <h3 id="cta-service-heading" className="text-2xl md:text-3xl font-black tracking-tight mb-3">{service.title}</h3>
-                <p className="text-slate-300 font-medium mb-8 max-w-lg leading-relaxed">
-                  Talk to our ex-OEM engineers about your specific turbine make, site conditions, and shutdown window.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
-                    target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-7 py-4 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
-                    <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" /> WhatsApp Us Now
-                  </a>
-                  <button onClick={() => navigate('/contact')}
-                    className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-7 py-4 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50">
-                    Submit Formal RFQ
-                  </button>
-                </div>
+            {/* Bottom CTA — matches site bg-slate-900 CTA section */}
+            <section aria-labelledby="cta-service-heading" className="sd-reveal bg-slate-900 p-8 md:p-10 text-white rounded-2xl">
+              <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">Ready to Start?</p>
+              <h3 id="cta-service-heading" className="text-2xl font-black tracking-tight mb-3">{service.title}</h3>
+              <p className="text-slate-400 font-medium mb-8 max-w-lg leading-relaxed text-sm">
+                Speak directly to our ex-OEM engineers about your turbine make, site conditions, and shutdown window.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 shadow-lg">
+                  <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" /> WhatsApp Us Now
+                </a>
+                <button onClick={() => navigate('/contact')}
+                  className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 shadow-lg">
+                  Submit Formal RFQ <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+                </button>
               </div>
             </section>
           </div>
 
-          {/* ── Sidebar ── */}
-          <aside className="space-y-5 lg:sticky lg:top-28 lg:self-start">
+          {/* ── SIDEBAR ── */}
+          <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
 
-            {/* What we deliver */}
-            <div className="sd-reveal bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-md">
-              <div className="bg-slate-900 px-6 py-4">
+            {/* What We Deliver — matches site "What We Deliver" card */}
+            <div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="bg-[#0A192F] px-5 py-4 flex items-center gap-3">
+                <div className="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center border border-blue-500/30">
+                  <CheckCircle2 className="w-4 h-4 text-blue-400" aria-hidden="true" />
+                </div>
                 <h3 className="font-black text-white text-sm uppercase tracking-widest">What We Deliver</h3>
               </div>
-              <ul className="divide-y divide-slate-100">
+              <ul className="divide-y divide-slate-100" role="list">
                 {service.details.map((d, i) => (
-                  <li key={i} className="flex items-start px-6 py-4 hover:bg-blue-50/40 transition-colors group/li">
-                    <CheckCircle2 className="w-4 h-4 text-blue-500 mr-3 shrink-0 mt-0.5 group-hover/li:text-blue-600 transition-colors" aria-hidden="true" />
+                  <li key={i} className="flex items-start px-5 py-3.5 hover:bg-blue-50/30 transition-colors">
+                    <CheckCircle2 className="w-4 h-4 text-blue-500 mr-3 shrink-0 mt-0.5" aria-hidden="true" />
                     <span className="text-slate-700 font-medium text-sm leading-relaxed">{d}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* OEM expertise */}
-            {service.oems && (
-              <div className="sd-reveal bg-[#0A192F] rounded-3xl p-6 shadow-lg">
-                <p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">OEM Expertise</p>
-                <div className="flex flex-wrap gap-2">
-                  {service.oems.map(oem => (
-                    <span key={oem} className="text-xs font-black text-slate-200 bg-slate-800/80 px-3 py-1.5 rounded-full uppercase tracking-wide border border-white/10 hover:border-blue-400/40 hover:text-white transition-colors cursor-default">{oem}</span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* WhatsApp CTA */}
+            {/* WhatsApp CTA — matches site btn-wa */}
             <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
               target="_blank" rel="noopener noreferrer"
-              className="sd-reveal flex items-center justify-center gap-3 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-5 rounded-2xl font-black text-base transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
-              <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" /> Get a Quote on WhatsApp
+              className="sd-reveal flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
+              <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" /> Get a Quote on WhatsApp
             </a>
 
+            {/* RFQ button — matches site btn-primary */}
             <button onClick={() => navigate('/contact')}
-              className="sd-reveal w-full border-2 border-slate-900 text-slate-900 px-6 py-4 rounded-2xl font-black text-base hover:bg-slate-900 hover:text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500">
-              Submit Formal RFQ
+              className="sd-reveal w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2">
+              Submit Formal RFQ <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
             </button>
 
-            {/* All services nav */}
-            <div className="sd-reveal bg-slate-50 border border-slate-200 rounded-3xl p-6">
-              <h4 className="font-black text-slate-900 text-sm uppercase tracking-widest mb-4">All Services</h4>
+            {/* All Services Nav — matches site card header pattern */}
+            <div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="bg-[#0A192F] px-5 py-4">
+                <h4 className="font-black text-white text-sm uppercase tracking-widest">All Services</h4>
+              </div>
               <nav aria-label="Service navigation">
-                <ul className="space-y-1.5" role="list">
+                <ul className="divide-y divide-slate-100" role="list">
                   {SERVICES.map(s => {
                     const SIcon = SERVICE_ICONS[s.id];
                     const isActive = s.id === serviceId;
                     return (
                       <li key={s.id}>
                         <button onClick={() => navigate(`/service/${s.id}`)}
-                          className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-black transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-left ${isActive ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' : 'text-slate-700 hover:bg-white hover:shadow-sm hover:text-blue-600 hover:translate-x-0.5'}`}
+                          className={`sd-sidenav-item w-full flex items-center gap-3 px-5 py-3.5 text-sm font-bold transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 ${isActive ? 'sd-sidenav-active' : 'text-slate-700'}`}
                           aria-current={isActive ? 'page' : undefined}>
-                          {SIcon && <SIcon className="w-4 h-4 shrink-0" aria-hidden="true" />}
-                          <span className="leading-tight">{s.title}</span>
-                          {isActive && <ChevronRight className="w-3.5 h-3.5 ml-auto shrink-0" aria-hidden="true" />}
+                          {SIcon && <SIcon className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-200' : 'text-blue-500'}`} aria-hidden="true" />}
+                          <span className="flex-1 leading-tight">{s.title}</span>
+                          {isActive && <ChevronRight className="w-3.5 h-3.5 shrink-0 text-blue-200" aria-hidden="true" />}
                         </button>
                       </li>
                     );
@@ -4690,9 +4867,10 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
           </aside>
         </div>
 
-        {/* Prev / Next navigation */}
+        {/* Prev / Next — matches site border-slate-200 card pattern */}
         {(prevService || nextService) && (
-          <nav aria-label="Adjacent service navigation" className="mt-16 pt-8 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <nav aria-label="Adjacent service navigation"
+            className="mt-16 pt-8 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {prevService ? (
               <button onClick={() => navigate(`/service/${prevService.id}`)}
                 className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
@@ -4701,7 +4879,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">Previous</p>
-                  <p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors truncate">{prevService.title}</p>
+                  <p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">{prevService.title}</p>
                 </div>
               </button>
             ) : <div />}
@@ -4710,7 +4888,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                 className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-right justify-end sm:col-start-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
                 <div className="min-w-0 text-right">
                   <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">Next</p>
-                  <p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors truncate">{nextService.title}</p>
+                  <p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">{nextService.title}</p>
                 </div>
                 <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shrink-0">
                   <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors" aria-hidden="true" />

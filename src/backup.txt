@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useRef, useCallback, useMemo, memo, Suspense, lazy
+  useState, useEffect, useRef, useCallback, useMemo, memo, Suspense
 } from 'react';
 import {
   Menu, X, ChevronRight, Phone, Mail, MapPin,
@@ -58,7 +58,7 @@ const NAV_LINKS = [
 const OEMS = ['Triveni', 'Siemens', 'BHEL', 'Belliss & Morcom', 'Maxwatt', 'Man Turbo', 'Chola Turbo', 'DLF-Skoda', 'KKK', 'ABB'];
 
 // PERF FIX: icon map instead of JSX in data arrays (prevents React serialization issues)
-const SERVICE_ICONS = { srv_1: Cog, srv_2: Wrench, srv_3: Hexagon, srv_4: Activity, srv_5: Droplets, srv_6: Target };
+const SERVICE_ICONS = { srv_1: Cog, srv_2: Wrench, srv_3: Hexagon, srv_4: Activity, srv_5: Droplets, srv_6: Target, srv_7: Search };
 
 // IMAGE FILENAMES FOR SERVICES — upload these to your /public folder
 // Each service card will show this as a background image with 90% opacity overlay
@@ -117,6 +117,15 @@ const SERVICES = [
     desc: 'Expert machine alignment using latest technology to eliminate misalignment, one of the primary causes of equipment failure. Covers turbines, gearboxes, pumps, fans, alternators, and induction generators.',
     details: ['Turbine to gearbox & gearbox to mill gearbox alignment', 'Fan, pump, alternator, induction generator alignment', 'Machine levelling & pipe strain measurements on any frame size', 'Fiberizor, shredder alignment', 'Latest alignment technology for highest standards', 'Detailed alignment reporting with exact results', 'Covers any size machine frame in any location'],
     oems: ['All Makes']
+  },
+  {
+    id: 'srv_7',
+    // Upload a photo of engineers diagnosing turbine with vibration analyser / laptop on-site
+    image: 'service-troubleshooting.webp',
+    title: 'Troubleshooting Service',
+    desc: 'Rapid on-site fault diagnosis for steam turbines experiencing vibration, bearing failure, governor instability, steam leakage, oil contamination, or unexpected trips. Ex-OEM engineers deploy with full diagnostic instrumentation for root-cause identification and corrective action.',
+    details: ['High vibration — imbalance, misalignment, bearing wear, rub diagnosis', 'Governor hunting, speed instability & overspeed trip investigation', 'Bearing oil contamination — carbon ring seal & lube system analysis', 'Steam gland leakage — labyrinth seal, packing & gland steam pressure issues', 'Blade fouling, erosion & steam path efficiency loss analysis', 'Unexpected trip investigation — oil pressure, temperature & control system faults', '24x7 emergency deployment across India with all diagnostic equipment'],
+    oems: ['Triveni', 'Siemens', 'BHEL', 'Belliss India', 'Maxwatt', 'Man Turbo', 'KKK', 'ABB']
   },
 ];
 
@@ -4134,6 +4143,94 @@ const SERVICE_DETAIL_DATA = {
     tools: ["Pruftechnik Rotalign Pro / OPTALIGN series laser alignment system", "SKF TKSA 71 wireless laser alignment equipment", "Precision dial gauge set for soft foot measurement", "Stainless steel precision shim sets (0.025 to 3.0 mm thickness)", "Digital torque wrenches for coupling and foundation bolt torquing", "Vibration analyser for pre and post alignment vibration comparison", "Thermal imaging camera for hot bearing and coupling temperature survey"],
     standards: ["ISO 10816 / ISO 20816 — Mechanical vibration of machines — evaluation criteria", "API 686 — Recommended practice for machinery installation", "OEM alignment tolerances (Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK)", "ISO 1940 — Residual imbalance limits post-alignment correction", "ASME B31.3 — Process piping nozzle load limits at machine connections"],
   },
+  srv_7: {
+    tagline: "Root Cause Found. Corrective Action Deployed. Turbine Back Online.",
+    overview: "Unplanned turbine trips and unexplained performance degradation cost industrial plants millions in lost production every year. A misdiagnosed fault repaired without identifying its root cause will fail again — often sooner than the first time. Keshav Enterprises deploys ex-OEM troubleshooting engineers with full diagnostic instrumentation to identify, document, and rectify the precise root cause of any steam turbine fault — from high vibration and bearing failure to governor instability, oil contamination, and steam leakage. We cover all turbine makes from 5 kW to 27 MW across the full spectrum of India's process and power industries.",
+    procedures: [
+      { step: "01", title: "Emergency Mobilisation & Site Data Collection", desc: "24x7 response deployment to site with full diagnostic kit. Collection of all available operational data: vibration history, trip logs, oil analysis reports, bearing temperature trends, steam condition logs, and maintenance records. Interview of operations and maintenance personnel." },
+      { step: "02", title: "Baseline Vibration & Performance Measurement", desc: "Online vibration measurement at all bearing housings: overall vibration level (mm/s RMS), FFT spectrum analysis, 1X and 2X amplitude and phase, sub-synchronous and high-frequency components. Steam inlet/exhaust pressure, temperature, and flow benchmarked against design duty." },
+      { step: "03", title: "Fault Signature Identification & Hypothesis", desc: "Analysis of vibration spectrum, phase data, bearing temperature map, and oil sample results to build the fault signature. Each potential root cause mapped against the measured evidence: imbalance (dominant 1X), misalignment (2X), bearing wear (sub-synchronous, bearing frequency), rub (sub-harmonics), looseness (harmonics 3X+), or steam path fouling (thermal bow)." },
+      { step: "04", title: "Targeted Strip-Down & Physical Inspection", desc: "Minimum-invasive disassembly targeting the suspected fault zone. Physical measurement of bearing clearances, shaft runout, coupling alignment, gland seal clearances, and labyrinth seal fits compared against OEM specification. Photographic and dimensional documentation of all findings." },
+      { step: "05", title: "Root Cause Confirmation & Report", desc: "Formal root cause analysis (RCA) report combining on-machine data, strip-down measurements, and OEM specification comparison. Root cause classified and confirmed. Contributing factors identified. Corrective action plan with priority ranking and estimated downtime prepared." },
+      { step: "06", title: "Corrective Action Execution", desc: "Direct execution of the corrective action by the same troubleshooting team: rotor re-balancing, bearing replacement, alignment correction, gland seal replacement, lube oil system flush, governor overhaul, or control system calibration. All corrective work documented against OEM specifications." },
+      { step: "07", title: "Post-Repair Commissioning & Trend Monitoring", desc: "Monitored restart with continuous vibration and bearing temperature logging during run-up. Comparison of post-repair vibration levels against pre-fault baseline and OEM acceptance limits. 48-hour trend monitoring with written clearance report before return to full load." },
+    ],
+    tools: [
+      "Multi-channel portable vibration analyser with real-time FFT spectrum (CSI 2140 / SKF Microlog class)",
+      "Proximity probes and eddy current sensors for shaft vibration measurement (API 670)",
+      "Thermal imaging camera (FLIR / Testo class) for bearing and steam path thermal survey",
+      "Stroboscope and phase reference trigger for 1X amplitude and phase angle measurement",
+      "Portable oil particle counter (ISO 11500) for lube oil contamination assessment",
+      "Karl Fischer titrator for free water content measurement in lube oil",
+      "Precision dial gauges and bore gauges for bearing clearance and shaft runout measurement",
+      "Laser shaft alignment system for coupling and bearing alignment confirmation",
+      "Borescope (rigid and flexible) for internal steam path and blade inspection without full strip-down",
+      "XRF PMI analyser for alloy identification of failed components",
+      "Ultrasonic thickness gauge for casing and pipe wall measurement",
+      "Governor calibration equipment and speed reference instruments",
+    ],
+    standards: [
+      "ISO 10816-3 / ISO 20816-3 — Vibration severity limits for industrial machines above 15 kW",
+      "API 670 — Machinery protection: vibration, axial position, and bearing temperature monitoring",
+      "API 612 — Special-purpose steam turbines for petroleum, chemical, and gas service",
+      "ISO 4406:99 — Lube oil cleanliness classification",
+      "ISO 4021 — Hydraulic fluid contamination analysis and sampling",
+      "ASME PTC 6 — Steam turbine performance test code (efficiency benchmarking)",
+      "OEM maintenance and troubleshooting manuals — Triveni, Siemens, BHEL, Belliss, Man Turbo, KKK, ABB",
+    ],
+    faultMatrix: [
+      {
+        symptom: "High vibration — 1X dominant",
+        causes: ["Rotor imbalance (residual or deposit-induced)", "Rotor bow (thermal or mechanical)", "Excessive bearing clearance"],
+        action: "Dynamic balancing, rotor inspection, bearing replacement"
+      },
+      {
+        symptom: "High vibration — 2X dominant",
+        causes: ["Shaft misalignment (angular or offset)", "Coupling fault", "Casing distortion / pipe strain"],
+        action: "Laser alignment, coupling inspection, pipe strain measurement"
+      },
+      {
+        symptom: "Sub-synchronous vibration",
+        causes: ["Oil whirl / oil whip in journal bearings", "Rub-induced instability", "Loose bearing fit"],
+        action: "Bearing clearance reset, lube oil pressure/viscosity check, rub clearance inspection"
+      },
+      {
+        symptom: "High-frequency vibration (>3X)",
+        causes: ["Blade fouling or erosion", "Looseness in foundation or bearing cap", "Gear mesh fault (gearbox)"],
+        action: "Blade inspection (borescope), bearing cap torque check, gearbox inspection"
+      },
+      {
+        symptom: "Bearing oil contamination / water in oil",
+        causes: ["Carbon ring gland seal wear", "Gland steam pressure too high", "Condensate ingress via exhaust"],
+        action: "Carbon ring replacement, gland steam pressure reset, lube oil system flush"
+      },
+      {
+        symptom: "Steam gland leakage",
+        causes: ["Labyrinth seal wear (excessive clearance)", "Gland packing worn or damaged", "Gland steam pressure incorrectly set"],
+        action: "Labyrinth seal replacement, gland packing replacement, gland steam controller calibration"
+      },
+      {
+        symptom: "Governor hunting / speed instability",
+        causes: ["Governor linkage wear or sticktion", "Dirty oil / sludge in PG-PL governor", "Compensation needle valve maladjustment"],
+        action: "Governor linkage overhaul, governor oil flush and refill, needle valve re-calibration"
+      },
+      {
+        symptom: "Low lube oil pressure trip",
+        causes: ["Oil pump wear", "Oil cooler fouling / high oil temperature", "Pressure relief valve stuck open", "Low oil level or cavitation"],
+        action: "Oil pump inspection, cooler cleaning, PRV inspection, oil level and system check"
+      },
+      {
+        symptom: "Overspeed trip — spurious or actual",
+        causes: ["Trip pin wear or incorrect setting", "Governor valve passing steam", "Actuator or control oil fault"],
+        action: "Trip pin inspection and re-setting, governor valve seat inspection, control system check"
+      },
+      {
+        symptom: "Power output / efficiency loss",
+        causes: ["Blade fouling (steam purity / attemperating water contamination)", "Seal strip wear (increased steam bypass)", "Nozzle erosion or blockage"],
+        action: "Borescope inspection, seal strip replacement, nozzle inspection and cleaning"
+      },
+    ],
+  },
 };
 
 // ─── SERVICE DETAIL PAGE ─────────────────────────────────────
@@ -4428,6 +4525,56 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                 ))}
               </ul>
             </section>
+
+            {/* Fault Diagnosis Matrix — only for Troubleshooting Service */}
+            {detail.faultMatrix && (
+              <section aria-labelledby="fault-matrix-heading">
+                <div className="sd-reveal flex items-center gap-4 mb-8">
+                  <span className="w-12 h-0.5 bg-red-500" aria-hidden="true" />
+                  <h2 id="fault-matrix-heading" className="text-red-600 font-black uppercase tracking-widest text-sm">Fault Diagnosis Matrix</h2>
+                </div>
+                <h3 className="sd-reveal text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">
+                  Symptom → Root Cause → Action
+                </h3>
+                <p className="sd-reveal text-slate-500 font-medium text-base mb-10 leading-relaxed">
+                  Our engineers use this systematic fault matrix — built from decades of OEM and field experience — to move from symptom to confirmed root cause in the shortest time possible.
+                </p>
+                <div className="space-y-4">
+                  {detail.faultMatrix.map((row, i) => (
+                    <div key={i}
+                      className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden hover:border-red-300 hover:shadow-lg transition-all duration-300 group/fm"
+                      style={{ animationDelay: `${i * 60}ms` }}>
+                      {/* Symptom header */}
+                      <div className="flex items-center gap-4 px-6 py-4 bg-slate-900 group-hover/fm:bg-red-950 transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/30 flex items-center justify-center shrink-0">
+                          <Activity className="w-4 h-4 text-red-400" aria-hidden="true" />
+                        </div>
+                        <h4 className="font-black text-white text-sm tracking-tight">{row.symptom}</h4>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
+                        {/* Causes */}
+                        <div className="p-5">
+                          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Possible Root Causes</p>
+                          <ul className="space-y-2">
+                            {row.causes.map((c, ci) => (
+                              <li key={ci} className="flex items-start gap-2 text-sm text-slate-700 font-medium leading-relaxed">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-400 mt-1.5 shrink-0" aria-hidden="true" />
+                                {c}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        {/* Action */}
+                        <div className="p-5 bg-blue-50/40">
+                          <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3">Corrective Action</p>
+                          <p className="text-sm text-slate-800 font-semibold leading-relaxed">{row.action}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Standards & Compliance */}
             <section aria-labelledby="standards-heading">
