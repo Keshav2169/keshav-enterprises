@@ -1562,8 +1562,10 @@ const MARQUEE_CSS = `
   /* PERF: content-visibility on below-fold sections */
   .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
 
-  /* Prevent all images from overflowing */
-  img{max-width:100%;height:auto;display:block}
+  /* Prevent flow images from overflowing; exclude absolute/fixed cover images so h-full is preserved */
+  img:not([class*="absolute"]):not([class*="fixed"]){max-width:100%;height:auto;display:block}
+  /* Absolute/fixed cover images: ensure object-cover fills parent correctly */
+  img.absolute,img.fixed{display:block;}
 
   /* GPU compositing for marquees */
   .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
@@ -1898,9 +1900,67 @@ if (typeof document !== 'undefined') {
   }
 }
 
+// ─── ANALYTICS: GA4 + Microsoft Clarity ──────────────────────
+// HOW TO USE:
+//   1. Replace 'G-XXXXXXXXXX' below with your real GA4 Measurement ID
+//      (Google Analytics → Admin → Data Streams → Web → Measurement ID)
+//   2. Replace 'XXXXXXXXXX' in the Clarity block with your real Clarity Project ID
+//      (clarity.microsoft.com → Settings → Setup)
+//   3. Both are injected once at module load — no re-injection on route changes.
+//
+const GA4_ID      = 'G-XXXXXXXXXX'; // ← REPLACE with your GA4 Measurement ID
+const CLARITY_ID  = 'XXXXXXXXXX';   // ← REPLACE with your Clarity Project ID
+
+if (typeof document !== 'undefined') {
+  // ── Google Analytics 4 ──
+  if (!document.getElementById('ga4-script') && !GA4_ID.includes('XXXXXXXXXX')) {
+    const s1 = document.createElement('script');
+    s1.id  = 'ga4-script';
+    s1.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
+    s1.async = true;
+    document.head.appendChild(s1);
+
+    const s2 = document.createElement('script');
+    s2.id   = 'ga4-init';
+    s2.text = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_ID}',{page_path:window.location.hash});`;
+    document.head.appendChild(s2);
+
+    // Track hash-based SPA navigation
+    window.addEventListener('popstate', () => {
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', 'page_view', { page_path: window.location.hash });
+      }
+    });
+  }
+
+  // ── Microsoft Clarity ──
+  if (!document.getElementById('clarity-script') && !CLARITY_ID.includes('XXXXXXXXXX')) {
+    const cs = document.createElement('script');
+    cs.id   = 'clarity-script';
+    cs.type = 'text/javascript';
+    cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
+    document.head.appendChild(cs);
+  }
+  // ── Tawk.to Live Chat (free) ──
+  // To enable: sign up at tawk.to, get your Property ID and Widget ID,
+  // replace the placeholder values below, then remove the early-return condition.
+  // const TAWK_PROPERTY_ID = 'YOUR_PROPERTY_ID';
+  // const TAWK_WIDGET_ID   = 'YOUR_WIDGET_ID';
+  // if (!document.getElementById('tawk-script')) {
+  //   const ts = document.createElement('script');
+  //   ts.id = 'tawk-script'; ts.async = true; ts.charset = 'UTF-8';
+  //   ts.setAttribute('crossorigin', '*');
+  //   ts.src = `https://embed.tawk.to/${TAWK_PROPERTY_ID}/${TAWK_WIDGET_ID}`;
+  //   document.head.appendChild(ts);
+  // }
+}
+
 // ─── SEO HEAD (Accessibility + SEO Fix) ──────────────────────
 // ─── SEO HEAD ─────────────────────────────────────────────────
 // SITE_URL: Update this to your live domain once deployed
+// IMPORTANT: Generate a sitemap.xml at /public/sitemap.xml covering all 105 product
+// pages (/product/*), 7 service pages (/service/*), 7 industry pages (/industry/*),
+// blog posts, and static pages. Also add /public/robots.txt pointing to the sitemap.
 const SITE_URL = 'https://keshaventerprises.in';
 const OG_IMAGE = `${SITE_URL}/og-image.webp`; // Upload a 1200x630 px og-image.webp to /public
 const SITE_KEYWORDS = 'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering';
@@ -1996,6 +2056,7 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
       <div className="relative w-10 h-10 sm:w-12 sm:h-12 shrink-0 overflow-hidden rounded-lg flex items-center justify-center">
         {!imgErr
           ? <img src="keshav-logo.png" alt="Keshav Enterprises" width="48" height="48"
+            loading="eager" decoding="async" fetchPriority="high"
             className="w-full h-full object-contain group-hover:scale-105 ..."
             onError={() => setImgErr(true)} />
           : <div className="w-full h-full rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30">
@@ -2015,7 +2076,7 @@ const MakeInIndiaBadge = memo(() => {
   const [e, sE] = useState(false);
   return (
     <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl w-fit" role="img" aria-label="Make In India — Vocal For Local">
-      {!e ? <img src="make-in-india.png" alt="Make In India" width="32" height="32" className="h-8 object-contain" onError={() => sE(true)} /> : <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"><Zap className="w-4 h-4 text-white" aria-hidden="true" /></div>}
+      {!e ? <img src="make-in-india.png" alt="Make In India" width="32" height="32" loading="lazy" decoding="async" fetchPriority="low" className="h-8 object-contain" onError={() => sE(true)} /> : <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center"><Zap className="w-4 h-4 text-white" aria-hidden="true" /></div>}
       <div className="flex flex-col justify-center border-l border-white/20 pl-3">
         <span className="text-white font-black text-sm leading-none uppercase tracking-widest">Make In India</span>
         <span className="text-white text-[11px] font-extrabold leading-none uppercase tracking-wider mt-1">Vocal For Local</span>
@@ -2030,7 +2091,7 @@ const IndiaMartBadge = memo(() => {
     <a href={CONTACT_INFO.indiamart} target="_blank" rel="noopener noreferrer"
       aria-label="View Keshav Enterprises on IndiaMART — Verified Supplier 4.3/5 rating"
       className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer w-fit">
-      {!e ? <div className="h-8 bg-white rounded px-1.5 flex items-center justify-center"><img src="indiamart-logo.png" alt="IndiaMART" width="60" height="20" className="h-5 object-contain" onError={() => sE(true)} /></div>
+      {!e ? <div className="h-8 bg-white rounded px-1.5 flex items-center justify-center"><img src="indiamart-logo.png" alt="IndiaMART" width="60" height="20" loading="lazy" decoding="async" fetchPriority="low" className="h-5 object-contain" onError={() => sE(true)} /></div>
         : <div className="w-8 h-8 bg-slate-900 rounded-full flex items-center justify-center border border-slate-700"><CheckCircle2 className="w-4 h-4 text-green-400" aria-hidden="true" /></div>}
       <div className="flex flex-col justify-center border-l border-white/20 pl-3">
         <span className="text-white font-black text-sm leading-none tracking-widest">IndiaMART Verified</span>
@@ -2047,7 +2108,7 @@ const MSMEBadge = memo(() => {
   return (
     <div className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl w-fit" role="img" aria-label="MSME Registered — Udyam Certified Enterprise">
       {!e
-        ? <img src="msme-logo.png" alt="MSME Udyam Registered" width="36" height="36" className="h-8 object-contain" onError={() => sE(true)} />
+        ? <img src="msme-logo.png" alt="MSME Udyam Registered" width="36" height="36" loading="lazy" decoding="async" fetchPriority="low" className="h-8 object-contain" onError={() => sE(true)} />
         : <div className="w-8 h-8 bg-green-700 rounded-full flex items-center justify-center"><Shield className="w-4 h-4 text-white" aria-hidden="true" /></div>
       }
       <div className="flex flex-col justify-center border-l border-white/20 pl-3">
@@ -2063,7 +2124,12 @@ const ProductCard = memo(({ product, navigate }) => {
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const pImg = product.images?.[0];
-  useEffect(() => { setImgErr(false); setImgLoaded(false); }, [pImg]);
+  const [prevImg, setPrevImg] = useState(pImg);
+  if (pImg !== prevImg) {
+    setPrevImg(pImg);
+    setImgErr(false);
+    setImgLoaded(false);
+  }
   return (
     <article onClick={() => navigate(`/product/${product.id}`)}
       className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50">
@@ -2138,7 +2204,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 
   const q = query.toLowerCase().trim();
   // keep ref in sync for the event handler
-  queryRef.current = query;
+  useEffect(() => { queryRef.current = query; }, [query]);
   const searchResults = useMemo(() => {
     if (!q) return [];
     return [
@@ -2355,210 +2421,244 @@ const Navbar = memo(({ currentPath, navigate }) => {
 
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
-  <footer className="bg-[#0A192F] text-slate-300 pt-20 pb-8 border-t-[8px] border-blue-600" role="contentinfo">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-        <div>
-          <div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
-          <p className="text-slate-300 font-medium text-sm leading-relaxed mb-8">20+ years of excellence in industrial turbine engineering, reverse engineering, and precision manufacturing. Delivering reliability to power, sugar, and process industries across India.</p>
-          <div className="flex flex-col space-y-4 mt-6"><MakeInIndiaBadge /><IndiaMartBadge /><MSMEBadge /></div>
+  <footer className="bg-[#060F1E] text-slate-400" role="contentinfo">
+
+    {/* Top gradient accent line */}
+    <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent" aria-hidden="true" />
+
+    {/* ── Pre-footer CTA band ── */}
+    <div className="bg-[#0A192F] border-b border-slate-800/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <p className="text-white font-black text-lg tracking-tight">Need a quote or have an emergency breakdown?</p>
+            <p className="text-slate-400 text-sm font-medium mt-1">Our engineering team responds within 24 hours — emergency calls answered immediately.</p>
+          </div>
+          <div className="flex flex-wrap gap-3 shrink-0 justify-center">
+            <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`}
+              className="flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.15] hover:border-blue-400/50 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+              <Phone className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />{CONTACT_INFO.phones[0]}
+            </a>
+            <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-5 py-2.5 rounded-lg font-black text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
+              <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />WhatsApp Now
+            </a>
+          </div>
         </div>
-        <nav aria-label="Footer quick links">
-          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Quick Links</h3>
-          <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true" />
-          <ul className="space-y-4">
+      </div>
+    </div>
+
+    {/* ── Main footer body ── */}
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
+
+      {/* ── 4-column grid ── */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-10 gap-y-12 mb-14">
+
+        {/* Col 1 — Brand (4 cols) */}
+        <div className="lg:col-span-4">
+          <div className="mb-5">
+            <BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
+          </div>
+          <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
+            20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares to power, sugar, paper, and process industries across India.
+          </p>
+
+          {/* Credential chips */}
+          <div className="flex flex-col gap-2.5 mb-6">
+            {[
+              { Icon: Shield, iconColor: 'text-green-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
+              { Icon: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal · 4.3★', sub: 'Verified Supplier' },
+              { Icon: Globe, iconColor: 'text-blue-400', title: 'Make In India', sub: 'Proudly manufactured in India' },
+            ].map(({ Icon: IconComponent, iconColor, title, sub }) => (
+              <div key={title} className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 w-fit">
+                <IconComponent className={`w-4 h-4 ${iconColor} shrink-0`} aria-hidden="true" />
+                <div>
+                  <p className="text-white text-xs font-black leading-none">{title}</p>
+                  <p className="text-slate-500 text-[10px] mt-0.5 font-medium">{sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* OEM compatibility */}
+          <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2">OEM Compatible With</p>
+          <p className="text-slate-500 text-xs font-medium leading-relaxed">{OEMS.join(' · ')}</p>
+        </div>
+
+        {/* Col 2 — Navigate (2 cols) */}
+        <nav className="lg:col-span-2" aria-label="Footer site links">
+          <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-5">Navigate</h3>
+          <ul className="space-y-3">
             {NAV_LINKS.map(link => (
               <li key={link.name}>
-                <a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
-                  className="text-slate-300 font-medium hover:text-white hover:translate-x-1 transition-all flex items-center text-sm focus:outline-none focus-visible:underline">
-                  <ChevronRight className="w-4 h-4 mr-2 text-blue-500" aria-hidden="true" /> {link.name}
+                <a href={`#${link.path}`}
+                  onClick={e => { e.preventDefault(); navigate(link.path); }}
+                  className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 group focus:outline-none focus-visible:underline">
+                  <span className="w-4 h-px bg-slate-700 group-hover:bg-blue-500 group-hover:w-5 transition-all duration-200 shrink-0" aria-hidden="true" />
+                  {link.name}
                 </a>
               </li>
             ))}
           </ul>
         </nav>
-        <div>
-          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Our Services</h3>
-          <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true" />
-          <ul className="space-y-4">
-            {['Overhauling & Maintenance', 'Reverse Engineering', 'Turbine Erection', 'Spares Manufacturing', 'Dynamic Balancing', 'Lube Oil Flushing'].map(s => (
-              <li key={s} className="text-slate-300 font-medium text-sm flex items-center">
-                <ChevronRight className="w-4 h-4 mr-2 text-blue-500 shrink-0" aria-hidden="true" /> {s}
+
+        {/* Col 3 — Services (3 cols) */}
+        <div className="lg:col-span-3">
+          <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-5">Services</h3>
+          <ul className="space-y-3">
+            {[
+              { label: 'Turbine Erection & Commissioning', id: 'srv_1' },
+              { label: 'Turnkey Overhauling', id: 'srv_2' },
+              { label: 'Reverse Engineering', id: 'srv_3' },
+              { label: 'Dynamic Balancing', id: 'srv_4' },
+              { label: 'Lube Oil Flushing', id: 'srv_5' },
+              { label: 'Machine Alignment', id: 'srv_6' },
+              { label: 'Troubleshooting', id: 'srv_7' },
+            ].map(({ label, id }) => (
+              <li key={id}>
+                <a href={`#/service/${id}`}
+                  onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
+                  className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 group focus:outline-none focus-visible:underline">
+                  <span className="w-4 h-px bg-slate-700 group-hover:bg-blue-500 group-hover:w-5 transition-all duration-200 shrink-0" aria-hidden="true" />
+                  {label}
+                </a>
               </li>
             ))}
           </ul>
         </div>
-        <div>
-          <h3 className="text-lg font-bold mb-6 text-white tracking-tight">Contact Us</h3>
-          <div className="w-12 h-1 bg-blue-600 mb-6" aria-hidden="true" />
-          <address className="not-italic">
-            <ul className="space-y-6">
-              <li className="flex items-start"><MapPin className="w-5 h-5 text-blue-500 mr-3 mt-0.5 shrink-0" aria-hidden="true" /><span className="text-slate-300 font-medium text-sm leading-relaxed">{CONTACT_INFO.address}</span></li>
-              <li className="flex items-start">
-                <div className="text-sm space-y-2 w-full">
-                  {CONTACT_INFO.phones.map(p => (
-                    <a key={p} href={`tel:${p.replace(/\s/g, '')}`}
-                      className="flex items-center gap-2.5 w-full bg-white/[0.08] hover:bg-blue-500/20 border border-white/[0.15] hover:border-blue-400/60 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group/phone">
-                      <PhoneCall className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
-                      <span className="text-slate-100 font-semibold tracking-wide truncate">{p}</span>
-                      <span className="ml-auto text-[10px] text-blue-400 font-black uppercase tracking-widest opacity-0 group-hover/phone:opacity-100 transition-opacity">Tap to Call</span>
-                    </a>
-                  ))}
+
+        {/* Col 4 — Contact (3 cols) */}
+        <address className="lg:col-span-3 not-italic">
+          <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-5">Contact</h3>
+
+          {/* Address */}
+          <div className="flex items-start gap-3 mb-5">
+            <div className="w-7 h-7 bg-white/[0.05] border border-white/[0.08] rounded-md flex items-center justify-center shrink-0 mt-0.5">
+              <MapPin className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+            </div>
+            <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p>
+          </div>
+
+          {/* GST */}
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-7 h-7 bg-white/[0.05] border border-white/[0.08] rounded-md flex items-center justify-center shrink-0">
+              <Shield className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+            </div>
+            <p className="text-slate-500 text-xs font-mono">GST: {CONTACT_INFO.gst}</p>
+          </div>
+
+          {/* Phones */}
+          <div className="space-y-2 mb-4">
+            {CONTACT_INFO.phones.map(p => (
+              <a key={p} href={`tel:${p.replace(/\s/g,'')}`}
+                className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
+                <div className="w-7 h-7 bg-blue-600/10 border border-blue-500/20 rounded-md flex items-center justify-center shrink-0 group-hover:bg-blue-600/20 transition-colors">
+                  <Phone className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
                 </div>
-              </li>
-              <li className="flex items-start">
-                <div className="text-sm space-y-2 w-full">
-                  {[
-                    { addr: CONTACT_INFO.email, label: 'General' },
-                    { addr: CONTACT_INFO.infoEmail, label: 'Info' },
-                    { addr: CONTACT_INFO.marketingEmail, label: 'Sales' },
-                  ].map(({ addr, label }) => (
-                    <a key={addr} href={`mailto:${addr}`}
-                      className="flex items-center gap-2.5 w-full min-w-0 bg-white/[0.08] hover:bg-blue-500/20 border border-white/[0.15] hover:border-blue-400/60 rounded-xl px-4 py-2.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                      <Mail className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
-                      <span className="text-slate-100 font-semibold truncate">{addr}</span>
-                      <span className="ml-auto shrink-0 text-[10px] text-blue-400 font-black uppercase tracking-widest bg-blue-500/20 border border-blue-400/30 px-2 py-0.5 rounded-full">{label}</span>
-                    </a>
-                  ))}
+                <span className="text-slate-300 group-hover:text-white text-sm font-semibold transition-colors">{p}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Emails */}
+          <div className="space-y-2 mb-6">
+            {[
+              { addr: CONTACT_INFO.email, label: 'General' },
+              { addr: CONTACT_INFO.infoEmail, label: 'Info / RFQ' },
+              { addr: CONTACT_INFO.marketingEmail, label: 'Sales' },
+            ].map(({ addr, label }) => (
+              <a key={addr} href={`mailto:${addr}`}
+                className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
+                <div className="w-7 h-7 bg-white/[0.05] border border-white/[0.08] rounded-md flex items-center justify-center shrink-0 group-hover:border-blue-500/30 transition-colors">
+                  <Mail className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
                 </div>
-              </li>
-            </ul>
-          </address>
+                <span className="text-slate-400 group-hover:text-slate-200 text-xs font-medium transition-colors truncate">{addr}</span>
+                <span className="ml-auto shrink-0 text-[9px] font-black text-slate-600 uppercase tracking-wider">{label}</span>
+              </a>
+            ))}
+          </div>
+
+          {/* Hours chip */}
+          <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 w-fit">
+            <Clock className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
+            <span className="text-slate-400 text-xs font-medium">Mon–Sat 09:00–18:00 &nbsp;|&nbsp; <span className="text-red-400 font-black">24×7 Emergency</span></span>
+          </div>
+        </address>
+      </div>
+
+      {/* ── Divider ── */}
+      <div className="border-t border-slate-800/60 mb-10" aria-hidden="true" />
+
+      {/* ── Social media cards ── */}
+      <div className="mb-10">
+        <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-6 text-center">Connect With Us</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          {[
+            { href: CONTACT_INFO.linkedin,  label: `LinkedIn — ${CONTACT_INFO.linkedinHandle}`,  name: 'LinkedIn',   handle: CONTACT_INFO.linkedinHandle,  bg: '#0A66C2', shadow: 'rgba(10,102,194,0.5)',
+              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
+            { href: CONTACT_INFO.youtube,   label: `YouTube — ${CONTACT_INFO.youtubeHandle}`,   name: 'YouTube',    handle: CONTACT_INFO.youtubeHandle,   bg: '#FF0000', shadow: 'rgba(255,0,0,0.5)',
+              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg> },
+            { href: CONTACT_INFO.instagram, label: `Instagram — ${CONTACT_INFO.instagramHandle}`, name: 'Instagram', handle: CONTACT_INFO.instagramHandle, bg: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', shadow: 'rgba(225,48,108,0.5)',
+              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> },
+            { href: CONTACT_INFO.facebook,  label: `Facebook — ${CONTACT_INFO.facebookHandle}`,  name: 'Facebook',   handle: CONTACT_INFO.facebookHandle,  bg: '#1877F2', shadow: 'rgba(24,119,242,0.5)',
+              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg> },
+            { href: CONTACT_INFO.twitter,   label: `X — ${CONTACT_INFO.twitterHandle}`,          name: 'X',          handle: CONTACT_INFO.twitterHandle,   bg: '#111827', shadow: 'rgba(255,255,255,0.1)',
+              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
+            { href: CONTACT_INFO.reddit,    label: `Reddit — ${CONTACT_INFO.redditHandle}`,       name: 'Reddit',     handle: CONTACT_INFO.redditHandle,    bg: '#FF4500', shadow: 'rgba(255,69,0,0.5)',
+              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z"/></svg> },
+          ].map(({ href, label, name, handle, bg, shadow, icon }) => (
+            <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
+              className="group relative flex flex-col items-center gap-2.5 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/[0.2] px-3 py-4 rounded-xl transition-all duration-200 overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              style={{ '--social-shadow': shadow }}>
+              {/* Icon circle */}
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md group-hover:shadow-lg transition-shadow"
+                style={{ background: bg }}>
+                {icon}
+              </div>
+              <span className="text-slate-400 group-hover:text-white text-xs font-bold transition-colors text-center leading-tight">{name}</span>
+              <span className="text-slate-600 text-[10px] font-medium truncate max-w-full text-center">{handle}</span>
+              {/* Bottom glow on hover */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ background: `linear-gradient(90deg, transparent, ${bg === 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)' ? '#E1306C' : bg}, transparent)` }}
+                aria-hidden="true" />
+            </a>
+          ))}
         </div>
       </div>
-      {/* ── Social Media + Copyright Bar ── */}
-      <div className="border-t border-slate-700/60 pt-10 mb-8">
-        {/* "Follow Us" heading */}
-        <div className="flex flex-col items-center mb-8">
-          <p className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-5">Connect With Us</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-5xl">
 
-            {/* ── LinkedIn Card ── */}
-            <a href={CONTACT_INFO.linkedin} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on LinkedIn — ${CONTACT_INFO.linkedinHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#0A66C2]/15 to-[#004182]/10 hover:from-[#0A66C2] hover:to-[#004182] border border-[#0A66C2]/30 hover:border-[#0A66C2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(10,102,194,0.5)] social-card overflow-hidden">
-              {/* Shine sweep on hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              {/* Logo box */}
-              <div className="w-11 h-11 bg-[#0A66C2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(10,102,194,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
-              </div>
-              {/* Text */}
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#4FA3F7] group-hover:text-blue-200 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">LinkedIn</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.linkedinHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-blue-200/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
-
-            {/* ── Instagram Card ── */}
-            <a href={CONTACT_INFO.instagram} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on Instagram — ${CONTACT_INFO.instagramHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#E1306C]/15 via-[#833ab4]/10 to-[#fcb045]/10 hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] border border-[#E1306C]/30 hover:border-transparent px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(225,48,108,0.45)] social-card overflow-hidden">
-              {/* Shine sweep */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              {/* Logo box — Instagram gradient */}
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 shadow-lg flex-shrink-0 bg-gradient-to-br from-[#833ab4] via-[#fd1d1d] to-[#fcb045] group-hover:shadow-[0_0_15px_rgba(225,48,108,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                </svg>
-              </div>
-              {/* Text */}
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#f472b6] group-hover:text-pink-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Instagram</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.instagramHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-pink-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
-
-            {/* ── Reddit Card ── */}
-            <a href={CONTACT_INFO.reddit} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on Reddit — ${CONTACT_INFO.redditHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF4500]/15 to-[#FF6A33]/10 hover:from-[#FF4500] hover:to-[#FF6A33] border border-[#FF4500]/30 hover:border-[#FF4500] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,69,0,0.45)] social-card overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-[#FF4500] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,69,0,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z" />
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#ffb08f] group-hover:text-orange-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Reddit</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.redditHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-orange-100/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
-
-            {/* ── YouTube Card ── */}
-            <a href={CONTACT_INFO.youtube} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on YouTube — ${CONTACT_INFO.youtubeHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#FF0000]/15 to-[#CC0000]/10 hover:from-[#FF0000] hover:to-[#CC0000] border border-[#FF0000]/30 hover:border-[#FF0000] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,0,0,0.45)] social-card overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-[#FF0000] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,0,0,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#fca5a5] group-hover:text-red-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">YouTube</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.youtubeHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-red-100/70 font-medium transition-colors mt-0.5">View Channel →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
-
-            {/* ── Facebook Card ── */}
-            <a href={CONTACT_INFO.facebook} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on Facebook — ${CONTACT_INFO.facebookHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-[#1877F2]/15 to-[#145DBF]/10 hover:from-[#1877F2] hover:to-[#145DBF] border border-[#1877F2]/30 hover:border-[#1877F2] px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(24,119,242,0.45)] social-card overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-[#1877F2] rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(24,119,242,0.6)] transition-shadow">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z" />
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-[#93c5fd] group-hover:text-blue-100 uppercase tracking-[0.2em] leading-none mb-1 transition-colors">Facebook</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.facebookHandle}</span>
-                <span className="text-[10px] text-slate-300 group-hover:text-blue-100/70 font-medium transition-colors mt-0.5">View Page →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
-
-            {/* ── Twitter / X Card ── */}
-            <a href={CONTACT_INFO.twitter} target="_blank" rel="noopener noreferrer"
-              aria-label={`Keshav Enterprises on X (Twitter) — ${CONTACT_INFO.twitterHandle}`}
-              className="group relative flex items-center gap-4 bg-gradient-to-br from-slate-800/60 to-slate-900/40 hover:from-slate-900 hover:to-slate-800 border border-slate-600/30 hover:border-slate-400 px-6 py-4 rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-[0_8px_30px_rgba(255,255,255,0.1)] social-card overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 pointer-events-none" />
-              <div className="w-11 h-11 bg-slate-900 border border-slate-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,255,255,0.15)] transition-shadow">
-                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </div>
-              <div className="flex flex-col min-w-0">
-                <span className="text-[10px] font-black text-slate-300 group-hover:text-white uppercase tracking-[0.2em] leading-none mb-1 transition-colors">X (Twitter)</span>
-                <span className="text-base font-black text-white leading-tight truncate">{CONTACT_INFO.twitterHandle}</span>
-                <span className="text-[10px] text-slate-400 group-hover:text-slate-200/70 font-medium transition-colors mt-0.5">View Profile →</span>
-              </div>
-              <ExternalLink className="w-4 h-4 text-slate-600 group-hover:text-white/60 transition-colors ml-auto shrink-0" aria-hidden="true" />
-            </a>
-
+      {/* ── Industries served + divider ── */}
+      <div className="border-t border-slate-800/40 pt-8 mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+          <div>
+            <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-3">Industries Served</p>
+            <div className="flex flex-wrap gap-2">
+              {['Power Generation','Sugar Mills','Paper & Pulp','Oil & Gas','Petrochemical','Agro & Food','Cement'].map(ind => (
+                <span key={ind} className="text-[10px] font-black text-slate-600 border border-slate-800 hover:border-slate-700 hover:text-slate-500 px-2.5 py-1 rounded-md uppercase tracking-wide transition-colors">{ind}</span>
+              ))}
+            </div>
+          </div>
+          <div className="text-right shrink-0">
+            <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-1">Capability Range</p>
+            <p className="text-white font-black text-lg tracking-tighter">5 kW – 27 MW</p>
+            <p className="text-slate-600 text-xs font-medium">Steam turbines across India</p>
           </div>
         </div>
+      </div>
 
-        {/* Copyright row */}
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-6 border-t border-slate-800/60">
-          <p className="text-slate-500 font-medium text-sm">© 2026 KESHAV ENTERPRISES. GST: {CONTACT_INFO.gst}. All rights reserved.</p>
-          <p className="text-slate-600 font-medium text-xs">Shamli, Uttar Pradesh, India — Power · Sugar · Process Industries</p>
-        </div>
+      {/* ── Bottom copyright bar ── */}
+      <div className="border-t border-slate-800/40 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <p className="text-slate-600 text-xs font-medium text-center sm:text-left">
+          © 2026 Keshav Enterprises, Shamli, U.P., India. All rights reserved.
+        </p>
+        <p className="text-slate-700 text-[11px] font-mono">
+          GST: {CONTACT_INFO.gst}
+        </p>
       </div>
     </div>
   </footer>
 ));
+
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
 // PERF: Defined outside component — constant data, no reason to recreate on every render
@@ -2637,7 +2737,7 @@ const DigitalProfilesStrip = memo(() => {
             >
               <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
                 style={{ backgroundColor: p.badgeBg }}>
-                <img src={p.imgSrc} alt={p.imgAlt} className="w-7 h-7 object-contain" loading="lazy" width="28" height="28" />
+                <img src={p.imgSrc} alt={p.imgAlt} className="w-7 h-7 object-contain" loading="lazy" decoding="async" fetchPriority="low" width="28" height="28" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="font-black text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors truncate">
@@ -2671,7 +2771,7 @@ const FloatingButtons = memo(() => (
       aria-label="Chat with Keshav Enterprises on WhatsApp"
       className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative">
       <MessageCircle className="w-7 h-7" aria-hidden="true" />
-      <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Chat with an Engineer</span>
+      <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Speak directly with an engineer</span>
     </a>
   </div>
 ));
@@ -2684,8 +2784,23 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [tab, setTab] = useState('specs');
   const product = useMemo(() => PRODUCTS.find(p => p.id === productId), [productId]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
-  useEffect(() => { setImgLoaded(false); setImgErr(false); }, [activeImg, productId]);
+
+  const [prevProductId, setPrevProductId] = useState(productId);
+  if (productId !== prevProductId) {
+    setPrevProductId(productId);
+    setActiveImg(0);
+    setImgErr(false);
+    setImgLoaded(false);
+    setTab('specs');
+  }
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [productId]);
+
+  const [prevActiveImg, setPrevActiveImg] = useState(activeImg);
+  if (activeImg !== prevActiveImg) {
+    setPrevActiveImg(activeImg);
+    setImgLoaded(false);
+    setImgErr(false);
+  }
   const related = useMemo(() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [], [product]);
   const productSchema = useMemo(() => product ? {
     '@context': 'https://schema.org',
@@ -2800,8 +2915,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
                 </div>
                 <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`}>
                   {tab === 'specs' && product.specs && (
-                    <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                      <table className="w-full text-left border-collapse">
+                    <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm overflow-x-auto">
+                      <table className="w-full text-left border-collapse min-w-[320px]">
                         <caption className="sr-only">Technical specifications for {product.title}</caption>
                         <tbody className="divide-y divide-slate-100">
                           {Object.entries(product.specs).map(([k, v], i) => (
@@ -2876,9 +2991,10 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   // PERF: arrow state is sampled every 12 frames (~5x/s) instead of 60fps
   // to avoid triggering 60 React re-renders per second from the rAF loop.
   const frameCount = useRef(0);
-  const tick = useCallback(() => {
+  const tickRef = useRef();
+  tickRef.current = () => {
     const el = trackRef.current;
-    if (!el) { rafRef.current = requestAnimationFrame(tick); return; }
+    if (!el) { rafRef.current = requestAnimationFrame(tickRef.current); return; }
     if (!isPaused.current) {
       el.scrollLeft += SPEED;
       // seamless reset: when we've scrolled past the first copy, snap back
@@ -2891,13 +3007,13 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       setCanLeft(el.scrollLeft > 4);
       setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
     }
-    rafRef.current = requestAnimationFrame(tick);
-  }, [halfW]);
+    rafRef.current = requestAnimationFrame(tickRef.current);
+  };
 
   useEffect(() => {
-    rafRef.current = requestAnimationFrame(tick);
+    rafRef.current = requestAnimationFrame(tickRef.current);
     return () => { cancelAnimationFrame(rafRef.current); clearTimeout(resumeTimer.current); };
-  }, [tick]);
+  }, []);
 
   // ── Pause / resume helpers ────────────────────────────────────
   const pause = useCallback(() => { isPaused.current = true; }, []);
@@ -3117,8 +3233,25 @@ const FEATURED_PRODUCTS = (() => {
 const HomePage = memo(({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
+  const [lang, setLang] = useState('en'); // 'en' | 'hi'
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
   const featuredProducts = FEATURED_PRODUCTS;
+
+  const heroContent = {
+    en: {
+      headline: <>Precision Engineering for<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">Maximum Uptime.</span></>,
+      sub: 'Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. Every overhaul, spare, and service comes with documentation you can take to management — on time, every time.',
+      cta1: 'Request a Technical Quote',
+      cta2: 'Emergency Breakdown',
+    },
+    hi: {
+      headline: <>अधिकतम अपटाइम के लिए<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">प्रेसिशन इंजीनियरिंग।</span></>,
+      sub: 'Triveni, Siemens, BHEL सहित 10 OEM ब्रांड के पूर्व-इंजीनियर। हर ओवरहॉल, स्पेयर और सर्विस के साथ पूरी डॉक्युमेंटेशन — समय पर, हर बार।',
+      cta1: 'तकनीकी कोटेशन मांगें',
+      cta2: 'आपातकालीन ब्रेकडाउन',
+    },
+  };
+  const h = heroContent[lang];
   return (
     <main id="main-content" className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
@@ -3146,42 +3279,92 @@ const HomePage = memo(({ navigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 w-full flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="w-full lg:w-3/5">
             <div className={`transform transition-all duration-1000 ease-out ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8"><MakeInIndiaBadge /><IndiaMartBadge /></div>
+              {/* Badges + Language toggle */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8">
+                <MakeInIndiaBadge /><IndiaMartBadge />
+                {/* Language toggle */}
+                <button
+                  onClick={() => setLang(l => l === 'en' ? 'hi' : 'en')}
+                  aria-label={lang === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-black px-4 py-2 rounded-md transition-colors uppercase tracking-widest focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 min-h-[44px]">
+                  <Globe className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  {lang === 'en' ? 'हिन्दी' : 'English'}
+                </button>
+              </div>
+
+              {/* Hero headline */}
               <h1 id="hero-heading" className="hero-h1 text-5xl md:text-7xl lg:text-[5.5rem] font-black text-white leading-[1.05] tracking-tighter mb-6 drop-shadow-2xl text-center lg:text-left">
-                Precision Engineering for <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">Maximum Uptime.</span>
+                {h.headline}
               </h1>
-              <div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl border-l-4 border-l-cyan-400 p-5 mb-10 max-w-xl shadow-xl mx-auto lg:mx-0">
+
+              {/* Pain-point subtext — speaks to procurement heads and plant managers */}
+              <div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl border-l-4 border-l-cyan-400 p-5 mb-8 max-w-xl shadow-xl mx-auto lg:mx-0">
                 <p className="text-lg md:text-xl text-slate-200 font-medium leading-relaxed">
-                  Complete overhauling &amp; maintenance, rapid reverse engineering, and OEM-compatible turbine spares for turbines from 5 kW to 27 MW. Trusted across India's power generation and process industries.
+                  {h.sub}
                 </p>
               </div>
+
+              {/* Micro trust-proof strip — reduces fear of contacting an unknown vendor */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
+                {[
+                  { Icon: CheckCircle2, text: '20+ years in service' },
+                  { Icon: Shield, text: 'PMI-certified spares' },
+                  { Icon: Clock, text: '24×7 emergency response' },
+                ].map(({ Icon: IconComponent, text }, i) => (
+                  <div key={i} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
+                    <IconComponent className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+                    <span>{text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTAs */}
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start">
                 <button onClick={() => navigate('/contact')}
                   className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[52px]">
-                  Request Technical Quote <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
+                  {h.cta1} <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
                 </button>
                 <a href={waMsg('Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.')}
                   target="_blank" rel="noopener noreferrer"
                   className="bg-white/5 text-white border border-white/20 px-8 py-4 md:py-5 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center text-lg backdrop-blur-md hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-[52px]">
-                  <LifeBuoy className="mr-3 w-6 h-6 text-cyan-400 shrink-0" aria-hidden="true" /> Emergency Breakdown
+                  <LifeBuoy className="mr-3 w-6 h-6 text-cyan-400 shrink-0" aria-hidden="true" /> {h.cta2}
                 </a>
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-2/5 hidden lg:flex flex-col gap-6" aria-hidden="true">
+
+          {/* Right-side proof cards — addresses biggest fear: "will this vendor let me down?" */}
+          <div className="w-full lg:w-2/5 hidden lg:flex flex-col gap-5" aria-hidden="true">
             {[
-              { delay: 'delay-300', label: 'Proven Experience', Icon: Shield, title: '5 kW – 27 MW', sub: 'Power range for erection, overhauling, and reverse engineering.' },
-              { delay: 'delay-500', label: 'Technical Services', Icon: Wrench, title: 'Zero Downtime', sub: '24x7 emergency support & 10 OEM-compatible turbine brands covered.' },
-              { delay: 'delay-700', label: 'Precision Products', Icon: Factory, title: 'OEM-Grade Spares', sub: '3D scanning, CMM & PMI for reverse-engineered ISO/API parts.' },
-            ].map(({ delay, label, Icon, title, sub }, i) => (
-              <div key={i} className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-7 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-12' : i === 2 ? 'ml-4' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+              {
+                delay: 'delay-300',
+                label: 'No Learning Curve',
+                Icon: Award,
+                title: 'Ex-OEM Engineers',
+                sub: 'Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.',
+              },
+              {
+                delay: 'delay-500',
+                label: 'Every Job Documented',
+                Icon: CheckCircle2,
+                title: 'Report on Delivery',
+                sub: 'PMI certs, balancing reports, alignment records, condition reports — handed over at job completion.',
+              },
+              {
+                delay: 'delay-700',
+                label: 'When Minutes Matter',
+                Icon: PhoneCall,
+                title: '24×7 Emergency',
+                sub: 'Engineers at multiple locations across India. Call us at 2 AM — someone answers.',
+              },
+            ].map(({ delay, label, Icon: IconComponent, title, sub }, i) => (
+              <div key={i} className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-10' : i === 2 ? 'ml-3' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
                 <div className="flex justify-between items-start mb-3">
                   <div className="text-blue-300 text-xs font-black uppercase tracking-widest">{label}</div>
-                  <Icon className="w-6 h-6 text-blue-400" />
+                  <IconComponent className="w-5 h-5 text-blue-400" aria-hidden="true" />
                 </div>
-                <div className="text-3xl font-black text-white tracking-tighter mb-2">{title}</div>
-                <div className="text-sm text-slate-400 font-medium">{sub}</div>
+                <div className="text-2xl font-black text-white tracking-tighter mb-2">{title}</div>
+                <div className="text-sm text-slate-400 font-medium leading-relaxed">{sub}</div>
               </div>
             ))}
           </div>
@@ -3199,7 +3382,7 @@ const HomePage = memo(({ navigate }) => {
             {[...OEMS, ...OEMS].map((oem, i) => (
               <div key={i} className="flex items-center justify-center shrink-0 w-40 md:w-56 h-20 p-2">
                 <img src={`${oem.toLowerCase().replace(/[^a-z0-9]/g, '-')}-logo.png`} alt={`${oem} logo`}
-                  width="160" height="60" loading="lazy" decoding="async"
+                  width="160" height="60" loading="lazy" decoding="async" fetchPriority="low"
                   className="max-h-full max-w-full object-contain"
                   onError={e => { const p = e.target.parentElement; if (p) { e.target.style.display = 'none'; const fb = p.querySelector('.oem-fallback'); if (fb) fb.style.display = 'flex'; } }} />
                 <div className="oem-fallback items-center justify-center space-x-3 w-full" style={{ display: 'none' }}>
@@ -3221,10 +3404,10 @@ const HomePage = memo(({ navigate }) => {
               { Icon: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
               { Icon: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W.' },
               { Icon: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
-            ].map(({ Icon, stat, label, sub }, i) => (
+            ].map(({ Icon: IconComponent, stat, label, sub }, i) => (
               <div key={i} className="text-center">
                 <div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-                  <Icon className="w-6 h-6 text-blue-400" aria-hidden="true" />
+                  <IconComponent className="w-6 h-6 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">{stat}</div>
                 <div className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-1">{label}</div>
@@ -3234,36 +3417,100 @@ const HomePage = memo(({ navigate }) => {
           </div>
         </div>
       </section>
+      {/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
+      <section className="bg-white py-14 border-b border-slate-100 lazy-section" aria-labelledby="why-us-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p id="why-us-heading" className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-10">Why Engineers &amp; Plant Managers Choose Keshav Enterprises</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                Icon: Award,
+                title: 'Same expertise as your OEM',
+                body: 'Our engineers were trained inside Triveni, Siemens, BHEL, and Belliss. No learning curve on your machine.',
+                color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100',
+              },
+              {
+                Icon: CheckCircle2,
+                title: 'Documentation at handover',
+                body: 'PMI certificates, balancing reports, condition reports, and ISO cleanliness certification — delivered with every job.',
+                color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100',
+              },
+              {
+                Icon: Clock,
+                title: 'Faster than OEM sourcing',
+                body: 'OEM spares take 12–26 weeks. We reverse-engineer, manufacture, and ship certified components in a fraction of the time.',
+                color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100',
+              },
+              {
+                Icon: PhoneCall,
+                title: '24×7 — someone always answers',
+                body: 'Multi-location engineers across India. Whether it\'s a scheduled overhaul or a 2 AM trip — we show up.',
+                color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100',
+              },
+            ].map(({ Icon: IconComponent, title, body, color, bg, border }, i) => (
+              <div key={i} className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}>
+                <div className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}>
+                  <IconComponent className={`w-6 h-6 ${color}`} aria-hidden="true" />
+                </div>
+                <h3 className="font-black text-slate-900 text-base mb-2 leading-snug">{title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Featured Products Strip — rAF auto-scroll + touch drag + nav arrows ── */}
       <FeaturedProductsStrip products={featuredProducts} navigate={navigate} />
       {/* Services Preview */}
       <section className="py-24 md:py-32 bg-white border-t border-slate-200 cv-auto lazy-section" aria-labelledby="services-preview-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
+            <span className="text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">End-to-End Turbine Lifecycle</span>
             <h2 id="services-preview-heading" className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-6">Technical Services</h2>
             <div className="section-divider w-24 h-1.5 bg-blue-600 rounded-full mx-auto mb-6" aria-hidden="true" />
-            <p className="text-slate-600 font-medium text-xl max-w-3xl mx-auto leading-relaxed">End-to-end turbine lifecycle services from erection through overhauling to precision reverse engineering.</p>
+            <p className="text-slate-600 font-medium text-xl max-w-3xl mx-auto leading-relaxed">
+              From erection to emergency breakdown — the same ex-OEM engineers, every time.
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {SERVICES.map(service => {
-              const Icon = SERVICE_ICONS[service.id];
-              return (
-                <button key={service.id}
-                  onClick={() => navigate(`/service/${service.id}`)}
-                  className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-left w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                  aria-label={`View details for ${service.title}`}>
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                    <Icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
-                  </div>
-                  <h3 className="text-xl font-black text-slate-900 mb-4 tracking-tight group-hover:text-blue-600 transition-colors">{service.title}</h3>
-                  <p className="text-slate-600 font-medium text-sm leading-relaxed mb-6">{service.desc}</p>
-                  <span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-                    View Full Details <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+
+          {/* Pain-aware service cards */}
+          {(() => {
+            const painLines = {
+              srv_1: 'Starting a new turbine installation and need OEM-level supervision without OEM wait times?',
+              srv_2: 'Tired of vendors who show up under-equipped and deliver no job report?',
+              srv_3: 'OEM quoted months for a spare that\'s no longer in production?',
+              srv_4: 'Recurring vibration after alignment and bearing replacement — the root cause hasn\'t been fixed?',
+              srv_5: 'ISO 4406 particle count keeps failing and commissioning is delayed?',
+              srv_6: 'Misalignment is the primary cause of premature bearing failure in your machine?',
+              srv_7: 'Turbine tripped unexpectedly and nobody in the plant can explain why?',
+            };
+            return (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {SERVICES.map(service => {
+                  const Icon = SERVICE_ICONS[service.id];
+                  return (
+                    <button key={service.id}
+                      onClick={() => navigate(`/service/${service.id}`)}
+                      className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-left w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                      aria-label={`View details for ${service.title}`}>
+                      <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
+                        <Icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
+                      </div>
+                      <h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight group-hover:text-blue-600 transition-colors">{service.title}</h3>
+                      {/* Empathy line — addresses the visitor's specific pain */}
+                      <p className="text-blue-600/80 text-xs font-bold italic mb-3 leading-snug">{painLines[service.id]}</p>
+                      <p className="text-slate-600 font-medium text-sm leading-relaxed mb-6">{service.desc}</p>
+                      <span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+                        View Full Details <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            );
+          })()}
+
           <div className="text-center mt-12">
             <button onClick={() => navigate('/services')}
               className="bg-slate-900 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-600 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
@@ -3272,6 +3519,76 @@ const HomePage = memo(({ navigate }) => {
           </div>
         </div>
       </section>
+      {/* ── TESTIMONIALS ── */}
+      <section className="py-20 md:py-28 bg-white border-t border-slate-100 cv-auto lazy-section" aria-labelledby="testimonials-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-3">From the Plants We Serve</p>
+            <h2 id="testimonials-heading" className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">What Plant Managers Say</h2>
+            <div className="section-divider w-20 h-1.5 bg-blue-600 rounded-full mx-auto" aria-hidden="true" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                quote: 'Their ex-Triveni engineers handled our 12 MW turbine overhaul during the annual shutdown — all clearances documented, rotor balanced, and back online ahead of schedule. First time in six years we had zero issues at first start-up.',
+                name: 'Plant Manager',
+                company: 'Sugar & Co-Gen Plant',
+                location: 'Uttar Pradesh',
+                service: 'Turbine Overhauling',
+              },
+              {
+                quote: 'We had a critical bearing failure at 2 AM during peak crushing season. Keshav Enterprises had an engineer at site by morning with the replacement Babbitt bearing ready. Downtime was under 14 hours — that saved us crores in cane losses.',
+                name: 'Maintenance Head',
+                company: 'Sugar Mill',
+                location: 'Haryana',
+                service: 'Emergency Breakdown Response',
+              },
+              {
+                quote: 'OEM spares for our 28-year-old Belliss & Morcom turbine had 18-month lead times. Keshav reverse-engineered the rotor shaft and labyrinth rings in 6 weeks with full PMI certificates. Quality was indistinguishable from OEM.',
+                name: 'Chief Engineer',
+                company: 'Paper Mill & Power Plant',
+                location: 'Punjab',
+                service: 'Reverse Engineering',
+              },
+            ].map(({ quote, name, company, location, service }, i) => (
+              <figure key={i} className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group">
+                {/* Service tag */}
+                <span className="self-start text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full mb-6">{service}</span>
+                {/* Stars */}
+                <div className="flex gap-1 mb-5" aria-label="5 out of 5 stars">
+                  {Array(5).fill(0).map((_, s) => (
+                    <svg key={s} className="w-4 h-4 text-yellow-400 fill-yellow-400" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  ))}
+                </div>
+                {/* Quote */}
+                <blockquote className="flex-1 text-slate-700 font-medium text-sm md:text-base leading-relaxed mb-6">
+                  <span className="text-blue-200 text-4xl font-black leading-none select-none" aria-hidden="true">"</span>
+                  {quote}
+                </blockquote>
+                {/* Attribution */}
+                <figcaption className="flex items-center gap-4 pt-5 border-t border-slate-200">
+                  <div className="w-10 h-10 rounded-full bg-blue-600/10 border border-blue-200 flex items-center justify-center shrink-0">
+                    <Users className="w-5 h-5 text-blue-600" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="font-black text-slate-900 text-sm">{name}</p>
+                    <p className="text-slate-500 font-medium text-xs">{company} · {location}</p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          {/* Nudge to leave review */}
+          <p className="text-center text-slate-400 font-medium text-sm mt-10">
+            We've served 100+ plants across India.{' '}
+            <a href={CONTACT_INFO.googleBusiness} target="_blank" rel="noopener noreferrer"
+              className="text-blue-600 font-bold hover:underline focus:outline-none focus-visible:underline">
+              Leave us a Google review →
+            </a>
+          </p>
+        </div>
+      </section>
+
       {/* Capabilities */}
       <section className="py-24 md:py-32 bg-slate-50 border-t border-slate-200 cv-auto lazy-section" aria-labelledby="capabilities-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -3292,20 +3609,64 @@ const HomePage = memo(({ navigate }) => {
           </div>
         </div>
       </section>
-      {/* CTA */}
-      <section className="bg-blue-600 py-20 lazy-section" aria-labelledby="cta-heading">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 id="cta-heading" className="text-4xl md:text-5xl font-black text-white tracking-tight mb-6">Ready to Get Started?</h2>
-          <p className="text-blue-100 font-medium text-xl max-w-2xl mx-auto mb-10 leading-relaxed">Talk to our engineering team about your specific turbine or plant requirements.</p>
-          <div className="flex flex-col sm:flex-row gap-5 justify-center">
-            <button onClick={() => navigate('/contact')}
-              className="bg-white text-blue-600 px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-50 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
-              Request a Technical Quote
-            </button>
-            <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to discuss a project requirement.')} target="_blank" rel="noopener noreferrer"
-              className="bg-[#25D366] text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300">
-              <MessageCircle className="w-6 h-6" aria-hidden="true" /> WhatsApp Now
-            </a>
+      {/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
+      <section className="bg-[#0A192F] py-20 lazy-section" aria-labelledby="cta-heading">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 id="cta-heading" className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">How Can We Help You Today?</h2>
+            <p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto">Whether you're planning ahead or dealing with an unplanned breakdown — there's a right path for you.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* Path 1 — Planned work */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-blue-400/40 transition-all">
+              <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center mb-5 border border-blue-500/30">
+                <Settings className="w-6 h-6 text-blue-400" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-black text-white mb-3">Planned Overhaul or RFQ</h3>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">Scheduled maintenance, spare procurement, expansion joint supply, or filter element orders. Share your requirements and get a detailed technical quote.</p>
+              <div className="flex flex-col gap-3">
+                <button onClick={() => navigate('/contact')}
+                  className="w-full bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+                  Request a Technical Quote <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                </button>
+                <a href={`mailto:${CONTACT_INFO.infoEmail}`}
+                  className="w-full bg-white/5 text-slate-300 border border-white/10 px-6 py-3.5 rounded-xl font-bold text-sm hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                  <Mail className="w-4 h-4" aria-hidden="true" /> Email Our Engineering Team
+                </a>
+              </div>
+            </div>
+            {/* Path 2 — Emergency */}
+            <div className="bg-white/5 border border-red-500/20 rounded-2xl p-8 hover:border-red-400/40 transition-all">
+              <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-5 border border-red-500/20">
+                <LifeBuoy className="w-6 h-6 text-red-400" aria-hidden="true" />
+              </div>
+              <h3 className="text-xl font-black text-white mb-3">Emergency Breakdown — Right Now</h3>
+              <p className="text-slate-400 text-sm leading-relaxed mb-6">Turbine tripped? High vibration? Unexpected shutdown? Our engineers are reachable 24×7. Call or WhatsApp immediately — every hour offline has a cost.</p>
+              <div className="flex flex-col gap-3">
+                <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+                  className="w-full bg-red-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-red-500 transition-all flex items-center justify-center gap-2">
+                  <Phone className="w-4 h-4" aria-hidden="true" /> Call Now — {CONTACT_INFO.phones[0]}
+                </a>
+                <a href={waMsg('URGENT: My turbine has tripped / has a breakdown. I need immediate engineering support. Please call back.')}
+                  target="_blank" rel="noopener noreferrer"
+                  className="w-full bg-[#25D366] text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-2">
+                  <MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Emergency
+                </a>
+              </div>
+            </div>
+          </div>
+          {/* Reassurance strip below CTAs */}
+          <div className="flex flex-wrap justify-center gap-8 mt-10">
+            {[
+              'No obligation technical consultation',
+              'Confidential RFQ handling',
+              'Response within 24 hours (planned) or within the hour (emergency)',
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 text-slate-400 text-sm font-medium">
+                <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+                <span>{item}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -3338,11 +3699,11 @@ const AboutPage = ({ navigate }) => {
       {/* ── HERO BANNER — "OUR STORY" with background image ── */}
       <div className="bg-[#0A192F] text-white relative overflow-hidden">
 
-        {/* About story background image — upload about-story-bg.webp to /public/
+        {/* About story background image — upload about-story-bg.png to /public/
             Recommended: wide industrial turbine workshop/factory floor photo
-            Size: 1920×900px, compressed WebP < 250KB */}
+            Size: 1920×900px, compressed < 250KB */}
         <img
-          src="about-story-bg.webp"
+          src="about-story-bg.png"
           alt=""
           aria-hidden="true"
           width="1920"
@@ -3459,7 +3820,7 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mb-6 rounded-full" />
             <div className="space-y-4 text-slate-600 text-base leading-relaxed keep-left">
               <p>Keshav Enterprises is a precision industrial engineering company headquartered in Shamli, Uttar Pradesh. For over two decades, we have provided specialist turbine maintenance, reverse engineering, and OEM-compatible spare parts to India's most demanding industrial sectors.</p>
-              <p>Our engineering team includes ex-OEM specialists from Triveni, Siemens, BHEL, Belliss & Morcom, Man Turbo, KKK, and ABB — providing clients with the same level of technical expertise as the original equipment manufacturers, at a fraction of the lead time and cost.</p>
+              <p>Our engineering team includes ex-OEM specialists from Triveni, Siemens, BHEL, Belliss &amp; Morcom, Man Turbo, KKK, and ABB — providing clients with the same level of technical expertise as the original equipment manufacturers, at a fraction of the lead time and cost.</p>
               <p>We cover steam turbines from 5 kW to 27 MW — back-pressure and condensing, horizontal and vertical, single and multi-stage. Our workshop is equipped with 3D laser scanners, CMM coordinate measuring machines, dynamic balancing machines (50–2,000 kg), and precision CNC lathes.</p>
             </div>
           </div>
@@ -3506,10 +3867,10 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {values.map(({ Icon, label, text }, i) => (
+            {values.map(({ Icon: IconComponent, label, text }, i) => (
               <div key={i} className="bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-center">
                 <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                  <Icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
+                  <IconComponent className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-3 tracking-tight">{label}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{text}</p>
@@ -3564,8 +3925,8 @@ const AboutPage = ({ navigate }) => {
 
         {/* CTA */}
         <div className="text-center">
-          <h3 className="text-3xl font-black text-slate-900 mb-4">Work With Our Team</h3>
-          <p className="text-slate-600 text-base max-w-xl mx-auto mb-8">Whether you need emergency breakdown support, planned overhauling, or obsolete spare procurement — our engineers are ready.</p>
+          <h3 className="text-3xl font-black text-slate-900 mb-4">Ready to Work With Our Engineering Team?</h3>
+          <p className="text-slate-600 text-base max-w-xl mx-auto mb-8">Whether you need emergency breakdown support, a planned overhaul partner, or a second source for obsolete spares — we respond with a technical answer, not a brochure.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button onClick={() => navigate('/contact')} className="bg-blue-600 text-white px-10 py-4 rounded-xl font-black text-base hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center gap-2 group">
               Contact Engineering Team <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
@@ -3674,6 +4035,56 @@ const BLOG_POSTS = [
       { type: 'h2', text: 'Turbines We Cover' },
       { type: 'p', text: 'We have reverse-engineered components for steam turbines from 5 kW to 27 MW across all major makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB. Both back-pressure and condensing turbines, horizontal and vertical, single and multi-stage.' },
       { type: 'cta', text: 'Have an obsolete spare you need reverse-engineered? Send us a photo and your turbine details on WhatsApp — we will assess feasibility within 24 hours.' },
+    ],
+  },
+  {
+    id: 'post_4',
+    slug: 'belliss-morcom-turbine-common-faults-india',
+    title: 'Belliss & Morcom Turbine Common Faults — Field Guide for Indian Plants',
+    excerpt: 'Belliss & Morcom steam turbines are widely used in Indian sugar mills and co-gen plants. Here are the most common faults our ex-OEM engineers encounter and how to diagnose and fix them.',
+    date: '2026-03-18',
+    author: 'Keshav Enterprises Engineering Team',
+    readTime: '8 min read',
+    tags: ['Belliss & Morcom', 'Troubleshooting', 'Steam Turbine', 'Sugar Mill'],
+    coverImage: 'blog-belliss-morcom.webp',
+    content: [
+      { type: 'p', text: 'Belliss & Morcom (now Howden) turbines are found in hundreds of Indian sugar mills, co-generation plants, and industrial facilities. Our engineers have worked on Belliss units for over 20 years across UP, Punjab, Maharashtra, and Karnataka. Here are the faults we encounter most frequently — and the correct way to diagnose and resolve each one.' },
+      { type: 'h2', text: 'Fault 1: High Vibration at Operating Speed' },
+      { type: 'p', text: 'The most common complaint on Belliss turbines is elevated vibration, typically detected by operators as increased noise and confirmed by portable vibration analysis. The leading root causes, in order of frequency, are: (1) rotor imbalance from deposit build-up on blades, (2) journal bearing wear — especially after long runs between overhauls, and (3) misalignment between the turbine and gearbox due to pipe strain or foundation settling.' },
+      { type: 'list', items: ['Check bearing temperatures first — elevated temperature alongside high vibration almost always indicates bearing condition issues', 'Take a portable vibration reading at all four bearing housings and compare to baseline (1× and 2× running speed)', 'If 1× dominant: imbalance or misalignment. If 2× dominant: bearing looseness or misalignment. Sub-synchronous: oil whirl', 'Inspect the coupling for wear and correct assembly before concluding misalignment is a turbine problem'] },
+      { type: 'h2', text: 'Fault 2: Governor Hunting / Speed Instability' },
+      { type: 'p', text: 'Belliss turbines use a centrifugal fly-ball governor or hydraulic governor depending on the model and vintage. Speed hunting — cyclic overshoot above and below setpoint — is typically caused by: worn pivot pins and fly-balls in centrifugal governors, incorrect droop setting, control valve actuator hysteresis, or steam pressure fluctuations from the boiler exceeding the governor authority.' },
+      { type: 'p', text: 'Before dismantling the governor, confirm the steam supply pressure is stable. If supply pressure is fluctuating more than ±0.5 bar, the boiler control loop is the primary problem — the governor cannot compensate for large supply swings. Once boiler stability is confirmed, the governor pivot pins and fly-ball weights should be inspected for wear and replaced if clearances are excessive.' },
+      { type: 'h2', text: 'Fault 3: Steam Gland Leakage' },
+      { type: 'p', text: 'Belliss turbines use labyrinth gland seals and gland steam systems to control leakage at the shaft ends. Visible steam leakage at the gland area in normal operation indicates: worn or damaged labyrinth strips, incorrect gland steam pressure setting, or shaft eccentricity causing uneven clearance around the labyrinth.' },
+      { type: 'list', items: ['Measure shaft eccentricity at the gland area using a dial gauge — if runout exceeds 0.05 mm, the rotor condition must be assessed', 'Check gland steam pressure versus saturation conditions — condensing water in the gland steam supply line causes severe labyrinth erosion', 'Labyrinth strip replacement is a planned outage item — do not attempt to reduce clearances by shimming strips in situ'] },
+      { type: 'h2', text: 'Fault 4: Lube Oil High Temperature or Low Pressure' },
+      { type: 'p', text: 'Lube oil system faults on Belliss turbines account for more unplanned trips than any other cause. High oil temperature (above 55°C at bearing inlet) typically means the lube oil cooler is fouled — clean the cooler shell and tube bundle. Low oil pressure trips occur when the relief valve is set incorrectly, filter differential pressure is high (element needs replacement), or the oil pump is worn and losing volumetric efficiency.' },
+      { type: 'cta', text: 'Need our ex-Belliss & Morcom engineers for an overhaul, vibration analysis, or emergency fault diagnosis? Contact us on WhatsApp for a same-day response.' },
+    ],
+  },
+  {
+    id: 'post_5',
+    slug: 'iso-4406-lube-oil-cleanliness-guide',
+    title: 'How to Read an ISO 4406 Lube Oil Cleanliness Report — A Guide for Maintenance Engineers',
+    excerpt: 'ISO 4406 particle count reports from oil labs are often misunderstood. This guide explains exactly what the numbers mean, how to set cleanliness targets for turbine bearing systems, and when to act.',
+    date: '2026-04-05',
+    author: 'Keshav Enterprises Engineering Team',
+    readTime: '6 min read',
+    tags: ['Lube Oil', 'ISO 4406', 'Filtration', 'Predictive Maintenance'],
+    coverImage: 'blog-iso-4406.webp',
+    content: [
+      { type: 'p', text: 'Every month, thousands of oil analysis reports land in plant maintenance offices across India — and most of them are filed without being understood. ISO 4406 cleanliness codes are the single most actionable number in that report. Getting them wrong costs bearings. Getting them right extends turbine life.' },
+      { type: 'h2', text: 'What Does an ISO 4406 Code Mean?' },
+      { type: 'p', text: 'An ISO 4406:99 cleanliness code has three numbers, for example 18/16/13. Each number is a "range code" representing a particle count per millilitre of oil at three different particle sizes: 4 µm(c), 6 µm(c), and 14 µm(c). The "(c)" suffix means the count uses the optical particle counter calibration per ISO 11171 — do not compare with older reports that used the uncalibrated method.' },
+      { type: 'list', items: ['Range code 14 = 80–160 particles/mL', 'Range code 16 = 320–640 particles/mL', 'Range code 18 = 1,280–2,560 particles/mL', 'Range code 20 = 5,120–10,240 particles/mL', 'Each step up = doubling of contamination level'] },
+      { type: 'h2', text: 'What Cleanliness Target Do You Need?' },
+      { type: 'p', text: 'For steam turbine journal bearing and lube oil systems, the target is typically ISO 4406:99 Class 16/14/11 — this is the minimum requirement in API 614. Many OEMs including Triveni and Siemens specify 15/13/10 for turbines with hydraulic control systems. After a major overhaul or lube oil flush, the system should achieve 16/14/11 before oil-in to prevent bearing contamination damage during run-up.' },
+      { type: 'h2', text: 'When Should You Act?' },
+      { type: 'p', text: 'If your routine oil analysis report shows the 6 µm(c) range code (middle number) at 17 or higher — one step above target — investigate immediately. Check filter differential pressure (replace if approaching 3.5–4 bar), inspect tank breather condition, and sample the inlet and outlet of the filter housing separately to locate where contamination is entering. If the water content report shows more than 0.1% water — replace the filter elements and schedule an offline WaterSorp filtration run.' },
+      { type: 'h2', text: 'The Cost of Ignoring a Deteriorating Code' },
+      { type: 'p', text: 'Particles in the 4–10 µm range are the most damaging — they are exactly the right size to enter the hydrodynamic oil film between a rotating journal and Babbitt bearing surface and cause three-body abrasion. A turbine running with ISO cleanliness code 20/18/15 instead of 16/14/11 has approximately 100× more damaging particles than target. Bearing surfaces degrade progressively and the failure is gradual until it is not — then it is a 48-hour emergency and a Babbitt re-pour.' },
+      { type: 'cta', text: 'We supply ISO 16889-compliant filter elements for all major turbine makes and can advise on lube oil flushing to achieve the correct cleanliness class before your next startup. Contact us on WhatsApp.' },
     ],
   },
 ];
@@ -4452,9 +4863,14 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
   }, []);
 
   // Scroll-to-top + hero entrance on service change
+  const [prevServiceId, setPrevServiceId] = useState(serviceId);
+  if (serviceId !== prevServiceId) {
+    setPrevServiceId(serviceId);
+    setHeroVisible(false);
+    setScrollY(0);
+  }
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    setHeroVisible(false); setScrollY(0);
     const t = setTimeout(() => setHeroVisible(true), 60);
     return () => clearTimeout(t);
   }, [serviceId]);
@@ -4523,15 +4939,11 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
         {/* Grid texture — matches ServicesPage hero */}
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
 
-        {/* Service photo — object-contain shows full image, navy bg fills letterbox gaps */}
+        {/* Service photo — object-cover fills the container */}
         {service.image && (
           <img src={service.image} alt="" aria-hidden="true"
-            className="absolute inset-0 w-full h-full opacity-[0.55]"
-            style={{
-              objectFit: 'contain',
-              objectPosition: 'center center',
-            }}
-            loading="eager" decoding="async" width="1200" height="420"
+            className="absolute inset-0 w-full h-full object-cover opacity-35"
+            loading="eager" decoding="async" fetchPriority="high" width="1200" height="420"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
         {/* Gradient — left dark for text legibility, right opens up to show image */}
@@ -4607,6 +5019,19 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
       {/* ══ BODY ══ */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        {/* Mobile CTA strip — shown only on mobile, above main content */}
+        <div className="flex flex-col sm:flex-row gap-3 mb-8 lg:hidden">
+          <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
+            target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 min-h-[52px]">
+            <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" /> Get a Quote on WhatsApp
+          </a>
+          <button onClick={() => navigate('/contact')}
+            className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[52px]">
+            Submit Formal RFQ <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-16">
 
           {/* ── MAIN COLUMN ── */}
@@ -4674,7 +5099,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             <section aria-labelledby="tools-heading">
               <div className="sd-reveal flex items-center gap-4 mb-4">
                 <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
-                <h2 id="tools-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Tools & Equipment</h2>
+                <h2 id="tools-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Tools &amp; Equipment</h2>
               </div>
               <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-8">Instrumentation We Deploy</h3>
 
@@ -4723,8 +5148,8 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                 <p className="sd-reveal text-slate-500 font-medium text-sm mb-10 leading-relaxed">
                   Systematic reference built from decades of OEM and field experience. Used to move from symptom to confirmed root cause in minimum time.
                 </p>
-                <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                  <div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F]">
+                <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm overflow-x-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F] min-w-[540px]">
                     {['Symptom Observed', 'Possible Root Causes', 'Corrective Action'].map(h => (
                       <div key={h} className="px-5 py-3.5 border-r border-slate-700 last:border-r-0">
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{h}</span>
@@ -4733,7 +5158,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                   </div>
                   {detail.faultMatrix.map((row, i) => (
                     <div key={i}
-                      className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0"
+                      className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0 min-w-[540px]"
                       style={{ animationDelay: `${i * 45}ms` }}>
                       <div className="px-5 py-4">
                         <p className="text-sm font-black text-slate-900">{row.symptom}</p>
@@ -4761,7 +5186,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             <section aria-labelledby="standards-heading">
               <div className="sd-reveal flex items-center gap-4 mb-4">
                 <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
-                <h2 id="standards-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Standards & Compliance</h2>
+                <h2 id="standards-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Standards &amp; Compliance</h2>
               </div>
               <h3 className="sd-reveal text-2xl font-black text-slate-900 tracking-tight mb-8">International Standards We Work To</h3>
               <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
@@ -4957,7 +5382,7 @@ const ProductsPage = ({ navigate }) => {
             {showLeft && (
               <div className="absolute left-0 top-0 bottom-6 w-20 md:w-28 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none" aria-hidden="true" />
             )}
-            <button onClick={() => scrollCats('left')} aria-label="Scroll categories left" className={`absolute left-1 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronLeft className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
+            <button onClick={() => scrollCats('left')} aria-label="Scroll categories left" className={`absolute left-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronLeft className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
             <div ref={categoryScrollRef} onScroll={handleScroll} style={{ scrollPaddingInline: '3rem' }} className="flex gap-2 sm:gap-3 overflow-x-auto w-full pb-6 pt-2 px-12 sm:px-14 md:px-16 snap-x snap-mandatory scroll-smooth relative z-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {PRODUCT_CATEGORIES.map(cat => (
                 <button key={cat} onClick={() => setActiveCategory(cat)} aria-pressed={activeCategory === cat}
@@ -4966,7 +5391,7 @@ const ProductsPage = ({ navigate }) => {
                 </button>
               ))}
             </div>
-            <button onClick={() => scrollCats('right')} aria-label="Scroll categories right" className={`absolute right-1 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronRight className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
+            <button onClick={() => scrollCats('right')} aria-label="Scroll categories right" className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronRight className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
             {showRight && (
               <div className="absolute right-0 top-0 bottom-6 w-20 md:w-28 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none" aria-hidden="true" />
             )}
@@ -5233,7 +5658,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
       <div className="bg-[#0A192F] text-white pt-28 pb-20 relative overflow-hidden border-b-8 border-blue-600">
         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
         {ind.image && (
-          <img src={ind.image} alt="" aria-hidden="true" loading="eager"
+          <img src={ind.image} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover opacity-35"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
@@ -5421,15 +5846,15 @@ const IndustriesPage = ({ navigate }) => (
               <div className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
 
                 {/* ── LEFT PANEL: full background image + overlay infographic ── */}
-                <div className="lg:w-2/5 relative overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[440px] flex-shrink-0">
-                  {/* Background photo at opacity 90% — upload image to /public with filename from ind.image */}
+                <div className="lg:w-2/5 relative overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[440px] flex-shrink-0" style={{ isolation: 'isolate' }}>
+                  {/* Background photo — object-cover fills the absolute container; no aspectRatio on img */}
                   {ind.image && (
                     <img
                       src={ind.image}
                       alt=""
                       aria-hidden="true"
-                      className="absolute inset-0 w-full h-full object-cover"
-                      style={{ opacity: 0.90, aspectRatio: '560/440' }}
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      style={{ opacity: 0.90 }}
                       loading="lazy"
                       decoding="async"
                       fetchPriority="low"
@@ -5541,9 +5966,22 @@ const ContactPage = () => {
         description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support. Phone: +91 9149229448." canonicalPath="/contact" pageType="website" schema={FAQ_SCHEMA} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">Contact Engineering</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">Talk to an Engineer</h1>
           <div className="section-divider w-24 h-1.5 bg-blue-600 mb-6 rounded-full" aria-hidden="true" />
-          <p className="text-lg font-medium text-slate-500 max-w-2xl">Reach our engineering team for technical specifications, reverse engineering quotes, or 24x7 emergency overhauling support.</p>
+          <p className="text-lg font-medium text-slate-500 max-w-2xl mb-6">Share your requirements below. Our engineering team — not a sales desk — reviews every inquiry and responds with a technical answer within 24 hours.</p>
+          {/* Fear-reduction trust row */}
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
+            {[
+              { Icon: Shield, text: 'Confidential RFQ handling' },
+              { Icon: CheckCircle2, text: 'No obligation consultation' },
+              { Icon: Clock, text: '24-hour response (emergency: within the hour)' },
+            ].map(({ Icon: IconComponent, text }, i) => (
+              <div key={i} className="flex items-center gap-2 text-slate-500 text-sm font-bold">
+                <IconComponent className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+                <span>{text}</span>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           <div className="lg:col-span-1 space-y-6">
@@ -5551,9 +5989,9 @@ const ContactPage = () => {
               { Icon: Phone, title: 'Direct Lines', content: <div className="space-y-2">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="block text-slate-600 font-bold text-base hover:text-blue-600 transition-colors">{p}</a>)}</div> },
               { Icon: Mail, title: 'Email (RFQs)', content: <div className="space-y-2">{[CONTACT_INFO.email, CONTACT_INFO.infoEmail, CONTACT_INFO.marketingEmail].map(e => <a key={e} href={`mailto:${e}`} className="block text-slate-600 font-bold text-sm hover:text-blue-600 transition-colors break-all">{e}</a>)}</div> },
               { Icon: MapPin, title: 'Facility Address', content: <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-            ].map(({ Icon, title, content }, i) => (
+            ].map(({ Icon: IconComponent, title, content }, i) => (
               <div key={i} className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
-                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><Icon className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><IconComponent className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
                 <div><h3 className="font-black text-slate-900 text-lg mb-2">{title}</h3>{content}</div>
               </div>
             ))}
@@ -5571,7 +6009,7 @@ const ContactPage = () => {
             <div className="bg-white p-8 md:p-12 border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/50">
               <div className="flex flex-col mb-8 border-b border-slate-100 pb-6">
                 <h2 className="text-3xl font-black text-slate-900 tracking-tight">Request a Technical Quote</h2>
-                <p className="text-slate-500 font-medium text-sm mt-2">Your inquiry will be sent to our engineering team via WhatsApp.</p>
+                <p className="text-slate-500 font-medium text-sm mt-2">Your details go directly to our engineering team — not a call centre. We will send a technical response, not a generic brochure.</p>
               </div>
               {status === 'success' && (
                 <div role="status" aria-live="polite" className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 font-black rounded-xl flex items-center shadow-sm text-lg">
@@ -5600,13 +6038,19 @@ const ContactPage = () => {
                 <div>
                   <label htmlFor="c-type" className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest">Inquiry Type <span aria-hidden="true">*</span></label>
                   <select id="c-type" value={iType} onChange={e => setIType(e.target.value)} aria-required="true" aria-invalid={!!errors.iType} aria-describedby={errors.iType ? 'err-type' : undefined} className={inputClass(errors.iType) + ' appearance-none cursor-pointer'}>
-                    <option value="" disabled>Select an option...</option>
-                    <option value="Filter Element RFQ">Filter Element RFQ (specify OEM)</option>
+                    <option value="" disabled>Select your requirement...</option>
+                    <option value="Turbine Overhauling Service">Turbine Overhauling (Planned / Scheduled)</option>
+                    <option value="Emergency Breakdown Support">Emergency Breakdown — Need Immediate Support</option>
+                    <option value="Turbine Erection & Commissioning">Turbine Erection &amp; Commissioning</option>
+                    <option value="Reverse Engineering">Reverse Engineering / Obsolete Spare</option>
+                    <option value="Dynamic Balancing">Dynamic Balancing &amp; Rotor Machining</option>
+                    <option value="Lube Oil Flushing">Lube Oil Flushing (ISO 4406 Certification)</option>
+                    <option value="Machine Alignment">Machine Alignment Service</option>
+                    <option value="Troubleshooting">Troubleshooting — Vibration / Governor / Trip</option>
+                    <option value="Filter Element RFQ">Filter Element RFQ (specify OEM make)</option>
+                    <option value="Turbine Spares RFQ">Turbine Spares RFQ (Bearings / Seals / Valves)</option>
                     <option value="Expansion Joint RFQ">Expansion Joint / Bellows RFQ</option>
-                    <option value="Turbine Spares RFQ">Turbine Spares (Triveni/Siemens/BHEL)</option>
-                    <option value="Turbine Overhauling Service">Turbine Overhauling Service</option>
-                    <option value="Reverse Engineering">Reverse Engineering / 3D Scanning</option>
-                    <option value="Lube Oil Flushing">Lube Oil Flushing Service</option>
+                    <option value="Strainer RFQ">Strainer / Hose Assembly RFQ</option>
                     <option value="General Inquiry">General Inquiry</option>
                   </select>
                   {errors.iType && <p id="err-type" role="alert" className="text-red-600 text-xs font-bold mt-2">{errors.iType}</p>}
@@ -5616,7 +6060,7 @@ const ContactPage = () => {
                 <label htmlFor="c-details" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Requirements / RFQ Details <span aria-hidden="true">*</span></label>
                 <textarea id="c-details" rows={6} value={details} onChange={e => setDetails(e.target.value)} aria-required="true" aria-invalid={!!errors.details} aria-describedby={errors.details ? 'err-details' : undefined}
                   className={inputClass(errors.details) + ' resize-none shadow-inner'}
-                  placeholder="Include: OEM/turbine make, model number, quantity, drawing number, or any technical specifications..." />
+                  placeholder="Tell us about your requirement — OEM/turbine make, model, quantity, part number, drawing reference, or describe the fault/symptom you're experiencing. The more detail you share, the faster and more useful our response will be." />
                 {errors.details && <p id="err-details" role="alert" className="text-red-600 text-xs font-bold mt-2">{errors.details}</p>}
               </div>
               <div className="mb-10 p-6 bg-slate-50 border-2 border-slate-200 border-dashed rounded-2xl hover:border-blue-400 transition-colors">
@@ -5630,9 +6074,10 @@ const ContactPage = () => {
                 className="w-full bg-blue-600 text-white py-5 rounded-xl font-black text-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
                 aria-live="polite">
                 {status === 'loading'
-                  ? <><span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />Submitting...</>
-                  : <><MessageCircle className="w-6 h-6" aria-hidden="true" />Submit via WhatsApp</>}
+                  ? <><span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />Sending to Engineering Team...</>
+                  : <><MessageCircle className="w-6 h-6" aria-hidden="true" />Send to Engineering Team via WhatsApp</>}
               </button>
+              <p className="text-center text-slate-400 text-xs font-medium mt-4">Your details are confidential and used only to respond to your inquiry.</p>
             </div>
           </div>
         </div>
