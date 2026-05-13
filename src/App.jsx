@@ -2120,7 +2120,7 @@ const MSMEBadge = memo(() => {
 });
 
 // ─── PRODUCT CARD (Memoized) ─────────────────────────────────
-const ProductCard = memo(({ product, navigate }) => {
+const ProductCard = memo(({ product, navigate, priority = false }) => {
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const pImg = product.images?.[0];
@@ -2134,20 +2134,21 @@ const ProductCard = memo(({ product, navigate }) => {
     <article onClick={() => navigate(`/product/${product.id}`)}
       className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50">
       {/* Fixed-height image container prevents layout shift (CLS fix) */}
-      <div className="h-48 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0" style={{ minHeight: '12rem' }}>
+      <div className="h-52 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent z-10 group-hover:opacity-0 transition-opacity" aria-hidden="true" />
-        <span className="absolute top-4 left-4 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm">{product.category}</span>
+        <span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm">{product.category}</span>
         {pImg && !imgErr
           ? <>
             {!imgLoaded && <div className="skeleton-shimmer" aria-hidden="true" />}
-            <img src={pImg} alt={product.title}
-            loading="lazy" decoding="async"
-            width="400" height="192"
-            fetchPriority="low"
-            className={`media-img w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
-            style={{ aspectRatio: '400/192' }}
-            onLoad={() => setImgLoaded(true)}
-            onError={() => { setImgErr(true); setImgLoaded(false); }} />
+            <div className="absolute inset-0 flex items-center justify-center p-5 z-0">
+              <img src={pImg} alt={product.title}
+              loading={priority ? 'eager' : 'lazy'}
+              decoding={priority ? 'sync' : 'async'}
+              fetchPriority={priority ? 'high' : 'low'}
+              className={`media-img max-w-full max-h-full w-auto h-auto object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => { setImgErr(true); setImgLoaded(false); }} />
+            </div>
           </>
           : <div className="z-0 w-full h-full flex items-center justify-center bg-slate-100" aria-hidden="true">{getCategoryIcon(product.category)}</div>}
       </div>
@@ -2341,151 +2342,149 @@ const Navbar = memo(({ currentPath, navigate }) => {
   return (
     <>
     <nav ref={menuRef} role="navigation" aria-label="Main navigation"
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/95 backdrop-blur-md border-slate-200 shadow-md py-1.5' : 'bg-[#0A192F] border-transparent py-2.5'}`}>
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg py-2' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10 py-3'}`}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold">Skip to main content</a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <BrandLogo scrolled={scrolled} navigate={navigate} />
-          <div className="hidden lg:flex space-x-6 items-center">
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
             {NAV_LINKS.map(link => (
               <a key={link.name} href={`#${link.path}`}
                 onClick={e => { e.preventDefault(); handleNav(link.path); }}
                 aria-current={isActive(link.path) ? 'page' : undefined}
-                className={`py-2 text-sm font-bold uppercase tracking-widest transition-colors focus:outline-none focus-visible:underline ${isActive(link.path) ? (scrolled ? 'text-blue-600' : 'text-blue-400') : (scrolled ? 'text-slate-600 hover:text-blue-600' : 'text-slate-300 hover:text-white')}`}>
+                className={`relative px-3 py-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
+                  ${isActive(link.path)
+                    ? (scrolled ? 'text-blue-600' : 'text-white')
+                    : (scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-300 hover:text-white')
+                  }`}>
                 {link.name}
+                <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300
+                  ${isActive(link.path) ? 'w-3/4 bg-blue-500' : 'w-0 group-hover:w-1/2 bg-blue-400/60'}`} aria-hidden="true" />
               </a>
             ))}
-            <div 
-              className="relative flex items-center"
-              onMouseEnter={() => setIsSearchOpen(true)}
-              onMouseLeave={() => { if (!query) setIsSearchOpen(false); }}
-            >
-              <div className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-56 lg:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search products & services..."
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  className={`w-56 lg:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
-                />
-              </div>
-              <button 
-                onClick={() => {
-                  if (isSearchOpen) {
-                    setIsSearchOpen(false);
-                    setQuery('');
-                  } else {
-                    setIsSearchOpen(true);
-                  }
-                }}
-                aria-label="Search"
-                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60] ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-md'} ${isSearchOpen ? 'ml-1' : ''}`}
+            {/* search + language switcher */}
+            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
+              <div
+                className="relative flex items-center"
+                onMouseEnter={() => setIsSearchOpen(true)}
+                onMouseLeave={() => { if (!query) setIsSearchOpen(false); }}
               >
-                <Search className="w-5 h-5" aria-hidden="true" />
-              </button>
-
-              {isSearchOpen && query && (
-                <div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
-                  <div className="max-h-[60vh] overflow-y-auto p-2">
-                    {searchResults.length === 0 ? (
-                      <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
-                    ) : (
-                      <ul className="space-y-1">
-                        {searchResults.map(r => (
-                          <li key={r.id}>
-                            <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                              <div className="flex gap-3 w-full items-center">
-                                <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-                                  <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
-                                  {r.image && (
-                                    <img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0 flex flex-col justify-center">
-                                  <div className="flex justify-between items-start">
-                                    <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
-                                    <div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
-                                      {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
-                                      <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
-                                    </div>
-                                  </div>
-                                  <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
-                                </div>
-                              </div>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                <div className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 xl:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search products & services..."
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    className={`w-64 xl:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
+                  />
                 </div>
-              )}
+                <button
+                  onClick={() => { if (isSearchOpen) { setIsSearchOpen(false); setQuery(''); } else { setIsSearchOpen(true); } }}
+                  aria-label="Search"
+                  className={`p-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60]
+                    ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}
+                    ${isSearchOpen ? 'ml-1' : ''}`}
+                >
+                  <Search className="w-4.5 h-4.5" aria-hidden="true" style={{width:'18px',height:'18px'}} />
+                </button>
+                {isSearchOpen && query && (
+                  <div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
+                    <div className="max-h-[60vh] overflow-y-auto p-2">
+                      {searchResults.length === 0 ? (
+                        <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
+                      ) : (
+                        <ul className="space-y-1">
+                          {searchResults.map(r => (
+                            <li key={r.id}>
+                              <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                <div className="flex gap-3 w-full items-center">
+                                  <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
+                                    <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
+                                    {r.image && (<img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />)}
+                                  </div>
+                                  <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                    <div className="flex justify-between items-start">
+                                      <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
+                                      <div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
+                                        {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
+                                        <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                                      </div>
+                                    </div>
+                                    <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <LanguageSwitcher scrolled={scrolled} />
             </div>
-            <LanguageSwitcher scrolled={scrolled} />
             <a href="#/contact" onClick={e => { e.preventDefault(); handleNav('/contact'); }}
-              className="bg-blue-600 text-white px-7 py-2.5 rounded font-bold hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+              className={`ml-2 px-6 py-2.5 rounded-lg font-bold text-sm tracking-wide transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300
+                ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}>
               Get Quote
             </a>
           </div>
-          <div className="lg:hidden flex items-center gap-1">
+          {/* Mobile controls */}
+          <div className="lg:hidden flex items-center gap-1.5">
             <LanguageSwitcher scrolled={scrolled} />
             <button onClick={() => {
-                if (isSearchOpen) {
-                  setIsSearchOpen(false);
-                  setQuery('');
-                } else {
-                  setIsSearchOpen(true);
-                }
+                if (isSearchOpen) { setIsSearchOpen(false); setQuery(''); }
+                else { setIsSearchOpen(true); }
               }} aria-label="Search products and services"
-              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)]' : 'bg-white/20 text-white backdrop-blur-md'}`}>
-              <Search className="h-6 w-6" aria-hidden="true" />
+              className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}>
+              <Search className="h-5 w-5" aria-hidden="true" />
             </button>
-            <button onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            <button onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isOpen} aria-controls="mobile-nav"
-              className={`p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-900' : 'text-white'}`}>
-              {isOpen ? <X className="h-7 w-7" aria-hidden="true" /> : <Menu className="h-7 w-7" aria-hidden="true" />}
+              className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}>
+              {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
       </div>
+      {/* Mobile drawer */}
       {(isOpen || isSearchOpen) && (
-        <div id="mobile-nav" className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100" role="menu">
+        <div id="mobile-nav" className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto" role="menu">
           {isSearchOpen && (
-            <div className="px-4 py-4 border-b border-slate-100">
+            <div className="px-4 pt-4 pb-3 border-b border-slate-100">
               <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search products & services..."
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500"
+                  autoFocus
+                  className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500 text-sm"
                 />
               </div>
               {query && (
-                <div className="max-h-[50vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
+                <div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
                   {searchResults.length === 0 ? (
-                    <div className="p-4 text-center text-slate-500 text-sm">No results found for "{query}"</div>
+                    <div className="p-4 text-center text-slate-500 text-sm">No results for "{query}"</div>
                   ) : (
                     <ul className="divide-y divide-slate-100">
                       {searchResults.map(r => (
                         <li key={r.id}>
-                          <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:bg-slate-50">
-                            <div className="flex gap-3 w-full items-center">
-                              <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-                                <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
-                                {r.image && (
-                                  <img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0 flex flex-col justify-center">
-                                <div className="flex justify-between items-start">
-                                  <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
-                                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0 ml-2 mt-0.5 ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
-                                </div>
-                                <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
-                              </div>
+                          <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }}
+                            className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none">
+                            <div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
+                              <span className="text-slate-400 font-black text-xs">{r.title.substring(0, 2)}</span>
+                              {r.image && (<img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={e => { e.target.style.display = 'none'; }} />)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <span className="font-bold text-slate-900 text-sm line-clamp-1 block">{r.title}</span>
+                              <span className={`text-[10px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
                             </div>
                           </button>
                         </li>
@@ -2497,19 +2496,33 @@ const Navbar = memo(({ currentPath, navigate }) => {
             </div>
           )}
           {isOpen && !query && (
-            <div className="px-4 py-6 space-y-2">
-              {NAV_LINKS.map(link => (
-                <a key={link.name} href={`#${link.path}`} role="menuitem"
-                  onClick={e => { e.preventDefault(); handleNav(link.path); }}
-                  aria-current={isActive(link.path) ? 'page' : undefined}
-                  className={`block w-full text-left px-5 py-4 rounded-xl text-lg font-black tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}>
-                  {link.name}
+            <div className="px-4 py-5">
+              <ul className="space-y-1 mb-5">
+                {NAV_LINKS.map(link => (
+                  <li key={link.name}>
+                    <a href={`#${link.path}`} role="menuitem"
+                      onClick={e => { e.preventDefault(); handleNav(link.path); }}
+                      aria-current={isActive(link.path) ? 'page' : undefined}
+                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                        ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}>
+                      {link.name}
+                      {isActive(link.path) && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" aria-hidden="true" />}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
+                <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-5 py-3.5 rounded-xl text-sm font-black tracking-wide shadow-md">
+                  <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp Us
                 </a>
-              ))}
-              <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')} target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 mt-4 bg-[#25D366] text-white px-5 py-4 rounded-xl text-lg font-black">
-                <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp Us
-              </a>
+                <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`}
+                  className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
+                    ${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}>
+                  <Phone className="w-4 h-4" aria-hidden="true" /> {CONTACT_INFO.phones[0]}
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -2665,19 +2678,22 @@ const Footer = memo(({ navigate }) => (
               </div>
             </div>
 
-            {/* Emails */}
+            {/* Emails — all 4 addresses */}
             <div className="flex items-start gap-4 group">
               <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
                 <Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
               </div>
-              <div className="flex flex-col gap-1.5 mt-1 w-full">
+              <div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
                 {[
-                  { addr: CONTACT_INFO.email, label: 'General' },
-                  { addr: CONTACT_INFO.infoEmail, label: 'Info' },
+                  { addr: CONTACT_INFO.email,          label: 'General' },
+                  { addr: CONTACT_INFO.infoEmail,       label: 'Info' },
+                  { addr: CONTACT_INFO.secondaryEmail,  label: 'Director' },
+                  { addr: CONTACT_INFO.marketingEmail,  label: 'Marketing' },
                 ].map(({ addr, label }) => (
-                  <a key={addr} href={`mailto:${addr}`} className="flex items-center justify-between gap-4 text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline">
-                    <span>{addr}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-widest opacity-50">{label}</span>
+                  <a key={addr} href={`mailto:${addr}`}
+                    className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline group/email">
+                    <span className="truncate group-hover/email:text-blue-300 transition-colors">{addr}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-slate-600 group-hover/email:text-blue-500 transition-colors">{label}</span>
                   </a>
                 ))}
               </div>
@@ -2951,14 +2967,14 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
                 {activeImage && !imgErr
                   ? <>
                     {!imgLoaded && <div className="skeleton-shimmer" aria-hidden="true" />}
-                    <img src={activeImage} alt={`${product.title} view ${activeImg + 1}`}
-                    loading="eager" decoding="async"
-                    fetchPriority="high"
-                    width="500" height="500"
-                    style={{ aspectRatio: '1/1' }}
-                    className={`media-img w-full h-full object-contain p-8 mix-blend-multiply ${imgLoaded ? 'is-loaded' : ''}`}
-                    onLoad={() => setImgLoaded(true)}
-                    onError={() => { setImgErr(true); setImgLoaded(false); }} />
+                    <div className="absolute inset-0 flex items-center justify-center p-8">
+                      <img src={activeImage} alt={`${product.title} view ${activeImg + 1}`}
+                      loading="eager" decoding="async"
+                      fetchPriority="high"
+                      className={`media-img max-w-full max-h-full w-auto h-auto object-contain mix-blend-multiply ${imgLoaded ? 'is-loaded' : ''}`}
+                      onLoad={() => setImgLoaded(true)}
+                      onError={() => { setImgErr(true); setImgLoaded(false); }} />
+                    </div>
                   </>
                   : <div className="flex flex-col items-center justify-center opacity-30" aria-hidden="true">
                     {getCategoryIcon(product.category)}
@@ -2973,7 +2989,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
                       onClick={() => { setActiveImg(idx); setImgErr(false); setImgLoaded(false); }}
                       aria-label={`View image ${idx + 1}`} aria-pressed={activeImg === idx}
                       className={`shrink-0 w-20 h-20 bg-white rounded-xl border-2 overflow-hidden transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeImg === idx ? 'border-blue-600 shadow-lg scale-105' : 'border-slate-200 hover:border-blue-400 opacity-70 hover:opacity-100'}`}>
-                      <img src={img} alt="" loading="lazy" width="80" height="80" className="w-full h-full object-cover p-2 mix-blend-multiply"
+                      <img src={img} alt="" loading="lazy" width="80" height="80" className="w-full h-full object-contain p-1.5 mix-blend-multiply"
                         onError={e => { e.target.closest('button').style.display = 'none'; }} />
                     </button>
                   ))}
@@ -5487,7 +5503,7 @@ const ProductsPage = ({ navigate }) => {
         </div>
         {filtered.length > 0
           ? <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" role="list" aria-label={`${filtered.length} products`}>
-            {filtered.map(p => <div key={p.id} role="listitem"><ProductCard product={p} navigate={navigate} /></div>)}
+            {filtered.map((p, idx) => <div key={p.id} role="listitem"><ProductCard product={p} navigate={navigate} priority={idx < 6} /></div>)}
           </div>
           : <div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm" role="status">
             <Search className="w-20 h-20 text-slate-200 mx-auto mb-6" aria-hidden="true" />
