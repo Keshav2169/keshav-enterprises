@@ -1927,8 +1927,8 @@ if (typeof document !== 'undefined') {
 
     // Track hash-based SPA navigation
     window.addEventListener('popstate', () => {
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'page_view', { page_path: window.location.hash });
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', 'page_view', { page_path: window.location.hash });
       }
     });
   }
@@ -2066,7 +2066,7 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
       </div>
 
       <div className={`font-black text-xl sm:text-2xl tracking-tight ${tc} flex items-center`}>
-        KESHAV ENTERPRISES<span className="text-blue-500 ml-0.5" aria-hidden="true">.</span>
+        KESHAV ENTERPRISES
       </div>
     </a>
   );
@@ -2124,7 +2124,12 @@ const ProductCard = memo(({ product, navigate }) => {
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const pImg = product.images?.[0];
-  useEffect(() => { setImgErr(false); setImgLoaded(false); }, [pImg]);
+  const [prevImg, setPrevImg] = useState(pImg);
+  if (pImg !== prevImg) {
+    setPrevImg(pImg);
+    setImgErr(false);
+    setImgLoaded(false);
+  }
   return (
     <article onClick={() => navigate(`/product/${product.id}`)}
       className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50">
@@ -2171,23 +2176,121 @@ const ProductCard = memo(({ product, navigate }) => {
   );
 });
 
+// ─── LANGUAGE SWITCHER ────────────────────────────────────────
+const LANGUAGES = [
+  { code: 'en', name: 'English', flag: '🇬🇧' },
+  { code: 'hi', name: 'Hindi', flag: '🇮🇳' },
+  { code: 'zh-CN', name: 'Mandarin', flag: '🇨🇳' },
+  { code: 'es', name: 'Spanish', flag: '🇪🇸' },
+  { code: 'fr', name: 'French', flag: '🇫🇷' },
+  { code: 'ar', name: 'Arabic', flag: '🇦🇪' },
+  { code: 'ru', name: 'Russian', flag: '🇷🇺' },
+  { code: 'pt', name: 'Portuguese', flag: '🇵🇹' },
+  { code: 'de', name: 'German', flag: '🇩🇪' },
+  { code: 'ja', name: 'Japanese', flag: '🇯🇵' }
+];
+
+const LanguageSwitcher = memo(({ scrolled }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState('en');
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
+    if (match) {
+      setCurrentLang(match[1]);
+    }
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const changeLanguage = (langCode) => {
+    setCurrentLang(langCode);
+    setIsOpen(false);
+    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${langCode}; path=/;`; // for localhost and IP addresses
+    window.location.reload();
+  };
+
+  const activeLang = LANGUAGES.find(l => l.code === currentLang) || LANGUAGES[0];
+
+  return (
+    <div className="relative" ref={ref}>
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Change Language"
+        className={`flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shadow-sm ${scrolled ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-blue-600' : 'bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-md'}`}
+      >
+        <span aria-hidden="true" className="text-base leading-none">{activeLang.flag}</span>
+        <span className="hidden xl:inline-block">{activeLang.code.toUpperCase()}</span>
+        <svg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+      </button>
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-[250]">
+          <div className="max-h-80 overflow-y-auto py-2 scrollbar-hide">
+            {LANGUAGES.map(lang => (
+              <button
+                key={lang.code}
+                onClick={() => changeLanguage(lang.code)}
+                className={`w-full text-left px-4 py-2.5 text-sm font-bold flex items-center gap-3 transition-colors hover:bg-blue-50 focus:outline-none focus:bg-blue-50 ${currentLang === lang.code ? 'text-blue-600 bg-blue-50/50' : 'text-slate-700'}`}
+              >
+                <span className="text-lg leading-none">{lang.flag}</span>
+                {lang.name}
+                {currentLang === lang.code && <CheckCircle2 className="w-4 h-4 ml-auto text-blue-500" aria-hidden="true" />}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+});
+
 // ─── NAVBAR ───────────────────────────────────────────────────
 const Navbar = memo(({ currentPath, navigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
   // PERF: ref mirrors query so outside-click handler reads current value without
   // needing query in its dependency array (which would re-register on every keystroke)
   const queryRef = useRef('');
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const h = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', h, { passive: true });
-    return () => window.removeEventListener('scroll', h);
-  }, []);
+    let scrollTimeout;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+
+      // Smart hide/show logic: Hide while scrolling, show when stopped
+      if (currentScrollY < 100 || isOpen || isSearchOpen) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setIsVisible(true);
+      }, 350); // Show after 350ms of no scrolling
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [isOpen, isSearchOpen]);
 
   useEffect(() => {
     if (isSearchOpen && window.innerWidth >= 1024) {
@@ -2199,7 +2302,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 
   const q = query.toLowerCase().trim();
   // keep ref in sync for the event handler
-  queryRef.current = query;
+  useEffect(() => { queryRef.current = query; }, [query]);
   const searchResults = useMemo(() => {
     if (!q) return [];
     return [
@@ -2238,7 +2341,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
   return (
     <>
     <nav ref={menuRef} role="navigation" aria-label="Main navigation"
-      className={`fixed w-full z-50 transition-all duration-300 border-b ${scrolled ? 'bg-white/95 backdrop-blur-md border-slate-200 shadow-sm py-3' : 'bg-[#0A192F] border-transparent py-5'}`}>
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/95 backdrop-blur-md border-slate-200 shadow-md py-1.5' : 'bg-[#0A192F] border-transparent py-2.5'}`}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold">Skip to main content</a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
@@ -2319,12 +2422,14 @@ const Navbar = memo(({ currentPath, navigate }) => {
                 </div>
               )}
             </div>
+            <LanguageSwitcher scrolled={scrolled} />
             <a href="#/contact" onClick={e => { e.preventDefault(); handleNav('/contact'); }}
               className="bg-blue-600 text-white px-7 py-2.5 rounded font-bold hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
               Get Quote
             </a>
           </div>
           <div className="lg:hidden flex items-center gap-1">
+            <LanguageSwitcher scrolled={scrolled} />
             <button onClick={() => {
                 if (isSearchOpen) {
                   setIsSearchOpen(false);
@@ -2416,28 +2521,29 @@ const Navbar = memo(({ currentPath, navigate }) => {
 
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
-  <footer className="bg-[#060F1E] text-slate-400" role="contentinfo">
+  <footer className="bg-slate-950 text-slate-400 font-sans border-t-4 border-blue-600" role="contentinfo">
 
-    {/* Top gradient accent line */}
-    <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent" aria-hidden="true" />
+    {/* Top accent line */}
+    <div className="h-[2px] w-full bg-blue-500" aria-hidden="true" />
 
     {/* ── Pre-footer CTA band ── */}
-    <div className="bg-[#0A192F] border-b border-slate-800/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="bg-gradient-to-r from-slate-950 via-blue-900 to-slate-950 border-b border-blue-900/50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-30 pointer-events-none" aria-hidden="true" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
-            <p className="text-white font-black text-lg tracking-tight">Need a quote or have an emergency breakdown?</p>
-            <p className="text-slate-400 text-sm font-medium mt-1">Our engineering team responds within 24 hours — emergency calls answered immediately.</p>
+            <h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">Need a quote or have an emergency breakdown?</h2>
+            <p className="text-blue-200 font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm">Our engineering team responds within 24 hours</p>
           </div>
-          <div className="flex flex-wrap gap-3 shrink-0 justify-center">
+          <div className="flex flex-wrap gap-4 shrink-0 justify-center">
             <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`}
-              className="flex items-center gap-2 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.15] hover:border-blue-400/50 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-              <Phone className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />{CONTACT_INFO.phones[0]}
+              className="flex items-center gap-2 bg-slate-900 hover:bg-blue-600 border border-blue-500/50 hover:border-blue-400 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_25px_rgba(37,99,235,0.4)] hover:-translate-y-1">
+              <Phone className="w-5 h-5 text-blue-300 group-hover:text-white shrink-0" aria-hidden="true" />{CONTACT_INFO.phones[0]}
             </a>
             <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
               target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-5 py-2.5 rounded-lg font-black text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">
-              <MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />WhatsApp Now
+              className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbc5a] text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,211,102,0.2)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1">
+              <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />WhatsApp Now
             </a>
           </div>
         </div>
@@ -2445,53 +2551,59 @@ const Footer = memo(({ navigate }) => (
     </div>
 
     {/* ── Main footer body ── */}
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative z-10">
 
       {/* ── 4-column grid ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-10 gap-y-12 mb-14">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16 mb-20">
 
         {/* Col 1 — Brand (4 cols) */}
         <div className="lg:col-span-4">
-          <div className="mb-5">
+          <div className="mb-6">
             <BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
           </div>
-          <p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-xs">
-            20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares to power, sugar, paper, and process industries across India.
+          <p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
+            20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
           </p>
 
           {/* Credential chips */}
-          <div className="flex flex-col gap-2.5 mb-6">
+          <div className="flex flex-col gap-4 mb-8">
             {[
-              { Icon: Shield, iconColor: 'text-green-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
-              { Icon: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal · 4.3★', sub: 'Verified Supplier' },
-              { Icon: Globe, iconColor: 'text-blue-400', title: 'Make In India', sub: 'Proudly manufactured in India' },
-            ].map(({ Icon, iconColor, title, sub }) => (
-              <div key={title} className="flex items-center gap-3 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2.5 w-fit">
-                <Icon className={`w-4 h-4 ${iconColor} shrink-0`} aria-hidden="true" />
+              { imgSrc: 'msme-logo.png', Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
+              { imgSrc: 'indiamart-logo.png', Icon: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+              { imgSrc: 'make-in-india.png', Icon: Globe, iconColor: 'text-cyan-400', title: 'Make In India', sub: 'Manufactured in India' },
+            ].map(({ imgSrc, Icon: IconComponent, iconColor, title, sub }) => (
+              <div key={title} className="flex items-center gap-5 bg-slate-900 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2">
+                <div className="w-14 h-14 shrink-0 flex items-center justify-center relative bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
+                  <img src={imgSrc} alt={title} className="w-full h-full object-contain"
+                    onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'block'; }} />
+                  <IconComponent className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
+                </div>
                 <div>
-                  <p className="text-white text-xs font-black leading-none">{title}</p>
-                  <p className="text-slate-500 text-[10px] mt-0.5 font-medium">{sub}</p>
+                  <p className="text-white font-bold text-sm uppercase tracking-wider mb-1">{title}</p>
+                  <p className="text-blue-400 font-mono text-xs tracking-widest">{sub}</p>
                 </div>
               </div>
             ))}
           </div>
 
           {/* OEM compatibility */}
-          <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-2">OEM Compatible With</p>
-          <p className="text-slate-500 text-xs font-medium leading-relaxed">{OEMS.join(' · ')}</p>
+          <p className="font-bold text-[10px] text-blue-500 uppercase tracking-[0.2em] mb-2">OEM Compatible With</p>
+          <p className="text-slate-400 font-mono text-xs leading-relaxed">{OEMS.join(' · ')}</p>
         </div>
 
         {/* Col 2 — Navigate (2 cols) */}
         <nav className="lg:col-span-2" aria-label="Footer site links">
-          <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-5">Navigate</h3>
-          <ul className="space-y-3">
+          <h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
+            Navigate
+          </h3>
+          <ul className="space-y-4">
             {NAV_LINKS.map(link => (
               <li key={link.name}>
                 <a href={`#${link.path}`}
                   onClick={e => { e.preventDefault(); navigate(link.path); }}
-                  className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 group focus:outline-none focus-visible:underline">
-                  <span className="w-4 h-px bg-slate-700 group-hover:bg-blue-500 group-hover:w-5 transition-all duration-200 shrink-0" aria-hidden="true" />
-                  {link.name}
+                  className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+                  <ChevronRight className="w-4 h-4 text-blue-500/50 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
+                  <span>{link.name}</span>
                 </a>
               </li>
             ))}
@@ -2500,23 +2612,24 @@ const Footer = memo(({ navigate }) => (
 
         {/* Col 3 — Services (3 cols) */}
         <div className="lg:col-span-3">
-          <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-5">Services</h3>
-          <ul className="space-y-3">
+          <h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
+            Core Services
+          </h3>
+          <ul className="space-y-4">
             {[
-              { label: 'Turbine Erection & Commissioning', id: 'srv_1' },
+              { label: 'Turbine Erection', id: 'srv_1' },
               { label: 'Turnkey Overhauling', id: 'srv_2' },
               { label: 'Reverse Engineering', id: 'srv_3' },
               { label: 'Dynamic Balancing', id: 'srv_4' },
               { label: 'Lube Oil Flushing', id: 'srv_5' },
               { label: 'Machine Alignment', id: 'srv_6' },
-              { label: 'Troubleshooting', id: 'srv_7' },
             ].map(({ label, id }) => (
               <li key={id}>
                 <a href={`#/service/${id}`}
                   onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
-                  className="text-slate-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2 group focus:outline-none focus-visible:underline">
-                  <span className="w-4 h-px bg-slate-700 group-hover:bg-blue-500 group-hover:w-5 transition-all duration-200 shrink-0" aria-hidden="true" />
-                  {label}
+                  className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+                  <Hexagon className="w-3.5 h-3.5 text-blue-500/50 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
+                  <span>{label}</span>
                 </a>
               </li>
             ))}
@@ -2525,129 +2638,111 @@ const Footer = memo(({ navigate }) => (
 
         {/* Col 4 — Contact (3 cols) */}
         <address className="lg:col-span-3 not-italic">
-          <h3 className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-5">Contact</h3>
+          <h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
+            Contact Us
+          </h3>
 
-          {/* Address */}
-          <div className="flex items-start gap-3 mb-5">
-            <div className="w-7 h-7 bg-white/[0.05] border border-white/[0.08] rounded-md flex items-center justify-center shrink-0 mt-0.5">
-              <MapPin className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+          <div className="space-y-5">
+            {/* Address */}
+            <div className="flex items-start gap-4 group">
+              <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
+                <MapPin className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              </div>
+              <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p>
             </div>
-            <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p>
-          </div>
 
-          {/* GST */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="w-7 h-7 bg-white/[0.05] border border-white/[0.08] rounded-md flex items-center justify-center shrink-0">
-              <Shield className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+            {/* Phones */}
+            <div className="flex items-start gap-4 group">
+              <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
+                <Phone className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col gap-1.5 mt-1">
+                {CONTACT_INFO.phones.map(p => (
+                  <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-slate-300 hover:text-white font-mono text-sm transition-colors focus:outline-none focus-visible:underline">
+                    {p}
+                  </a>
+                ))}
+              </div>
             </div>
-            <p className="text-slate-500 text-xs font-mono">GST: {CONTACT_INFO.gst}</p>
-          </div>
 
-          {/* Phones */}
-          <div className="space-y-2 mb-4">
-            {CONTACT_INFO.phones.map(p => (
-              <a key={p} href={`tel:${p.replace(/\s/g,'')}`}
-                className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
-                <div className="w-7 h-7 bg-blue-600/10 border border-blue-500/20 rounded-md flex items-center justify-center shrink-0 group-hover:bg-blue-600/20 transition-colors">
-                  <Phone className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
-                </div>
-                <span className="text-slate-300 group-hover:text-white text-sm font-semibold transition-colors">{p}</span>
-              </a>
-            ))}
-          </div>
-
-          {/* Emails */}
-          <div className="space-y-2 mb-6">
-            {[
-              { addr: CONTACT_INFO.email, label: 'General' },
-              { addr: CONTACT_INFO.infoEmail, label: 'Info / RFQ' },
-              { addr: CONTACT_INFO.marketingEmail, label: 'Sales' },
-            ].map(({ addr, label }) => (
-              <a key={addr} href={`mailto:${addr}`}
-                className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg">
-                <div className="w-7 h-7 bg-white/[0.05] border border-white/[0.08] rounded-md flex items-center justify-center shrink-0 group-hover:border-blue-500/30 transition-colors">
-                  <Mail className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 transition-colors" aria-hidden="true" />
-                </div>
-                <span className="text-slate-400 group-hover:text-slate-200 text-xs font-medium transition-colors truncate">{addr}</span>
-                <span className="ml-auto shrink-0 text-[9px] font-black text-slate-600 uppercase tracking-wider">{label}</span>
-              </a>
-            ))}
-          </div>
-
-          {/* Hours chip */}
-          <div className="flex items-center gap-2 bg-white/[0.04] border border-white/[0.08] rounded-lg px-3 py-2 w-fit">
-            <Clock className="w-3.5 h-3.5 text-blue-400 shrink-0" aria-hidden="true" />
-            <span className="text-slate-400 text-xs font-medium">Mon–Sat 09:00–18:00 &nbsp;|&nbsp; <span className="text-red-400 font-black">24×7 Emergency</span></span>
+            {/* Emails */}
+            <div className="flex items-start gap-4 group">
+              <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
+                <Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
+              </div>
+              <div className="flex flex-col gap-1.5 mt-1 w-full">
+                {[
+                  { addr: CONTACT_INFO.email, label: 'General' },
+                  { addr: CONTACT_INFO.infoEmail, label: 'Info' },
+                ].map(({ addr, label }) => (
+                  <a key={addr} href={`mailto:${addr}`} className="flex items-center justify-between gap-4 text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline">
+                    <span>{addr}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-widest opacity-50">{label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </address>
       </div>
 
       {/* ── Divider ── */}
-      <div className="border-t border-slate-800/60 mb-10" aria-hidden="true" />
+      <div className="h-px w-full bg-slate-800 mb-12" />
 
-      {/* ── Social media cards ── */}
-      <div className="mb-10">
-        <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-6 text-center">Connect With Us</p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+      {/* ── Social media links ── */}
+      <div className="mb-14">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
           {[
-            { href: CONTACT_INFO.linkedin,  label: `LinkedIn — ${CONTACT_INFO.linkedinHandle}`,  name: 'LinkedIn',   handle: CONTACT_INFO.linkedinHandle,  bg: '#0A66C2', shadow: 'rgba(10,102,194,0.5)',
-              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg> },
-            { href: CONTACT_INFO.youtube,   label: `YouTube — ${CONTACT_INFO.youtubeHandle}`,   name: 'YouTube',    handle: CONTACT_INFO.youtubeHandle,   bg: '#FF0000', shadow: 'rgba(255,0,0,0.5)',
-              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg> },
-            { href: CONTACT_INFO.instagram, label: `Instagram — ${CONTACT_INFO.instagramHandle}`, name: 'Instagram', handle: CONTACT_INFO.instagramHandle, bg: 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)', shadow: 'rgba(225,48,108,0.5)',
-              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg> },
-            { href: CONTACT_INFO.facebook,  label: `Facebook — ${CONTACT_INFO.facebookHandle}`,  name: 'Facebook',   handle: CONTACT_INFO.facebookHandle,  bg: '#1877F2', shadow: 'rgba(24,119,242,0.5)',
-              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg> },
-            { href: CONTACT_INFO.twitter,   label: `X — ${CONTACT_INFO.twitterHandle}`,          name: 'X',          handle: CONTACT_INFO.twitterHandle,   bg: '#111827', shadow: 'rgba(255,255,255,0.1)',
-              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> },
-            { href: CONTACT_INFO.reddit,    label: `Reddit — ${CONTACT_INFO.redditHandle}`,       name: 'Reddit',     handle: CONTACT_INFO.redditHandle,    bg: '#FF4500', shadow: 'rgba(255,69,0,0.5)',
-              icon: <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z"/></svg> },
-          ].map(({ href, label, name, handle, bg, shadow, icon }) => (
+            { href: CONTACT_INFO.linkedin,  label: `LinkedIn — ${CONTACT_INFO.linkedinHandle}`,  name: 'LinkedIn',   bg: '#0A66C2' },
+            { href: CONTACT_INFO.youtube,   label: `YouTube — ${CONTACT_INFO.youtubeHandle}`,   name: 'YouTube',    bg: '#FF0000' },
+            { href: CONTACT_INFO.instagram, label: `Instagram — ${CONTACT_INFO.instagramHandle}`, name: 'Instagram', bg: '#E1306C' },
+            { href: CONTACT_INFO.facebook,  label: `Facebook — ${CONTACT_INFO.facebookHandle}`,  name: 'Facebook',   bg: '#1877F2' },
+            { href: CONTACT_INFO.twitter,   label: `X — ${CONTACT_INFO.twitterHandle}`,          name: 'X',          bg: '#000000' },
+            { href: CONTACT_INFO.reddit,    label: `Reddit — ${CONTACT_INFO.redditHandle}`,       name: 'Reddit',     bg: '#FF4500' },
+          ].map(({ href, label, name, bg }) => (
             <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-              className="group relative flex flex-col items-center gap-2.5 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/[0.2] px-3 py-4 rounded-xl transition-all duration-200 overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-              style={{ '--social-shadow': shadow }}>
-              {/* Icon circle */}
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md group-hover:shadow-lg transition-shadow"
-                style={{ background: bg }}>
-                {icon}
-              </div>
-              <span className="text-slate-400 group-hover:text-white text-xs font-bold transition-colors text-center leading-tight">{name}</span>
-              <span className="text-slate-600 text-[10px] font-medium truncate max-w-full text-center">{handle}</span>
-              {/* Bottom glow on hover */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-px opacity-0 group-hover:opacity-100 transition-opacity"
-                style={{ background: `linear-gradient(90deg, transparent, ${bg === 'linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045)' ? '#E1306C' : bg}, transparent)` }}
-                aria-hidden="true" />
+              className="flex items-center justify-center sm:justify-start gap-4 bg-white border border-slate-200 hover:border-slate-300 px-5 py-4 rounded-xl transition-all hover:bg-slate-50 shadow-md hover:shadow-lg hover:-translate-y-1 group focus:outline-none">
+              <span className="flex items-center justify-center w-8 h-8 rounded bg-slate-100 group-hover:bg-white transition-colors shrink-0 shadow-sm border border-slate-100" style={{ color: bg }}>
+                  {name === 'X' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  : name === 'LinkedIn' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  : name === 'YouTube' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+                  : name === 'Instagram' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  : name === 'Facebook' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg>
+                  : <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z"/></svg>
+                  }
+              </span>
+              <span className="font-bold text-sm tracking-wide transition-colors" style={{ color: bg }}>{name}</span>
             </a>
           ))}
         </div>
       </div>
 
-      {/* ── Industries served + divider ── */}
-      <div className="border-t border-slate-800/40 pt-8 mb-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-          <div>
-            <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-3">Industries Served</p>
+      {/* ── Industries served ── */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-8 mb-10">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+          <div className="flex-1">
+            <p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">Industries Served</p>
             <div className="flex flex-wrap gap-2">
               {['Power Generation','Sugar Mills','Paper & Pulp','Oil & Gas','Petrochemical','Agro & Food','Cement'].map(ind => (
-                <span key={ind} className="text-[10px] font-black text-slate-600 border border-slate-800 hover:border-slate-700 hover:text-slate-500 px-2.5 py-1 rounded-md uppercase tracking-wide transition-colors">{ind}</span>
+                <span key={ind} className="text-xs text-slate-300 bg-slate-800 px-3 py-1.5 rounded-full font-medium">{ind}</span>
               ))}
             </div>
           </div>
-          <div className="text-right shrink-0">
-            <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.2em] mb-1">Capability Range</p>
-            <p className="text-white font-black text-lg tracking-tighter">5 kW – 27 MW</p>
-            <p className="text-slate-600 text-xs font-medium">Steam turbines across India</p>
+          <div className="lg:text-right shrink-0">
+            <p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">Capability Range</p>
+            <p className="text-white font-black text-3xl tracking-tight">5 kW <span className="text-slate-600 font-normal mx-1">–</span> 27 MW</p>
           </div>
         </div>
       </div>
 
       {/* ── Bottom copyright bar ── */}
-      <div className="border-t border-slate-800/40 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-        <p className="text-slate-600 text-xs font-medium text-center sm:text-left">
-          © 2026 Keshav Enterprises, Shamli, U.P., India. All rights reserved.
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-800">
+        <p className="text-slate-400 text-sm">
+          © {new Date().getFullYear()} Keshav Enterprises. All rights reserved.
         </p>
-        <p className="text-slate-700 text-[11px] font-mono">
-          GST: {CONTACT_INFO.gst}
+        <p className="text-slate-400 text-sm flex items-center gap-2">
+          <span>GST:</span>
+          <span className="text-slate-300 font-mono bg-slate-900 px-2 py-0.5 rounded border border-slate-800">{CONTACT_INFO.gst}</span>
         </p>
       </div>
     </div>
@@ -2779,8 +2874,23 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [tab, setTab] = useState('specs');
   const product = useMemo(() => PRODUCTS.find(p => p.id === productId), [productId]);
-  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setActiveImg(0); setImgErr(false); setImgLoaded(false); setTab('specs'); }, [productId]);
-  useEffect(() => { setImgLoaded(false); setImgErr(false); }, [activeImg, productId]);
+
+  const [prevProductId, setPrevProductId] = useState(productId);
+  if (productId !== prevProductId) {
+    setPrevProductId(productId);
+    setActiveImg(0);
+    setImgErr(false);
+    setImgLoaded(false);
+    setTab('specs');
+  }
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [productId]);
+
+  const [prevActiveImg, setPrevActiveImg] = useState(activeImg);
+  if (activeImg !== prevActiveImg) {
+    setPrevActiveImg(activeImg);
+    setImgLoaded(false);
+    setImgErr(false);
+  }
   const related = useMemo(() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [], [product]);
   const productSchema = useMemo(() => product ? {
     '@context': 'https://schema.org',
@@ -2971,9 +3081,10 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   // PERF: arrow state is sampled every 12 frames (~5x/s) instead of 60fps
   // to avoid triggering 60 React re-renders per second from the rAF loop.
   const frameCount = useRef(0);
-  const tick = useCallback(() => {
+  const tickRef = useRef();
+  tickRef.current = () => {
     const el = trackRef.current;
-    if (!el) { rafRef.current = requestAnimationFrame(tick); return; }
+    if (!el) { rafRef.current = requestAnimationFrame(tickRef.current); return; }
     if (!isPaused.current) {
       el.scrollLeft += SPEED;
       // seamless reset: when we've scrolled past the first copy, snap back
@@ -2986,13 +3097,13 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       setCanLeft(el.scrollLeft > 4);
       setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
     }
-    rafRef.current = requestAnimationFrame(tick);
-  }, [halfW]);
+    rafRef.current = requestAnimationFrame(tickRef.current);
+  };
 
   useEffect(() => {
-    rafRef.current = requestAnimationFrame(tick);
+    rafRef.current = requestAnimationFrame(tickRef.current);
     return () => { cancelAnimationFrame(rafRef.current); clearTimeout(resumeTimer.current); };
-  }, [tick]);
+  }, []);
 
   // ── Pause / resume helpers ────────────────────────────────────
   const pause = useCallback(() => { isPaused.current = true; }, []);
@@ -3258,17 +3369,9 @@ const HomePage = memo(({ navigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 w-full flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="w-full lg:w-3/5">
             <div className={`transform transition-all duration-1000 ease-out ${loaded ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-              {/* Badges + Language toggle */}
+              {/* Badges */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8">
                 <MakeInIndiaBadge /><IndiaMartBadge />
-                {/* Language toggle */}
-                <button
-                  onClick={() => setLang(l => l === 'en' ? 'hi' : 'en')}
-                  aria-label={lang === 'en' ? 'Switch to Hindi' : 'Switch to English'}
-                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-black px-4 py-2 rounded-md transition-colors uppercase tracking-widest focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 min-h-[44px]">
-                  <Globe className="w-4 h-4 shrink-0" aria-hidden="true" />
-                  {lang === 'en' ? 'हिन्दी' : 'English'}
-                </button>
               </div>
 
               {/* Hero headline */}
@@ -3289,9 +3392,9 @@ const HomePage = memo(({ navigate }) => {
                   { Icon: CheckCircle2, text: '20+ years in service' },
                   { Icon: Shield, text: 'PMI-certified spares' },
                   { Icon: Clock, text: '24×7 emergency response' },
-                ].map(({ Icon, text }, i) => (
+                ].map(({ Icon: IconComponent, text }, i) => (
                   <div key={i} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
-                    <Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+                    <IconComponent className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
                     <span>{text}</span>
                   </div>
                 ))}
@@ -3336,11 +3439,11 @@ const HomePage = memo(({ navigate }) => {
                 title: '24×7 Emergency',
                 sub: 'Engineers at multiple locations across India. Call us at 2 AM — someone answers.',
               },
-            ].map(({ delay, label, Icon, title, sub }, i) => (
+            ].map(({ delay, label, Icon: IconComponent, title, sub }, i) => (
               <div key={i} className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-10' : i === 2 ? 'ml-3' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
                 <div className="flex justify-between items-start mb-3">
                   <div className="text-blue-300 text-xs font-black uppercase tracking-widest">{label}</div>
-                  <Icon className="w-5 h-5 text-blue-400" aria-hidden="true" />
+                  <IconComponent className="w-5 h-5 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-2xl font-black text-white tracking-tighter mb-2">{title}</div>
                 <div className="text-sm text-slate-400 font-medium leading-relaxed">{sub}</div>
@@ -3383,10 +3486,10 @@ const HomePage = memo(({ navigate }) => {
               { Icon: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
               { Icon: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W.' },
               { Icon: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
-            ].map(({ Icon, stat, label, sub }, i) => (
+            ].map(({ Icon: IconComponent, stat, label, sub }, i) => (
               <div key={i} className="text-center">
                 <div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-                  <Icon className="w-6 h-6 text-blue-400" aria-hidden="true" />
+                  <IconComponent className="w-6 h-6 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">{stat}</div>
                 <div className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-1">{label}</div>
@@ -3426,10 +3529,10 @@ const HomePage = memo(({ navigate }) => {
                 body: 'Multi-location engineers across India. Whether it\'s a scheduled overhaul or a 2 AM trip — we show up.',
                 color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100',
               },
-            ].map(({ Icon, title, body, color, bg, border }, i) => (
+            ].map(({ Icon: IconComponent, title, body, color, bg, border }, i) => (
               <div key={i} className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}>
                 <div className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}>
-                  <Icon className={`w-6 h-6 ${color}`} aria-hidden="true" />
+                  <IconComponent className={`w-6 h-6 ${color}`} aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-2 leading-snug">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{body}</p>
@@ -3846,10 +3949,10 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {values.map(({ Icon, label, text }, i) => (
+            {values.map(({ Icon: IconComponent, label, text }, i) => (
               <div key={i} className="bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-center">
                 <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                  <Icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
+                  <IconComponent className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-3 tracking-tight">{label}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{text}</p>
@@ -4842,9 +4945,14 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
   }, []);
 
   // Scroll-to-top + hero entrance on service change
+  const [prevServiceId, setPrevServiceId] = useState(serviceId);
+  if (serviceId !== prevServiceId) {
+    setPrevServiceId(serviceId);
+    setHeroVisible(false);
+    setScrollY(0);
+  }
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    setHeroVisible(false); setScrollY(0);
     const t = setTimeout(() => setHeroVisible(true), 60);
     return () => clearTimeout(t);
   }, [serviceId]);
@@ -5949,9 +6057,9 @@ const ContactPage = () => {
               { Icon: Shield, text: 'Confidential RFQ handling' },
               { Icon: CheckCircle2, text: 'No obligation consultation' },
               { Icon: Clock, text: '24-hour response (emergency: within the hour)' },
-            ].map(({ Icon, text }, i) => (
+            ].map(({ Icon: IconComponent, text }, i) => (
               <div key={i} className="flex items-center gap-2 text-slate-500 text-sm font-bold">
-                <Icon className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+                <IconComponent className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
                 <span>{text}</span>
               </div>
             ))}
@@ -5963,9 +6071,9 @@ const ContactPage = () => {
               { Icon: Phone, title: 'Direct Lines', content: <div className="space-y-2">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="block text-slate-600 font-bold text-base hover:text-blue-600 transition-colors">{p}</a>)}</div> },
               { Icon: Mail, title: 'Email (RFQs)', content: <div className="space-y-2">{[CONTACT_INFO.email, CONTACT_INFO.infoEmail, CONTACT_INFO.marketingEmail].map(e => <a key={e} href={`mailto:${e}`} className="block text-slate-600 font-bold text-sm hover:text-blue-600 transition-colors break-all">{e}</a>)}</div> },
               { Icon: MapPin, title: 'Facility Address', content: <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-            ].map(({ Icon, title, content }, i) => (
+            ].map(({ Icon: IconComponent, title, content }, i) => (
               <div key={i} className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
-                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><Icon className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><IconComponent className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
                 <div><h3 className="font-black text-slate-900 text-lg mb-2">{title}</h3>{content}</div>
               </div>
             ))}
@@ -6133,6 +6241,40 @@ export default function App() {
       window.removeEventListener('popstate', h);
       window.removeEventListener('pagehide', handlePageHide);
     };
+  }, []);
+
+  // ── GOOGLE TRANSLATE INIT ──
+  useEffect(() => {
+    if (typeof window === 'undefined' || document.getElementById('google-translate-script')) return;
+    
+    // Inject custom CSS to hide Google Translate bar and highlights
+    const style = document.createElement('style');
+    style.innerHTML = `
+      body { top: 0 !important; }
+      .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
+      #google_translate_element { display: none !important; }
+      .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+      .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+    `;
+    document.head.appendChild(style);
+
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,zh-CN,es,fr,ar,ru,pt,de,ja',
+        autoDisplay: false
+      }, 'google_translate_element');
+    };
+
+    const gtScript = document.createElement('script');
+    gtScript.id = 'google-translate-script';
+    gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    gtScript.async = true;
+    document.body.appendChild(gtScript);
+    
+    const gtDiv = document.createElement('div');
+    gtDiv.id = 'google_translate_element';
+    document.body.appendChild(gtDiv);
   }, []);
 
   // ── PERF: Intersection Observer — re-observe after each route change ──
