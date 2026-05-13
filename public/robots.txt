@@ -1,108 +1,49 @@
-# ============================================================
-# robots.txt — Keshav Enterprises (keshaventerprises.in)
-# Updated: May 2026
-# Covers: Traditional search engines + AI crawler rules
-# ============================================================
+# Keshav Enterprises — robots.txt
+# Place this file in /public/robots.txt (or site root)
 
-# ── ALL STANDARD CRAWLERS ────────────────────────────────────
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /private/
-Disallow: /*.json$
-Disallow: /api/
 
-# ── GOOGLE ───────────────────────────────────────────────────
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 2
+# Sitemap reference
+Sitemap: https://keshaventerprises.in/sitemap.xml
 
-# Allows Google to use content for AI Overviews (SGE)
-User-agent: Google-Extended
-Allow: /
+# ── AI / LLM Crawler Support ──
+# llms.txt: Structured content for AI assistants (ChatGPT, Gemini, Claude, Perplexity)
+# See https://llmstxt.org for the standard specification
+# Place llms.txt and llms-full.txt in your site root (/public/)
 
-# ── BING ─────────────────────────────────────────────────────
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 2
-
-# ── OPENAI / CHATGPT ─────────────────────────────────────────
-# OAI-SearchBot = ChatGPT Search citations (ALLOW — sends referral traffic)
-User-agent: OAI-SearchBot
-Allow: /
-
-# ChatGPT-User = real-time browsing by ChatGPT users (ALLOW)
-User-agent: ChatGPT-User
-Allow: /
-
-# GPTBot = OpenAI training crawler (ALLOW — improves brand presence in ChatGPT)
+# Allow all major AI crawlers
 User-agent: GPTBot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
-# ── ANTHROPIC / CLAUDE ───────────────────────────────────────
+User-agent: Google-Extended
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
 User-agent: ClaudeBot
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
-User-agent: anthropic-ai
-Allow: /
-
-# ── PERPLEXITY ───────────────────────────────────────────────
 User-agent: PerplexityBot
 Allow: /
-
-# ── GOOGLE GEMINI / APPLE ────────────────────────────────────
-User-agent: Applebot
-Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 User-agent: Applebot-Extended
 Allow: /
 
-# ── META / FACEBOOK ──────────────────────────────────────────
-User-agent: meta-externalagent
+User-agent: CCBot
 Allow: /
 
-# ── AMAZON ALEXA ─────────────────────────────────────────────
-User-agent: Amazonbot
-Allow: /
+# Crawl-delay for polite crawling
+Crawl-delay: 1
 
-# ── LINKEDIN / TWITTER PREVIEWS ──────────────────────────────
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-# ── WHATSAPP LINK PREVIEW ────────────────────────────────────
-User-agent: WhatsApp
-Allow: /
-
-# ── BLOCK AGGRESSIVE SCRAPERS & BAD BOTS ────────────────────
-# These bots scrape aggressively without providing SEO or AI benefit
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: Diffbot
-Disallow: /
-
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: DotBot
-Disallow: /
-
-User-agent: BLEXBot
-Disallow: /
-
-User-agent: PetalBot
-Disallow: /
-
-# ── SITEMAPS ─────────────────────────────────────────────────
-Sitemap: https://keshaventerprises.in/sitemap.xml
-Sitemap: https://keshaventerprises.in/llms.txt
+# Block common attack/probe paths
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /.env
+Disallow: /admin/

@@ -1772,10 +1772,10 @@ const LOCAL_SCHEMA = {
   },
   areaServed: [
     { '@type': 'Country', 'name': 'India' },
-    { '@type': 'State', 'name': 'Uttar Pradesh' },
-    { '@type': 'State', 'name': 'Punjab' },
-    { '@type': 'State', 'name': 'Haryana' },
-    { '@type': 'State', 'name': 'Maharashtra' }
+    { '@type': 'AdministrativeArea', 'name': 'Uttar Pradesh' },
+    { '@type': 'AdministrativeArea', 'name': 'Punjab' },
+    { '@type': 'AdministrativeArea', 'name': 'Haryana' },
+    { '@type': 'AdministrativeArea', 'name': 'Maharashtra' }
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -1890,12 +1890,12 @@ if (typeof document !== 'undefined') {
   addLink('preconnect', 'https://fonts.gstatic.com', '');
   addLink('dns-prefetch', 'https://api.whatsapp.com');
   addLink('dns-prefetch', 'https://www.indiamart.com');
-  // Preload hero image for LCP
+  // Preload hero image for LCP — WebP for smaller payload
   if (!document.querySelector('link[rel="preload"][as="image"]')) {
     const pl = document.createElement('link');
-    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
+    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.webp';
     pl.setAttribute('fetchpriority', 'high');
-    pl.setAttribute('type', 'image/png');
+    pl.setAttribute('type', 'image/webp');
     document.head.appendChild(pl);
   }
 }
@@ -1941,21 +1941,8 @@ if (typeof document !== 'undefined') {
     cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
     document.head.appendChild(cs);
   }
-  // ── Tawk.to Live Chat (free) ──
-  // To enable: sign up at tawk.to, get your Property ID and Widget ID,
-  // replace the placeholder values below, then remove the early-return condition.
-  // const TAWK_PROPERTY_ID = 'YOUR_PROPERTY_ID';
-  // const TAWK_WIDGET_ID   = 'YOUR_WIDGET_ID';
-  // if (!document.getElementById('tawk-script')) {
-  //   const ts = document.createElement('script');
-  //   ts.id = 'tawk-script'; ts.async = true; ts.charset = 'UTF-8';
-  //   ts.setAttribute('crossorigin', '*');
-  //   ts.src = `https://embed.tawk.to/${TAWK_PROPERTY_ID}/${TAWK_WIDGET_ID}`;
-  //   document.head.appendChild(ts);
-  // }
 }
 
-// ─── SEO HEAD (Accessibility + SEO Fix) ──────────────────────
 // ─── SEO HEAD ─────────────────────────────────────────────────
 // SITE_URL: Update this to your live domain once deployed
 // IMPORTANT: Generate a sitemap.xml at /public/sitemap.xml covering all 105 product
@@ -2002,6 +1989,11 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
       vm.content = 'width=device-width, initial-scale=1, maximum-scale=5';
       document.head.appendChild(vm);
     }
+
+    // ── LLM / AI Crawler Discovery (llms.txt standard) ──
+    // Helps AI assistants (ChatGPT, Gemini, Claude, Perplexity) find structured content
+    sl('help', `${SITE_URL}/llms.txt`, { type: 'text/plain', title: 'LLM-readable site summary' });
+    sl('help', `${SITE_URL}/llms-full.txt`, { type: 'text/plain', title: 'LLM-readable full catalog' });
 
     // ── Open Graph ──
     sm('meta[property="og:title"]', 'property', 'og:title', fullTitle);
@@ -2300,6 +2292,17 @@ const Navbar = memo(({ currentPath, navigate }) => {
       setQuery('');
     }
   }, [isSearchOpen]);
+
+  // AUDIT FIX: Body scroll lock when mobile menu/search is open
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if ((isOpen || isSearchOpen) && window.innerWidth < 1024) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen, isSearchOpen]);
 
   const q = query.toLowerCase().trim();
   // keep ref in sync for the event handler
@@ -2937,7 +2940,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
     ]
   } : null, [product]);
   if (!product) return (
-    <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
+    <main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Product Not Found" />
       <div><Settings className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
         <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Product Not Found</h1>
@@ -2947,7 +2950,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
   );
   const activeImage = product.images?.[activeImg];
   return (
-    <main id="main-content" className="pt-28 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-28 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title={`${product.title} | ${product.category}`} description={`${product.desc} — Keshav Enterprises, Shamli, UP.`} schema={productSchema} canonicalPath={`/product/${product.id}`} pageType="website" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2">
@@ -3359,7 +3362,7 @@ const HomePage = memo(({ navigate }) => {
   };
   const h = heroContent[lang];
   return (
-    <main id="main-content" className="bg-white">
+    <main id="main-content" tabIndex={-1} className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
@@ -3789,7 +3792,7 @@ const AboutPage = ({ navigate }) => {
     { Icon: Users, label: 'Customer Uptime First', text: 'We measure success in plant availability. 24×7 emergency response because shutdowns do not follow business hours.' },
   ];
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white min-h-screen">
       <SEOHead title="About Keshav Enterprises — 20+ Years of Turbine Engineering Excellence"
         description="Keshav Enterprises — 20+ years of industrial turbine engineering, reverse engineering, and OEM-compatible spare parts manufacturing from Shamli, UP, India."
         canonicalPath="/about" pageType="website" />
@@ -4189,7 +4192,7 @@ const BLOG_POSTS = [
 
 // ─── BLOG LIST PAGE ────────────────────────────────────────────
 const BlogPage = ({ navigate }) => (
-  <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead
       title="Engineering Blog — Turbine Maintenance & Industrial Insights"
       description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises." canonicalPath="/blog" pageType="website" />
@@ -4316,7 +4319,7 @@ const BlogPostPage = ({ slug, navigate }) => {
   const others = useMemo(() => post ? BLOG_POSTS.filter(p => p.id !== post.id).slice(0, 2) : [], [post]);
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [slug]);
   if (!post) return (
-    <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
+    <main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Post Not Found" />
       <div>
         <BookOpen className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
@@ -4351,7 +4354,7 @@ const BlogPostPage = ({ slug, navigate }) => {
     }
   };
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title={post.title} description={post.excerpt} canonicalPath={`/blog/${post.slug}`} pageType="article" publishedTime={post.date} />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
@@ -4431,7 +4434,7 @@ const BlogPostPage = ({ slug, navigate }) => {
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = ({ navigate }) => (
-  <main id="main-content" className="pt-24 pb-20 bg-white">
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white">
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
       description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -5008,7 +5011,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
   });
 
   if (!service || !detail) return (
-    <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
       <div className="text-center">
         <h1 className="text-3xl font-black text-slate-900 mb-4">Service Not Found</h1>
         <button onClick={() => navigate('/services')} className="bg-blue-600 text-white px-6 py-3 rounded font-bold hover:bg-blue-500 transition-all">
@@ -5019,7 +5022,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
   );
 
   return (
-    <main id="main-content" className="pt-24 pb-24 bg-white">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-24 bg-white">
       <SEOHead
         title={`${service.title} — Keshav Enterprises`}
         description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
@@ -5456,7 +5459,7 @@ const ProductsPage = ({ navigate }) => {
   }), [activeCategory, searchQuery]);
   const counts = useMemo(() => PRODUCT_CATEGORIES.reduce((a, c) => { a[c] = c === 'All' ? PRODUCTS.length : PRODUCTS.filter(p => p.category === c).length; return a; }, {}), []);
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
         description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`} canonicalPath="/products" pageType="website" />
       <div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
@@ -5734,7 +5737,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [industryId]);
 
   if (!ind || !detail) return (
-    <main id="main-content" className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
+    <main id="main-content" tabIndex={-1} className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
       <div className="text-center">
         <Building2 className="w-20 h-20 text-slate-300 mx-auto mb-6" />
         <h1 className="text-3xl font-black text-slate-900 mb-4">Industry Not Found</h1>
@@ -5745,7 +5748,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 
   const { Icon } = ind;
   return (
-    <main id="main-content" className="bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
       <SEOHead
         title={`${ind.title} | Industrial Solutions — Keshav Enterprises`}
         description={`${ind.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -5919,7 +5922,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
 const IndustriesPage = ({ navigate }) => (
-  <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
       description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -6059,7 +6062,7 @@ const ContactPage = () => {
   };
   const inputClass = (err) => `w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50 border rounded-xl font-medium text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Contact Engineering Team — Request a Technical Quote"
         description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support. Phone: +91 9149229448." canonicalPath="/contact" pageType="website" schema={FAQ_SCHEMA} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -6239,13 +6242,84 @@ const ContactPage = () => {
   );
 };
 
+// ─── ERROR BOUNDARY (Audit Fix: prevents full-page crashes) ──
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+  static getDerivedStateFromError(error) { return { hasError: true, error }; }
+  componentDidCatch(error, errorInfo) {
+    // Log to console; replace with Sentry.captureException(error) when available
+    console.error('[ErrorBoundary]', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main id="main-content" tabIndex={-1} className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4">
+          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
+            <Shield className="w-10 h-10 text-red-500" aria-hidden="true" />
+          </div>
+          <h1 className="text-3xl font-black text-slate-900 mb-3">Something went wrong</h1>
+          <p className="text-slate-500 font-medium text-center max-w-md mb-8">An unexpected error occurred. Please refresh the page or contact our team for assistance.</p>
+          <div className="flex gap-4">
+            <button onClick={() => { this.setState({ hasError: false, error: null }); window.location.hash = '#/'; window.location.reload(); }}
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">
+              Go to Home
+            </button>
+            <a href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent('Hi, I encountered an error on your website.')}`}
+              target="_blank" rel="noopener noreferrer"
+              className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#1ebe5d] transition-all flex items-center gap-2">
+              <MessageCircle className="w-4 h-4" /> WhatsApp Us
+            </a>
+          </div>
+        </main>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// ─── 404 NOT FOUND PAGE (Audit Fix: unknown routes) ──────────
+const NotFoundPage = memo(({ navigate }) => (
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4">
+    <SEOHead title="Page Not Found — 404" description="The page you're looking for doesn't exist. Browse our products and services." canonicalPath="/404" />
+    <div className="text-center max-w-lg">
+      <p className="text-8xl font-black text-blue-600 mb-4">404</p>
+      <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Page Not Found</h1>
+      <p className="text-slate-500 font-medium mb-8">The page you're looking for doesn't exist or has been moved. Let us help you find what you need.</p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onClick={() => navigate('/')}
+          className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2">
+          <ArrowLeft className="w-4 h-4" /> Go Home
+        </button>
+        <button onClick={() => navigate('/products')}
+          className="bg-slate-900 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-md">
+          Browse Products
+        </button>
+        <a href={waMsg('Hi, I couldn\'t find a page on your website. Can you help?')}
+          target="_blank" rel="noopener noreferrer"
+          className="bg-[#25D366] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2">
+          <MessageCircle className="w-4 h-4" /> WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+));
+
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash.replace('#', '') || '/');
+  // AUDIT FIX: aria-live region for screen reader route announcements
+  const [routeAnnouncement, setRouteAnnouncement] = useState('');
 
   // Stable window listeners — registered once
   useEffect(() => {
-    const h = () => setCurrentPath(window.location.hash.replace('#', '') || '/');
+    const h = () => {
+      const newPath = window.location.hash.replace('#', '') || '/';
+      setCurrentPath(newPath);
+      // AUDIT FIX: scroll to top on back/forward navigation
+      window.scrollTo({ top: 0 });
+      // AUDIT FIX: move focus to main content for screen readers
+      setTimeout(() => document.getElementById('main-content')?.focus(), 100);
+    };
     window.addEventListener('popstate', h);
 
     // ── PERF: Back/Forward Cache (bfcache) fix ──
@@ -6317,12 +6391,17 @@ export default function App() {
   const navigate = useCallback((path) => {
     window.history.pushState(null, '', `#${path}`);
     setCurrentPath(path);
-    // scrollTo does not need rAF wrapping — it is already async and safe to call synchronously
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // AUDIT FIX: move focus to main content after navigation for a11y
+    setTimeout(() => document.getElementById('main-content')?.focus(), 150);
+    // AUDIT FIX: announce route change to screen readers
+    const pageName = path === '/' ? 'Home' : path.replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
+    setRouteAnnouncement(`Navigated to ${pageName} page`);
   }, []);
 
-  // PERF: useMemo prevents re-creating page component on every render
-  const page = useMemo(() => {
+  // Route resolution — AUDIT FIX: removed useMemo wrapper (JSX inside memo is an anti-pattern),
+  // added NotFoundPage for unknown routes instead of falling through to HomePage
+  const renderPage = () => {
     if (currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate} />;
     if (currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/', '')} navigate={navigate} />;
     if (currentPath.startsWith('/industry/')) return <IndustryDetailPage industryId={currentPath.split('/')[2]} navigate={navigate} />;
@@ -6336,17 +6415,23 @@ export default function App() {
       case '/products': return <ProductsPage navigate={navigate} />;
       case '/industries': return <IndustriesPage navigate={navigate} />;
       case '/contact': return <ContactPage />;
-      default: return <HomePage navigate={navigate} />;
+      default: return <NotFoundPage navigate={navigate} />;
     }
-  }, [currentPath, navigate]);
+  };
 
   return (
     <div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
+      {/* AUDIT FIX: aria-live region for screen reader route change announcements */}
+      <div className="sr-only" aria-live="assertive" aria-atomic="true" role="status">
+        {routeAnnouncement}
+      </div>
       <Navbar currentPath={currentPath} navigate={navigate} />
       <div className="flex-1 flex flex-col">
-        <Suspense fallback={<div className="flex-1 flex items-center justify-center min-h-[60vh]"><span className="sr-only">Loading…</span></div>}>
-          {page}
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<div className="flex-1 flex items-center justify-center min-h-[60vh]"><span className="sr-only">Loading…</span></div>}>
+            {renderPage()}
+          </Suspense>
+        </ErrorBoundary>
       </div>
       <DigitalProfilesStrip />
       <Footer navigate={navigate} />
