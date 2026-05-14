@@ -1533,9 +1533,229 @@ const INDUSTRIES = [
   },
 ];
 
-// ─── GLOBAL CSS ──────────────────────────────────────────────────────────
-// PERF: All global CSS has been moved to index.css (loaded statically via main.jsx).
-// This eliminates runtime style injection and lets the browser process CSS in parallel with JS.
+// ─── GLOBAL CSS (injected once, never re-created) ────────────────────────
+const MARQUEE_CSS = `
+  /* ── Animations ── */
+  @keyframes ke-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .ke-marquee{animation:ke-marquee 80s linear infinite;display:flex;width:max-content;will-change:transform;contain:layout style}
+  .ke-marquee-slow{animation:ke-marquee 160s linear infinite;display:flex;width:max-content;will-change:transform;contain:layout style}
+  .ke-marquee:hover,.ke-marquee-slow:hover{animation-play-state:paused}
+  .scrollbar-hide::-webkit-scrollbar{display:none}
+  .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+  .lazy-section{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
+  .lazy-section.visible{opacity:1;transform:none}
+
+  @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+  .skeleton-shimmer{
+    position:absolute;inset:0;z-index:0;
+    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
+    background-size:200% 100%;
+    animation:ke-shimmer 1.25s linear infinite;
+  }
+  /* Enhanced skeleton with product icon placeholder */
+  .skeleton-product{
+    position:absolute;inset:0;z-index:1;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+  }
+  .skeleton-product::before{
+    content:'';width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
+    animation:ke-shimmer 1.25s linear infinite;
+    background-size:200% 100%;
+  }
+  .skeleton-product::after{
+    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
+    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
+    background-size:200% 100%;
+    animation:ke-shimmer 1.25s linear infinite;
+  }
+  /* Product image container gradient for contrast */
+  .product-img-bg{
+    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
+  }
+  .media-img{opacity:0;transition:opacity .35s ease}
+  .media-img.is-loaded{opacity:1}
+
+  /* font-display:swap prevents invisible-text Lighthouse warning */
+  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed')}
+  @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
+
+  /* PERF: content-visibility on below-fold sections */
+  .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
+
+  /* Prevent flow images from overflowing; exclude absolute/fixed cover images so h-full is preserved */
+  img:not([class*="absolute"]):not([class*="fixed"]){max-width:100%;height:auto;display:block}
+  /* Absolute/fixed cover images: ensure object-cover fills parent correctly */
+  img.absolute,img.fixed{display:block;}
+
+  /* GPU compositing for marquees */
+  .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
+
+  /* Paint containment */
+  section:not(.hero-section){contain:paint}
+
+  /* ─── HERO MOBILE ─── */
+  .hero-mobile-vignette{display:none}
+  .hero-bg-img{opacity:0.90;object-position:center center}
+  @media(max-width:767px){
+    .hero-section{
+      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
+      background-size:cover;
+      background-position:center center;
+      background-repeat:no-repeat;
+    }
+    .hero-bg-layer{display:none!important}
+    .hero-desktop-grad{display:none!important}
+    .hero-mobile-vignette{display:none!important}
+    .hero-glow-orb{display:none!important}
+    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
+    .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+  }
+
+  /* ─── MOBILE TYPOGRAPHY BOOST ─── */
+  @media(max-width:640px){
+    .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
+    .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
+    p{font-size:max(15px,1em);line-height:1.65}
+    .hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+    .glass-hero p{color:#d0e4f5!important}
+    .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
+  }
+
+  /* ─── MOBILE HEADING ALIGNMENT ─── */
+  @media(max-width:767px){
+    section h1,section h2,section h3,
+    main>div>h1,main>div>h2{text-align:center}
+    .section-divider{margin-left:auto!important;margin-right:auto!important}
+    nav[aria-label="Breadcrumb"] *,
+    label,input,select,textarea,
+    footer h3,footer li,footer p,
+    address *,
+    [role="tabpanel"] *,
+    .keep-left,
+    .keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
+    article .bg-white h2,article .bg-white p{text-align:left!important}
+    .md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
+    .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
+  }
+
+  /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
+  .product-img-wrap{aspect-ratio:1/1;contain:layout style;overflow:hidden}
+  .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
+  .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
+
+  /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
+  /* Social cards collapse gracefully on small screens */
+  .social-card{
+    min-width:0!important;
+    width:100%;
+    max-width:100%;
+    flex-shrink:1;
+  }
+  @media(max-width:640px){
+    /* Social card grid: 1 column on phones, 2 on wider phones */
+    .social-cards-grid{
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:0.75rem;
+      width:100%;
+    }
+    .social-card{
+      min-width:0!important;
+      padding:0.75rem!important;
+      gap:0.625rem!important;
+    }
+    .social-card .social-handle{font-size:13px!important}
+    .social-card .social-sub{display:none}
+  }
+  @media(max-width:380px){
+    .social-cards-grid{grid-template-columns:1fr}
+  }
+
+  /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
+  .dir-card{
+    min-width:0!important;
+    flex-shrink:1;
+  }
+  @media(max-width:640px){
+    .dir-cards-grid{
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:0.625rem;
+      width:100%;
+    }
+    .dir-card{
+      padding:0.75rem 0.875rem!important;
+      gap:0.5rem!important;
+      min-width:0!important;
+    }
+    .dir-card .dir-badge{font-size:10px!important}
+  }
+  @media(max-width:380px){
+    .dir-cards-grid{grid-template-columns:1fr}
+  }
+
+  /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
+  @media(max-width:640px){
+    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
+    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
+  }
+
+  /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
+  @media(max-width:480px){
+    .fp-card{width:13rem!important}
+  }
+
+  /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
+  @media(max-width:640px){
+    .sd-step-gap{gap:0.875rem!important}
+    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
+  }
+
+  /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
+  .email-link{
+    word-break:break-all;
+    overflow-wrap:anywhere;
+    min-width:0;
+  }
+
+  /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
+  @media(max-width:767px){
+    .timeline-connector{left:1rem!important}
+    .timeline-card{margin-left:3rem!important;margin-right:0!important}
+  }
+
+  /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
+  @media(max-width:480px){
+    .ind-oem-chips{gap:0.375rem!important}
+    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
+  }
+
+  /* ─── TAP TARGETS + SAFE AREA ─── */
+  @media(max-width:767px){
+    a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
+    .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
+  }
+
+  /* ─── REDUCED MOTION ─── */
+  @media(prefers-reduced-motion:reduce){
+    .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
+    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
+    *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+  }
+
+  /* ─── REUSABLE BUTTON UTILITIES ─── */
+  .btn-primary{background:#2563eb;color:#fff;font-weight:900;border-radius:0.75rem;transition:background 0.2s,transform 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem}
+  .btn-primary:hover{background:#3b82f6;transform:translateY(-2px)}
+  .btn-wa{background:#25D366;color:#fff;font-weight:900;border-radius:0.75rem;transition:background 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem}
+  .btn-wa:hover{background:#1ebe5d}
+  .card-hover{transition:box-shadow 0.3s,transform 0.3s,border-color 0.3s}
+  .card-hover:hover{box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transform:translateY(-4px)}
+
+  /* ─── GLOBAL OVERFLOW GUARD ─── */
+  html,body{overflow-x:hidden;max-width:100vw}
+  *{box-sizing:border-box}
+`;
 
 // ─── LOCAL BUSINESS JSON-LD SCHEMA ────────────────────────────
 const LOCAL_SCHEMA = {
@@ -1675,8 +1895,31 @@ const getCategoryIcon = (category) => {
   }
 };
 
-// PERF: preconnect, dns-prefetch, and hero preload are already declared in index.html.
-// Removed duplicate JS-based injection to avoid double resource hints.
+// PERF: preconnect and dns-prefetch injected once at module level —
+// avoids re-querying/creating DOM nodes on every page transition.
+if (typeof document !== 'undefined') {
+  const addLink = (rel, href, crossOrigin) => {
+    const sel = `link[rel="${rel}"][href="${href}"]`;
+    if (!document.querySelector(sel)) {
+      const el = document.createElement('link');
+      el.rel = rel; el.href = href;
+      if (crossOrigin !== undefined) el.crossOrigin = crossOrigin;
+      document.head.appendChild(el);
+    }
+  };
+  addLink('preconnect', 'https://fonts.googleapis.com');
+  addLink('preconnect', 'https://fonts.gstatic.com', '');
+  addLink('dns-prefetch', 'https://api.whatsapp.com');
+  addLink('dns-prefetch', 'https://www.indiamart.com');
+  // Preload hero image for LCP — WebP for smaller payload
+  if (!document.querySelector('link[rel="preload"][as="image"]')) {
+    const pl = document.createElement('link');
+    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.webp';
+    pl.setAttribute('fetchpriority', 'high');
+    pl.setAttribute('type', 'image/webp');
+    document.head.appendChild(pl);
+  }
+}
 
 // ─── ANALYTICS: GA4 + Microsoft Clarity ──────────────────────
 // HOW TO USE:
@@ -1829,7 +2072,7 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
             loading="eager" decoding="async" fetchPriority="high"
             className="w-full h-full object-contain group-hover:scale-105 ..."
             onError={() => setImgErr(true)} />
-          : <div className="w-full h-full rounded-xl bg-linear-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30">
+          : <div className="w-full h-full rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30">
             <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-white" aria-hidden="true" />
           </div>
         }
@@ -1962,16 +2205,14 @@ const LANGUAGES = [
 
 const LanguageSwitcher = memo(({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState(() => {
-    if (typeof document !== 'undefined') {
-      const match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
-      if (match) return match[1];
-    }
-    return 'en';
-  });
+  const [currentLang, setCurrentLang] = useState('en');
   const ref = useRef(null);
 
   useEffect(() => {
+    const match = document.cookie.match(/googtrans=\/en\/([^;]+)/);
+    if (match) {
+      setCurrentLang(match[1]);
+    }
     const handleClickOutside = (event) => {
       if (ref.current && !ref.current.contains(event.target)) {
         setIsOpen(false);
@@ -1981,16 +2222,13 @@ const LanguageSwitcher = memo(({ scrolled }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const changeLanguage = useCallback((langCode) => {
+  const changeLanguage = (langCode) => {
     setCurrentLang(langCode);
     setIsOpen(false);
-
-    requestAnimationFrame(() => {
-      document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-      document.cookie = `googtrans=/en/${langCode}; path=/;`;
-      window.location.reload();
-    });
-  }, []);
+    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
+    document.cookie = `googtrans=/en/${langCode}; path=/;`; // for localhost and IP addresses
+    window.location.reload();
+  };
 
   const activeLang = LANGUAGES.find(l => l.code === currentLang) || LANGUAGES[0];
 
@@ -2006,7 +2244,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
         <svg className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
+        <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-[250]">
           <div className="max-h-80 overflow-y-auto py-2 scrollbar-hide">
             {LANGUAGES.map(lang => (
               <button
@@ -2035,7 +2273,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
   const [isVisible, setIsVisible] = useState(true);
   const menuRef = useRef(null);
   const searchInputRef = useRef(null);
+  // PERF: ref mirrors query so outside-click handler reads current value without
+  // needing query in its dependency array (which would re-register on every keystroke)
   const queryRef = useRef('');
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     let scrollTimeout;
@@ -2067,11 +2308,12 @@ const Navbar = memo(({ currentPath, navigate }) => {
   useEffect(() => {
     if (isSearchOpen && window.innerWidth >= 1024) {
       setTimeout(() => searchInputRef.current?.focus(), 100);
+    } else if (!isSearchOpen) {
+      setQuery('');
     }
-    return () => { if (!isSearchOpen) { queryRef.current = ''; setQuery(''); } };
   }, [isSearchOpen]);
 
-  // Body scroll lock when mobile menu/search is open
+  // AUDIT FIX: Body scroll lock when mobile menu/search is open
   useEffect(() => {
     if (typeof document === 'undefined') return;
     if ((isOpen || isSearchOpen) && window.innerWidth < 1024) {
@@ -2124,7 +2366,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
     <>
     <nav ref={menuRef} role="navigation" aria-label="Main navigation"
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg py-2' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10 py-3'}`}>
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-100 font-bold">Skip to main content</a>
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold">Skip to main content</a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <BrandLogo scrolled={scrolled} navigate={navigate} />
@@ -2163,14 +2405,14 @@ const Navbar = memo(({ currentPath, navigate }) => {
                 <button
                   onClick={() => { if (isSearchOpen) { setIsSearchOpen(false); setQuery(''); } else { setIsSearchOpen(true); } }}
                   aria-label="Search"
-                  className={`p-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+                  className={`p-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60]
                     ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}
                     ${isSearchOpen ? 'ml-1' : ''}`}
                 >
                   <Search className="w-4.5 h-4.5" aria-hidden="true" style={{width:'18px',height:'18px'}} />
                 </button>
                 {isSearchOpen && query && (
-                  <div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
+                  <div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
                     <div className="max-h-[60vh] overflow-y-auto p-2">
                       {searchResults.length === 0 ? (
                         <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
@@ -2318,10 +2560,10 @@ const Footer = memo(({ navigate }) => (
   <footer className="bg-slate-950 text-slate-400 font-sans border-t-4 border-blue-600" role="contentinfo">
 
     {/* Top accent line */}
-    <div className="h-0.5 w-full bg-blue-500" aria-hidden="true" />
+    <div className="h-[2px] w-full bg-blue-500" aria-hidden="true" />
 
     {/* ── Pre-footer CTA band ── */}
-    <div className="bg-linear-to-r from-slate-950 via-blue-900 to-slate-950 border-b border-blue-900/50 relative overflow-hidden">
+    <div className="bg-gradient-to-r from-slate-950 via-blue-900 to-slate-950 border-b border-blue-900/50 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-30 pointer-events-none" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
@@ -2362,15 +2604,15 @@ const Footer = memo(({ navigate }) => (
           {/* Credential chips */}
           <div className="flex flex-col gap-4 mb-8">
             {[
-              { imgSrc: 'msme-logo.png', Ic: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
-              { imgSrc: 'indiamart-logo.png', Ic: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
-              { imgSrc: 'make-in-india.png', Ic: Globe, iconColor: 'text-cyan-400', title: 'Make In India', sub: 'Manufactured in India' },
-            ].map(({ imgSrc, Ic, iconColor, title, sub }) => (
+              { imgSrc: 'msme-logo.png', Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
+              { imgSrc: 'indiamart-logo.png', Icon: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+              { imgSrc: 'make-in-india.png', Icon: Globe, iconColor: 'text-cyan-400', title: 'Make In India', sub: 'Manufactured in India' },
+            ].map(({ imgSrc, Icon: IconComponent, iconColor, title, sub }) => (
               <div key={title} className="flex items-center gap-5 bg-slate-900 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2">
                 <div className="w-14 h-14 shrink-0 flex items-center justify-center relative bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
                   <img src={imgSrc} alt={title} className="w-full h-full object-contain"
                     onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'block'; }} />
-                  <Ic className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
+                  <IconComponent className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-white font-bold text-sm uppercase tracking-wider mb-1">{title}</p>
@@ -2746,7 +2988,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
           <span aria-hidden="true" className="mx-1">/</span>
           <button onClick={() => navigate('/products')} className="hover:text-blue-600 transition-colors text-slate-400 focus:outline-none focus-visible:underline">{product.category}</button>
           <span aria-hidden="true" className="mx-1">/</span>
-          <span className="text-slate-800 truncate max-w-50 md:max-w-full" aria-current="page">{product.title}</span>
+          <span className="text-slate-800 truncate max-w-[200px] md:max-w-full" aria-current="page">{product.title}</span>
         </nav>
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-200 mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-12">
@@ -2785,7 +3027,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
                 </div>
               )}
             </div>
-            <div className="lg:col-span-7 p-8 lg:p-12 flex flex-col bg-linear-to-br from-white to-slate-50/50">
+            <div className="lg:col-span-7 p-8 lg:p-12 flex flex-col bg-gradient-to-br from-white to-slate-50/50">
               <div className="mb-5"><span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-4 py-2 uppercase tracking-widest rounded-md shadow-sm">{product.category}</span></div>
               <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-[1.1] tracking-tight">{product.title}</h1>
               <p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">{product.desc}</p>
@@ -2920,27 +3162,23 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
   // to avoid triggering 60 React re-renders per second from the rAF loop.
   const frameCount = useRef(0);
   const tickRef = useRef();
-  // PERF: keep tickRef.current in sync via effect to avoid
-  // "cannot update ref during render" eslint warning
-  useEffect(() => {
-    tickRef.current = () => {
-      const el = trackRef.current;
-      if (!el) { rafRef.current = requestAnimationFrame(tickRef.current); return; }
-      if (!isPaused.current) {
-        el.scrollLeft += SPEED;
-        // seamless reset: when we've scrolled past the first copy, snap back
-        if (el.scrollLeft >= halfW) el.scrollLeft -= halfW;
-      }
-      // update arrow visibility only every 12 frames (~5 updates/s) to avoid
-      // calling setState 60 times/s which forces 60 full React re-renders/s
-      frameCount.current = (frameCount.current + 1) % 12;
-      if (frameCount.current === 0) {
-        setCanLeft(el.scrollLeft > 4);
-        setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
-      }
-      rafRef.current = requestAnimationFrame(tickRef.current);
-    };
-  }, [halfW]);
+  tickRef.current = () => {
+    const el = trackRef.current;
+    if (!el) { rafRef.current = requestAnimationFrame(tickRef.current); return; }
+    if (!isPaused.current) {
+      el.scrollLeft += SPEED;
+      // seamless reset: when we've scrolled past the first copy, snap back
+      if (el.scrollLeft >= halfW) el.scrollLeft -= halfW;
+    }
+    // update arrow visibility only every 12 frames (~5 updates/s) to avoid
+    // calling setState 60 times/s which forces 60 full React re-renders/s
+    frameCount.current = (frameCount.current + 1) % 12;
+    if (frameCount.current === 0) {
+      setCanLeft(el.scrollLeft > 4);
+      setCanRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    }
+    rafRef.current = requestAnimationFrame(tickRef.current);
+  };
 
   useEffect(() => {
     rafRef.current = requestAnimationFrame(tickRef.current);
@@ -3060,8 +3298,8 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
       {/* ── Track ── */}
       <div className="relative">
         {/* Edge fade-out gradients */}
-        <div className="absolute left-0 top-0 w-16 md:w-28 h-full bg-linear-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 w-16 md:w-28 h-full bg-linear-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 w-16 md:w-28 h-full bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 w-16 md:w-28 h-full bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
 
         {/* Scrollable track — overflow hidden on section, auto here lets JS control scrollLeft */}
         <div
@@ -3125,7 +3363,14 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 });
 
 // ─── HOME PAGE ────────────────────────────────────────────────
-// PERF: Global CSS now loaded statically via index.css (see main.jsx import).
+// PERF: inject global CSS once at module parse time — avoids re-injecting
+// on every HomePage mount and eliminates the <style> element inside JSX.
+if (typeof document !== 'undefined' && !document.getElementById('ke-global-css')) {
+  const styleEl = document.createElement('style');
+  styleEl.id = 'ke-global-css';
+  styleEl.textContent = MARQUEE_CSS;
+  document.head.appendChild(styleEl);
+}
 const FEATURED_PRODUCTS = (() => {
   const shuffled = [...PRODUCTS];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -3138,18 +3383,19 @@ const FEATURED_PRODUCTS = (() => {
 const HomePage = memo(({ navigate }) => {
   const [loaded, setLoaded] = useState(false);
   const [heroErr, setHeroErr] = useState(false);
-  const lang = 'en';
+  const [lang, setLang] = useState('en'); // 'en' | 'hi'
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 100); return () => clearTimeout(t); }, []);
+  const featuredProducts = FEATURED_PRODUCTS;
 
   const heroContent = {
     en: {
-      headline: <>Precision Engineering for<br /><span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">Maximum Uptime.</span></>,
+      headline: <>Precision Engineering for<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">Maximum Uptime.</span></>,
       sub: 'Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. Every overhaul, spare, and service comes with documentation you can take to management — on time, every time.',
       cta1: 'Request a Technical Quote',
       cta2: 'Emergency Breakdown',
     },
     hi: {
-      headline: <>अधिकतम अपटाइम के लिए<br /><span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">प्रेसिशन इंजीनियरिंग।</span></>,
+      headline: <>अधिकतम अपटाइम के लिए<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">प्रेसिशन इंजीनियरिंग।</span></>,
       sub: 'Triveni, Siemens, BHEL सहित 10 OEM ब्रांड के पूर्व-इंजीनियर। हर ओवरहॉल, स्पेयर और सर्विस के साथ पूरी डॉक्युमेंटेशन — समय पर, हर बार।',
       cta1: 'तकनीकी कोटेशन मांगें',
       cta2: 'आपातकालीन ब्रेकडाउन',
@@ -3171,10 +3417,10 @@ const HomePage = memo(({ navigate }) => {
           <div className="hero-mobile-vignette absolute inset-0" style={{ background: 'linear-gradient(to bottom,rgba(10,25,47,0.55) 0%,rgba(10,25,47,0.10) 25%,rgba(10,25,47,0.10) 65%,rgba(10,25,47,0.80) 100%)' }}/>
 
           {/* Desktop: left-to-right fade for text panel readability */}
-          <div className="hero-desktop-grad absolute inset-0 bg-linear-to-r from-[#0A192F]/90 via-[#0A192F]/55 to-[#0A192F]/10" />
+          <div className="hero-desktop-grad absolute inset-0 bg-gradient-to-r from-[#0A192F]/90 via-[#0A192F]/55 to-[#0A192F]/10" />
 
           {/* Bottom ground — both viewports */}
-          <div className="hero-bottom-overlay absolute inset-0 bg-linear-to-t from-[#0A192F]/70 via-transparent to-transparent z-10" />
+          <div className="hero-bottom-overlay absolute inset-0 bg-gradient-to-t from-[#0A192F]/70 via-transparent to-transparent z-10" />
 
           {/* Glow orbs — desktop only */}
           <div className="hero-glow-orb absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[128px]" />
@@ -3203,12 +3449,12 @@ const HomePage = memo(({ navigate }) => {
               {/* Micro trust-proof strip — reduces fear of contacting an unknown vendor */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
                 {[
-                  { Ic: CheckCircle2, text: '20+ years in service' },
-                  { Ic: Shield, text: 'PMI-certified spares' },
-                  { Ic: Clock, text: '24×7 emergency response' },
-                ].map(({ Ic, text }, i) => (
+                  { Icon: CheckCircle2, text: '20+ years in service' },
+                  { Icon: Shield, text: 'PMI-certified spares' },
+                  { Icon: Clock, text: '24×7 emergency response' },
+                ].map(({ Icon: IconComponent, text }, i) => (
                   <div key={i} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
-                    <Ic className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+                    <IconComponent className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
                     <span>{text}</span>
                   </div>
                 ))}
@@ -3217,12 +3463,12 @@ const HomePage = memo(({ navigate }) => {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start">
                 <button onClick={() => navigate('/contact')}
-                  className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13">
+                  className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[52px]">
                   {h.cta1} <ArrowRight className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform" aria-hidden="true" />
                 </button>
                 <a href={waMsg('Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.')}
                   target="_blank" rel="noopener noreferrer"
-                  className="bg-white/5 text-white border border-white/20 px-8 py-4 md:py-5 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center text-lg backdrop-blur-md hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-13">
+                  className="bg-white/5 text-white border border-white/20 px-8 py-4 md:py-5 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center text-lg backdrop-blur-md hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-[52px]">
                   <LifeBuoy className="mr-3 w-6 h-6 text-cyan-400 shrink-0" aria-hidden="true" /> {h.cta2}
                 </a>
               </div>
@@ -3235,29 +3481,29 @@ const HomePage = memo(({ navigate }) => {
               {
                 delay: 'delay-300',
                 label: 'No Learning Curve',
-                Ic: Award,
+                Icon: Award,
                 title: 'Ex-OEM Engineers',
                 sub: 'Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.',
               },
               {
                 delay: 'delay-500',
                 label: 'Every Job Documented',
-                Ic: CheckCircle2,
+                Icon: CheckCircle2,
                 title: 'Report on Delivery',
                 sub: 'PMI certs, balancing reports, alignment records, condition reports — handed over at job completion.',
               },
               {
                 delay: 'delay-700',
                 label: 'When Minutes Matter',
-                Ic: PhoneCall,
+                Icon: PhoneCall,
                 title: '24×7 Emergency',
                 sub: 'Engineers at multiple locations across India. Call us at 2 AM — someone answers.',
               },
-            ].map(({ delay, label, Ic, title, sub }, i) => (
-              <div key={i} className={`bg-linear-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-10' : i === 2 ? 'ml-3' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
+            ].map(({ delay, label, Icon: IconComponent, title, sub }, i) => (
+              <div key={i} className={`bg-gradient-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-10' : i === 2 ? 'ml-3' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
                 <div className="flex justify-between items-start mb-3">
                   <div className="text-blue-300 text-xs font-black uppercase tracking-widest">{label}</div>
-                  <Ic className="w-5 h-5 text-blue-400" aria-hidden="true" />
+                  <IconComponent className="w-5 h-5 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-2xl font-black text-white tracking-tighter mb-2">{title}</div>
                 <div className="text-sm text-slate-400 font-medium leading-relaxed">{sub}</div>
@@ -3267,13 +3513,13 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* OEM Brands */}
-      <section className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden lazy-section cv-auto" aria-label="OEM-compatible brands">
+      <section className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden lazy-section" aria-label="OEM-compatible brands">
         <div className="max-w-7xl mx-auto px-4 mb-8">
           <p className="text-center text-sm font-black text-slate-600 uppercase tracking-widest">OEM-Compatible &amp; Trusted By Industry Leaders</p>
         </div>
         <div className="relative w-full overflow-hidden flex items-center" aria-hidden="true">
-          <div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
           <div className="ke-marquee gap-8 md:gap-16 px-4">
             {[...OEMS, ...OEMS].map((oem, i) => (
               <div key={i} className="flex items-center justify-center shrink-0 w-40 md:w-56 h-20 p-2">
@@ -3291,19 +3537,19 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* Stats */}
-      <section className="bg-slate-900 py-12 md:py-14 border-b border-slate-800 lazy-section cv-auto" aria-labelledby="stats-heading">
+      <section className="bg-slate-900 py-12 md:py-14 border-b border-slate-800 lazy-section" aria-labelledby="stats-heading">
         <h2 id="stats-heading" className="sr-only">Company statistics</h2>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
-              { Ic: Clock, stat: '20+', label: 'Years Experience', sub: 'In turbine engineering' },
-              { Ic: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
-              { Ic: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W.' },
-              { Ic: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
-            ].map(({ Ic, stat, label, sub }, i) => (
+              { Icon: Clock, stat: '20+', label: 'Years Experience', sub: 'In turbine engineering' },
+              { Icon: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
+              { Icon: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W.' },
+              { Icon: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
+            ].map(({ Icon: IconComponent, stat, label, sub }, i) => (
               <div key={i} className="text-center">
                 <div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-                  <Ic className="w-6 h-6 text-blue-400" aria-hidden="true" />
+                  <IconComponent className="w-6 h-6 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">{stat}</div>
                 <div className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-1">{label}</div>
@@ -3314,39 +3560,39 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
-      <section className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto" aria-labelledby="why-us-heading">
+      <section className="bg-white py-14 border-b border-slate-100 lazy-section" aria-labelledby="why-us-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p id="why-us-heading" className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-10">Why Engineers &amp; Plant Managers Choose Keshav Enterprises</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                Ic: Award,
+                Icon: Award,
                 title: 'Same expertise as your OEM',
                 body: 'Our engineers were trained inside Triveni, Siemens, BHEL, and Belliss. No learning curve on your machine.',
                 color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100',
               },
               {
-                Ic: CheckCircle2,
+                Icon: CheckCircle2,
                 title: 'Documentation at handover',
                 body: 'PMI certificates, balancing reports, condition reports, and ISO cleanliness certification — delivered with every job.',
                 color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100',
               },
               {
-                Ic: Clock,
+                Icon: Clock,
                 title: 'Faster than OEM sourcing',
                 body: 'OEM spares take 12–26 weeks. We reverse-engineer, manufacture, and ship certified components in a fraction of the time.',
                 color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100',
               },
               {
-                Ic: PhoneCall,
+                Icon: PhoneCall,
                 title: '24×7 — someone always answers',
                 body: 'Multi-location engineers across India. Whether it\'s a scheduled overhaul or a 2 AM trip — we show up.',
                 color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100',
               },
-            ].map(({ Ic, title, body, color, bg, border }, i) => (
+            ].map(({ Icon: IconComponent, title, body, color, bg, border }, i) => (
               <div key={i} className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}>
                 <div className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}>
-                  <Ic className={`w-6 h-6 ${color}`} aria-hidden="true" />
+                  <IconComponent className={`w-6 h-6 ${color}`} aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-2 leading-snug">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{body}</p>
@@ -3357,7 +3603,7 @@ const HomePage = memo(({ navigate }) => {
       </section>
 
       {/* ── Featured Products Strip — rAF auto-scroll + touch drag + nav arrows ── */}
-      <FeaturedProductsStrip products={FEATURED_PRODUCTS} navigate={navigate} />
+      <FeaturedProductsStrip products={featuredProducts} navigate={navigate} />
       {/* Services Preview */}
       <section className="py-24 md:py-32 bg-white border-t border-slate-200 cv-auto lazy-section" aria-labelledby="services-preview-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -3506,7 +3752,7 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
-      <section className="bg-[#0A192F] py-20 lazy-section cv-auto" aria-labelledby="cta-heading">
+      <section className="bg-[#0A192F] py-20 lazy-section" aria-labelledby="cta-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 id="cta-heading" className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">How Can We Help You Today?</h2>
@@ -3581,10 +3827,10 @@ const AboutPage = ({ navigate }) => {
     { year: '2026', title: 'Pan-India Reach', desc: 'Today serving power, sugar, paper, oil & gas, petrochemical, and agro industries across India with 24×7 emergency engineering support.' },
   ];
   const values = [
-    { Ic: Shield, label: 'Engineering Integrity', text: 'Every component, every clearance, every dimension documented and verified. No shortcuts on safety-critical rotating equipment.' },
-    { Ic: Target, label: 'OEM-Grade Standards', text: 'Ex-OEM engineers from Triveni, Siemens, BHEL, and ABB delivering maintenance at the same standard as the original manufacturer.' },
-    { Ic: Zap, label: 'Innovation in Reverse Engineering', text: '3D scanning and PMI testing give clients access to obsolete spares without 12–18 month OEM lead times.' },
-    { Ic: Users, label: 'Customer Uptime First', text: 'We measure success in plant availability. 24×7 emergency response because shutdowns do not follow business hours.' },
+    { Icon: Shield, label: 'Engineering Integrity', text: 'Every component, every clearance, every dimension documented and verified. No shortcuts on safety-critical rotating equipment.' },
+    { Icon: Target, label: 'OEM-Grade Standards', text: 'Ex-OEM engineers from Triveni, Siemens, BHEL, and ABB delivering maintenance at the same standard as the original manufacturer.' },
+    { Icon: Zap, label: 'Innovation in Reverse Engineering', text: '3D scanning and PMI testing give clients access to obsolete spares without 12–18 month OEM lead times.' },
+    { Icon: Users, label: 'Customer Uptime First', text: 'We measure success in plant availability. 24×7 emergency response because shutdowns do not follow business hours.' },
   ];
   return (
     <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white min-h-screen">
@@ -3612,8 +3858,8 @@ const AboutPage = ({ navigate }) => {
         />
 
         {/* Gradient overlays — left side darker for text legibility, right opens up */}
-        <div className="absolute inset-0 bg-linear-to-r from-[#0A192F]/92 via-[#0A192F]/60 to-[#0A192F]/25" />
-        <div className="absolute inset-0 bg-linear-to-t from-[#0A192F]/80 via-transparent to-[#0A192F]/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/92 via-[#0A192F]/60 to-[#0A192F]/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/80 via-transparent to-[#0A192F]/40" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-24 lg:py-32">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -3622,9 +3868,9 @@ const AboutPage = ({ navigate }) => {
                 <div className="w-8 h-0.5 bg-blue-400 rounded-full" />
                 <span className="eyebrow-label text-blue-400 font-black text-xs uppercase tracking-[0.25em]">Our Story</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-black text-white leading-none tracking-tight mb-6">
+              <h1 className="text-4xl md:text-6xl font-black text-white leading-[1.0] tracking-tight mb-6">
                 Two Decades of<br />
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">Precision Engineering</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">Precision Engineering</span>
               </h1>
               <div className="section-divider w-20 h-0.5 bg-blue-500 mb-8 rounded-full" />
               <div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 border-l-4 border-l-blue-500 px-5 py-4 rounded-r-2xl mb-7">
@@ -3642,11 +3888,11 @@ const AboutPage = ({ navigate }) => {
               </div>
               <div className="flex flex-wrap gap-3">
                 <button onClick={() => navigate('/services')}
-                  className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center gap-2 group shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 min-h-11">
+                  className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center gap-2 group shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 min-h-[44px]">
                   Our Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                 </button>
                 <button onClick={() => navigate('/contact')}
-                  className="bg-white/5 text-white border border-white/20 px-7 py-3.5 rounded-xl font-black text-sm hover:bg-white/10 transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-11">
+                  className="bg-white/5 text-white border border-white/20 px-7 py-3.5 rounded-xl font-black text-sm hover:bg-white/10 transition-all hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-[44px]">
                   Contact Engineering Team
                 </button>
               </div>
@@ -3682,7 +3928,7 @@ const AboutPage = ({ navigate }) => {
             </div>
           </div>
         </div>
-        <div className="h-1 w-full bg-linear-to-r from-transparent via-blue-500 to-transparent" aria-hidden="true" />
+        <div className="h-1 w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent" aria-hidden="true" />
       </div>
 
       {/* Stats bar */}
@@ -3763,10 +4009,10 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {values.map(({ Ic, label, text }, i) => (
+            {values.map(({ Icon: IconComponent, label, text }, i) => (
               <div key={i} className="bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-center">
                 <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                  <Ic className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
+                  <IconComponent className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-3 tracking-tight">{label}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{text}</p>
@@ -3783,7 +4029,7 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
           </div>
           <div className="relative">
-            <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-linear-to-b from-blue-600 via-blue-400 to-blue-200 rounded-full timeline-connector" aria-hidden="true" />
+            <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-600 via-blue-400 to-blue-200 rounded-full timeline-connector" aria-hidden="true" />
             <div className="space-y-10">
               {milestones.map(({ year, title, desc }, i) => (
                 <div key={i} className={`relative flex flex-col md:flex-row gap-8 md:gap-0 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
@@ -3992,7 +4238,7 @@ const BlogPage = ({ navigate }) => (
       title="Engineering Blog — Turbine Maintenance & Industrial Insights"
       description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises." canonicalPath="/blog" pageType="website" />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
         <div className="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
           <BookOpen className="w-8 h-8 text-blue-400" aria-hidden="true" />
@@ -4019,7 +4265,7 @@ const BlogPage = ({ navigate }) => (
                   className="media-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   onLoad={e => { e.currentTarget.classList.add('is-loaded'); }}
                   onError={e => { e.target.style.display = 'none'; }} />
-                <div className="absolute inset-0 bg-linear-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
                   <BookOpen className="w-24 h-24 text-white/20" aria-hidden="true" />
                 </div>
                 <span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-black px-3 py-1.5 uppercase tracking-widest rounded-full shadow-lg">Featured</span>
@@ -4066,7 +4312,7 @@ const BlogPage = ({ navigate }) => (
                     className="media-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     onLoad={e => { e.currentTarget.classList.add('is-loaded'); }}
                     onError={e => { e.target.style.display = 'none'; }} />
-                  <div className="absolute inset-0 bg-linear-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
                     <BookOpen className="w-16 h-16 text-white/20" aria-hidden="true" />
                   </div>
                 </div>
@@ -4170,7 +4416,7 @@ const BlogPostPage = ({ slug, navigate }) => {
             className="media-img w-full h-full object-cover opacity-60"
             onLoad={e => { e.currentTarget.classList.add('is-loaded'); }}
             onError={e => { e.target.style.display = 'none'; }} />
-          <div className="absolute inset-0 bg-linear-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent" />
           <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
             <div className="flex flex-wrap gap-2 mb-4">
               {post.tags.map(tag => (
@@ -4233,7 +4479,7 @@ const ServicesPage = ({ navigate }) => (
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
       description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
         <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">Technical Services</h1>
         <div className="section-divider w-24 h-1.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true" />
@@ -4252,7 +4498,7 @@ const ServicesPage = ({ navigate }) => (
                 {/* Service image card — sticky while scrolling on desktop — clickable */}
                 <button
                   onClick={() => navigate(`/service/${service.id}`)}
-                  className="w-full aspect-4/3 rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 sticky top-28 bg-[#0A192F] focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 cursor-pointer"
+                  className="w-full aspect-[4/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 sticky top-28 relative bg-[#0A192F] focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 cursor-pointer"
                   aria-label={`View full details for ${service.title}`}
                 >
 
@@ -4272,10 +4518,10 @@ const ServicesPage = ({ navigate }) => (
                   )}
 
                   {/* Dark fallback layer — visible only when no image */}
-                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] bg-size-[16px_16px]" aria-hidden="true" />
+                  <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px]" aria-hidden="true" />
 
                   {/* Bottom scrim — ensures OEM chips are always readable */}
-                  <div className="absolute inset-0 bg-linear-to-t from-[#0A192F]/95 via-[#0A192F]/20 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F]/95 via-[#0A192F]/20 to-transparent z-10" />
 
                   {/* Top-left service label badge */}
                   <div className="absolute top-5 left-5 z-20">
@@ -4826,14 +5072,14 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
       />
 
       {/* Reading progress bar — blue-600 matching site CTA */}
-      <div className="fixed top-0 left-0 right-0 z-60 h-0.75 bg-slate-200" aria-hidden="true">
+      <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-slate-200" aria-hidden="true">
         <div className="h-full bg-blue-600 transition-[width] duration-75 ease-linear" style={{ width: `${progress}%` }} />
       </div>
 
       {/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
       <div className="bg-[#0A192F] text-white relative overflow-hidden" style={{ borderBottom: '8px solid #2563eb', minHeight: '480px' }}>
         {/* Grid texture — matches ServicesPage hero */}
-        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
 
         {/* Service photo — object-cover fills the container */}
         {service.image && (
@@ -4843,9 +5089,9 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             onError={e => { e.target.style.display = 'none'; }} />
         )}
         {/* Gradient — left dark for text legibility, right opens up to show image */}
-        <div className="absolute inset-0 bg-linear-to-r from-[#0A192F]/90 via-[#0A192F]/60 to-[#0A192F]/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/90 via-[#0A192F]/60 to-[#0A192F]/30" />
         {/* Bottom fade — ensures stat bar reads cleanly over image */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-[#0A192F]/70 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A192F]/70 to-transparent" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
@@ -4919,11 +5165,11 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
         <div className="flex flex-col sm:flex-row gap-3 mb-8 lg:hidden">
           <a href={waMsg(`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`)}
             target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 min-h-13">
+            className="flex items-center justify-center gap-2 flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 min-h-[52px]">
             <MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" /> Get a Quote on WhatsApp
           </a>
           <button onClick={() => navigate('/contact')}
-            className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13">
+            className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[52px]">
             Submit Formal RFQ <ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
           </button>
         </div>
@@ -4949,7 +5195,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             {/* Overview */}
             <section aria-labelledby="overview-heading">
               <div className="sd-reveal flex items-center gap-4 mb-5">
-                <span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
                 <h2 id="overview-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Service Overview</h2>
               </div>
               <p className="sd-reveal text-slate-600 font-medium text-base leading-relaxed">{detail.overview}</p>
@@ -4958,7 +5204,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             {/* Procedures */}
             <section aria-labelledby="procedure-heading">
               <div className="sd-reveal flex items-center gap-4 mb-4">
-                <span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
                 <h2 id="procedure-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Step-by-Step Procedure</h2>
               </div>
               <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-10">
@@ -4994,7 +5240,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             {/* Tools & Equipment */}
             <section aria-labelledby="tools-heading">
               <div className="sd-reveal flex items-center gap-4 mb-4">
-                <span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
                 <h2 id="tools-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Tools &amp; Equipment</h2>
               </div>
               <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-8">Instrumentation We Deploy</h3>
@@ -5035,7 +5281,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             {detail.faultMatrix && (
               <section aria-labelledby="fault-matrix-heading">
                 <div className="sd-reveal flex items-center gap-4 mb-4">
-                  <span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
+                  <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
                   <h2 id="fault-matrix-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Fault Diagnosis Matrix</h2>
                 </div>
                 <h3 className="sd-reveal text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-3">
@@ -5045,7 +5291,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                   Systematic reference built from decades of OEM and field experience. Used to move from symptom to confirmed root cause in minimum time.
                 </p>
                 <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm overflow-x-auto">
-                  <div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F] min-w-135">
+                  <div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F] min-w-[540px]">
                     {['Symptom Observed', 'Possible Root Causes', 'Corrective Action'].map(h => (
                       <div key={h} className="px-5 py-3.5 border-r border-slate-700 last:border-r-0">
                         <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{h}</span>
@@ -5054,7 +5300,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                   </div>
                   {detail.faultMatrix.map((row, i) => (
                     <div key={i}
-                      className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0 min-w-135"
+                      className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0 min-w-[540px]"
                       style={{ animationDelay: `${i * 45}ms` }}>
                       <div className="px-5 py-4">
                         <p className="text-sm font-black text-slate-900">{row.symptom}</p>
@@ -5081,7 +5327,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
             {/* Standards & Compliance */}
             <section aria-labelledby="standards-heading">
               <div className="sd-reveal flex items-center gap-4 mb-4">
-                <span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
+                <span className="w-10 h-[2px] bg-blue-600" aria-hidden="true" />
                 <h2 id="standards-heading" className="font-black uppercase tracking-widest text-xs text-slate-500">Standards &amp; Compliance</h2>
               </div>
               <h3 className="sd-reveal text-2xl font-black text-slate-900 tracking-tight mb-8">International Standards We Work To</h3>
@@ -5092,7 +5338,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
                       className="sd-reveal sd-std-row flex items-start gap-4 px-6 py-4"
                       style={{ animationDelay: `${i * 40}ms` }}>
                       {/* Body badge — blue-50 matches site card accent pattern */}
-                      <span className="text-[10px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded uppercase tracking-wider shrink-0 mt-0.5 min-w-11 text-center">
+                      <span className="text-[10px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded uppercase tracking-wider shrink-0 mt-0.5 min-w-[44px] text-center">
                         {std.body}
                       </span>
                       <div>
@@ -5258,7 +5504,7 @@ const ProductsPage = ({ navigate }) => {
       <SEOHead title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
         description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`} canonicalPath="/products" pageType="website" />
       <div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
-        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-md">Industrial Products</h1>
           <div className="section-divider w-20 h-1.5 bg-blue-500 mb-6 rounded-full" aria-hidden="true" />
@@ -5548,14 +5794,14 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 
       {/* ── Hero ── */}
       <div className="bg-[#0A192F] text-white pt-28 pb-20 relative overflow-hidden border-b-8 border-blue-600">
-        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
         {ind.image && (
           <img src={ind.image} alt="" aria-hidden="true" loading="eager" decoding="async" fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover opacity-35"
             onError={e => { e.target.style.display = 'none'; }} />
         )}
         {/* Reduced overlay so industry image is visible — gradient fades left edge only */}
-        <div className="absolute inset-0 bg-linear-to-r from-[#0A192F]/80 via-[#0A192F]/55 to-[#0A192F]/25" aria-hidden="true" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A192F]/80 via-[#0A192F]/55 to-[#0A192F]/25" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10">
@@ -5566,7 +5812,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
             <span className={ind.accent}>{ind.title}</span>
           </nav>
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8">
-            <div className={`w-20 h-20 rounded-2xl bg-linear-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 shadow-2xl`}>
+            <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 shadow-2xl`}>
               <Icon className={`w-10 h-10 ${ind.accent}`} />
             </div>
             <div>
@@ -5623,7 +5869,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
             {detail.challenges.map((c, i) => (
               <div key={i} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7 hover:border-blue-200 hover:shadow-md transition-all">
                 <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-xl bg-linear-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0`}>
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0`}>
                     <span className={`text-lg font-black ${ind.accent}`}>{i + 1}</span>
                   </div>
                   <div>
@@ -5654,10 +5900,10 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
                   tabIndex={isClickable ? 0 : undefined}
                   onKeyDown={isClickable ? (e) => { if (e.key === 'Enter' || e.key === ' ') navigate(`/product/${prodId}`); } : undefined}
                   aria-label={isClickable ? `View product: ${prod.name}` : undefined}>
-                  <div className={`h-1.5 w-full rounded-t-2xl bg-linear-to-r ${ind.color.replace('/20', '').replace('/10', '')} from-blue-600 to-blue-400`} />
+                  <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${ind.color.replace('/20', '').replace('/10', '')} from-blue-600 to-blue-400`} />
                   <div className="p-7 flex flex-col flex-1">
                     <div className="flex items-start gap-3 mb-4">
-                      <div className={`w-9 h-9 rounded-xl bg-linear-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 mt-0.5`}>
+                      <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${ind.color} border ${ind.border} flex items-center justify-center shrink-0 mt-0.5`}>
                         <Settings className={`w-4 h-4 ${ind.accent}`} />
                       </div>
                       <h3 className="font-black text-slate-900 text-base leading-snug">{prod.name}</h3>
@@ -5717,7 +5963,7 @@ const IndustriesPage = ({ navigate }) => (
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
       description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem]" aria-hidden="true" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
         <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">Industries We Serve</h1>
         <div className="section-divider w-24 h-1.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true" />
@@ -5738,7 +5984,7 @@ const IndustriesPage = ({ navigate }) => (
               <div className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
 
                 {/* ── LEFT PANEL: full background image + overlay infographic ── */}
-                <div className="lg:w-2/5 relative overflow-hidden min-h-70 sm:min-h-85 lg:min-h-110 shrink-0" style={{ isolation: 'isolate' }}>
+                <div className="lg:w-2/5 relative overflow-hidden min-h-[280px] sm:min-h-[340px] lg:min-h-[440px] flex-shrink-0" style={{ isolation: 'isolate' }}>
                   {/* Background photo — object-cover fills the absolute container; no aspectRatio on img */}
                   {ind.image && (
                     <img
@@ -5755,7 +6001,7 @@ const IndustriesPage = ({ navigate }) => (
                     />
                   )}
                   {/* Fallback gradient when no image or image fails — always present as base */}
-                  <div className={`absolute inset-0 bg-linear-to-br ${ind.color}`} />
+                  <div className={`absolute inset-0 bg-gradient-to-br ${ind.color}`} />
                   {/* Dark scrim so white text is readable over any photo */}
                   <div className="absolute inset-0 bg-[#0A192F]/60" />
                   {/* Subtle vignette at edges */}
@@ -5864,12 +6110,12 @@ const ContactPage = () => {
           {/* Fear-reduction trust row */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
             {[
-              { Ic: Shield, text: 'Confidential RFQ handling' },
-              { Ic: CheckCircle2, text: 'No obligation consultation' },
-              { Ic: Clock, text: '24-hour response (emergency: within the hour)' },
-            ].map(({ Ic, text }, i) => (
+              { Icon: Shield, text: 'Confidential RFQ handling' },
+              { Icon: CheckCircle2, text: 'No obligation consultation' },
+              { Icon: Clock, text: '24-hour response (emergency: within the hour)' },
+            ].map(({ Icon: IconComponent, text }, i) => (
               <div key={i} className="flex items-center gap-2 text-slate-500 text-sm font-bold">
-                <Ic className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+                <IconComponent className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
                 <span>{text}</span>
               </div>
             ))}
@@ -5878,17 +6124,17 @@ const ContactPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           <div className="lg:col-span-1 space-y-6">
             {[
-              { Ic: Phone, title: 'Direct Lines', content: <div className="space-y-2">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="block text-slate-600 font-bold text-base hover:text-blue-600 transition-colors">{p}</a>)}</div> },
-              { Ic: Mail, title: 'Email (RFQs)', content: <div className="space-y-2">{[CONTACT_INFO.email, CONTACT_INFO.infoEmail, CONTACT_INFO.marketingEmail].map(e => <a key={e} href={`mailto:${e}`} className="block text-slate-600 font-bold text-sm hover:text-blue-600 transition-colors break-all">{e}</a>)}</div> },
-              { Ic: MapPin, title: 'Facility Address', content: <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-            ].map(({ Ic, title, content }, i) => (
+              { Icon: Phone, title: 'Direct Lines', content: <div className="space-y-2">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="block text-slate-600 font-bold text-base hover:text-blue-600 transition-colors">{p}</a>)}</div> },
+              { Icon: Mail, title: 'Email (RFQs)', content: <div className="space-y-2">{[CONTACT_INFO.email, CONTACT_INFO.infoEmail, CONTACT_INFO.marketingEmail].map(e => <a key={e} href={`mailto:${e}`} className="block text-slate-600 font-bold text-sm hover:text-blue-600 transition-colors break-all">{e}</a>)}</div> },
+              { Icon: MapPin, title: 'Facility Address', content: <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
+            ].map(({ Icon: IconComponent, title, content }, i) => (
               <div key={i} className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
-                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><Ic className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><IconComponent className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
                 <div><h3 className="font-black text-slate-900 text-lg mb-2">{title}</h3>{content}</div>
               </div>
             ))}
             <a href={CONTACT_INFO.indiamart} target="_blank" rel="noopener noreferrer" aria-label="View Keshav Enterprises on IndiaMART"
-              className="bg-slate-900 p-8 border border-slate-800 rounded-3xl shadow-lg flex items-start space-x-5 hover:border-blue-500 transition-colors group w-full">
+              className="bg-slate-900 p-8 border border-slate-800 rounded-3xl shadow-lg flex items-start space-x-5 hover:border-blue-500 transition-colors group block w-full">
               <div className="w-14 h-14 bg-slate-800 rounded-2xl flex items-center justify-center shrink-0 border border-slate-700 group-hover:border-blue-500/50 transition-colors"><CheckCircle2 className="w-7 h-7 text-green-400" aria-hidden="true" /></div>
               <div>
                 <h3 className="font-black text-white text-lg mb-1">IndiaMART Verified</h3>
@@ -5991,7 +6237,7 @@ const ContactPage = () => {
               </p>
             </div>
             <a href={CONTACT_INFO.googleBusiness} target="_blank" rel="noopener noreferrer"
-              className="shrink-0 bg-[#4285F4] text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-[#3367d6] transition-all shadow-md flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-11">
+              className="shrink-0 bg-[#4285F4] text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-[#3367d6] transition-all shadow-md flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[44px]">
               <ExternalLink className="w-4 h-4" aria-hidden="true" /> View on Google
             </a>
           </div>
@@ -6002,7 +6248,7 @@ const ContactPage = () => {
               <MapPin className="w-5 h-5 text-blue-600 shrink-0" aria-hidden="true" />
               <h2 className="font-black text-slate-900 text-lg tracking-tight">Our Manufacturing Facility — Shamli, U.P.</h2>
             </div>
-            <div className="w-full h-100 relative bg-slate-100">
+            <div className="w-full h-[400px] relative bg-slate-100">
               <iframe
                 title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
                 src={CONTACT_INFO.googleMapsEmbed}
@@ -6017,11 +6263,11 @@ const ContactPage = () => {
               <p className="text-slate-500 font-medium text-sm">{CONTACT_INFO.address}</p>
               <div className="flex gap-3 shrink-0 flex-wrap justify-center sm:justify-end">
                 <a href={CONTACT_INFO.googleBusiness} target="_blank" rel="noopener noreferrer"
-                  className="bg-[#4285F4] text-white px-5 py-2.5 rounded-xl font-black text-sm hover:bg-[#3367d6] transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-11">
+                  className="bg-[#4285F4] text-white px-5 py-2.5 rounded-xl font-black text-sm hover:bg-[#3367d6] transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[44px]">
                   <ExternalLink className="w-4 h-4" aria-hidden="true" /> Google Business
                 </a>
                 <a href={CONTACT_INFO.gmapsShare} target="_blank" rel="noopener noreferrer"
-                  className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-black text-sm hover:bg-blue-600 transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 min-h-11">
+                  className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-black text-sm hover:bg-blue-600 transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 min-h-[44px]">
                   <MapPin className="w-4 h-4" aria-hidden="true" /> Get Directions
                 </a>
               </div>
@@ -6124,49 +6370,38 @@ export default function App() {
     };
   }, []);
 
-  // ── GOOGLE TRANSLATE INIT (deferred for performance) ──
-  // PERF: Defer Google Translate loading until after the page is interactive
-  // to avoid blocking the main thread during initial render (~92 KB JS).
+  // ── GOOGLE TRANSLATE INIT ──
   useEffect(() => {
     if (typeof window === 'undefined' || document.getElementById('google-translate-script')) return;
+    
+    // Inject custom CSS to hide Google Translate bar and highlights
+    const style = document.createElement('style');
+    style.innerHTML = `
+      body { top: 0 !important; }
+      .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
+      #google_translate_element { display: none !important; }
+      .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+      .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+    `;
+    document.head.appendChild(style);
 
-    const initGoogleTranslate = () => {
-      // Inject custom CSS to hide Google Translate bar and highlights
-      const style = document.createElement('style');
-      style.textContent = `
-        body { top: 0 !important; }
-        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
-        #google_translate_element { display: none !important; }
-        .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
-      `;
-      document.head.appendChild(style);
-
-      window.googleTranslateElementInit = () => {
-        new window.google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'en,hi,zh-CN,es,fr,ar,ru,pt,de,ja',
-          autoDisplay: false
-        }, 'google_translate_element');
-      };
-
-      const gtScript = document.createElement('script');
-      gtScript.id = 'google-translate-script';
-      gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      gtScript.async = true;
-      document.body.appendChild(gtScript);
-
-      const gtDiv = document.createElement('div');
-      gtDiv.id = 'google_translate_element';
-      document.body.appendChild(gtDiv);
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,zh-CN,es,fr,ar,ru,pt,de,ja',
+        autoDisplay: false
+      }, 'google_translate_element');
     };
 
-    // PERF: Load after the page is fully interactive
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(initGoogleTranslate, { timeout: 5000 });
-    } else {
-      setTimeout(initGoogleTranslate, 3000);
-    }
+    const gtScript = document.createElement('script');
+    gtScript.id = 'google-translate-script';
+    gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    gtScript.async = true;
+    document.body.appendChild(gtScript);
+    
+    const gtDiv = document.createElement('div');
+    gtDiv.id = 'google_translate_element';
+    document.body.appendChild(gtDiv);
   }, []);
 
   // ── PERF: Intersection Observer — re-observe after each route change ──
