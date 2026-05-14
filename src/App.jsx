@@ -1911,12 +1911,12 @@ if (typeof document !== 'undefined') {
   addLink('preconnect', 'https://fonts.gstatic.com', '');
   addLink('dns-prefetch', 'https://api.whatsapp.com');
   addLink('dns-prefetch', 'https://www.indiamart.com');
-  // Preload hero image for LCP — WebP for smaller payload
+  // Preload hero image for LCP
   if (!document.querySelector('link[rel="preload"][as="image"]')) {
     const pl = document.createElement('link');
-    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.webp';
+    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
     pl.setAttribute('fetchpriority', 'high');
-    pl.setAttribute('type', 'image/webp');
+    pl.setAttribute('type', 'image/png');
     document.head.appendChild(pl);
   }
 }
@@ -2605,15 +2605,15 @@ const Footer = memo(({ navigate }) => (
           {/* Credential chips */}
           <div className="flex flex-col gap-4 mb-8">
             {[
-              { imgSrc: 'msme-logo.png', Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
-              { imgSrc: 'indiamart-logo.png', Icon: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
-              { imgSrc: 'make-in-india.png', Icon: Globe, iconColor: 'text-cyan-400', title: 'Make In India', sub: 'Manufactured in India' },
-            ].map(({ imgSrc, Icon, iconColor, title, sub }) => (
+              { imgSrc: 'msme-logo.png', Ic: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered', sub: CONTACT_INFO.msme },
+              { imgSrc: 'indiamart-logo.png', Ic: Award, iconColor: 'text-amber-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+              { imgSrc: 'make-in-india.png', Ic: Globe, iconColor: 'text-cyan-400', title: 'Make In India', sub: 'Manufactured in India' },
+            ].map(({ imgSrc, Ic, iconColor, title, sub }) => (
               <div key={title} className="flex items-center gap-5 bg-slate-900 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2">
                 <div className="w-14 h-14 shrink-0 flex items-center justify-center relative bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
                   <img src={imgSrc} alt={title} className="w-full h-full object-contain"
                     onError={(e) => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'block'; }} />
-                  <Icon className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
+                  <Ic className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
                 </div>
                 <div>
                   <p className="text-white font-bold text-sm uppercase tracking-wider mb-1">{title}</p>
@@ -3453,12 +3453,12 @@ const HomePage = memo(({ navigate }) => {
               {/* Micro trust-proof strip — reduces fear of contacting an unknown vendor */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 mb-8">
                 {[
-                  { Icon: CheckCircle2, text: '20+ years in service' },
-                  { Icon: Shield, text: 'PMI-certified spares' },
-                  { Icon: Clock, text: '24×7 emergency response' },
-                ].map(({ Icon, text }, i) => (
+                  { Ic: CheckCircle2, text: '20+ years in service' },
+                  { Ic: Shield, text: 'PMI-certified spares' },
+                  { Ic: Clock, text: '24×7 emergency response' },
+                ].map(({ Ic, text }, i) => (
                   <div key={i} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
-                    <Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+                    <Ic className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
                     <span>{text}</span>
                   </div>
                 ))}
@@ -3485,29 +3485,29 @@ const HomePage = memo(({ navigate }) => {
               {
                 delay: 'delay-300',
                 label: 'No Learning Curve',
-                Icon: Award,
+                Ic: Award,
                 title: 'Ex-OEM Engineers',
                 sub: 'Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.',
               },
               {
                 delay: 'delay-500',
                 label: 'Every Job Documented',
-                Icon: CheckCircle2,
+                Ic: CheckCircle2,
                 title: 'Report on Delivery',
                 sub: 'PMI certs, balancing reports, alignment records, condition reports — handed over at job completion.',
               },
               {
                 delay: 'delay-700',
                 label: 'When Minutes Matter',
-                Icon: PhoneCall,
+                Ic: PhoneCall,
                 title: '24×7 Emergency',
                 sub: 'Engineers at multiple locations across India. Call us at 2 AM — someone answers.',
               },
-            ].map(({ delay, label, Icon, title, sub }, i) => (
+            ].map(({ delay, label, Ic, title, sub }, i) => (
               <div key={i} className={`bg-linear-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-10' : i === 2 ? 'ml-3' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}>
                 <div className="flex justify-between items-start mb-3">
                   <div className="text-blue-300 text-xs font-black uppercase tracking-widest">{label}</div>
-                  <Icon className="w-5 h-5 text-blue-400" aria-hidden="true" />
+                  <Ic className="w-5 h-5 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-2xl font-black text-white tracking-tighter mb-2">{title}</div>
                 <div className="text-sm text-slate-400 font-medium leading-relaxed">{sub}</div>
@@ -3546,14 +3546,14 @@ const HomePage = memo(({ navigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             {[
-              { Icon: Clock, stat: '20+', label: 'Years Experience', sub: 'In turbine engineering' },
-              { Icon: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
-              { Icon: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W.' },
-              { Icon: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
-            ].map(({ Icon, stat, label, sub }, i) => (
+              { Ic: Clock, stat: '20+', label: 'Years Experience', sub: 'In turbine engineering' },
+              { Ic: Settings, stat: '10+', label: 'OEM Brands', sub: 'Triveni, Siemens, BHEL & more' },
+              { Ic: TrendingUp, stat: '27 MW', label: 'Max Turbine', sub: 'Upto 27M.W.' },
+              { Ic: Users, stat: '24x7', label: 'Emergency Support', sub: 'Multi-location response' },
+            ].map(({ Ic, stat, label, sub }, i) => (
               <div key={i} className="text-center">
                 <div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-                  <Icon className="w-6 h-6 text-blue-400" aria-hidden="true" />
+                  <Ic className="w-6 h-6 text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">{stat}</div>
                 <div className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-1">{label}</div>
@@ -3570,33 +3570,33 @@ const HomePage = memo(({ navigate }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                Icon: Award,
+                Ic: Award,
                 title: 'Same expertise as your OEM',
                 body: 'Our engineers were trained inside Triveni, Siemens, BHEL, and Belliss. No learning curve on your machine.',
                 color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-100',
               },
               {
-                Icon: CheckCircle2,
+                Ic: CheckCircle2,
                 title: 'Documentation at handover',
                 body: 'PMI certificates, balancing reports, condition reports, and ISO cleanliness certification — delivered with every job.',
                 color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-100',
               },
               {
-                Icon: Clock,
+                Ic: Clock,
                 title: 'Faster than OEM sourcing',
                 body: 'OEM spares take 12–26 weeks. We reverse-engineer, manufacture, and ship certified components in a fraction of the time.',
                 color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-100',
               },
               {
-                Icon: PhoneCall,
+                Ic: PhoneCall,
                 title: '24×7 — someone always answers',
                 body: 'Multi-location engineers across India. Whether it\'s a scheduled overhaul or a 2 AM trip — we show up.',
                 color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100',
               },
-            ].map(({ Icon, title, body, color, bg, border }, i) => (
+            ].map(({ Ic, title, body, color, bg, border }, i) => (
               <div key={i} className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}>
                 <div className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}>
-                  <Icon className={`w-6 h-6 ${color}`} aria-hidden="true" />
+                  <Ic className={`w-6 h-6 ${color}`} aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-2 leading-snug">{title}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{body}</p>
@@ -3831,10 +3831,10 @@ const AboutPage = ({ navigate }) => {
     { year: '2026', title: 'Pan-India Reach', desc: 'Today serving power, sugar, paper, oil & gas, petrochemical, and agro industries across India with 24×7 emergency engineering support.' },
   ];
   const values = [
-    { Icon: Shield, label: 'Engineering Integrity', text: 'Every component, every clearance, every dimension documented and verified. No shortcuts on safety-critical rotating equipment.' },
-    { Icon: Target, label: 'OEM-Grade Standards', text: 'Ex-OEM engineers from Triveni, Siemens, BHEL, and ABB delivering maintenance at the same standard as the original manufacturer.' },
-    { Icon: Zap, label: 'Innovation in Reverse Engineering', text: '3D scanning and PMI testing give clients access to obsolete spares without 12–18 month OEM lead times.' },
-    { Icon: Users, label: 'Customer Uptime First', text: 'We measure success in plant availability. 24×7 emergency response because shutdowns do not follow business hours.' },
+    { Ic: Shield, label: 'Engineering Integrity', text: 'Every component, every clearance, every dimension documented and verified. No shortcuts on safety-critical rotating equipment.' },
+    { Ic: Target, label: 'OEM-Grade Standards', text: 'Ex-OEM engineers from Triveni, Siemens, BHEL, and ABB delivering maintenance at the same standard as the original manufacturer.' },
+    { Ic: Zap, label: 'Innovation in Reverse Engineering', text: '3D scanning and PMI testing give clients access to obsolete spares without 12–18 month OEM lead times.' },
+    { Ic: Users, label: 'Customer Uptime First', text: 'We measure success in plant availability. 24×7 emergency response because shutdowns do not follow business hours.' },
   ];
   return (
     <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white min-h-screen">
@@ -4013,10 +4013,10 @@ const AboutPage = ({ navigate }) => {
             <div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
-            {values.map(({ Icon, label, text }, i) => (
+            {values.map(({ Ic, label, text }, i) => (
               <div key={i} className="bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-center">
                 <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-                  <Icon className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
+                  <Ic className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors" aria-hidden="true" />
                 </div>
                 <h3 className="font-black text-slate-900 text-base mb-3 tracking-tight">{label}</h3>
                 <p className="text-slate-500 text-sm leading-relaxed">{text}</p>
@@ -4408,7 +4408,7 @@ const BlogPostPage = ({ slug, navigate }) => {
             <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />Blog
           </button>
           <span aria-hidden="true" className="mx-1">/</span>
-          <span className="text-slate-800 truncate max-w-62.5 md:max-w-full normal-case" aria-current="page">{post.title}</span>
+          <span className="text-slate-800 truncate max-w-[250px] md:max-w-full normal-case" aria-current="page">{post.title}</span>
         </nav>
         {/* Hero */}
         <div className="h-72 md:h-96 bg-slate-900 rounded-3xl overflow-hidden mb-10 flex items-center justify-center relative">
@@ -6114,12 +6114,12 @@ const ContactPage = () => {
           {/* Fear-reduction trust row */}
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
             {[
-              { Icon: Shield, text: 'Confidential RFQ handling' },
-              { Icon: CheckCircle2, text: 'No obligation consultation' },
-              { Icon: Clock, text: '24-hour response (emergency: within the hour)' },
-            ].map(({ Icon, text }, i) => (
+              { Ic: Shield, text: 'Confidential RFQ handling' },
+              { Ic: CheckCircle2, text: 'No obligation consultation' },
+              { Ic: Clock, text: '24-hour response (emergency: within the hour)' },
+            ].map(({ Ic, text }, i) => (
               <div key={i} className="flex items-center gap-2 text-slate-500 text-sm font-bold">
-                <Icon className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+                <Ic className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
                 <span>{text}</span>
               </div>
             ))}
@@ -6128,12 +6128,12 @@ const ContactPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           <div className="lg:col-span-1 space-y-6">
             {[
-              { Icon: Phone, title: 'Direct Lines', content: <div className="space-y-2">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="block text-slate-600 font-bold text-base hover:text-blue-600 transition-colors">{p}</a>)}</div> },
-              { Icon: Mail, title: 'Email (RFQs)', content: <div className="space-y-2">{[CONTACT_INFO.email, CONTACT_INFO.infoEmail, CONTACT_INFO.marketingEmail].map(e => <a key={e} href={`mailto:${e}`} className="block text-slate-600 font-bold text-sm hover:text-blue-600 transition-colors break-all">{e}</a>)}</div> },
-              { Icon: MapPin, title: 'Facility Address', content: <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-            ].map(({ Icon, title, content }, i) => (
+              { Ic: Phone, title: 'Direct Lines', content: <div className="space-y-2">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g, '')}`} className="block text-slate-600 font-bold text-base hover:text-blue-600 transition-colors">{p}</a>)}</div> },
+              { Ic: Mail, title: 'Email (RFQs)', content: <div className="space-y-2">{[CONTACT_INFO.email, CONTACT_INFO.infoEmail, CONTACT_INFO.marketingEmail].map(e => <a key={e} href={`mailto:${e}`} className="block text-slate-600 font-bold text-sm hover:text-blue-600 transition-colors break-all">{e}</a>)}</div> },
+              { Ic: MapPin, title: 'Facility Address', content: <p className="text-slate-600 font-bold text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
+            ].map(({ Ic, title, content }, i) => (
               <div key={i} className="bg-white p-8 border border-slate-200 rounded-3xl shadow-sm flex items-start space-x-5 hover:border-blue-200 transition-colors">
-                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><Icon className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0 border border-blue-100"><Ic className="w-7 h-7 text-blue-600" aria-hidden="true" /></div>
                 <div><h3 className="font-black text-slate-900 text-lg mb-2">{title}</h3>{content}</div>
               </div>
             ))}
