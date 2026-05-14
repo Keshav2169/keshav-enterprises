@@ -1552,6 +1552,27 @@ const MARQUEE_CSS = `
     background-size:200% 100%;
     animation:ke-shimmer 1.25s linear infinite;
   }
+  /* Enhanced skeleton with product icon placeholder */
+  .skeleton-product{
+    position:absolute;inset:0;z-index:1;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+  }
+  .skeleton-product::before{
+    content:'';width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
+    animation:ke-shimmer 1.25s linear infinite;
+    background-size:200% 100%;
+  }
+  .skeleton-product::after{
+    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
+    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
+    background-size:200% 100%;
+    animation:ke-shimmer 1.25s linear infinite;
+  }
+  /* Product image container gradient for contrast */
+  .product-img-bg{
+    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
+  }
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
 
@@ -1772,10 +1793,10 @@ const LOCAL_SCHEMA = {
   },
   areaServed: [
     { '@type': 'Country', 'name': 'India' },
-    { '@type': 'State', 'name': 'Uttar Pradesh' },
-    { '@type': 'State', 'name': 'Punjab' },
-    { '@type': 'State', 'name': 'Haryana' },
-    { '@type': 'State', 'name': 'Maharashtra' }
+    { '@type': 'AdministrativeArea', 'name': 'Uttar Pradesh' },
+    { '@type': 'AdministrativeArea', 'name': 'Punjab' },
+    { '@type': 'AdministrativeArea', 'name': 'Haryana' },
+    { '@type': 'AdministrativeArea', 'name': 'Maharashtra' }
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
@@ -1890,12 +1911,12 @@ if (typeof document !== 'undefined') {
   addLink('preconnect', 'https://fonts.gstatic.com', '');
   addLink('dns-prefetch', 'https://api.whatsapp.com');
   addLink('dns-prefetch', 'https://www.indiamart.com');
-  // Preload hero image for LCP
+  // Preload hero image for LCP — WebP for smaller payload
   if (!document.querySelector('link[rel="preload"][as="image"]')) {
     const pl = document.createElement('link');
-    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
+    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.webp';
     pl.setAttribute('fetchpriority', 'high');
-    pl.setAttribute('type', 'image/png');
+    pl.setAttribute('type', 'image/webp');
     document.head.appendChild(pl);
   }
 }
@@ -1941,21 +1962,8 @@ if (typeof document !== 'undefined') {
     cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
     document.head.appendChild(cs);
   }
-  // ── Tawk.to Live Chat (free) ──
-  // To enable: sign up at tawk.to, get your Property ID and Widget ID,
-  // replace the placeholder values below, then remove the early-return condition.
-  // const TAWK_PROPERTY_ID = 'YOUR_PROPERTY_ID';
-  // const TAWK_WIDGET_ID   = 'YOUR_WIDGET_ID';
-  // if (!document.getElementById('tawk-script')) {
-  //   const ts = document.createElement('script');
-  //   ts.id = 'tawk-script'; ts.async = true; ts.charset = 'UTF-8';
-  //   ts.setAttribute('crossorigin', '*');
-  //   ts.src = `https://embed.tawk.to/${TAWK_PROPERTY_ID}/${TAWK_WIDGET_ID}`;
-  //   document.head.appendChild(ts);
-  // }
 }
 
-// ─── SEO HEAD (Accessibility + SEO Fix) ──────────────────────
 // ─── SEO HEAD ─────────────────────────────────────────────────
 // SITE_URL: Update this to your live domain once deployed
 // IMPORTANT: Generate a sitemap.xml at /public/sitemap.xml covering all 105 product
@@ -2002,6 +2010,11 @@ const SEOHead = memo(({ title, description, schema, pageType, canonicalPath, pub
       vm.content = 'width=device-width, initial-scale=1, maximum-scale=5';
       document.head.appendChild(vm);
     }
+
+    // ── LLM / AI Crawler Discovery (llms.txt standard) ──
+    // Helps AI assistants (ChatGPT, Gemini, Claude, Perplexity) find structured content
+    sl('help', `${SITE_URL}/llms.txt`, { type: 'text/plain', title: 'LLM-readable site summary' });
+    sl('help', `${SITE_URL}/llms-full.txt`, { type: 'text/plain', title: 'LLM-readable full catalog' });
 
     // ── Open Graph ──
     sm('meta[property="og:title"]', 'property', 'og:title', fullTitle);
@@ -2120,7 +2133,7 @@ const MSMEBadge = memo(() => {
 });
 
 // ─── PRODUCT CARD (Memoized) ─────────────────────────────────
-const ProductCard = memo(({ product, navigate }) => {
+const ProductCard = memo(({ product, navigate, priority = false }) => {
   const [imgErr, setImgErr] = useState(false);
   const [imgLoaded, setImgLoaded] = useState(false);
   const pImg = product.images?.[0];
@@ -2134,22 +2147,22 @@ const ProductCard = memo(({ product, navigate }) => {
     <article onClick={() => navigate(`/product/${product.id}`)}
       className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50">
       {/* Fixed-height image container prevents layout shift (CLS fix) */}
-      <div className="h-48 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0" style={{ minHeight: '12rem' }}>
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent z-10 group-hover:opacity-0 transition-opacity" aria-hidden="true" />
-        <span className="absolute top-4 left-4 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm">{product.category}</span>
+      <div className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+        <span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm backdrop-blur-sm">{product.category}</span>
         {pImg && !imgErr
           ? <>
-            {!imgLoaded && <div className="skeleton-shimmer" aria-hidden="true" />}
-            <img src={pImg} alt={product.title}
-            loading="lazy" decoding="async"
-            width="400" height="192"
-            fetchPriority="low"
-            className={`media-img w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
-            style={{ aspectRatio: '400/192' }}
-            onLoad={() => setImgLoaded(true)}
-            onError={() => { setImgErr(true); setImgLoaded(false); }} />
+            {!imgLoaded && <><div className="skeleton-shimmer" aria-hidden="true" /><div className="skeleton-product" aria-hidden="true" /></>}
+            <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-4 z-0">
+              <img src={pImg} alt={product.title}
+              loading={priority ? 'eager' : 'lazy'}
+              decoding={priority ? 'sync' : 'async'}
+              fetchPriority={priority ? 'high' : 'low'}
+              className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => { setImgErr(true); setImgLoaded(false); }} />
+            </div>
           </>
-          : <div className="z-0 w-full h-full flex items-center justify-center bg-slate-100" aria-hidden="true">{getCategoryIcon(product.category)}</div>}
+          : <div className="z-0 w-full h-full flex items-center justify-center bg-slate-100/60" aria-hidden="true">{getCategoryIcon(product.category)}</div>}
       </div>
       <div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
         <h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
@@ -2300,6 +2313,17 @@ const Navbar = memo(({ currentPath, navigate }) => {
     }
   }, [isSearchOpen]);
 
+  // AUDIT FIX: Body scroll lock when mobile menu/search is open
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    if ((isOpen || isSearchOpen) && window.innerWidth < 1024) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen, isSearchOpen]);
+
   const q = query.toLowerCase().trim();
   // keep ref in sync for the event handler
   useEffect(() => { queryRef.current = query; }, [query]);
@@ -2341,151 +2365,149 @@ const Navbar = memo(({ currentPath, navigate }) => {
   return (
     <>
     <nav ref={menuRef} role="navigation" aria-label="Main navigation"
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/95 backdrop-blur-md border-slate-200 shadow-md py-1.5' : 'bg-[#0A192F] border-transparent py-2.5'}`}>
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg py-2' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10 py-3'}`}>
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold">Skip to main content</a>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <BrandLogo scrolled={scrolled} navigate={navigate} />
-          <div className="hidden lg:flex space-x-6 items-center">
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
             {NAV_LINKS.map(link => (
               <a key={link.name} href={`#${link.path}`}
                 onClick={e => { e.preventDefault(); handleNav(link.path); }}
                 aria-current={isActive(link.path) ? 'page' : undefined}
-                className={`py-2 text-sm font-bold uppercase tracking-widest transition-colors focus:outline-none focus-visible:underline ${isActive(link.path) ? (scrolled ? 'text-blue-600' : 'text-blue-400') : (scrolled ? 'text-slate-600 hover:text-blue-600' : 'text-slate-300 hover:text-white')}`}>
+                className={`relative px-3 py-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
+                  ${isActive(link.path)
+                    ? (scrolled ? 'text-blue-600' : 'text-white')
+                    : (scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-300 hover:text-white')
+                  }`}>
                 {link.name}
+                <span className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300
+                  ${isActive(link.path) ? 'w-3/4 bg-blue-500' : 'w-0 group-hover:w-1/2 bg-blue-400/60'}`} aria-hidden="true" />
               </a>
             ))}
-            <div 
-              className="relative flex items-center"
-              onMouseEnter={() => setIsSearchOpen(true)}
-              onMouseLeave={() => { if (!query) setIsSearchOpen(false); }}
-            >
-              <div className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-56 lg:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search products & services..."
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  className={`w-56 lg:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
-                />
-              </div>
-              <button 
-                onClick={() => {
-                  if (isSearchOpen) {
-                    setIsSearchOpen(false);
-                    setQuery('');
-                  } else {
-                    setIsSearchOpen(true);
-                  }
-                }}
-                aria-label="Search"
-                className={`p-2.5 rounded-full transition-all duration-300 hover:scale-110 hover:-translate-y-0.5 hover:shadow-lg active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60] ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)] hover:bg-blue-700 hover:shadow-[0_0_20px_rgba(37,99,235,0.4)]' : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-md'} ${isSearchOpen ? 'ml-1' : ''}`}
+            {/* search + language switcher */}
+            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
+              <div
+                className="relative flex items-center"
+                onMouseEnter={() => setIsSearchOpen(true)}
+                onMouseLeave={() => { if (!query) setIsSearchOpen(false); }}
               >
-                <Search className="w-5 h-5" aria-hidden="true" />
-              </button>
-
-              {isSearchOpen && query && (
-                <div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
-                  <div className="max-h-[60vh] overflow-y-auto p-2">
-                    {searchResults.length === 0 ? (
-                      <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
-                    ) : (
-                      <ul className="space-y-1">
-                        {searchResults.map(r => (
-                          <li key={r.id}>
-                            <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-                              <div className="flex gap-3 w-full items-center">
-                                <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-                                  <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
-                                  {r.image && (
-                                    <img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0 flex flex-col justify-center">
-                                  <div className="flex justify-between items-start">
-                                    <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
-                                    <div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
-                                      {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
-                                      <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
-                                    </div>
-                                  </div>
-                                  <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
-                                </div>
-                              </div>
-                            </button>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
+                <div className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 xl:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search products & services..."
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    className={`w-64 xl:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
+                  />
                 </div>
-              )}
+                <button
+                  onClick={() => { if (isSearchOpen) { setIsSearchOpen(false); setQuery(''); } else { setIsSearchOpen(true); } }}
+                  aria-label="Search"
+                  className={`p-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60]
+                    ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}
+                    ${isSearchOpen ? 'ml-1' : ''}`}
+                >
+                  <Search className="w-4.5 h-4.5" aria-hidden="true" style={{width:'18px',height:'18px'}} />
+                </button>
+                {isSearchOpen && query && (
+                  <div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
+                    <div className="max-h-[60vh] overflow-y-auto p-2">
+                      {searchResults.length === 0 ? (
+                        <div className="p-6 text-center text-slate-500 font-medium text-sm">No results found for "{query}"</div>
+                      ) : (
+                        <ul className="space-y-1">
+                          {searchResults.map(r => (
+                            <li key={r.id}>
+                              <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+                                <div className="flex gap-3 w-full items-center">
+                                  <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
+                                    <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
+                                    {r.image && (<img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />)}
+                                  </div>
+                                  <div className="flex-1 min-w-0 flex flex-col justify-center">
+                                    <div className="flex justify-between items-start">
+                                      <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
+                                      <div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
+                                        {r.type === 'Product' && <span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>}
+                                        <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
+                                      </div>
+                                    </div>
+                                    <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
+                                  </div>
+                                </div>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <LanguageSwitcher scrolled={scrolled} />
             </div>
-            <LanguageSwitcher scrolled={scrolled} />
             <a href="#/contact" onClick={e => { e.preventDefault(); handleNav('/contact'); }}
-              className="bg-blue-600 text-white px-7 py-2.5 rounded font-bold hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300">
+              className={`ml-2 px-6 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300
+                ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}>
               Get Quote
             </a>
           </div>
-          <div className="lg:hidden flex items-center gap-1">
+          {/* Mobile controls */}
+          <div className="lg:hidden flex items-center gap-1.5">
             <LanguageSwitcher scrolled={scrolled} />
             <button onClick={() => {
-                if (isSearchOpen) {
-                  setIsSearchOpen(false);
-                  setQuery('');
-                } else {
-                  setIsSearchOpen(true);
-                }
+                if (isSearchOpen) { setIsSearchOpen(false); setQuery(''); }
+                else { setIsSearchOpen(true); }
               }} aria-label="Search products and services"
-              className={`p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.2)]' : 'bg-white/20 text-white backdrop-blur-md'}`}>
-              <Search className="h-6 w-6" aria-hidden="true" />
+              className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}>
+              <Search className="h-5 w-5" aria-hidden="true" />
             </button>
-            <button onClick={() => setIsOpen(!isOpen)} aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            <button onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={isOpen} aria-controls="mobile-nav"
-              className={`p-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'text-slate-900' : 'text-white'}`}>
-              {isOpen ? <X className="h-7 w-7" aria-hidden="true" /> : <Menu className="h-7 w-7" aria-hidden="true" />}
+              className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}>
+              {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
         </div>
       </div>
+      {/* Mobile drawer */}
       {(isOpen || isSearchOpen) && (
-        <div id="mobile-nav" className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100" role="menu">
+        <div id="mobile-nav" className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto" role="menu">
           {isSearchOpen && (
-            <div className="px-4 py-4 border-b border-slate-100">
+            <div className="px-4 pt-4 pb-3 border-b border-slate-100">
               <div className="relative">
-                <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search products & services..."
                   value={query}
                   onChange={e => setQuery(e.target.value)}
-                  className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500"
+                  autoFocus
+                  className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500 text-sm"
                 />
               </div>
               {query && (
-                <div className="max-h-[50vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
+                <div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
                   {searchResults.length === 0 ? (
-                    <div className="p-4 text-center text-slate-500 text-sm">No results found for "{query}"</div>
+                    <div className="p-4 text-center text-slate-500 text-sm">No results for "{query}"</div>
                   ) : (
                     <ul className="divide-y divide-slate-100">
                       {searchResults.map(r => (
                         <li key={r.id}>
-                          <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }} className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:bg-slate-50">
-                            <div className="flex gap-3 w-full items-center">
-                              <div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-                                <span className="text-slate-400 font-black text-xs uppercase tracking-widest">{r.title.substring(0, 2)}</span>
-                                {r.image && (
-                                  <img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={(e) => { e.target.style.display = 'none'; }} />
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0 flex flex-col justify-center">
-                                <div className="flex justify-between items-start">
-                                  <span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
-                                  <span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded shrink-0 ml-2 mt-0.5 ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
-                                </div>
-                                <span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
-                              </div>
+                          <button onClick={() => { setIsSearchOpen(false); setQuery(''); navigate(r.path); setIsOpen(false); }}
+                            className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none">
+                            <div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
+                              <span className="text-slate-400 font-black text-xs">{r.title.substring(0, 2)}</span>
+                              {r.image && (<img src={r.image} alt="" className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" onError={e => { e.target.style.display = 'none'; }} />)}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <span className="font-bold text-slate-900 text-sm line-clamp-1 block">{r.title}</span>
+                              <span className={`text-[10px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>{r.type}</span>
                             </div>
                           </button>
                         </li>
@@ -2497,19 +2519,33 @@ const Navbar = memo(({ currentPath, navigate }) => {
             </div>
           )}
           {isOpen && !query && (
-            <div className="px-4 py-6 space-y-2">
-              {NAV_LINKS.map(link => (
-                <a key={link.name} href={`#${link.path}`} role="menuitem"
-                  onClick={e => { e.preventDefault(); handleNav(link.path); }}
-                  aria-current={isActive(link.path) ? 'page' : undefined}
-                  className={`block w-full text-left px-5 py-4 rounded-xl text-lg font-black tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}>
-                  {link.name}
+            <div className="px-4 py-5">
+              <ul className="space-y-1 mb-5">
+                {NAV_LINKS.map(link => (
+                  <li key={link.name}>
+                    <a href={`#${link.path}`} role="menuitem"
+                      onClick={e => { e.preventDefault(); handleNav(link.path); }}
+                      aria-current={isActive(link.path) ? 'page' : undefined}
+                      className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+                        ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}>
+                      {link.name}
+                      {isActive(link.path) && <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" aria-hidden="true" />}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
+                <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')}
+                  target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-5 py-3.5 rounded-xl text-sm font-black tracking-wide shadow-md">
+                  <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp Us
                 </a>
-              ))}
-              <a href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')} target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 mt-4 bg-[#25D366] text-white px-5 py-4 rounded-xl text-lg font-black">
-                <MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp Us
-              </a>
+                <a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`}
+                  className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
+                    ${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}>
+                  <Phone className="w-4 h-4" aria-hidden="true" /> {CONTACT_INFO.phones[0]}
+                </a>
+              </div>
             </div>
           )}
         </div>
@@ -2665,19 +2701,22 @@ const Footer = memo(({ navigate }) => (
               </div>
             </div>
 
-            {/* Emails */}
+            {/* Emails — all 4 addresses */}
             <div className="flex items-start gap-4 group">
               <div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
                 <Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
               </div>
-              <div className="flex flex-col gap-1.5 mt-1 w-full">
+              <div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
                 {[
-                  { addr: CONTACT_INFO.email, label: 'General' },
-                  { addr: CONTACT_INFO.infoEmail, label: 'Info' },
+                  { addr: CONTACT_INFO.email,          label: 'General' },
+                  { addr: CONTACT_INFO.infoEmail,       label: 'Info' },
+                  { addr: CONTACT_INFO.secondaryEmail,  label: 'Director' },
+                  { addr: CONTACT_INFO.marketingEmail,  label: 'Marketing' },
                 ].map(({ addr, label }) => (
-                  <a key={addr} href={`mailto:${addr}`} className="flex items-center justify-between gap-4 text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline">
-                    <span>{addr}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-widest opacity-50">{label}</span>
+                  <a key={addr} href={`mailto:${addr}`}
+                    className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline group/email">
+                    <span className="truncate group-hover/email:text-blue-300 transition-colors">{addr}</span>
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-slate-600 group-hover/email:text-blue-500 transition-colors">{label}</span>
                   </a>
                 ))}
               </div>
@@ -2701,17 +2740,17 @@ const Footer = memo(({ navigate }) => (
             { href: CONTACT_INFO.reddit,    label: `Reddit — ${CONTACT_INFO.redditHandle}`,       name: 'Reddit',     bg: '#FF4500' },
           ].map(({ href, label, name, bg }) => (
             <a key={name} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
-              className="flex items-center justify-center sm:justify-start gap-4 bg-white border border-slate-200 hover:border-slate-300 px-5 py-4 rounded-xl transition-all hover:bg-slate-50 shadow-md hover:shadow-lg hover:-translate-y-1 group focus:outline-none">
-              <span className="flex items-center justify-center w-8 h-8 rounded bg-slate-100 group-hover:bg-white transition-colors shrink-0 shadow-sm border border-slate-100" style={{ color: bg }}>
-                  {name === 'X' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  : name === 'LinkedIn' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                  : name === 'YouTube' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
-                  : name === 'Instagram' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                  : name === 'Facebook' ? <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg>
-                  : <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z"/></svg>
+              className="flex items-center justify-center sm:justify-start gap-3 bg-white border border-slate-200 hover:border-slate-300 px-5 py-4 rounded-xl transition-all hover:bg-slate-50 shadow-md hover:shadow-lg hover:-translate-y-1 group focus:outline-none">
+              <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100 group-hover:bg-white transition-colors shrink-0 shadow-sm border border-slate-100" style={{ color: bg }}>
+                  {name === 'X' ? <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  : name === 'LinkedIn' ? <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  : name === 'YouTube' ? <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+                  : name === 'Instagram' ? <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                  : name === 'Facebook' ? <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg>
+                  : <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z"/></svg>
                   }
               </span>
-              <span className="font-bold text-sm tracking-wide transition-colors" style={{ color: bg }}>{name}</span>
+              <span className="font-black text-base tracking-wide transition-colors" style={{ color: bg }}>{name}</span>
             </a>
           ))}
         </div>
@@ -2723,8 +2762,16 @@ const Footer = memo(({ navigate }) => (
           <div className="flex-1">
             <p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">Industries Served</p>
             <div className="flex flex-wrap gap-2">
-              {['Power Generation','Sugar Mills','Paper & Pulp','Oil & Gas','Petrochemical','Agro & Food','Cement'].map(ind => (
-                <span key={ind} className="text-xs text-slate-300 bg-slate-800 px-3 py-1.5 rounded-full font-medium">{ind}</span>
+              {[
+                { name: 'Power Generation', text: 'text-yellow-400', bg: 'bg-yellow-500/15', border: 'border-yellow-500/30' },
+                { name: 'Sugar Mills', text: 'text-green-400', bg: 'bg-green-500/15', border: 'border-green-500/30' },
+                { name: 'Paper & Pulp', text: 'text-blue-400', bg: 'bg-blue-500/15', border: 'border-blue-500/30' },
+                { name: 'Oil & Gas', text: 'text-orange-400', bg: 'bg-orange-500/15', border: 'border-orange-500/30' },
+                { name: 'Petrochemical', text: 'text-purple-400', bg: 'bg-purple-500/15', border: 'border-purple-500/30' },
+                { name: 'Agro & Food', text: 'text-teal-400', bg: 'bg-teal-500/15', border: 'border-teal-500/30' },
+                { name: 'Cement', text: 'text-stone-400', bg: 'bg-stone-500/15', border: 'border-stone-500/30' },
+              ].map(ind => (
+                <span key={ind.name} className={`text-xs ${ind.text} ${ind.bg} ${ind.border} border px-3 py-1.5 rounded-full font-bold`}>{ind.name}</span>
               ))}
             </div>
           </div>
@@ -2921,7 +2968,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
     ]
   } : null, [product]);
   if (!product) return (
-    <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
+    <main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Product Not Found" />
       <div><Settings className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
         <h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Product Not Found</h1>
@@ -2931,7 +2978,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
   );
   const activeImage = product.images?.[activeImg];
   return (
-    <main id="main-content" className="pt-28 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-28 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title={`${product.title} | ${product.category}`} description={`${product.desc} — Keshav Enterprises, Shamli, UP.`} schema={productSchema} canonicalPath={`/product/${product.id}`} pageType="website" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <nav aria-label="Breadcrumb" className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2">
@@ -2946,19 +2993,19 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-200 mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-5 p-8 lg:p-10 bg-white flex flex-col items-center border-b lg:border-b-0 lg:border-r border-slate-100">
-              <div className="w-full aspect-square bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 shadow-inner"
+              <div className="w-full aspect-square product-img-bg rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 shadow-inner"
                 role="img" aria-label={`Product image of ${product.title}`}>
                 {activeImage && !imgErr
                   ? <>
-                    {!imgLoaded && <div className="skeleton-shimmer" aria-hidden="true" />}
-                    <img src={activeImage} alt={`${product.title} view ${activeImg + 1}`}
-                    loading="eager" decoding="async"
-                    fetchPriority="high"
-                    width="500" height="500"
-                    style={{ aspectRatio: '1/1' }}
-                    className={`media-img w-full h-full object-contain p-8 mix-blend-multiply ${imgLoaded ? 'is-loaded' : ''}`}
-                    onLoad={() => setImgLoaded(true)}
-                    onError={() => { setImgErr(true); setImgLoaded(false); }} />
+                    {!imgLoaded && <><div className="skeleton-shimmer" aria-hidden="true" /><div className="skeleton-product" aria-hidden="true" /></>}
+                    <div className="absolute inset-0 flex items-center justify-center p-6">
+                      <img src={activeImage} alt={`${product.title} view ${activeImg + 1}`}
+                      loading="eager" decoding="async"
+                      fetchPriority="high"
+                      className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.1)] ${imgLoaded ? 'is-loaded' : ''}`}
+                      onLoad={() => setImgLoaded(true)}
+                      onError={() => { setImgErr(true); setImgLoaded(false); }} />
+                    </div>
                   </>
                   : <div className="flex flex-col items-center justify-center opacity-30" aria-hidden="true">
                     {getCategoryIcon(product.category)}
@@ -2973,7 +3020,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
                       onClick={() => { setActiveImg(idx); setImgErr(false); setImgLoaded(false); }}
                       aria-label={`View image ${idx + 1}`} aria-pressed={activeImg === idx}
                       className={`shrink-0 w-20 h-20 bg-white rounded-xl border-2 overflow-hidden transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeImg === idx ? 'border-blue-600 shadow-lg scale-105' : 'border-slate-200 hover:border-blue-400 opacity-70 hover:opacity-100'}`}>
-                      <img src={img} alt="" loading="lazy" width="80" height="80" className="w-full h-full object-cover p-2 mix-blend-multiply"
+                      <img src={img} alt="" loading="lazy" width="80" height="80" className="w-full h-full object-contain p-1.5 mix-blend-multiply"
                         onError={e => { e.target.closest('button').style.display = 'none'; }} />
                     </button>
                   ))}
@@ -3061,6 +3108,39 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 // rAF auto-scroll + seamless infinite loop + touch drag + nav arrows
 const CARD_W = 296; // card width (w-72 = 288px) + gap (8px) ≈ 296px
 const SPEED = 0.7; // px per animation frame (~42px/s at 60fps)
+
+const FeaturedProductImage = memo(({ product }) => {
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgErr, setImgErr] = useState(false);
+  const pImg = product.images?.[0];
+  return (
+    <div
+      className="h-48 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0"
+      style={{ minHeight: '12rem' }}>
+      <span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[9px] font-black px-2.5 py-1 uppercase tracking-widest rounded z-20 shadow-sm pointer-events-none backdrop-blur-sm">
+        {product.category}
+      </span>
+      {pImg && !imgErr
+        ? <>
+          {!imgLoaded && <><div className="skeleton-shimmer" aria-hidden="true" /><div className="skeleton-product" aria-hidden="true" /></>}
+          <div className="absolute inset-0 flex items-center justify-center p-3 z-0">
+            <img
+              src={pImg}
+              alt={product.title}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+              className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-700 group-hover:scale-110 pointer-events-none ${imgLoaded ? 'is-loaded' : ''}`}
+              onLoad={() => setImgLoaded(true)}
+              onError={() => { setImgErr(true); setImgLoaded(false); }} />
+          </div>
+        </>
+        : <div className="z-0 w-full h-full flex items-center justify-center pointer-events-none bg-slate-100/60" aria-hidden="true">
+          {getCategoryIcon(product.category)}
+        </div>}
+    </div>
+  );
+});
 
 const FeaturedProductsStrip = memo(({ products, navigate }) => {
   const trackRef = useRef(null);   // scrollable div
@@ -3246,27 +3326,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
               aria-label={product.title}>
 
               {/* Image — fixed height prevents CLS */}
-              <div
-                className="h-44 bg-slate-50 border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0"
-                style={{ minHeight: '11rem' }}>
-                <span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[9px] font-black px-2.5 py-1 uppercase tracking-widest rounded z-20 shadow-sm pointer-events-none">
-                  {product.category}
-                </span>
-                {product.images?.[0]
-                  ? <img
-                    src={product.images[0]}
-                    alt={product.title}
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
-                    width="288" height="176"
-                    style={{ aspectRatio: '288/176' }}
-                    className="w-full h-full object-cover z-0 transition-transform duration-700 group-hover:scale-110 pointer-events-none"
-                    onError={e => { e.target.style.display = 'none'; }} />
-                  : <div className="z-0 w-full h-full flex items-center justify-center pointer-events-none" aria-hidden="true">
-                    {getCategoryIcon(product.category)}
-                  </div>}
-              </div>
+              <FeaturedProductImage product={product} />
 
               {/* Body */}
               <div className="p-5 flex-1 flex flex-col bg-white">
@@ -3343,7 +3403,7 @@ const HomePage = memo(({ navigate }) => {
   };
   const h = heroContent[lang];
   return (
-    <main id="main-content" className="bg-white">
+    <main id="main-content" tabIndex={-1} className="bg-white">
       <SEOHead title="Industrial Turbine Engineering & Spares — Shamli, UP" schema={LOCAL_SCHEMA} canonicalPath="/" pageType="website" />
       {/* Hero */}
       <section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden" >
@@ -3773,7 +3833,7 @@ const AboutPage = ({ navigate }) => {
     { Icon: Users, label: 'Customer Uptime First', text: 'We measure success in plant availability. 24×7 emergency response because shutdowns do not follow business hours.' },
   ];
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white min-h-screen">
       <SEOHead title="About Keshav Enterprises — 20+ Years of Turbine Engineering Excellence"
         description="Keshav Enterprises — 20+ years of industrial turbine engineering, reverse engineering, and OEM-compatible spare parts manufacturing from Shamli, UP, India."
         canonicalPath="/about" pageType="website" />
@@ -4173,7 +4233,7 @@ const BLOG_POSTS = [
 
 // ─── BLOG LIST PAGE ────────────────────────────────────────────
 const BlogPage = ({ navigate }) => (
-  <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead
       title="Engineering Blog — Turbine Maintenance & Industrial Insights"
       description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises." canonicalPath="/blog" pageType="website" />
@@ -4300,7 +4360,7 @@ const BlogPostPage = ({ slug, navigate }) => {
   const others = useMemo(() => post ? BLOG_POSTS.filter(p => p.id !== post.id).slice(0, 2) : [], [post]);
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [slug]);
   if (!post) return (
-    <main id="main-content" className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
+    <main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
       <SEOHead title="Post Not Found" />
       <div>
         <BookOpen className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
@@ -4335,7 +4395,7 @@ const BlogPostPage = ({ slug, navigate }) => {
     }
   };
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title={post.title} description={post.excerpt} canonicalPath={`/blog/${post.slug}`} pageType="article" publishedTime={post.date} />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
@@ -4415,7 +4475,7 @@ const BlogPostPage = ({ slug, navigate }) => {
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = ({ navigate }) => (
-  <main id="main-content" className="pt-24 pb-20 bg-white">
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white">
     <SEOHead title="Turbine Services — Overhauling, Erection & Reverse Engineering"
       description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW." canonicalPath="/services" pageType="website" schema={FAQ_SCHEMA} />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -4992,7 +5052,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
   });
 
   if (!service || !detail) return (
-    <main id="main-content" className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center">
       <div className="text-center">
         <h1 className="text-3xl font-black text-slate-900 mb-4">Service Not Found</h1>
         <button onClick={() => navigate('/services')} className="bg-blue-600 text-white px-6 py-3 rounded font-bold hover:bg-blue-500 transition-all">
@@ -5003,7 +5063,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
   );
 
   return (
-    <main id="main-content" className="pt-24 pb-24 bg-white">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-24 bg-white">
       <SEOHead
         title={`${service.title} — Keshav Enterprises`}
         description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
@@ -5440,7 +5500,7 @@ const ProductsPage = ({ navigate }) => {
   }), [activeCategory, searchQuery]);
   const counts = useMemo(() => PRODUCT_CATEGORIES.reduce((a, c) => { a[c] = c === 'All' ? PRODUCTS.length : PRODUCTS.filter(p => p.category === c).length; return a; }, {}), []);
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
         description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`} canonicalPath="/products" pageType="website" />
       <div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
@@ -5461,9 +5521,7 @@ const ProductsPage = ({ navigate }) => {
             {searchQuery && <button onClick={() => setSearchQuery('')} aria-label="Clear search" className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"><X className="w-5 h-5" aria-hidden="true" /></button>}
           </div>
           <div className="relative w-full flex items-center mt-2" role="group" aria-label="Filter by product category">
-            {showLeft && (
-              <div className="absolute left-0 top-0 bottom-6 w-20 md:w-28 bg-gradient-to-r from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none" aria-hidden="true" />
-            )}
+
             <button onClick={() => scrollCats('left')} aria-label="Scroll categories left" className={`absolute left-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronLeft className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
             <div ref={categoryScrollRef} onScroll={handleScroll} style={{ scrollPaddingInline: '3rem' }} className="flex gap-2 sm:gap-3 overflow-x-auto w-full pb-6 pt-2 px-12 sm:px-14 md:px-16 snap-x snap-mandatory scroll-smooth relative z-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {PRODUCT_CATEGORIES.map(cat => (
@@ -5474,9 +5532,7 @@ const ProductsPage = ({ navigate }) => {
               ))}
             </div>
             <button onClick={() => scrollCats('right')} aria-label="Scroll categories right" className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><ChevronRight className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" /></button>
-            {showRight && (
-              <div className="absolute right-0 top-0 bottom-6 w-20 md:w-28 bg-gradient-to-l from-slate-50 via-slate-50/80 to-transparent z-10 pointer-events-none" aria-hidden="true" />
-            )}
+
           </div>
           {(searchQuery || activeCategory !== 'All') && (
             <div className="flex items-center gap-3 -mt-2" role="status" aria-live="polite">
@@ -5487,7 +5543,7 @@ const ProductsPage = ({ navigate }) => {
         </div>
         {filtered.length > 0
           ? <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" role="list" aria-label={`${filtered.length} products`}>
-            {filtered.map(p => <div key={p.id} role="listitem"><ProductCard product={p} navigate={navigate} /></div>)}
+            {filtered.map((p, idx) => <div key={p.id} role="listitem"><ProductCard product={p} navigate={navigate} priority={idx < 6} /></div>)}
           </div>
           : <div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm" role="status">
             <Search className="w-20 h-20 text-slate-200 mx-auto mb-6" aria-hidden="true" />
@@ -5718,7 +5774,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
   useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [industryId]);
 
   if (!ind || !detail) return (
-    <main id="main-content" className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
+    <main id="main-content" tabIndex={-1} className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50">
       <div className="text-center">
         <Building2 className="w-20 h-20 text-slate-300 mx-auto mb-6" />
         <h1 className="text-3xl font-black text-slate-900 mb-4">Industry Not Found</h1>
@@ -5729,7 +5785,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 
   const { Icon } = ind;
   return (
-    <main id="main-content" className="bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
       <SEOHead
         title={`${ind.title} | Industrial Solutions — Keshav Enterprises`}
         description={`${ind.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -5903,7 +5959,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
 const IndustriesPage = ({ navigate }) => (
-  <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
     <SEOHead title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
       description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products." canonicalPath="/industries" pageType="website" />
     <div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
@@ -6043,7 +6099,7 @@ const ContactPage = () => {
   };
   const inputClass = (err) => `w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50 border rounded-xl font-medium text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
   return (
-    <main id="main-content" className="pt-24 pb-20 bg-slate-50 min-h-screen">
+    <main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
       <SEOHead title="Contact Engineering Team — Request a Technical Quote"
         description="Contact Keshav Enterprises for turbine engineering RFQs, reverse engineering quotes, and 24x7 emergency breakdown support. Phone: +91 9149229448." canonicalPath="/contact" pageType="website" schema={FAQ_SCHEMA} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -6223,13 +6279,84 @@ const ContactPage = () => {
   );
 };
 
+// ─── ERROR BOUNDARY (Audit Fix: prevents full-page crashes) ──
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { hasError: false, error: null }; }
+  static getDerivedStateFromError(error) { return { hasError: true, error }; }
+  componentDidCatch(error, errorInfo) {
+    // Log to console; replace with Sentry.captureException(error) when available
+    console.error('[ErrorBoundary]', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main id="main-content" tabIndex={-1} className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4">
+          <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
+            <Shield className="w-10 h-10 text-red-500" aria-hidden="true" />
+          </div>
+          <h1 className="text-3xl font-black text-slate-900 mb-3">Something went wrong</h1>
+          <p className="text-slate-500 font-medium text-center max-w-md mb-8">An unexpected error occurred. Please refresh the page or contact our team for assistance.</p>
+          <div className="flex gap-4">
+            <button onClick={() => { this.setState({ hasError: false, error: null }); window.location.hash = '#/'; window.location.reload(); }}
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all">
+              Go to Home
+            </button>
+            <a href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent('Hi, I encountered an error on your website.')}`}
+              target="_blank" rel="noopener noreferrer"
+              className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#1ebe5d] transition-all flex items-center gap-2">
+              <MessageCircle className="w-4 h-4" /> WhatsApp Us
+            </a>
+          </div>
+        </main>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+// ─── 404 NOT FOUND PAGE (Audit Fix: unknown routes) ──────────
+const NotFoundPage = memo(({ navigate }) => (
+  <main id="main-content" tabIndex={-1} className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4">
+    <SEOHead title="Page Not Found — 404" description="The page you're looking for doesn't exist. Browse our products and services." canonicalPath="/404" />
+    <div className="text-center max-w-lg">
+      <p className="text-8xl font-black text-blue-600 mb-4">404</p>
+      <h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">Page Not Found</h1>
+      <p className="text-slate-500 font-medium mb-8">The page you're looking for doesn't exist or has been moved. Let us help you find what you need.</p>
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onClick={() => navigate('/')}
+          className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2">
+          <ArrowLeft className="w-4 h-4" /> Go Home
+        </button>
+        <button onClick={() => navigate('/products')}
+          className="bg-slate-900 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-md">
+          Browse Products
+        </button>
+        <a href={waMsg('Hi, I couldn\'t find a page on your website. Can you help?')}
+          target="_blank" rel="noopener noreferrer"
+          className="bg-[#25D366] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2">
+          <MessageCircle className="w-4 h-4" /> WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+));
+
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
   const [currentPath, setCurrentPath] = useState(() => window.location.hash.replace('#', '') || '/');
+  // AUDIT FIX: aria-live region for screen reader route announcements
+  const [routeAnnouncement, setRouteAnnouncement] = useState('');
 
   // Stable window listeners — registered once
   useEffect(() => {
-    const h = () => setCurrentPath(window.location.hash.replace('#', '') || '/');
+    const h = () => {
+      const newPath = window.location.hash.replace('#', '') || '/';
+      setCurrentPath(newPath);
+      // AUDIT FIX: scroll to top on back/forward navigation
+      window.scrollTo({ top: 0 });
+      // AUDIT FIX: move focus to main content for screen readers
+      setTimeout(() => document.getElementById('main-content')?.focus(), 100);
+    };
     window.addEventListener('popstate', h);
 
     // ── PERF: Back/Forward Cache (bfcache) fix ──
@@ -6301,12 +6428,17 @@ export default function App() {
   const navigate = useCallback((path) => {
     window.history.pushState(null, '', `#${path}`);
     setCurrentPath(path);
-    // scrollTo does not need rAF wrapping — it is already async and safe to call synchronously
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // AUDIT FIX: move focus to main content after navigation for a11y
+    setTimeout(() => document.getElementById('main-content')?.focus(), 150);
+    // AUDIT FIX: announce route change to screen readers
+    const pageName = path === '/' ? 'Home' : path.replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
+    setRouteAnnouncement(`Navigated to ${pageName} page`);
   }, []);
 
-  // PERF: useMemo prevents re-creating page component on every render
-  const page = useMemo(() => {
+  // Route resolution — AUDIT FIX: removed useMemo wrapper (JSX inside memo is an anti-pattern),
+  // added NotFoundPage for unknown routes instead of falling through to HomePage
+  const renderPage = () => {
     if (currentPath.startsWith('/product/')) return <ProductDetailPage productId={currentPath.split('/')[2]} navigate={navigate} />;
     if (currentPath.startsWith('/blog/')) return <BlogPostPage slug={currentPath.replace('/blog/', '')} navigate={navigate} />;
     if (currentPath.startsWith('/industry/')) return <IndustryDetailPage industryId={currentPath.split('/')[2]} navigate={navigate} />;
@@ -6320,17 +6452,23 @@ export default function App() {
       case '/products': return <ProductsPage navigate={navigate} />;
       case '/industries': return <IndustriesPage navigate={navigate} />;
       case '/contact': return <ContactPage />;
-      default: return <HomePage navigate={navigate} />;
+      default: return <NotFoundPage navigate={navigate} />;
     }
-  }, [currentPath, navigate]);
+  };
 
   return (
     <div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
+      {/* AUDIT FIX: aria-live region for screen reader route change announcements */}
+      <div className="sr-only" aria-live="assertive" aria-atomic="true" role="status">
+        {routeAnnouncement}
+      </div>
       <Navbar currentPath={currentPath} navigate={navigate} />
       <div className="flex-1 flex flex-col">
-        <Suspense fallback={<div className="flex-1 flex items-center justify-center min-h-[60vh]"><span className="sr-only">Loading…</span></div>}>
-          {page}
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<div className="flex-1 flex items-center justify-center min-h-[60vh]"><span className="sr-only">Loading…</span></div>}>
+            {renderPage()}
+          </Suspense>
+        </ErrorBoundary>
       </div>
       <DigitalProfilesStrip />
       <Footer navigate={navigate} />
