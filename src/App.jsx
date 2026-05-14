@@ -1533,229 +1533,9 @@ const INDUSTRIES = [
   },
 ];
 
-// ─── GLOBAL CSS (injected once, never re-created) ────────────────────────
-const MARQUEE_CSS = `
-  /* ── Animations ── */
-  @keyframes ke-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-  .ke-marquee{animation:ke-marquee 80s linear infinite;display:flex;width:max-content;will-change:transform;contain:layout style}
-  .ke-marquee-slow{animation:ke-marquee 160s linear infinite;display:flex;width:max-content;will-change:transform;contain:layout style}
-  .ke-marquee:hover,.ke-marquee-slow:hover{animation-play-state:paused}
-  .scrollbar-hide::-webkit-scrollbar{display:none}
-  .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
-  .lazy-section{opacity:1;transform:none;transition:opacity .55s ease,transform .55s ease}
-  .lazy-section.visible{opacity:1;transform:none}
-
-  @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-  .skeleton-shimmer{
-    position:absolute;inset:0;z-index:0;
-    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
-  }
-  /* Enhanced skeleton with product icon placeholder */
-  .skeleton-product{
-    position:absolute;inset:0;z-index:1;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
-  }
-  .skeleton-product::before{
-    content:'';width:48px;height:48px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
-    animation:ke-shimmer 1.25s linear infinite;
-    background-size:200% 100%;
-  }
-  .skeleton-product::after{
-    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
-    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
-  }
-  /* Product image container gradient for contrast */
-  .product-img-bg{
-    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
-  }
-  .media-img{opacity:0;transition:opacity .35s ease}
-  .media-img.is-loaded{opacity:1}
-
-  /* font-display:swap prevents invisible-text Lighthouse warning */
-  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed')}
-  @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
-
-  /* PERF: content-visibility on below-fold sections */
-  .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
-
-  /* Prevent flow images from overflowing; exclude absolute/fixed cover images so h-full is preserved */
-  img:not([class*="absolute"]):not([class*="fixed"]){max-width:100%;height:auto;display:block}
-  /* Absolute/fixed cover images: ensure object-cover fills parent correctly */
-  img.absolute,img.fixed{display:block;}
-
-  /* GPU compositing for marquees */
-  .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
-
-  /* Paint containment */
-  section:not(.hero-section){contain:paint}
-
-  /* ─── HERO MOBILE ─── */
-  .hero-mobile-vignette{display:none}
-  .hero-bg-img{opacity:0.90;object-position:center center}
-  @media(max-width:767px){
-    .hero-section{
-      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
-      background-size:cover;
-      background-position:center center;
-      background-repeat:no-repeat;
-    }
-    .hero-bg-layer{display:none!important}
-    .hero-desktop-grad{display:none!important}
-    .hero-mobile-vignette{display:none!important}
-    .hero-glow-orb{display:none!important}
-    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
-    .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
-  }
-
-  /* ─── MOBILE TYPOGRAPHY BOOST ─── */
-  @media(max-width:640px){
-    .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
-    .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
-    p{font-size:max(15px,1em);line-height:1.65}
-    .hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-    .glass-hero p{color:#d0e4f5!important}
-    .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
-  }
-
-  /* ─── MOBILE HEADING ALIGNMENT ─── */
-  @media(max-width:767px){
-    section h1,section h2,section h3,
-    main>div>h1,main>div>h2{text-align:center}
-    .section-divider{margin-left:auto!important;margin-right:auto!important}
-    nav[aria-label="Breadcrumb"] *,
-    label,input,select,textarea,
-    footer h3,footer li,footer p,
-    address *,
-    [role="tabpanel"] *,
-    .keep-left,
-    .keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
-    article .bg-white h2,article .bg-white p{text-align:left!important}
-    .md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
-    .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
-  }
-
-  /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
-  .product-img-wrap{aspect-ratio:1/1;contain:layout style;overflow:hidden}
-  .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
-  .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
-
-  /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
-  /* Social cards collapse gracefully on small screens */
-  .social-card{
-    min-width:0!important;
-    width:100%;
-    max-width:100%;
-    flex-shrink:1;
-  }
-  @media(max-width:640px){
-    /* Social card grid: 1 column on phones, 2 on wider phones */
-    .social-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.75rem;
-      width:100%;
-    }
-    .social-card{
-      min-width:0!important;
-      padding:0.75rem!important;
-      gap:0.625rem!important;
-    }
-    .social-card .social-handle{font-size:13px!important}
-    .social-card .social-sub{display:none}
-  }
-  @media(max-width:380px){
-    .social-cards-grid{grid-template-columns:1fr}
-  }
-
-  /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
-  .dir-card{
-    min-width:0!important;
-    flex-shrink:1;
-  }
-  @media(max-width:640px){
-    .dir-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.625rem;
-      width:100%;
-    }
-    .dir-card{
-      padding:0.75rem 0.875rem!important;
-      gap:0.5rem!important;
-      min-width:0!important;
-    }
-    .dir-card .dir-badge{font-size:10px!important}
-  }
-  @media(max-width:380px){
-    .dir-cards-grid{grid-template-columns:1fr}
-  }
-
-  /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
-  @media(max-width:640px){
-    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
-    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
-  }
-
-  /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
-  @media(max-width:480px){
-    .fp-card{width:13rem!important}
-  }
-
-  /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
-  @media(max-width:640px){
-    .sd-step-gap{gap:0.875rem!important}
-    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
-  }
-
-  /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
-  .email-link{
-    word-break:break-all;
-    overflow-wrap:anywhere;
-    min-width:0;
-  }
-
-  /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
-  @media(max-width:767px){
-    .timeline-connector{left:1rem!important}
-    .timeline-card{margin-left:3rem!important;margin-right:0!important}
-  }
-
-  /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
-  @media(max-width:480px){
-    .ind-oem-chips{gap:0.375rem!important}
-    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
-  }
-
-  /* ─── TAP TARGETS + SAFE AREA ─── */
-  @media(max-width:767px){
-    a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-    .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
-  }
-
-  /* ─── REDUCED MOTION ─── */
-  @media(prefers-reduced-motion:reduce){
-    .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
-    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
-    *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
-  }
-
-  /* ─── REUSABLE BUTTON UTILITIES ─── */
-  .btn-primary{background:#2563eb;color:#fff;font-weight:900;border-radius:0.75rem;transition:background 0.2s,transform 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem}
-  .btn-primary:hover{background:#3b82f6;transform:translateY(-2px)}
-  .btn-wa{background:#25D366;color:#fff;font-weight:900;border-radius:0.75rem;transition:background 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem}
-  .btn-wa:hover{background:#1ebe5d}
-  .card-hover{transition:box-shadow 0.3s,transform 0.3s,border-color 0.3s}
-  .card-hover:hover{box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);transform:translateY(-4px)}
-
-  /* ─── GLOBAL OVERFLOW GUARD ─── */
-  html,body{overflow-x:hidden;max-width:100vw}
-  *{box-sizing:border-box}
-`;
+// ─── GLOBAL CSS ──────────────────────────────────────────────────────────
+// PERF: All global CSS has been moved to index.css (loaded statically via main.jsx).
+// This eliminates runtime style injection and lets the browser process CSS in parallel with JS.
 
 // ─── LOCAL BUSINESS JSON-LD SCHEMA ────────────────────────────
 const LOCAL_SCHEMA = {
@@ -1895,31 +1675,8 @@ const getCategoryIcon = (category) => {
   }
 };
 
-// PERF: preconnect and dns-prefetch injected once at module level —
-// avoids re-querying/creating DOM nodes on every page transition.
-if (typeof document !== 'undefined') {
-  const addLink = (rel, href, crossOrigin) => {
-    const sel = `link[rel="${rel}"][href="${href}"]`;
-    if (!document.querySelector(sel)) {
-      const el = document.createElement('link');
-      el.rel = rel; el.href = href;
-      if (crossOrigin !== undefined) el.crossOrigin = crossOrigin;
-      document.head.appendChild(el);
-    }
-  };
-  addLink('preconnect', 'https://fonts.googleapis.com');
-  addLink('preconnect', 'https://fonts.gstatic.com', '');
-  addLink('dns-prefetch', 'https://api.whatsapp.com');
-  addLink('dns-prefetch', 'https://www.indiamart.com');
-  // Preload hero image for LCP
-  if (!document.querySelector('link[rel="preload"][as="image"]')) {
-    const pl = document.createElement('link');
-    pl.rel = 'preload'; pl.as = 'image'; pl.href = 'hero-background.png';
-    pl.setAttribute('fetchpriority', 'high');
-    pl.setAttribute('type', 'image/png');
-    document.head.appendChild(pl);
-  }
-}
+// PERF: preconnect, dns-prefetch, and hero preload are already declared in index.html.
+// Removed duplicate JS-based injection to avoid double resource hints.
 
 // ─── ANALYTICS: GA4 + Microsoft Clarity ──────────────────────
 // HOW TO USE:
@@ -3368,14 +3125,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 });
 
 // ─── HOME PAGE ────────────────────────────────────────────────
-// PERF: inject global CSS once at module parse time — avoids re-injecting
-// on every HomePage mount and eliminates the <style> element inside JSX.
-if (typeof document !== 'undefined' && !document.getElementById('ke-global-css')) {
-  const styleEl = document.createElement('style');
-  styleEl.id = 'ke-global-css';
-  styleEl.textContent = MARQUEE_CSS;
-  document.head.appendChild(styleEl);
-}
+// PERF: Global CSS now loaded statically via index.css (see main.jsx import).
 const FEATURED_PRODUCTS = (() => {
   const shuffled = [...PRODUCTS];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -3517,7 +3267,7 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* OEM Brands */}
-      <section className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden lazy-section" aria-label="OEM-compatible brands">
+      <section className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden lazy-section cv-auto" aria-label="OEM-compatible brands">
         <div className="max-w-7xl mx-auto px-4 mb-8">
           <p className="text-center text-sm font-black text-slate-600 uppercase tracking-widest">OEM-Compatible &amp; Trusted By Industry Leaders</p>
         </div>
@@ -3541,7 +3291,7 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* Stats */}
-      <section className="bg-slate-900 py-12 md:py-14 border-b border-slate-800 lazy-section" aria-labelledby="stats-heading">
+      <section className="bg-slate-900 py-12 md:py-14 border-b border-slate-800 lazy-section cv-auto" aria-labelledby="stats-heading">
         <h2 id="stats-heading" className="sr-only">Company statistics</h2>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
@@ -3564,7 +3314,7 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
-      <section className="bg-white py-14 border-b border-slate-100 lazy-section" aria-labelledby="why-us-heading">
+      <section className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto" aria-labelledby="why-us-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p id="why-us-heading" className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-10">Why Engineers &amp; Plant Managers Choose Keshav Enterprises</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -3756,7 +3506,7 @@ const HomePage = memo(({ navigate }) => {
         </div>
       </section>
       {/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
-      <section className="bg-[#0A192F] py-20 lazy-section" aria-labelledby="cta-heading">
+      <section className="bg-[#0A192F] py-20 lazy-section cv-auto" aria-labelledby="cta-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 id="cta-heading" className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">How Can We Help You Today?</h2>
@@ -6374,38 +6124,49 @@ export default function App() {
     };
   }, []);
 
-  // ── GOOGLE TRANSLATE INIT ──
+  // ── GOOGLE TRANSLATE INIT (deferred for performance) ──
+  // PERF: Defer Google Translate loading until after the page is interactive
+  // to avoid blocking the main thread during initial render (~92 KB JS).
   useEffect(() => {
     if (typeof window === 'undefined' || document.getElementById('google-translate-script')) return;
-    
-    // Inject custom CSS to hide Google Translate bar and highlights
-    const style = document.createElement('style');
-    style.innerHTML = `
-      body { top: 0 !important; }
-      .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
-      #google_translate_element { display: none !important; }
-      .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-      .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
-    `;
-    document.head.appendChild(style);
 
-    window.googleTranslateElementInit = () => {
-      new window.google.translate.TranslateElement({
-        pageLanguage: 'en',
-        includedLanguages: 'en,hi,zh-CN,es,fr,ar,ru,pt,de,ja',
-        autoDisplay: false
-      }, 'google_translate_element');
+    const initGoogleTranslate = () => {
+      // Inject custom CSS to hide Google Translate bar and highlights
+      const style = document.createElement('style');
+      style.textContent = `
+        body { top: 0 !important; }
+        .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
+        #google_translate_element { display: none !important; }
+        .goog-tooltip, .goog-tooltip:hover { display: none !important; }
+        .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+      `;
+      document.head.appendChild(style);
+
+      window.googleTranslateElementInit = () => {
+        new window.google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,hi,zh-CN,es,fr,ar,ru,pt,de,ja',
+          autoDisplay: false
+        }, 'google_translate_element');
+      };
+
+      const gtScript = document.createElement('script');
+      gtScript.id = 'google-translate-script';
+      gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      gtScript.async = true;
+      document.body.appendChild(gtScript);
+
+      const gtDiv = document.createElement('div');
+      gtDiv.id = 'google_translate_element';
+      document.body.appendChild(gtDiv);
     };
 
-    const gtScript = document.createElement('script');
-    gtScript.id = 'google-translate-script';
-    gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    gtScript.async = true;
-    document.body.appendChild(gtScript);
-    
-    const gtDiv = document.createElement('div');
-    gtDiv.id = 'google_translate_element';
-    document.body.appendChild(gtDiv);
+    // PERF: Load after the page is fully interactive
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(initGoogleTranslate, { timeout: 5000 });
+    } else {
+      setTimeout(initGoogleTranslate, 3000);
+    }
   }, []);
 
   // ── PERF: Intersection Observer — re-observe after each route change ──
