@@ -6486,16 +6486,18 @@ Navbar.displayName = 'Navbar';
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
 	<footer
-		className="bg-slate-950 text-slate-400 font-sans border-t-4 border-blue-600 cv-auto"
+		className="font-sans border-t-4 border-[#0891B2]"
+		style={{ background: '#050d1a', color: '#94a3b8' }}
 		role="contentinfo"
 	>
-		{/* Top accent line */}
-		<div className="h-0.5 w-full bg-blue-500" aria-hidden="true" />
+		{/* Top accent line — cyan glow */}
+		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg, #0891B2, #06B6D4, #67E8F9, #06B6D4, #0891B2)' }} aria-hidden="true" />
 
 		{/* ── Pre-footer CTA band ── */}
-		<div className="bg-linear-to-r from-slate-950 via-blue-900 to-slate-950 border-b border-blue-900/50 relative overflow-hidden">
+		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #071428 0%, #0d1f3c 50%, #071428 100%)', borderColor: '#0891B2' + '33' }}>
 			<div
-				className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-30 pointer-events-none"
+				className="absolute inset-0 opacity-20 pointer-events-none"
+				style={{ backgroundImage: `radial-gradient(circle at 20% 50%, #0891B220 0%, transparent 50%), radial-gradient(circle at 80% 50%, #06B6D420 0%, transparent 50%)` }}
 				aria-hidden="true"
 			/>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
@@ -6504,17 +6506,21 @@ const Footer = memo(({ navigate }) => (
 						<h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">
 							Need a quote or have an emergency breakdown?
 						</h2>
-						<p className="text-blue-200 font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm">
+						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm" style={{ color: '#67E8F9' }}>
 							Our engineering team responds within 24 hours
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-4 shrink-0 justify-center">
 						<a
 							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-							className="flex items-center gap-2 bg-slate-900 hover:bg-blue-600 border border-blue-500/50 hover:border-blue-400 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_25px_rgba(37,99,235,0.4)] hover:-translate-y-1"
+							className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none hover:-translate-y-1"
+							style={{ background: '#0d1f3c', border: '1px solid #0891B2' }}
+							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
+							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
 						>
 							<Phone
-								className="w-5 h-5 text-blue-300 group-hover:text-white shrink-0"
+								className="w-5 h-5 shrink-0"
+								style={{ color: '#67E8F9' }}
 								aria-hidden="true"
 							/>
 							{CONTACT_INFO.phones[0]}
@@ -6576,7 +6582,10 @@ const Footer = memo(({ navigate }) => (
 						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
 							<div
 								key={title}
-								className="flex items-center gap-5 bg-slate-900 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2"
+								className="flex items-center gap-5 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2"
+								style={{ background: '#071428', border: '1px solid #0d1f3c' }}
+								onMouseEnter={e => { e.currentTarget.style.borderColor = '#0891B2'; e.currentTarget.style.background = '#0d1f3c'; }}
+								onMouseLeave={e => { e.currentTarget.style.borderColor = '#0d1f3c'; e.currentTarget.style.background = '#071428'; }}
 							>
 								<div className="w-14 h-14 shrink-0 flex items-center justify-center relative bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
 									<img
@@ -6597,7 +6606,7 @@ const Footer = memo(({ navigate }) => (
 									<p className="text-white font-bold text-sm uppercase tracking-wider mb-1">
 										{title}
 									</p>
-									<p className="text-blue-400 font-mono text-xs tracking-widest">
+									<p className="font-mono text-xs tracking-widest" style={{ color: '#06B6D4' }}>
 										{sub}
 									</p>
 								</div>
@@ -6606,7 +6615,7 @@ const Footer = memo(({ navigate }) => (
 					</div>
 
 					{/* OEM compatibility */}
-					<p className="font-bold text-[10px] text-blue-500 uppercase tracking-[0.2em] mb-2">
+					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>
 						OEM Compatible With
 					</p>
 					<p className="text-slate-400 font-mono text-xs leading-relaxed">
@@ -6616,7 +6625,7 @@ const Footer = memo(({ navigate }) => (
 
 				{/* Col 2 — Navigate (2 cols) */}
 				<nav className="lg:col-span-2" aria-label="Footer site links">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>
 						Navigate
 					</h3>
 					<ul className="space-y-4">
@@ -6631,7 +6640,8 @@ const Footer = memo(({ navigate }) => (
 									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit"
 								>
 									<ChevronRight
-										className="w-4 h-4 text-blue-500/50 group-hover:text-blue-400 transition-colors"
+										className="w-4 h-4 transition-colors group-hover:translate-x-0.5"
+										style={{ color: '#0891B2' }}
 										aria-hidden="true"
 									/>
 									<span>{link.name}</span>
@@ -6643,7 +6653,7 @@ const Footer = memo(({ navigate }) => (
 
 				{/* Col 3 — Services (3 cols) */}
 				<div className="lg:col-span-3">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>
 						Core Services
 					</h3>
 					<ul className="space-y-4">
@@ -6665,7 +6675,8 @@ const Footer = memo(({ navigate }) => (
 									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit"
 								>
 									<Hexagon
-										className="w-3.5 h-3.5 text-blue-500/50 group-hover:text-blue-400 transition-colors"
+										className="w-3.5 h-3.5 transition-colors"
+										style={{ color: '#0891B2' }}
 										aria-hidden="true"
 									/>
 									<span>{label}</span>
@@ -6677,15 +6688,15 @@ const Footer = memo(({ navigate }) => (
 
 				{/* Col 4 — Contact (3 cols) */}
 				<address className="lg:col-span-3 not-italic">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>
 						Contact Us
 					</h3>
 
 					<div className="space-y-5">
 						{/* Address */}
 						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
-								<MapPin className="w-4 h-4 text-blue-400" aria-hidden="true" />
+							<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
+								<MapPin className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
 							</div>
 							<p className="text-slate-400 text-sm leading-relaxed">
 								{CONTACT_INFO.address}
@@ -6694,8 +6705,8 @@ const Footer = memo(({ navigate }) => (
 
 						{/* Phones */}
 						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
-								<Phone className="w-4 h-4 text-blue-400" aria-hidden="true" />
+							<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
+								<Phone className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
 							</div>
 							<div className="flex flex-col gap-1.5 mt-1">
 								{CONTACT_INFO.phones.map((p) => (
@@ -6710,13 +6721,12 @@ const Footer = memo(({ navigate }) => (
 							</div>
 						</div>
 
-						{/* Emails — all 4 addresses */}
+						{/* Emails */}
 						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
-								<Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
+							<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
+								<Mail className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
 							</div>
 							<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
-								{/* Step 1.2 — only public emails rendered; private emails removed from bundle */}
 								{[
 									{ addr: CONTACT_INFO.email, label: 'General' },
 									{ addr: CONTACT_INFO.infoEmail, label: 'Info' },
@@ -6726,10 +6736,10 @@ const Footer = memo(({ navigate }) => (
 										href={`mailto:${addr}`}
 										className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline group/email"
 									>
-										<span className="truncate group-hover/email:text-blue-300 transition-colors">
+										<span className="truncate group-hover/email:text-white transition-colors">
 											{addr}
 										</span>
-										<span className="font-mono text-[9px] uppercase tracking-widest text-slate-600 group-hover/email:text-blue-500 transition-colors">
+										<span className="font-mono text-[9px] uppercase tracking-widest transition-colors" style={{ color: '#0891B2' }}>
 											{label}
 										</span>
 									</a>
@@ -6741,7 +6751,7 @@ const Footer = memo(({ navigate }) => (
 			</div>
 
 			{/* ── Divider ── */}
-			<div className="h-px w-full bg-slate-800 mb-12" />
+			<div className="h-px w-full mb-12" style={{ background: '#0d1f3c' }} />
 
 			{/* ── Social media links ── */}
 			<div className="mb-14">
@@ -6838,7 +6848,7 @@ const Footer = memo(({ navigate }) => (
 			</div>
 
 			{/* ── Industries served ── */}
-			<div className="bg-slate-900 border border-slate-800 rounded-xl p-8 mb-10">
+			<div className="rounded-xl p-8 mb-10" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
 				<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
 					<div className="flex-1">
 						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">
@@ -6846,54 +6856,20 @@ const Footer = memo(({ navigate }) => (
 						</p>
 						<div className="flex flex-wrap gap-2">
 							{[
-								{
-									name: 'Power Generation',
-									text: 'text-yellow-400',
-									bg: 'bg-yellow-500/15',
-									border: 'border-yellow-500/30',
-								},
-								{
-									name: 'Sugar Mills',
-									text: 'text-green-400',
-									bg: 'bg-green-500/15',
-									border: 'border-green-500/30',
-								},
-								{
-									name: 'Paper & Pulp',
-									text: 'text-blue-400',
-									bg: 'bg-blue-500/15',
-									border: 'border-blue-500/30',
-								},
-								{
-									name: 'Oil & Gas',
-									text: 'text-orange-400',
-									bg: 'bg-orange-500/15',
-									border: 'border-orange-500/30',
-								},
-								{
-									name: 'Petrochemical',
-									text: 'text-purple-400',
-									bg: 'bg-purple-500/15',
-									border: 'border-purple-500/30',
-								},
-								{
-									name: 'Agro & Food',
-									text: 'text-teal-400',
-									bg: 'bg-teal-500/15',
-									border: 'border-teal-500/30',
-								},
-								{
-									name: 'Cement',
-									text: 'text-stone-400',
-									bg: 'bg-stone-500/15',
-									border: 'border-stone-500/30',
-								},
-							].map((ind) => (
+								{ name: 'Power Generation', color: '#facc15' },
+								{ name: 'Sugar Mills',      color: '#4ade80' },
+								{ name: 'Paper & Pulp',     color: '#67E8F9' },
+								{ name: 'Oil & Gas',        color: '#fb923c' },
+								{ name: 'Petrochemical',    color: '#c084fc' },
+								{ name: 'Agro & Food',      color: '#2dd4bf' },
+								{ name: 'Cement',           color: '#a8a29e' },
+							].map(({ name, color }) => (
 								<span
-									key={ind.name}
-									className={`text-xs ${ind.text} ${ind.bg} ${ind.border} border px-3 py-1.5 rounded-full font-bold`}
+									key={name}
+									className="text-xs px-3 py-1.5 rounded-full font-bold"
+									style={{ color, background: color + '18', border: `1px solid ${color}44` }}
 								>
-									{ind.name}
+									{name}
 								</span>
 							))}
 						</div>
@@ -6903,7 +6879,7 @@ const Footer = memo(({ navigate }) => (
 							Capability Range
 						</p>
 						<p className="text-white font-black text-3xl tracking-tight">
-							5 kW <span className="text-slate-600 font-normal mx-1">–</span> 27
+							5 kW <span className="font-normal mx-1" style={{ color: '#0d1f3c' }}>–</span> 27
 							MW
 						</p>
 					</div>
@@ -6911,13 +6887,13 @@ const Footer = memo(({ navigate }) => (
 			</div>
 
 			{/* ── Bottom copyright bar ── */}
-			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-800">
+			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
 				<p className="text-slate-400 text-sm">
 					© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.
 				</p>
 				<p className="text-slate-400 text-sm flex items-center gap-2">
 					<span>GST:</span>
-					<span className="text-slate-300 font-mono bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+					<span className="text-slate-300 font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
 						{CONTACT_INFO.gst}
 					</span>
 				</p>
