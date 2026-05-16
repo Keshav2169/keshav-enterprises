@@ -7086,6 +7086,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	const [imgLoaded, setImgLoaded]   = useState(false);
 	const [imgErr, setImgErr]         = useState(false);
 	const [lightbox, setLightbox]     = useState(false);
+	const [lbLoaded, setLbLoaded]     = useState(false);
+	const [lbErr, setLbErr]           = useState(false);
 	const [slideDir, setSlideDir]     = useState('');
 	const [isSliding, setIsSliding]   = useState(false);
 	const [thumbLoaded, setThumbLoaded] = useState({});
@@ -7104,29 +7106,57 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		setPrevProductId(productId);
 		setActiveImg(0); setImgLoaded(false); setImgErr(false);
 		setLightbox(false); setSlideDir(''); setIsSliding(false);
-		setThumbLoaded({}); setTab('specs');
+		setThumbLoaded({}); setTab('specs'); setLbLoaded(false); setLbErr(false);
 	}
 	useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [productId]);
 
 	// Reset main image state on slide change
 	const [prevImg, setPrevImg] = useState(activeImg);
 	if (activeImg !== prevImg) {
-		setPrevImg(activeImg); setImgLoaded(false); setImgErr(false);
+		setPrevImg(activeImg); setImgLoaded(false); setImgErr(false); setLbLoaded(false); setLbErr(false);
 	}
 
 	const images = useMemo(() => (product?.images || []).filter(Boolean), [product]);
 	const total  = images.length;
 
+	// Safety ref to clear isSliding if onAnimationEnd never fires (e.g. missing/errored image)
+	const slidingTimerRef = useRef(null);
+
 	const goTo = useCallback((idx, dir) => {
 		if (idx === activeImg || isSliding) return;
-		setSlideDir(dir || (idx > activeImg ? 'left' : 'right'));
+		// Skip images that have already hard-errored in the thumbnail tracker
+		// Walk in the requested direction to find the next non-errored image
+		const findNext = (startIdx, direction) => {
+			for (let step = 1; step < total; step++) {
+				const candidate = (startIdx + direction * step + total) % total;
+				const thumbState = thumbLoaded[candidate];
+				if (!thumbState?.err) return candidate;
+			}
+			return startIdx; // all errored — stay put
+		};
+
+		const thumbState = thumbLoaded[idx];
+		const resolvedIdx = thumbState?.err ? findNext(activeImg, idx > activeImg ? 1 : -1) : idx;
+		if (resolvedIdx === activeImg) return;
+
+		setSlideDir(dir || (resolvedIdx > activeImg ? 'left' : 'right'));
 		setIsSliding(true);
-		setActiveImg(idx);
+		setActiveImg(resolvedIdx);
+
+		// Safety fallback: always clear isSliding after 600ms so navigation
+		// can never permanently lock (fires if onAnimationEnd is never triggered
+		// due to a missing/errored image that has no rendered animation).
+		if (slidingTimerRef.current) clearTimeout(slidingTimerRef.current);
+		slidingTimerRef.current = setTimeout(() => setIsSliding(false), 600);
+
 		setTimeout(() => {
 			const strip = thumbStripRef.current;
-			if (strip) strip.children[idx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+			if (strip) strip.children[resolvedIdx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
 		}, 40);
-	}, [activeImg, isSliding]);
+	}, [activeImg, isSliding, total, thumbLoaded]);
+
+	// Cleanup safety timer on unmount
+	useEffect(() => () => { if (slidingTimerRef.current) clearTimeout(slidingTimerRef.current); }, []);
 
 	const prev = useCallback(() => goTo(activeImg === 0 ? total - 1 : activeImg - 1, 'right'), [goTo, activeImg, total]);
 	const next = useCallback(() => goTo(activeImg === total - 1 ? 0 : activeImg + 1, 'left'),  [goTo, activeImg, total]);
@@ -7257,7 +7287,13 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 										{/* Slide-transition wrapper */}
 										<div
 											className={`absolute inset-0 flex items-center justify-center p-5 pdp-slide pdp-slide-${slideDir} ${isSliding ? 'pdp-sliding' : ''}`}
-											onAnimationEnd={() => setIsSliding(false)}
+											onAnimationEnd={() => {
+												setIsSliding(false);
+												if (slidingTimerRef.current) {
+													clearTimeout(slidingTimerRef.current);
+													slidingTimerRef.current = null;
+												}
+											}}
 										>
 											<img
 												key={activeImage}
@@ -7268,7 +7304,17 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												fetchPriority="high"
 												className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.12)] ${imgLoaded ? 'is-loaded' : ''}`}
 												onLoad={() => setImgLoaded(true)}
-												onError={() => { setImgErr(true); setImgLoaded(false); }}
+												onError={() => {
+													setImgErr(true);
+													setImgLoaded(false);
+													// Also clear isSliding — if image 404s during a slide,
+													// onAnimationEnd will never fire, so unlock navigation here.
+													setIsSliding(false);
+													if (slidingTimerRef.current) {
+														clearTimeout(slidingTimerRef.current);
+														slidingTimerRef.current = null;
+													}
+												}}
 											/>
 										</div>
 
@@ -7553,13 +7599,36 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</button>
 					</>
 				)}
-				<img
-					key={`lb-${activeImg}`}
-					src={activeImage}
-					alt={`${product.title} — zoomed view ${activeImg + 1}`}
-					className="max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl"
+				{/* Lightbox image with skeleton while loading */}
+				<div
+					className="relative flex items-center justify-center"
+					style={{ minWidth: 120, minHeight: 120 }}
 					onClick={(e) => e.stopPropagation()}
-				/>
+				>
+					{!lbLoaded && !lbErr && (
+						<div
+							className="absolute inset-0 flex items-center justify-center"
+							aria-hidden="true"
+						>
+							<div className="w-24 h-24 rounded-2xl skeleton-shimmer opacity-40" />
+						</div>
+					)}
+					{lbErr ? (
+						<div className="flex flex-col items-center justify-center text-white/50 gap-3">
+							<Settings className="w-14 h-14" aria-hidden="true" />
+							<span className="text-sm font-bold">Image unavailable</span>
+						</div>
+					) : (
+						<img
+							key={`lb-${activeImg}`}
+							src={activeImage}
+							alt={`${product.title} — zoomed view ${activeImg + 1}`}
+							className={`max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl transition-opacity duration-300 ${lbLoaded ? 'opacity-100' : 'opacity-0'}`}
+							onLoad={() => setLbLoaded(true)}
+							onError={() => { setLbErr(true); setLbLoaded(false); }}
+						/>
+					)}
+				</div>
 				{total > 1 && (
 					<div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 flex-wrap justify-center max-w-[80vw]">
 						{images.map((_, i) => (
