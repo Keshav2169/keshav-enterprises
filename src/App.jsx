@@ -53,8 +53,8 @@ const CONTACT_INFO = {
 	phones: ['+91 9149229448', '+91 6397363268'],
 	email: 'ksengg007@gmail.com',
 	infoEmail: 'info.ksengg007@gmail.com',
-	secondaryEmail: 'ppshekher71@gmail.com',
-	marketingEmail: 'ksenggmrkt007@gmail.com',
+	// Step 1.2 — secondaryEmail + marketingEmail removed from JS bundle.
+	// Store them in Formspree notification settings, not in client-side code.
 	address:
 		'Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, U.P., India',
 	whatsapp: '6397363268',
@@ -4955,6 +4955,13 @@ const MARQUEE_CSS = `
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
 
+  /* ─── PRODUCT DETAIL GALLERY — slide transitions ─── */
+  @keyframes pdp-in-left {from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:translateX(0)}}
+  @keyframes pdp-in-right{from{opacity:0;transform:translateX(-28px)} to{opacity:1;transform:translateX(0)}}
+  .pdp-slide{will-change:transform,opacity}
+  .pdp-sliding.pdp-slide-left {animation:pdp-in-left  .3s cubic-bezier(.25,.46,.45,.94) both}
+  .pdp-sliding.pdp-slide-right{animation:pdp-in-right .3s cubic-bezier(.25,.46,.45,.94) both}
+
   /* font-display:swap prevents invisible-text Lighthouse warning */
   @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed')}
   @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
@@ -5140,13 +5147,13 @@ const MARQUEE_CSS = `
 const LOCAL_SCHEMA = {
 	'@context': 'https://schema.org',
 	'@type': ['LocalBusiness', 'ProfessionalService'],
-	name: 'Keshav Enterprises',
-	alternateName: 'Keshav Engg',
+	name: 'Keshav Turbo Services',
+	alternateName: ['Keshav Enterprises', 'Keshav Engg'],
 	description:
 		'Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW. Serving power, sugar, paper, oil & gas, and petrochemical industries across India.',
-	url: 'https://keshaventerprises.in',
-	logo: 'https://keshaventerprises.in/keshav-logo.png',
-	image: 'https://keshaventerprises.in/og-image.webp',
+	url: 'https://www.keshavturboservices.com',
+	logo: 'https://www.keshavturboservices.com/keshav-logo.png',
+	image: 'https://www.keshavturboservices.com/og-image.webp',
 	telephone: ['+919149229448', '+916397363268'],
 	email: 'ksengg007@gmail.com',
 	currenciesAccepted: 'INR',
@@ -5265,7 +5272,7 @@ const FAQ_SCHEMA = {
 			name: 'What turbine makes does Keshav Enterprises service?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Keshav Enterprises services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW.',
+				text: 'Keshav Turbo Services services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW.',
 			},
 		},
 		{
@@ -5273,7 +5280,7 @@ const FAQ_SCHEMA = {
 			name: 'Does Keshav Enterprises offer emergency turbine breakdown support?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Yes. Keshav Enterprises provides 24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India. Contact us on WhatsApp at +91 6397363268 for immediate assistance.',
+				text: 'Yes. Keshav Turbo Services provides 24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India. Contact us on WhatsApp at +91 6397363268 for immediate assistance.',
 			},
 		},
 		{
@@ -5281,7 +5288,7 @@ const FAQ_SCHEMA = {
 			name: 'What is the power range of turbines Keshav Enterprises can overhaul?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Keshav Enterprises handles steam turbines from 5 kW to 27 MW — both back-pressure and condensing types, horizontal and vertical, single and multi-stage.',
+				text: 'Keshav Turbo Services handles steam turbines from 5 kW to 27 MW — both back-pressure and condensing types, horizontal and vertical, single and multi-stage.',
 			},
 		},
 		{
@@ -5289,7 +5296,7 @@ const FAQ_SCHEMA = {
 			name: 'Can Keshav Enterprises reverse engineer obsolete turbine parts?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Yes. Using 3D laser scanners, CMM coordinate measuring machines, and PMI material testing, Keshav Enterprises reverse engineers obsolete turbine components to exact OEM dimensional and material standards.',
+				text: 'Yes. Using 3D laser scanners, CMM coordinate measuring machines, and PMI material testing, Keshav Turbo Services reverse engineers obsolete turbine components to exact OEM dimensional and material standards.',
 			},
 		},
 		{
@@ -5297,7 +5304,7 @@ const FAQ_SCHEMA = {
 			name: 'Where is Keshav Enterprises located?',
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: 'Keshav Enterprises is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India.',
+				text: 'Keshav Turbo Services is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India.',
 			},
 		},
 	],
@@ -5306,6 +5313,9 @@ const FAQ_SCHEMA = {
 // ─── UTILITY ──────────────────────────────────────────────────
 const waMsg = (text) =>
 	`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
+
+// Step 1.1 — sanitise helper: strip WhatsApp markdown chars before building messages
+const sanitise = (str) => str.replace(/[*_~`]/g, '').trim();
 
 const getCategoryIcon = (category) => {
 	const cls =
@@ -5401,24 +5411,23 @@ if (typeof document !== 'undefined') {
 }
 
 // ─── SEO HEAD ─────────────────────────────────────────────────
-// SITE_URL: Update this to your live domain once deployed
-// IMPORTANT: Generate a sitemap.xml at /public/sitemap.xml covering all 105 product
-// pages (/product/*), 7 service pages (/service/*), 7 industry pages (/industry/*),
-// blog posts, and static pages. Also add /public/robots.txt pointing to the sitemap.
-const SITE_URL = 'https://keshaventerprises.in';
+// SITE_URL: Live production domain
+// Ensure /public/sitemap.xml, /public/robots.txt, /public/llms.txt,
+// and /public/llms-full.txt are deployed alongside this app.
+const SITE_URL = 'https://www.keshavturboservices.com';
 const OG_IMAGE = `${SITE_URL}/og-image.webp`; // Upload a 1200x630 px og-image.webp to /public
 const SITE_KEYWORDS =
 	'turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering';
 
 const SEOHead = memo(
-	({ title, description, schema, pageType, canonicalPath, publishedTime }) => {
+	({ title, description, schema, pageType, canonicalPath, publishedTime, noIndex }) => {
 		useEffect(() => {
 			const fullTitle = title
-				? `${title} | Keshav Enterprises`
-				: 'Keshav Enterprises | Industrial Turbine Engineering — Shamli, UP';
+				? `${title} | Keshav Turbo Services`
+				: 'Keshav Turbo Services | Industrial Steam Turbine Engineering — Shamli, UP';
 			const fullDesc =
 				description ||
-				'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Enterprises, Shamli, UP, India.';
+				'Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Turbo Services, Shamli, UP, India.';
 			const canonical = canonicalPath
 				? `${SITE_URL}${canonicalPath}`
 				: SITE_URL;
@@ -5463,9 +5472,11 @@ const SEOHead = memo(
 				'meta[name="robots"]',
 				'name',
 				'robots',
-				'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
+				noIndex
+					? 'noindex, nofollow'
+					: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
 			);
-			sm('meta[name="author"]', 'name', 'author', 'Keshav Enterprises');
+			sm('meta[name="author"]', 'name', 'author', 'Keshav Turbo Services');
 			sm('meta[name="theme-color"]', 'name', 'theme-color', '#0A192F');
 
 			// ── Canonical ──
@@ -5522,14 +5533,16 @@ const SEOHead = memo(
 				'meta[property="og:image:alt"]',
 				'property',
 				'og:image:alt',
-				'Keshav Enterprises — Industrial Turbine Engineering, Shamli, UP',
+				'Keshav Turbo Services — Industrial Turbine Engineering, Shamli, UP',
 			);
 			sm('meta[property="og:locale"]', 'property', 'og:locale', 'en_IN');
+			// og:locale:alternate — signals multilingual support to social crawlers
+			sm('meta[property="og:locale:alternate"]', 'property', 'og:locale:alternate', 'hi_IN');
 			sm(
 				'meta[property="og:site_name"]',
 				'property',
 				'og:site_name',
-				'Keshav Enterprises',
+				'Keshav Turbo Services',
 			);
 			if (pageType === 'article' && publishedTime) {
 				sm(
@@ -5559,6 +5572,8 @@ const SEOHead = memo(
 				'twitter:card',
 				'summary_large_image',
 			);
+			sm('meta[name="twitter:site"]', 'name', 'twitter:site', '@ksengg007');
+			sm('meta[name="twitter:creator"]', 'name', 'twitter:creator', '@ksengg007');
 			sm('meta[name="twitter:title"]', 'name', 'twitter:title', fullTitle);
 			sm(
 				'meta[name="twitter:description"]',
@@ -5571,7 +5586,7 @@ const SEOHead = memo(
 				'meta[name="twitter:image:alt"]',
 				'name',
 				'twitter:image:alt',
-				'Keshav Enterprises — Industrial Turbine Engineering',
+				'Keshav Turbo Services — Industrial Turbine Engineering',
 			);
 
 			// ── Geo ──
@@ -5601,7 +5616,7 @@ const SEOHead = memo(
 				}
 				ld.textContent = JSON.stringify(schema);
 			}
-		}, [title, description, schema, pageType, canonicalPath, publishedTime]);
+		}, [title, description, schema, pageType, canonicalPath, publishedTime, noIndex]);
 		return null;
 	},
 );
@@ -6179,6 +6194,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 						))}
 						{/* search + language switcher */}
 						<div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
+							<LanguageSwitcher scrolled={scrolled} />
 							<search
 								className="relative flex items-center"
 								onMouseEnter={() => setIsSearchOpen(true)}
@@ -6700,11 +6716,10 @@ const Footer = memo(({ navigate }) => (
 								<Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
 							</div>
 							<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
+								{/* Step 1.2 — only public emails rendered; private emails removed from bundle */}
 								{[
 									{ addr: CONTACT_INFO.email, label: 'General' },
 									{ addr: CONTACT_INFO.infoEmail, label: 'Info' },
-									{ addr: CONTACT_INFO.secondaryEmail, label: 'Director' },
-									{ addr: CONTACT_INFO.marketingEmail, label: 'Marketing' },
 								].map(({ addr, label }) => (
 									<a
 										key={addr}
@@ -6736,112 +6751,85 @@ const Footer = memo(({ navigate }) => (
 							href: CONTACT_INFO.linkedin,
 							label: `LinkedIn — ${CONTACT_INFO.linkedinHandle}`,
 							name: 'LinkedIn',
-							bg: '#0A66C2',
+							brand: '#0A66C2',
+							iconBg: '#E8F0FB',
 						},
 						{
 							href: CONTACT_INFO.youtube,
 							label: `YouTube — ${CONTACT_INFO.youtubeHandle}`,
 							name: 'YouTube',
-							bg: '#FF0000',
+							brand: '#FF0000',
+							iconBg: '#FDECEA',
 						},
 						{
 							href: CONTACT_INFO.instagram,
 							label: `Instagram — ${CONTACT_INFO.instagramHandle}`,
 							name: 'Instagram',
-							bg: '#E1306C',
+							brand: '#C13584',
+							iconBg: '#FCE4F3',
 						},
 						{
 							href: CONTACT_INFO.facebook,
 							label: `Facebook — ${CONTACT_INFO.facebookHandle}`,
 							name: 'Facebook',
-							bg: '#1877F2',
+							brand: '#1877F2',
+							iconBg: '#E7F0FE',
 						},
 						{
 							href: CONTACT_INFO.twitter,
 							label: `X — ${CONTACT_INFO.twitterHandle}`,
 							name: 'X',
-							bg: '#000000',
+							brand: '#111111',
+							iconBg: '#F0F0F0',
 						},
 						{
 							href: CONTACT_INFO.reddit,
 							label: `Reddit — ${CONTACT_INFO.redditHandle}`,
 							name: 'Reddit',
-							bg: '#FF4500',
+							brand: '#FF4500',
+							iconBg: '#FFF0EB',
 						},
-					].map(({ href, label, name, bg }) => (
+					].map(({ href, label, name, brand, iconBg }) => (
 						<a
 							key={name}
 							href={href}
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label={label}
-							className="flex items-center justify-center gap-3 bg-white border border-slate-200 hover:border-slate-300 px-5 py-4 rounded-xl transition-all hover:bg-slate-50 shadow-md hover:shadow-lg hover:-translate-y-1 group focus:outline-none w-[calc(50%-6px)] sm:w-auto"
+							className="flex items-center gap-3 bg-white border border-slate-200 hover:border-slate-300 px-5 py-3.5 rounded-2xl transition-all hover:shadow-lg hover:-translate-y-0.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shadow-sm w-[calc(50%-6px)] sm:w-auto min-w-35"
 						>
 							<span
 								aria-hidden="true"
-								className="flex items-center justify-center w-10 h-10 rounded-lg bg-slate-100 group-hover:bg-white transition-colors shrink-0 shadow-sm border border-slate-100"
-								style={{ color: bg }}
+								className="flex items-center justify-center w-10 h-10 rounded-xl shrink-0 transition-transform group-hover:scale-110"
+								style={{ background: iconBg, color: brand }}
 							>
 								{name === 'X' ? (
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
 									</svg>
 								) : name === 'LinkedIn' ? (
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
 									</svg>
 								) : name === 'YouTube' ? (
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
 									</svg>
 								) : name === 'Instagram' ? (
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
 									</svg>
 								) : name === 'Facebook' ? (
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z" />
 									</svg>
 								) : (
-									<svg
-										aria-hidden="true"
-										className="w-6 h-6"
-										fill="currentColor"
-										viewBox="0 0 24 24"
-									>
+									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
 										<path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z" />
 									</svg>
 								)}
 							</span>
-							<span
-								className="font-black text-base tracking-wide transition-colors"
-								style={{ color: bg }}
-							>
+							<span className="font-black text-sm tracking-wide" style={{ color: brand }}>
 								{name}
 							</span>
 						</a>
@@ -7094,40 +7082,77 @@ FloatingButtons.displayName = 'FloatingButtons';
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
-	const [activeImg, setActiveImg] = useState(0);
-	const [imgErr, setImgErr] = useState(false);
-	const [imgLoaded, setImgLoaded] = useState(false);
-	const [tab, setTab] = useState('specs');
+	const [activeImg, setActiveImg]   = useState(0);
+	const [imgLoaded, setImgLoaded]   = useState(false);
+	const [imgErr, setImgErr]         = useState(false);
+	const [lightbox, setLightbox]     = useState(false);
+	const [slideDir, setSlideDir]     = useState('');
+	const [isSliding, setIsSliding]   = useState(false);
+	const [thumbLoaded, setThumbLoaded] = useState({});
+	const [tab, setTab]               = useState('specs');
+	const thumbStripRef               = useRef(null);
+	const touchRef                    = useRef(null);
+
 	const product = useMemo(
 		() => PRODUCTS.find((p) => p.id === productId),
 		[productId],
 	);
 
+	// Reset all state when product changes
 	const [prevProductId, setPrevProductId] = useState(productId);
 	if (productId !== prevProductId) {
 		setPrevProductId(productId);
-		setActiveImg(0);
-		setImgErr(false);
-		setImgLoaded(false);
-		setTab('specs');
+		setActiveImg(0); setImgLoaded(false); setImgErr(false);
+		setLightbox(false); setSlideDir(''); setIsSliding(false);
+		setThumbLoaded({}); setTab('specs');
 	}
-	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}, [productId]);
+	useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [productId]);
 
-	const [prevActiveImg, setPrevActiveImg] = useState(activeImg);
-	if (activeImg !== prevActiveImg) {
-		setPrevActiveImg(activeImg);
-		setImgLoaded(false);
-		setImgErr(false);
+	// Reset main image state on slide change
+	const [prevImg, setPrevImg] = useState(activeImg);
+	if (activeImg !== prevImg) {
+		setPrevImg(activeImg); setImgLoaded(false); setImgErr(false);
 	}
+
+	const images = useMemo(() => (product?.images || []).filter(Boolean), [product]);
+	const total  = images.length;
+
+	const goTo = useCallback((idx, dir) => {
+		if (idx === activeImg || isSliding) return;
+		setSlideDir(dir || (idx > activeImg ? 'left' : 'right'));
+		setIsSliding(true);
+		setActiveImg(idx);
+		setTimeout(() => {
+			const strip = thumbStripRef.current;
+			if (strip) strip.children[idx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+		}, 40);
+	}, [activeImg, isSliding]);
+
+	const prev = useCallback(() => goTo(activeImg === 0 ? total - 1 : activeImg - 1, 'right'), [goTo, activeImg, total]);
+	const next = useCallback(() => goTo(activeImg === total - 1 ? 0 : activeImg + 1, 'left'),  [goTo, activeImg, total]);
+
+	// Keyboard navigation
+	useEffect(() => {
+		const h = (e) => {
+			if (e.key === 'ArrowLeft')  { e.preventDefault(); prev(); }
+			if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+			if (e.key === 'Escape' && lightbox) { e.preventDefault(); setLightbox(false); }
+		};
+		window.addEventListener('keydown', h);
+		return () => window.removeEventListener('keydown', h);
+	}, [prev, next, lightbox]);
+
+	// Touch swipe
+	const onTouchStart = (e) => { touchRef.current = e.touches[0].clientX; };
+	const onTouchEnd   = (e) => {
+		if (touchRef.current === null) return;
+		const dx = e.changedTouches[0].clientX - touchRef.current;
+		if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
+		touchRef.current = null;
+	};
+
 	const related = useMemo(
-		() =>
-			product
-				? PRODUCTS.filter(
-						(p) => p.category === product.category && p.id !== product.id,
-					).slice(0, 3)
-				: [],
+		() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [],
 		[product],
 	);
 	const productSchema = useMemo(
@@ -7145,38 +7170,18 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								offers: {
 									'@type': 'Offer',
 									availability: 'https://schema.org/InStock',
-									seller: {
-										'@type': 'Organization',
-										name: 'Keshav Enterprises',
-									},
+									seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
 									priceCurrency: 'INR',
-									priceSpecification: {
-										'@type': 'PriceSpecification',
-										priceCurrency: 'INR',
-									},
+									priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'INR' },
 								},
-								manufacturer: {
-									'@type': 'Organization',
-									name: 'Keshav Enterprises',
-									url: 'https://keshaventerprises.in',
-								},
+								manufacturer: { '@type': 'Organization', name: 'Keshav Turbo Services', url: 'https://www.keshavturboservices.com' },
 							},
 							{
 								'@type': 'BreadcrumbList',
 								itemListElement: [
-									{
-										'@type': 'ListItem',
-										position: 1,
-										name: 'Products',
-										item: 'https://keshaventerprises.in/#/products',
-									},
+									{ '@type': 'ListItem', position: 1, name: 'Products', item: 'https://www.keshavturboservices.com/#/products' },
 									{ '@type': 'ListItem', position: 2, name: product.category },
-									{
-										'@type': 'ListItem',
-										position: 3,
-										name: product.title,
-										item: `https://keshaventerprises.in/#/product/${product.id}`,
-									},
+									{ '@type': 'ListItem', position: 3, name: product.title, item: `https://www.keshavturboservices.com/#/product/${product.id}` },
 								],
 							},
 						],
@@ -7184,39 +7189,26 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 				: null,
 		[product],
 	);
+
 	if (!product)
 		return (
-			<main
-				id="main-content"
-				tabIndex={-1}
-				className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50"
-			>
+			<main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
 				<SEOHead title="Product Not Found" />
 				<div>
-					<Settings
-						className="w-20 h-20 text-slate-300 mx-auto mb-6"
-						aria-hidden="true"
-					/>
-					<h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">
-						Product Not Found
-					</h1>
-					<button
-						type="button"
-						onClick={() => navigate('/products')}
-						className="text-blue-600 font-bold hover:underline text-lg"
-					>
+					<Settings className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
+					<h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Product Not Found</h1>
+					<button type="button" onClick={() => navigate('/products')} className="text-blue-600 font-bold hover:underline text-lg">
 						Return to Catalog
 					</button>
 				</div>
 			</main>
 		);
-	const activeImage = product.images?.[activeImg];
+
+	const activeImage = images[activeImg] || '';
+
 	return (
-		<main
-			id="main-content"
-			tabIndex={-1}
-			className="pt-28 pb-20 bg-slate-50 min-h-screen"
-		>
+		<>
+		<main id="main-content" tabIndex={-1} className="pt-28 pb-20 bg-slate-50 min-h-screen">
 			<SEOHead
 				title={`${product.title} | ${product.category}`}
 				description={`${product.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -7225,116 +7217,167 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 				pageType="website"
 			/>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<nav
-					aria-label="Breadcrumb"
-					className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2"
-				>
-					<button
-						type="button"
-						onClick={() => navigate('/products')}
-						className="hover:text-blue-600 transition-colors flex items-center focus:outline-none focus-visible:underline"
-					>
+				<nav aria-label="Breadcrumb" className="flex items-center text-sm font-bold text-slate-500 mb-8 uppercase tracking-widest flex-wrap gap-2">
+					<button type="button" onClick={() => navigate('/products')} className="hover:text-blue-600 transition-colors flex items-center focus:outline-none focus-visible:underline">
 						<ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" /> Catalog
 					</button>
-					<span aria-hidden="true" className="mx-1">
-						/
-					</span>
-					<button
-						type="button"
-						onClick={() => navigate('/products')}
-						className="hover:text-blue-600 transition-colors text-slate-400 focus:outline-none focus-visible:underline"
-					>
+					<span aria-hidden="true" className="mx-1">/</span>
+					<button type="button" onClick={() => navigate('/products')} className="hover:text-blue-600 transition-colors text-slate-400 focus:outline-none focus-visible:underline">
 						{product.category}
 					</button>
-					<span aria-hidden="true" className="mx-1">
-						/
-					</span>
-					<span
-						className="text-slate-800 truncate max-w-50 md:max-w-full"
-						aria-current="page"
-					>
-						{product.title}
-					</span>
+					<span aria-hidden="true" className="mx-1">/</span>
+					<span className="text-slate-800 truncate max-w-50 md:max-w-full" aria-current="page">{product.title}</span>
 				</nav>
+
 				<div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 overflow-hidden border border-slate-200 mb-10">
 					<div className="grid grid-cols-1 lg:grid-cols-12">
-						<div className="lg:col-span-5 p-8 lg:p-10 bg-white flex flex-col items-center border-b lg:border-b-0 lg:border-r border-slate-100">
+
+						{/* ── LEFT: Image gallery panel ── */}
+						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
+
+							{/* Main image viewer */}
 							<div
-								className="w-full aspect-square product-img-bg rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-6 shadow-inner"
+								className="w-full aspect-square product-img-bg rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-4 shadow-inner cursor-zoom-in select-none"
 								role="img"
-								aria-label={`Product image of ${product.title}`}
+								aria-label={`${product.title} — image ${activeImg + 1} of ${total}`}
+								onClick={() => activeImage && !imgErr && setLightbox(true)}
+								onTouchStart={onTouchStart}
+								onTouchEnd={onTouchEnd}
 							>
 								{activeImage && !imgErr ? (
 									<>
+										{/* Skeleton shimmer while loading */}
 										{!imgLoaded && (
 											<>
 												<div className="skeleton-shimmer" aria-hidden="true" />
 												<div className="skeleton-product" aria-hidden="true" />
 											</>
 										)}
-										<div className="absolute inset-0 flex items-center justify-center p-6">
+
+										{/* Slide-transition wrapper */}
+										<div
+											className={`absolute inset-0 flex items-center justify-center p-5 pdp-slide pdp-slide-${slideDir} ${isSliding ? 'pdp-sliding' : ''}`}
+											onAnimationEnd={() => setIsSliding(false)}
+										>
 											<img
+												key={activeImage}
 												src={activeImage}
-												alt={`${product.title} view ${activeImg + 1}`}
+												alt={`${product.title} — view ${activeImg + 1} of ${total}`}
 												loading="eager"
 												decoding="async"
 												fetchPriority="high"
-												className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.1)] ${imgLoaded ? 'is-loaded' : ''}`}
+												className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.12)] ${imgLoaded ? 'is-loaded' : ''}`}
 												onLoad={() => setImgLoaded(true)}
-												onError={() => {
-													setImgErr(true);
-													setImgLoaded(false);
-												}}
+												onError={() => { setImgErr(true); setImgLoaded(false); }}
 											/>
 										</div>
+
+										{/* Counter badge */}
+										{total > 1 && (
+											<span className="absolute bottom-3 right-3 z-10 bg-slate-900/75 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none" aria-hidden="true">
+												{activeImg + 1} / {total}
+											</span>
+										)}
+
+										{/* Zoom hint */}
+										{imgLoaded && (
+											<span className="absolute top-3 right-3 z-10 bg-white/85 border border-slate-200 text-slate-500 text-[10px] font-bold px-2.5 py-1 rounded-full pointer-events-none backdrop-blur-sm shadow-sm">
+												🔍 Zoom
+											</span>
+										)}
+
+										{/* Prev / Next arrows */}
+										{total > 1 && (
+											<>
+												<button type="button" onClick={(e) => { e.stopPropagation(); prev(); }} aria-label="Previous image"
+													className="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 bg-white/90 border border-slate-200 rounded-full shadow-md flex items-center justify-center text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+													<ChevronLeft className="w-5 h-5" aria-hidden="true" />
+												</button>
+												<button type="button" onClick={(e) => { e.stopPropagation(); next(); }} aria-label="Next image"
+													className="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 bg-white/90 border border-slate-200 rounded-full shadow-md flex items-center justify-center text-slate-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+													<ChevronRight className="w-5 h-5" aria-hidden="true" />
+												</button>
+											</>
+										)}
 									</>
 								) : (
-									<div
-										className="flex flex-col items-center justify-center opacity-30"
-										aria-hidden="true"
-									>
+									<div className="flex flex-col items-center justify-center opacity-30" aria-hidden="true">
 										{getCategoryIcon(product.category)}
-										<span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">
-											Image Pending
-										</span>
+										<span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">Image Pending</span>
 									</div>
 								)}
 							</div>
-							{product.images?.length > 1 && (
-								<ul
-									className="flex gap-4 w-full overflow-x-auto pb-4 px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] thumb-strip list-none m-0 p-0"
-									aria-label="Product thumbnails"
-								>
-									{product.images.map((img, idx) => (
-										<li key={img} className="shrink-0">
-											<button
-												type="button"
-												onClick={() => {
-													setActiveImg(idx);
-													setImgErr(false);
-													setImgLoaded(false);
-												}}
-												aria-label={`View image ${idx + 1}`}
-												aria-pressed={activeImg === idx}
-												className={`w-20 h-20 bg-white rounded-xl border-2 overflow-hidden transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeImg === idx ? 'border-blue-600 shadow-lg scale-105' : 'border-slate-200 hover:border-blue-400 opacity-70 hover:opacity-100'}`}
-											>
-												<img
-													src={img}
-													alt=""
-													loading="lazy"
-													width="80"
-													height="80"
-													className="w-full h-full object-contain p-1.5 mix-blend-multiply"
-													onError={(e) => {
-														e.target.closest('button').style.display = 'none';
-													}}
-												/>
-											</button>
-										</li>
+
+							{/* Dot indicators */}
+							{total > 1 && (
+								<div className="flex justify-center gap-1.5 mb-3" role="tablist" aria-label="Image navigation dots">
+									{images.map((_, i) => (
+										<button key={i} type="button" role="tab"
+											aria-selected={i === activeImg}
+											aria-label={`View image ${i + 1}`}
+											onClick={() => goTo(i, i > activeImg ? 'left' : 'right')}
+											className={`rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${i === activeImg ? 'w-5 h-2 bg-blue-600' : 'w-2 h-2 bg-slate-300 hover:bg-slate-400'}`}
+										/>
 									))}
-								</ul>
+								</div>
+							)}
+
+							{/* Thumbnail strip — shows ALL images with individual skeletons */}
+							{total > 1 && (
+								<div
+									ref={thumbStripRef}
+									className="grid gap-2 w-full pt-1 pb-1 overflow-x-auto thumb-strip"
+									style={{
+										gridTemplateColumns: `repeat(${Math.min(total, 6)}, minmax(0,1fr))`,
+										scrollbarWidth: 'none',
+										msOverflowStyle: 'none',
+									}}
+									role="list"
+									aria-label="All product images"
+								>
+									{images.map((img, idx) => {
+										const loaded = thumbLoaded[idx]?.loaded;
+										const err    = thumbLoaded[idx]?.err;
+										const active = idx === activeImg;
+										return (
+											<div key={img} role="listitem" className="relative">
+												<button
+													type="button"
+													onClick={() => goTo(idx, idx > activeImg ? 'left' : 'right')}
+													aria-label={`View image ${idx + 1} of ${total}`}
+													aria-pressed={active}
+													className={`w-full aspect-square rounded-xl border-2 overflow-hidden transition-all duration-200 relative block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${active ? 'border-blue-600 shadow-md ring-2 ring-blue-200 scale-[1.04]' : 'border-slate-200 hover:border-blue-400 opacity-65 hover:opacity-100 hover:scale-[1.02]'}`}
+												>
+													{/* Per-thumb skeleton */}
+													{!loaded && !err && (
+														<div className="absolute inset-0 skeleton-shimmer rounded-xl" aria-hidden="true" />
+													)}
+													{err ? (
+														<div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 text-xs font-bold">
+															<Settings className="w-4 h-4" aria-hidden="true" />
+														</div>
+													) : (
+														<img
+															src={img}
+															alt={`${product.title} view ${idx + 1}`}
+															loading="lazy"
+															width="80"
+															height="80"
+															className={`w-full h-full object-contain p-1 transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+															onLoad={()  => setThumbLoaded(s => ({ ...s, [idx]: { loaded: true,  err: false } }))}
+															onError={() => setThumbLoaded(s => ({ ...s, [idx]: { loaded: false, err: true  } }))}
+														/>
+													)}
+												</button>
+												{/* Active pip */}
+												{active && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-600 pointer-events-none" aria-hidden="true" />}
+											</div>
+										);
+									})}
+								</div>
 							)}
 						</div>
+
 						<div className="lg:col-span-7 p-8 lg:p-12 flex flex-col bg-linear-to-br from-white to-slate-50/50">
 							<div className="mb-5">
 								<span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-4 py-2 uppercase tracking-widest rounded-md shadow-sm">
@@ -7480,6 +7523,57 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 				)}
 			</div>
 		</main>
+
+		{/* ── Full-screen Lightbox ── */}
+		{lightbox && (
+			<div
+				className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
+				role="dialog" aria-modal="true"
+				aria-label={`Zoomed: ${product.title} — image ${activeImg + 1} of ${total}`}
+				onClick={() => setLightbox(false)}
+				onTouchStart={onTouchStart}
+				onTouchEnd={onTouchEnd}
+			>
+				<button type="button" onClick={() => setLightbox(false)} aria-label="Close zoom view"
+					className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/25 border border-white/20 rounded-full flex items-center justify-center text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+					<X className="w-5 h-5" aria-hidden="true" />
+				</button>
+				<span className="absolute top-4 left-4 bg-white/10 border border-white/20 text-white text-sm font-bold px-3 py-1 rounded-full backdrop-blur-sm" aria-live="polite">
+					{activeImg + 1} / {total}
+				</span>
+				{total > 1 && (
+					<>
+						<button type="button" onClick={(e) => { e.stopPropagation(); prev(); }} aria-label="Previous image"
+							className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 bg-white/10 hover:bg-white/25 border border-white/20 rounded-full flex items-center justify-center text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+							<ChevronLeft className="w-6 h-6" aria-hidden="true" />
+						</button>
+						<button type="button" onClick={(e) => { e.stopPropagation(); next(); }} aria-label="Next image"
+							className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-11 h-11 bg-white/10 hover:bg-white/25 border border-white/20 rounded-full flex items-center justify-center text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
+							<ChevronRight className="w-6 h-6" aria-hidden="true" />
+						</button>
+					</>
+				)}
+				<img
+					key={`lb-${activeImg}`}
+					src={activeImage}
+					alt={`${product.title} — zoomed view ${activeImg + 1}`}
+					className="max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl"
+					onClick={(e) => e.stopPropagation()}
+				/>
+				{total > 1 && (
+					<div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 flex-wrap justify-center max-w-[80vw]">
+						{images.map((_, i) => (
+							<button key={i} type="button"
+								onClick={(e) => { e.stopPropagation(); goTo(i, i > activeImg ? 'left' : 'right'); }}
+								aria-label={`Go to image ${i + 1}`}
+								className={`rounded-full transition-all focus:outline-none ${i === activeImg ? 'w-6 h-2.5 bg-white' : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'}`}
+							/>
+						))}
+					</div>
+				)}
+			</div>
+		)}
+		</>
 	);
 });
 ProductDetailPage.displayName = 'ProductDetailPage';
@@ -13607,7 +13701,7 @@ const ContactPage = memo(() => {
 			e.details = 'Please provide details (min 20 characters)';
 		return e;
 	}, [name, email, phone, iType, details]);
-	const handleSubmit = useCallback(() => {
+	const handleSubmit = useCallback(async () => {
 		const e = validate();
 		if (Object.keys(e).length > 0) {
 			setErrors(e);
@@ -13615,11 +13709,37 @@ const ContactPage = memo(() => {
 		}
 		setErrors({});
 		setStatus('loading');
-		const msg = `*New RFQ from Keshav Enterprises Website*\n\n*Company:* ${name}\n*Email:* ${email}\n*Phone:* ${phone}\n*Inquiry Type:* ${iType}\n\n*Details:*\n${details}`;
-		setTimeout(() => {
+
+		try {
+			// Step 1.1 — primary delivery: Formspree (replace YOUR_FORM_ID after sign-up at formspree.io)
+			const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					company: sanitise(name),
+					email:   sanitise(email),
+					phone:   sanitise(phone),
+					inquiry: iType,
+					details: sanitise(details),
+				}),
+			});
+			if (!res.ok) throw new Error('Submission failed');
+
+			// WhatsApp as bonus confirmation — now optional, not the only delivery path
+			const msg = [
+				`*New RFQ — Keshav Enterprises*`,
+				`Company: ${sanitise(name)}`,
+				`Email: ${sanitise(email)}`,
+				`Phone: ${sanitise(phone)}`,
+				`Type: ${iType}`,
+				`Details: ${sanitise(details)}`,
+			].join('\n');
 			window.open(waMsg(msg), '_blank', 'noopener');
+
 			setStatus('success');
-		}, 800);
+		} catch {
+			setStatus('error');
+		}
 	}, [validate, name, email, phone, iType, details]);
 	const inputClass = (err) =>
 		`w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50 border rounded-xl font-medium text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
@@ -13698,10 +13818,10 @@ const ContactPage = memo(() => {
 								title: 'Email (RFQs)',
 								content: (
 									<div className="space-y-2">
+									{/* Step 1.2 — marketingEmail removed from bundle */}
 										{[
 											CONTACT_INFO.email,
 											CONTACT_INFO.infoEmail,
-											CONTACT_INFO.marketingEmail,
 										].map((e) => (
 											<a
 												key={e}
@@ -14205,6 +14325,7 @@ const NotFoundPage = memo(({ navigate }) => (
 			title="Page Not Found — 404"
 			description="The page you're looking for doesn't exist. Browse our products and services."
 			canonicalPath="/404"
+			noIndex={true}
 		/>
 		<div className="text-center max-w-lg">
 			<p className="text-8xl font-black text-blue-600 mb-4">404</p>
@@ -14299,48 +14420,6 @@ export default function App() {
 			document.getElementById(PRELOAD_ID)?.remove();
 		}
 	}, [currentPath]);
-
-	// ── GOOGLE TRANSLATE INIT ──
-	useEffect(() => {
-		if (
-			typeof window === 'undefined' ||
-			document.getElementById('google-translate-script')
-		)
-			return;
-
-		// Inject custom CSS to hide Google Translate bar and highlights
-		const style = document.createElement('style');
-		style.innerHTML = `
-      body { top: 0 !important; }
-      .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
-      #google_translate_element { display: none !important; }
-      .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-      .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
-    `;
-		document.head.appendChild(style);
-
-		window.googleTranslateElementInit = () => {
-			new window.google.translate.TranslateElement(
-				{
-					pageLanguage: 'en',
-					includedLanguages: 'en,hi,zh-CN,es,fr,ar,ru,pt,de,ja',
-					autoDisplay: false,
-				},
-				'google_translate_element',
-			);
-		};
-
-		const gtScript = document.createElement('script');
-		gtScript.id = 'google-translate-script';
-		gtScript.src =
-			'//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-		gtScript.async = true;
-		document.body.appendChild(gtScript);
-
-		const gtDiv = document.createElement('div');
-		gtDiv.id = 'google_translate_element';
-		document.body.appendChild(gtDiv);
-	}, []);
 
 	// ── PERF: Pre-paint viewport stamp ──
 	// Runs synchronously after DOM commit but BEFORE the browser paints the
