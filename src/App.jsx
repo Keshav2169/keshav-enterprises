@@ -1,9 +1,11 @@
 import {
 	Activity,
+	AlertTriangle,
 	ArrowLeft,
 	ArrowRight,
 	Award,
 	BookOpen,
+	Bug,
 	Building2,
 	Calendar,
 	CheckCircle2,
@@ -5625,10 +5627,17 @@ SEOHead.displayName = 'SEOHead';
 // ─── BRAND LOGO ───────────────────────────────────────────────
 const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 	const [imgErr, setImgErr] = useState(false);
-	const tc = forceWhite
+
+	const nameCls = forceWhite
 		? 'text-white'
 		: scrolled
-			? 'text-slate-900'
+			? 'text-[#0A192F]'
+			: 'text-white';
+
+	const tagCls = forceWhite
+		? 'text-white'
+		: scrolled
+			? 'text-blue-500'
 			: 'text-white';
 
 	return (
@@ -5636,36 +5645,34 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 			type="button"
 			onClick={() => navigate('/')}
 			aria-label="Keshav Enterprises — Home"
-			className="flex items-center space-x-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+			className="flex items-center gap-3 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
 		>
-			{/* HARD WRAPPER FIX */}
-			<div className="relative w-10 h-10 sm:w-12 sm:h-12 shrink-0 overflow-hidden rounded-lg flex items-center justify-center">
-				{!imgErr ? (
-					<img
-						src="keshav-logo.png"
-						alt="Keshav Enterprises"
-						width="48"
-						height="48"
-						loading="eager"
-						decoding="async"
-						fetchPriority="high"
-						className="w-full h-full object-contain group-hover:scale-105"
-						onError={() => setImgErr(true)}
-					/>
-				) : (
-					<div className="w-full h-full rounded-xl bg-linear-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30">
-						<Settings
-							className="w-5 h-5 sm:w-6 sm:h-6 text-white"
-							aria-hidden="true"
-						/>
-					</div>
-				)}
-			</div>
+			{/* Logo — larger, bare, no box */}
+			{!imgErr ? (
+				<img
+					src="keshav-logo.png"
+					alt=""
+					aria-hidden="true"
+					width="48"
+					height="48"
+					loading="eager"
+					decoding="async"
+					fetchPriority="high"
+					className="w-12 h-12 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
+					onError={() => setImgErr(true)}
+				/>
+			) : (
+				<Settings className="w-12 h-12 shrink-0 text-white" aria-hidden="true" />
+			)}
 
-			<div
-				className={`font-black text-xl sm:text-2xl tracking-tight ${tc} flex items-center`}
-			>
-				KESHAV ENTERPRISES
+			{/* Brand name — two lines, left-aligned, white */}
+			<div className="flex flex-col text-left" style={{ lineHeight: 1 }}>
+				<span className={`font-black uppercase tracking-[0.06em] text-[18px] lg:text-[20px] ${nameCls} transition-colors duration-200`}>
+					KESHAV
+				</span>
+				<span className={`font-bold uppercase tracking-[0.14em] text-[12px] lg:text-[13px] mt-0.75 ${tagCls} transition-colors duration-200`}>
+					ENTERPRISES
+				</span>
 			</div>
 		</button>
 	);
@@ -5867,16 +5874,16 @@ ProductCard.displayName = 'ProductCard';
 
 // ─── LANGUAGE SWITCHER ────────────────────────────────────────
 const LANGUAGES = [
-	{ code: 'en', name: 'English', flag: '🇬🇧' },
-	{ code: 'hi', name: 'Hindi', flag: '🇮🇳' },
-	{ code: 'zh-CN', name: 'Mandarin', flag: '🇨🇳' },
-	{ code: 'es', name: 'Spanish', flag: '🇪🇸' },
-	{ code: 'fr', name: 'French', flag: '🇫🇷' },
-	{ code: 'ar', name: 'Arabic', flag: '🇦🇪' },
-	{ code: 'ru', name: 'Russian', flag: '🇷🇺' },
-	{ code: 'pt', name: 'Portuguese', flag: '🇵🇹' },
-	{ code: 'de', name: 'German', flag: '🇩🇪' },
-	{ code: 'ja', name: 'Japanese', flag: '🇯🇵' },
+	{ code: 'en',    name: 'English',    flag: '🇮🇳', color: '#FF9933' }, // India saffron
+	{ code: 'hi',    name: 'Hindi',      flag: '🇮🇳', color: '#138808' }, // India green
+	{ code: 'zh-CN', name: 'Mandarin',   flag: '🇨🇳', color: '#DE2910' }, // China red
+	{ code: 'es',    name: 'Spanish',    flag: '🇪🇸', color: '#c60b1e' }, // Spain red
+	{ code: 'fr',    name: 'French',     flag: '🇫🇷', color: '#0055A4' }, // France blue
+	{ code: 'ar',    name: 'Arabic',     flag: '🇦🇪', color: '#009A44' }, // UAE green
+	{ code: 'ru',    name: 'Russian',    flag: '🇷🇺', color: '#D52B1E' }, // Russia red
+	{ code: 'pt',    name: 'Portuguese', flag: '🇵🇹', color: '#006600' }, // Portugal green
+	{ code: 'de',    name: 'German',     flag: '🇩🇪', color: '#DD0000' }, // Germany red
+	{ code: 'ja',    name: 'Japanese',   flag: '🇯🇵', color: '#BC002D' }, // Japan red
 ];
 
 // Cookie helpers (avoids direct document.cookie access per lint rules)
@@ -5892,6 +5899,7 @@ const setCookie = (name, value, attrs = {}) => {
 	let str = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
 	if (attrs.path) str += `; path=${attrs.path}`;
 	if (attrs.domain) str += `; domain=${attrs.domain}`;
+	str += '; SameSite=Lax';
 	// biome-ignore lint/suspicious/noDocumentCookie: direct assignment required for cookie write
 	document.cookie = str;
 };
@@ -5938,46 +5946,57 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				aria-label="Change Language"
-				className={`flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shadow-sm ${scrolled ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-blue-600' : 'bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-md'}`}
+				className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-[13px] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+					scrolled
+						? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
+						: 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'
+				}`}
 			>
-				<span aria-hidden="true" className="text-base leading-none">
-					{activeLang.flag}
-				</span>
-				<span className="hidden xl:inline-block">
-					{activeLang.code.toUpperCase()}
+				<span className="flex items-center gap-1.5">
+					<span aria-hidden="true" className="text-[18px]" style={{ lineHeight: 1 }}>
+						{activeLang.flag}
+					</span>
+					<span className="tracking-wide text-[13px] font-black" style={{ color: activeLang.color, lineHeight: 1 }}>
+						{activeLang.code.toUpperCase()}
+					</span>
 				</span>
 				<svg
 					aria-hidden="true"
-					className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+					className={`w-3.5 h-3.5 opacity-70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
 				>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth={2}
-						d="M19 9l-7 7-7-7"
-					/>
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
 				</svg>
 			</button>
 			{isOpen && (
-				<div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
-					<div className="max-h-80 overflow-y-auto py-2 scrollbar-hide">
+				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
+					<div className="max-h-80 overflow-y-auto py-1.5 scrollbar-hide">
 						{LANGUAGES.map((lang) => (
 							<button
 								type="button"
 								key={lang.code}
 								onClick={() => changeLanguage(lang.code)}
-								className={`w-full text-left px-4 py-2.5 text-sm font-bold flex items-center gap-3 transition-colors hover:bg-blue-50 focus:outline-none focus:bg-blue-50 ${currentLang === lang.code ? 'text-blue-600 bg-blue-50/50' : 'text-slate-700'}`}
+								className={`w-full text-left px-3.5 py-2 flex items-center gap-3 transition-colors hover:bg-slate-50 focus:outline-none focus:bg-slate-50 ${currentLang === lang.code ? 'bg-slate-50' : ''}`}
+								style={currentLang === lang.code ? { borderLeft: `3px solid ${lang.color}`, paddingLeft: '10px' } : { borderLeft: '3px solid transparent' }}
 							>
-								<span className="text-lg leading-none">{lang.flag}</span>
-								{lang.name}
+								{/* Flag */}
+								<span className="text-2xl leading-none shrink-0">{lang.flag}</span>
+
+								{/* Name + code stacked */}
+								<div className="flex flex-col leading-none gap-0.75 min-w-0">
+									<span className="text-[13px] font-bold truncate" style={{ color: lang.color }}>
+										{lang.name}
+									</span>
+									<span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+										{lang.code.toUpperCase()}
+									</span>
+								</div>
+
+								{/* Active tick */}
 								{currentLang === lang.code && (
-									<CheckCircle2
-										className="w-4 h-4 ml-auto text-blue-500"
-										aria-hidden="true"
-									/>
+									<CheckCircle2 className="w-4 h-4 ml-auto shrink-0" style={{ color: lang.color }} aria-hidden="true" />
 								)}
 							</button>
 						))}
@@ -6173,7 +6192,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									handleNav(link.path);
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
-								className={`relative px-3 py-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
+								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
                   ${
 										isActive(link.path)
 											? scrolled
@@ -6186,8 +6205,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							>
 								{link.name}
 								<span
-									className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300
-                  ${isActive(link.path) ? 'w-3/4 bg-blue-500' : 'w-0 group-hover:w-1/2 bg-blue-400/60'}`}
+									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
+                  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
@@ -6197,10 +6216,6 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							<LanguageSwitcher scrolled={scrolled} />
 							<search
 								className="relative flex items-center"
-								onMouseEnter={() => setIsSearchOpen(true)}
-								onMouseLeave={() => {
-									if (!query) setIsSearchOpen(false);
-								}}
 							>
 								<div
 									className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 xl:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
@@ -6225,8 +6240,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-                    ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}
+									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+                    ${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
                     ${isSearchOpen ? 'ml-1' : ''}`}
 								>
 									<Search
@@ -6308,9 +6323,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 						<button
 							type="button"
 							onClick={() => handleNav('/contact')}
-							className={`ml-2 px-6 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300
+							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
                 ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
+							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
 							Get Quote
 						</button>
 					</div>
@@ -6359,7 +6375,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					id="mobile-nav"
 					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto"
 					role="menu"
+					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both' }}
 				>
+				<style>{`@keyframes mobileDrawerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 					{isSearchOpen && (
 						<div className="px-4 pt-4 pb-3 border-b border-slate-100">
 							<div className="relative">
@@ -6483,6 +6501,41 @@ const Navbar = memo(({ currentPath, navigate }) => {
 });
 Navbar.displayName = 'Navbar';
 
+// ─── CREDENTIAL BADGE (footer trust blocks) ──────────────────
+const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
+	const [imgErr, setImgErr] = useState(false);
+	const [hovered, setHovered] = useState(false);
+	return (
+		<div
+			className="flex items-center gap-3 rounded-xl px-3 py-2 w-fit transition-all duration-200 cursor-default"
+			style={{
+				background: hovered ? '#0d1f3c' : '#071428',
+				border: `1px solid ${hovered ? '#0891B2' : '#0d1f3c'}`,
+			}}
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
+		>
+			<div className="w-9 h-9 shrink-0 flex items-center justify-center bg-white rounded-lg p-1.5 border border-slate-200 shadow-inner">
+				{!imgErr ? (
+					<img
+						src={imgSrc}
+						alt={title}
+						className="w-full h-full object-contain"
+						onError={() => setImgErr(true)}
+					/>
+				) : (
+					<Icon className={`w-5 h-5 ${iconColor}`} aria-hidden="true" />
+				)}
+			</div>
+			<div>
+				<p className="text-white font-bold text-xs uppercase tracking-wider leading-none mb-0.5">{title}</p>
+				<p className="font-mono text-[10px] tracking-widest leading-none" style={{ color: '#06B6D4' }}>{sub}</p>
+			</div>
+		</div>
+	);
+});
+CredentialBadge.displayName = 'CredentialBadge';
+
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
 	<footer
@@ -6490,16 +6543,12 @@ const Footer = memo(({ navigate }) => (
 		style={{ background: '#050d1a', color: '#94a3b8' }}
 		role="contentinfo"
 	>
-		{/* Top accent line — cyan glow */}
-		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg, #0891B2, #06B6D4, #67E8F9, #06B6D4, #0891B2)' }} aria-hidden="true" />
+		{/* Top cyan gradient accent line */}
+		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4,#67E8F9,#06B6D4,#0891B2)' }} aria-hidden="true" />
 
 		{/* ── Pre-footer CTA band ── */}
-		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #071428 0%, #0d1f3c 50%, #071428 100%)', borderColor: '#0891B2' + '33' }}>
-			<div
-				className="absolute inset-0 opacity-20 pointer-events-none"
-				style={{ backgroundImage: `radial-gradient(circle at 20% 50%, #0891B220 0%, transparent 50%), radial-gradient(circle at 80% 50%, #06B6D420 0%, transparent 50%)` }}
-				aria-hidden="true"
-			/>
+		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderColor: '#0891B233' }}>
+			<div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%,#0891B220 0%,transparent 50%),radial-gradient(circle at 80% 50%,#06B6D420 0%,transparent 50%)' }} aria-hidden="true" />
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
 				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
 					<div className="text-center md:text-left">
@@ -6518,19 +6567,12 @@ const Footer = memo(({ navigate }) => (
 							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
 							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
 						>
-							<Phone
-								className="w-5 h-5 shrink-0"
-								style={{ color: '#67E8F9' }}
-								aria-hidden="true"
-							/>
+							<Phone className="w-5 h-5 shrink-0" style={{ color: '#67E8F9' }} aria-hidden="true" />
 							{CONTACT_INFO.phones[0]}
 						</a>
 						<a
-							href={waMsg(
-								'Hi KESHAV ENTERPRISES, I would like to request a technical quote.',
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+							target="_blank" rel="noopener noreferrer"
 							className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbc5a] text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,211,102,0.2)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1"
 						>
 							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
@@ -6543,107 +6585,36 @@ const Footer = memo(({ navigate }) => (
 
 		{/* ── Main footer body ── */}
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative z-10">
-			{/* ── 4-column grid ── */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16 mb-20">
-				{/* Col 1 — Brand (4 cols) */}
-				<div className="lg:col-span-4">
-					<div className="mb-6">
-						<BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
-					</div>
-					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
-						20+ years delivering ex-OEM turbine engineering, precision reverse
-						engineering, and certified industrial spares across India.
-					</p>
 
-					{/* Credential chips */}
-					<div className="flex flex-col gap-4 mb-8">
+				{/* Col 1 — Brand */}
+				<div className="lg:col-span-4">
+					<div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
+					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
+						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
+					</p>
+					<div className="flex flex-col gap-2 mb-8">
 						{[
-							{
-								imgSrc: 'msme-logo.png',
-								Icon: Shield,
-								iconColor: 'text-emerald-400',
-								title: 'MSME Registered',
-								sub: CONTACT_INFO.msme,
-							},
-							{
-								imgSrc: 'indiamart-logo.png',
-								Icon: Award,
-								iconColor: 'text-amber-400',
-								title: 'IndiaMART TrustSeal',
-								sub: '4.3★ Verified Supplier',
-							},
-							{
-								imgSrc: 'make-in-india.png',
-								Icon: Globe,
-								iconColor: 'text-cyan-400',
-								title: 'Make In India',
-								sub: 'Manufactured in India',
-							},
+							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
+							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-amber-400',  title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-cyan-400',   title: 'Make In India',       sub: 'Manufactured in India' },
 						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
-							<div
-								key={title}
-								className="flex items-center gap-5 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2"
-								style={{ background: '#071428', border: '1px solid #0d1f3c' }}
-								onMouseEnter={e => { e.currentTarget.style.borderColor = '#0891B2'; e.currentTarget.style.background = '#0d1f3c'; }}
-								onMouseLeave={e => { e.currentTarget.style.borderColor = '#0d1f3c'; e.currentTarget.style.background = '#071428'; }}
-							>
-								<div className="w-14 h-14 shrink-0 flex items-center justify-center relative bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
-									<img
-										src={imgSrc}
-										alt={title}
-										className="w-full h-full object-contain"
-										onError={(e) => {
-											e.target.style.display = 'none';
-											e.target.nextElementSibling.style.display = 'block';
-										}}
-									/>
-									<Icon
-										className={`w-full h-full ${iconColor} hidden`}
-										aria-hidden="true"
-									/>
-								</div>
-								<div>
-									<p className="text-white font-bold text-sm uppercase tracking-wider mb-1">
-										{title}
-									</p>
-									<p className="font-mono text-xs tracking-widest" style={{ color: '#06B6D4' }}>
-										{sub}
-									</p>
-								</div>
-							</div>
+							<CredentialBadge key={title} imgSrc={imgSrc} Icon={Icon} iconColor={iconColor} title={title} sub={sub} />
 						))}
 					</div>
-
-					{/* OEM compatibility */}
-					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>
-						OEM Compatible With
-					</p>
-					<p className="text-slate-400 font-mono text-xs leading-relaxed">
-						{OEMS.join(' · ')}
-					</p>
+					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>OEM Compatible With</p>
+					<p className="text-slate-400 font-mono text-xs leading-relaxed">{OEMS.join(' · ')}</p>
 				</div>
 
-				{/* Col 2 — Navigate (2 cols) */}
+				{/* Col 2 — Navigate */}
 				<nav className="lg:col-span-2" aria-label="Footer site links">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>
-						Navigate
-					</h3>
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Navigate</h3>
 					<ul className="space-y-4">
 						{NAV_LINKS.map((link) => (
 							<li key={link.name}>
-								<a
-									href={`#${link.path}`}
-									onClick={(e) => {
-										e.preventDefault();
-										navigate(link.path);
-									}}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit"
-								>
-									<ChevronRight
-										className="w-4 h-4 transition-colors group-hover:translate-x-0.5"
-										style={{ color: '#0891B2' }}
-										aria-hidden="true"
-									/>
+								<a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
+									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" style={{ color: '#0891B2' }} aria-hidden="true" />
 									<span>{link.name}</span>
 								</a>
 							</li>
@@ -6651,34 +6622,22 @@ const Footer = memo(({ navigate }) => (
 					</ul>
 				</nav>
 
-				{/* Col 3 — Services (3 cols) */}
+				{/* Col 3 — Services */}
 				<div className="lg:col-span-3">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>
-						Core Services
-					</h3>
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Core Services</h3>
 					<ul className="space-y-4">
 						{[
-							{ label: 'Turbine Erection', id: 'srv_1' },
+							{ label: 'Turbine Erection',    id: 'srv_1' },
 							{ label: 'Turnkey Overhauling', id: 'srv_2' },
-							{ label: 'Reverse Engineering', id: 'srv_3' },
-							{ label: 'Dynamic Balancing', id: 'srv_4' },
-							{ label: 'Lube Oil Flushing', id: 'srv_5' },
-							{ label: 'Machine Alignment', id: 'srv_6' },
+							{ label: 'Reverse Engineering',  id: 'srv_3' },
+							{ label: 'Dynamic Balancing',    id: 'srv_4' },
+							{ label: 'Lube Oil Flushing',    id: 'srv_5' },
+							{ label: 'Machine Alignment',    id: 'srv_6' },
 						].map(({ label, id }) => (
 							<li key={id}>
-								<a
-									href={`#/service/${id}`}
-									onClick={(e) => {
-										e.preventDefault();
-										navigate(`/service/${id}`);
-									}}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit"
-								>
-									<Hexagon
-										className="w-3.5 h-3.5 transition-colors"
-										style={{ color: '#0891B2' }}
-										aria-hidden="true"
-									/>
+								<a href={`#/service/${id}`} onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
+									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<Hexagon className="w-3.5 h-3.5" style={{ color: '#0891B2' }} aria-hidden="true" />
 									<span>{label}</span>
 								</a>
 							</li>
@@ -6686,174 +6645,43 @@ const Footer = memo(({ navigate }) => (
 					</ul>
 				</div>
 
-				{/* Col 4 — Contact (3 cols) */}
+				{/* Col 4 — Contact */}
 				<address className="lg:col-span-3 not-italic">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>
-						Contact Us
-					</h3>
-
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Contact Us</h3>
 					<div className="space-y-5">
-						{/* Address */}
-						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-								<MapPin className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
+						{[
+							{ id: 'address', Icon: MapPin, content: <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
+							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-slate-300 hover:text-white font-mono text-sm transition-colors">{p}</a>)}</div> },
+							{ id: 'mail',    Icon: Mail,   content: (
+								<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
+									{[{ addr: CONTACT_INFO.email, label: 'General' }, { addr: CONTACT_INFO.infoEmail, label: 'Info' }].map(({ addr, label }) => (
+										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors">
+											<span className="truncate">{addr}</span>
+											<span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: '#0891B2' }}>{label}</span>
+										</a>
+									))}
+								</div>
+							)},
+						].map(({ id, Icon, content }) => (
+							<div key={id} className="flex items-start gap-4">
+								<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
+									<Icon className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
+								</div>
+								{content}
 							</div>
-							<p className="text-slate-400 text-sm leading-relaxed">
-								{CONTACT_INFO.address}
-							</p>
-						</div>
-
-						{/* Phones */}
-						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-								<Phone className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
-							</div>
-							<div className="flex flex-col gap-1.5 mt-1">
-								{CONTACT_INFO.phones.map((p) => (
-									<a
-										key={p}
-										href={`tel:${p.replace(/\s/g, '')}`}
-										className="text-slate-300 hover:text-white font-mono text-sm transition-colors focus:outline-none focus-visible:underline"
-									>
-										{p}
-									</a>
-								))}
-							</div>
-						</div>
-
-						{/* Emails */}
-						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-								<Mail className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
-							</div>
-							<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
-								{[
-									{ addr: CONTACT_INFO.email, label: 'General' },
-									{ addr: CONTACT_INFO.infoEmail, label: 'Info' },
-								].map(({ addr, label }) => (
-									<a
-										key={addr}
-										href={`mailto:${addr}`}
-										className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline group/email"
-									>
-										<span className="truncate group-hover/email:text-white transition-colors">
-											{addr}
-										</span>
-										<span className="font-mono text-[9px] uppercase tracking-widest transition-colors" style={{ color: '#0891B2' }}>
-											{label}
-										</span>
-									</a>
-								))}
-							</div>
-						</div>
+						))}
 					</div>
 				</address>
 			</div>
 
-			{/* ── Divider ── */}
+			{/* Divider */}
 			<div className="h-px w-full mb-12" style={{ background: '#0d1f3c' }} />
 
-			{/* ── Social media links ── */}
-			<div className="mb-14">
-				<div className="flex flex-wrap justify-center gap-3">
-					{[
-						{
-							href: CONTACT_INFO.linkedin,
-							label: `LinkedIn — ${CONTACT_INFO.linkedinHandle}`,
-							name: 'LinkedIn',
-							brand: '#0A66C2',
-							iconBg: '#E8F0FB',
-						},
-						{
-							href: CONTACT_INFO.youtube,
-							label: `YouTube — ${CONTACT_INFO.youtubeHandle}`,
-							name: 'YouTube',
-							brand: '#FF0000',
-							iconBg: '#FDECEA',
-						},
-						{
-							href: CONTACT_INFO.instagram,
-							label: `Instagram — ${CONTACT_INFO.instagramHandle}`,
-							name: 'Instagram',
-							brand: '#C13584',
-							iconBg: '#FCE4F3',
-						},
-						{
-							href: CONTACT_INFO.facebook,
-							label: `Facebook — ${CONTACT_INFO.facebookHandle}`,
-							name: 'Facebook',
-							brand: '#1877F2',
-							iconBg: '#E7F0FE',
-						},
-						{
-							href: CONTACT_INFO.twitter,
-							label: `X — ${CONTACT_INFO.twitterHandle}`,
-							name: 'X',
-							brand: '#111111',
-							iconBg: '#F0F0F0',
-						},
-						{
-							href: CONTACT_INFO.reddit,
-							label: `Reddit — ${CONTACT_INFO.redditHandle}`,
-							name: 'Reddit',
-							brand: '#FF4500',
-							iconBg: '#FFF0EB',
-						},
-					].map(({ href, label, name, brand, iconBg }) => (
-						<a
-							key={name}
-							href={href}
-							target="_blank"
-							rel="noopener noreferrer"
-							aria-label={label}
-							className="flex items-center gap-3 bg-white border border-slate-200 hover:border-slate-300 px-5 py-3.5 rounded-2xl transition-all hover:shadow-lg hover:-translate-y-0.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shadow-sm w-[calc(50%-6px)] sm:w-auto min-w-35"
-						>
-							<span
-								aria-hidden="true"
-								className="flex items-center justify-center w-10 h-10 rounded-xl shrink-0 transition-transform group-hover:scale-110"
-								style={{ background: iconBg, color: brand }}
-							>
-								{name === 'X' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-									</svg>
-								) : name === 'LinkedIn' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-									</svg>
-								) : name === 'YouTube' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-									</svg>
-								) : name === 'Instagram' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-									</svg>
-								) : name === 'Facebook' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z" />
-									</svg>
-								) : (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z" />
-									</svg>
-								)}
-							</span>
-							<span className="font-black text-sm tracking-wide" style={{ color: brand }}>
-								{name}
-							</span>
-						</a>
-					))}
-				</div>
-			</div>
-
-			{/* ── Industries served ── */}
+			{/* Industries panel */}
 			<div className="rounded-xl p-8 mb-10" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
 				<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
 					<div className="flex-1">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">
-							Industries Served
-						</p>
+						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">Industries Served</p>
 						<div className="flex flex-wrap gap-2">
 							{[
 								{ name: 'Power Generation', color: '#facc15' },
@@ -6864,38 +6692,28 @@ const Footer = memo(({ navigate }) => (
 								{ name: 'Agro & Food',      color: '#2dd4bf' },
 								{ name: 'Cement',           color: '#a8a29e' },
 							].map(({ name, color }) => (
-								<span
-									key={name}
-									className="text-xs px-3 py-1.5 rounded-full font-bold"
-									style={{ color, background: color + '18', border: `1px solid ${color}44` }}
-								>
+								<span key={name} className="text-xs px-3 py-1.5 rounded-full font-bold"
+									style={{ color, background: color + '18', border: `1px solid ${color}44` }}>
 									{name}
 								</span>
 							))}
 						</div>
 					</div>
 					<div className="lg:text-right shrink-0">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">
-							Capability Range
-						</p>
+						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">Capability Range</p>
 						<p className="text-white font-black text-3xl tracking-tight">
-							5 kW <span className="font-normal mx-1" style={{ color: '#0d1f3c' }}>–</span> 27
-							MW
+							5 kW <span className="font-normal mx-1" style={{ color: '#0d1f3c' }}>–</span> 27 MW
 						</p>
 					</div>
 				</div>
 			</div>
 
-			{/* ── Bottom copyright bar ── */}
+			{/* Bottom bar */}
 			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
-				<p className="text-slate-400 text-sm">
-					© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.
-				</p>
+				<p className="text-slate-400 text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
 				<p className="text-slate-400 text-sm flex items-center gap-2">
 					<span>GST:</span>
-					<span className="text-slate-300 font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-						{CONTACT_INFO.gst}
-					</span>
+					<span className="text-slate-300 font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
 				</p>
 			</div>
 		</div>
@@ -7027,85 +6845,297 @@ const DigitalProfilesStrip = memo(() => {
 DigitalProfilesStrip.displayName = 'DigitalProfilesStrip';
 
 // ─── WHATSAPP + CALL FAB ─────────────────────────────────────
-const FloatingButtons = memo(() => (
-	<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-		<a
-			href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-			className="flex items-center gap-2 bg-white border border-slate-200 text-slate-900 px-4 py-3 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
-			aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
+// ─── BUG REPORT MODAL ────────────────────────────────────────
+const BugReportModal = memo(({ onClose }) => {
+	const [bugType, setBugType]         = useState('');
+	const [page, setPage]               = useState('');
+	const [description, setDescription] = useState('');
+	const [email, setEmail]             = useState('');
+	const [status, setStatus]           = useState('idle');
+	const [errors, setErrors]           = useState({});
+
+	const BUG_TYPES = [
+		'Page not loading',
+		'Broken link or button',
+		'Display / layout issue',
+		'Form not working',
+		'Slow performance',
+		'Wrong or missing content',
+		'Other',
+	];
+
+	const validate = useCallback(() => {
+		const e = {};
+		if (!bugType) e.bugType = 'Please select a bug type';
+		if (!description.trim() || description.length < 10)
+			e.description = 'Please describe the issue (min 10 characters)';
+		if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+			e.email = 'Enter a valid email address or leave blank';
+		return e;
+	}, [bugType, description, email]);
+
+	const handleSubmit = useCallback(async () => {
+		const e = validate();
+		if (Object.keys(e).length > 0) { setErrors(e); return; }
+		setErrors({});
+		setStatus('loading');
+
+		const FORMSPREE_BUG_FORM_ID = 'YOUR_BUG_FORM_ID';
+		const isFormspreeConfigured = FORMSPREE_BUG_FORM_ID !== 'YOUR_BUG_FORM_ID';
+
+		try {
+			if (isFormspreeConfigured) {
+				const res = await fetch(`https://formspree.io/f/${FORMSPREE_BUG_FORM_ID}`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						bug_type:       bugType,
+						page:           page || 'Not specified',
+						description,
+						reporter_email: email || 'Anonymous',
+						url:            window.location.href,
+						user_agent:     navigator.userAgent,
+					}),
+				});
+				if (!res.ok) throw new Error('Formspree submission failed');
+			}
+
+			const msg = [
+				`🐛 *Bug Report — Keshav Enterprises Website*`,
+				`Type: ${bugType}`,
+				`Page: ${page || 'Not specified'}`,
+				`Description: ${description}`,
+				`Reporter: ${email || 'Anonymous'}`,
+				`URL: ${window.location.href}`,
+			].join('\n');
+			window.open(waMsg(msg), '_blank', 'noopener');
+
+			setStatus('success');
+		} catch {
+			setStatus('error');
+		}
+	}, [validate, bugType, page, description, email]);
+
+	const inputClass = (err) =>
+		`w-full px-4 py-3 bg-slate-50 border rounded-xl font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
+
+	return (
+		<div
+			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="bug-report-title"
 		>
-			<Phone className="w-4 h-4 text-blue-600" aria-hidden="true" />
-			<span className="hidden group-hover:block">{CONTACT_INFO.phones[0]}</span>
-		</a>
-		<a
-			href={waMsg(
-				'Hi KESHAV ENTERPRISES, I would like to request a technical quote.',
-			)}
-			target="_blank"
-			rel="noopener noreferrer"
-			aria-label="Chat with Keshav Enterprises on WhatsApp"
-			className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative"
-		>
-			<MessageCircle className="w-7 h-7" aria-hidden="true" />
-			<span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-				Speak directly with an engineer
-			</span>
-		</a>
-	</div>
-));
+			<div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+			<div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+				<div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+					<div className="flex items-center gap-3">
+						<div className="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center">
+							<Bug className="w-5 h-5 text-red-500" aria-hidden="true" />
+						</div>
+						<div>
+							<h2 id="bug-report-title" className="font-black text-slate-900 text-base">Report a Bug</h2>
+							<p className="text-xs text-slate-500 font-medium">Help us fix issues faster</p>
+						</div>
+					</div>
+					<button type="button" onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" aria-label="Close bug report">
+						<X className="w-5 h-5 text-slate-500" />
+					</button>
+				</div>
+
+				{status === 'success' ? (
+					<div className="px-6 py-10 text-center">
+						<div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+							<CheckCircle2 className="w-8 h-8 text-green-500" />
+						</div>
+						<h3 className="font-black text-slate-900 text-lg mb-2">Bug Reported!</h3>
+						<p className="text-slate-500 text-sm font-medium mb-6">Thank you for helping us improve. Our team will look into it promptly.</p>
+						<button type="button" onClick={onClose} className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-800 transition-all">Close</button>
+					</div>
+				) : (
+					<div className="px-6 py-5 flex flex-col gap-4">
+						<div>
+							<label className="block text-sm font-bold text-slate-700 mb-2">Bug Type <span className="text-red-500">*</span></label>
+							<div className="flex flex-wrap gap-2">
+								{BUG_TYPES.map((t) => (
+									<button key={t} type="button" onClick={() => setBugType(t)}
+										className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${bugType === t ? 'bg-red-500 text-white border-red-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-red-300'}`}>
+										{t}
+									</button>
+								))}
+							</div>
+							{errors.bugType && <p className="text-red-500 text-xs mt-1 font-medium">{errors.bugType}</p>}
+						</div>
+
+						<div>
+							<label htmlFor="bug-page" className="block text-sm font-bold text-slate-700 mb-1.5">Which page? <span className="text-slate-400 font-medium">(optional)</span></label>
+							<input id="bug-page" type="text" placeholder="e.g. /products, Home page, Contact form…" value={page} onChange={(ev) => setPage(ev.target.value)} className={inputClass(false)} />
+						</div>
+
+						<div>
+							<label htmlFor="bug-description" className="block text-sm font-bold text-slate-700 mb-1.5">Describe the issue <span className="text-red-500">*</span></label>
+							<textarea id="bug-description" rows={4} placeholder="What happened? What did you expect? Steps to reproduce…" value={description} onChange={(ev) => setDescription(ev.target.value)} className={`${inputClass(errors.description)} resize-none`} />
+							<div className="flex justify-between mt-1">
+								{errors.description ? <p className="text-red-500 text-xs font-medium">{errors.description}</p> : <span />}
+								<span className={`text-xs font-medium ${description.length < 10 ? 'text-slate-400' : 'text-green-500'}`}>{description.length} chars</span>
+							</div>
+						</div>
+
+						<div>
+							<label htmlFor="bug-email" className="block text-sm font-bold text-slate-700 mb-1.5">Your email <span className="text-slate-400 font-medium">(optional — for follow-up)</span></label>
+							<input id="bug-email" type="email" placeholder="you@example.com" value={email} onChange={(ev) => setEmail(ev.target.value)} className={inputClass(errors.email)} />
+							{errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
+						</div>
+
+						{status === 'error' && (
+							<div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+								<AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+								<p className="text-red-600 text-sm font-medium">Something went wrong. Try again or WhatsApp us directly.</p>
+							</div>
+						)}
+
+						<button type="button" onClick={handleSubmit} disabled={status === 'loading'}
+							className="w-full bg-red-500 text-white py-3.5 rounded-xl font-black text-sm hover:bg-red-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1">
+							{status === 'loading' ? (
+								<><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Sending…</>
+							) : (
+								<><Bug className="w-4 h-4" />Submit Bug Report</>
+							)}
+						</button>
+						<p className="text-center text-xs text-slate-400 font-medium -mt-1">Report sent via WhatsApp to our team instantly</p>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+});
+BugReportModal.displayName = 'BugReportModal';
+
+// ─── FLOATING BUTTONS ─────────────────────────────────────────
+const FloatingButtons = memo(() => {
+	const [showBugReport, setShowBugReport] = useState(false);
+	return (
+		<>
+			<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+				<button
+					type="button"
+					onClick={() => setShowBugReport(true)}
+					aria-label="Report a bug"
+					className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-3 rounded-full shadow-lg hover:bg-red-50 hover:border-red-200 hover:text-red-600 hover:scale-105 transition-all group font-bold text-sm"
+				>
+					<Bug className="w-4 h-4 text-red-400 group-hover:text-red-500" aria-hidden="true" />
+					<span className="hidden group-hover:block">Report a Bug</span>
+				</button>
+				<a
+					href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+					className="flex items-center gap-2 bg-white border border-slate-200 text-slate-900 px-4 py-3 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
+					aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
+				>
+					<Phone className="w-4 h-4 text-blue-600" aria-hidden="true" />
+					<span className="hidden group-hover:block">{CONTACT_INFO.phones[0]}</span>
+				</a>
+				<a
+					href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label="Chat with Keshav Enterprises on WhatsApp"
+					className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative"
+				>
+					<MessageCircle className="w-7 h-7" aria-hidden="true" />
+					<span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+						Speak directly with an engineer
+					</span>
+				</a>
+			</div>
+			{showBugReport && <BugReportModal onClose={() => setShowBugReport(false)} />}
+		</>
+	);
+});
 FloatingButtons.displayName = 'FloatingButtons';
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
+	// probe[i] = 'pending' | 'ok' | 'err'  — set by hidden <img> preloaders
+	const [probe, setProbe]           = useState({});
 	const [activeImg, setActiveImg]   = useState(0);
 	const [imgLoaded, setImgLoaded]   = useState(false);
 	const [imgErr, setImgErr]         = useState(false);
 	const [lightbox, setLightbox]     = useState(false);
+	const [lbLoaded, setLbLoaded]     = useState(false);
+	const [lbErr, setLbErr]           = useState(false);
 	const [slideDir, setSlideDir]     = useState('');
 	const [isSliding, setIsSliding]   = useState(false);
-	const [thumbLoaded, setThumbLoaded] = useState({});
 	const [tab, setTab]               = useState('specs');
 	const thumbStripRef               = useRef(null);
 	const touchRef                    = useRef(null);
+	const slidingTimerRef             = useRef(null);
 
 	const product = useMemo(
 		() => PRODUCTS.find((p) => p.id === productId),
 		[productId],
 	);
 
-	// Reset all state when product changes
+	// All filenames from product data
+	const allImages = useMemo(() => (product?.images || []).filter(Boolean), [product]);
+
+	// Reset all state when product changes — also scroll instantly to top.
+	// Must happen before render (not in useEffect) so the new page paints at 0.
 	const [prevProductId, setPrevProductId] = useState(productId);
 	if (productId !== prevProductId) {
 		setPrevProductId(productId);
-		setActiveImg(0); setImgLoaded(false); setImgErr(false);
-		setLightbox(false); setSlideDir(''); setIsSliding(false);
-		setThumbLoaded({}); setTab('specs');
+		window.scrollTo({ top: 0, behavior: 'instant' });
+		setProbe({}); setActiveImg(0); setImgLoaded(false); setImgErr(false);
+		setLightbox(false); setLbLoaded(false); setLbErr(false);
+		setSlideDir(''); setIsSliding(false); setTab('specs');
 	}
-	useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [productId]);
 
 	// Reset main image state on slide change
 	const [prevImg, setPrevImg] = useState(activeImg);
 	if (activeImg !== prevImg) {
-		setPrevImg(activeImg); setImgLoaded(false); setImgErr(false);
+		setPrevImg(activeImg); setImgLoaded(false); setImgErr(false); setLbLoaded(false); setLbErr(false);
 	}
 
-	const images = useMemo(() => (product?.images || []).filter(Boolean), [product]);
-	const total  = images.length;
+	// Probe result helpers
+	const probeOk  = useCallback((i) => setProbe(p => ({ ...p, [i]: 'ok'  })), []);
+	const probeErr = useCallback((i) => setProbe(p => ({ ...p, [i]: 'err' })), []);
 
+	// Only images confirmed to exist. While probing, we show nothing in the
+	// strip/dots — they appear one-by-one as probes resolve to 'ok'.
+	const images = useMemo(
+		() => allImages.filter((_, i) => probe[i] === 'ok'),
+		[allImages, probe],
+	);
+	const total = images.length;
+
+	// How many probes have finished (ok or err) — used to decide if probing is complete
+	const probedCount = useMemo(
+		() => Object.keys(probe).length,
+		[probe],
+	);
+	const probing = probedCount < allImages.length;
+
+	// Clamp activeImg whenever visible images shrink (shouldn't happen, but defensive)
+	const safeActive = Math.min(activeImg, Math.max(0, total - 1));
+
+	// Safety ref: clear isSliding if onAnimationEnd never fires (errored image)
 	const goTo = useCallback((idx, dir) => {
-		if (idx === activeImg || isSliding) return;
-		setSlideDir(dir || (idx > activeImg ? 'left' : 'right'));
+		if (idx === safeActive || isSliding) return;
+		setSlideDir(dir || (idx > safeActive ? 'left' : 'right'));
 		setIsSliding(true);
 		setActiveImg(idx);
+		if (slidingTimerRef.current) clearTimeout(slidingTimerRef.current);
+		slidingTimerRef.current = setTimeout(() => setIsSliding(false), 600);
 		setTimeout(() => {
 			const strip = thumbStripRef.current;
 			if (strip) strip.children[idx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
 		}, 40);
-	}, [activeImg, isSliding]);
+	}, [safeActive, isSliding]);
 
-	const prev = useCallback(() => goTo(activeImg === 0 ? total - 1 : activeImg - 1, 'right'), [goTo, activeImg, total]);
-	const next = useCallback(() => goTo(activeImg === total - 1 ? 0 : activeImg + 1, 'left'),  [goTo, activeImg, total]);
+	useEffect(() => () => { if (slidingTimerRef.current) clearTimeout(slidingTimerRef.current); }, []);
+
+	const prev = useCallback(() => goTo(safeActive === 0 ? total - 1 : safeActive - 1, 'right'), [goTo, safeActive, total]);
+	const next = useCallback(() => goTo(safeActive === total - 1 ? 0 : safeActive + 1, 'left'),  [goTo, safeActive, total]);
 
 	// Keyboard navigation
 	useEffect(() => {
@@ -7180,11 +7210,11 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			</main>
 		);
 
-	const activeImage = images[activeImg] || '';
+	const activeImage = images[safeActive] || '';
 
 	return (
 		<>
-		<main id="main-content" tabIndex={-1} className="pt-28 pb-20 bg-slate-50 min-h-screen">
+		<main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
 			<SEOHead
 				title={`${product.title} | ${product.category}`}
 				description={`${product.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -7211,11 +7241,33 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						{/* ── LEFT: Image gallery panel ── */}
 						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
 
+							{/* ── Hidden image probers ──
+							    Invisible 1×1 images that fire onLoad/onError for every filename.
+							    This resolves which images actually exist BEFORE anything visible renders.
+							    Only images that pass probe[i]==='ok' appear in the gallery. */}
+							<div className="sr-only" aria-hidden="true">
+								{allImages.map((src, i) =>
+									probe[i] === undefined ? (
+										<img
+											key={src}
+											src={src}
+											alt=""
+											width="1"
+											height="1"
+											loading="eager"
+											decoding="async"
+											onLoad={() => probeOk(i)}
+											onError={() => probeErr(i)}
+										/>
+									) : null
+								)}
+							</div>
+
 							{/* Main image viewer */}
 							<div
 								className="w-full aspect-square product-img-bg rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-4 shadow-inner cursor-zoom-in select-none"
 								role="img"
-								aria-label={`${product.title} — image ${activeImg + 1} of ${total}`}
+								aria-label={total > 0 ? `${product.title} — image ${safeActive + 1} of ${total}` : product.title}
 								onClick={() => activeImage && !imgErr && setLightbox(true)}
 								onTouchStart={onTouchStart}
 								onTouchEnd={onTouchEnd}
@@ -7233,25 +7285,39 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 										{/* Slide-transition wrapper */}
 										<div
 											className={`absolute inset-0 flex items-center justify-center p-5 pdp-slide pdp-slide-${slideDir} ${isSliding ? 'pdp-sliding' : ''}`}
-											onAnimationEnd={() => setIsSliding(false)}
+											onAnimationEnd={() => {
+												setIsSliding(false);
+												if (slidingTimerRef.current) { clearTimeout(slidingTimerRef.current); slidingTimerRef.current = null; }
+											}}
 										>
 											<img
 												key={activeImage}
 												src={activeImage}
-												alt={`${product.title} — view ${activeImg + 1} of ${total}`}
+												alt={`${product.title} — view ${safeActive + 1} of ${total}`}
 												loading="eager"
 												decoding="async"
 												fetchPriority="high"
 												className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.12)] ${imgLoaded ? 'is-loaded' : ''}`}
 												onLoad={() => setImgLoaded(true)}
-												onError={() => { setImgErr(true); setImgLoaded(false); }}
+												onError={() => {
+													setImgErr(true); setImgLoaded(false);
+													setIsSliding(false);
+													if (slidingTimerRef.current) { clearTimeout(slidingTimerRef.current); slidingTimerRef.current = null; }
+												}}
 											/>
 										</div>
 
 										{/* Counter badge */}
+									{total > 1 && (
+										<span className="absolute bottom-3 right-3 z-10 bg-slate-900/75 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none" aria-hidden="true">
+											{safeActive + 1} / {total}
+										</span>
+									)}
+
+									{/* Counter badge */}
 										{total > 1 && (
 											<span className="absolute bottom-3 right-3 z-10 bg-slate-900/75 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none" aria-hidden="true">
-												{activeImg + 1} / {total}
+												{safeActive + 1} / {total}
 											</span>
 										)}
 
@@ -7276,77 +7342,101 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											</>
 										)}
 									</>
+								) : probing && allImages.length > 0 ? (
+									/* Still waiting for first probe to resolve — show skeleton */
+									<>
+										<div className="skeleton-shimmer" aria-hidden="true" />
+										<div className="skeleton-product" aria-hidden="true" />
+									</>
 								) : (
+									/* All probes done, none succeeded */
 									<div className="flex flex-col items-center justify-center opacity-30" aria-hidden="true">
 										{getCategoryIcon(product.category)}
-										<span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">Image Pending</span>
+										<span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">No Images Available</span>
 									</div>
 								)}
 							</div>
 
-							{/* Dot indicators */}
+							{/* ── Dot indicators ──
+							    Mobile: compact dots, active pill slightly wider. Gap tight.
+							    Desktop (sm+): slightly larger, more breathing room.
+							    For >8 images: dots scale down further so they all fit in one row. */}
 							{total > 1 && (
-								<div className="flex justify-center gap-1.5 mb-3" role="tablist" aria-label="Image navigation dots">
-									{images.map((_, i) => (
-										<button key={i} type="button" role="tab"
-											aria-selected={i === activeImg}
-											aria-label={`View image ${i + 1}`}
-											onClick={() => goTo(i, i > activeImg ? 'left' : 'right')}
-											className={`rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${i === activeImg ? 'w-5 h-2 bg-blue-600' : 'w-2 h-2 bg-slate-300 hover:bg-slate-400'}`}
-										/>
-									))}
+								<div
+									className="flex justify-center items-center flex-wrap mb-2 mt-1"
+									style={{ gap: total > 8 ? '3px' : '4px' }}
+									role="tablist"
+									aria-label="Image navigation"
+								>
+									{images.map((img, i) => {
+										const isActive = i === safeActive;
+										const w = isActive ? (total > 8 ? 16 : 20) : (total > 8 ? 5 : 6);
+										return (
+											<button
+												key={img}
+												type="button"
+												role="tab"
+												aria-selected={isActive}
+												aria-label={`View image ${i + 1}`}
+												onClick={() => goTo(i, i > safeActive ? 'left' : 'right')}
+												className="rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 block shrink-0 p-0 border-0 cursor-pointer"
+												style={{
+													width:           w,
+													height:          4,
+													minHeight:       4,
+													maxHeight:       4,
+													background:      isActive ? '#2563EB' : '#cbd5e1',
+													lineHeight:      0,
+													fontSize:        0,
+												}}
+											/>
+										);
+									})}
 								</div>
 							)}
 
-							{/* Thumbnail strip — shows ALL images with individual skeletons */}
+							{/* ── Thumbnail grid ──
+							    Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
+							    Grid aligns left so 3 images don't become 3 huge tiles. */}
 							{total > 1 && (
 								<div
 									ref={thumbStripRef}
-									className="grid gap-2 w-full pt-1 pb-1 overflow-x-auto thumb-strip"
+									className="pt-1 pb-1"
 									style={{
-										gridTemplateColumns: `repeat(${Math.min(total, 6)}, minmax(0,1fr))`,
-										scrollbarWidth: 'none',
-										msOverflowStyle: 'none',
+										display: 'grid',
+										gridTemplateColumns: 'repeat(auto-fill, 72px)',
+										gap: '6px',
 									}}
 									role="list"
 									aria-label="All product images"
 								>
 									{images.map((img, idx) => {
-										const loaded = thumbLoaded[idx]?.loaded;
-										const err    = thumbLoaded[idx]?.err;
-										const active = idx === activeImg;
+										const active = idx === safeActive;
 										return (
-											<div key={img} role="listitem" className="relative">
+											<div key={img} role="listitem" className="relative" style={{ width: 72, height: 72 }}>
 												<button
 													type="button"
-													onClick={() => goTo(idx, idx > activeImg ? 'left' : 'right')}
+													onClick={() => goTo(idx, idx > safeActive ? 'left' : 'right')}
 													aria-label={`View image ${idx + 1} of ${total}`}
 													aria-pressed={active}
-													className={`w-full aspect-square rounded-xl border-2 overflow-hidden transition-all duration-200 relative block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${active ? 'border-blue-600 shadow-md ring-2 ring-blue-200 scale-[1.04]' : 'border-slate-200 hover:border-blue-400 opacity-65 hover:opacity-100 hover:scale-[1.02]'}`}
+													className={`w-full h-full rounded-xl border-2 overflow-hidden block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-150 ${
+														active
+															? 'border-blue-600 ring-2 ring-blue-200 scale-[1.05]'
+															: 'border-slate-200 opacity-60 hover:opacity-100 hover:border-blue-400 hover:scale-[1.02] active:opacity-100 active:scale-[1.04]'
+													}`}
 												>
-													{/* Per-thumb skeleton */}
-													{!loaded && !err && (
-														<div className="absolute inset-0 skeleton-shimmer rounded-xl" aria-hidden="true" />
-													)}
-													{err ? (
-														<div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 text-xs font-bold">
-															<Settings className="w-4 h-4" aria-hidden="true" />
-														</div>
-													) : (
-														<img
-															src={img}
-															alt={`${product.title} view ${idx + 1}`}
-															loading="lazy"
-															width="80"
-															height="80"
-															className={`w-full h-full object-contain p-1 transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-															onLoad={()  => setThumbLoaded(s => ({ ...s, [idx]: { loaded: true,  err: false } }))}
-															onError={() => setThumbLoaded(s => ({ ...s, [idx]: { loaded: false, err: true  } }))}
-														/>
-													)}
+													<img
+														src={img}
+														alt={`${product.title} view ${idx + 1}`}
+														loading="lazy"
+														width="72"
+														height="72"
+														className="w-full h-full object-contain p-1"
+													/>
 												</button>
-												{/* Active pip */}
-												{active && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-600 pointer-events-none" aria-hidden="true" />}
+												{active && (
+													<span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-600 pointer-events-none" aria-hidden="true" />
+												)}
 											</div>
 										);
 									})}
@@ -7505,7 +7595,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			<div
 				className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
 				role="dialog" aria-modal="true"
-				aria-label={`Zoomed: ${product.title} — image ${activeImg + 1} of ${total}`}
+				aria-label={`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
 				onClick={() => setLightbox(false)}
 				onTouchStart={onTouchStart}
 				onTouchEnd={onTouchEnd}
@@ -7515,7 +7605,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					<X className="w-5 h-5" aria-hidden="true" />
 				</button>
 				<span className="absolute top-4 left-4 bg-white/10 border border-white/20 text-white text-sm font-bold px-3 py-1 rounded-full backdrop-blur-sm" aria-live="polite">
-					{activeImg + 1} / {total}
+					{safeActive + 1} / {total}
 				</span>
 				{total > 1 && (
 					<>
@@ -7529,20 +7619,40 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</button>
 					</>
 				)}
-				<img
-					key={`lb-${activeImg}`}
-					src={activeImage}
-					alt={`${product.title} — zoomed view ${activeImg + 1}`}
-					className="max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl"
+				{/* Lightbox image with skeleton */}
+				<div
+					className="relative flex items-center justify-center"
+					style={{ minWidth: 120, minHeight: 120 }}
 					onClick={(e) => e.stopPropagation()}
-				/>
+				>
+					{!lbLoaded && !lbErr && (
+						<div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+							<div className="w-24 h-24 rounded-2xl skeleton-shimmer opacity-40" />
+						</div>
+					)}
+					{lbErr ? (
+						<div className="flex flex-col items-center justify-center text-white/50 gap-3">
+							<Settings className="w-14 h-14" aria-hidden="true" />
+							<span className="text-sm font-bold">Image unavailable</span>
+						</div>
+					) : (
+						<img
+							key={`lb-${safeActive}`}
+							src={activeImage}
+							alt={`${product.title} — zoomed view ${safeActive + 1}`}
+							className={`max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl transition-opacity duration-300 ${lbLoaded ? 'opacity-100' : 'opacity-0'}`}
+							onLoad={() => setLbLoaded(true)}
+							onError={() => { setLbErr(true); setLbLoaded(false); }}
+						/>
+					)}
+				</div>
 				{total > 1 && (
-					<div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 flex-wrap justify-center max-w-[80vw]">
-						{images.map((_, i) => (
-							<button key={i} type="button"
-								onClick={(e) => { e.stopPropagation(); goTo(i, i > activeImg ? 'left' : 'right'); }}
+					<div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 flex-wrap justify-center max-w-[80vw]">
+						{images.map((img, i) => (
+							<button key={img} type="button"
+								onClick={(e) => { e.stopPropagation(); goTo(i, i > safeActive ? 'left' : 'right'); }}
 								aria-label={`Go to image ${i + 1}`}
-								className={`rounded-full transition-all focus:outline-none ${i === activeImg ? 'w-6 h-2.5 bg-white' : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'}`}
+								className={`rounded-full transition-all focus:outline-none ${i === safeActive ? 'w-4 h-2 sm:w-6 sm:h-2.5 bg-white' : 'w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white/40 hover:bg-white/70'}`}
 							/>
 						))}
 					</div>
@@ -7979,7 +8089,7 @@ const HomePage = memo(({ navigate }) => {
 				pageType="website"
 			/>
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-20 pb-12 overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -8767,7 +8877,7 @@ const AboutPage = memo(({ navigate }) => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-white min-h-screen"
+			className="pt-20 pb-20 bg-white min-h-screen"
 		>
 			<SEOHead
 				title="About Keshav Enterprises — 20+ Years of Turbine Engineering Excellence"
@@ -9571,7 +9681,7 @@ const BlogPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-24 pb-20 bg-slate-50 min-h-screen"
+		className="pt-20 pb-20 bg-slate-50 min-h-screen"
 	>
 		<SEOHead
 			title="Engineering Blog — Turbine Maintenance & Industrial Insights"
@@ -9830,15 +9940,18 @@ const BlogPage = memo(({ navigate }) => (
 BlogPage.displayName = 'BlogPage';
 
 // ─── BLOG POST PAGE ────────────────────────────────────────────
-const BlogPostPage = ({ slug, navigate }) => {
+const BlogPostPage = memo(({ slug, navigate }) => {
 	const post = useMemo(() => BLOG_POSTS.find((p) => p.slug === slug), [slug]);
 	const others = useMemo(
 		() => (post ? BLOG_POSTS.filter((p) => p.id !== post.id).slice(0, 2) : []),
 		[post],
 	);
-	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}, [slug]);
+	// Scroll instantly in render phase — before React paints — so new post always starts at top
+	const [prevSlug, setPrevSlug] = useState(slug);
+	if (slug !== prevSlug) {
+		setPrevSlug(slug);
+		window.scrollTo({ top: 0, behavior: 'instant' });
+	}
 	if (!post)
 		return (
 			<main
@@ -9888,7 +10001,7 @@ const BlogPostPage = ({ slug, navigate }) => {
 			case 'list':
 				return (
 					<ul key={`block-${i}`} className="mb-8 space-y-3">
-						{block.items.map((item) => (
+						{(block.items ?? []).map((item) => (
 							<li
 								key={item}
 								className="flex items-start gap-3 text-slate-700 font-medium text-base leading-relaxed"
@@ -9932,7 +10045,7 @@ const BlogPostPage = ({ slug, navigate }) => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-slate-50 min-h-screen"
+			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
 				title={post.title}
@@ -10108,11 +10221,12 @@ const BlogPostPage = ({ slug, navigate }) => {
 			</div>
 		</main>
 	);
-};
+});
+BlogPostPage.displayName = 'BlogPostPage';
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = memo(({ navigate }) => (
-	<main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white">
+	<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-white">
 		<SEOHead
 			title="Turbine Services — Overhauling, Erection & Reverse Engineering"
 			description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW."
@@ -11414,15 +11528,16 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		}
 	}, []);
 
-	// Scroll-to-top + hero entrance on service change
+	// Scroll-to-top + hero entrance on service change — render phase so scroll happens before paint
 	const [prevServiceId, setPrevServiceId] = useState(serviceId);
 	if (serviceId !== prevServiceId) {
 		setPrevServiceId(serviceId);
+		window.scrollTo({ top: 0, behavior: 'instant' });
 		setHeroVisible(false);
 		setScrollY(0);
 	}
 	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'instant' });
+		// Trigger hero entrance animation after first paint on new service
 		const t = setTimeout(() => setHeroVisible(true), 60);
 		return () => clearTimeout(t);
 	}, [serviceId]);
@@ -11474,7 +11589,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 			<main
 				id="main-content"
 				tabIndex={-1}
-				className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center"
+				className="pt-20 pb-20 bg-white min-h-screen flex items-center justify-center"
 			>
 				<div className="text-center">
 					<h1 className="text-3xl font-black text-slate-900 mb-4">
@@ -11492,7 +11607,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		);
 
 	return (
-		<main id="main-content" tabIndex={-1} className="pt-24 pb-24 bg-white">
+		<main id="main-content" tabIndex={-1} className="pt-20 pb-24 bg-white">
 			<SEOHead
 				title={`${service.title} — Keshav Enterprises`}
 				description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
@@ -11744,7 +11859,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									const PIcon = proc.icon;
 									return (
 										<div
-											key={proc.label}
+											key={proc.step}
 											className="sd-reveal sd-proc-row bg-white border border-slate-200 rounded-2xl overflow-hidden flex gap-0 shadow-sm"
 											style={{ animationDelay: `${i * 50}ms` }}
 										>
@@ -12229,7 +12344,7 @@ const ProductsPage = memo(({ navigate }) => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-slate-50 min-h-screen"
+			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
 				title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
@@ -13133,12 +13248,15 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)': 'prod_st3',
 };
 
-const IndustryDetailPage = ({ industryId, navigate }) => {
+const IndustryDetailPage = memo(({ industryId, navigate }) => {
 	const ind = INDUSTRIES.find((i) => i.id === industryId);
 	const detail = INDUSTRY_DETAILS[industryId];
-	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}, [industryId]);
+	// Scroll instantly in render phase — before React paints — so new industry always starts at top
+	const [prevIndustryId, setPrevIndustryId] = useState(industryId);
+	if (industryId !== prevIndustryId) {
+		setPrevIndustryId(industryId);
+		window.scrollTo({ top: 0, behavior: 'instant' });
+	}
 
 	if (!ind || !detail)
 		return (
@@ -13174,7 +13292,7 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 			/>
 
 			{/* ── Hero ── */}
-			<div className="bg-[#0A192F] text-white pt-28 pb-20 relative overflow-hidden border-b-8 border-blue-600">
+			<div className="bg-[#0A192F] text-white pt-24 pb-20 relative overflow-hidden border-b-8 border-blue-600">
 				<div
 					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
@@ -13443,14 +13561,15 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 			</div>
 		</main>
 	);
-};
+});
+IndustryDetailPage.displayName = 'IndustryDetailPage';
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
 const IndustriesPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-24 pb-20 bg-slate-50 min-h-screen"
+		className="pt-20 pb-20 bg-slate-50 min-h-screen"
 	>
 		<SEOHead
 			title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
@@ -13686,20 +13805,23 @@ const ContactPage = memo(() => {
 		setErrors({});
 		setStatus('loading');
 
+		const FORMSPREE_FORM_ID = 'YOUR_FORM_ID';
+		const isFormspreeConfigured = FORMSPREE_FORM_ID !== 'YOUR_FORM_ID';
 		try {
-			// Step 1.1 — primary delivery: Formspree (replace YOUR_FORM_ID after sign-up at formspree.io)
-			const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					company: sanitise(name),
-					email:   sanitise(email),
-					phone:   sanitise(phone),
-					inquiry: iType,
-					details: sanitise(details),
-				}),
-			});
-			if (!res.ok) throw new Error('Submission failed');
+			if (isFormspreeConfigured) {
+				const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						company: sanitise(name),
+						email:   sanitise(email),
+						phone:   sanitise(phone),
+						inquiry: sanitise(iType),
+						details: sanitise(details),
+					}),
+				});
+				if (!res.ok) throw new Error('Formspree submission failed');
+			}
 
 			// WhatsApp as bonus confirmation — now optional, not the only delivery path
 			const msg = [
@@ -13707,7 +13829,7 @@ const ContactPage = memo(() => {
 				`Company: ${sanitise(name)}`,
 				`Email: ${sanitise(email)}`,
 				`Phone: ${sanitise(phone)}`,
-				`Type: ${iType}`,
+				`Type: ${sanitise(iType)}`,
 				`Details: ${sanitise(details)}`,
 			].join('\n');
 			window.open(waMsg(msg), '_blank', 'noopener');
@@ -13723,7 +13845,7 @@ const ContactPage = memo(() => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-slate-50 min-h-screen"
+			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
 				title="Contact Engineering Team — Request a Technical Quote"
@@ -14250,7 +14372,7 @@ class ErrorBoundary extends React.Component {
 				<main
 					id="main-content"
 					tabIndex={-1}
-					className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
+					className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
 				>
 					<div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
 						<Shield className="w-10 h-10 text-red-500" aria-hidden="true" />
@@ -14295,7 +14417,7 @@ const NotFoundPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
+		className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
 	>
 		<SEOHead
 			title="Page Not Found — 404"
@@ -14357,7 +14479,7 @@ export default function App() {
 			const newPath = window.location.hash.replace('#', '') || '/';
 			setCurrentPath(newPath);
 			// AUDIT FIX: scroll to top on back/forward navigation
-			window.scrollTo({ top: 0 });
+			window.scrollTo({ top: 0, behavior: 'instant' });
 			// AUDIT FIX: move focus to main content for screen readers
 			setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		};
@@ -14438,11 +14560,14 @@ export default function App() {
 	}, [currentPath]);
 
 	const navigate = useCallback((path) => {
+		// Scroll to top INSTANTLY before state update — this ensures the new page
+		// always renders from position 0. 'smooth' causes mid-render scroll artifacts
+		// because React paints the new page before the animation completes.
+		window.scrollTo({ top: 0, behavior: 'instant' });
 		window.history.pushState(null, '', `#${path}`);
 		setCurrentPath(path);
-		window.scrollTo({ top: 0, behavior: 'smooth' });
 		// AUDIT FIX: move focus to main content after navigation for a11y
-		setTimeout(() => document.getElementById('main-content')?.focus(), 150);
+		setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		// AUDIT FIX: announce route change to screen readers
 		const pageName =
 			path === '/'

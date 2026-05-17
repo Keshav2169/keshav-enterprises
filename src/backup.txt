@@ -5630,42 +5630,55 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 		: scrolled
 			? 'text-slate-900'
 			: 'text-white';
+	const subTc = forceWhite
+		? 'text-blue-300'
+		: scrolled
+			? 'text-blue-600'
+			: 'text-blue-300';
+
+	const dividerTc = forceWhite
+		? 'bg-white/30'
+		: scrolled
+			? 'bg-slate-300'
+			: 'bg-white/30';
 
 	return (
 		<button
 			type="button"
 			onClick={() => navigate('/')}
 			aria-label="Keshav Enterprises — Home"
-			className="flex items-center space-x-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm"
+			className="flex items-center gap-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-md"
 		>
-			{/* HARD WRAPPER FIX */}
-			<div className="relative w-10 h-10 sm:w-12 sm:h-12 shrink-0 overflow-hidden rounded-lg flex items-center justify-center">
-				{!imgErr ? (
-					<img
-						src="keshav-logo.png"
-						alt="Keshav Enterprises"
-						width="48"
-						height="48"
-						loading="eager"
-						decoding="async"
-						fetchPriority="high"
-						className="w-full h-full object-contain group-hover:scale-105"
-						onError={() => setImgErr(true)}
-					/>
-				) : (
-					<div className="w-full h-full rounded-xl bg-linear-to-br from-blue-600 to-blue-800 flex items-center justify-center border border-blue-400/30">
-						<Settings
-							className="w-5 h-5 sm:w-6 sm:h-6 text-white"
-							aria-hidden="true"
-						/>
-					</div>
-				)}
-			</div>
+			{/* Logo — clean, no box or ring */}
+			{!imgErr ? (
+				<img
+					src="keshav-logo.png"
+					alt="Keshav Enterprises logo"
+					width="48"
+					height="48"
+					loading="eager"
+					decoding="async"
+					fetchPriority="high"
+					className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-110"
+					onError={() => setImgErr(true)}
+				/>
+			) : (
+				<div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 flex items-center justify-center">
+					<Settings className="w-8 h-8 text-white" aria-hidden="true" />
+				</div>
+			)}
 
-			<div
-				className={`font-black text-xl sm:text-2xl tracking-tight ${tc} flex items-center`}
-			>
-				KESHAV ENTERPRISES
+			{/* Thin vertical divider */}
+			<div className={`hidden sm:block w-px h-8 shrink-0 ${dividerTc}`} aria-hidden="true" />
+
+			{/* Brand name — vertically centred two-line stack */}
+			<div className="flex flex-col justify-center leading-none gap-[3px]">
+				<span className={`font-extrabold text-[15px] sm:text-[17px] tracking-[0.18em] uppercase ${tc} transition-colors duration-200`}>
+					KESHAV
+				</span>
+				<span className={`font-medium text-[9px] sm:text-[10.5px] tracking-[0.3em] uppercase ${subTc} transition-colors duration-200`}>
+					ENTERPRISES
+				</span>
 			</div>
 		</button>
 	);
@@ -6486,45 +6499,40 @@ Navbar.displayName = 'Navbar';
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
 	<footer
-		className="bg-slate-950 text-slate-400 font-sans border-t-4 border-blue-600 cv-auto"
+		className="font-sans border-t-4 border-[#0891B2]"
+		style={{ background: '#050d1a', color: '#94a3b8' }}
 		role="contentinfo"
 	>
-		{/* Top accent line */}
-		<div className="h-0.5 w-full bg-blue-500" aria-hidden="true" />
+		{/* Top cyan gradient accent line */}
+		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4,#67E8F9,#06B6D4,#0891B2)' }} aria-hidden="true" />
 
 		{/* ── Pre-footer CTA band ── */}
-		<div className="bg-linear-to-r from-slate-950 via-blue-900 to-slate-950 border-b border-blue-900/50 relative overflow-hidden">
-			<div
-				className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-30 pointer-events-none"
-				aria-hidden="true"
-			/>
+		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderColor: '#0891B233' }}>
+			<div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%,#0891B220 0%,transparent 50%),radial-gradient(circle at 80% 50%,#06B6D420 0%,transparent 50%)' }} aria-hidden="true" />
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
 				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
 					<div className="text-center md:text-left">
 						<h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">
 							Need a quote or have an emergency breakdown?
 						</h2>
-						<p className="text-blue-200 font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm">
+						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm" style={{ color: '#67E8F9' }}>
 							Our engineering team responds within 24 hours
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-4 shrink-0 justify-center">
 						<a
 							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-							className="flex items-center gap-2 bg-slate-900 hover:bg-blue-600 border border-blue-500/50 hover:border-blue-400 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,99,235,0.2)] hover:shadow-[0_6px_25px_rgba(37,99,235,0.4)] hover:-translate-y-1"
+							className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none hover:-translate-y-1"
+							style={{ background: '#0d1f3c', border: '1px solid #0891B2' }}
+							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
+							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
 						>
-							<Phone
-								className="w-5 h-5 text-blue-300 group-hover:text-white shrink-0"
-								aria-hidden="true"
-							/>
+							<Phone className="w-5 h-5 shrink-0" style={{ color: '#67E8F9' }} aria-hidden="true" />
 							{CONTACT_INFO.phones[0]}
 						</a>
 						<a
-							href={waMsg(
-								'Hi KESHAV ENTERPRISES, I would like to request a technical quote.',
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
+							href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+							target="_blank" rel="noopener noreferrer"
 							className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbc5a] text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,211,102,0.2)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1"
 						>
 							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
@@ -6537,103 +6545,51 @@ const Footer = memo(({ navigate }) => (
 
 		{/* ── Main footer body ── */}
 		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative z-10">
-			{/* ── 4-column grid ── */}
 			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16 mb-20">
-				{/* Col 1 — Brand (4 cols) */}
-				<div className="lg:col-span-4">
-					<div className="mb-6">
-						<BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
-					</div>
-					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
-						20+ years delivering ex-OEM turbine engineering, precision reverse
-						engineering, and certified industrial spares across India.
-					</p>
 
-					{/* Credential chips */}
+				{/* Col 1 — Brand */}
+				<div className="lg:col-span-4">
+					<div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
+					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
+						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
+					</p>
 					<div className="flex flex-col gap-4 mb-8">
 						{[
-							{
-								imgSrc: 'msme-logo.png',
-								Icon: Shield,
-								iconColor: 'text-emerald-400',
-								title: 'MSME Registered',
-								sub: CONTACT_INFO.msme,
-							},
-							{
-								imgSrc: 'indiamart-logo.png',
-								Icon: Award,
-								iconColor: 'text-amber-400',
-								title: 'IndiaMART TrustSeal',
-								sub: '4.3★ Verified Supplier',
-							},
-							{
-								imgSrc: 'make-in-india.png',
-								Icon: Globe,
-								iconColor: 'text-cyan-400',
-								title: 'Make In India',
-								sub: 'Manufactured in India',
-							},
+							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
+							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-amber-400',  title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-cyan-400',   title: 'Make In India',       sub: 'Manufactured in India' },
 						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
-							<div
-								key={title}
-								className="flex items-center gap-5 bg-slate-900 border border-slate-800 hover:border-blue-500/50 hover:bg-slate-800 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2"
+							<div key={title}
+								className="flex items-center gap-5 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2"
+								style={{ background: '#071428', border: '1px solid #0d1f3c' }}
+								onMouseEnter={e => { e.currentTarget.style.borderColor = '#0891B2'; e.currentTarget.style.background = '#0d1f3c'; }}
+								onMouseLeave={e => { e.currentTarget.style.borderColor = '#0d1f3c'; e.currentTarget.style.background = '#071428'; }}
 							>
-								<div className="w-14 h-14 shrink-0 flex items-center justify-center relative bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
-									<img
-										src={imgSrc}
-										alt={title}
-										className="w-full h-full object-contain"
-										onError={(e) => {
-											e.target.style.display = 'none';
-											e.target.nextElementSibling.style.display = 'block';
-										}}
-									/>
-									<Icon
-										className={`w-full h-full ${iconColor} hidden`}
-										aria-hidden="true"
-									/>
+								<div className="w-14 h-14 shrink-0 flex items-center justify-center bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
+									<img src={imgSrc} alt={title} className="w-full h-full object-contain"
+										onError={e => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'block'; }} />
+									<Icon className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
 								</div>
 								<div>
-									<p className="text-white font-bold text-sm uppercase tracking-wider mb-1">
-										{title}
-									</p>
-									<p className="text-blue-400 font-mono text-xs tracking-widest">
-										{sub}
-									</p>
+									<p className="text-white font-bold text-sm uppercase tracking-wider mb-1">{title}</p>
+									<p className="font-mono text-xs tracking-widest" style={{ color: '#06B6D4' }}>{sub}</p>
 								</div>
 							</div>
 						))}
 					</div>
-
-					{/* OEM compatibility */}
-					<p className="font-bold text-[10px] text-blue-500 uppercase tracking-[0.2em] mb-2">
-						OEM Compatible With
-					</p>
-					<p className="text-slate-400 font-mono text-xs leading-relaxed">
-						{OEMS.join(' · ')}
-					</p>
+					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>OEM Compatible With</p>
+					<p className="text-slate-400 font-mono text-xs leading-relaxed">{OEMS.join(' · ')}</p>
 				</div>
 
-				{/* Col 2 — Navigate (2 cols) */}
+				{/* Col 2 — Navigate */}
 				<nav className="lg:col-span-2" aria-label="Footer site links">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
-						Navigate
-					</h3>
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Navigate</h3>
 					<ul className="space-y-4">
 						{NAV_LINKS.map((link) => (
 							<li key={link.name}>
-								<a
-									href={`#${link.path}`}
-									onClick={(e) => {
-										e.preventDefault();
-										navigate(link.path);
-									}}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit"
-								>
-									<ChevronRight
-										className="w-4 h-4 text-blue-500/50 group-hover:text-blue-400 transition-colors"
-										aria-hidden="true"
-									/>
+								<a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
+									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" style={{ color: '#0891B2' }} aria-hidden="true" />
 									<span>{link.name}</span>
 								</a>
 							</li>
@@ -6641,33 +6597,22 @@ const Footer = memo(({ navigate }) => (
 					</ul>
 				</nav>
 
-				{/* Col 3 — Services (3 cols) */}
+				{/* Col 3 — Services */}
 				<div className="lg:col-span-3">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
-						Core Services
-					</h3>
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Core Services</h3>
 					<ul className="space-y-4">
 						{[
-							{ label: 'Turbine Erection', id: 'srv_1' },
+							{ label: 'Turbine Erection',    id: 'srv_1' },
 							{ label: 'Turnkey Overhauling', id: 'srv_2' },
-							{ label: 'Reverse Engineering', id: 'srv_3' },
-							{ label: 'Dynamic Balancing', id: 'srv_4' },
-							{ label: 'Lube Oil Flushing', id: 'srv_5' },
-							{ label: 'Machine Alignment', id: 'srv_6' },
+							{ label: 'Reverse Engineering',  id: 'srv_3' },
+							{ label: 'Dynamic Balancing',    id: 'srv_4' },
+							{ label: 'Lube Oil Flushing',    id: 'srv_5' },
+							{ label: 'Machine Alignment',    id: 'srv_6' },
 						].map(({ label, id }) => (
 							<li key={id}>
-								<a
-									href={`#/service/${id}`}
-									onClick={(e) => {
-										e.preventDefault();
-										navigate(`/service/${id}`);
-									}}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit"
-								>
-									<Hexagon
-										className="w-3.5 h-3.5 text-blue-500/50 group-hover:text-blue-400 transition-colors"
-										aria-hidden="true"
-									/>
+								<a href={`#/service/${id}`} onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
+									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<Hexagon className="w-3.5 h-3.5" style={{ color: '#0891B2' }} aria-hidden="true" />
 									<span>{label}</span>
 								</a>
 							</li>
@@ -6675,251 +6620,75 @@ const Footer = memo(({ navigate }) => (
 					</ul>
 				</div>
 
-				{/* Col 4 — Contact (3 cols) */}
+				{/* Col 4 — Contact */}
 				<address className="lg:col-span-3 not-italic">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 border-b border-slate-800 pb-2 inline-block">
-						Contact Us
-					</h3>
-
+					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Contact Us</h3>
 					<div className="space-y-5">
-						{/* Address */}
-						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
-								<MapPin className="w-4 h-4 text-blue-400" aria-hidden="true" />
+						{[
+							{ id: 'address', Icon: MapPin, content: <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
+							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-slate-300 hover:text-white font-mono text-sm transition-colors">{p}</a>)}</div> },
+							{ id: 'mail',    Icon: Mail,   content: (
+								<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
+									{[{ addr: CONTACT_INFO.email, label: 'General' }, { addr: CONTACT_INFO.infoEmail, label: 'Info' }].map(({ addr, label }) => (
+										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors">
+											<span className="truncate">{addr}</span>
+											<span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: '#0891B2' }}>{label}</span>
+										</a>
+									))}
+								</div>
+							)},
+						].map(({ id, Icon, content }) => (
+							<div key={id} className="flex items-start gap-4">
+								<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
+									<Icon className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
+								</div>
+								{content}
 							</div>
-							<p className="text-slate-400 text-sm leading-relaxed">
-								{CONTACT_INFO.address}
-							</p>
-						</div>
-
-						{/* Phones */}
-						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
-								<Phone className="w-4 h-4 text-blue-400" aria-hidden="true" />
-							</div>
-							<div className="flex flex-col gap-1.5 mt-1">
-								{CONTACT_INFO.phones.map((p) => (
-									<a
-										key={p}
-										href={`tel:${p.replace(/\s/g, '')}`}
-										className="text-slate-300 hover:text-white font-mono text-sm transition-colors focus:outline-none focus-visible:underline"
-									>
-										{p}
-									</a>
-								))}
-							</div>
-						</div>
-
-						{/* Emails — all 4 addresses */}
-						<div className="flex items-start gap-4 group">
-							<div className="w-8 h-8 bg-slate-900 border border-slate-800 rounded-lg flex items-center justify-center shrink-0 mt-0.5 group-hover:border-blue-500/50 transition-colors">
-								<Mail className="w-4 h-4 text-blue-400" aria-hidden="true" />
-							</div>
-							<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
-								{/* Step 1.2 — only public emails rendered; private emails removed from bundle */}
-								{[
-									{ addr: CONTACT_INFO.email, label: 'General' },
-									{ addr: CONTACT_INFO.infoEmail, label: 'Info' },
-								].map(({ addr, label }) => (
-									<a
-										key={addr}
-										href={`mailto:${addr}`}
-										className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors focus:outline-none focus-visible:underline group/email"
-									>
-										<span className="truncate group-hover/email:text-blue-300 transition-colors">
-											{addr}
-										</span>
-										<span className="font-mono text-[9px] uppercase tracking-widest text-slate-600 group-hover/email:text-blue-500 transition-colors">
-											{label}
-										</span>
-									</a>
-								))}
-							</div>
-						</div>
+						))}
 					</div>
 				</address>
 			</div>
 
-			{/* ── Divider ── */}
-			<div className="h-px w-full bg-slate-800 mb-12" />
+			{/* Divider */}
+			<div className="h-px w-full mb-12" style={{ background: '#0d1f3c' }} />
 
-			{/* ── Social media links ── */}
-			<div className="mb-14">
-				<div className="flex flex-wrap justify-center gap-3">
-					{[
-						{
-							href: CONTACT_INFO.linkedin,
-							label: `LinkedIn — ${CONTACT_INFO.linkedinHandle}`,
-							name: 'LinkedIn',
-							brand: '#0A66C2',
-							iconBg: '#E8F0FB',
-						},
-						{
-							href: CONTACT_INFO.youtube,
-							label: `YouTube — ${CONTACT_INFO.youtubeHandle}`,
-							name: 'YouTube',
-							brand: '#FF0000',
-							iconBg: '#FDECEA',
-						},
-						{
-							href: CONTACT_INFO.instagram,
-							label: `Instagram — ${CONTACT_INFO.instagramHandle}`,
-							name: 'Instagram',
-							brand: '#C13584',
-							iconBg: '#FCE4F3',
-						},
-						{
-							href: CONTACT_INFO.facebook,
-							label: `Facebook — ${CONTACT_INFO.facebookHandle}`,
-							name: 'Facebook',
-							brand: '#1877F2',
-							iconBg: '#E7F0FE',
-						},
-						{
-							href: CONTACT_INFO.twitter,
-							label: `X — ${CONTACT_INFO.twitterHandle}`,
-							name: 'X',
-							brand: '#111111',
-							iconBg: '#F0F0F0',
-						},
-						{
-							href: CONTACT_INFO.reddit,
-							label: `Reddit — ${CONTACT_INFO.redditHandle}`,
-							name: 'Reddit',
-							brand: '#FF4500',
-							iconBg: '#FFF0EB',
-						},
-					].map(({ href, label, name, brand, iconBg }) => (
-						<a
-							key={name}
-							href={href}
-							target="_blank"
-							rel="noopener noreferrer"
-							aria-label={label}
-							className="flex items-center gap-3 bg-white border border-slate-200 hover:border-slate-300 px-5 py-3.5 rounded-2xl transition-all hover:shadow-lg hover:-translate-y-0.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shadow-sm w-[calc(50%-6px)] sm:w-auto min-w-35"
-						>
-							<span
-								aria-hidden="true"
-								className="flex items-center justify-center w-10 h-10 rounded-xl shrink-0 transition-transform group-hover:scale-110"
-								style={{ background: iconBg, color: brand }}
-							>
-								{name === 'X' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-									</svg>
-								) : name === 'LinkedIn' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-									</svg>
-								) : name === 'YouTube' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-									</svg>
-								) : name === 'Instagram' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-									</svg>
-								) : name === 'Facebook' ? (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-1.9.9-1.9 1.8V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z" />
-									</svg>
-								) : (
-									<svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-										<path d="M14.2 15.6c-.5.5-1.3.5-1.8 0-.4-.5-.4-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm-4.4 0c-.5.5-1.3.5-1.8 0-.5-.5-.5-1.3 0-1.8.5-.5 1.3-.5 1.8 0 .5.5.5 1.3 0 1.8zm4.4-7.5 2.2.5c.1 0 .2 0 .3-.1l1.5-1.5c.5-.5.5-1.3 0-1.8s-1.3-.5-1.8 0l-1 1-1.5-.3c-1-.7-2.3-1.1-3.6-1.1-3.5 0-6.4 2.3-7.5 5.5H1.5C.7 10.3 0 11 0 11.8v.4c0 .8.7 1.5 1.5 1.5h1c.5 3.8 3.8 6.7 7.8 6.7s7.3-2.9 7.8-6.7h1c.8 0 1.5-.7 1.5-1.5v-.4c0-.8-.7-1.5-1.5-1.5h-1.2c-.5-1-1.2-1.8-2-2.5z" />
-									</svg>
-								)}
-							</span>
-							<span className="font-black text-sm tracking-wide" style={{ color: brand }}>
-								{name}
-							</span>
-						</a>
-					))}
-				</div>
-			</div>
-
-			{/* ── Industries served ── */}
-			<div className="bg-slate-900 border border-slate-800 rounded-xl p-8 mb-10">
+			{/* Industries panel */}
+			<div className="rounded-xl p-8 mb-10" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
 				<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
 					<div className="flex-1">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">
-							Industries Served
-						</p>
+						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">Industries Served</p>
 						<div className="flex flex-wrap gap-2">
 							{[
-								{
-									name: 'Power Generation',
-									text: 'text-yellow-400',
-									bg: 'bg-yellow-500/15',
-									border: 'border-yellow-500/30',
-								},
-								{
-									name: 'Sugar Mills',
-									text: 'text-green-400',
-									bg: 'bg-green-500/15',
-									border: 'border-green-500/30',
-								},
-								{
-									name: 'Paper & Pulp',
-									text: 'text-blue-400',
-									bg: 'bg-blue-500/15',
-									border: 'border-blue-500/30',
-								},
-								{
-									name: 'Oil & Gas',
-									text: 'text-orange-400',
-									bg: 'bg-orange-500/15',
-									border: 'border-orange-500/30',
-								},
-								{
-									name: 'Petrochemical',
-									text: 'text-purple-400',
-									bg: 'bg-purple-500/15',
-									border: 'border-purple-500/30',
-								},
-								{
-									name: 'Agro & Food',
-									text: 'text-teal-400',
-									bg: 'bg-teal-500/15',
-									border: 'border-teal-500/30',
-								},
-								{
-									name: 'Cement',
-									text: 'text-stone-400',
-									bg: 'bg-stone-500/15',
-									border: 'border-stone-500/30',
-								},
-							].map((ind) => (
-								<span
-									key={ind.name}
-									className={`text-xs ${ind.text} ${ind.bg} ${ind.border} border px-3 py-1.5 rounded-full font-bold`}
-								>
-									{ind.name}
+								{ name: 'Power Generation', color: '#facc15' },
+								{ name: 'Sugar Mills',      color: '#4ade80' },
+								{ name: 'Paper & Pulp',     color: '#67E8F9' },
+								{ name: 'Oil & Gas',        color: '#fb923c' },
+								{ name: 'Petrochemical',    color: '#c084fc' },
+								{ name: 'Agro & Food',      color: '#2dd4bf' },
+								{ name: 'Cement',           color: '#a8a29e' },
+							].map(({ name, color }) => (
+								<span key={name} className="text-xs px-3 py-1.5 rounded-full font-bold"
+									style={{ color, background: color + '18', border: `1px solid ${color}44` }}>
+									{name}
 								</span>
 							))}
 						</div>
 					</div>
 					<div className="lg:text-right shrink-0">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">
-							Capability Range
-						</p>
+						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">Capability Range</p>
 						<p className="text-white font-black text-3xl tracking-tight">
-							5 kW <span className="text-slate-600 font-normal mx-1">–</span> 27
-							MW
+							5 kW <span className="font-normal mx-1" style={{ color: '#0d1f3c' }}>–</span> 27 MW
 						</p>
 					</div>
 				</div>
 			</div>
 
-			{/* ── Bottom copyright bar ── */}
-			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-slate-800">
-				<p className="text-slate-400 text-sm">
-					© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.
-				</p>
+			{/* Bottom bar */}
+			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
+				<p className="text-slate-400 text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
 				<p className="text-slate-400 text-sm flex items-center gap-2">
 					<span>GST:</span>
-					<span className="text-slate-300 font-mono bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
-						{CONTACT_INFO.gst}
-					</span>
+					<span className="text-slate-300 font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
 				</p>
 			</div>
 		</div>
@@ -7082,6 +6851,8 @@ FloatingButtons.displayName = 'FloatingButtons';
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
+	// probe[i] = 'pending' | 'ok' | 'err'  — set by hidden <img> preloaders
+	const [probe, setProbe]           = useState({});
 	const [activeImg, setActiveImg]   = useState(0);
 	const [imgLoaded, setImgLoaded]   = useState(false);
 	const [imgErr, setImgErr]         = useState(false);
@@ -7090,25 +6861,29 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	const [lbErr, setLbErr]           = useState(false);
 	const [slideDir, setSlideDir]     = useState('');
 	const [isSliding, setIsSliding]   = useState(false);
-	const [thumbLoaded, setThumbLoaded] = useState({});
 	const [tab, setTab]               = useState('specs');
 	const thumbStripRef               = useRef(null);
 	const touchRef                    = useRef(null);
+	const slidingTimerRef             = useRef(null);
 
 	const product = useMemo(
 		() => PRODUCTS.find((p) => p.id === productId),
 		[productId],
 	);
 
-	// Reset all state when product changes
+	// All filenames from product data
+	const allImages = useMemo(() => (product?.images || []).filter(Boolean), [product]);
+
+	// Reset all state when product changes — also scroll instantly to top.
+	// Must happen before render (not in useEffect) so the new page paints at 0.
 	const [prevProductId, setPrevProductId] = useState(productId);
 	if (productId !== prevProductId) {
 		setPrevProductId(productId);
-		setActiveImg(0); setImgLoaded(false); setImgErr(false);
-		setLightbox(false); setSlideDir(''); setIsSliding(false);
-		setThumbLoaded({}); setTab('specs'); setLbLoaded(false); setLbErr(false);
+		window.scrollTo({ top: 0, behavior: 'instant' });
+		setProbe({}); setActiveImg(0); setImgLoaded(false); setImgErr(false);
+		setLightbox(false); setLbLoaded(false); setLbErr(false);
+		setSlideDir(''); setIsSliding(false); setTab('specs');
 	}
-	useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [productId]);
 
 	// Reset main image state on slide change
 	const [prevImg, setPrevImg] = useState(activeImg);
@@ -7116,50 +6891,46 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		setPrevImg(activeImg); setImgLoaded(false); setImgErr(false); setLbLoaded(false); setLbErr(false);
 	}
 
-	const images = useMemo(() => (product?.images || []).filter(Boolean), [product]);
-	const total  = images.length;
+	// Probe result helpers
+	const probeOk  = useCallback((i) => setProbe(p => ({ ...p, [i]: 'ok'  })), []);
+	const probeErr = useCallback((i) => setProbe(p => ({ ...p, [i]: 'err' })), []);
 
-	// Safety ref to clear isSliding if onAnimationEnd never fires (e.g. missing/errored image)
-	const slidingTimerRef = useRef(null);
+	// Only images confirmed to exist. While probing, we show nothing in the
+	// strip/dots — they appear one-by-one as probes resolve to 'ok'.
+	const images = useMemo(
+		() => allImages.filter((_, i) => probe[i] === 'ok'),
+		[allImages, probe],
+	);
+	const total = images.length;
 
+	// How many probes have finished (ok or err) — used to decide if probing is complete
+	const probedCount = useMemo(
+		() => Object.keys(probe).length,
+		[probe],
+	);
+	const probing = probedCount < allImages.length;
+
+	// Clamp activeImg whenever visible images shrink (shouldn't happen, but defensive)
+	const safeActive = Math.min(activeImg, Math.max(0, total - 1));
+
+	// Safety ref: clear isSliding if onAnimationEnd never fires (errored image)
 	const goTo = useCallback((idx, dir) => {
-		if (idx === activeImg || isSliding) return;
-		// Skip images that have already hard-errored in the thumbnail tracker
-		// Walk in the requested direction to find the next non-errored image
-		const findNext = (startIdx, direction) => {
-			for (let step = 1; step < total; step++) {
-				const candidate = (startIdx + direction * step + total) % total;
-				const thumbState = thumbLoaded[candidate];
-				if (!thumbState?.err) return candidate;
-			}
-			return startIdx; // all errored — stay put
-		};
-
-		const thumbState = thumbLoaded[idx];
-		const resolvedIdx = thumbState?.err ? findNext(activeImg, idx > activeImg ? 1 : -1) : idx;
-		if (resolvedIdx === activeImg) return;
-
-		setSlideDir(dir || (resolvedIdx > activeImg ? 'left' : 'right'));
+		if (idx === safeActive || isSliding) return;
+		setSlideDir(dir || (idx > safeActive ? 'left' : 'right'));
 		setIsSliding(true);
-		setActiveImg(resolvedIdx);
-
-		// Safety fallback: always clear isSliding after 600ms so navigation
-		// can never permanently lock (fires if onAnimationEnd is never triggered
-		// due to a missing/errored image that has no rendered animation).
+		setActiveImg(idx);
 		if (slidingTimerRef.current) clearTimeout(slidingTimerRef.current);
 		slidingTimerRef.current = setTimeout(() => setIsSliding(false), 600);
-
 		setTimeout(() => {
 			const strip = thumbStripRef.current;
-			if (strip) strip.children[resolvedIdx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+			if (strip) strip.children[idx]?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
 		}, 40);
-	}, [activeImg, isSliding, total, thumbLoaded]);
+	}, [safeActive, isSliding]);
 
-	// Cleanup safety timer on unmount
 	useEffect(() => () => { if (slidingTimerRef.current) clearTimeout(slidingTimerRef.current); }, []);
 
-	const prev = useCallback(() => goTo(activeImg === 0 ? total - 1 : activeImg - 1, 'right'), [goTo, activeImg, total]);
-	const next = useCallback(() => goTo(activeImg === total - 1 ? 0 : activeImg + 1, 'left'),  [goTo, activeImg, total]);
+	const prev = useCallback(() => goTo(safeActive === 0 ? total - 1 : safeActive - 1, 'right'), [goTo, safeActive, total]);
+	const next = useCallback(() => goTo(safeActive === total - 1 ? 0 : safeActive + 1, 'left'),  [goTo, safeActive, total]);
 
 	// Keyboard navigation
 	useEffect(() => {
@@ -7234,7 +7005,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			</main>
 		);
 
-	const activeImage = images[activeImg] || '';
+	const activeImage = images[safeActive] || '';
 
 	return (
 		<>
@@ -7265,11 +7036,33 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						{/* ── LEFT: Image gallery panel ── */}
 						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
 
+							{/* ── Hidden image probers ──
+							    Invisible 1×1 images that fire onLoad/onError for every filename.
+							    This resolves which images actually exist BEFORE anything visible renders.
+							    Only images that pass probe[i]==='ok' appear in the gallery. */}
+							<div className="sr-only" aria-hidden="true">
+								{allImages.map((src, i) =>
+									probe[i] === undefined ? (
+										<img
+											key={src}
+											src={src}
+											alt=""
+											width="1"
+											height="1"
+											loading="eager"
+											decoding="async"
+											onLoad={() => probeOk(i)}
+											onError={() => probeErr(i)}
+										/>
+									) : null
+								)}
+							</div>
+
 							{/* Main image viewer */}
 							<div
 								className="w-full aspect-square product-img-bg rounded-2xl border border-slate-100 flex items-center justify-center relative overflow-hidden mb-4 shadow-inner cursor-zoom-in select-none"
 								role="img"
-								aria-label={`${product.title} — image ${activeImg + 1} of ${total}`}
+								aria-label={total > 0 ? `${product.title} — image ${safeActive + 1} of ${total}` : product.title}
 								onClick={() => activeImage && !imgErr && setLightbox(true)}
 								onTouchStart={onTouchStart}
 								onTouchEnd={onTouchEnd}
@@ -7289,39 +7082,37 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											className={`absolute inset-0 flex items-center justify-center p-5 pdp-slide pdp-slide-${slideDir} ${isSliding ? 'pdp-sliding' : ''}`}
 											onAnimationEnd={() => {
 												setIsSliding(false);
-												if (slidingTimerRef.current) {
-													clearTimeout(slidingTimerRef.current);
-													slidingTimerRef.current = null;
-												}
+												if (slidingTimerRef.current) { clearTimeout(slidingTimerRef.current); slidingTimerRef.current = null; }
 											}}
 										>
 											<img
 												key={activeImage}
 												src={activeImage}
-												alt={`${product.title} — view ${activeImg + 1} of ${total}`}
+												alt={`${product.title} — view ${safeActive + 1} of ${total}`}
 												loading="eager"
 												decoding="async"
 												fetchPriority="high"
 												className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.12)] ${imgLoaded ? 'is-loaded' : ''}`}
 												onLoad={() => setImgLoaded(true)}
 												onError={() => {
-													setImgErr(true);
-													setImgLoaded(false);
-													// Also clear isSliding — if image 404s during a slide,
-													// onAnimationEnd will never fire, so unlock navigation here.
+													setImgErr(true); setImgLoaded(false);
 													setIsSliding(false);
-													if (slidingTimerRef.current) {
-														clearTimeout(slidingTimerRef.current);
-														slidingTimerRef.current = null;
-													}
+													if (slidingTimerRef.current) { clearTimeout(slidingTimerRef.current); slidingTimerRef.current = null; }
 												}}
 											/>
 										</div>
 
 										{/* Counter badge */}
+									{total > 1 && (
+										<span className="absolute bottom-3 right-3 z-10 bg-slate-900/75 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none" aria-hidden="true">
+											{safeActive + 1} / {total}
+										</span>
+									)}
+
+									{/* Counter badge */}
 										{total > 1 && (
 											<span className="absolute bottom-3 right-3 z-10 bg-slate-900/75 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none" aria-hidden="true">
-												{activeImg + 1} / {total}
+												{safeActive + 1} / {total}
 											</span>
 										)}
 
@@ -7346,77 +7137,101 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											</>
 										)}
 									</>
+								) : probing && allImages.length > 0 ? (
+									/* Still waiting for first probe to resolve — show skeleton */
+									<>
+										<div className="skeleton-shimmer" aria-hidden="true" />
+										<div className="skeleton-product" aria-hidden="true" />
+									</>
 								) : (
+									/* All probes done, none succeeded */
 									<div className="flex flex-col items-center justify-center opacity-30" aria-hidden="true">
 										{getCategoryIcon(product.category)}
-										<span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">Image Pending</span>
+										<span className="mt-6 font-bold text-slate-500 uppercase tracking-widest text-sm">No Images Available</span>
 									</div>
 								)}
 							</div>
 
-							{/* Dot indicators */}
+							{/* ── Dot indicators ──
+							    Mobile: compact dots, active pill slightly wider. Gap tight.
+							    Desktop (sm+): slightly larger, more breathing room.
+							    For >8 images: dots scale down further so they all fit in one row. */}
 							{total > 1 && (
-								<div className="flex justify-center gap-1.5 mb-3" role="tablist" aria-label="Image navigation dots">
-									{images.map((_, i) => (
-										<button key={i} type="button" role="tab"
-											aria-selected={i === activeImg}
-											aria-label={`View image ${i + 1}`}
-											onClick={() => goTo(i, i > activeImg ? 'left' : 'right')}
-											className={`rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${i === activeImg ? 'w-5 h-2 bg-blue-600' : 'w-2 h-2 bg-slate-300 hover:bg-slate-400'}`}
-										/>
-									))}
+								<div
+									className="flex justify-center items-center flex-wrap mb-2 mt-1"
+									style={{ gap: total > 8 ? '3px' : '4px' }}
+									role="tablist"
+									aria-label="Image navigation"
+								>
+									{images.map((img, i) => {
+										const isActive = i === safeActive;
+										const w = isActive ? (total > 8 ? 16 : 20) : (total > 8 ? 5 : 6);
+										return (
+											<button
+												key={img}
+												type="button"
+												role="tab"
+												aria-selected={isActive}
+												aria-label={`View image ${i + 1}`}
+												onClick={() => goTo(i, i > safeActive ? 'left' : 'right')}
+												className="rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 block shrink-0 p-0 border-0 cursor-pointer"
+												style={{
+													width:           w,
+													height:          4,
+													minHeight:       4,
+													maxHeight:       4,
+													background:      isActive ? '#2563EB' : '#cbd5e1',
+													lineHeight:      0,
+													fontSize:        0,
+												}}
+											/>
+										);
+									})}
 								</div>
 							)}
 
-							{/* Thumbnail strip — shows ALL images with individual skeletons */}
+							{/* ── Thumbnail grid ──
+							    Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
+							    Grid aligns left so 3 images don't become 3 huge tiles. */}
 							{total > 1 && (
 								<div
 									ref={thumbStripRef}
-									className="grid gap-2 w-full pt-1 pb-1 overflow-x-auto thumb-strip"
+									className="pt-1 pb-1"
 									style={{
-										gridTemplateColumns: `repeat(${Math.min(total, 6)}, minmax(0,1fr))`,
-										scrollbarWidth: 'none',
-										msOverflowStyle: 'none',
+										display: 'grid',
+										gridTemplateColumns: 'repeat(auto-fill, 72px)',
+										gap: '6px',
 									}}
 									role="list"
 									aria-label="All product images"
 								>
 									{images.map((img, idx) => {
-										const loaded = thumbLoaded[idx]?.loaded;
-										const err    = thumbLoaded[idx]?.err;
-										const active = idx === activeImg;
+										const active = idx === safeActive;
 										return (
-											<div key={img} role="listitem" className="relative">
+											<div key={img} role="listitem" className="relative" style={{ width: 72, height: 72 }}>
 												<button
 													type="button"
-													onClick={() => goTo(idx, idx > activeImg ? 'left' : 'right')}
+													onClick={() => goTo(idx, idx > safeActive ? 'left' : 'right')}
 													aria-label={`View image ${idx + 1} of ${total}`}
 													aria-pressed={active}
-													className={`w-full aspect-square rounded-xl border-2 overflow-hidden transition-all duration-200 relative block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${active ? 'border-blue-600 shadow-md ring-2 ring-blue-200 scale-[1.04]' : 'border-slate-200 hover:border-blue-400 opacity-65 hover:opacity-100 hover:scale-[1.02]'}`}
+													className={`w-full h-full rounded-xl border-2 overflow-hidden block focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all duration-150 ${
+														active
+															? 'border-blue-600 ring-2 ring-blue-200 scale-[1.05]'
+															: 'border-slate-200 opacity-60 hover:opacity-100 hover:border-blue-400 hover:scale-[1.02] active:opacity-100 active:scale-[1.04]'
+													}`}
 												>
-													{/* Per-thumb skeleton */}
-													{!loaded && !err && (
-														<div className="absolute inset-0 skeleton-shimmer rounded-xl" aria-hidden="true" />
-													)}
-													{err ? (
-														<div className="w-full h-full flex items-center justify-center bg-slate-100 text-slate-300 text-xs font-bold">
-															<Settings className="w-4 h-4" aria-hidden="true" />
-														</div>
-													) : (
-														<img
-															src={img}
-															alt={`${product.title} view ${idx + 1}`}
-															loading="lazy"
-															width="80"
-															height="80"
-															className={`w-full h-full object-contain p-1 transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
-															onLoad={()  => setThumbLoaded(s => ({ ...s, [idx]: { loaded: true,  err: false } }))}
-															onError={() => setThumbLoaded(s => ({ ...s, [idx]: { loaded: false, err: true  } }))}
-														/>
-													)}
+													<img
+														src={img}
+														alt={`${product.title} view ${idx + 1}`}
+														loading="lazy"
+														width="72"
+														height="72"
+														className="w-full h-full object-contain p-1"
+													/>
 												</button>
-												{/* Active pip */}
-												{active && <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-600 pointer-events-none" aria-hidden="true" />}
+												{active && (
+													<span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-600 pointer-events-none" aria-hidden="true" />
+												)}
 											</div>
 										);
 									})}
@@ -7575,7 +7390,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			<div
 				className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
 				role="dialog" aria-modal="true"
-				aria-label={`Zoomed: ${product.title} — image ${activeImg + 1} of ${total}`}
+				aria-label={`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
 				onClick={() => setLightbox(false)}
 				onTouchStart={onTouchStart}
 				onTouchEnd={onTouchEnd}
@@ -7585,7 +7400,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					<X className="w-5 h-5" aria-hidden="true" />
 				</button>
 				<span className="absolute top-4 left-4 bg-white/10 border border-white/20 text-white text-sm font-bold px-3 py-1 rounded-full backdrop-blur-sm" aria-live="polite">
-					{activeImg + 1} / {total}
+					{safeActive + 1} / {total}
 				</span>
 				{total > 1 && (
 					<>
@@ -7599,17 +7414,14 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</button>
 					</>
 				)}
-				{/* Lightbox image with skeleton while loading */}
+				{/* Lightbox image with skeleton */}
 				<div
 					className="relative flex items-center justify-center"
 					style={{ minWidth: 120, minHeight: 120 }}
 					onClick={(e) => e.stopPropagation()}
 				>
 					{!lbLoaded && !lbErr && (
-						<div
-							className="absolute inset-0 flex items-center justify-center"
-							aria-hidden="true"
-						>
+						<div className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
 							<div className="w-24 h-24 rounded-2xl skeleton-shimmer opacity-40" />
 						</div>
 					)}
@@ -7620,9 +7432,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</div>
 					) : (
 						<img
-							key={`lb-${activeImg}`}
+							key={`lb-${safeActive}`}
 							src={activeImage}
-							alt={`${product.title} — zoomed view ${activeImg + 1}`}
+							alt={`${product.title} — zoomed view ${safeActive + 1}`}
 							className={`max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl transition-opacity duration-300 ${lbLoaded ? 'opacity-100' : 'opacity-0'}`}
 							onLoad={() => setLbLoaded(true)}
 							onError={() => { setLbErr(true); setLbLoaded(false); }}
@@ -7630,12 +7442,12 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					)}
 				</div>
 				{total > 1 && (
-					<div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 flex-wrap justify-center max-w-[80vw]">
-						{images.map((_, i) => (
-							<button key={i} type="button"
-								onClick={(e) => { e.stopPropagation(); goTo(i, i > activeImg ? 'left' : 'right'); }}
+					<div className="absolute bottom-4 sm:bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 flex-wrap justify-center max-w-[80vw]">
+						{images.map((img, i) => (
+							<button key={img} type="button"
+								onClick={(e) => { e.stopPropagation(); goTo(i, i > safeActive ? 'left' : 'right'); }}
 								aria-label={`Go to image ${i + 1}`}
-								className={`rounded-full transition-all focus:outline-none ${i === activeImg ? 'w-6 h-2.5 bg-white' : 'w-2.5 h-2.5 bg-white/40 hover:bg-white/70'}`}
+								className={`rounded-full transition-all focus:outline-none ${i === safeActive ? 'w-4 h-2 sm:w-6 sm:h-2.5 bg-white' : 'w-2 h-2 sm:w-2.5 sm:h-2.5 bg-white/40 hover:bg-white/70'}`}
 							/>
 						))}
 					</div>
@@ -9923,15 +9735,18 @@ const BlogPage = memo(({ navigate }) => (
 BlogPage.displayName = 'BlogPage';
 
 // ─── BLOG POST PAGE ────────────────────────────────────────────
-const BlogPostPage = ({ slug, navigate }) => {
+const BlogPostPage = memo(({ slug, navigate }) => {
 	const post = useMemo(() => BLOG_POSTS.find((p) => p.slug === slug), [slug]);
 	const others = useMemo(
 		() => (post ? BLOG_POSTS.filter((p) => p.id !== post.id).slice(0, 2) : []),
 		[post],
 	);
-	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}, [slug]);
+	// Scroll instantly in render phase — before React paints — so new post always starts at top
+	const [prevSlug, setPrevSlug] = useState(slug);
+	if (slug !== prevSlug) {
+		setPrevSlug(slug);
+		window.scrollTo({ top: 0, behavior: 'instant' });
+	}
 	if (!post)
 		return (
 			<main
@@ -10201,7 +10016,8 @@ const BlogPostPage = ({ slug, navigate }) => {
 			</div>
 		</main>
 	);
-};
+});
+BlogPostPage.displayName = 'BlogPostPage';
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = memo(({ navigate }) => (
@@ -11507,15 +11323,16 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		}
 	}, []);
 
-	// Scroll-to-top + hero entrance on service change
+	// Scroll-to-top + hero entrance on service change — render phase so scroll happens before paint
 	const [prevServiceId, setPrevServiceId] = useState(serviceId);
 	if (serviceId !== prevServiceId) {
 		setPrevServiceId(serviceId);
+		window.scrollTo({ top: 0, behavior: 'instant' });
 		setHeroVisible(false);
 		setScrollY(0);
 	}
 	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'instant' });
+		// Trigger hero entrance animation after first paint on new service
 		const t = setTimeout(() => setHeroVisible(true), 60);
 		return () => clearTimeout(t);
 	}, [serviceId]);
@@ -13226,12 +13043,15 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)': 'prod_st3',
 };
 
-const IndustryDetailPage = ({ industryId, navigate }) => {
+const IndustryDetailPage = memo(({ industryId, navigate }) => {
 	const ind = INDUSTRIES.find((i) => i.id === industryId);
 	const detail = INDUSTRY_DETAILS[industryId];
-	useEffect(() => {
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}, [industryId]);
+	// Scroll instantly in render phase — before React paints — so new industry always starts at top
+	const [prevIndustryId, setPrevIndustryId] = useState(industryId);
+	if (industryId !== prevIndustryId) {
+		setPrevIndustryId(industryId);
+		window.scrollTo({ top: 0, behavior: 'instant' });
+	}
 
 	if (!ind || !detail)
 		return (
@@ -13536,7 +13356,8 @@ const IndustryDetailPage = ({ industryId, navigate }) => {
 			</div>
 		</main>
 	);
-};
+});
+IndustryDetailPage.displayName = 'IndustryDetailPage';
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
 const IndustriesPage = memo(({ navigate }) => (
@@ -14450,7 +14271,7 @@ export default function App() {
 			const newPath = window.location.hash.replace('#', '') || '/';
 			setCurrentPath(newPath);
 			// AUDIT FIX: scroll to top on back/forward navigation
-			window.scrollTo({ top: 0 });
+			window.scrollTo({ top: 0, behavior: 'instant' });
 			// AUDIT FIX: move focus to main content for screen readers
 			setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		};
@@ -14531,11 +14352,14 @@ export default function App() {
 	}, [currentPath]);
 
 	const navigate = useCallback((path) => {
+		// Scroll to top INSTANTLY before state update — this ensures the new page
+		// always renders from position 0. 'smooth' causes mid-render scroll artifacts
+		// because React paints the new page before the animation completes.
+		window.scrollTo({ top: 0, behavior: 'instant' });
 		window.history.pushState(null, '', `#${path}`);
 		setCurrentPath(path);
-		window.scrollTo({ top: 0, behavior: 'smooth' });
 		// AUDIT FIX: move focus to main content after navigation for a11y
-		setTimeout(() => document.getElementById('main-content')?.focus(), 150);
+		setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		// AUDIT FIX: announce route change to screen readers
 		const pageName =
 			path === '/'
