@@ -3,10 +3,9 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: '/keshav-enterprises/',
   plugins: [
     react(),
     tailwindcss(),
   ],
-  base: '/keshav-enterprises/',//— correct for Cloudflare Pages with a custom domain
 })
- 
