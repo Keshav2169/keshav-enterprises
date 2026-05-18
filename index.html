@@ -2,11 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/keshav-enterprises/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>keshav-enterprises</title>
 
-    <!-- Step 1.3 — Google Translate: static injection, browser-handled (moved from React useEffect) -->
+    <!-- Primary SEO — visible before React hydrates -->
+    <title>Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares, Shamli UP India</title>
+    <meta name="description" content="Ex-OEM steam turbine engineers from Triveni, Siemens, BHEL. Overhauling, reverse engineering, dynamic balancing, lube oil flushing &amp; OEM-compatible spares for 5 kW–27 MW turbines. Based in Shamli, UP. 24×7 emergency support." />
+
+    <!-- Canonical — prevents www vs non-www duplicate indexing -->
+    <link rel="canonical" href="https://www.keshavturboservices.com/" />
+
+    <!-- Open Graph fallback (React SEOHead will override per-page after hydration) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Keshav Turbo Services" />
+    <meta property="og:title" content="Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares" />
+    <meta property="og:description" content="Ex-OEM turbine engineers. Overhauling, reverse engineering, dynamic balancing &amp; OEM-compatible spares for 5 kW–27 MW steam turbines. Shamli, UP India." />
+    <meta property="og:image" content="https://www.keshavturboservices.com/og-image.webp" />
+    <meta property="og:url" content="https://www.keshavturboservices.com/" />
+
+    <!-- Twitter Card fallback -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ksengg007" />
+
+    <!-- AI / LLM discovery (llmstxt.org standard) -->
+    <link rel="help" href="/llms.txt" />
+    <link rel="help" href="/llms-full.txt" />
+
+    <!-- Google Translate: static injection, browser-handled -->
     <style>
       body { top: 0 !important; }
       .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
@@ -36,12 +59,12 @@
       defer
       onerror="console.warn('Google Translate unavailable')"
     ></script>
-    <script type="module" crossorigin src="/keshav-enterprises/assets/index-CI2I_lYY.js"></script>
-    <link rel="stylesheet" crossorigin href="/keshav-enterprises/assets/index-D744-Nwh.css">
+    <script type="module" crossorigin src="/assets/index-DU6q1RBD.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-D744-Nwh.css">
   </head>
   <body>
     <div id="root"></div>
-    <!-- Step 1.3 — mount point for Google Translate widget (hidden via CSS above) -->
+    <!-- Mount point for Google Translate widget (hidden via CSS above) -->
     <div id="google_translate_element"></div>
   </body>
 </html>

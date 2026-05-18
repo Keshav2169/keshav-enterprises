@@ -1,94 +1,110 @@
-# Keshav Enterprises
+# Keshav Turbo Services
 
-> Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW. Based in Shamli, Uttar Pradesh, India. Serving power, sugar, paper, oil & gas, petrochemical, cement, and agro industries across India.
+> Precision industrial steam turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW. Based in Shamli, Uttar Pradesh, India. Serving power generation, sugar mills, paper mills, oil & gas, petrochemical, cement, and agro industries pan-India. 24×7 emergency breakdown support.
 
 ## Company Overview
 
-Keshav Enterprises is a B2B industrial engineering company specializing in steam turbine maintenance, reverse engineering of obsolete parts, and supply of OEM-compatible industrial components. With 20+ years of experience and ex-OEM engineers from Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, KKK, and ABB, the company serves power plants, sugar mills, paper mills, oil refineries, and petrochemical facilities.
+Keshav Turbo Services (legal name: Keshav Enterprises) is a B2B industrial engineering company with 20+ years of field experience specialising in steam turbine maintenance, reverse engineering of obsolete turbine components, and supply of OEM-compatible industrial parts. The engineering team includes ex-OEM engineers from Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, KKK, and ABB.
 
+- **Brand Name**: Keshav Turbo Services
+- **Legal Name**: Keshav Enterprises
+- **Also Known As**: Keshav Engg
 - **Founded**: 2000+
-- **Location**: Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, U.P., India
-- **Phone**: +91 9149229448, +91 6397363268
-- **WhatsApp**: +91 6397363268
-- **Email**: ksengg007@gmail.com, info.ksengg007@gmail.com, ksenggmrkt007@gmail.com
+- **Location**: Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India
+- **Geo Coordinates**: 29.4476°N, 77.3003°E
+- **Phone**: +91 9149229448 | +91 6397363268
+- **WhatsApp**: +91 6397363268 (24×7 emergency line)
+- **Email**: ksengg007@gmail.com | info.ksengg007@gmail.com
 - **GST**: 09BOSPS3115K1ZC
-- **MSME/Udyam**: UDYAM-UP-47-0071234
-- **Website**: https://keshaventerprises.in
+- **MSME / Udyam**: UDYAM-UP-47-0071234
+- **Working Hours**: Monday–Saturday 09:00–18:00 IST (Emergency: 24×7)
+- **Languages**: English, Hindi, Mandarin, Spanish, French, Arabic, Russian, Portuguese, German, Japanese
+- **Payment**: Bank Transfer, Cheque (INR)
+- **Website**: https://www.keshavturboservices.com
 - **IndiaMART**: https://www.indiamart.com/keshav-enterprises-shamli/
+- **TradeIndia**: https://www.tradeindia.com/keshav-enterprises-73664698/product-services.html
+- **ExportersIndia**: https://www.exportersindia.com/keshav-enterprises-shamli/about-us.htm
 - **Google Business**: https://share.google/B7KVUQrAcCh86oSyu
 - **LinkedIn**: https://www.linkedin.com/in/keshav-enterprises-825a473b8
+- **Instagram**: https://www.instagram.com/ksengg007
+- **X / Twitter**: https://x.com/ksengg007 (@ksengg007)
+- **YouTube**: https://www.youtube.com/@ksengg007
+- **Facebook**: https://www.facebook.com/ksengg007
+- **Reddit**: https://www.reddit.com/user/NoDragonfly4979/
 
-## Services
+## Services (7 Total)
 
-- [Turbine Erection & Commissioning](/service/srv_1): Expert erection and commissioning for steam turbines, pumps, compressors, fans, condensers, EOT cranes, and steam/water/air pipeline work.
-- [Turnkey Overhauling & Maintenance](/service/srv_2): Executed by ex-OEM engineers. Includes pre-shutdown planning, on-site condition reporting, comprehensive spares management, and 24x7 emergency troubleshooting.
-- [Precision Reverse Engineering](/service/srv_3): PMI-verified reverse engineering using 3D laser scanners, CMM, and copying lathes for turbines from 5 kW to 27 MW.
-- [Dynamic Balancing & Rotor Machining](/service/srv_4): Precision rotor machining plus ISO/API standard dynamic balancing from 50 to 2000 kg.
-- [Lube Oil Flushing](/service/srv_5): ISO-compliant flushing using purpose-built mobile centrifuge filter systems targeting ISO 4406:99 standards.
-- [Machine Alignment](/service/srv_6): Expert machine alignment using latest technology for turbines, gearboxes, pumps, fans, alternators, and induction generators.
-- [Troubleshooting Service](/service/srv_7): Rapid on-site fault diagnosis for steam turbines experiencing vibration, bearing failure, governor instability, steam leakage, oil contamination, or unexpected trips. 24x7 emergency deployment.
+- [Turbine Erection & Commissioning](/service/srv_1): Expert erection and commissioning for steam turbines, pumps, compressors, fans, condensers, EOT cranes, and pipeline work. OEMs: Triveni, Siemens, BHEL, Belliss India, Maxwatt.
+- [Turnkey Overhauling & Maintenance](/service/srv_2): Executed by ex-OEM engineers from Triveni, Siemens, BHEL, Belliss, Maxwatt, Man Turbo, KKK, ABB. Pre-shutdown planning, condition reporting, spares management, 24×7 emergency support. Turnkey — all tools and manpower provided.
+- [Precision Reverse Engineering](/service/srv_3): PMI-verified using 3D laser scanners, CMM, and copying lathes. Turbines 5 kW to 27 MW. Full engineering drawings with GD&T, tolerances, heat treatment specs. Lead time 4–8 weeks vs 12–18 months OEM import.
+- [Dynamic Balancing & Rotor Machining](/service/srv_4): Journal grinding, polishing, labyrinth machining plus ISO 1940 / API dynamic balancing for rotors 50–2000 kg. Full compliance report.
+- [Lube Oil Flushing](/service/srv_5): ISO 4406:99-compliant flushing with mobile centrifuge filter systems. 4–25 micron removal, up to 6,000 l/min. Target: API 614 Class 16/14/11.
+- [Machine Alignment](/service/srv_6): Laser-precision alignment for turbines, gearboxes, pumps, fans, alternators, induction generators. Detailed report for every job.
+- [Troubleshooting Service](/service/srv_7): On-site fault diagnosis — high vibration, bearing failure, governor instability, steam leakage, oil contamination, unexpected trips. Ex-OEM engineers deploy 24×7 across India.
 
-## Product Categories
+## Product Categories (8 Categories, 105 Products)
 
-### Industrial Filtration
-Filter elements for turbine lube oil, control oil, and hydraulic systems. OEM-compatible with Triveni, Siemens, BHEL, and all major makes. Includes glass fiber, wire mesh, PTFE, WaterSorp, breather, suction, and return-line filters.
+### Industrial Filtration (23 products — prod_f1 to prod_f23)
+Lube oil, control oil, and hydraulic filter elements. OEM-compatible with Triveni, Siemens, BHEL. Includes glass fiber, wire mesh CEP, tank breather (NBF), suction strainer (AS/TS), WaterSorp offline (WSNR), PTFE hydrophobic, return-line, duplex control oil assembly, duplex fabricated housing, RO assemblies, filter bag assemblies, wedge wire, dust collector cartridges, oil vapour extractor, HYDAC replacement, Pall replacement, Bhagwati replacement, and air-oil separator elements.
 
-### Turbine Spares
-Carbon sealing rings, labyrinth packing, babbitt bearings, governor valves, ESV valves, rotor assemblies, gears, nozzles, diaphragms, speed governors, throttle valves, couplings, disc packs, shear pins, and more.
+### Industrial Strainers (6 products — prod_st1 to prod_st6)
+Simplex basket, duplex basket, conical/temporary, Y-type, pot/bucket type, and notch wire elements in CS and SS for all pipeline ratings.
 
-### Expansion Joints
-Metallic bellows (DN 15–12,000), rubber expansion joints, fabric expansion joints, PTFE-lined joints, and universal/hinged/gimbal designs for pipe stress compensation.
+### Expansion Joints (34 products — prod_e1 to prod_e31 + variants e1b, e3b, e3c)
+SS metallic bellows (DN 15–12,000), axial, double/single/wide-arch rubber, heat exchanger bellows, universal metallic, fabric/non-metallic (to 1000°C), pressure balance, ring reinforced, externally pressurised, lateral, angular/gimbal hinged, metallic vibration absorber, elbow pressure balance, steam crossover bellows, FCCU high-temperature, jacketed, clamshell retrofit, lens type, rectangular, district heating, tank farm service, cryogenic LNG/LPG, scrubber/exhaust gas, hygienic sanitary, hinged single-plane, T-type pressure balance, octagonal profile, thick-wall heavy-duty, MS slip type, industrial airflow damper, dismantling joint, MS & SS duct systems.
 
-### Industrial Strainers
-Y-type, basket, duplex basket, T-type, conical, and temporary pipeline strainers in carbon steel and stainless steel.
+### Turbine Spares (23 products — prod_ts1 to prod_ts23)
+Carbon & graphite gland sealing rings, labyrinth shaft packings, babbitt journal bearings & thrust pads, ESV valves, lube oil pumps & mechanical seals, high-purity electrographite rings, complete rotor assemblies, precision gears & worm wheels, nozzles & diaphragms, mechanical centrifugal governors, throttle/control valves, high/low speed couplings, flexible disc packs (MetaFlex), boiler sight glasses, spherical WM-80 bearings (TDPS alternator), leaf springs, rotor journal polishing service, fulcrum pins, spiral conveyor screws, nylon gear coupling sleeves, KTR BoWex gear couplings, shear pins, Dowty hydraulic oil pumps.
 
-### Flexible Hoses & Assemblies
-SS corrugated metal hoses, PTFE-lined hoses, hydraulic rubber hoses, steam hoses, food-grade hoses, oxygen hoses, and exhaust bellows.
+### Industrial Rubber Products (2 products — prod_r1 to prod_r2)
+Custom extruded rubber profiles & seals (neoprene/EPDM/nitrile/silicone), and heavy-duty anti-vibration rubber mounts (5–5000 kg per mount).
 
-### Industrial Rubber Products
-Custom extruded profiles, anti-vibration mounts, rubber expansion joints, and neoprene/EPDM/nitrile/silicone products.
+### Flexible Hoses & Assemblies (10 products — prod_h1 to prod_h8 + h1b, h1c)
+SS corrugated flexible metal hose assemblies, SS pre-fitted assemblies, generator/engine exhaust bellows, PTFE lined smooth bore assemblies, high-pressure hydraulic rubber hose (SAE 100R, to 400 bar), PTFE braided corrugated transfer hose, metallic flexible hose (corrugated core), steam hose (to 210°C), food grade hose (FDA/EU), oxygen & specialty gas hose.
 
-### Electronic Equipment
-Vibration monitoring probes (Shinkawa-compatible), magnetic pickup sensors (Woodward), solenoid valves (ASCO), tachometers, RTDs, and rectifier diodes.
+### Electronic Equipments (6 products — prod_ee1 to prod_ee6)
+Vibration monitoring probes (Shinkawa-compatible, API 670), magnetic pickup sensors (Woodward-compatible), ASCO 8210 explosion-proof solenoid valves, Beacon analog tachometer gauges, RTD & sensors (PT100/PT1000 for power plants), SEMIKRON SKN240/16 rectifier diodes.
 
-## Industries Served
+### Hydraulic Components (1 product — prod_hv1) ← NEW
+Directional control valves from Bosch Rexroth, Parker, Yuken, Vickers (Eaton), Atos, Duplomatic. CETOP 3/5/7 (D03/D05/D08), ISO 4401. Solenoid (24V DC/110V AC/220V AC), manual, pilot-operated. 4/2, 4/3, 5/2 spool; 2/2 poppet. Flow 15–350 LPM, up to 350 bar. ATEX explosion-proof option. Proportional valves available.
 
-- **Power Generation**: Steam turbine overhauling, erection, and spares for 5 MW to 27 MW thermal power plants.
-- **Sugar Mills & Distilleries**: Back-pressure turbine services for India's sugar industry. Triveni and Belliss turbine specialists.
-- **Paper & Pulp Mills**: Continuous-operation turbine maintenance for Siemens, BHEL, and Triveni turbines.
-- **Oil & Gas**: API 614-compliant filtration, API 670-compliant vibration monitoring, PTFE-lined hoses.
-- **Petrochemical & Refineries**: Metallic expansion joints, high-temperature PTFE products, ASME-code strainers.
-- **Agro & Food Processing**: Steam turbine maintenance, FDA-grade PTFE hoses, tank breather filters.
-- **Cement & Construction**: Lube oil filters for kilns, expansion joints for exhaust ducts, anti-vibration mounts.
+## Industries Served (7 Industries)
+
+- **Power Generation** (ind_1): Turbine overhauling, erection, filter spares for 5–27 MW thermal power plants.
+- **Sugar Mills & Distilleries** (ind_2): Back-pressure turbine services. Triveni and Belliss & Morcom specialists. 24×7 crushing-season emergency support.
+- **Paper & Pulp Mills** (ind_3): Continuous-operation turbine maintenance, duplex basket strainers, metallic expansion joints.
+- **Oil & Gas** (ind_4): API 614 filtration, API 670 vibration monitoring, PTFE hoses, high-pressure hydraulic hoses, babbitt bearings.
+- **Petrochemical & Refineries** (ind_5): Inconel/Hastelloy bellows, PTFE expansion joints, ASME-code strainers, FCCU expansion joints.
+- **Agro & Food Processing** (ind_6): FDA-grade PTFE hoses, anti-vibration mounts, breather filters, steam turbine maintenance.
+- **Cement & Construction** (ind_7): Kiln gearbox filters, kiln exhaust expansion joints, crusher anti-vibration mounts, babbitt bearings for kiln support rollers.
 
 ## OEM Compatibility
 
-All turbine makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, ABB.
+Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, ABB.
 
 ## Turbine Range
 
-5 kW to 27 MW — back-pressure and condensing types, horizontal and vertical, single and multi-stage.
+5 kW to 27 MW — back-pressure and condensing, horizontal and vertical, single and multi-stage.
 
 ## Emergency Support
 
-24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India. Contact WhatsApp +91 6397363268 for immediate assistance.
+24×7 breakdown support. WhatsApp +91 6397363268. Quote turnaround: 24 hours.
 
-## Blog / Technical Articles
+## Technical Blog Articles (5 Published)
 
-- [The Complete Steam Turbine Overhauling Checklist for Plant Engineers](/blog/steam-turbine-overhauling-checklist)
-- [How Lube Oil Contamination Destroys Turbine Bearings](/blog/lube-oil-contamination-turbine-bearings)
-- [Reverse Engineering Turbine Spares in India](/blog/reverse-engineering-turbine-spares-india)
-- [Belliss & Morcom Turbine Common Faults — Field Guide](/blog/belliss-morcom-turbine-common-faults-india)
-- [How to Read an ISO 4406 Lube Oil Cleanliness Report](/blog/iso-4406-lube-oil-cleanliness-guide)
+- [The Complete Steam Turbine Overhauling Checklist for Plant Engineers](/blog/steam-turbine-overhauling-checklist) — 2026-03-15
+- [How Lube Oil Contamination Destroys Turbine Bearings — And How to Prevent It](/blog/lube-oil-contamination-turbine-bearings) — 2026-02-28
+- [Reverse Engineering Turbine Spares: How We Recreate Obsolete Components in India](/blog/reverse-engineering-turbine-spares-india) — 2026-01-20
+- [Belliss & Morcom Turbine Common Faults — Field Guide for Indian Plants](/blog/belliss-morcom-turbine-common-faults-india) — 2026-03-18
+- [How to Read an ISO 4406 Lube Oil Cleanliness Report](/blog/iso-4406-lube-oil-cleanliness-guide) — 2026-04-05
 
-## Certifications & Trust
+## Certifications & Standards
 
-- MSME/Udyam Registered (UDYAM-UP-47-0071234)
-- GST Registered (09BOSPS3115K1ZC)
-- IndiaMART TrustSeal Verified (4.3★ rating)
-- Make in India
-- ISO 4406 / ISO 16889 / API 614 / API 670 compliant products
+- MSME/Udyam: UDYAM-UP-47-0071234 | GST: 09BOSPS3115K1ZC
+- IndiaMART TrustSeal Verified — 4.3★
+- Make in India certified
+- ISO 4406:99, ISO 16889, ISO 1940, API 614, API 670, ASME, SAE 100R, ISO 4401
 
 ## Optional
 
-- [Full product catalog with specifications](llms-full.txt)
+- [Full product and service catalog with complete specifications](llms-full.txt)
