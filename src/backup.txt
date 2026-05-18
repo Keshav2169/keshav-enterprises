@@ -1,9 +1,11 @@
 import {
 	Activity,
+	AlertTriangle,
 	ArrowLeft,
 	ArrowRight,
 	Award,
 	BookOpen,
+	Bug,
 	Building2,
 	Calendar,
 	CheckCircle2,
@@ -4926,31 +4928,31 @@ const MARQUEE_CSS = `
 
   @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   .skeleton-shimmer{
-    position:absolute;inset:0;z-index:0;
-    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
+	position:absolute;inset:0;z-index:0;
+	background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
+	background-size:200% 100%;
+	animation:ke-shimmer 1.25s linear infinite;
   }
   /* Enhanced skeleton with product icon placeholder */
   .skeleton-product{
-    position:absolute;inset:0;z-index:1;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
+	position:absolute;inset:0;z-index:1;
+	display:flex;align-items:center;justify-content:center;flex-direction:column;
   }
   .skeleton-product::before{
-    content:'';width:48px;height:48px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
-    animation:ke-shimmer 1.25s linear infinite;
-    background-size:200% 100%;
+	content:'';width:48px;height:48px;border-radius:12px;
+	background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
+	animation:ke-shimmer 1.25s linear infinite;
+	background-size:200% 100%;
   }
   .skeleton-product::after{
-    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
-    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
+	content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
+	background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
+	background-size:200% 100%;
+	animation:ke-shimmer 1.25s linear infinite;
   }
   /* Product image container gradient for contrast */
   .product-img-bg{
-    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
+	background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
   }
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
@@ -4984,45 +4986,45 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
-    .hero-section{
-      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
-      background-size:cover;
-      background-position:center center;
-      background-repeat:no-repeat;
-    }
-    .hero-bg-layer{display:none!important}
-    .hero-desktop-grad{display:none!important}
-    .hero-mobile-vignette{display:none!important}
-    .hero-glow-orb{display:none!important}
-    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
-    .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+	.hero-section{
+	  background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
+	  background-size:cover;
+	  background-position:center center;
+	  background-repeat:no-repeat;
+	}
+	.hero-bg-layer{display:none!important}
+	.hero-desktop-grad{display:none!important}
+	.hero-mobile-vignette{display:none!important}
+	.hero-glow-orb{display:none!important}
+	.hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
+	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
   /* ─── MOBILE TYPOGRAPHY BOOST ─── */
   @media(max-width:640px){
-    .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
-    .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
-    p{font-size:max(15px,1em);line-height:1.65}
-    .hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-    .glass-hero p{color:#d0e4f5!important}
-    .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
+	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
+	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
+	p{font-size:max(15px,1em);line-height:1.65}
+	.hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+	.glass-hero p{color:#d0e4f5!important}
+	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
-    section h1,section h2,section h3,
-    main>div>h1,main>div>h2{text-align:center}
-    .section-divider{margin-left:auto!important;margin-right:auto!important}
-    nav[aria-label="Breadcrumb"] *,
-    label,input,select,textarea,
-    footer h3,footer li,footer p,
-    address *,
-    [role="tabpanel"] *,
-    .keep-left,
-    .keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
-    article .bg-white h2,article .bg-white p{text-align:left!important}
-    .md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
-    .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
+	section h1,section h2,section h3,
+	main>div>h1,main>div>h2{text-align:center}
+	.section-divider{margin-left:auto!important;margin-right:auto!important}
+	nav[aria-label="Breadcrumb"] *,
+	label,input,select,textarea,
+	footer h3,footer li,footer p,
+	address *,
+	[role="tabpanel"] *,
+	.keep-left,
+	.keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
+	article .bg-white h2,article .bg-white p{text-align:left!important}
+	.md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
+	.lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
   }
 
   /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
@@ -5033,101 +5035,101 @@ const MARQUEE_CSS = `
   /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
   /* Social cards collapse gracefully on small screens */
   .social-card{
-    min-width:0!important;
-    width:100%;
-    max-width:100%;
-    flex-shrink:1;
+	min-width:0!important;
+	width:100%;
+	max-width:100%;
+	flex-shrink:1;
   }
   @media(max-width:640px){
-    /* Social card grid: 1 column on phones, 2 on wider phones */
-    .social-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.75rem;
-      width:100%;
-    }
-    .social-card{
-      min-width:0!important;
-      padding:0.75rem!important;
-      gap:0.625rem!important;
-    }
-    .social-card .social-handle{font-size:13px!important}
-    .social-card .social-sub{display:none}
+	/* Social card grid: 1 column on phones, 2 on wider phones */
+	.social-cards-grid{
+	  display:grid!important;
+	  grid-template-columns:1fr 1fr;
+	  gap:0.75rem;
+	  width:100%;
+	}
+	.social-card{
+	  min-width:0!important;
+	  padding:0.75rem!important;
+	  gap:0.625rem!important;
+	}
+	.social-card .social-handle{font-size:13px!important}
+	.social-card .social-sub{display:none}
   }
   @media(max-width:380px){
-    .social-cards-grid{grid-template-columns:1fr}
+	.social-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
   .dir-card{
-    min-width:0!important;
-    flex-shrink:1;
+	min-width:0!important;
+	flex-shrink:1;
   }
   @media(max-width:640px){
-    .dir-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.625rem;
-      width:100%;
-    }
-    .dir-card{
-      padding:0.75rem 0.875rem!important;
-      gap:0.5rem!important;
-      min-width:0!important;
-    }
-    .dir-card .dir-badge{font-size:10px!important}
+	.dir-cards-grid{
+	  display:grid!important;
+	  grid-template-columns:1fr 1fr;
+	  gap:0.625rem;
+	  width:100%;
+	}
+	.dir-card{
+	  padding:0.75rem 0.875rem!important;
+	  gap:0.5rem!important;
+	  min-width:0!important;
+	}
+	.dir-card .dir-badge{font-size:10px!important}
   }
   @media(max-width:380px){
-    .dir-cards-grid{grid-template-columns:1fr}
+	.dir-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
-    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
-    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
+	.thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
+	.thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
   }
 
   /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
   @media(max-width:480px){
-    .fp-card{width:13rem!important}
+	.fp-card{width:13rem!important}
   }
 
   /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
   @media(max-width:640px){
-    .sd-step-gap{gap:0.875rem!important}
-    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
+	.sd-step-gap{gap:0.875rem!important}
+	.sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
   }
 
   /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
   .email-link{
-    word-break:break-all;
-    overflow-wrap:anywhere;
-    min-width:0;
+	word-break:break-all;
+	overflow-wrap:anywhere;
+	min-width:0;
   }
 
   /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
   @media(max-width:767px){
-    .timeline-connector{left:1rem!important}
-    .timeline-card{margin-left:3rem!important;margin-right:0!important}
+	.timeline-connector{left:1rem!important}
+	.timeline-card{margin-left:3rem!important;margin-right:0!important}
   }
 
   /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
   @media(max-width:480px){
-    .ind-oem-chips{gap:0.375rem!important}
-    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
+	.ind-oem-chips{gap:0.375rem!important}
+	.ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
   }
 
   /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
-    a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-    .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
+	a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
+	.floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
   /* ─── REDUCED MOTION ─── */
   @media(prefers-reduced-motion:reduce){
-    .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
-    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
-    *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+	.ke-marquee,.ke-marquee-slow{animation:none;transform:none}
+	.lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
+	*{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
   }
 
   /* ─── REUSABLE BUTTON UTILITIES ─── */
@@ -5362,50 +5364,70 @@ if (typeof document !== 'undefined') {
 }
 
 // ─── ANALYTICS: GA4 + Microsoft Clarity ──────────────────────
-// HOW TO USE:
-//   1. Replace 'G-XXXXXXXXXX' below with your real GA4 Measurement ID
-//      (Google Analytics → Admin → Data Streams → Web → Measurement ID)
-//   2. Replace 'XXXXXXXXXX' in the Clarity block with your real Clarity Project ID
-//      (clarity.microsoft.com → Settings → Setup)
-//   3. Both are injected once at module load — no re-injection on route changes.
+// IDs are read from Vite environment variables — never hardcoded.
+// Set in Cloudflare Pages → Settings → Environment Variables:
+//   VITE_GA4_ID     = G-XXXXXXXXXX   (Google Analytics 4 Measurement ID)
+//   VITE_CLARITY_ID = XXXXXXXXXX     (Microsoft Clarity Project ID)
+// For local dev, set these in your .env file at the project root.
 //
-const GA4_ID = 'G-XXXXXXXXXX'; // ← REPLACE with your GA4 Measurement ID
-const CLARITY_ID = 'XXXXXXXXXX'; // ← REPLACE with your Clarity Project ID
+const GA4_ID     = import.meta.env.VITE_GA4_ID     ?? '';
+const CLARITY_ID = import.meta.env.VITE_CLARITY_ID ?? '';
+
+// trackPageView is exported to module scope so navigate() can call it
+// directly on every pushState navigation — not just popstate (back/forward).
+// path must be a clean pathname like '/products' or '/product/prod_ts1'.
+export const trackPageView = (path) => {
+	if (typeof window.gtag === 'function') {
+		window.gtag('event', 'page_view', {
+			page_path:     path,
+			page_location: window.location.origin + '/#' + path,
+			page_title:    document.title,
+		});
+	}
+};
 
 if (typeof document !== 'undefined') {
-	// ── Google Analytics 4 ──
-	if (
-		!document.getElementById('ga4-script') &&
-		!GA4_ID.includes('XXXXXXXXXX')
-	) {
+	// ── Google Analytics 4 ──────────────────────────────────────
+	if (GA4_ID && !document.getElementById('ga4-script')) {
 		const s1 = document.createElement('script');
-		s1.id = 'ga4-script';
-		s1.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
+		s1.id    = 'ga4-script';
+		s1.src   = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
 		s1.async = true;
 		document.head.appendChild(s1);
 
-		const s2 = document.createElement('script');
-		s2.id = 'ga4-init';
-		s2.text = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_ID}',{page_path:window.location.hash});`;
+		const s2  = document.createElement('script');
+		s2.id     = 'ga4-init';
+		// send_page_view:false — we fire all page_view events manually via
+		// trackPageView() so there is no double-count on the initial load.
+		s2.text = `window.dataLayer=window.dataLayer||[];`
+				+ `function gtag(){dataLayer.push(arguments);}`
+				+ `gtag('js',new Date());`
+				+ `gtag('config','${GA4_ID}',{send_page_view:false});`;
 		document.head.appendChild(s2);
 
-		// Track hash-based SPA navigation
+		// Fire the first page_view for the initial landing page
+		// (deferred so gtag is defined before we call it)
+		window.addEventListener('load', () => {
+			const initPath = window.location.hash.replace('#', '') || '/';
+			trackPageView(initPath);
+		}, { once: true });
+
+		// popstate covers browser back/forward navigation
 		window.addEventListener('popstate', () => {
-			if (typeof window.gtag !== 'undefined') {
-				window.gtag('event', 'page_view', { page_path: window.location.hash });
-			}
+			const path = window.location.hash.replace('#', '') || '/';
+			trackPageView(path);
 		});
 	}
 
-	// ── Microsoft Clarity ──
-	if (
-		!document.getElementById('clarity-script') &&
-		!CLARITY_ID.includes('XXXXXXXXXX')
-	) {
-		const cs = document.createElement('script');
-		cs.id = 'clarity-script';
-		cs.type = 'text/javascript';
-		cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
+	// ── Microsoft Clarity ───────────────────────────────────────
+	if (CLARITY_ID && !document.getElementById('clarity-script')) {
+		const cs      = document.createElement('script');
+		cs.id         = 'clarity-script';
+		cs.type       = 'text/javascript';
+		cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};`
+				+ `t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;`
+				+ `y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);`
+				+ `})(window,document,"clarity","script","${CLARITY_ID}");`;
 		document.head.appendChild(cs);
 	}
 }
@@ -5625,58 +5647,50 @@ SEOHead.displayName = 'SEOHead';
 // ─── BRAND LOGO ───────────────────────────────────────────────
 const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 	const [imgErr, setImgErr] = useState(false);
-	const tc = forceWhite
+
+	const nameCls = forceWhite
 		? 'text-white'
 		: scrolled
-			? 'text-slate-900'
+			? 'text-[#0A192F]'
 			: 'text-white';
-	const subTc = forceWhite
-		? 'text-blue-300'
-		: scrolled
-			? 'text-blue-600'
-			: 'text-blue-300';
 
-	const dividerTc = forceWhite
-		? 'bg-white/30'
+	const tagCls = forceWhite
+		? 'text-white'
 		: scrolled
-			? 'bg-slate-300'
-			: 'bg-white/30';
+			? 'text-blue-500'
+			: 'text-white';
 
 	return (
 		<button
 			type="button"
 			onClick={() => navigate('/')}
 			aria-label="Keshav Enterprises — Home"
-			className="flex items-center gap-3 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-md"
+			className="flex items-center gap-3 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
 		>
-			{/* Logo — clean, no box or ring */}
+			{/* Logo — larger, bare, no box */}
 			{!imgErr ? (
 				<img
 					src="keshav-logo.png"
-					alt="Keshav Enterprises logo"
+					alt=""
+					aria-hidden="true"
 					width="48"
 					height="48"
 					loading="eager"
 					decoding="async"
 					fetchPriority="high"
-					className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-110"
+					className="w-12 h-12 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
 					onError={() => setImgErr(true)}
 				/>
 			) : (
-				<div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 flex items-center justify-center">
-					<Settings className="w-8 h-8 text-white" aria-hidden="true" />
-				</div>
+				<Settings className="w-12 h-12 shrink-0 text-white" aria-hidden="true" />
 			)}
 
-			{/* Thin vertical divider */}
-			<div className={`hidden sm:block w-px h-8 shrink-0 ${dividerTc}`} aria-hidden="true" />
-
-			{/* Brand name — vertically centred two-line stack */}
-			<div className="flex flex-col justify-center leading-none gap-[3px]">
-				<span className={`font-extrabold text-[15px] sm:text-[17px] tracking-[0.18em] uppercase ${tc} transition-colors duration-200`}>
+			{/* Brand name — two lines, left-aligned, white */}
+			<div className="flex flex-col text-left" style={{ lineHeight: 1 }}>
+				<span className={`font-black uppercase tracking-[0.06em] text-[18px] lg:text-[20px] ${nameCls} transition-colors duration-200`}>
 					KESHAV
 				</span>
-				<span className={`font-medium text-[9px] sm:text-[10.5px] tracking-[0.3em] uppercase ${subTc} transition-colors duration-200`}>
+				<span className={`font-bold uppercase tracking-[0.14em] text-[12px] lg:text-[13px] mt-0.75 ${tagCls} transition-colors duration-200`}>
 					ENTERPRISES
 				</span>
 			</div>
@@ -5880,16 +5894,16 @@ ProductCard.displayName = 'ProductCard';
 
 // ─── LANGUAGE SWITCHER ────────────────────────────────────────
 const LANGUAGES = [
-	{ code: 'en', name: 'English', flag: '🇬🇧' },
-	{ code: 'hi', name: 'Hindi', flag: '🇮🇳' },
-	{ code: 'zh-CN', name: 'Mandarin', flag: '🇨🇳' },
-	{ code: 'es', name: 'Spanish', flag: '🇪🇸' },
-	{ code: 'fr', name: 'French', flag: '🇫🇷' },
-	{ code: 'ar', name: 'Arabic', flag: '🇦🇪' },
-	{ code: 'ru', name: 'Russian', flag: '🇷🇺' },
-	{ code: 'pt', name: 'Portuguese', flag: '🇵🇹' },
-	{ code: 'de', name: 'German', flag: '🇩🇪' },
-	{ code: 'ja', name: 'Japanese', flag: '🇯🇵' },
+	{ code: 'en',    name: 'English',    flag: '🇮🇳', color: '#FF9933' }, // India saffron
+	{ code: 'hi',    name: 'Hindi',      flag: '🇮🇳', color: '#138808' }, // India green
+	{ code: 'zh-CN', name: 'Mandarin',   flag: '🇨🇳', color: '#DE2910' }, // China red
+	{ code: 'es',    name: 'Spanish',    flag: '🇪🇸', color: '#c60b1e' }, // Spain red
+	{ code: 'fr',    name: 'French',     flag: '🇫🇷', color: '#0055A4' }, // France blue
+	{ code: 'ar',    name: 'Arabic',     flag: '🇦🇪', color: '#009A44' }, // UAE green
+	{ code: 'ru',    name: 'Russian',    flag: '🇷🇺', color: '#D52B1E' }, // Russia red
+	{ code: 'pt',    name: 'Portuguese', flag: '🇵🇹', color: '#006600' }, // Portugal green
+	{ code: 'de',    name: 'German',     flag: '🇩🇪', color: '#DD0000' }, // Germany red
+	{ code: 'ja',    name: 'Japanese',   flag: '🇯🇵', color: '#BC002D' }, // Japan red
 ];
 
 // Cookie helpers (avoids direct document.cookie access per lint rules)
@@ -5905,6 +5919,7 @@ const setCookie = (name, value, attrs = {}) => {
 	let str = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
 	if (attrs.path) str += `; path=${attrs.path}`;
 	if (attrs.domain) str += `; domain=${attrs.domain}`;
+	str += '; SameSite=Lax';
 	// biome-ignore lint/suspicious/noDocumentCookie: direct assignment required for cookie write
 	document.cookie = str;
 };
@@ -5951,46 +5966,57 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				aria-label="Change Language"
-				className={`flex items-center gap-2 px-3 py-2 rounded-lg font-bold text-sm transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shadow-sm ${scrolled ? 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-blue-600' : 'bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-md'}`}
+				className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-[13px] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+					scrolled
+						? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
+						: 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'
+				}`}
 			>
-				<span aria-hidden="true" className="text-base leading-none">
-					{activeLang.flag}
-				</span>
-				<span className="hidden xl:inline-block">
-					{activeLang.code.toUpperCase()}
+				<span className="flex items-center gap-1.5">
+					<span aria-hidden="true" className="text-[18px]" style={{ lineHeight: 1 }}>
+						{activeLang.flag}
+					</span>
+					<span className="tracking-wide text-[13px] font-black" style={{ color: activeLang.color, lineHeight: 1 }}>
+						{activeLang.code.toUpperCase()}
+					</span>
 				</span>
 				<svg
 					aria-hidden="true"
-					className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+					className={`w-3.5 h-3.5 opacity-70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
 				>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						strokeWidth={2}
-						d="M19 9l-7 7-7-7"
-					/>
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
 				</svg>
 			</button>
 			{isOpen && (
-				<div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
-					<div className="max-h-80 overflow-y-auto py-2 scrollbar-hide">
+				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
+					<div className="max-h-80 overflow-y-auto py-1.5 scrollbar-hide">
 						{LANGUAGES.map((lang) => (
 							<button
 								type="button"
 								key={lang.code}
 								onClick={() => changeLanguage(lang.code)}
-								className={`w-full text-left px-4 py-2.5 text-sm font-bold flex items-center gap-3 transition-colors hover:bg-blue-50 focus:outline-none focus:bg-blue-50 ${currentLang === lang.code ? 'text-blue-600 bg-blue-50/50' : 'text-slate-700'}`}
+								className={`w-full text-left px-3.5 py-2 flex items-center gap-3 transition-colors hover:bg-slate-50 focus:outline-none focus:bg-slate-50 ${currentLang === lang.code ? 'bg-slate-50' : ''}`}
+								style={currentLang === lang.code ? { borderLeft: `3px solid ${lang.color}`, paddingLeft: '10px' } : { borderLeft: '3px solid transparent' }}
 							>
-								<span className="text-lg leading-none">{lang.flag}</span>
-								{lang.name}
+								{/* Flag */}
+								<span className="text-2xl leading-none shrink-0">{lang.flag}</span>
+
+								{/* Name + code stacked */}
+								<div className="flex flex-col leading-none gap-0.75 min-w-0">
+									<span className="text-[13px] font-bold truncate" style={{ color: lang.color }}>
+										{lang.name}
+									</span>
+									<span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+										{lang.code.toUpperCase()}
+									</span>
+								</div>
+
+								{/* Active tick */}
 								{currentLang === lang.code && (
-									<CheckCircle2
-										className="w-4 h-4 ml-auto text-blue-500"
-										aria-hidden="true"
-									/>
+									<CheckCircle2 className="w-4 h-4 ml-auto shrink-0" style={{ color: lang.color }} aria-hidden="true" />
 								)}
 							</button>
 						))}
@@ -6186,8 +6212,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									handleNav(link.path);
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
-								className={`relative px-3 py-2 text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
-                  ${
+								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
+				  ${
 										isActive(link.path)
 											? scrolled
 												? 'text-blue-600'
@@ -6199,8 +6225,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							>
 								{link.name}
 								<span
-									className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 rounded-full transition-all duration-300
-                  ${isActive(link.path) ? 'w-3/4 bg-blue-500' : 'w-0 group-hover:w-1/2 bg-blue-400/60'}`}
+									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
+				  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
@@ -6210,10 +6236,6 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							<LanguageSwitcher scrolled={scrolled} />
 							<search
 								className="relative flex items-center"
-								onMouseEnter={() => setIsSearchOpen(true)}
-								onMouseLeave={() => {
-									if (!query) setIsSearchOpen(false);
-								}}
 							>
 								<div
 									className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 xl:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
@@ -6238,9 +6260,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-full transition-all duration-300 hover:scale-105 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-                    ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}
-                    ${isSearchOpen ? 'ml-1' : ''}`}
+									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
+					${isSearchOpen ? 'ml-1' : ''}`}
 								>
 									<Search
 										className="w-4.5 h-4.5"
@@ -6321,9 +6343,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 						<button
 							type="button"
 							onClick={() => handleNav('/contact')}
-							className={`ml-2 px-6 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300
-                ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
+							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
+				${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
+							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
 							Get Quote
 						</button>
 					</div>
@@ -6342,7 +6365,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							}}
 							aria-label="Search products and services"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+				${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							<Search className="h-5 w-5" aria-hidden="true" />
 						</button>
@@ -6355,7 +6378,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							aria-expanded={isOpen}
 							aria-controls="mobile-nav"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+				${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							{isOpen ? (
 								<X className="h-5 w-5" aria-hidden="true" />
@@ -6372,7 +6395,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					id="mobile-nav"
 					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto"
 					role="menu"
+					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both' }}
 				>
+				<style>{`@keyframes mobileDrawerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 					{isSearchOpen && (
 						<div className="px-4 pt-4 pb-3 border-b border-slate-100">
 							<div className="relative">
@@ -6453,7 +6478,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 											}}
 											aria-current={isActive(link.path) ? 'page' : undefined}
 											className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                        ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
+						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
 										>
 											{link.name}
 											{isActive(link.path) && (
@@ -6481,7 +6506,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								<a
 									href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
 									className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
-                    ${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
+					${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
 								>
 									<Phone className="w-4 h-4" aria-hidden="true" />{' '}
 									{CONTACT_INFO.phones[0]}
@@ -6495,6 +6520,41 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	);
 });
 Navbar.displayName = 'Navbar';
+
+// ─── CREDENTIAL BADGE (footer trust blocks) ──────────────────
+const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
+	const [imgErr, setImgErr] = useState(false);
+	const [hovered, setHovered] = useState(false);
+	return (
+		<div
+			className="flex items-center gap-3 rounded-xl px-3 py-2 w-fit transition-all duration-200 cursor-default"
+			style={{
+				background: hovered ? '#0d1f3c' : '#071428',
+				border: `1px solid ${hovered ? '#0891B2' : '#0d1f3c'}`,
+			}}
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
+		>
+			<div className="w-9 h-9 shrink-0 flex items-center justify-center bg-white rounded-lg p-1.5 border border-slate-200 shadow-inner">
+				{!imgErr ? (
+					<img
+						src={imgSrc}
+						alt={title}
+						className="w-full h-full object-contain"
+						onError={() => setImgErr(true)}
+					/>
+				) : (
+					<Icon className={`w-5 h-5 ${iconColor}`} aria-hidden="true" />
+				)}
+			</div>
+			<div>
+				<p className="text-white font-bold text-xs uppercase tracking-wider leading-none mb-0.5">{title}</p>
+				<p className="font-mono text-[10px] tracking-widest leading-none" style={{ color: '#06B6D4' }}>{sub}</p>
+			</div>
+		</div>
+	);
+});
+CredentialBadge.displayName = 'CredentialBadge';
 
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => (
@@ -6553,28 +6613,13 @@ const Footer = memo(({ navigate }) => (
 					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
 						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
 					</p>
-					<div className="flex flex-col gap-4 mb-8">
+					<div className="flex flex-col gap-2 mb-8">
 						{[
 							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
 							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-amber-400',  title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
 							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-cyan-400',   title: 'Make In India',       sub: 'Manufactured in India' },
 						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
-							<div key={title}
-								className="flex items-center gap-5 shadow-md rounded-2xl p-4 w-fit transition-all hover:translate-x-2"
-								style={{ background: '#071428', border: '1px solid #0d1f3c' }}
-								onMouseEnter={e => { e.currentTarget.style.borderColor = '#0891B2'; e.currentTarget.style.background = '#0d1f3c'; }}
-								onMouseLeave={e => { e.currentTarget.style.borderColor = '#0d1f3c'; e.currentTarget.style.background = '#071428'; }}
-							>
-								<div className="w-14 h-14 shrink-0 flex items-center justify-center bg-white rounded-xl p-2 border border-slate-200 shadow-inner">
-									<img src={imgSrc} alt={title} className="w-full h-full object-contain"
-										onError={e => { e.target.style.display = 'none'; e.target.nextElementSibling.style.display = 'block'; }} />
-									<Icon className={`w-full h-full ${iconColor} hidden`} aria-hidden="true" />
-								</div>
-								<div>
-									<p className="text-white font-bold text-sm uppercase tracking-wider mb-1">{title}</p>
-									<p className="font-mono text-xs tracking-widest" style={{ color: '#06B6D4' }}>{sub}</p>
-								</div>
-							</div>
+							<CredentialBadge key={title} imgSrc={imgSrc} Icon={Icon} iconColor={iconColor} title={title} sub={sub} />
 						))}
 					</div>
 					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>OEM Compatible With</p>
@@ -6820,32 +6865,212 @@ const DigitalProfilesStrip = memo(() => {
 DigitalProfilesStrip.displayName = 'DigitalProfilesStrip';
 
 // ─── WHATSAPP + CALL FAB ─────────────────────────────────────
-const FloatingButtons = memo(() => (
-	<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-		<a
-			href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-			className="flex items-center gap-2 bg-white border border-slate-200 text-slate-900 px-4 py-3 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
-			aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
+// ─── BUG REPORT MODAL ────────────────────────────────────────
+const BugReportModal = memo(({ onClose }) => {
+	const [bugType, setBugType]         = useState('');
+	const [page, setPage]               = useState('');
+	const [description, setDescription] = useState('');
+	const [email, setEmail]             = useState('');
+	const [status, setStatus]           = useState('idle');
+	const [errors, setErrors]           = useState({});
+
+	const BUG_TYPES = [
+		'Page not loading',
+		'Broken link or button',
+		'Display / layout issue',
+		'Form not working',
+		'Slow performance',
+		'Wrong or missing content',
+		'Other',
+	];
+
+	const validate = useCallback(() => {
+		const e = {};
+		if (!bugType) e.bugType = 'Please select a bug type';
+		if (!description.trim() || description.length < 10)
+			e.description = 'Please describe the issue (min 10 characters)';
+		if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+			e.email = 'Enter a valid email address or leave blank';
+		return e;
+	}, [bugType, description, email]);
+
+	const handleSubmit = useCallback(async () => {
+		const e = validate();
+		if (Object.keys(e).length > 0) { setErrors(e); return; }
+		setErrors({});
+		setStatus('loading');
+
+		const FORMSPREE_BUG_FORM_ID = 'YOUR_BUG_FORM_ID';
+		const isFormspreeConfigured = FORMSPREE_BUG_FORM_ID !== 'YOUR_BUG_FORM_ID';
+
+		try {
+			if (isFormspreeConfigured) {
+				const res = await fetch(`https://formspree.io/f/${FORMSPREE_BUG_FORM_ID}`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						bug_type:       bugType,
+						page:           page || 'Not specified',
+						description,
+						reporter_email: email || 'Anonymous',
+						url:            window.location.href,
+						user_agent:     navigator.userAgent,
+					}),
+				});
+				if (!res.ok) throw new Error('Formspree submission failed');
+			}
+
+			const msg = [
+				`🐛 *Bug Report — Keshav Enterprises Website*`,
+				`Type: ${bugType}`,
+				`Page: ${page || 'Not specified'}`,
+				`Description: ${description}`,
+				`Reporter: ${email || 'Anonymous'}`,
+				`URL: ${window.location.href}`,
+			].join('\n');
+			window.open(waMsg(msg), '_blank', 'noopener');
+
+			setStatus('success');
+		} catch {
+			setStatus('error');
+		}
+	}, [validate, bugType, page, description, email]);
+
+	const inputClass = (err) =>
+		`w-full px-4 py-3 bg-slate-50 border rounded-xl font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
+
+	return (
+		<div
+			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="bug-report-title"
 		>
-			<Phone className="w-4 h-4 text-blue-600" aria-hidden="true" />
-			<span className="hidden group-hover:block">{CONTACT_INFO.phones[0]}</span>
-		</a>
-		<a
-			href={waMsg(
-				'Hi KESHAV ENTERPRISES, I would like to request a technical quote.',
-			)}
-			target="_blank"
-			rel="noopener noreferrer"
-			aria-label="Chat with Keshav Enterprises on WhatsApp"
-			className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative"
-		>
-			<MessageCircle className="w-7 h-7" aria-hidden="true" />
-			<span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-				Speak directly with an engineer
-			</span>
-		</a>
-	</div>
-));
+			<div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+			<div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+				<div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+					<div className="flex items-center gap-3">
+						<div className="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center">
+							<Bug className="w-5 h-5 text-red-500" aria-hidden="true" />
+						</div>
+						<div>
+							<h2 id="bug-report-title" className="font-black text-slate-900 text-base">Report a Bug</h2>
+							<p className="text-xs text-slate-500 font-medium">Help us fix issues faster</p>
+						</div>
+					</div>
+					<button type="button" onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" aria-label="Close bug report">
+						<X className="w-5 h-5 text-slate-500" />
+					</button>
+				</div>
+
+				{status === 'success' ? (
+					<div className="px-6 py-10 text-center">
+						<div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+							<CheckCircle2 className="w-8 h-8 text-green-500" />
+						</div>
+						<h3 className="font-black text-slate-900 text-lg mb-2">Bug Reported!</h3>
+						<p className="text-slate-500 text-sm font-medium mb-6">Thank you for helping us improve. Our team will look into it promptly.</p>
+						<button type="button" onClick={onClose} className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-800 transition-all">Close</button>
+					</div>
+				) : (
+					<div className="px-6 py-5 flex flex-col gap-4">
+						<div>
+							<label className="block text-sm font-bold text-slate-700 mb-2">Bug Type <span className="text-red-500">*</span></label>
+							<div className="flex flex-wrap gap-2">
+								{BUG_TYPES.map((t) => (
+									<button key={t} type="button" onClick={() => setBugType(t)}
+										className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${bugType === t ? 'bg-red-500 text-white border-red-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-red-300'}`}>
+										{t}
+									</button>
+								))}
+							</div>
+							{errors.bugType && <p className="text-red-500 text-xs mt-1 font-medium">{errors.bugType}</p>}
+						</div>
+
+						<div>
+							<label htmlFor="bug-page" className="block text-sm font-bold text-slate-700 mb-1.5">Which page? <span className="text-slate-400 font-medium">(optional)</span></label>
+							<input id="bug-page" type="text" placeholder="e.g. /products, Home page, Contact form…" value={page} onChange={(ev) => setPage(ev.target.value)} className={inputClass(false)} />
+						</div>
+
+						<div>
+							<label htmlFor="bug-description" className="block text-sm font-bold text-slate-700 mb-1.5">Describe the issue <span className="text-red-500">*</span></label>
+							<textarea id="bug-description" rows={4} placeholder="What happened? What did you expect? Steps to reproduce…" value={description} onChange={(ev) => setDescription(ev.target.value)} className={`${inputClass(errors.description)} resize-none`} />
+							<div className="flex justify-between mt-1">
+								{errors.description ? <p className="text-red-500 text-xs font-medium">{errors.description}</p> : <span />}
+								<span className={`text-xs font-medium ${description.length < 10 ? 'text-slate-400' : 'text-green-500'}`}>{description.length} chars</span>
+							</div>
+						</div>
+
+						<div>
+							<label htmlFor="bug-email" className="block text-sm font-bold text-slate-700 mb-1.5">Your email <span className="text-slate-400 font-medium">(optional — for follow-up)</span></label>
+							<input id="bug-email" type="email" placeholder="you@example.com" value={email} onChange={(ev) => setEmail(ev.target.value)} className={inputClass(errors.email)} />
+							{errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
+						</div>
+
+						{status === 'error' && (
+							<div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
+								<AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
+								<p className="text-red-600 text-sm font-medium">Something went wrong. Try again or WhatsApp us directly.</p>
+							</div>
+						)}
+
+						<button type="button" onClick={handleSubmit} disabled={status === 'loading'}
+							className="w-full bg-red-500 text-white py-3.5 rounded-xl font-black text-sm hover:bg-red-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1">
+							{status === 'loading' ? (
+								<><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Sending…</>
+							) : (
+								<><Bug className="w-4 h-4" />Submit Bug Report</>
+							)}
+						</button>
+						<p className="text-center text-xs text-slate-400 font-medium -mt-1">Report sent via WhatsApp to our team instantly</p>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+});
+BugReportModal.displayName = 'BugReportModal';
+
+// ─── FLOATING BUTTONS ─────────────────────────────────────────
+const FloatingButtons = memo(() => {
+	const [showBugReport, setShowBugReport] = useState(false);
+	return (
+		<>
+			<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+				<button
+					type="button"
+					onClick={() => setShowBugReport(true)}
+					aria-label="Report a bug"
+					className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-3 rounded-full shadow-lg hover:bg-red-50 hover:border-red-200 hover:text-red-600 hover:scale-105 transition-all group font-bold text-sm"
+				>
+					<Bug className="w-4 h-4 text-red-400 group-hover:text-red-500" aria-hidden="true" />
+					<span className="hidden group-hover:block">Report a Bug</span>
+				</button>
+				<a
+					href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+					className="flex items-center gap-2 bg-white border border-slate-200 text-slate-900 px-4 py-3 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
+					aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
+				>
+					<Phone className="w-4 h-4 text-blue-600" aria-hidden="true" />
+					<span className="hidden group-hover:block">{CONTACT_INFO.phones[0]}</span>
+				</a>
+				<a
+					href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+					target="_blank"
+					rel="noopener noreferrer"
+					aria-label="Chat with Keshav Enterprises on WhatsApp"
+					className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative"
+				>
+					<MessageCircle className="w-7 h-7" aria-hidden="true" />
+					<span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+						Speak directly with an engineer
+					</span>
+				</a>
+			</div>
+			{showBugReport && <BugReportModal onClose={() => setShowBugReport(false)} />}
+		</>
+	);
+});
 FloatingButtons.displayName = 'FloatingButtons';
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
@@ -7009,7 +7234,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 
 	return (
 		<>
-		<main id="main-content" tabIndex={-1} className="pt-28 pb-20 bg-slate-50 min-h-screen">
+		<main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
 			<SEOHead
 				title={`${product.title} | ${product.category}`}
 				description={`${product.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -7037,9 +7262,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
 
 							{/* ── Hidden image probers ──
-							    Invisible 1×1 images that fire onLoad/onError for every filename.
-							    This resolves which images actually exist BEFORE anything visible renders.
-							    Only images that pass probe[i]==='ok' appear in the gallery. */}
+								Invisible 1×1 images that fire onLoad/onError for every filename.
+								This resolves which images actually exist BEFORE anything visible renders.
+								Only images that pass probe[i]==='ok' appear in the gallery. */}
 							<div className="sr-only" aria-hidden="true">
 								{allImages.map((src, i) =>
 									probe[i] === undefined ? (
@@ -7153,9 +7378,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							</div>
 
 							{/* ── Dot indicators ──
-							    Mobile: compact dots, active pill slightly wider. Gap tight.
-							    Desktop (sm+): slightly larger, more breathing room.
-							    For >8 images: dots scale down further so they all fit in one row. */}
+								Mobile: compact dots, active pill slightly wider. Gap tight.
+								Desktop (sm+): slightly larger, more breathing room.
+								For >8 images: dots scale down further so they all fit in one row. */}
 							{total > 1 && (
 								<div
 									className="flex justify-center items-center flex-wrap mb-2 mt-1"
@@ -7191,8 +7416,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							)}
 
 							{/* ── Thumbnail grid ──
-							    Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
-							    Grid aligns left so 3 images don't become 3 huge tiles. */}
+								Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
+								Grid aligns left so 3 images don't become 3 huge tiles. */}
 							{total > 1 && (
 								<div
 									ref={thumbStripRef}
@@ -7884,7 +8109,7 @@ const HomePage = memo(({ navigate }) => {
 				pageType="website"
 			/>
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-24 pb-12 overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-[92vh] flex items-center pt-20 pb-12 overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -8672,7 +8897,7 @@ const AboutPage = memo(({ navigate }) => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-white min-h-screen"
+			className="pt-20 pb-20 bg-white min-h-screen"
 		>
 			<SEOHead
 				title="About Keshav Enterprises — 20+ Years of Turbine Engineering Excellence"
@@ -8684,8 +8909,8 @@ const AboutPage = memo(({ navigate }) => {
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
 			<div className="bg-[#0A192F] text-white relative overflow-hidden">
 				{/* About story background image — upload about-story-bg.png to /public/
-            Recommended: wide industrial turbine workshop/factory floor photo
-            Size: 1920×900px, compressed < 250KB */}
+			Recommended: wide industrial turbine workshop/factory floor photo
+			Size: 1920×900px, compressed < 250KB */}
 				<img
 					src="about-story-bg.png"
 					alt=""
@@ -9476,7 +9701,7 @@ const BlogPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-24 pb-20 bg-slate-50 min-h-screen"
+		className="pt-20 pb-20 bg-slate-50 min-h-screen"
 	>
 		<SEOHead
 			title="Engineering Blog — Turbine Maintenance & Industrial Insights"
@@ -9796,7 +10021,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 			case 'list':
 				return (
 					<ul key={`block-${i}`} className="mb-8 space-y-3">
-						{block.items.map((item) => (
+						{(block.items ?? []).map((item) => (
 							<li
 								key={item}
 								className="flex items-start gap-3 text-slate-700 font-medium text-base leading-relaxed"
@@ -9840,7 +10065,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-slate-50 min-h-screen"
+			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
 				title={post.title}
@@ -10021,7 +10246,7 @@ BlogPostPage.displayName = 'BlogPostPage';
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = memo(({ navigate }) => (
-	<main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-white">
+	<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-white">
 		<SEOHead
 			title="Turbine Services — Overhauling, Erection & Reverse Engineering"
 			description="Complete turbine overhauling, reverse engineering, erection & commissioning, dynamic balancing, lube oil flushing, and machine alignment for steam turbines 5 kW to 27 MW."
@@ -11260,7 +11485,7 @@ const SERVICE_DETAIL_CSS = `
 .sd-reveal      { opacity:0 }
 .sd-reveal-stat { opacity:0 }
 .sd-step-line   { transform-origin:top; transform:scaleY(0);
-                  transition:transform 0.5s ease 0.1s }
+				  transition:transform 0.5s ease 0.1s }
 
 .sd-reveal.sd-visible      { animation:sdFadeUp 0.45s ease forwards }
 .sd-reveal-stat.sd-visible { animation:sdFadeUp 0.35s ease forwards }
@@ -11384,7 +11609,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 			<main
 				id="main-content"
 				tabIndex={-1}
-				className="pt-24 pb-20 bg-white min-h-screen flex items-center justify-center"
+				className="pt-20 pb-20 bg-white min-h-screen flex items-center justify-center"
 			>
 				<div className="text-center">
 					<h1 className="text-3xl font-black text-slate-900 mb-4">
@@ -11402,7 +11627,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		);
 
 	return (
-		<main id="main-content" tabIndex={-1} className="pt-24 pb-24 bg-white">
+		<main id="main-content" tabIndex={-1} className="pt-20 pb-24 bg-white">
 			<SEOHead
 				title={`${service.title} — Keshav Enterprises`}
 				description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
@@ -11654,7 +11879,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									const PIcon = proc.icon;
 									return (
 										<div
-											key={proc.label}
+											key={proc.step}
 											className="sd-reveal sd-proc-row bg-white border border-slate-200 rounded-2xl overflow-hidden flex gap-0 shadow-sm"
 											style={{ animationDelay: `${i * 50}ms` }}
 										>
@@ -12139,7 +12364,7 @@ const ProductsPage = memo(({ navigate }) => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-slate-50 min-h-screen"
+			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
 				title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
@@ -13087,7 +13312,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 			/>
 
 			{/* ── Hero ── */}
-			<div className="bg-[#0A192F] text-white pt-28 pb-20 relative overflow-hidden border-b-8 border-blue-600">
+			<div className="bg-[#0A192F] text-white pt-24 pb-20 relative overflow-hidden border-b-8 border-blue-600">
 				<div
 					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
@@ -13364,7 +13589,7 @@ const IndustriesPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-24 pb-20 bg-slate-50 min-h-screen"
+		className="pt-20 pb-20 bg-slate-50 min-h-screen"
 	>
 		<SEOHead
 			title="Industries Served — Power, Sugar, Oil & Gas, Petrochemical, Cement"
@@ -13600,20 +13825,23 @@ const ContactPage = memo(() => {
 		setErrors({});
 		setStatus('loading');
 
+		const FORMSPREE_FORM_ID = 'YOUR_FORM_ID';
+		const isFormspreeConfigured = FORMSPREE_FORM_ID !== 'YOUR_FORM_ID';
 		try {
-			// Step 1.1 — primary delivery: Formspree (replace YOUR_FORM_ID after sign-up at formspree.io)
-			const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					company: sanitise(name),
-					email:   sanitise(email),
-					phone:   sanitise(phone),
-					inquiry: iType,
-					details: sanitise(details),
-				}),
-			});
-			if (!res.ok) throw new Error('Submission failed');
+			if (isFormspreeConfigured) {
+				const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						company: sanitise(name),
+						email:   sanitise(email),
+						phone:   sanitise(phone),
+						inquiry: sanitise(iType),
+						details: sanitise(details),
+					}),
+				});
+				if (!res.ok) throw new Error('Formspree submission failed');
+			}
 
 			// WhatsApp as bonus confirmation — now optional, not the only delivery path
 			const msg = [
@@ -13621,7 +13849,7 @@ const ContactPage = memo(() => {
 				`Company: ${sanitise(name)}`,
 				`Email: ${sanitise(email)}`,
 				`Phone: ${sanitise(phone)}`,
-				`Type: ${iType}`,
+				`Type: ${sanitise(iType)}`,
 				`Details: ${sanitise(details)}`,
 			].join('\n');
 			window.open(waMsg(msg), '_blank', 'noopener');
@@ -13637,7 +13865,7 @@ const ContactPage = memo(() => {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="pt-24 pb-20 bg-slate-50 min-h-screen"
+			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
 				title="Contact Engineering Team — Request a Technical Quote"
@@ -14164,7 +14392,7 @@ class ErrorBoundary extends React.Component {
 				<main
 					id="main-content"
 					tabIndex={-1}
-					className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
+					className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
 				>
 					<div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-6">
 						<Shield className="w-10 h-10 text-red-500" aria-hidden="true" />
@@ -14209,7 +14437,7 @@ const NotFoundPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-24 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
+		className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
 	>
 		<SEOHead
 			title="Page Not Found — 404"
@@ -14358,6 +14586,9 @@ export default function App() {
 		window.scrollTo({ top: 0, behavior: 'instant' });
 		window.history.pushState(null, '', `#${path}`);
 		setCurrentPath(path);
+		// GA4: pushState does NOT fire popstate, so we track every navigation here.
+		// trackPageView is a module-level function defined in the analytics block above.
+		trackPageView(path);
 		// AUDIT FIX: move focus to main content after navigation for a11y
 		setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		// AUDIT FIX: announce route change to screen readers
