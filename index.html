@@ -2,40 +2,104 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/keshav-enterprises/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary SEO — visible before React hydrates -->
+    <!-- ══ FAVICON ══════════════════════════════════════════════════════════
+         Inline SVG data-URI — zero network request, zero 404.
+         Replace with real files once keshav-logo.png / favicon.ico are
+         in /public:
+           <link rel="icon" type="image/png" href="/keshav-logo.png" />
+           <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    ════════════════════════════════════════════════════════════════════════ -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230A192F'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='system-ui'>⚙️</text></svg>"
+    />
+    <!-- Once you have the logo file in /public, also add: -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" /> -->
+
+    <!-- ══ WEB APP MANIFEST ══════════════════════════════════════════════ -->
+    <!-- Create /public/site.webmanifest with the content shown below this file -->
+    <link rel="manifest" href="/keshav-enterprises/site.webmanifest" />
+
+    <!-- ══ PRIMARY SEO ═══════════════════════════════════════════════════
+         These are the static fallback values — React SEOHead overrides
+         title, description, canonical, and robots per-page after hydration.
+    ════════════════════════════════════════════════════════════════════════ -->
     <title>Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares, Shamli UP India</title>
-    <meta name="description" content="Ex-OEM steam turbine engineers from Triveni, Siemens, BHEL. Overhauling, reverse engineering, dynamic balancing, lube oil flushing &amp; OEM-compatible spares for 5 kW–27 MW turbines. Based in Shamli, UP. 24×7 emergency support." />
+    <meta
+      name="description"
+      content="Ex-OEM steam turbine engineers from Triveni, Siemens, BHEL. Overhauling, reverse engineering, dynamic balancing, lube oil flushing &amp; OEM-compatible spares for 5 kW–27 MW turbines. Based in Shamli, UP. 24×7 emergency support."
+    />
+    <meta
+      name="keywords"
+      content="turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering"
+    />
+    <meta name="author" content="Keshav Turbo Services" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#0A192F" />
 
     <!-- Canonical — prevents www vs non-www duplicate indexing -->
     <link rel="canonical" href="https://www.keshavturboservices.com/" />
 
-    <!-- Open Graph fallback (React SEOHead will override per-page after hydration) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Keshav Turbo Services" />
-    <meta property="og:title" content="Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares" />
+    <!-- ══ OPEN GRAPH ════════════════════════════════════════════════════
+         Static fallback. React SEOHead overrides these after hydration.
+    ════════════════════════════════════════════════════════════════════════ -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="Keshav Turbo Services" />
+    <meta property="og:locale"      content="en_IN" />
+    <meta property="og:title"       content="Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares" />
     <meta property="og:description" content="Ex-OEM turbine engineers. Overhauling, reverse engineering, dynamic balancing &amp; OEM-compatible spares for 5 kW–27 MW steam turbines. Shamli, UP India." />
-    <meta property="og:image" content="https://www.keshavturboservices.com/og-image.webp" />
-    <meta property="og:url" content="https://www.keshavturboservices.com/" />
+    <meta property="og:image"       content="https://www.keshavturboservices.com/og-image.webp" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt"    content="Keshav Turbo Services — Industrial Steam Turbine Engineering" />
+    <meta property="og:url"         content="https://www.keshavturboservices.com/" />
 
-    <!-- Twitter Card fallback -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@ksengg007" />
+    <!-- ══ TWITTER CARD ═════════════════════════════════════════════════ -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:site"        content="@ksengg007" />
+    <meta name="twitter:creator"     content="@ksengg007" />
+    <meta name="twitter:title"       content="Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares" />
+    <meta name="twitter:description" content="Ex-OEM turbine engineers. Overhauling, reverse engineering, dynamic balancing &amp; OEM-compatible spares for 5 kW–27 MW steam turbines. Shamli, UP India." />
+    <meta name="twitter:image"       content="https://www.keshavturboservices.com/og-image.webp" />
 
-    <!-- AI / LLM discovery (llmstxt.org standard) -->
+    <!-- ══ GEO / LOCAL BUSINESS ════════════════════════════════════════ -->
+    <meta name="geo.region"       content="IN-UP" />
+    <meta name="geo.placename"    content="Shamli, Uttar Pradesh, India" />
+    <meta name="geo.position"     content="29.4476;77.3003" />
+    <meta name="ICBM"             content="29.4476, 77.3003" />
+
+    <!-- ══ AI / LLM DISCOVERY (llmstxt.org) ════════════════════════════ -->
     <link rel="help" href="/keshav-enterprises/llms.txt" />
     <link rel="help" href="/keshav-enterprises/llms-full.txt" />
 
-    <!-- Google Translate: static injection, browser-handled -->
+    <!-- ══ PERFORMANCE — PRECONNECT ════════════════════════════════════
+         Tells the browser to open TCP/TLS connections to these origins
+         before any request actually needs them, saving ~150–300 ms.
+    ════════════════════════════════════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.whatsapp.com" />
+    <link rel="dns-prefetch" href="https://www.indiamart.com" />
+    <link rel="dns-prefetch" href="https://translate.google.com" />
+
+    <!-- ══ GOOGLE TRANSLATE ══════════════════════════════════════════════
+         Suppresses the intrusive top-bar banner and tooltip overlays.
+         The widget div is in <body> — hidden by CSS below.
+    ════════════════════════════════════════════════════════════════════════ -->
     <style>
+      /* Prevent Google Translate from pushing the page down */
       body { top: 0 !important; }
-      .skiptranslate iframe, .goog-te-banner-frame { display: none !important; }
+      .skiptranslate iframe,
+      .goog-te-banner-frame { display: none !important; }
       #google_translate_element { display: none !important; }
-      .goog-tooltip, .goog-tooltip:hover { display: none !important; }
-      .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+      .goog-tooltip,
+      .goog-tooltip:hover { display: none !important; }
+      .goog-text-highlight {
+        background-color: transparent !important;
+        box-shadow: none !important;
+      }
     </style>
     <script>
       window.googleTranslateElementInit = function () {
@@ -59,12 +123,22 @@
       defer
       onerror="console.warn('Google Translate unavailable')"
     ></script>
-    <script type="module" crossorigin src="/keshav-enterprises/assets/index-Db9v8au1.js"></script>
+    <script type="module" crossorigin src="/keshav-enterprises/assets/index-Db-Fxs8-.js"></script>
     <link rel="stylesheet" crossorigin href="/keshav-enterprises/assets/index-D5afAU5j.css">
   </head>
   <body>
+    <!-- No-JS fallback — hidden once React mounts -->
+    <noscript>
+      <div style="font-family:sans-serif;padding:2rem;text-align:center">
+        <strong>Keshav Turbo Services</strong> requires JavaScript to run.
+        Please enable JavaScript in your browser settings.
+      </div>
+    </noscript>
+
     <div id="root"></div>
+
     <!-- Mount point for Google Translate widget (hidden via CSS above) -->
-    <div id="google_translate_element"></div>
+    <div id="google_translate_element" aria-hidden="true"></div>
+
   </body>
 </html>

@@ -1,0 +1,26 @@
+{
+  "name": "Keshav Turbo Services",
+  "short_name": "KeshavTurbo",
+  "description": "Industrial steam turbine engineering — overhauling, spares & services. Shamli, UP India.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A192F",
+  "theme_color": "#0A192F",
+  "lang": "en",
+  "dir": "ltr",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/keshav-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/keshav-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
