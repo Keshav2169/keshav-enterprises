@@ -3435,7 +3435,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee1',
-		category: 'Electronic Equipments',
+		category: 'Electronic Equipment',
 		title: 'Vibration Monitoring Probes (Shinkawa-compatible)',
 		desc: 'High-precision non-contact eddy current displacement sensors for continuous turbine shaft vibration and axial position monitoring. API 670 standard compliant.',
 		usage:
@@ -3479,7 +3479,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee2',
-		category: 'Electronic Equipments',
+		category: 'Electronic Equipment',
 		title: 'Magnetic Pickup Sensor (Woodward)',
 		desc: 'Genuine Woodward variable reluctance magnetic speed pickup (MPU) for precise shaft speed feedback to Woodward governors and digital turbine control systems. Passive, self-powered, zero-maintenance design for continuous duty on steam turbines running at 3000–3600 RPM.',
 		usage:
@@ -3794,7 +3794,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee3',
-		category: 'Electronic Equipments',
+		category: 'Electronic Equipment',
 		title: 'ASCO 8210 Series Explosion-Proof Solenoid Valve',
 		desc: 'ASCO 8210 series general purpose explosion-proof solenoid valves for turbine trip, lube oil, steam seal, and process control applications. ATEX/IECEx and NEMA 7/9 rated for hazardous area installation.',
 		usage:
@@ -3886,7 +3886,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee4',
-		category: 'Electronic Equipments',
+		category: 'Electronic Equipment',
 		title: 'Beacon Industrial Analog Tachometer Gauge',
 		desc: 'Robust industrial analog panel tachometer for direct shaft speed indication in turbine control panels. Robust movement with IP54 sealed case for steam turbine house environments.',
 		usage:
@@ -4026,7 +4026,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee5',
-		category: 'Electronic Equipments',
+		category: 'Electronic Equipment',
 		title: 'RTD & Sensors for Power Plants & Steam Turbines',
 		desc: 'Complete range of Resistance Temperature Detectors (RTDs), thermocouples, and process sensors for turbine bearing temperature, lube oil temperature, steam temperature, and exhaust gas monitoring.',
 		usage:
@@ -4071,7 +4071,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee6',
-		category: 'Electronic Equipments',
+		category: 'Electronic Equipment',
 		title: 'SEMIKRON SKN240/16 Rectifier Diode',
 		desc: 'SEMIKRON SKN240/16 stud-mount power rectifier diode for alternator AVR excitation circuits and turbine-generator rectifier bridges. 240 A average forward current, 1600 V peak reverse voltage. Full VRRM voltage range (800 V to 2200 V) available — specify voltage class at order.',
 		usage:
@@ -5924,8 +5924,10 @@ const getCategoryIcon = (category) => {
 			return <Activity className={cls} />;
 		case 'Industrial Rubber Products':
 			return <Hexagon className={cls} />;
-		case 'Electronic Equipments':
+		case 'Electronic Equipment':
 			return <Cpu className={cls} />;
+		case 'Hydraulic Components':
+			return <Settings className={cls} />;
 		default:
 			return <Settings className="w-16 h-16 text-slate-300" />;
 	}
@@ -6718,7 +6720,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				path: `/service/${s.id}`,
 				image: s.image,
 			})),
-			...RAW_PRODUCTS.filter(
+			...PRODUCTS.filter(
 				(p) =>
 					p.title?.toLowerCase().includes(q) ||
 					p.desc?.toLowerCase().includes(q) ||
@@ -7808,7 +7810,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	if (!product)
 		return (
 			<main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
-				<SEOHead title="Product Not Found" />
+				<SEOHead title="Product Not Found" noIndex={true} />
 				<div>
 					<Settings className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
 					<h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Product Not Found</h1>
@@ -8141,7 +8143,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 														else if (cat === 'Expansion Joints') lt = 'Stocked sizes: 1–2 weeks; custom DN: 3–5 weeks';
 														else if (cat === 'Industrial Strainers') lt = '1–3 weeks (standard); custom 3–6 weeks';
 														else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
-														else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
+														else if (cat === 'Electronic Equipment') lt = '1–4 weeks (subject to availability)';
 														else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
 								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
 								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
@@ -10346,7 +10348,6 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Featured post */}
 			{BLOG_POSTS.length > 0 && (
 				<div
-					role="article"
 					className="mb-16 group cursor-pointer w-full text-left"
 					onClick={() => navigate(`/blog/${BLOG_POSTS[0].slug}`)}
 				>
@@ -10589,7 +10590,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				tabIndex={-1}
 				className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50"
 			>
-				<SEOHead title="Post Not Found" />
+				<SEOHead title="Post Not Found" noIndex={true} />
 				<div>
 					<BookOpen
 						className="w-20 h-20 text-slate-300 mx-auto mb-6"
@@ -12221,6 +12222,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 				tabIndex={-1}
 				className="pt-20 pb-20 bg-white min-h-screen flex items-center justify-center"
 			>
+				<SEOHead title="Service Not Found" noIndex={true} />
 				<div className="text-center">
 					<h1 className="text-3xl font-black text-slate-900 mb-4">
 						Service Not Found
@@ -12954,7 +12956,9 @@ const ProductsPage = memo(({ navigate }) => {
 					p.title.toLowerCase().includes(q) ||
 					p.desc.toLowerCase().includes(q) ||
 					p.usage?.toLowerCase().includes(q) ||
-					p.features.some((f) => f.toLowerCase().includes(q))
+					p.features.some((f) => f.toLowerCase().includes(q)) ||
+					Object.values(p.specs ?? {}).some((v) => String(v).toLowerCase().includes(q)) ||
+					Object.keys(p.specs ?? {}).some((k) => k.toLowerCase().includes(q))
 				);
 			}),
 		[activeCategory, searchQuery],
@@ -13839,14 +13843,14 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Lube Oil Filter Elements (Triveni-compatible)': 'prod_f1',
 	'Air Breather Filters': 'prod_f4',
 	'Simplex & Duplex Basket Strainers': 'prod_st2',
-	'Rotor Balancing Service': null,
+	'Rotor Balancing Service': 'srv_4',
 	// ind_3 — Paper Mills
 	'Duplex Basket Strainers': 'prod_st2',
 	'SS Metallic Bellows Expansion Joints': 'prod_e1',
 	'Rubber Expansion Joints (Double-Arch)': 'prod_e2',
 	'PTFE-Lined Hose Assemblies': 'prod_h2',
 	'Anti-Vibration Mounts': 'prod_r2',
-	'Turbine Spares (Siemens, BHEL, Triveni)': null,
+	'Turbine Spares (Siemens, BHEL, Triveni)': 'prod_ts3',
 	// ind_4 — Oil & Gas
 	'Control Oil Filter Elements (IS27 Anti-Static)': 'prod_f2',
 	'Babbitt Bearing Manufacturing': 'prod_ts3',
@@ -13866,7 +13870,7 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Y-Type & Conical Strainers': 'prod_st4',
 	'Rubber Anti-Vibration Mounts': 'prod_r2',
 	'Rubber Expansion Joints (Single-Arch)': 'prod_e3',
-	'Steam Turbine Maintenance (Triveni, Maxwatt)': null,
+	'Steam Turbine Maintenance (Triveni, Maxwatt)': 'srv_2',
 	// ind_7 — Cement
 	'Lube Oil Filter Elements (Kiln & Mill Gearboxes)': 'prod_f1',
 	'Duplex Basket Strainers (Cooling Water & Process Lines)': 'prod_st2',
@@ -13895,6 +13899,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 				tabIndex={-1}
 				className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50"
 			>
+				<SEOHead title="Industry Not Found" noIndex={true} />
 				<div className="text-center">
 					<Building2 className="w-20 h-20 text-slate-300 mx-auto mb-6" />
 					<h1 className="text-3xl font-black text-slate-900 mb-4">
@@ -14086,8 +14091,11 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 						{detail.products.map((prod) => {
-							const prodId = INDUSTRY_PRODUCT_IDS[prod.name];
-							const isClickable = !!prodId;
+							const targetId = INDUSTRY_PRODUCT_IDS[prod.name];
+							const isService = typeof targetId === 'string' && targetId.startsWith('srv_');
+							const isClickable = !!targetId;
+							const targetPath = isService ? `/service/${targetId}` : `/product/${targetId}`;
+							const cardLabel = isService ? 'View Service' : isClickable ? 'View Product' : 'View in Catalog';
 							const cardInner = (
 								<>
 									<div
@@ -14125,7 +14133,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 										<span
 											className={`mt-auto text-xs font-black uppercase tracking-widest ${ind.accent} flex items-center gap-1`}
 										>
-											{isClickable ? 'View Product' : 'View in Catalog'}{' '}
+											{cardLabel}{' '}
 											<ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
 										</span>
 									</div>
@@ -14136,8 +14144,8 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 									type="button"
 									key={prod.name}
 									className={`bg-white rounded-2xl border border-slate-200 shadow-sm transition-all flex flex-col w-full text-left hover:shadow-lg hover:border-blue-300 cursor-pointer group`}
-									onClick={() => navigate(`/product/${prodId}`)}
-									aria-label={`View product: ${prod.name}`}
+									onClick={() => navigate(targetPath)}
+									aria-label={`${cardLabel}: ${prod.name}`}
 								>
 									{cardInner}
 								</button>
