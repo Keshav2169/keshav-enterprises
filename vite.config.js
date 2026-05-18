@@ -7,5 +7,6 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  // base defaults to '/' — correct for Cloudflare Pages with a custom domain
+  base: '/keshav-enterprises/',//— correct for Cloudflare Pages with a custom domain
 })
+ 
