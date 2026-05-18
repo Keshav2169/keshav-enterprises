@@ -4928,31 +4928,31 @@ const MARQUEE_CSS = `
 
   @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   .skeleton-shimmer{
-    position:absolute;inset:0;z-index:0;
-    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
+	position:absolute;inset:0;z-index:0;
+	background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
+	background-size:200% 100%;
+	animation:ke-shimmer 1.25s linear infinite;
   }
   /* Enhanced skeleton with product icon placeholder */
   .skeleton-product{
-    position:absolute;inset:0;z-index:1;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
+	position:absolute;inset:0;z-index:1;
+	display:flex;align-items:center;justify-content:center;flex-direction:column;
   }
   .skeleton-product::before{
-    content:'';width:48px;height:48px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
-    animation:ke-shimmer 1.25s linear infinite;
-    background-size:200% 100%;
+	content:'';width:48px;height:48px;border-radius:12px;
+	background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
+	animation:ke-shimmer 1.25s linear infinite;
+	background-size:200% 100%;
   }
   .skeleton-product::after{
-    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
-    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
+	content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
+	background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
+	background-size:200% 100%;
+	animation:ke-shimmer 1.25s linear infinite;
   }
   /* Product image container gradient for contrast */
   .product-img-bg{
-    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
+	background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
   }
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
@@ -4986,45 +4986,45 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
-    .hero-section{
-      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
-      background-size:cover;
-      background-position:center center;
-      background-repeat:no-repeat;
-    }
-    .hero-bg-layer{display:none!important}
-    .hero-desktop-grad{display:none!important}
-    .hero-mobile-vignette{display:none!important}
-    .hero-glow-orb{display:none!important}
-    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
-    .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+	.hero-section{
+	  background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
+	  background-size:cover;
+	  background-position:center center;
+	  background-repeat:no-repeat;
+	}
+	.hero-bg-layer{display:none!important}
+	.hero-desktop-grad{display:none!important}
+	.hero-mobile-vignette{display:none!important}
+	.hero-glow-orb{display:none!important}
+	.hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
+	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
   /* ─── MOBILE TYPOGRAPHY BOOST ─── */
   @media(max-width:640px){
-    .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
-    .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
-    p{font-size:max(15px,1em);line-height:1.65}
-    .hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-    .glass-hero p{color:#d0e4f5!important}
-    .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
+	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
+	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
+	p{font-size:max(15px,1em);line-height:1.65}
+	.hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+	.glass-hero p{color:#d0e4f5!important}
+	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
-    section h1,section h2,section h3,
-    main>div>h1,main>div>h2{text-align:center}
-    .section-divider{margin-left:auto!important;margin-right:auto!important}
-    nav[aria-label="Breadcrumb"] *,
-    label,input,select,textarea,
-    footer h3,footer li,footer p,
-    address *,
-    [role="tabpanel"] *,
-    .keep-left,
-    .keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
-    article .bg-white h2,article .bg-white p{text-align:left!important}
-    .md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
-    .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
+	section h1,section h2,section h3,
+	main>div>h1,main>div>h2{text-align:center}
+	.section-divider{margin-left:auto!important;margin-right:auto!important}
+	nav[aria-label="Breadcrumb"] *,
+	label,input,select,textarea,
+	footer h3,footer li,footer p,
+	address *,
+	[role="tabpanel"] *,
+	.keep-left,
+	.keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
+	article .bg-white h2,article .bg-white p{text-align:left!important}
+	.md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
+	.lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
   }
 
   /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
@@ -5035,101 +5035,101 @@ const MARQUEE_CSS = `
   /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
   /* Social cards collapse gracefully on small screens */
   .social-card{
-    min-width:0!important;
-    width:100%;
-    max-width:100%;
-    flex-shrink:1;
+	min-width:0!important;
+	width:100%;
+	max-width:100%;
+	flex-shrink:1;
   }
   @media(max-width:640px){
-    /* Social card grid: 1 column on phones, 2 on wider phones */
-    .social-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.75rem;
-      width:100%;
-    }
-    .social-card{
-      min-width:0!important;
-      padding:0.75rem!important;
-      gap:0.625rem!important;
-    }
-    .social-card .social-handle{font-size:13px!important}
-    .social-card .social-sub{display:none}
+	/* Social card grid: 1 column on phones, 2 on wider phones */
+	.social-cards-grid{
+	  display:grid!important;
+	  grid-template-columns:1fr 1fr;
+	  gap:0.75rem;
+	  width:100%;
+	}
+	.social-card{
+	  min-width:0!important;
+	  padding:0.75rem!important;
+	  gap:0.625rem!important;
+	}
+	.social-card .social-handle{font-size:13px!important}
+	.social-card .social-sub{display:none}
   }
   @media(max-width:380px){
-    .social-cards-grid{grid-template-columns:1fr}
+	.social-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
   .dir-card{
-    min-width:0!important;
-    flex-shrink:1;
+	min-width:0!important;
+	flex-shrink:1;
   }
   @media(max-width:640px){
-    .dir-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.625rem;
-      width:100%;
-    }
-    .dir-card{
-      padding:0.75rem 0.875rem!important;
-      gap:0.5rem!important;
-      min-width:0!important;
-    }
-    .dir-card .dir-badge{font-size:10px!important}
+	.dir-cards-grid{
+	  display:grid!important;
+	  grid-template-columns:1fr 1fr;
+	  gap:0.625rem;
+	  width:100%;
+	}
+	.dir-card{
+	  padding:0.75rem 0.875rem!important;
+	  gap:0.5rem!important;
+	  min-width:0!important;
+	}
+	.dir-card .dir-badge{font-size:10px!important}
   }
   @media(max-width:380px){
-    .dir-cards-grid{grid-template-columns:1fr}
+	.dir-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
-    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
-    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
+	.thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
+	.thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
   }
 
   /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
   @media(max-width:480px){
-    .fp-card{width:13rem!important}
+	.fp-card{width:13rem!important}
   }
 
   /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
   @media(max-width:640px){
-    .sd-step-gap{gap:0.875rem!important}
-    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
+	.sd-step-gap{gap:0.875rem!important}
+	.sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
   }
 
   /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
   .email-link{
-    word-break:break-all;
-    overflow-wrap:anywhere;
-    min-width:0;
+	word-break:break-all;
+	overflow-wrap:anywhere;
+	min-width:0;
   }
 
   /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
   @media(max-width:767px){
-    .timeline-connector{left:1rem!important}
-    .timeline-card{margin-left:3rem!important;margin-right:0!important}
+	.timeline-connector{left:1rem!important}
+	.timeline-card{margin-left:3rem!important;margin-right:0!important}
   }
 
   /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
   @media(max-width:480px){
-    .ind-oem-chips{gap:0.375rem!important}
-    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
+	.ind-oem-chips{gap:0.375rem!important}
+	.ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
   }
 
   /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
-    a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-    .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
+	a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
+	.floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
   /* ─── REDUCED MOTION ─── */
   @media(prefers-reduced-motion:reduce){
-    .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
-    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
-    *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+	.ke-marquee,.ke-marquee-slow{animation:none;transform:none}
+	.lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
+	*{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
   }
 
   /* ─── REUSABLE BUTTON UTILITIES ─── */
@@ -5364,50 +5364,70 @@ if (typeof document !== 'undefined') {
 }
 
 // ─── ANALYTICS: GA4 + Microsoft Clarity ──────────────────────
-// HOW TO USE:
-//   1. Replace 'G-XXXXXXXXXX' below with your real GA4 Measurement ID
-//      (Google Analytics → Admin → Data Streams → Web → Measurement ID)
-//   2. Replace 'XXXXXXXXXX' in the Clarity block with your real Clarity Project ID
-//      (clarity.microsoft.com → Settings → Setup)
-//   3. Both are injected once at module load — no re-injection on route changes.
+// IDs are read from Vite environment variables — never hardcoded.
+// Set in Cloudflare Pages → Settings → Environment Variables:
+//   VITE_GA4_ID     = G-XXXXXXXXXX   (Google Analytics 4 Measurement ID)
+//   VITE_CLARITY_ID = XXXXXXXXXX     (Microsoft Clarity Project ID)
+// For local dev, set these in your .env file at the project root.
 //
-const GA4_ID = 'G-XXXXXXXXXX'; // ← REPLACE with your GA4 Measurement ID
-const CLARITY_ID = 'XXXXXXXXXX'; // ← REPLACE with your Clarity Project ID
+const GA4_ID     = import.meta.env.VITE_GA4_ID     ?? '';
+const CLARITY_ID = import.meta.env.VITE_CLARITY_ID ?? '';
+
+// trackPageView is exported to module scope so navigate() can call it
+// directly on every pushState navigation — not just popstate (back/forward).
+// path must be a clean pathname like '/products' or '/product/prod_ts1'.
+export const trackPageView = (path) => {
+	if (typeof window.gtag === 'function') {
+		window.gtag('event', 'page_view', {
+			page_path:     path,
+			page_location: window.location.origin + '/#' + path,
+			page_title:    document.title,
+		});
+	}
+};
 
 if (typeof document !== 'undefined') {
-	// ── Google Analytics 4 ──
-	if (
-		!document.getElementById('ga4-script') &&
-		!GA4_ID.includes('XXXXXXXXXX')
-	) {
+	// ── Google Analytics 4 ──────────────────────────────────────
+	if (GA4_ID && !document.getElementById('ga4-script')) {
 		const s1 = document.createElement('script');
-		s1.id = 'ga4-script';
-		s1.src = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
+		s1.id    = 'ga4-script';
+		s1.src   = `https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`;
 		s1.async = true;
 		document.head.appendChild(s1);
 
-		const s2 = document.createElement('script');
-		s2.id = 'ga4-init';
-		s2.text = `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_ID}',{page_path:window.location.hash});`;
+		const s2  = document.createElement('script');
+		s2.id     = 'ga4-init';
+		// send_page_view:false — we fire all page_view events manually via
+		// trackPageView() so there is no double-count on the initial load.
+		s2.text = `window.dataLayer=window.dataLayer||[];`
+				+ `function gtag(){dataLayer.push(arguments);}`
+				+ `gtag('js',new Date());`
+				+ `gtag('config','${GA4_ID}',{send_page_view:false});`;
 		document.head.appendChild(s2);
 
-		// Track hash-based SPA navigation
+		// Fire the first page_view for the initial landing page
+		// (deferred so gtag is defined before we call it)
+		window.addEventListener('load', () => {
+			const initPath = window.location.hash.replace('#', '') || '/';
+			trackPageView(initPath);
+		}, { once: true });
+
+		// popstate covers browser back/forward navigation
 		window.addEventListener('popstate', () => {
-			if (typeof window.gtag !== 'undefined') {
-				window.gtag('event', 'page_view', { page_path: window.location.hash });
-			}
+			const path = window.location.hash.replace('#', '') || '/';
+			trackPageView(path);
 		});
 	}
 
-	// ── Microsoft Clarity ──
-	if (
-		!document.getElementById('clarity-script') &&
-		!CLARITY_ID.includes('XXXXXXXXXX')
-	) {
-		const cs = document.createElement('script');
-		cs.id = 'clarity-script';
-		cs.type = 'text/javascript';
-		cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`;
+	// ── Microsoft Clarity ───────────────────────────────────────
+	if (CLARITY_ID && !document.getElementById('clarity-script')) {
+		const cs      = document.createElement('script');
+		cs.id         = 'clarity-script';
+		cs.type       = 'text/javascript';
+		cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};`
+				+ `t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;`
+				+ `y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);`
+				+ `})(window,document,"clarity","script","${CLARITY_ID}");`;
 		document.head.appendChild(cs);
 	}
 }
@@ -6193,7 +6213,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
 								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
-                  ${
+				  ${
 										isActive(link.path)
 											? scrolled
 												? 'text-blue-600'
@@ -6206,7 +6226,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								{link.name}
 								<span
 									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
-                  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+				  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
@@ -6241,8 +6261,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									}}
 									aria-label="Search"
 									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-                    ${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
-                    ${isSearchOpen ? 'ml-1' : ''}`}
+					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
+					${isSearchOpen ? 'ml-1' : ''}`}
 								>
 									<Search
 										className="w-4.5 h-4.5"
@@ -6324,7 +6344,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							type="button"
 							onClick={() => handleNav('/contact')}
 							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
-                ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
+				${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
 							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
 							Get Quote
@@ -6345,7 +6365,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							}}
 							aria-label="Search products and services"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+				${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							<Search className="h-5 w-5" aria-hidden="true" />
 						</button>
@@ -6358,7 +6378,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							aria-expanded={isOpen}
 							aria-controls="mobile-nav"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+				${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							{isOpen ? (
 								<X className="h-5 w-5" aria-hidden="true" />
@@ -6458,7 +6478,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 											}}
 											aria-current={isActive(link.path) ? 'page' : undefined}
 											className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                        ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
+						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
 										>
 											{link.name}
 											{isActive(link.path) && (
@@ -6486,7 +6506,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								<a
 									href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
 									className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
-                    ${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
+					${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
 								>
 									<Phone className="w-4 h-4" aria-hidden="true" />{' '}
 									{CONTACT_INFO.phones[0]}
@@ -7242,9 +7262,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
 
 							{/* ── Hidden image probers ──
-							    Invisible 1×1 images that fire onLoad/onError for every filename.
-							    This resolves which images actually exist BEFORE anything visible renders.
-							    Only images that pass probe[i]==='ok' appear in the gallery. */}
+								Invisible 1×1 images that fire onLoad/onError for every filename.
+								This resolves which images actually exist BEFORE anything visible renders.
+								Only images that pass probe[i]==='ok' appear in the gallery. */}
 							<div className="sr-only" aria-hidden="true">
 								{allImages.map((src, i) =>
 									probe[i] === undefined ? (
@@ -7358,9 +7378,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							</div>
 
 							{/* ── Dot indicators ──
-							    Mobile: compact dots, active pill slightly wider. Gap tight.
-							    Desktop (sm+): slightly larger, more breathing room.
-							    For >8 images: dots scale down further so they all fit in one row. */}
+								Mobile: compact dots, active pill slightly wider. Gap tight.
+								Desktop (sm+): slightly larger, more breathing room.
+								For >8 images: dots scale down further so they all fit in one row. */}
 							{total > 1 && (
 								<div
 									className="flex justify-center items-center flex-wrap mb-2 mt-1"
@@ -7396,8 +7416,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							)}
 
 							{/* ── Thumbnail grid ──
-							    Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
-							    Grid aligns left so 3 images don't become 3 huge tiles. */}
+								Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
+								Grid aligns left so 3 images don't become 3 huge tiles. */}
 							{total > 1 && (
 								<div
 									ref={thumbStripRef}
@@ -8889,8 +8909,8 @@ const AboutPage = memo(({ navigate }) => {
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
 			<div className="bg-[#0A192F] text-white relative overflow-hidden">
 				{/* About story background image — upload about-story-bg.png to /public/
-            Recommended: wide industrial turbine workshop/factory floor photo
-            Size: 1920×900px, compressed < 250KB */}
+			Recommended: wide industrial turbine workshop/factory floor photo
+			Size: 1920×900px, compressed < 250KB */}
 				<img
 					src="about-story-bg.png"
 					alt=""
@@ -11465,7 +11485,7 @@ const SERVICE_DETAIL_CSS = `
 .sd-reveal      { opacity:0 }
 .sd-reveal-stat { opacity:0 }
 .sd-step-line   { transform-origin:top; transform:scaleY(0);
-                  transition:transform 0.5s ease 0.1s }
+				  transition:transform 0.5s ease 0.1s }
 
 .sd-reveal.sd-visible      { animation:sdFadeUp 0.45s ease forwards }
 .sd-reveal-stat.sd-visible { animation:sdFadeUp 0.35s ease forwards }
@@ -14566,6 +14586,9 @@ export default function App() {
 		window.scrollTo({ top: 0, behavior: 'instant' });
 		window.history.pushState(null, '', `#${path}`);
 		setCurrentPath(path);
+		// GA4: pushState does NOT fire popstate, so we track every navigation here.
+		// trackPageView is a module-level function defined in the analytics block above.
+		trackPageView(path);
 		// AUDIT FIX: move focus to main content after navigation for a11y
 		setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		// AUDIT FIX: announce route change to screen readers

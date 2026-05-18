@@ -1,49 +1,249 @@
-# Keshav Enterprises — robots.txt
-# Place this file in /public/robots.txt (or site root)
+# ════════════════════════════════════════════════════════════════════
+# robots.txt — Keshav Turbo Services
+# Domain   : https://www.keshavturboservices.com
+# Updated  : 2026-05-17
+# Standard : https://www.robotstxt.org/robotstxt.html
+#
+# SYNCED WITH Appf.jsx v3 (latest upload):
+#   ✓ SITE_URL = www.keshavturboservices.com (confirmed)
+#   ✓ LOCAL_SCHEMA brand = "Keshav Turbo Services" (confirmed)
+#   ✓ 105 products across 8 categories (f, st, e, ts, r, h, ee, hv)
+#   ✓ New category: Hydraulic Components (prod_hv1)
+#   ✓ category label: "Electronic Equipments" (prod_ee*)
+#   ✓ gmapsShare URL updated in CONTACT_INFO
+#   ✓ 404 page noIndex in SEOHead — Disallowed here too
+#   ✓ SEOHead injects <link rel="help"> for llms.txt on every page
+#   ✓ LanguageSwitcher: en, hi, zh-CN, es, fr, ar, ru, pt, de, ja
+#   ✓ Twitterbot allowed — twitter:site @ksengg007 in SEOHead
+#   ✓ secondaryEmail/marketingEmail removed from JS bundle (Step 1.2)
+# ════════════════════════════════════════════════════════════════════
 
+
+# ── DEFAULT: Allow all well-behaved crawlers full site access ──────────
 User-agent: *
 Allow: /
 
-# Sitemap reference
-Sitemap: https://keshaventerprises.in/sitemap.xml
+# ── Block admin, build artefacts, private paths ───────────────────────
+Disallow: /admin/
+Disallow: /admin-panel/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /wp-json/
+Disallow: /api/
+Disallow: /api/private/
+Disallow: /.env
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /dist/assets/
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /logout
+Disallow: /register
+Disallow: /account/
+Disallow: /404
 
-# ── AI / LLM Crawler Support ──
-# llms.txt: Structured content for AI assistants (ChatGPT, Gemini, Claude, Perplexity)
-# See https://llmstxt.org for the standard specification
-# Place llms.txt and llms-full.txt in your site root (/public/)
+# ── Block URL parameter duplicates (crawl budget protection) ──────────
+Disallow: /search?*
+Disallow: /*?utm_*
+Disallow: /*?ref=*
+Disallow: /*?fbclid=*
+Disallow: /*?gclid=*
+Disallow: /*?sessionid=*
+Disallow: /print/
 
-# Allow all major AI crawlers
-User-agent: GPTBot
-Allow: /
+# ── Allow all public static assets explicitly ─────────────────────────
+Allow: /sitemap.xml
+Allow: /sitemap-*.xml
 Allow: /llms.txt
 Allow: /llms-full.txt
+Allow: /favicon.ico
+Allow: /logo.png
+Allow: /logo.webp
+Allow: /keshav-logo.png
+Allow: /og-image.webp
+Allow: /hero-background.png
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.webp$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.svg$
+Allow: /*.pdf$
 
+# Polite crawl delay for generic bots
+# (Googlebot and Bingbot ignore this — set rate via Search Console)
+Crawl-delay: 1
+
+
+# ── GOOGLE ────────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /*?utm_*
+Disallow: /*?ref=*
+Disallow: /*?fbclid=*
+Disallow: /*?gclid=*
+
+User-agent: Googlebot-Image
+Allow: /
+Allow: /*.webp$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.svg$
+
+# Google-Extended feeds Gemini AI — full access including LLM files
 User-agent: Google-Extended
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 
+
+# ── BING / MICROSOFT ──────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /.env
+Disallow: /*?utm_*
+
+User-agent: MSNBot
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+
+# ── ANTHROPIC (Claude AI) ─────────────────────────────────────────────
+# SEOHead injects <link rel="help" href="/llms.txt"> and
+# <link rel="help" href="/llms-full.txt"> on every page —
+# ClaudeBot discovers files via both robots.txt and <head> link tags.
 User-agent: ClaudeBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 
+User-agent: Claude-Web
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+
+# ── OPENAI (ChatGPT) ──────────────────────────────────────────────────
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+
+# ── PERPLEXITY ────────────────────────────────────────────────────────
 User-agent: PerplexityBot
 Allow: /
 Allow: /llms.txt
 Allow: /llms-full.txt
 
+
+# ── APPLE (Siri, Spotlight, Safari Reader) ────────────────────────────
+User-agent: Applebot
+Allow: /
+
 User-agent: Applebot-Extended
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
-User-agent: CCBot
+
+# ── META / SOCIAL PREVIEW CRAWLERS ───────────────────────────────────
+# og:locale:alternate hi_IN set in SEOHead for Hindi preview cards
+User-agent: facebookexternalhit
 Allow: /
 
-# Crawl-delay for polite crawling
-Crawl-delay: 1
+User-agent: LinkedInBot
+Allow: /
 
-# Block common attack/probe paths
-Disallow: /wp-admin/
-Disallow: /wp-login.php
-Disallow: /.env
+# twitter:site @ksengg007 + twitter:creator now in every page <head>
+User-agent: Twitterbot
+Allow: /
+
+
+# ── COMMON CRAWL (feeds LLM training datasets) ────────────────────────
+User-agent: CCBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+
+# ── YANDEX (CIS / Middle East relevance) ──────────────────────────────
+User-agent: YandexBot
+Allow: /
 Disallow: /admin/
+Disallow: /api/
+Crawl-delay: 2
+
+
+# ── DUCKDUCKGO ────────────────────────────────────────────────────────
+User-agent: DuckDuckBot
+Allow: /
+
+
+# ── SEO AUDIT TOOLS (your own tools — unrestricted) ───────────────────
+User-agent: Screaming Frog SEO Spider
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+
+# ── BLOCK LOW-VALUE / SCRAPING BOTS ──────────────────────────────────
+User-agent: SemrushBot-SA
+Disallow: /
+
+User-agent: MauiBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: SeznamBot
+Crawl-delay: 5
+
+
+# ════════════════════════════════════════════════════════════════════
+# SITEMAP
+# ════════════════════════════════════════════════════════════════════
+Sitemap: https://www.keshavturboservices.com/sitemap.xml
+
+# ── AI / LLM CONTENT FILES (llmstxt.org standard) ───────────────────
+# llms.txt      → AI-readable site summary (ChatGPT, Claude, Gemini, Perplexity)
+# llms-full.txt → Complete catalog with all 105 product IDs and specs
+#
+# Also referenced via <link rel="help"> in SEOHead (Appf.jsx)
+# Deploy both to /public/ so they resolve at:
+#   https://www.keshavturboservices.com/llms.txt
+#   https://www.keshavturboservices.com/llms-full.txt
