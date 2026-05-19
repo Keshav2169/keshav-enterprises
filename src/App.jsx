@@ -5,7 +5,6 @@ import {
 	ArrowRight,
 	Award,
 	BookOpen,
-	Bug,
 	Building2,
 	Calendar,
 	CheckCircle2,
@@ -18,6 +17,7 @@ import {
 	ExternalLink,
 	Factory,
 	Filter,
+	Flag,
 	Globe,
 	Hexagon,
 	Layers,
@@ -33,6 +33,7 @@ import {
 	Settings,
 	Shield,
 	Target,
+	ThumbsDown,
 	TrendingUp,
 	User,
 	Users,
@@ -3435,7 +3436,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee1',
-		category: 'Electronic Equipment',
+		category: 'Electronic Equipments',
 		title: 'Vibration Monitoring Probes (Shinkawa-compatible)',
 		desc: 'High-precision non-contact eddy current displacement sensors for continuous turbine shaft vibration and axial position monitoring. API 670 standard compliant.',
 		usage:
@@ -3479,7 +3480,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee2',
-		category: 'Electronic Equipment',
+		category: 'Electronic Equipments',
 		title: 'Magnetic Pickup Sensor (Woodward)',
 		desc: 'Genuine Woodward variable reluctance magnetic speed pickup (MPU) for precise shaft speed feedback to Woodward governors and digital turbine control systems. Passive, self-powered, zero-maintenance design for continuous duty on steam turbines running at 3000–3600 RPM.',
 		usage:
@@ -3794,7 +3795,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee3',
-		category: 'Electronic Equipment',
+		category: 'Electronic Equipments',
 		title: 'ASCO 8210 Series Explosion-Proof Solenoid Valve',
 		desc: 'ASCO 8210 series general purpose explosion-proof solenoid valves for turbine trip, lube oil, steam seal, and process control applications. ATEX/IECEx and NEMA 7/9 rated for hazardous area installation.',
 		usage:
@@ -3886,7 +3887,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee4',
-		category: 'Electronic Equipment',
+		category: 'Electronic Equipments',
 		title: 'Beacon Industrial Analog Tachometer Gauge',
 		desc: 'Robust industrial analog panel tachometer for direct shaft speed indication in turbine control panels. Robust movement with IP54 sealed case for steam turbine house environments.',
 		usage:
@@ -4026,7 +4027,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee5',
-		category: 'Electronic Equipment',
+		category: 'Electronic Equipments',
 		title: 'RTD & Sensors for Power Plants & Steam Turbines',
 		desc: 'Complete range of Resistance Temperature Detectors (RTDs), thermocouples, and process sensors for turbine bearing temperature, lube oil temperature, steam temperature, and exhaust gas monitoring.',
 		usage:
@@ -4071,7 +4072,7 @@ const RAW_PRODUCTS = [
 	},
 	{
 		id: 'prod_ee6',
-		category: 'Electronic Equipment',
+		category: 'Electronic Equipments',
 		title: 'SEMIKRON SKN240/16 Rectifier Diode',
 		desc: 'SEMIKRON SKN240/16 stud-mount power rectifier diode for alternator AVR excitation circuits and turbine-generator rectifier bridges. 240 A average forward current, 1600 V peak reverse voltage. Full VRRM voltage range (800 V to 2200 V) available — specify voltage class at order.',
 		usage:
@@ -5517,31 +5518,31 @@ const MARQUEE_CSS = `
 
   @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   .skeleton-shimmer{
-    position:absolute;inset:0;z-index:0;
-    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
+	position:absolute;inset:0;z-index:0;
+	background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
+	background-size:200% 100%;
+	animation:ke-shimmer 1.25s linear infinite;
   }
   /* Enhanced skeleton with product icon placeholder */
   .skeleton-product{
-    position:absolute;inset:0;z-index:1;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
+	position:absolute;inset:0;z-index:1;
+	display:flex;align-items:center;justify-content:center;flex-direction:column;
   }
   .skeleton-product::before{
-    content:'';width:48px;height:48px;border-radius:12px;
-    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
-    animation:ke-shimmer 1.25s linear infinite;
-    background-size:200% 100%;
+	content:'';width:48px;height:48px;border-radius:12px;
+	background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
+	animation:ke-shimmer 1.25s linear infinite;
+	background-size:200% 100%;
   }
   .skeleton-product::after{
-    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
-    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
-    background-size:200% 100%;
-    animation:ke-shimmer 1.25s linear infinite;
+	content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
+	background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
+	background-size:200% 100%;
+	animation:ke-shimmer 1.25s linear infinite;
   }
   /* Product image container gradient for contrast */
   .product-img-bg{
-    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
+	background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
   }
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
@@ -5575,45 +5576,45 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
-    .hero-section{
-      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
-      background-size:cover;
-      background-position:center center;
-      background-repeat:no-repeat;
-    }
-    .hero-bg-layer{display:none!important}
-    .hero-desktop-grad{display:none!important}
-    .hero-mobile-vignette{display:none!important}
-    .hero-glow-orb{display:none!important}
-    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
-    .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+	.hero-section{
+	  background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
+	  background-size:cover;
+	  background-position:center center;
+	  background-repeat:no-repeat;
+	}
+	.hero-bg-layer{display:none!important}
+	.hero-desktop-grad{display:none!important}
+	.hero-mobile-vignette{display:none!important}
+	.hero-glow-orb{display:none!important}
+	.hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
+	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
   /* ─── MOBILE TYPOGRAPHY BOOST ─── */
   @media(max-width:640px){
-    .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
-    .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
-    p{font-size:max(15px,1em);line-height:1.65}
-    .hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-    .glass-hero p{color:#d0e4f5!important}
-    .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
+	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
+	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
+	p{font-size:max(15px,1em);line-height:1.65}
+	.hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+	.glass-hero p{color:#d0e4f5!important}
+	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
-    section h1,section h2,section h3,
-    main>div>h1,main>div>h2{text-align:center}
-    .section-divider{margin-left:auto!important;margin-right:auto!important}
-    nav[aria-label="Breadcrumb"] *,
-    label,input,select,textarea,
-    footer h3,footer li,footer p,
-    address *,
-    [role="tabpanel"] *,
-    .keep-left,
-    .keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
-    article .bg-white h2,article .bg-white p{text-align:left!important}
-    .md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
-    .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
+	section h1,section h2,section h3,
+	main>div>h1,main>div>h2{text-align:center}
+	.section-divider{margin-left:auto!important;margin-right:auto!important}
+	nav[aria-label="Breadcrumb"] *,
+	label,input,select,textarea,
+	footer h3,footer li,footer p,
+	address *,
+	[role="tabpanel"] *,
+	.keep-left,
+	.keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
+	article .bg-white h2,article .bg-white p{text-align:left!important}
+	.md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
+	.lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
   }
 
   /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
@@ -5624,101 +5625,101 @@ const MARQUEE_CSS = `
   /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
   /* Social cards collapse gracefully on small screens */
   .social-card{
-    min-width:0!important;
-    width:100%;
-    max-width:100%;
-    flex-shrink:1;
+	min-width:0!important;
+	width:100%;
+	max-width:100%;
+	flex-shrink:1;
   }
   @media(max-width:640px){
-    /* Social card grid: 1 column on phones, 2 on wider phones */
-    .social-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.75rem;
-      width:100%;
-    }
-    .social-card{
-      min-width:0!important;
-      padding:0.75rem!important;
-      gap:0.625rem!important;
-    }
-    .social-card .social-handle{font-size:13px!important}
-    .social-card .social-sub{display:none}
+	/* Social card grid: 1 column on phones, 2 on wider phones */
+	.social-cards-grid{
+	  display:grid!important;
+	  grid-template-columns:1fr 1fr;
+	  gap:0.75rem;
+	  width:100%;
+	}
+	.social-card{
+	  min-width:0!important;
+	  padding:0.75rem!important;
+	  gap:0.625rem!important;
+	}
+	.social-card .social-handle{font-size:13px!important}
+	.social-card .social-sub{display:none}
   }
   @media(max-width:380px){
-    .social-cards-grid{grid-template-columns:1fr}
+	.social-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
   .dir-card{
-    min-width:0!important;
-    flex-shrink:1;
+	min-width:0!important;
+	flex-shrink:1;
   }
   @media(max-width:640px){
-    .dir-cards-grid{
-      display:grid!important;
-      grid-template-columns:1fr 1fr;
-      gap:0.625rem;
-      width:100%;
-    }
-    .dir-card{
-      padding:0.75rem 0.875rem!important;
-      gap:0.5rem!important;
-      min-width:0!important;
-    }
-    .dir-card .dir-badge{font-size:10px!important}
+	.dir-cards-grid{
+	  display:grid!important;
+	  grid-template-columns:1fr 1fr;
+	  gap:0.625rem;
+	  width:100%;
+	}
+	.dir-card{
+	  padding:0.75rem 0.875rem!important;
+	  gap:0.5rem!important;
+	  min-width:0!important;
+	}
+	.dir-card .dir-badge{font-size:10px!important}
   }
   @media(max-width:380px){
-    .dir-cards-grid{grid-template-columns:1fr}
+	.dir-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
-    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
-    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
+	.thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
+	.thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
   }
 
   /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
   @media(max-width:480px){
-    .fp-card{width:13rem!important}
+	.fp-card{width:13rem!important}
   }
 
   /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
   @media(max-width:640px){
-    .sd-step-gap{gap:0.875rem!important}
-    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
+	.sd-step-gap{gap:0.875rem!important}
+	.sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
   }
 
   /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
   .email-link{
-    word-break:break-all;
-    overflow-wrap:anywhere;
-    min-width:0;
+	word-break:break-all;
+	overflow-wrap:anywhere;
+	min-width:0;
   }
 
   /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
   @media(max-width:767px){
-    .timeline-connector{left:1rem!important}
-    .timeline-card{margin-left:3rem!important;margin-right:0!important}
+	.timeline-connector{left:1rem!important}
+	.timeline-card{margin-left:3rem!important;margin-right:0!important}
   }
 
   /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
   @media(max-width:480px){
-    .ind-oem-chips{gap:0.375rem!important}
-    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
+	.ind-oem-chips{gap:0.375rem!important}
+	.ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
   }
 
   /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
-    a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-    .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
+	a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
+	.floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
   /* ─── REDUCED MOTION ─── */
   @media(prefers-reduced-motion:reduce){
-    .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
-    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
-    *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+	.ke-marquee,.ke-marquee-slow{animation:none;transform:none}
+	.lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
+	*{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
   }
 
   /* ─── REUSABLE BUTTON UTILITIES ─── */
@@ -5924,10 +5925,8 @@ const getCategoryIcon = (category) => {
 			return <Activity className={cls} />;
 		case 'Industrial Rubber Products':
 			return <Hexagon className={cls} />;
-		case 'Electronic Equipment':
+		case 'Electronic Equipments':
 			return <Cpu className={cls} />;
-		case 'Hydraulic Components':
-			return <Settings className={cls} />;
 		default:
 			return <Settings className="w-16 h-16 text-slate-300" />;
 	}
@@ -5964,10 +5963,10 @@ if (typeof document !== 'undefined') {
 const GA4_ID     = import.meta.env.VITE_GA4_ID     ?? '';
 const CLARITY_ID = import.meta.env.VITE_CLARITY_ID ?? '';
 
-// trackPageView is exported to module scope so navigate() can call it
+// trackPageView is module-scoped so navigate() can call it
 // directly on every pushState navigation — not just popstate (back/forward).
 // path must be a clean pathname like '/products' or '/product/prod_ts1'.
-export const trackPageView = (path) => {
+const trackPageView = (path) => {
 	if (typeof window.gtag === 'function') {
 		window.gtag('event', 'page_view', {
 			page_path:     path,
@@ -5991,9 +5990,9 @@ if (typeof document !== 'undefined') {
 		// send_page_view:false — we fire all page_view events manually via
 		// trackPageView() so there is no double-count on the initial load.
 		s2.text = `window.dataLayer=window.dataLayer||[];`
-		        + `function gtag(){dataLayer.push(arguments);}`
-		        + `gtag('js',new Date());`
-		        + `gtag('config','${GA4_ID}',{send_page_view:false});`;
+				+ `function gtag(){dataLayer.push(arguments);}`
+				+ `gtag('js',new Date());`
+				+ `gtag('config','${GA4_ID}',{send_page_view:false});`;
 		document.head.appendChild(s2);
 
 		// Fire the first page_view for the initial landing page
@@ -6016,9 +6015,9 @@ if (typeof document !== 'undefined') {
 		cs.id         = 'clarity-script';
 		cs.type       = 'text/javascript';
 		cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};`
-		        + `t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;`
-		        + `y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);`
-		        + `})(window,document,"clarity","script","${CLARITY_ID}");`;
+				+ `t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;`
+				+ `y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);`
+				+ `})(window,document,"clarity","script","${CLARITY_ID}");`;
 		document.head.appendChild(cs);
 	}
 }
@@ -6406,7 +6405,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						<div className="absolute inset-0 flex items-center justify-center p-3 sm:p-4 z-0">
 							<img
 								src={pImg}
-								alt={product.title}
+								alt={`${product.title} — ${product.category}`}
 								loading={priority ? 'eager' : 'lazy'}
 								decoding={priority ? 'sync' : 'async'}
 								fetchPriority={priority ? 'high' : 'low'}
@@ -6720,7 +6719,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				path: `/service/${s.id}`,
 				image: s.image,
 			})),
-			...PRODUCTS.filter(
+			...RAW_PRODUCTS.filter(
 				(p) =>
 					p.title?.toLowerCase().includes(q) ||
 					p.desc?.toLowerCase().includes(q) ||
@@ -6804,7 +6803,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
 								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
-                  ${
+				  ${
 										isActive(link.path)
 											? scrolled
 												? 'text-blue-600'
@@ -6817,7 +6816,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								{link.name}
 								<span
 									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
-                  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+				  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
@@ -6852,8 +6851,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									}}
 									aria-label="Search"
 									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-                    ${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
-                    ${isSearchOpen ? 'ml-1' : ''}`}
+					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
+					${isSearchOpen ? 'ml-1' : ''}`}
 								>
 									<Search
 										className="w-4.5 h-4.5"
@@ -6935,7 +6934,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							type="button"
 							onClick={() => handleNav('/contact')}
 							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
-                ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
+				${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
 							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
 							Get Quote
@@ -6956,7 +6955,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							}}
 							aria-label="Search products and services"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+				${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							<Search className="h-5 w-5" aria-hidden="true" />
 						</button>
@@ -6969,7 +6968,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							aria-expanded={isOpen}
 							aria-controls="mobile-nav"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+				${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							{isOpen ? (
 								<X className="h-5 w-5" aria-hidden="true" />
@@ -7069,7 +7068,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 											}}
 											aria-current={isActive(link.path) ? 'page' : undefined}
 											className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-                        ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
+						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
 										>
 											{link.name}
 											{isActive(link.path) && (
@@ -7097,7 +7096,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								<a
 									href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
 									className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
-                    ${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
+					${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
 								>
 									<Phone className="w-4 h-4" aria-hidden="true" />{' '}
 									{CONTACT_INFO.phones[0]}
@@ -7151,7 +7150,7 @@ CredentialBadge.displayName = 'CredentialBadge';
 const Footer = memo(({ navigate }) => (
 	<footer
 		className="font-sans border-t-4 border-[#0891B2]"
-		style={{ background: '#050d1a', color: '#94a3b8' }}
+		style={{ background: '#050d1a', color: '#ffffff' }}
 		role="contentinfo"
 	>
 		{/* Top cyan gradient accent line */}
@@ -7166,7 +7165,7 @@ const Footer = memo(({ navigate }) => (
 						<h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">
 							Need a quote or have an emergency breakdown?
 						</h2>
-						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm" style={{ color: '#67E8F9' }}>
+						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm text-white">
 							Our engineering team responds within 24 hours
 						</p>
 					</div>
@@ -7178,7 +7177,7 @@ const Footer = memo(({ navigate }) => (
 							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
 							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
 						>
-							<Phone className="w-5 h-5 shrink-0" style={{ color: '#67E8F9' }} aria-hidden="true" />
+							<Phone className="w-5 h-5 shrink-0 text-blue-400" aria-hidden="true" />
 							{CONTACT_INFO.phones[0]}
 						</a>
 						<a
@@ -7201,20 +7200,20 @@ const Footer = memo(({ navigate }) => (
 				{/* Col 1 — Brand */}
 				<div className="lg:col-span-4">
 					<div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
-					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
+					<p className="font-sans text-sm leading-relaxed mb-8 max-w-sm text-white">
 						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
 					</p>
 					<div className="flex flex-col gap-2 mb-8">
 						{[
-							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
-							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-amber-400',  title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
-							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-cyan-400',   title: 'Make In India',       sub: 'Manufactured in India' },
+							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-blue-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
+							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-blue-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-blue-400', title: 'Make In India',       sub: 'Manufactured in India' },
 						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
 							<CredentialBadge key={title} imgSrc={imgSrc} Icon={Icon} iconColor={iconColor} title={title} sub={sub} />
 						))}
 					</div>
-					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>OEM Compatible With</p>
-					<p className="text-slate-400 font-mono text-xs leading-relaxed">{OEMS.join(' · ')}</p>
+					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2 text-blue-400">OEM Compatible With</p>
+					<p className="font-mono text-xs leading-relaxed text-white">{OEMS.join(' · ')}</p>
 				</div>
 
 				{/* Col 2 — Navigate */}
@@ -7224,8 +7223,8 @@ const Footer = memo(({ navigate }) => (
 						{NAV_LINKS.map((link) => (
 							<li key={link.name}>
 								<a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" style={{ color: '#0891B2' }} aria-hidden="true" />
+									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform text-blue-400" aria-hidden="true" />
 									<span>{link.name}</span>
 								</a>
 							</li>
@@ -7247,8 +7246,8 @@ const Footer = memo(({ navigate }) => (
 						].map(({ label, id }) => (
 							<li key={id}>
 								<a href={`#/service/${id}`} onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<Hexagon className="w-3.5 h-3.5" style={{ color: '#0891B2' }} aria-hidden="true" />
+									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<Hexagon className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
 									<span>{label}</span>
 								</a>
 							</li>
@@ -7261,14 +7260,14 @@ const Footer = memo(({ navigate }) => (
 					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Contact Us</h3>
 					<div className="space-y-5">
 						{[
-							{ id: 'address', Icon: MapPin, content: <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-slate-300 hover:text-white font-mono text-sm transition-colors">{p}</a>)}</div> },
+							{ id: 'address', Icon: MapPin, content: <p className="text-white text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
+							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-white hover:text-blue-400 font-mono text-sm transition-colors">{p}</a>)}</div> },
 							{ id: 'mail',    Icon: Mail,   content: (
 								<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
 									{[{ addr: CONTACT_INFO.email, label: 'General' }, { addr: CONTACT_INFO.infoEmail, label: 'Info' }].map(({ addr, label }) => (
-										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors">
+										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-white hover:text-blue-400 text-sm transition-colors">
 											<span className="truncate">{addr}</span>
-											<span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: '#0891B2' }}>{label}</span>
+											<span className="font-mono text-[9px] uppercase tracking-widest text-blue-400">{label}</span>
 										</a>
 									))}
 								</div>
@@ -7276,7 +7275,7 @@ const Footer = memo(({ navigate }) => (
 						].map(({ id, Icon, content }) => (
 							<div key={id} className="flex items-start gap-4">
 								<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-									<Icon className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
+									<Icon className="w-4 h-4 text-blue-400" aria-hidden="true" />
 								</div>
 								{content}
 							</div>
@@ -7321,10 +7320,10 @@ const Footer = memo(({ navigate }) => (
 
 			{/* Bottom bar */}
 			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
-				<p className="text-slate-400 text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
-				<p className="text-slate-400 text-sm flex items-center gap-2">
+				<p className="text-white text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
+				<p className="text-white text-sm flex items-center gap-2">
 					<span>GST:</span>
-					<span className="text-slate-300 font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
+					<span className="text-white font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
 				</p>
 			</div>
 		</div>
@@ -7455,218 +7454,546 @@ const DigitalProfilesStrip = memo(() => {
 });
 DigitalProfilesStrip.displayName = 'DigitalProfilesStrip';
 
-// ─── WHATSAPP + CALL FAB ─────────────────────────────────────
-// ─── BUG REPORT MODAL ────────────────────────────────────────
-const BugReportModal = memo(({ onClose }) => {
-	const [bugType, setBugType]         = useState('');
-	const [page, setPage]               = useState('');
+// ─── REPORT ISSUE MODAL ───────────────────────────────────────
+// Reusable modal for reporting issues on Product or Service pages.
+// Props:
+//   context  — { type: 'product'|'service', name: string, id: string }
+//   onClose  — function to close the modal
+const ISSUE_TYPES = [
+	{ id: 'wrong_info',   label: 'Wrong / missing info',     icon: '📋', severity: 'low'  },
+	{ id: 'quality',      label: 'Service quality complaint', icon: '⚠️', severity: 'high' },
+	{ id: 'delivery',     label: 'Delivery / order issue',   icon: '🚚', severity: 'high' },
+	{ id: 'safety',       label: 'Technical / safety concern',icon: '🔴', severity: 'critical' },
+	{ id: 'pricing',      label: 'Pricing dispute',          icon: '💰', severity: 'medium' },
+	{ id: 'feedback',     label: 'General feedback',         icon: '💬', severity: 'low'  },
+];
+
+const SEVERITY_CONFIG = {
+	low:      { label: 'Low',      color: 'bg-slate-100 text-slate-700 border-slate-200' },
+	medium:   { label: 'Medium',   color: 'bg-amber-50 text-amber-800 border-amber-200'  },
+	high:     { label: 'High',     color: 'bg-orange-50 text-orange-800 border-orange-200' },
+	critical: { label: 'Critical', color: 'bg-red-50 text-red-800 border-red-200'        },
+};
+
+const ReportIssueModal = memo(({ context, onClose }) => {
+	const [step, setStep]             = useState(1); // 1=type, 2=details, 3=contact, 4=done
+	const [issueType, setIssueType]   = useState(null);
 	const [description, setDescription] = useState('');
-	const [email, setEmail]             = useState('');
-	const [status, setStatus]           = useState('idle');
-	const [errors, setErrors]           = useState({});
+	const [name, setName]             = useState('');
+	const [phone, setPhone]           = useState('');
+	const [descErr, setDescErr]       = useState('');
+	const [_submitted, setSubmitted]   = useState(false);
 
-	const BUG_TYPES = [
-		'Page not loading',
-		'Broken link or button',
-		'Display / layout issue',
-		'Form not working',
-		'Slow performance',
-		'Wrong or missing content',
-		'Other',
-	];
+	// Close on Escape
+	useEffect(() => {
+		const h = (e) => { if (e.key === 'Escape') onClose(); };
+		document.addEventListener('keydown', h);
+		return () => document.removeEventListener('keydown', h);
+	}, [onClose]);
 
-	const validate = useCallback(() => {
-		const e = {};
-		if (!bugType) e.bugType = 'Please select a bug type';
-		if (!description.trim() || description.length < 10)
-			e.description = 'Please describe the issue (min 10 characters)';
-		if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-			e.email = 'Enter a valid email address or leave blank';
-		return e;
-	}, [bugType, description, email]);
+	// Lock body scroll
+	useEffect(() => {
+		document.body.style.overflow = 'hidden';
+		return () => { document.body.style.overflow = ''; };
+	}, []);
 
-	const handleSubmit = useCallback(async () => {
-		const e = validate();
-		if (Object.keys(e).length > 0) { setErrors(e); return; }
-		setErrors({});
-		setStatus('loading');
+	const selectedType = ISSUE_TYPES.find(t => t.id === issueType);
+	const severityConf = selectedType ? SEVERITY_CONFIG[selectedType.severity] : null;
 
-		const FORMSPREE_BUG_FORM_ID = 'YOUR_BUG_FORM_ID';
-		const isFormspreeConfigured = FORMSPREE_BUG_FORM_ID !== 'YOUR_BUG_FORM_ID';
-
+	const handleSubmit = useCallback(() => {
+		// Rate limit: max 3 reports per hour per browser
 		try {
-			if (isFormspreeConfigured) {
-				const res = await fetch(`https://formspree.io/f/${FORMSPREE_BUG_FORM_ID}`, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						bug_type:       bugType,
-						page:           page || 'Not specified',
-						description,
-						reporter_email: email || 'Anonymous',
-						url:            window.location.href,
-						user_agent:     navigator.userAgent,
-					}),
-				});
-				if (!res.ok) throw new Error('Formspree submission failed');
+			const RL_KEY = 'ke_report_ts';
+			const now = Date.now();
+			const stored = JSON.parse(localStorage.getItem(RL_KEY) || '[]');
+			const recent = stored.filter(t => now - t < 60 * 60 * 1000); // last 1 hour
+			if (recent.length >= 3) {
+				setDescErr('You have submitted 3 reports in the last hour. Please try again later or call us directly.');
+				return;
 			}
+			recent.push(now);
+			localStorage.setItem(RL_KEY, JSON.stringify(recent));
+		} catch { /* localStorage blocked — allow submission */ }
 
-			const msg = [
-				`🐛 *Bug Report — Keshav Enterprises Website*`,
-				`Type: ${bugType}`,
-				`Page: ${page || 'Not specified'}`,
-				`Description: ${description}`,
-				`Reporter: ${email || 'Anonymous'}`,
-				`URL: ${window.location.href}`,
-			].join('\n');
-			window.open(waMsg(msg), '_blank', 'noopener');
-
-			setStatus('success');
-		} catch {
-			setStatus('error');
+		if (description.trim().length < 15) {
+			setDescErr('Please describe the issue in at least 15 characters.');
+			return;
 		}
-	}, [validate, bugType, page, description, email]);
+		setDescErr('');
 
-	const inputClass = (err) =>
-		`w-full px-4 py-3 bg-slate-50 border rounded-xl font-medium text-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
+		const lines = [
+			`⚠️ *Issue Report — Keshav Enterprises*`,
+			``,
+			`*${context.type === 'product' ? 'Product' : 'Service'}:* ${sanitise(context.name)}`,
+			`*Issue Type:* ${selectedType?.label || 'General'}`,
+			`*Severity:* ${severityConf?.label || 'Low'}`,
+			``,
+			`*Description:*`,
+			sanitise(description),
+		];
+		if (name.trim())  lines.push(``, `*Reported by:* ${sanitise(name)}`);
+		if (phone.trim()) lines.push(`*Contact:* ${sanitise(phone)}`);
+
+		window.open(waMsg(lines.join('\n')), '_blank', 'noopener');
+		setSubmitted(true);
+		setStep(4);
+	}, [context, selectedType, severityConf, description, name, phone]);
+
+	// Step labels for progress indicator
+	const steps = ['Issue type', 'Details', 'Contact', 'Done'];
 
 	return (
 		<div
 			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
 			role="dialog"
 			aria-modal="true"
-			aria-labelledby="bug-report-title"
+			aria-labelledby="report-modal-title"
 		>
-			<div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
-			<div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-				<div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+			{/* Backdrop */}
+			<div
+				className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+				onClick={onClose}
+				aria-hidden="true"
+			/>
+
+			{/* Panel */}
+			<div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden">
+
+				{/* Header */}
+				<div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
 					<div className="flex items-center gap-3">
-						<div className="w-9 h-9 bg-red-100 rounded-xl flex items-center justify-center">
-							<Bug className="w-5 h-5 text-red-500" aria-hidden="true" />
+						<div className="w-9 h-9 bg-orange-100 rounded-xl flex items-center justify-center shrink-0">
+							<Flag className="w-4 h-4 text-orange-500" aria-hidden="true" />
 						</div>
 						<div>
-							<h2 id="bug-report-title" className="font-black text-slate-900 text-base">Report a Bug</h2>
-							<p className="text-xs text-slate-500 font-medium">Help us fix issues faster</p>
+							<h2 id="report-modal-title" className="font-black text-slate-900 text-base leading-tight">
+								Report an Issue
+							</h2>
+							<p className="text-xs text-slate-500 font-medium truncate max-w-60">
+								{context.name}
+							</p>
 						</div>
 					</div>
-					<button type="button" onClick={onClose} className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors" aria-label="Close bug report">
-						<X className="w-5 h-5 text-slate-500" />
+					<button
+						type="button"
+						onClick={onClose}
+						className="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						aria-label="Close report modal"
+					>
+						<X className="w-5 h-5 text-slate-500" aria-hidden="true" />
 					</button>
 				</div>
 
-				{status === 'success' ? (
-					<div className="px-6 py-10 text-center">
-						<div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-							<CheckCircle2 className="w-8 h-8 text-green-500" />
+				{/* Progress bar — steps 1-3 only */}
+				{step < 4 && (
+					<div className="px-6 pt-4 pb-2 shrink-0">
+						<div className="flex items-center gap-2">
+							{steps.slice(0, 3).map((label, i) => {
+								const idx = i + 1;
+								const active  = step === idx;
+								const done    = step > idx;
+								return (
+									<React.Fragment key={label}>
+										<div className="flex items-center gap-1.5 shrink-0">
+											<div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${done ? 'bg-blue-600 text-white' : active ? 'bg-blue-100 text-blue-700 ring-2 ring-blue-300' : 'bg-slate-100 text-slate-400'}`}>
+												{done ? <CheckCircle2 className="w-3 h-3" aria-hidden="true" /> : idx}
+											</div>
+											<span className={`text-xs font-bold hidden sm:block ${active ? 'text-blue-700' : done ? 'text-slate-500' : 'text-slate-300'}`}>{label}</span>
+										</div>
+										{i < 2 && <div className={`flex-1 h-0.5 rounded-full transition-all ${done ? 'bg-blue-500' : 'bg-slate-200'}`} aria-hidden="true" />}
+									</React.Fragment>
+								);
+							})}
 						</div>
-						<h3 className="font-black text-slate-900 text-lg mb-2">Bug Reported!</h3>
-						<p className="text-slate-500 text-sm font-medium mb-6">Thank you for helping us improve. Our team will look into it promptly.</p>
-						<button type="button" onClick={onClose} className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-800 transition-all">Close</button>
 					</div>
-				) : (
-					<div className="px-6 py-5 flex flex-col gap-4">
+				)}
+
+				{/* Body — scrollable */}
+				<div className="flex-1 overflow-y-auto px-6 py-4">
+
+					{/* ── STEP 1: Issue type ── */}
+					{step === 1 && (
 						<div>
-							<label className="block text-sm font-bold text-slate-700 mb-2">Bug Type <span className="text-red-500">*</span></label>
-							<div className="flex flex-wrap gap-2">
-								{BUG_TYPES.map((t) => (
-									<button key={t} type="button" onClick={() => setBugType(t)}
-										className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${bugType === t ? 'bg-red-500 text-white border-red-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-red-300'}`}>
-										{t}
+							<p className="text-sm font-bold text-slate-700 mb-4">What kind of issue are you reporting?</p>
+							<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+								{ISSUE_TYPES.map((type) => (
+									<button
+										key={type.id}
+										type="button"
+										onClick={() => setIssueType(type.id)}
+										className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+											issueType === type.id
+												? 'border-blue-500 bg-blue-50'
+												: 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
+										}`}
+										aria-pressed={issueType === type.id}
+									>
+										<span className="text-xl shrink-0" aria-hidden="true">{type.icon}</span>
+										<span className="text-sm font-bold text-slate-800 leading-snug">{type.label}</span>
 									</button>
 								))}
 							</div>
-							{errors.bugType && <p className="text-red-500 text-xs mt-1 font-medium">{errors.bugType}</p>}
-						</div>
-
-						<div>
-							<label htmlFor="bug-page" className="block text-sm font-bold text-slate-700 mb-1.5">Which page? <span className="text-slate-400 font-medium">(optional)</span></label>
-							<input id="bug-page" type="text" placeholder="e.g. /products, Home page, Contact form…" value={page} onChange={(ev) => setPage(ev.target.value)} className={inputClass(false)} />
-						</div>
-
-						<div>
-							<label htmlFor="bug-description" className="block text-sm font-bold text-slate-700 mb-1.5">Describe the issue <span className="text-red-500">*</span></label>
-							<textarea id="bug-description" rows={4} placeholder="What happened? What did you expect? Steps to reproduce…" value={description} onChange={(ev) => setDescription(ev.target.value)} className={`${inputClass(errors.description)} resize-none`} />
-							<div className="flex justify-between mt-1">
-								{errors.description ? <p className="text-red-500 text-xs font-medium">{errors.description}</p> : <span />}
-								<span className={`text-xs font-medium ${description.length < 10 ? 'text-slate-400' : 'text-green-500'}`}>{description.length} chars</span>
-							</div>
-						</div>
-
-						<div>
-							<label htmlFor="bug-email" className="block text-sm font-bold text-slate-700 mb-1.5">Your email <span className="text-slate-400 font-medium">(optional — for follow-up)</span></label>
-							<input id="bug-email" type="email" placeholder="you@example.com" value={email} onChange={(ev) => setEmail(ev.target.value)} className={inputClass(errors.email)} />
-							{errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
-						</div>
-
-						{status === 'error' && (
-							<div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3">
-								<AlertTriangle className="w-4 h-4 text-red-500 shrink-0" />
-								<p className="text-red-600 text-sm font-medium">Something went wrong. Try again or WhatsApp us directly.</p>
-							</div>
-						)}
-
-						<button type="button" onClick={handleSubmit} disabled={status === 'loading'}
-							className="w-full bg-red-500 text-white py-3.5 rounded-xl font-black text-sm hover:bg-red-600 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-1">
-							{status === 'loading' ? (
-								<><span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />Sending…</>
-							) : (
-								<><Bug className="w-4 h-4" />Submit Bug Report</>
+							{/* Safety notice */}
+							{issueType === 'safety' && (
+								<div className="mt-4 flex gap-3 bg-red-50 border border-red-200 rounded-xl p-4">
+									<AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" aria-hidden="true" />
+									<p className="text-sm font-bold text-red-700 leading-snug">
+										For immediate safety risks, please call us directly at{' '}
+										<a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="underline">{CONTACT_INFO.phones[0]}</a>.
+										This form is for non-emergency reporting.
+									</p>
+								</div>
 							)}
+						</div>
+					)}
+
+					{/* ── STEP 2: Details ── */}
+					{step === 2 && selectedType && (
+						<div>
+							{/* Severity badge */}
+							<div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-black uppercase tracking-widest mb-5 ${severityConf.color}`}>
+								{selectedType.icon} {selectedType.label} · {severityConf.label} priority
+							</div>
+
+							<label htmlFor="ri-description" className="block text-sm font-bold text-slate-700 mb-2">
+								Describe the issue <span className="text-red-500" aria-hidden="true">*</span>
+							</label>
+							<textarea
+								id="ri-description"
+								rows={5}
+								value={description}
+								onChange={(e) => { setDescription(e.target.value); if (descErr) setDescErr(''); }}
+								placeholder={
+									issueType === 'wrong_info'   ? 'Which information is wrong or missing? Where did you see it?' :
+									issueType === 'quality'      ? 'What happened during the service? When and where?' :
+									issueType === 'delivery'     ? 'What was ordered? What went wrong with delivery?' :
+									issueType === 'safety'       ? 'Describe the safety concern clearly. Include part numbers if relevant.' :
+									issueType === 'pricing'      ? 'Which product or service? What price discrepancy did you notice?' :
+									'Share your feedback — what can we improve?'
+								}
+								aria-required="true"
+								aria-invalid={!!descErr}
+								aria-describedby={descErr ? 'ri-desc-err' : undefined}
+								className={`w-full px-4 py-3 bg-slate-50 border rounded-xl font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none ${descErr ? 'border-red-400 bg-red-50' : 'border-slate-200'}`}
+							/>
+							<div className="flex justify-between mt-1">
+								{descErr
+									? <p id="ri-desc-err" role="alert" className="text-red-500 text-xs font-bold">{descErr}</p>
+									: <span />
+								}
+								<span className={`text-xs font-medium ${description.length < 15 ? 'text-slate-400' : 'text-green-600'}`}>
+									{description.length} chars
+								</span>
+							</div>
+						</div>
+					)}
+
+					{/* ── STEP 3: Contact (optional) ── */}
+					{step === 3 && (
+						<div className="flex flex-col gap-5">
+							<div className="bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3">
+								<Shield className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" aria-hidden="true" />
+								<p className="text-sm font-medium text-blue-800 leading-snug">
+									Your contact details are <strong>optional</strong> and used only to follow up on your report. You can submit anonymously.
+								</p>
+							</div>
+							<div>
+								<label htmlFor="ri-name" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+									Your name <span className="text-slate-400 font-medium normal-case tracking-normal">(optional)</span>
+								</label>
+								<input
+									id="ri-name"
+									type="text"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									placeholder="Company or contact name"
+									className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+								/>
+							</div>
+							<div>
+								<label htmlFor="ri-phone" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+									Phone / WhatsApp <span className="text-slate-400 font-medium normal-case tracking-normal">(optional)</span>
+								</label>
+								<input
+									id="ri-phone"
+									type="tel"
+									value={phone}
+									onChange={(e) => setPhone(e.target.value)}
+									placeholder="+91 XXXXX XXXXX"
+									className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+								/>
+							</div>
+						</div>
+					)}
+
+					{/* ── STEP 4: Done ── */}
+					{step === 4 && (
+						<div className="py-6 text-center flex flex-col items-center gap-4">
+							<div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+								<CheckCircle2 className="w-8 h-8 text-green-500" aria-hidden="true" />
+							</div>
+							<div>
+								<h3 className="font-black text-slate-900 text-xl mb-2">Report submitted</h3>
+								<p className="text-slate-500 font-medium text-sm leading-relaxed max-w-xs mx-auto">
+									Your report has been sent to our engineering team via WhatsApp. We take all feedback seriously and will review it promptly.
+								</p>
+							</div>
+							{selectedType?.severity === 'critical' && (
+								<div className="bg-red-50 border border-red-200 rounded-xl p-4 max-w-xs text-left">
+									<p className="text-sm font-bold text-red-700">
+										For urgent safety concerns, also call us directly:{' '}
+										<a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="underline">{CONTACT_INFO.phones[0]}</a>
+									</p>
+								</div>
+							)}
+							<button
+								type="button"
+								onClick={onClose}
+								className="bg-blue-600 text-white px-8 py-3 rounded-xl font-black text-sm hover:bg-blue-500 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+							>
+								Close
+							</button>
+						</div>
+					)}
+				</div>
+
+				{/* Footer navigation — steps 1-3 */}
+				{step < 4 && (
+					<div className="px-6 py-4 border-t border-slate-100 flex justify-between items-center shrink-0 gap-3">
+						<button
+							type="button"
+							onClick={() => step === 1 ? onClose() : setStep(s => s - 1)}
+							className="px-5 py-2.5 rounded-xl border border-slate-200 font-bold text-sm text-slate-700 hover:bg-slate-50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						>
+							{step === 1 ? 'Cancel' : '← Back'}
 						</button>
-						<p className="text-center text-xs text-slate-400 font-medium -mt-1">Report sent via WhatsApp to our team instantly</p>
+
+						{step < 3 ? (
+							<button
+								type="button"
+								disabled={step === 1 && !issueType}
+								onClick={() => {
+									if (step === 2) {
+										if (description.trim().length < 15) { setDescErr('Please describe the issue in at least 15 characters.'); return; }
+										setDescErr('');
+									}
+									setStep(s => s + 1);
+								}}
+								className="px-6 py-2.5 rounded-xl bg-blue-600 text-white font-black text-sm hover:bg-blue-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2"
+							>
+								Continue <ArrowRight className="w-4 h-4" aria-hidden="true" />
+							</button>
+						) : (
+							<button
+								type="button"
+								onClick={handleSubmit}
+								className="px-6 py-2.5 rounded-xl bg-[#25D366] text-white font-black text-sm hover:bg-[#1ebe5d] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 flex items-center gap-2 shadow-[0_4px_16px_rgba(37,211,102,0.3)]"
+							>
+								<MessageCircle className="w-4 h-4" aria-hidden="true" />
+								Send via WhatsApp
+							</button>
+						)}
 					</div>
 				)}
 			</div>
 		</div>
 	);
 });
-BugReportModal.displayName = 'BugReportModal';
+ReportIssueModal.displayName = 'ReportIssueModal';
 
 // ─── FLOATING BUTTONS ─────────────────────────────────────────
-const FloatingButtons = memo(() => {
-	const [showBugReport, setShowBugReport] = useState(false);
+// ─── RECENTLY VIEWED PRODUCTS ────────────────────────────────
+// Stores up to 6 product IDs in localStorage, newest first.
+const RV_KEY = 'ke_recently_viewed';
+const RV_MAX = 6;
+
+const getRecentlyViewed = () => {
+	try { return JSON.parse(localStorage.getItem(RV_KEY) || '[]'); }
+	catch { return []; }
+};
+
+const addRecentlyViewed = (productId) => {
+	try {
+		const list = getRecentlyViewed().filter(id => id !== productId);
+		list.unshift(productId);
+		localStorage.setItem(RV_KEY, JSON.stringify(list.slice(0, RV_MAX)));
+	} catch { /* ignore */ }
+};
+
+const RecentlyViewedStrip = memo(({ currentProductId, navigate }) => {
+	// Derive directly — no state, no effect, no cascading renders.
+	// useMemo re-runs whenever currentProductId changes (i.e. user navigates
+	// to a different product), which is the only time this list can change.
+	const items = useMemo(
+		() =>
+			getRecentlyViewed()
+				.filter(id => id !== currentProductId)
+				.map(id => PRODUCTS.find(p => p.id === id))
+				.filter(Boolean)
+				.slice(0, 4),
+		[currentProductId]
+	);
+
+	if (items.length === 0) return null;
+
 	return (
-		<>
-			<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
-				<button
-					type="button"
-					onClick={() => setShowBugReport(true)}
-					aria-label="Report a bug"
-					className="flex items-center gap-2 bg-white border border-slate-200 text-slate-700 px-4 py-3 rounded-full shadow-lg hover:bg-red-50 hover:border-red-200 hover:text-red-600 hover:scale-105 transition-all group font-bold text-sm"
-				>
-					<Bug className="w-4 h-4 text-red-400 group-hover:text-red-500" aria-hidden="true" />
-					<span className="hidden group-hover:block">Report a Bug</span>
-				</button>
-				<a
-					href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-					className="flex items-center gap-2 bg-white border border-slate-200 text-slate-900 px-4 py-3 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
-					aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
-				>
-					<Phone className="w-4 h-4 text-blue-600" aria-hidden="true" />
-					<span className="hidden group-hover:block">{CONTACT_INFO.phones[0]}</span>
-				</a>
-				<a
-					href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
-					target="_blank"
-					rel="noopener noreferrer"
-					aria-label="Chat with Keshav Enterprises on WhatsApp"
-					className="bg-[#25D366] text-white p-4 rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300 group relative"
-				>
-					<MessageCircle className="w-7 h-7" aria-hidden="true" />
-					<span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 bg-slate-900 text-white text-sm font-bold px-4 py-2 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-						Speak directly with an engineer
-					</span>
-				</a>
+		<section aria-labelledby="rv-heading" className="mt-12 pt-8 border-t border-slate-100">
+			<h2 id="rv-heading" className="text-xl font-black text-slate-900 tracking-tight mb-5 flex items-center gap-2">
+				<Clock className="w-5 h-5 text-blue-500" aria-hidden="true" />
+				Recently Viewed
+			</h2>
+			<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+				{items.map(p => {
+					const img = p.images?.[0];
+					return (
+						<button
+							key={p.id}
+							type="button"
+							onClick={() => navigate(`/product/${p.id}`)}
+							className="group flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-blue-300 hover:-translate-y-0.5 transition-all text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							aria-label={`View ${p.title}`}
+						>
+							<div className="h-28 bg-slate-50 flex items-center justify-center p-3 border-b border-slate-100">
+								{img ? (
+									<img
+										src={img}
+										alt={`${p.title} — ${p.category}`}
+										loading="lazy"
+										className="max-h-full max-w-full object-contain"
+										onError={e => { e.target.style.display = 'none'; }}
+									/>
+								) : (
+									<div className="w-10 h-10 bg-slate-200 rounded-lg" aria-hidden="true" />
+								)}
+							</div>
+							<div className="p-3 flex-1 flex flex-col">
+								<span className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-1">{p.category}</span>
+								<p className="text-xs font-bold text-slate-800 leading-snug line-clamp-2 group-hover:text-blue-700 transition-colors">
+									{p.title}
+								</p>
+							</div>
+						</button>
+					);
+				})}
 			</div>
-			{showBugReport && <BugReportModal onClose={() => setShowBugReport(false)} />}
-		</>
+		</section>
 	);
 });
+RecentlyViewedStrip.displayName = 'RecentlyViewedStrip';
+
+// ─── BACK TO TOP BUTTON ───────────────────────────────────────
+const BackToTopButton = memo(() => {
+	const [visible, setVisible] = useState(false);
+
+	useEffect(() => {
+		const h = () => setVisible(window.scrollY > 400);
+		window.addEventListener('scroll', h, { passive: true });
+		h();
+		return () => window.removeEventListener('scroll', h);
+	}, []);
+
+	if (!visible) return null;
+
+	return (
+		<button
+			type="button"
+			onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+			aria-label="Back to top"
+			className="fixed bottom-6 left-6 z-50 w-11 h-11 bg-slate-900 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+		>
+			<ArrowLeft className="w-5 h-5 -rotate-90" aria-hidden="true" />
+		</button>
+	);
+});
+BackToTopButton.displayName = 'BackToTopButton';
+
+// ─── WHATSAPP CHAT BUBBLE ─────────────────────────────────────
+const WA_GREETING_DELAY = 2500; // ms before greeting appears
+
+const WhatsAppBubble = memo(() => {
+	const [showGreeting, setShowGreeting] = useState(false);
+	const [dismissed, setDismissed] = useState(false);
+
+	// Show greeting after delay, but only once per session
+	useEffect(() => {
+		try {
+			if (sessionStorage.getItem('ke_wa_greeted')) return;
+		} catch { /* ignore */ }
+		const t = setTimeout(() => {
+			setShowGreeting(true);
+			try { sessionStorage.setItem('ke_wa_greeted', '1'); } catch { /* ignore */ }
+		}, WA_GREETING_DELAY);
+		return () => clearTimeout(t);
+	}, []);
+
+	const dismiss = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setShowGreeting(false);
+		setDismissed(true);
+	};
+
+	return (
+		<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+			{/* Greeting bubble */}
+			{showGreeting && !dismissed && (
+				<div
+					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-55 animate-[fadeSlideUp_0.35s_ease_forwards]"
+					role="status"
+					aria-live="polite"
+				>
+					<button
+						type="button"
+						onClick={dismiss}
+						aria-label="Dismiss greeting"
+						className="absolute -top-2 -right-2 w-5 h-5 bg-slate-500 hover:bg-slate-700 text-white rounded-full flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+					>
+						<X className="w-3 h-3" />
+					</button>
+					<p className="text-xs font-black text-slate-900 mb-0.5">👋 Hello!</p>
+					<p className="text-xs font-medium text-slate-600 leading-snug">
+						Need a quote or tech support? Chat with our engineers now.
+					</p>
+					{/* Chat bubble tail */}
+					<span className="absolute bottom-0 right-3 translate-y-full w-0 h-0 border-l-8 border-r-0 border-t-8 border-l-transparent border-t-white" aria-hidden="true" />
+				</div>
+			)}
+
+			{/* Phone pill */}
+			<a
+				href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+				className="flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-900 p-3.5 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
+				aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
+			>
+				<Phone className="w-4 h-4 text-blue-600 shrink-0 translate-x-px" aria-hidden="true" />
+				<span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">
+					{CONTACT_INFO.phones[0]}
+				</span>
+			</a>
+
+			{/* WhatsApp FAB */}
+			<a
+				href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Chat with Keshav Enterprises on WhatsApp"
+				onClick={() => setShowGreeting(false)}
+				className="bg-[#25D366] text-white p-3.5 rounded-full shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300"
+			>
+				<MessageCircle className="w-6 h-6" aria-hidden="true" />
+			</a>
+		</div>
+	);
+});
+WhatsAppBubble.displayName = 'WhatsAppBubble';
+
+const FloatingButtons = memo(() => <WhatsAppBubble />);
 FloatingButtons.displayName = 'FloatingButtons';
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
+	const [showReport, setShowReport] = useState(false);
 	// probe[i] = 'pending' | 'ok' | 'err'  — set by hidden <img> preloaders
 	const [probe, setProbe]           = useState({});
 	const [activeImg, setActiveImg]   = useState(0);
@@ -7686,6 +8013,11 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		() => PRODUCTS.find((p) => p.id === productId),
 		[productId],
 	);
+
+	// Track recently viewed
+	useEffect(() => {
+		if (product) addRecentlyViewed(product.id);
+	}, [product]);
 
 	// All filenames from product data
 	const allImages = useMemo(() => (product?.images || []).filter(Boolean), [product]);
@@ -7810,7 +8142,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	if (!product)
 		return (
 			<main id="main-content" tabIndex={-1} className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50">
-				<SEOHead title="Product Not Found" noIndex={true} />
+				<SEOHead title="Product Not Found" />
 				<div>
 					<Settings className="w-20 h-20 text-slate-300 mx-auto mb-6" aria-hidden="true" />
 					<h1 className="text-4xl font-black text-slate-900 mb-4 tracking-tight">Product Not Found</h1>
@@ -7853,9 +8185,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
 
 							{/* ── Hidden image probers ──
-							    Invisible 1×1 images that fire onLoad/onError for every filename.
-							    This resolves which images actually exist BEFORE anything visible renders.
-							    Only images that pass probe[i]==='ok' appear in the gallery. */}
+								Invisible 1×1 images that fire onLoad/onError for every filename.
+								This resolves which images actually exist BEFORE anything visible renders.
+								Only images that pass probe[i]==='ok' appear in the gallery. */}
 							<div className="sr-only" aria-hidden="true">
 								{allImages.map((src, i) =>
 									probe[i] === undefined ? (
@@ -7969,9 +8301,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							</div>
 
 							{/* ── Dot indicators ──
-							    Mobile: compact dots, active pill slightly wider. Gap tight.
-							    Desktop (sm+): slightly larger, more breathing room.
-							    For >8 images: dots scale down further so they all fit in one row. */}
+								Mobile: compact dots, active pill slightly wider. Gap tight.
+								Desktop (sm+): slightly larger, more breathing room.
+								For >8 images: dots scale down further so they all fit in one row. */}
 							{total > 1 && (
 								<div
 									className="flex justify-center items-center flex-wrap mb-2 mt-1"
@@ -8007,8 +8339,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							)}
 
 							{/* ── Thumbnail grid ──
-							    Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
-							    Grid aligns left so 3 images don't become 3 huge tiles. */}
+								Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
+								Grid aligns left so 3 images don't become 3 huge tiles. */}
 							{total > 1 && (
 								<div
 									ref={thumbStripRef}
@@ -8143,7 +8475,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 														else if (cat === 'Expansion Joints') lt = 'Stocked sizes: 1–2 weeks; custom DN: 3–5 weeks';
 														else if (cat === 'Industrial Strainers') lt = '1–3 weeks (standard); custom 3–6 weeks';
 														else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
-														else if (cat === 'Electronic Equipment') lt = '1–4 weeks (subject to availability)';
+														else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
 														else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
 								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
 								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
@@ -8201,6 +8533,16 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									View on IndiaMART
 								</a>
 							</div>
+							<div className="pt-4">
+								<button
+									type="button"
+									onClick={() => setShowReport(true)}
+									className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-400 text-sm font-black transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+								>
+									<Flag className="w-4 h-4 shrink-0" aria-hidden="true" />
+									Report an Issue with this Product
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -8219,8 +8561,16 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</div>
 					</section>
 				)}
+				<RecentlyViewedStrip currentProductId={productId} navigate={navigate} />
 			</div>
 		</main>
+
+		{showReport && product && (
+			<ReportIssueModal
+				context={{ type: 'product', name: product.title, id: product.id }}
+				onClose={() => setShowReport(false)}
+			/>
+		)}
 
 		{/* ── Full-screen Lightbox ── */}
 		{lightbox && (
@@ -8324,7 +8674,7 @@ const FeaturedProductImage = memo(({ product }) => {
 					<div className="absolute inset-0 flex items-center justify-center p-3 z-0">
 						<img
 							src={pImg}
-							alt={product.title}
+							alt={`${product.title} — ${product.category}`}
 							loading="lazy"
 							decoding="async"
 							fetchPriority="low"
@@ -8640,7 +8990,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 				<button
 					type="button"
 					onClick={() => navigate('/products')}
-					className="w-full bg-slate-900 text-white px-6 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-md flex items-center justify-center text-base"
+					className="w-full bg-blue-600 text-white px-6 py-4 rounded-xl font-black hover:bg-blue-500 transition-all shadow-md flex items-center justify-center text-base"
 				>
 					View Complete Catalog{' '}
 					<ArrowRight className="ml-2 w-5 h-5" aria-hidden="true" />
@@ -8829,6 +9179,20 @@ const HomePage = memo(({ navigate }) => {
 									/>{' '}
 									{h.cta2}
 								</a>
+							</div>
+
+							{/* Mobile proof strip — visible on mobile/tablet only; desktop shows the right-col cards */}
+							<div className="flex flex-wrap justify-center lg:hidden gap-x-6 gap-y-3 mt-8 pt-6 border-t border-white/10">
+								{[
+									{ Icon: Award, text: 'Ex-OEM Engineers' },
+									{ Icon: CheckCircle2, text: 'Report on Delivery' },
+									{ Icon: PhoneCall, text: '24×7 Emergency' },
+								].map(({ Icon, text }) => (
+									<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
+										<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+										<span>{text}</span>
+									</div>
+								))}
 							</div>
 						</div>
 					</div>
@@ -9155,7 +9519,7 @@ const HomePage = memo(({ navigate }) => {
 						<button
 							type="button"
 							onClick={() => navigate('/services')}
-							className="bg-slate-900 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-600 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							className="bg-blue-600 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 						>
 							View All Services{' '}
 							<ArrowRight className="inline ml-3 w-5 h-5" aria-hidden="true" />
@@ -9521,8 +9885,8 @@ const AboutPage = memo(({ navigate }) => {
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
 			<div className="bg-[#0A192F] text-white relative overflow-hidden">
 				{/* About story background image — upload about-story-bg.png to /public/
-            Recommended: wide industrial turbine workshop/factory floor photo
-            Size: 1920×900px, compressed < 250KB */}
+			Recommended: wide industrial turbine workshop/factory floor photo
+			Size: 1920×900px, compressed < 250KB */}
 				<img
 					src="about-story-bg.png"
 					alt=""
@@ -9804,6 +10168,120 @@ const AboutPage = memo(({ navigate }) => {
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				{/* ── PRODUCT RANGE SHOWCASE ────────────────────────────────────────────────
+					Images are pulled from the same filenames already defined in RAW_PRODUCTS.
+					Each card uses the first image of the lead product in that category.
+					No new uploads needed — these files are already expected by the Products page. */}
+				<div className="mb-24 lazy-section">
+					<div className="text-center mb-10">
+						<span className="eyebrow-label text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">
+							Built for Industrial Uptime
+						</span>
+						<h2 className="text-4xl font-black text-slate-900 tracking-tight">
+							If Your Turbine Needs It,<br className="hidden sm:block" /> We Make It.
+						</h2>
+						<div
+							className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full"
+							aria-hidden="true"
+						/>
+						<p className="text-slate-500 text-base max-w-2xl mx-auto mt-5 leading-relaxed">
+							70+ precision-engineered components across 8 categories — from OEM-matched filter elements to turbine spares that ship the same week your plant calls.
+						</p>
+					</div>
+
+					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+						{[
+							{
+								src: 'workshop-gallery-1.webp',
+								alt: 'Keshav Enterprises workshop floor — precision lathes and machining area',
+								caption: 'Workshop Floor',
+								desc: 'Precision CNC lathes, copying lathes, and grinding machines for rotor journal machining, polishing, and labyrinth portion work.',
+								onClick: null,
+								linkLabel: null,
+							},
+							{
+								src: 'workshop-gallery-2.webp',
+								alt: 'Keshav Enterprises engineering services — turbine overhauling, erection, alignment and troubleshooting',
+								caption: 'Our Services',
+								desc: '7 specialist services — turbine erection & commissioning, turnkey overhauling, reverse engineering, dynamic balancing, lube oil flushing, machine alignment, and 24×7 troubleshooting.',
+								onClick: () => navigate('/services'),
+								linkLabel: 'Browse Services',
+							},
+							{
+								src: 'workshop-gallery-products.webp',
+								alt: 'Keshav Enterprises industrial product range — filtration, strainers, expansion joints and turbine spares',
+								caption: 'Product Range',
+								desc: '70+ engineered products across 8 categories — filtration, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.',
+								onClick: () => navigate('/products'),
+								linkLabel: 'Browse Products',
+							},
+							{
+								src: 'workshop-gallery-4.webp',
+								alt: 'Engineer inspecting turbine rotor journal bearing — precision measurement',
+								caption: 'Rotor Inspection',
+								desc: 'Ex-OEM engineers measure and record every clearance, gap, and dimension during inspection — full condition report with each job.',
+								onClick: null,
+								linkLabel: null,
+							},
+						].map(({ src, alt, caption, desc, onClick, linkLabel }) => (
+							<div
+								key={caption}
+								role={onClick ? 'button' : undefined}
+								tabIndex={onClick ? 0 : undefined}
+								onClick={onClick || undefined}
+								onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
+								className={`group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 transition-all hover:-translate-y-1 hover:shadow-xl${onClick ? ' cursor-pointer hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500' : ' hover:border-slate-400'}`}
+								style={{ aspectRatio: '4/3' }}
+							>
+								<img
+									src={src}
+									alt={alt}
+									loading="lazy"
+									decoding="async"
+									className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+									onError={(e) => { e.target.style.display = 'none'; }}
+								/>
+								{/* Caption + desc overlay */}
+								<div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-slate-900/95 via-slate-900/60 to-transparent px-4 py-4">
+									<p className="text-white font-black text-sm tracking-tight leading-tight mb-1">
+										{caption}
+									</p>
+									<p className="text-slate-300 text-[11px] leading-snug line-clamp-3">
+										{desc}
+									</p>
+									{onClick && linkLabel && (
+										<div className="mt-2 flex items-center gap-1 text-blue-400 text-[11px] font-black uppercase tracking-wider">
+											{linkLabel}
+											<ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+										</div>
+									)}
+								</div>
+								{/* Dot-pattern placeholder */}
+								<div
+									className="absolute inset-0 -z-10 opacity-20"
+									style={{
+										backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
+										backgroundSize: '20px 20px',
+									}}
+									aria-hidden="true"
+								/>
+							</div>
+						))}
+					</div>
+
+					{/* Browse all CTA */}
+					<div className="text-center">
+						<button
+							type="button"
+							onClick={() => navigate('/products')}
+							className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all shadow-md group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Browse Full Product Catalogue
+							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+						</button>
 					</div>
 				</div>
 
@@ -10348,6 +10826,7 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Featured post */}
 			{BLOG_POSTS.length > 0 && (
 				<div
+					role="article"
 					className="mb-16 group cursor-pointer w-full text-left"
 					onClick={() => navigate(`/blog/${BLOG_POSTS[0].slug}`)}
 				>
@@ -10432,7 +10911,7 @@ const BlogPage = memo(({ navigate }) => (
 								<button
 									type="button"
 									onClick={() => navigate(`/blog/${BLOG_POSTS[0].slug}`)}
-									className="self-start bg-slate-900 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+									className="self-start bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all shadow-sm flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								>
 									Read Article{' '}
 									<ArrowRight className="w-5 h-5" aria-hidden="true" />
@@ -10590,7 +11069,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				tabIndex={-1}
 				className="pt-32 pb-20 text-center min-h-screen flex items-center justify-center bg-slate-50"
 			>
-				<SEOHead title="Post Not Found" noIndex={true} />
+				<SEOHead title="Post Not Found" />
 				<div>
 					<BookOpen
 						className="w-20 h-20 text-slate-300 mx-auto mb-6"
@@ -12090,13 +12569,17 @@ const SERVICE_DETAIL_DATA = {
 // CSS injected once. Matches site theme: #0A192F navy, blue-600 primary,
 // slate-200 borders, rounded-2xl cards, blue-50 hover tints.
 const SERVICE_DETAIL_CSS = `
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 @keyframes sdFadeUp  { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
 @keyframes sdBarFill { from { width:0 }  to { width:56px } }
 
 .sd-reveal      { opacity:0 }
 .sd-reveal-stat { opacity:0 }
 .sd-step-line   { transform-origin:top; transform:scaleY(0);
-                  transition:transform 0.5s ease 0.1s }
+				  transition:transform 0.5s ease 0.1s }
 
 .sd-reveal.sd-visible      { animation:sdFadeUp 0.45s ease forwards }
 .sd-reveal-stat.sd-visible { animation:sdFadeUp 0.35s ease forwards }
@@ -12147,6 +12630,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		serviceIndex < SERVICES.length - 1 ? SERVICES[serviceIndex + 1] : null;
 	const [heroVisible, setHeroVisible] = useState(false);
 	const [scrollY, setScrollY] = useState(0);
+	const [showReport, setShowReport] = useState(false);
 
 	// Inject CSS once
 	useEffect(() => {
@@ -12222,7 +12706,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 				tabIndex={-1}
 				className="pt-20 pb-20 bg-white min-h-screen flex items-center justify-center"
 			>
-				<SEOHead title="Service Not Found" noIndex={true} />
 				<div className="text-center">
 					<h1 className="text-3xl font-black text-slate-900 mb-4">
 						Service Not Found
@@ -12239,6 +12722,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		);
 
 	return (
+		<>
 		<main id="main-content" tabIndex={-1} className="pt-20 pb-24 bg-white">
 			<SEOHead
 				title={`${service.title} — Keshav Enterprises`}
@@ -12752,6 +13236,16 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
 								</button>
 							</div>
+							<div className="pt-4">
+								<button
+									type="button"
+									onClick={() => setShowReport(true)}
+									className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border-2 border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-400 text-sm font-black transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+								>
+									<Flag className="w-4 h-4 shrink-0" aria-hidden="true" />
+									Report an Issue with this Service
+								</button>
+							</div>
 						</section>
 					</div>
 
@@ -12912,6 +13406,13 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 				)}
 			</div>
 		</main>
+		{showReport && service && (
+			<ReportIssueModal
+				context={{ type: 'service', name: service.title, id: service.id }}
+				onClose={() => setShowReport(false)}
+			/>
+		)}
+		</>
 	);
 });
 ServiceDetailPage.displayName = 'ServiceDetailPage';
@@ -12956,9 +13457,7 @@ const ProductsPage = memo(({ navigate }) => {
 					p.title.toLowerCase().includes(q) ||
 					p.desc.toLowerCase().includes(q) ||
 					p.usage?.toLowerCase().includes(q) ||
-					p.features.some((f) => f.toLowerCase().includes(q)) ||
-					Object.values(p.specs ?? {}).some((v) => String(v).toLowerCase().includes(q)) ||
-					Object.keys(p.specs ?? {}).some((k) => k.toLowerCase().includes(q))
+					p.features.some((f) => f.toLowerCase().includes(q))
 				);
 			}),
 		[activeCategory, searchQuery],
@@ -13843,14 +14342,14 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Lube Oil Filter Elements (Triveni-compatible)': 'prod_f1',
 	'Air Breather Filters': 'prod_f4',
 	'Simplex & Duplex Basket Strainers': 'prod_st2',
-	'Rotor Balancing Service': 'srv_4',
+	'Rotor Balancing Service': null,
 	// ind_3 — Paper Mills
 	'Duplex Basket Strainers': 'prod_st2',
 	'SS Metallic Bellows Expansion Joints': 'prod_e1',
 	'Rubber Expansion Joints (Double-Arch)': 'prod_e2',
 	'PTFE-Lined Hose Assemblies': 'prod_h2',
 	'Anti-Vibration Mounts': 'prod_r2',
-	'Turbine Spares (Siemens, BHEL, Triveni)': 'prod_ts3',
+	'Turbine Spares (Siemens, BHEL, Triveni)': null,
 	// ind_4 — Oil & Gas
 	'Control Oil Filter Elements (IS27 Anti-Static)': 'prod_f2',
 	'Babbitt Bearing Manufacturing': 'prod_ts3',
@@ -13870,7 +14369,7 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Y-Type & Conical Strainers': 'prod_st4',
 	'Rubber Anti-Vibration Mounts': 'prod_r2',
 	'Rubber Expansion Joints (Single-Arch)': 'prod_e3',
-	'Steam Turbine Maintenance (Triveni, Maxwatt)': 'srv_2',
+	'Steam Turbine Maintenance (Triveni, Maxwatt)': null,
 	// ind_7 — Cement
 	'Lube Oil Filter Elements (Kiln & Mill Gearboxes)': 'prod_f1',
 	'Duplex Basket Strainers (Cooling Water & Process Lines)': 'prod_st2',
@@ -13899,7 +14398,6 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 				tabIndex={-1}
 				className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50"
 			>
-				<SEOHead title="Industry Not Found" noIndex={true} />
 				<div className="text-center">
 					<Building2 className="w-20 h-20 text-slate-300 mx-auto mb-6" />
 					<h1 className="text-3xl font-black text-slate-900 mb-4">
@@ -14091,11 +14589,8 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 						{detail.products.map((prod) => {
-							const targetId = INDUSTRY_PRODUCT_IDS[prod.name];
-							const isService = typeof targetId === 'string' && targetId.startsWith('srv_');
-							const isClickable = !!targetId;
-							const targetPath = isService ? `/service/${targetId}` : `/product/${targetId}`;
-							const cardLabel = isService ? 'View Service' : isClickable ? 'View Product' : 'View in Catalog';
+							const prodId = INDUSTRY_PRODUCT_IDS[prod.name];
+							const isClickable = !!prodId;
 							const cardInner = (
 								<>
 									<div
@@ -14133,7 +14628,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 										<span
 											className={`mt-auto text-xs font-black uppercase tracking-widest ${ind.accent} flex items-center gap-1`}
 										>
-											{cardLabel}{' '}
+											{isClickable ? 'View Product' : 'View in Catalog'}{' '}
 											<ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
 										</span>
 									</div>
@@ -14144,8 +14639,8 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 									type="button"
 									key={prod.name}
 									className={`bg-white rounded-2xl border border-slate-200 shadow-sm transition-all flex flex-col w-full text-left hover:shadow-lg hover:border-blue-300 cursor-pointer group`}
-									onClick={() => navigate(targetPath)}
-									aria-label={`${cardLabel}: ${prod.name}`}
+									onClick={() => navigate(`/product/${prodId}`)}
+									aria-label={`View product: ${prod.name}`}
 								>
 									{cardInner}
 								</button>
@@ -14380,7 +14875,7 @@ const IndustriesPage = memo(({ navigate }) => (
 												navigate('/contact');
 											}}
 											aria-label={`Get a quote for ${ind.title} services`}
-											className="bg-slate-900 text-white px-5 py-3.5 rounded-xl font-black hover:bg-blue-600 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 group/btn text-sm"
+											className="bg-blue-600 text-white px-5 py-3.5 rounded-xl font-black hover:bg-blue-500 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 group/btn text-sm"
 										>
 											Get a Quote{' '}
 											<ArrowRight
@@ -14443,25 +14938,46 @@ const ContactPage = memo(() => {
 		setErrors({});
 		setStatus('loading');
 
-		const FORMSPREE_FORM_ID = 'YOUR_FORM_ID';
-		const isFormspreeConfigured = FORMSPREE_FORM_ID !== 'YOUR_FORM_ID';
+		// ── Web3Forms — free plan: 250 submissions/month, file attachments supported ──
+		// Sign up at web3forms.com → get your Access Key → paste it below.
+		// The Access Key is safe to expose in client-side code (it is not a secret).
+		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185'; // ← replace with your key
+
 		try {
-			if (isFormspreeConfigured) {
-				const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						company: sanitise(name),
-						email:   sanitise(email),
-						phone:   sanitise(phone),
-						inquiry: sanitise(iType),
-						details: sanitise(details),
-					}),
-				});
-				if (!res.ok) throw new Error('Formspree submission failed');
+			// FormData is required so the file attachment is included.
+			// Do NOT set Content-Type manually — the browser sets the correct
+			// multipart/form-data boundary automatically when body is FormData.
+			const fd = new FormData();
+
+			// Required Web3Forms fields
+			fd.append('access_key', WEB3FORMS_KEY);
+			fd.append('subject',    `New RFQ — ${sanitise(iType)} from ${sanitise(name)}`);
+			fd.append('from_name',  'Keshav Enterprises Website');
+
+			// Form fields — capitalised keys become column headers in the email
+			fd.append('Company',  sanitise(name));
+			fd.append('Email',    sanitise(email));
+			fd.append('Phone',    sanitise(phone));
+			fd.append('Inquiry',  sanitise(iType));
+			fd.append('Details',  sanitise(details));
+
+			// File attachment — reads the c-files input already in the JSX.
+			// Web3Forms free: single file up to 5 MB.
+			const fileInput = document.getElementById('c-files');
+			if (fileInput?.files?.length > 0) {
+				fd.append('attachment', fileInput.files[0]);
 			}
 
-			// WhatsApp as bonus confirmation — now optional, not the only delivery path
+			const res  = await fetch('https://api.web3forms.com/submit', {
+				method:  'POST',
+				headers: { Accept: 'application/json' },
+				body:    fd,
+			});
+			const data = await res.json();
+			if (!res.ok || data.success === false)
+				throw new Error(data.message || 'Web3Forms submission failed');
+
+			// WhatsApp as bonus confirmation — always fires on success
 			const msg = [
 				`*New RFQ — Keshav Enterprises*`,
 				`Company: ${sanitise(name)}`,
@@ -14648,8 +15164,38 @@ const ContactPage = memo(() => {
 										className="w-8 h-8 mr-4 text-green-500 shrink-0"
 										aria-hidden="true"
 									/>
-									Your inquiry has been sent to our engineers via WhatsApp. We
-									will respond within 24 hours.
+									Your inquiry has been sent to our engineers. We will respond
+									within 24 hours.
+								</div>
+							)}
+							{status === 'error' && (
+								<div
+									role="alert"
+									aria-live="assertive"
+									className="mb-8 p-6 bg-red-50 border border-red-200 text-red-800 font-black rounded-xl flex items-start shadow-sm text-base gap-4"
+								>
+									<AlertTriangle
+										className="w-7 h-7 text-red-500 shrink-0 mt-0.5"
+										aria-hidden="true"
+									/>
+									<span>
+										Submission failed — please try again or reach us directly:{' '}
+										<a
+											href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+											className="underline hover:text-red-600 transition-colors"
+										>
+											{CONTACT_INFO.phones[0]}
+										</a>
+										{' '}·{' '}
+										<a
+											href={waMsg('Hi, I tried submitting the contact form but it failed. Can you help?')}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="underline hover:text-red-600 transition-colors"
+										>
+											WhatsApp
+										</a>
+									</span>
 								</div>
 							)}
 							<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
@@ -14849,6 +15395,7 @@ const ContactPage = memo(() => {
 									className="w-full text-slate-700 file:cursor-pointer file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-slate-900 file:text-white hover:file:bg-blue-600 transition-all cursor-pointer outline-none"
 								/>
 							</div>
+							{/* Primary CTA — WhatsApp + form submission */}
 							<button
 								type="button"
 								onClick={handleSubmit}
@@ -14871,7 +15418,42 @@ const ContactPage = memo(() => {
 									</>
 								)}
 							</button>
-							<p className="text-center text-slate-400 text-xs font-medium mt-4">
+
+							{/* Secondary CTA — direct email form submission only (no WhatsApp) */}
+							<button
+								type="button"
+								disabled={status === 'loading'}
+								onClick={async () => {
+									const e = validate();
+									if (Object.keys(e).length > 0) { setErrors(e); return; }
+									setErrors({});
+									setStatus('loading');
+									const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
+									try {
+										const fd = new FormData();
+										fd.append('access_key', WEB3FORMS_KEY);
+										fd.append('subject',   `New RFQ — ${sanitise(iType)} from ${sanitise(name)}`);
+										fd.append('from_name', 'Keshav Enterprises Website');
+										fd.append('Company',  sanitise(name));
+										fd.append('Email',    sanitise(email));
+										fd.append('Phone',    sanitise(phone));
+										fd.append('Inquiry',  sanitise(iType));
+										fd.append('Details',  sanitise(details));
+										const fileInput = document.getElementById('c-files');
+										if (fileInput?.files?.length > 0) fd.append('attachment', fileInput.files[0]);
+										const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+										const data = await res.json();
+										if (!res.ok || data.success === false) throw new Error(data.message || 'Submission failed');
+										setStatus('success');
+									} catch { setStatus('error'); }
+								}}
+								className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-base hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+							>
+								<Mail className="w-5 h-5" aria-hidden="true" />
+								Submit Form via Email Only
+							</button>
+
+							<p className="text-center text-slate-400 text-xs font-medium mt-2">
 								Your details are confidential and used only to respond to your
 								inquiry.
 							</p>
@@ -14934,6 +15516,42 @@ const ContactPage = memo(() => {
 						</a>
 					</div>
 
+					{/* ── FACILITY PHOTO ──────────────────────────────────────────────────────
+						Upload one photo to /public/contact-facility.webp
+						Recommended: exterior shot of the Shamli workshop / building entrance,
+						or a wide interior floor shot showing equipment. 1200×600px, < 200KB.
+						If the file is missing the block collapses gracefully. */}
+					<div
+						id="facility-photo-wrapper"
+						className="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 shadow-xl"
+						style={{ display: 'none' /* revealed by onLoad below */ }}
+					>
+						<img
+							src="contact-facility.webp"
+							alt="Keshav Enterprises manufacturing facility — Shamli, Uttar Pradesh"
+							loading="lazy"
+							decoding="async"
+							width="1200"
+							height="480"
+							className="w-full object-cover"
+							style={{ maxHeight: '320px' }}
+							onLoad={(e) => {
+								/* Reveal wrapper only when image actually loads */
+								e.target.closest('#facility-photo-wrapper').style.display = '';
+							}}
+							onError={(e) => {
+								/* Hide wrapper if photo not uploaded yet */
+								e.target.closest('#facility-photo-wrapper').style.display = 'none';
+							}}
+						/>
+						<div className="px-6 py-3 flex items-center gap-2 border-t border-slate-800 bg-slate-900">
+							<Factory className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+							<p className="text-slate-400 text-sm font-bold">
+								Our Manufacturing Facility, Shamli, U.P.
+							</p>
+						</div>
+					</div>
+
 					{/* Embedded Google Map */}
 					<div className="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden">
 						<div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100">
@@ -14976,7 +15594,7 @@ const ContactPage = memo(() => {
 									href={CONTACT_INFO.gmapsShare}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-black text-sm hover:bg-blue-600 transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500 min-h-11"
+									className="bg-blue-600 text-white px-5 py-2.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-11"
 								>
 									<MapPin className="w-4 h-4" aria-hidden="true" /> Get
 									Directions
@@ -15298,6 +15916,7 @@ export default function App() {
 			<DigitalProfilesStrip />
 			<Footer navigate={navigate} />
 			<FloatingButtons />
+			<BackToTopButton />
 		</div>
 	);
 }

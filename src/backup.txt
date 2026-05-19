@@ -273,30 +273,48 @@ const RAW_PRODUCTS = [
 		id: 'prod_f1',
 		category: 'Industrial Filtration',
 		title: 'Triveni Turbine Lube Oil Filter Elements',
-		desc: 'OEM-compatible lube oil filter elements for Triveni steam turbine lubrication systems. Ensures optimum fluid cleanliness per API 614 for extended bearing life.',
+		desc: 'OEM-matched lube oil filter elements for the complete range of Triveni steam turbines — from small 4 GPM packaged units to large 140 GPM power station turbines. Nine standard flow-rated sizes cover every Triveni model including the FR-series and TST-series. Supplied in glass fiber, SS wire mesh (reusable), and polyester media. Duplex housing arrangement enables element change without turbine shutdown.',
 		usage:
-			'Primary lube oil filtration in Triveni steam turbines used in sugar mills, power plants, paper mills, distilleries and agro industries.',
+			'Primary lube oil filtration in Triveni steam turbines across power generation, sugar mills, steel plants, paper mills, cement plants, petrochemical refineries, and agro-industrial co-generation. Compatible with Triveni turbine models FR13, FR13B, FR2, FR2B, FR14A, FR14M, FR14M3HB, FR2S, TST-1030, TST-1030-M, TST-1030-MB, TST-1030-SBM, TST-1060-EB, TST-1060-SB and all other Triveni variants.',
 		features: [
-			'Triveni OEM Compatible — 180 GPM (approx. 680 LPM) rated flow',
-			'Filter media: Glass Fiber Fleece (VG) multilayer pleated construction',
-			'Filtration fineness: 6 VG, 10 VG, 16 VG, 25 VG grades available',
-			'High dirt-holding capacity; consistent efficiency at elevated differential pressure',
-			'High collapse resistance per ISO 2941',
-			'Material compatibility verified per ISO 2943',
-			'Sealing options: Nitrile (P) or Viton (V)',
-			'IS27 anti-static specification for oils below 300 pS/m conductivity',
-			'Compatible with mineral oils, emulsions, synthetic hydraulic/lube fluids',
+			'Nine standard flow-rated sizes: 4, 8, 15, 25, 35, 45, 90, 120, 140 GPM — custom up to 800 GPM on request',
+			'Model cross-reference: FR13/FR13B/FR2/FR2B → 90–120 GPM; FR14A/FR14M/FR14M3HB/FR2S → 45 GPM; TST-1030-SBM/TST-1060-EB/TST-1060-SB → 90–120 GPM; TST-1030/TST-1030-M/TST-1030-MB → 45 GPM',
+			'4 & 8 GPM: OD 92 mm — pleated glass fiber media with outer SS wire mesh support; single-side-open with top threaded connection',
+			'15 GPM: OD 140 mm × ID 50 mm × L 260 mm — inner + outer perforated cylinder; both-sides-open with rubber gasket',
+			'25–45 GPM: OD 180 mm × ID 82 mm — both-sides-open; 25 GPM L 261 mm / 35 GPM L 351 mm / 45 GPM L 431 mm',
+			'90–120 GPM: OD 225 mm × ID 100 mm — both-sides-open with O-ring; 90 GPM L 461 mm / 120 GPM L 581 mm',
+			'140 GPM: OD 270 mm × ID 125 mm × L 551 mm — both-sides-open with O-ring',
+			'Working pressure 6 kg/cm² (all standard sizes); up to 30 bar for high-pressure variants',
+			'Temperature range: –30°C to +120°C',
+			'Standard filtration: 10 µm nominal; available in 15, 25, 50, 100 µm on request',
+			'Filter media: Imported glass fiber (3–25 µm depth filtration); SS wire mesh (reusable, cleanable); Polyester (temperature-resistant)',
+			'Duplex housing arrangement: active + standby housings with transfer valve — element change without shutdown',
+			'OEM part interchangeability: EPE Process Filters (2.0045 H10XL A OO O P); Internormen 306607 & 307252; Eaton / Industrial Enterprises elements',
+			'Body / end cap: Zinc coated MS or powder coated steel; end seals in rubber gasket or O-ring',
+			'Compatible fluids: Turbine oils ISO VG 32 / 46 / 68, mineral-based lube oils',
 			'HSN Code: 8421',
 		],
 		specs: {
-			'Flow Capacity': '180 GPM (680 LPM rated)',
-			'Filtration Fineness': '6-25 µm (beta20µm(c) >= 200 per ISO 16889)',
-			'Max Operating Pressure': '10 bar (145 psi)',
-			'Filter Media': 'Glass Fiber Fleece (VG); SS Wire Mesh (G) available',
-			'Sealing Material': 'Nitrile (P) / Viton (V)',
-			'OEM Compatibility': 'Triveni Steam Turbines — all models',
-			Standards: 'ISO 16889, API 614',
-			'Anti-Static Option': 'IS27 spec — oils below 300 pS/m conductivity',
+			'Flow Range': '4 GPM to 140 GPM (9 standard sizes); custom up to 800 GPM',
+			'Filtration Rating': '10 µm standard (nominal); 15, 25, 50, 100 µm available',
+			'Filtration Standard': 'ISO 16889; API 614',
+			'Working Pressure': '6 kg/cm² standard; up to 30 bar (high-pressure variants)',
+			'Temperature Range': '–30°C to +120°C',
+			'Filter Media': 'Imported glass fiber; SS wire mesh (reusable); Polyester',
+			'Body Material': 'Zinc coated MS / Powder coated steel',
+			'End Seals': 'Rubber gaskets / O-rings',
+			'Sizing — 04 GPM': 'OD 92 mm × ID 15 mm × L 100 mm | Single-side open, threaded',
+			'Sizing — 08 GPM': 'OD 92 mm × ID 15 mm × L 240 mm | Single-side open, threaded',
+			'Sizing — 15 GPM': 'OD 140 mm × ID 50 mm × L 260 mm | Both-sides open, gasket',
+			'Sizing — 25 GPM': 'OD 180 mm × ID 82 mm × L 261 mm | Both-sides open, gasket',
+			'Sizing — 35 GPM': 'OD 180 mm × ID 82 mm × L 351 mm | Both-sides open, gasket',
+			'Sizing — 45 GPM': 'OD 180 mm × ID 82 mm × L 431 mm | Both-sides open, gasket',
+			'Sizing — 90 GPM': 'OD 225 mm × ID 100 mm × L 461 mm | Both-sides open, O-ring',
+			'Sizing — 120 GPM': 'OD 225 mm × ID 100 mm × L 581 mm | Both-sides open, O-ring',
+			'Sizing — 140 GPM': 'OD 270 mm × ID 125 mm × L 551 mm | Both-sides open, O-ring',
+			'OEM Interchangeable': 'EPE 2.0045 H10XL; Internormen 306607 / 307252; Eaton elements',
+			'Compatible Turbine Models': 'FR13, FR13B, FR2, FR2B, FR14A, FR14M, FR14M3HB, FR2S, TST-1030 series, TST-1060 series',
+			'Compatible Fluids': 'Turbine oils ISO VG 32 / 46 / 68; mineral-based lube oils',
 			'HSN Code': '8421',
 		},
 		images: [
@@ -317,31 +335,34 @@ const RAW_PRODUCTS = [
 	{
 		id: 'prod_f2',
 		category: 'Industrial Filtration',
-		title: 'Siemens Turbine Filter Elements',
-		desc: 'High-performance control oil filter elements for Siemens industrial turbines. Microglass deep media with IS27 anti-static specification protects hydraulic control systems.',
+		title: 'Siemens Turbine Lube Oil Filter Elements',
+		desc: 'OEM-matched lube oil filter elements for Siemens industrial steam turbines (SST series) and gas turbines (SGT series). Microglass deep media with IS27 anti-static specification protects lube oil systems — bearings, journal pads, and gear meshes — from particle contamination. Eaton 01.E series dimensional compatible for drop-in housing fit.',
 		usage:
-			'Hydraulic control systems in Siemens industrial turbines; prevents electrostatic discharge in low-conductivity synthetic control oils.',
+			'Primary lube oil filtration in Siemens SST-200, SST-300, SST-400, SST-600, SST-800, SST-900 steam turbines and SGT-100 to SGT-800 gas turbines. Protects journal bearings, thrust pads, and gear train lubrication circuits. 850 LPM flow rating covers duplex lube oil filter housing applications in turbines up to 250 MW. Critical during commissioning and post-overhaul startup to prevent particle-induced bearing damage.',
 		features: [
-			'850 LPM flow rating for duplex turbine control filter applications',
-			'Microglass deep media — Eaton 01.E series dimensional compatible',
-			'IS27 Electrostatic Critical Application specification',
-			'Anti-static prevents discharge in synthetic oils below 300 pS/m',
-			'High collapse pressure per ISO 2941',
-			'Filtration fineness: 3 VG, 6 VG, 10 VG, 16 VG, 25 VG',
+			'850 LPM flow rating for duplex turbine lube oil filter applications — covers SST/SGT turbines up to 250 MW',
+			'Microglass deep media — Eaton 01.E series dimensional compatible for drop-in fit in existing Siemens housing',
+			'IS27 Electrostatic Critical Application specification — prevents electrostatic discharge in synthetic oils below 300 pS/m',
+			'Turbine model compatibility: SST-200 / SST-300 / SST-400 / SST-600 / SST-800 / SST-900; SGT-100 to SGT-800',
+			'High collapse pressure per ISO 2941 — structural integrity maintained at rated operating pressure',
+			'Filtration fineness: 3 VG, 6 VG, 10 VG, 16 VG, 25 VG microglass grades',
 			'Operating pressure: up to 16 bar (DWF series) / 63 bar (DU duplex series)',
-			'Sealing: Nitrile or Viton',
-			'ASME compliant: EN13445, AD2000, ASME Sec. VIII Div. 1',
-			'PED/CE certified housings available',
+			'Sealing: Nitrile or Viton end caps — specify media type at order',
+			'ASME compliant housings: EN13445, AD2000, ASME Sec. VIII Div. 1',
+			'PED/CE certified housing options available',
+			'HSN Code: 8421',
 		],
 		specs: {
-			'Flow Capacity': '850 LPM (duplex control filter)',
-			'Filtration Fineness': '3-25 µm (microglass VG)',
+			'Turbine Compatibility': 'Siemens SST-200/300/400/600/800/900; SGT-100 to SGT-800',
+			'Flow Capacity': '850 LPM (duplex lube oil filter)',
+			'Filtration Fineness': '3–25 µm (microglass VG grades)',
 			'Max Operating Pressure': 'Up to 63 bar (DU duplex housing)',
 			'Filter Media': 'Microglass (VG) with IS27 anti-static treatment',
 			'Anti-Static Spec': 'IS27 — oils below 300 pS/m conductivity',
 			'Housing Series': 'DWF / DU / DA/EDA Duplex series compatible',
+			'Seal Options': 'Nitrile (P) / Viton (V)',
 			Standards: 'EN13445, AD2000, ASME Sec. VIII Div. 1, PED 2014/68/EC',
-			'OEM Compatibility': 'Siemens industrial turbine control systems',
+			'HSN Code': '8421',
 		},
 		images: [
 			'850-lpm-siemens-filter-1.webp',
@@ -362,26 +383,34 @@ const RAW_PRODUCTS = [
 		id: 'prod_f3',
 		category: 'Industrial Filtration',
 		title: 'SS Wire Mesh (CEP) Centrifugal Filter Elements',
-		desc: 'Stainless steel wire mesh filter elements with single or multi-layer pleated construction. Surface filtration principle; cleanable and reusable. Ideal for high-temperature applications.',
+		desc: 'Stainless steel wire mesh filter elements with single or multi-layer pleated construction. CEP — Centrifugal End-Plug — design seats securely under centrifugal force in rotating filter housings, preventing bypass. Surface filtration principle; cleanable and reusable. Ideal for high-temperature applications where depth-media elements would be damaged by thermal shock or solvent cleaning.',
 		usage:
-			'High-temperature fluid and gas filtration, hydraulic and lubrication systems where cleanable/reusable elements are preferred.',
+			'High-temperature fluid and gas filtration in steam turbine lube oil systems (Triveni, BHEL, HTC), hydraulic and lubrication systems, centrifugal filter housings, and industrial applications where cleanable, reusable elements are preferred over disposable media. Suitable for turbine oil circuits where contaminated oil must be cleaned and reused rather than replaced.',
 		features: [
-			'SS 304 / SS 316 stainless steel wire mesh construction',
-			'Single or multi-layer pleated weave designs',
-			'Surface filtration principle (vs. depth filtration)',
-			'Available rating: 5-1500 µm or per special requirement',
-			'High collapse resistance and high burst strength',
-			'Compatible with wide range of hydraulic & lubrication fluids',
-			'Cleanable and reusable — reduced lifecycle cost',
+			'CEP — Centrifugal End-Plug — design: seats under centrifugal force to prevent bypass in rotating housings',
+			'SS 304 / SS 316 stainless steel wire mesh construction — corrosion resistant for all turbine oils and process fluids',
+			'Single or multi-layer pleated Twill Dutch Weave (TWD) designs for finer ratings',
+			'Surface filtration principle — contaminants captured on outer surface for easy cleaning',
+			'Available rating: 5–1500 µm or per special requirement',
+			'High collapse resistance and high burst strength — maintains structural integrity under flow surge',
+			'Compatible with wide range of hydraulic, lubrication, and process fluids including mineral oil, synthetic oil, water-glycol',
+			'Cleanable and reusable — reduced lifecycle cost vs. disposable media',
+			'Operating pressure: up to 20 bar (standard); higher on request',
+			'Temperature range: –20°C to +350°C (SS 316 grade) — suitable for high-temperature turbine oil service',
+			'OEM turbine compatibility: Triveni, BHEL, HTC turbine centrifugal filter housings',
 			'HSN Code: 8421',
 		],
 		specs: {
 			Material: 'SS 304 / SS 316 Wire Mesh',
-			'Filtration Range': '5-1500 µm (custom available)',
-			Construction: 'Single or multi-layer pleated weave',
-			'Filtration Type': 'Surface filtration',
-			Reusability: 'Cleanable & reusable',
-			'Fluid Compatibility': 'All hydraulic & lubrication fluids',
+			'CEP Design': 'Centrifugal End-Plug — prevents bypass in rotating housings',
+			'Filtration Range': '5–1500 µm (custom available)',
+			Construction: 'Single or multi-layer pleated weave (incl. Twill Dutch Weave)',
+			'Filtration Type': 'Surface filtration — easy cleaning',
+			'Max Pressure': 'Up to 20 bar (higher on request)',
+			'Temperature Range': '–20°C to +350°C (SS 316)',
+			'OEM Compatibility': 'Triveni, BHEL, HTC centrifugal filter housings',
+			Reusability: 'Cleanable & reusable — reduced lifecycle cost',
+			'Fluid Compatibility': 'Mineral oil, synthetic oil, water-glycol, all hydraulic fluids',
 			'HSN Code': '8421',
 		},
 		images: [
@@ -423,6 +452,7 @@ const RAW_PRODUCTS = [
 			Sealing: 'Viton (V)',
 			Installation: 'Tank breather mount',
 			Standards: 'ISO 16889, ISO 4406:99 compatible',
+					'HSN Code': '8421',
 		},
 		images: [
 			'air-breather-filter-1.webp',
@@ -462,6 +492,7 @@ const RAW_PRODUCTS = [
 			'Flow Direction': 'Inside-to-outside (suction)',
 			'End Design': 'Double open end (B)',
 			Application: 'Tank-immersed suction pump protection',
+					'HSN Code': '8421',
 		},
 		images: [
 			'hydraulic-suction-strainer-1.webp',
@@ -503,6 +534,7 @@ const RAW_PRODUCTS = [
 			'End Design': 'Double open end (B)',
 			Sealing: 'Nitrile / Viton',
 			Function: 'Particulate removal + water absorption',
+					'HSN Code': '8421',
 		},
 		images: [
 			'watersorp-filter-1.webp',
@@ -541,6 +573,7 @@ const RAW_PRODUCTS = [
 			'Chemical Resistance': 'Excellent — wide pH range',
 			Application: 'Compressed air, process gas, instrument air',
 			'Key Feature': 'Hydrophobic — water cannot penetrate media',
+					'HSN Code': '8421',
 		},
 		images: [
 			'ptfe-air-filter-1.webp',
@@ -561,26 +594,34 @@ const RAW_PRODUCTS = [
 		id: 'prod_f8',
 		category: 'Industrial Filtration',
 		title: 'Return-Line Filter Elements',
-		desc: 'Precision filter elements for hydraulic and lubrication system return lines, removing contaminants before oil re-enters the reservoir. Low pressure-drop design maintains system efficiency at high flow rates.',
+		desc: 'Precision filter elements for hydraulic and lubrication system return lines, removing contaminants before oil re-enters the reservoir. Low pressure-drop design maintains system efficiency at high flow rates. Eaton 01.E series, Parker, HYDAC RFM/RFD series, and Internormen dimensionally compatible — drop-in replacement in existing housings.',
 		usage:
-			'Return lines in turbine lube oil systems, hydraulic power units, industrial machinery, and lubrication circuits.',
+			'Return lines in turbine lube oil systems, hydraulic power units, industrial machinery, and lubrication circuits. Handles return flow of 50–3,000 LPM at low pressure (return line typically 5–16 bar). Prevents contaminated oil from re-entering main reservoir between service intervals.',
 		features: [
-			'Designed for return-line duty — low differential pressure at full flow',
+			'Designed for return-line duty — low differential pressure at full flow (typically < 0.5 bar initial DP)',
+			'Flow range: 50–3,000 LPM (housing size and micron rating dependent)',
+			'Pressure rating: up to 16–25 bar (return-line housing class dependent)',
 			'Filter media options: Glass Fibre (VG), Paper (P), SS Wire Mesh (G)',
 			'MOC: Carbon Steel or Stainless Steel housing',
+			'OEM cross-references: Eaton 01.E series; Parker; HYDAC RFM/RFD series; Internormen return-line elements',
 			'Prevents contaminated oil from returning to main reservoir',
-			'Maintains system cleanliness per ISO 4406 standards',
+			'Maintains system cleanliness per ISO 4406:99 standards',
 			'Compatible with mineral oils, emulsions, and synthetic fluids',
-			'Available in multiple flow sizes and micron ratings',
+			'Available in multiple flow sizes and micron ratings — 4, 6, 10, 16, 25 µm standard',
 			'Bypass valve option for cold-start protection',
+			'HSN Code: 8421',
 		],
 		specs: {
 			Application: 'Return-line filtration — hydraulic & lube oil systems',
+			'Flow Range': '50–3,000 LPM (housing size dependent)',
+			'Pressure Rating': 'Up to 16–25 bar (return-line housing class)',
 			'Filter Media': 'Glass Fibre (VG) / Paper (P) / SS Wire Mesh (G)',
+			'Micron Ratings': '4, 6, 10, 16, 25 µm standard',
 			MOC: 'Carbon Steel / Stainless Steel',
-			'Filtration Range': '4 µm to 40 µm (media-dependent)',
+			'OEM Cross-References': 'Eaton 01.E series; Parker; HYDAC RFM/RFD; Internormen',
 			Bypass: 'Bypass valve available for cold-start protection',
-			Standards: 'ISO 4406 cleanliness compliance',
+			Standards: 'ISO 4406:99 cleanliness compliance',
+			'HSN Code': '8421',
 		},
 		images: [
 			'return-line-filter-1.webp',
@@ -601,13 +642,16 @@ const RAW_PRODUCTS = [
 		id: 'prod_f9',
 		category: 'Industrial Filtration',
 		title: 'Duplex Control Oil Filter Assembly',
-		desc: 'High-precision duplex filter assemblies for turbine control oil circuits. Allows live element changeover without interrupting oil flow to the governing system — critical for continuous plant operation.',
+		desc: 'High-precision duplex filter assemblies for turbine control oil circuits. Allows live element changeover without interrupting oil flow to the governing system — critical for continuous plant operation. Connection sizes DN 25 to DN 150; flow capacity up to 850 LPM. Compatible with Eaton DU/DWF, Parker, and HYDAC duplex housing configurations.',
 		usage:
 			'Turbine governing and control oil hydraulic circuits where uninterrupted filtration is mandatory for plant safety and continuity.',
 		features: [
-			'Duplex (twin-chamber) design — continuous operation without shutdown',
-			'Live online element changeover via 3-way changeover valve',
-			'Critical for turbine governor and control systems',
+			'Duplex (twin-chamber) design — continuous operation without shutdown or governor interruption',
+			'Live online element changeover via 3-way changeover valve — no oil flow interruption',
+			'Connection size range: DN 25 to DN 150 (specify turbine and housing model at order)',
+			'Flow capacity: up to 850 LPM (housing series dependent)',
+			'Critical for turbine governor and control systems — prevents servo valve contamination',
+			'OEM housing compatibility: Eaton DU/DWF series, Parker, HYDAC duplex configurations',
 			'MOC: Stainless Steel housing and internals',
 			'Filtration accuracy: 5 to 25 µm',
 			'Operating pressure: Up to 63 bar (size-dependent)',
@@ -616,13 +660,17 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			Configuration: 'Duplex twin-chamber for continuous duty',
+			'Connection Size Range': 'DN 25 to DN 150',
+			'Flow Capacity': 'Up to 850 LPM (housing size dependent)',
 			Changeover: 'Live 3-way changeover valve — no shutdown',
+			'OEM Housing Compatibility': 'Eaton DU/DWF; Parker; HYDAC duplex series',
 			MOC: 'Stainless Steel',
 			'Filtration Accuracy': '5 to 25 µm',
 			'Max Pressure': 'Up to 63 bar (DU duplex series)',
 			Monitoring: 'Differential pressure indicator',
 			Standards: 'ASME Sec. VIII Div.1',
 			Application: 'Turbine governor / control oil circuits',
+					'HSN Code': '8421',
 		},
 		images: [
 			'control-oil-filter-duplex-1.webp',
@@ -643,14 +691,16 @@ const RAW_PRODUCTS = [
 		id: 'prod_f10',
 		category: 'Industrial Filtration',
 		title: 'Duplex Fabricated Filter Housing',
-		desc: 'Twin-chamber fabricated filter assemblies for systems that cannot tolerate shutdown for filter cleaning. A manual changeover valve keeps one chamber in service while the other is serviced offline.',
+		desc: 'Twin-chamber fabricated filter assemblies for systems that cannot tolerate shutdown for filter cleaning. A manual changeover valve keeps one chamber in service while the other is serviced offline. Flow range 50–5,000 LPM; element grades from 5 µm to 40 µm; connection sizes DN 25 to DN 300.',
 		usage:
 			'Process lines, industrial fluid systems, fuel oil, and lube oil applications requiring continuous filtration without production interruption.',
 		features: [
-			'Twin-chamber design — one in service, one offline for maintenance',
+			'Twin-chamber design — one in service, one offline for maintenance; zero production downtime',
+			'Flow range: 50–5,000 LPM (housing size dependent)',
+			'Element filtration grades: 5, 10, 25, 40 µm — fine-grade elements (5–25 µm) available for high-precision lube/control oil duty',
+			'Connection sizes: DN 25 to DN 300 (flanged or screwed ends per application)',
 			'Manual 2-way or 3-way ball valve / butterfly valve changeover',
 			'MOC: MS Fabricated, CS, SS 304, SS 316',
-			'Filtration down to 40 µm standard; finer on request',
 			'Operating pressure: Up to 20 kg/cm² standard; higher on request',
 			'Full drain and vent provisions on each chamber',
 			'Optional DP gauges for element condition monitoring',
@@ -658,12 +708,15 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			Configuration: 'Twin-chamber duplex',
+			'Flow Range': '50–5,000 LPM (housing size dependent)',
+			'Connection Sizes': 'DN 25 to DN 300 (flanged or screwed)',
+			'Element Grades': '5, 10, 25, 40 µm (fine to coarse)',
 			'Changeover Valve': '2-way or 3-way ball valve / butterfly valve',
 			MOC: 'MS Fabricated / CS / SS 304 / SS 316',
-			Filtration: 'Down to 40 µm (finer on request)',
 			'Max Pressure': 'Up to 20 kg/cm² standard; higher on request',
 			Options: 'DP gauges, drain/vent connections',
 			Custom: 'Dimensions available for retrofit',
+					'HSN Code': '8421',
 		},
 		images: [
 			'duplex-fabricated-filter-1.webp',
@@ -684,27 +737,33 @@ const RAW_PRODUCTS = [
 		id: 'prod_f11',
 		category: 'Industrial Filtration',
 		title: 'Reverse Osmosis (RO) Filter Assemblies',
-		desc: 'Reverse osmosis filter assemblies and replacement membranes for industrial water treatment and process water purification. Supplied as complete systems or as individual replacement elements to match existing installations.',
+		desc: 'Reverse osmosis filter assemblies and replacement membranes for industrial water treatment and process water purification. TDS rejection ≥97%; operating pressure 6–16 bar; standard membrane sizes 4040 and 8040; system recovery 50–75%. Supplied as complete systems or individual replacement elements to match existing installations.',
 		usage:
 			'Industrial process water purification, boiler feed water treatment, cooling tower make-up water, and high-purity water generation.',
 		features: [
-			'Complete RO assemblies or replacement elements/membranes',
-			'Removes dissolved salts, bacteria, particulates, and organics',
-			'Supplied to match existing system specifications',
-			'Boiler feed water treatment — prevents scale and corrosion',
-			'Cooling tower make-up water conditioning',
+			'TDS rejection rate: ≥97% (spiral-wound polyamide composite membrane)',
+			'Operating pressure range: 6–16 bar (brackish water) — dependent on feed water TDS and temperature',
+			'Standard membrane sizes: 4040 (4 inch × 40 inch) and 8040 (8 inch × 40 inch)',
+			'System recovery rate: 50–75% (ratio of permeate to feed water)',
+			'Complete RO assemblies or replacement elements/membranes for existing systems',
+			'Removes dissolved salts, bacteria, particulates, pyrogens, and organics',
+			'Boiler feed water treatment — prevents scale and corrosion in boilers and heat exchangers',
+			'Cooling tower make-up water conditioning — reduces blowdown frequency',
 			'Process water purification for chemical and pharmaceutical applications',
 			'High-purity water generation for critical industrial processes',
-			'Pre-treatment and post-treatment element options available',
+			'Pre-treatment and post-treatment element options available (sediment, carbon, antiscalant)',
 		],
 		specs: {
 			Type: 'Reverse Osmosis membranes and assemblies',
-			Function: 'Dissolved solids, bacteria, and particulate removal',
+			'TDS Rejection Rate': '≥97% (polyamide composite membrane)',
+			'Operating Pressure': '6–16 bar (brackish water service)',
+			'Standard Membrane Sizes': '4040 (4 in × 40 in) and 8040 (8 in × 40 in)',
+			'System Recovery Rate': '50–75% (permeate/feed ratio)',
+			Function: 'Dissolved solids, bacteria, particulate, and organics removal',
 			'Supply Format': 'Complete assemblies or replacement elements',
-			Applications:
-				'Boiler feed, cooling tower, process water, high-purity water',
-			'Membrane Options': 'As per existing system specification',
+			Applications: 'Boiler feed, cooling tower, process water, high-purity water',
 			Industries: 'Power plants, chemical, pharmaceutical, food processing',
+					'HSN Code': '8421',
 		},
 		images: [
 			'ro-filter-1.webp',
@@ -725,10 +784,12 @@ const RAW_PRODUCTS = [
 		id: 'prod_st1',
 		category: 'Industrial Strainers',
 		title: 'Simplex Basket Strainer',
-		desc: 'Engineered and fabricated to ASME VIII Div.1 and ASME B31.3 for high-pressure pipeline protection. Low pressure drop at high velocities with SS perforated basket internals.',
+		desc: 'Engineered and fabricated to ASME VIII Div.1 and ASME B31.3 for high-pressure pipeline protection. Low pressure drop at high velocities with SS perforated basket internals. Size range DN 15 to DN 600; mesh/perforation 0.5–6 mm standard.',
 		usage:
 			'Liquid, viscous, and gaseous media filtration in high-pressure pipelines; protects valves, meters, and process equipment.',
 		features: [
+			'Size range: DN 15 to DN 600 (larger on request)',
+			'Mesh / perforation size range: 0.5 mm, 1 mm, 2 mm, 3 mm, 4 mm, 6 mm standard — finer wire mesh baskets on request',
 			'Design standard: ASME VIII Div.1, ASME B31.3',
 			'MOC: Cast Steel or Stainless Steel; others on request',
 			'Pressure ratings: ASME Class 125, 150, 300, 600',
@@ -741,12 +802,15 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			'Design Standard': 'ASME VIII Div.1, ASME B31.3',
+			'Size Range': 'DN 15 to DN 600 (larger on request)',
+			'Mesh / Perforation Range': '0.5–6 mm standard; finer wire mesh on request',
 			MOC: 'Cast Steel, SS 304/316 (others on request)',
 			'Pressure Rating': 'ASME Class 125, 150, 300, 600',
 			'Basket Internals': 'SS Perforated Basket (standard)',
 			'End Connections': 'Flanged, Butt-Weld, Screwed',
 			Orientation: 'Horizontal or Vertical',
 			Optional: 'Davit lifts, Quick-open closures, DP Gauges',
+					'HSN Code': '8421',
 		},
 		images: [
 			'simplex-basket-strainer-1.webp',
@@ -787,6 +851,7 @@ const RAW_PRODUCTS = [
 			MOC: 'Cast Steel, SS 304/316',
 			'Pressure Rating': 'ASME Class 125, 150, 300, 600',
 			Monitoring: 'DP Gauges available',
+					'HSN Code': '8421',
 		},
 		images: [
 			'duplex-basket-strainer-1.webp',
@@ -807,25 +872,31 @@ const RAW_PRODUCTS = [
 		id: 'prod_st3',
 		category: 'Industrial Strainers',
 		title: 'Conical (Temporary) Strainer',
-		desc: 'Welded conical strainer installed between standard flanges to remove foreign matter during commissioning or startup.',
+		desc: 'Welded conical strainer installed between standard flanges to remove foreign matter during commissioning or startup. Essential protection during turbine and pump commissioning to capture weld splatter, rust, and construction debris before it damages impellers, seals, and bearings.',
 		usage:
-			'Pipeline protection for downstream equipment; commissioning to catch weld splatter and construction debris.',
+			'Pipeline protection for downstream equipment during commissioning and startup. Critical for steam turbine and pump commissioning — installed upstream of turbine steam inlet, pump suction, and compressor suction to capture weld slag, pipe scale, gasket material, and construction debris. Removed after flushing is complete and replaced with permanent strainer or filter.',
 		features: [
-			'Welded conical mesh element',
-			'Installed between standard pipeline flanges',
-			'MOC: Stainless Steel SS 304/316 standard',
-			'Mesh size: Customizable per application',
-			'ASME Class 125, 150, 300, 600 available',
-			'Horizontal and vertical installation',
+			'Welded conical mesh element — installed between standard pipeline flanges; no housing required',
+			'Size range: DN 15 to DN 1200 — covers all turbine steam inlet, pump suction, and pipeline sizes',
+			'Mesh range: 0.5 mm, 1 mm, 2 mm, 3 mm, 4 mm, 6 mm standard — finer on request',
+			'MOC: Stainless Steel SS 304/316 standard — corrosion resistant for steam and water service',
+			'ASME Class 125, 150, 300, 600 rated — handles full turbine steam pressure',
+			'Horizontal and vertical installation positions — orientate as required by pipe layout',
 			'End connections: Flanged, butt-weld, screwed',
+			'Low initial pressure drop — minimal restriction to commissioning flush flow',
+			'Quick removal after commissioning — no tools required beyond flange fasteners',
+			'Most critical application: steam turbine commissioning protection — prevents blade erosion and valve damage from debris',
 		],
 		specs: {
 			Design: 'Welded conical wire mesh element',
+			'Size Range': 'DN 15 to DN 1200',
+			'Mesh Range': '0.5, 1, 2, 3, 4, 6 mm standard (finer on request)',
 			MOC: 'SS 304/316',
-			Mesh: 'Customizable per requirement',
-			'Pressure Rating': 'ASME Class 125-600',
+			'Pressure Rating': 'ASME Class 125 to 600',
 			'End Connections': 'Flanged, Butt-Weld, Screwed',
 			Installation: 'Horizontal or Vertical',
+			'Primary Use': 'Commissioning & startup pipeline protection',
+					'HSN Code': '8421',
 		},
 		images: [
 			'conical-strainer-1.webp',
@@ -846,24 +917,30 @@ const RAW_PRODUCTS = [
 		id: 'prod_st4',
 		category: 'Industrial Strainers',
 		title: 'Y-Type Strainer',
-		desc: 'Cast and welded Y-type strainer for liquid and gaseous pipelines. Y-configuration allows easy blow-off cleanout without line shutdown.',
+		desc: 'Cast and welded Y-type strainer for liquid and gaseous pipelines. Y-configuration allows easy blow-off cleanout without line shutdown. Size range DN 15 to DN 400; mesh 0.5–3 mm; temperature rating up to 400°C for steam service.',
 		usage:
 			'General pipeline protection; steam, water, gas, oil, and chemical service lines protecting downstream equipment.',
 		features: [
+			'Size range: DN 15 to DN 400 (larger on request)',
+			'Mesh range: 0.5 mm, 1 mm, 1.5 mm, 2 mm, 3 mm standard — custom mesh on request',
+			'Temperature rating: up to 400°C for steam service (alloy steel body); up to 200°C for cast iron',
 			'Cast and welded design — horizontal & vertical configurations',
 			'MOC: Cast Iron, Cast Steel, SS 304/316',
 			'Pressure ratings: ASME Class 125, 150, 300, 600',
-			'Easy blow-off cleanout port — no full disassembly',
-			'Mesh element size per application requirement',
+			'Easy blow-off cleanout port — no full disassembly required',
 			'Service: Steam, water, gas, oil, chemical media',
 		],
 		specs: {
 			Design: 'Cast & Welded Y-configuration',
+			'Size Range': 'DN 15 to DN 400 (larger on request)',
+			'Mesh Range': '0.5–3 mm standard; custom available',
+			'Temperature Rating': 'Up to 400°C (steam, alloy steel body)',
 			MOC: 'Cast Iron, Cast Steel, SS 304/316',
 			'Pressure Rating': 'ASME Class 125, 150, 300, 600',
 			Cleanout: 'Blow-off port',
 			Media: 'Steam, water, gas, oil, chemicals',
 			'End Connections': 'Flanged, Butt-Weld, Screwed',
+					'HSN Code': '8421',
 		},
 		images: [
 			'y-type-strainer-1.webp',
@@ -907,6 +984,7 @@ const RAW_PRODUCTS = [
 			'Key Advantage':
 				'High dirt-holding capacity — reduced cleaning intervals',
 			Optional: 'DP Gauge, davit arm cover lift',
+					'HSN Code': '8421',
 		},
 		images: [
 			'pot-bucket-strainer-1.webp',
@@ -927,9 +1005,9 @@ const RAW_PRODUCTS = [
 		id: 'prod_e1',
 		category: 'Expansion Joints',
 		title: 'Stainless Steel Metallic Bellows Expansion Joint',
-		desc: 'Multi-ply SS metallic bellows absorbing thermal expansion in piping systems. Available DN 15 to DN 12,000. Fatigue, yield, and rupture tested per EJMA/ASME standards.',
+		desc: 'Multi-ply SS metallic bellows absorbing thermal expansion in piping systems. Available DN 15 to DN 12,000. Fatigue, yield, and rupture tested per EJMA/ASME standards. Choose this (prod_e1) over the standard axial joint (prod_e1b) when your application requires multi-ply high-cycle fatigue life, exotic alloy material (Incoloy, Inconel, Hastelloy, Titanium), very high pressure above 16 bar, or PED/AD2000 third-party certification documentation.',
 		usage:
-			'High-pressure steam exhaust systems, chemical process pipes, heat exchanger connections, and piping requiring thermal movement compensation.',
+			'High-pressure steam exhaust systems, chemical process pipes, heat exchanger connections, and piping requiring thermal movement compensation. Best choice for high-cycle fatigue duty, exotic materials, pressures above 16 bar, or where PED/AD2000 certification is required. For standard steam and water pipelines at moderate pressure, the axial expansion joint (prod_e1b) is more cost-effective.',
 		features: [
 			'Material: SS 304/316L, Duplex, Incoloy 825/925, Inconel 625, Titanium, Hastelloy',
 			'Dimension range: DN 15 to DN 12,000',
@@ -948,6 +1026,7 @@ const RAW_PRODUCTS = [
 			Testing: 'Pneumatic, hydrostatic, vacuum, dye penetrant, movement',
 			Compliance: 'PED 2014/68/EC, AD2000',
 			'Forming Methods': 'Rolling, Punch, Hydraulic',
+					'HSN Code': '8484',
 		},
 		images: [
 			'ss-metallic-bellows-1.webp',
@@ -968,9 +1047,9 @@ const RAW_PRODUCTS = [
 		id: 'prod_e1b',
 		category: 'Expansion Joints',
 		title: 'Axial Expansion Joint',
-		desc: 'Single-bellows axial expansion joint absorbing thermal expansion and contraction along the longitudinal pipe axis. The most widely used expansion joint type in steam, process gas, and hot water pipelines.',
+		desc: 'Single-bellows axial expansion joint absorbing thermal expansion and contraction along the longitudinal pipe axis. The most widely used expansion joint type in steam, process gas, and hot water pipelines. Choose this over the multi-ply SS metallic bellows (prod_e1) for standard duty applications at moderate pressure (up to 16 bar) where cost-effectiveness matters. When exotic alloys, very high pressure (>16 bar), PED certification, or ultra-high cycle fatigue life are required, specify prod_e1 instead.',
 		usage:
-			'Steam pipelines, pump connections, heat exchanger inlet/outlet connections, hot water systems in power plants, sugar mills, paper mills, and refineries.',
+			'Steam pipelines, pump connections, heat exchanger inlet/outlet connections, hot water systems in power plants, sugar mills, paper mills, and refineries. Standard first choice for axial movement compensation up to 150 bar G — upgrade to multi-ply metallic bellows (prod_e1) only when exotic alloy, high-cycle fatigue, or strict code certification is mandated.',
 		features: [
 			'Absorbs axial compression and extension from thermal cycling',
 			'Single-bellow design — compact and cost-effective',
@@ -990,6 +1069,7 @@ const RAW_PRODUCTS = [
 			'Design Codes': 'EJMA, ASME VIII Div.1, ASME B31.1/B31.3',
 			Accessories: 'Inner sleeve, cover/shroud, tie rods (optional)',
 			Testing: 'Hydrostatic / Pneumatic certified',
+					'HSN Code': '8484',
 		},
 		images: [
 			'axial-expansion-joint-1.webp',
@@ -1014,20 +1094,28 @@ const RAW_PRODUCTS = [
 		usage:
 			'Pumps, chillers, cooling towers, heavy fluid systems requiring greater movement than single arch allows.',
 		features: [
-			'Double arch design: ~2x movement vs. single arch',
-			'Simultaneously absorbs axial, lateral, and angular movements',
-			'Reduces system noise and vibration',
+			'Double arch design: ~2x movement vs. single arch — preferred where large thermal cycles or equipment vibration is significant',
+			'Simultaneously absorbs axial, lateral, and angular movements in any combination',
+			'Reduces system noise and vibration — excellent isolation for pump and compressor connections',
 			'Compensates pipeline misalignment or offset',
-			'High-quality rubber compound',
-			'Tie rod assembly available and recommended',
-			'Flanged ends for standard installation',
+			'Rubber compounds: EPDM (water/HVAC), Neoprene (CR, oil/flame resistant), Nitrile (NBR, fuel/oil)',
+			'Tie rod assembly available and recommended to control pressure thrust loads',
+			'Flanged ends — standard ANSI/DIN drilling',
+			'Size range: DN 25 to DN 600 (larger on request)',
+			'Pressure rating: PN 10 / PN 16 (10 bar and 16 bar)',
+			'Temperature range: –20°C to +120°C (EPDM); –30°C to +90°C (NBR)',
 		],
 		specs: {
 			Architecture: 'Double arch (twin convolution) rubber',
+			'Size Range': 'DN 25 to DN 600 (larger on request)',
+			'Pressure Rating': 'PN 10 / PN 16 (10 bar / 16 bar)',
+			'Temperature Range': '–20°C to +120°C (EPDM); –30°C to +90°C (NBR)',
+			'Rubber Compounds': 'EPDM / Neoprene (CR) / Nitrile (NBR)',
 			Movement: 'Axial, Lateral, Angular (dual-arch capacity)',
-			Ends: 'Flanged (standard)',
-			'Tie Rods': 'Available — specially recommended',
-			Applications: 'Pumps, chillers, cooling towers',
+			Ends: 'Flanged ANSI/DIN (standard)',
+			'Tie Rods': 'Available — specially recommended for pressure control',
+			Applications: 'Pumps, chillers, cooling towers, heavy fluid systems',
+					'HSN Code': '8484',
 		},
 		images: [
 			'double-arch-rubber-joint-1.webp',
@@ -1048,9 +1136,9 @@ const RAW_PRODUCTS = [
 		id: 'prod_e3',
 		category: 'Expansion Joints',
 		title: 'Single Arch Rubber Expansion Joint',
-		desc: 'Standard single arch rubber expansion joint absorbing thermal movements and mechanical vibrations. Cost-effective for HVAC, water piping, and light industrial fluid lines.',
+		desc: 'Standard single arch rubber expansion joint absorbing thermal movements and mechanical vibrations. Cost-effective first choice for HVAC, water piping, and light industrial fluid lines. Choose this over the wide arch variant (prod_e3b) for standard applications with moderate movement and normal vibration levels — it is more compact and lower cost. Upgrade to the wide arch (prod_e3b) when the system has high vibration amplitude, large thermal movements, or significant pump/motor-induced shock loads.',
 		usage:
-			'HVAC systems, water piping, light industrial fluid lines, pump discharge and suction connections.',
+			'HVAC systems, water piping, light industrial fluid lines, pump discharge and suction connections. Standard first choice for most rubber expansion joint applications — choose the wide arch variant (prod_e3b) only when large movement capacity or high-vibration/shock isolation is specifically required.',
 		features: [
 			'Single arch convolution rubber construction',
 			'Absorbs thermal expansion and contraction',
@@ -1066,6 +1154,7 @@ const RAW_PRODUCTS = [
 			'End Connections': 'Flanged (PN10/PN16)',
 			Sleeve: 'Optional — protects against particle impingement',
 			Applications: 'HVAC, water, light industrial',
+					'HSN Code': '8484',
 		},
 		images: [
 			'single-arch-rubber-joint-1.webp',
@@ -1086,9 +1175,9 @@ const RAW_PRODUCTS = [
 		id: 'prod_e3b',
 		category: 'Expansion Joints',
 		title: 'Wide Arch Rubber Expansion Bellow',
-		desc: 'Wide arch rubber bellow providing maximum movement absorption and superior vibration isolation. Specifically recommended with a tie rod assembly for internal pressure control. Ideal for high-vibration pump and motor connections.',
+		desc: 'Wide arch rubber bellow providing maximum movement absorption and superior vibration isolation. Specifically recommended with a tie rod assembly for internal pressure control. Ideal for high-vibration pump and motor connections. Choose this over the standard single arch (prod_e3) when your system has high vibration amplitude, large thermal movement cycles, significant pump/motor shock loads, or where maximum flexibility and noise attenuation are the primary requirements. For standard HVAC and water piping, the single arch (prod_e3) is more compact and cost-effective.',
 		usage:
-			'High-vibration pump and motor connections, heavy-duty industrial piping with significant thermal movement, applications requiring maximum flexibility and shock isolation.',
+			'High-vibration pump and motor connections, heavy-duty industrial piping with significant thermal movement, applications requiring maximum flexibility and shock isolation. Specify over single arch (prod_e3) when vibration or movement is the dominant design concern.',
 		features: [
 			'Maximum axial, lateral, and angular movement absorption',
 			'Superior vibration, noise, and shock isolation vs. single/double arch',
@@ -1108,6 +1197,7 @@ const RAW_PRODUCTS = [
 			Applications:
 				'High-vibration pumps, motors, heavy-duty industrial piping',
 			Advantage: 'Maximum flexibility and shock isolation vs. standard arch',
+					'HSN Code': '8484',
 		},
 		images: [
 			'wide-arch-rubber-joint-1.webp',
@@ -1149,6 +1239,7 @@ const RAW_PRODUCTS = [
 			Materials: 'SS 304 / SS 316 / SS 316L / Duplex',
 			Industries: 'Refineries, chemical plants, power stations',
 			Documentation: 'Full material traceability and test certificates',
+					'HSN Code': '8484',
 		},
 		images: [
 			'heat-exchanger-bellow-1.webp',
@@ -1188,6 +1279,7 @@ const RAW_PRODUCTS = [
 			'Dimension Range': 'DN 15 to DN 12,000',
 			'Tie Rods': 'Recommended (pressure thrust)',
 			'Design Codes': 'EN 14917, EJMA, ASME VIII Div.1',
+					'HSN Code': '8484',
 		},
 		images: [
 			'universal-expansion-joint-1.webp',
@@ -1228,6 +1320,7 @@ const RAW_PRODUCTS = [
 			Applications:
 				'Boilers, ESP, bag filters, gas turbines, cement, incineration',
 			Movement: 'Axial + Lateral + Angular (large capacity)',
+					'HSN Code': '8484',
 		},
 		images: [
 			'non-metallic-expansion-joint-1.webp',
@@ -1266,6 +1359,7 @@ const RAW_PRODUCTS = [
 			'Design Codes': 'EN 14917, EJMA, ASME VIII Div.1',
 			Movement: 'Axial + Lateral (thrust-balanced)',
 			Testing: 'Full pressure, movement, fatigue certification',
+					'HSN Code': '8484',
 		},
 		images: [
 			'pressure-balance-joint-1.webp',
@@ -1305,6 +1399,7 @@ const RAW_PRODUCTS = [
 			Materials: 'SS 304/316/321, Duplex, Inconel, Incoloy, Hastelloy',
 			'Design Codes': 'EJMA, EN 14917, ASME VIII Div.1, ASME B31.3',
 			Testing: 'Hydrostatic / pneumatic pressure test with full documentation',
+					'HSN Code': '8484',
 		},
 		images: [
 			'ring-reinforced-expansion-joint-1.webp',
@@ -1346,6 +1441,7 @@ const RAW_PRODUCTS = [
 				'EJMA, EN 14917, ASME / EN code compliance per project',
 			'Typical Use':
 				'Buried lines, long pipe runs, district heating and steam networks',
+					'HSN Code': '8484',
 		},
 		images: [
 			'externally-pressurised-joint-1.webp',
@@ -1384,6 +1480,7 @@ const RAW_PRODUCTS = [
 			'Tie Rods': 'Standard / recommended for pressure thrust control',
 			Materials: 'SS 304/316/321, Duplex, high alloys',
 			'Design Code': 'EJMA / EN 14917 / ASME (project dependent)',
+					'HSN Code': '8484',
 		},
 		images: [
 			'lateral-expansion-joint-1.webp',
@@ -1423,6 +1520,7 @@ const RAW_PRODUCTS = [
 			'Temperature Capability':
 				'High-temperature service with suitable alloy selection',
 			Standards: 'EJMA, EN 14917, ASME code-based design',
+					'HSN Code': '8484',
 		},
 		images: [
 			'angular-hinged-gimbal-joint-1.webp',
@@ -1463,6 +1561,7 @@ const RAW_PRODUCTS = [
 			Materials: 'SS 304/316/321 and process-suitable alloys',
 			'Design Basis':
 				'EJMA movement/stress criteria with project nozzle load checks',
+					'HSN Code': '8484',
 		},
 		images: [
 			'metallic-vibration-absorber-1.webp',
@@ -1501,6 +1600,7 @@ const RAW_PRODUCTS = [
 			Configuration: 'Two flow bellows + balancing bellows at elbow',
 			Materials: 'SS 304/316/321, duplex, high-alloy options',
 			'Design Standards': 'EJMA / EN / ASME code-based engineering',
+					'HSN Code': '8484',
 		},
 		images: [
 			'elbow-pressure-balance-joint-1.webp',
@@ -1539,6 +1639,7 @@ const RAW_PRODUCTS = [
 			Construction: 'Single, universal, or pressure-balanced design',
 			Materials: 'SS 321/316, high-temperature alloys',
 			'Design Compliance': 'EJMA + power/process piping code basis',
+					'HSN Code': '8484',
 		},
 		images: [
 			'steam-crossover-bellows-1.webp',
@@ -1577,6 +1678,7 @@ const RAW_PRODUCTS = [
 			Construction: 'Multi-ply bellows with protective liner options',
 			Alloys: '310/321 SS, Inconel, Incoloy, Hastelloy options',
 			'Design Basis': 'EJMA with refinery service-specific checks',
+					'HSN Code': '8484',
 		},
 		images: [
 			'fccu-expansion-joint-1.webp',
@@ -1615,6 +1717,7 @@ const RAW_PRODUCTS = [
 			'Primary Movement': 'Axial + lateral compensation',
 			Materials: 'SS 304/316/321 and application-specific alloys',
 			'Design Standards': 'EJMA + pressure piping code requirements',
+					'HSN Code': '8484',
 		},
 		images: [
 			'jacketed-expansion-joint-1.webp',
@@ -1653,6 +1756,7 @@ const RAW_PRODUCTS = [
 			Service: 'Repair / replacement / retrofit projects',
 			Construction: 'Two half-shell sections welded on site',
 			Engineering: 'Site-specific dimensions and movement validation',
+					'HSN Code': '8484',
 		},
 		images: [
 			'clamshell-bellows-1.webp',
@@ -1691,6 +1795,7 @@ const RAW_PRODUCTS = [
 			'Pressure Class': 'Well-suited for high-pressure low-stroke duty',
 			Connections: 'Weld-end / flanged options',
 			Applications: 'Heat exchangers and short movement runs',
+					'HSN Code': '8484',
 		},
 		images: [
 			'lens-expansion-joint-1.webp',
@@ -1730,6 +1835,7 @@ const RAW_PRODUCTS = [
 			Accessories: 'Liners / shrouds / insulation interfaces',
 			'Design Compliance':
 				'Duct movement and stress-based project calculations',
+					'HSN Code': '8484',
 		},
 		images: [
 			'rectangular-expansion-joint-1.webp',
@@ -1769,6 +1875,7 @@ const RAW_PRODUCTS = [
 			'Pressure-Temperature Class': 'Utility network duty (project specific)',
 			'Design Standards':
 				'District heating and pressure piping design requirements',
+					'HSN Code': '8484',
 		},
 		images: [
 			'district-heating-joint-1.webp',
@@ -1807,6 +1914,7 @@ const RAW_PRODUCTS = [
 			Movement: 'Axial + lateral + angular (as designed)',
 			Materials: 'SS 304/316, duplex, low-temperature alloy options',
 			'Design Basis': 'Terminal piping load and movement calculations',
+					'HSN Code': '8484',
 		},
 		images: [
 			'tank-farm-bellows-1.webp',
@@ -1845,6 +1953,7 @@ const RAW_PRODUCTS = [
 			'Material Options': 'Austenitic SS and cryogenic-grade alloys',
 			Applications: 'LNG/LPG pipelines and transfer systems',
 			'Quality Package': 'Material certificates + test documentation',
+					'HSN Code': '8484',
 		},
 		images: [
 			'lng-lpg-expansion-joint-1.webp',
@@ -1883,6 +1992,7 @@ const RAW_PRODUCTS = [
 			Materials: '316L, duplex, and high-corrosion-resistance alloys',
 			'Service Range': 'Exhaust treatment and scrubber ducting',
 			'Design Focus': 'Corrosion + thermal cycling durability',
+					'HSN Code': '8484',
 		},
 		images: [
 			'scrubber-egc-joint-1.webp',
@@ -1921,6 +2031,7 @@ const RAW_PRODUCTS = [
 			'Design Priority': 'Cleanability and contamination control',
 			Construction: 'Sanitary-finish metallic bellows assembly',
 			Applications: 'Food, pharma, biotech, beverage lines',
+					'HSN Code': '8484',
 		},
 		images: [
 			'hygienic-expansion-joint-1.webp',
@@ -1961,6 +2072,7 @@ const RAW_PRODUCTS = [
 			Materials: 'SS 304/316/321, high-temperature alloys',
 			'Design Codes': 'EJMA, EN 14917, ASME B31.1/B31.3',
 			Connections: 'Weld-end or flanged',
+					'HSN Code': '8484',
 		},
 		images: [
 			'hinged-expansion-joint-1.webp',
@@ -2001,6 +2113,7 @@ const RAW_PRODUCTS = [
 			Materials: 'SS 304/316/321, Duplex, Incoloy, Inconel',
 			'Design Standards': 'EJMA, EN 14917, ASME VIII Div.1',
 			Applications: 'T-junction steam lines, process gas branch connections',
+					'HSN Code': '8484',
 		},
 		images: [
 			't-pressure-balance-joint-1.webp',
@@ -2042,6 +2155,7 @@ const RAW_PRODUCTS = [
 			Materials: 'SS 304/316/321, process-suitable alloys',
 			'Design Codes': 'EJMA, EN 14917, project-specific calculations',
 			Connections: 'Weld-end or flanged to match pipe geometry',
+					'HSN Code': '8484',
 		},
 		images: [
 			'octagonal-expansion-joint-1.webp',
@@ -2083,6 +2197,7 @@ const RAW_PRODUCTS = [
 			'Primary Function': 'Axial movement absorption with extreme durability',
 			Materials: 'SS 316/321, Duplex, Inconel, Hastelloy options',
 			Testing: 'Full hydrostatic + pneumatic pressure certification',
+					'HSN Code': '8484',
 		},
 		images: [
 			'thick-wall-expansion-joint-1.webp',
@@ -2123,6 +2238,7 @@ const RAW_PRODUCTS = [
 			Material: 'Mild Steel (MS) — IS 2062 / equivalent grade',
 			Service: 'Steam, water, industrial gas at moderate pressure',
 			Connections: 'Flanged or weld-end as specified',
+					'HSN Code': '8484',
 		},
 		images: [
 			'ms-slip-expansion-joint-1.webp',
@@ -2163,6 +2279,7 @@ const RAW_PRODUCTS = [
 			Service: 'HVAC, flue gas, combustion air, ventilation ducts',
 			Applications: 'Boilers, chimneys, HVAC, industrial ducts, boiler systems',
 			Sizing: 'Custom to duct dimensions and flow requirements',
+					'HSN Code': '8484',
 		},
 		images: [
 			'industrial-damper-1.webp',
@@ -2203,6 +2320,7 @@ const RAW_PRODUCTS = [
 			Connections: 'Flanged ends (ANSI/PN as specified)',
 			Applications: 'Pumps, valves, water treatment, industrial piping',
 			'Typical Bore Range': 'DN 50 to DN 600 (custom larger sizes available)',
+					'HSN Code': '8484',
 		},
 		images: [
 			'dismantling-joint-1.webp',
@@ -2247,6 +2365,7 @@ const RAW_PRODUCTS = [
 				'Air, gas, fumes, exhaust, chemical vapour, hot flue gas',
 			Applications:
 				'Industrial ventilation, fume extraction, HVAC, boiler gas ducts',
+					'HSN Code': '8484',
 		},
 		images: [
 			'ms-ss-duct-1.webp',
@@ -2267,24 +2386,32 @@ const RAW_PRODUCTS = [
 		id: 'prod_ts1',
 		category: 'Turbine Spares',
 		title: 'Carbon & Graphite Gland Sealing Rings',
-		desc: 'Precision machined carbon and graphite seal rings for steam turbine gland sealing. Self-lubricating material maintains tight clearances at extreme temperatures.',
+		desc: 'Precision machined carbon and graphite seal rings for steam turbine gland sealing. Self-lubricating material maintains tight clearances at extreme temperatures. Bore size range 25–600 mm; compatible with Triveni, BHEL, Siemens gland sealing systems. Split ring designs available for in-situ fitting without rotor removal.',
 		usage:
 			'Steam turbine gland sealing for pressure retention at shaft exits; gas turbine labyrinth shaft sealing.',
 		features: [
+			'Bore size range: 25–600 mm (per OEM drawing or sample)',
+			'OEM turbine compatibility: Triveni, BHEL, Siemens, Belliss & Morcom, Maxwatt gland sealing systems',
+			'Split ring designs available — allows in-situ installation without rotor removal, reducing outage time',
 			'Self-lubricating carbon/graphite — no additional lubrication required',
 			'Precision CNC machined to OEM dimensional specifications',
 			'High temperature resistance: up to 600 deg C continuous',
 			'Low coefficient of friction — minimal shaft wear',
 			'Chemical inertness with steam, gases, most process media',
 			'Grades: Carbon graphite, electrographite, silicon carbide',
-			'Manufactured to tight clearances per OEM drawings',
+			'Manufactured to tight clearances per OEM drawings — 0.15–0.50 mm diametral clearance standard',
 		],
 		specs: {
+			'Bore Size Range': '25–600 mm (per OEM drawing)',
+			'OEM Compatibility': 'Triveni, BHEL, Siemens, Belliss & Morcom, Maxwatt',
 			'Material Grades': 'Carbon graphite / Electrographite / Silicon Carbide',
 			'Max Temperature': 'Up to 600 deg C continuous',
+			'Diametral Clearance': '0.15–0.50 mm per OEM specification',
 			Lubrication: 'Self-lubricating (no oil required)',
+			'Split Ring': 'Available — in-situ fitting without rotor removal',
 			Application: 'Turbine gland sealing at shaft exits',
 			Machining: 'Precision CNC to OEM dimensions',
+					'HSN Code': '8406',
 		},
 		images: [
 			'black-carbon-sealing-rings-1.webp',
@@ -2305,10 +2432,13 @@ const RAW_PRODUCTS = [
 		id: 'prod_ts2',
 		category: 'Turbine Spares',
 		title: 'Labyrinth Shaft Sealing Packings',
-		desc: 'Custom manufactured labyrinth seal segments and packings for steam turbine shaft sealing. High-temperature alloy with erosion-resistant teeth machined to OEM tight-clearance specifications.',
+		desc: 'Custom manufactured labyrinth seal segments and packings for steam turbine shaft sealing. High-temperature alloy with erosion-resistant teeth machined to OEM tight-clearance specifications. Typical diametral clearance 0.2–0.6 mm per OEM; spring-back (retractable) seals reduce outage time versus fixed designs. Compatible with Triveni, BHEL, Siemens, Belliss & Morcom, and KKK turbines.',
 		usage:
 			'Steam turbine shaft sealing between rotating and stationary components; prevents steam leakage along shaft at multiple pressure stages.',
 		features: [
+			'OEM turbine compatibility: Triveni, BHEL, Siemens, Belliss & Morcom, Maxwatt, KKK, Man Turbo',
+			'Typical diametral clearance range: 0.2–0.6 mm per OEM specification — tighter clearances available where reverse-engineered data is available',
+			'Spring-back (retractable) designs reduce rub risk during startup and reduce outage time vs. fixed caulked-in seals',
 			'High-temperature alloy: 410SS, Monel, Stellite options',
 			'Erosion-resistant labyrinth teeth profile',
 			'Precision machined to OEM diametral clearance specs',
@@ -2319,11 +2449,15 @@ const RAW_PRODUCTS = [
 			'Dimensional inspection report provided',
 		],
 		specs: {
+			'OEM Compatibility': 'Triveni, BHEL, Siemens, Belliss & Morcom, Maxwatt, KKK, Man Turbo',
+			'Diametral Clearance Range': '0.2–0.6 mm (per OEM specification)',
 			Material: '410SS, Monel, Stellite — per OEM specification',
 			Configurations: 'Radial, Axial, Combined labyrinth',
 			'Design Types': 'Caulked-in or Spring-back (retractable)',
 			Clearances: 'Precision OEM diametral clearance specification',
+			'Spring-back Advantage': 'Reduces rub risk and outage time vs. fixed seals',
 			Verification: 'PMI material testing + dimensional inspection',
+					'HSN Code': '8406',
 		},
 		images: [
 			'labyrinth-sealing-packings-1.webp',
@@ -2364,6 +2498,7 @@ const RAW_PRODUCTS = [
 			'Bond Integrity Test': 'Ultrasonic bond integrity verification — 100%',
 			Machining: 'Precision CNC to OEM tolerance',
 			'Dimensional Verification': '3D scanning + CMM measurement',
+					'HSN Code': '8483',
 		},
 		images: [
 			'babbitt-bearings-1.webp',
@@ -2405,6 +2540,7 @@ const RAW_PRODUCTS = [
 			'Pressure Testing': 'Hydrotest at 1.5x design pressure',
 			'Seat Leakage': 'Tested per applicable standards',
 			Verification: 'PMI certification + dimensional inspection report',
+					'HSN Code': '8406',
 		},
 		images: [
 			'emergency-stop-valve-1.webp',
@@ -2425,13 +2561,16 @@ const RAW_PRODUCTS = [
 		id: 'prod_ts5',
 		category: 'Turbine Spares',
 		title: 'Turbine Lube Oil Pumps & Mechanical Seals',
-		desc: 'OEM-dimensionally-matched replacement main and auxiliary lube oil pumps with precision mechanical seals. High volumetric efficiency with leak-proof mechanical seal assemblies.',
+		desc: 'OEM-dimensionally-matched replacement main and auxiliary lube oil pumps with precision mechanical seals. High volumetric efficiency with leak-proof mechanical seal assemblies. Typical flow range 10–500 LPM at 5–20 bar delivery pressure; compatible with Triveni, BHEL, Belliss & Morcom, and Maxwatt turbine lube oil systems.',
 		usage:
 			'Main and auxiliary lube oil systems in power generation turbines; supplying pressurized oil to bearings, governors, and control systems.',
 		features: [
-			'Exact OEM dimensional match verified against drawing',
-			'Gear pump type — high volumetric efficiency',
-			'Precision mechanical face seal assembly — no packing',
+			'Typical flow range: 10–500 LPM (turbine model and speed dependent)',
+			'Delivery pressure: 5–20 bar (system design dependent)',
+			'OEM turbine compatibility: Triveni, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Siemens',
+			'Exact OEM dimensional match verified against drawing or sample',
+			'Gear pump type — high volumetric efficiency (>90%) at rated speed',
+			'Precision mechanical face seal assembly — no packing, zero leak design',
 			'Shaft and gear dimensions verified per OEM drawing',
 			'Materials: Cast iron body, SS shaft, bronze bushing',
 			'Performance tested at rated pressure and flow before dispatch',
@@ -2439,10 +2578,14 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			'Pump Type': 'Gear pump (main / auxiliary lube oil service)',
+			'Flow Range': '10–500 LPM (turbine model dependent)',
+			'Delivery Pressure': '5–20 bar (system dependent)',
+			'OEM Compatibility': 'Triveni, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Siemens',
 			'Shaft Sealing': 'Precision mechanical face seal',
 			Materials: 'Cast iron body / SS shaft / Bronze bushing',
 			Testing: 'Pressure and flow performance test at rated conditions',
 			Documentation: 'Engineering drawing supplied with each unit',
+					'HSN Code': '8406',
 		},
 		images: [
 			'turbine-oil-pumps-1.webp',
@@ -2483,6 +2626,7 @@ const RAW_PRODUCTS = [
 			'Chemical Resistance': 'Steam, all process gases, chemicals',
 			Lubrication: 'Self-lubricating',
 			Machining: 'Precision CNC to OEM specification',
+					'HSN Code': '8406',
 		},
 		images: [
 			'high-purity-graphite-rings-1.webp',
@@ -2523,6 +2667,7 @@ const RAW_PRODUCTS = [
 			'Blade Root Options': 'Finger-tree, T-root, Dove-tail',
 			Documentation: 'Full inspection certificate + balancing report',
 			'Material Upgrades': 'Available for life extension programs',
+					'HSN Code': '8406',
 		},
 		images: [
 			'rotor-assembly-1.webp',
@@ -2563,6 +2708,7 @@ const RAW_PRODUCTS = [
 			'Heat Treatment': 'Case hardening, through hardening, nitriding',
 			'Surface Hardness': '58-62 HRC (case) / 250-320 HB (through)',
 			Verification: 'Profile, tooth geometry, noise/vibration tests',
+					'HSN Code': '8406',
 		},
 		images: [
 			'gears-worm-wheels-1.webp',
@@ -2603,6 +2749,7 @@ const RAW_PRODUCTS = [
 			'Diaphragm Type': 'Welded or cast; integral/replaceable nozzle block',
 			'Material Upgrades': 'Titanium/high-alloy for life extension',
 			Documentation: 'Dimensional inspection + PMI material certificate',
+					'HSN Code': '8406',
 		},
 		images: [
 			'nozzles-diaphragms-1.webp',
@@ -2623,25 +2770,31 @@ const RAW_PRODUCTS = [
 		id: 'prod_ts10',
 		category: 'Turbine Spares',
 		title: 'Mechanical Centrifugal Speed Governors',
-		desc: 'Precision mechanical centrifugal governor assemblies maintaining exact RPM control in steam turbines. Fly-weight mechanism, speeder spring, and pilot valve assemblies included.',
+		desc: 'Precision mechanical centrifugal governor assemblies maintaining exact RPM control in steam turbines. Fly-weight mechanism, speeder spring, and pilot valve assemblies included. Speed range 1,000–6,000 RPM; compatible with Triveni, Belliss & Morcom, Maxwatt, and BHEL steam turbines.',
 		usage:
 			'Turbine speed control and over-speed prevention; primary speed governing device in steam turbines without electronic governors.',
 		features: [
+			'Speed range: 1,000–6,000 RPM (turbine model dependent — specify OEM and rated speed at order)',
+			'OEM turbine makes: Triveni, Belliss & Morcom, Maxwatt, BHEL, DLF-Skoda, Chola Turbo',
+			'Governor type variants: fly-weight centrifugal, oil relay amplifier, and combined fly-weight + relay designs',
 			'Fly-weight centrifugal mechanism with calibrated speeder springs',
 			'Pilot valve assembly for hydraulic amplification of control signal',
-			'High sensitivity: detects speed deviations within +/-1% RPM',
+			'High sensitivity: detects speed deviations within +/–1% RPM',
 			'Over-speed trip setpoint: typically 10% above rated speed',
 			'Robust all-mechanical design for continuous unattended operation',
 			'Calibrated setpoint before dispatch from workshop',
 			'Complete dimensional and performance test report provided',
 		],
 		specs: {
-			'Governor Type': 'Mechanical centrifugal fly-weight',
-			'Speed Sensitivity': '+/-1% RPM deviation detection',
+			'Governor Type': 'Mechanical centrifugal fly-weight / oil relay / combined',
+			'Speed Range': '1,000–6,000 RPM (turbine model dependent)',
+			'OEM Compatibility': 'Triveni, Belliss & Morcom, Maxwatt, BHEL, DLF-Skoda, Chola Turbo',
+			'Speed Sensitivity': '+/–1% RPM deviation detection',
 			'Over-speed Trip': 'Typically 10% above rated operating speed',
 			'Control Amplification': 'Hydraulic pilot valve (oil pressure signal)',
 			Calibration: 'Setpoint calibrated before dispatch',
 			Documentation: 'Performance test report supplied',
+					'HSN Code': '8406',
 		},
 		images: [
 			'mechanical-governors-1.webp',
@@ -2682,6 +2835,7 @@ const RAW_PRODUCTS = [
 			Actuation: 'Hydraulic or pneumatic',
 			Hardness: '40-45 HRC (Stellite 6)',
 			Testing: 'Hydrotest 1.5x DP + seat leakage test',
+					'HSN Code': '8406',
 		},
 		images: [
 			'throttle-valves-1.webp',
@@ -2722,6 +2876,7 @@ const RAW_PRODUCTS = [
 			Profile: 'Custom cross-section per drawing or sample',
 			'Backing Option': 'Pressure-sensitive adhesive backing available',
 			'Supply Format': 'Standard rolls or cut-to-length',
+					'HSN Code': '4016',
 		},
 		images: [
 			'extruded-rubber-profile-1.webp',
@@ -2742,25 +2897,32 @@ const RAW_PRODUCTS = [
 		id: 'prod_r2',
 		category: 'Industrial Rubber Products',
 		title: 'Heavy Duty Anti-Vibration Rubber Mounts',
-		desc: 'Industrial-grade anti-vibration rubber mounts bonded to steel plates for isolating heavy rotating machinery. Reduces structure-borne noise and vibration transmission.',
+		desc: 'Industrial-grade anti-vibration rubber mounts bonded to steel plates for isolating heavy rotating machinery. Reduces structure-borne noise and vibration transmission. Load range 50 kg to 5,000 kg per mount; static deflection 5–20 mm; natural frequency 3–15 Hz depending on series selected.',
 		usage:
 			'Vibration isolation for turbine-generator sets, compressors, diesel generators, cooling tower fans, and heavy industrial machinery.',
 		features: [
-			'Natural rubber to steel plate bonded (vulcanized) construction',
-			'High load bearing capacity per mounting point',
-			'Significantly reduces structure-borne noise and vibration',
-			'Protects foundations from dynamic machinery loads',
-			'Operating temperature: -30 to +70 deg C (continuous)',
-			'Types: Cylindrical, sandwich, conical, and bobbin mounts',
-			'Custom load ratings and natural frequency specifications available',
+			'Natural rubber to steel plate bonded (vulcanized) construction — long fatigue life under cyclic loading',
+			'Load range: 50 kg to 5,000 kg per mount (mount code series dependent)',
+			'Static deflection: 5–20 mm — select higher deflection for lower natural frequency',
+			'Natural frequency range: 3–15 Hz — for machinery running at 1,000–3,600 RPM, choose mount with natural frequency below 1/3 of running speed',
+			'Significantly reduces structure-borne noise and vibration transmission to foundations',
+			'Protects foundations from dynamic machinery loads and shock loads',
+			'Operating temperature: –30°C to +70°C (continuous) — natural rubber grade',
+			'Types: Cylindrical, sandwich, conical, and bobbin mounts — select per application direction',
+			'Fail-safe: mounts rated to support 4x rated static load without collapse',
+			'Custom load ratings and natural frequency specifications available — submit machinery mass and running speed',
 		],
 		specs: {
 			Construction: 'Rubber-to-steel bonded (vulcanized)',
+			'Load Range': '50 kg to 5,000 kg per mount (series dependent)',
+			'Static Deflection': '5–20 mm (higher deflection = lower natural freq)',
+			'Natural Frequency Range': '3–15 Hz (application dependent)',
 			'Mount Types': 'Cylindrical, sandwich, conical, bobbin',
 			Material: 'Natural Rubber / Neoprene + Mild Steel',
-			'Operating Temperature': '-30 to +70 deg C continuous',
-			'Load Rating': 'Custom per application requirement',
+			'Operating Temperature': '–30°C to +70°C continuous',
+			'Fail-Safe Rating': '4× static rated load without collapse',
 			Applications: 'Turbine-generator, compressor, heavy machinery isolation',
+					'HSN Code': '4016',
 		},
 		images: [
 			'rubber-mounts-1.webp',
@@ -2802,6 +2964,7 @@ const RAW_PRODUCTS = [
 				'0.6-1.6 MPa (single braid); higher with double braid',
 			'End Fittings': 'BSP, NPT, Flanged — SS 304/316',
 			'Test Standards': 'ISO 10380, SAE J1610',
+					'HSN Code': '8307',
 		},
 		images: [
 			'ss-corrugated-flexible-hose-1.webp',
@@ -2844,6 +3007,7 @@ const RAW_PRODUCTS = [
 				'Female Threaded, Flanged, Nipple, Camlock, Quick Release',
 			Testing: 'Full pressure and leakage test before despatch',
 			Standard: 'ISO 10380',
+					'HSN Code': '8307',
 		},
 		images: [
 			'ss-hose-assembly-1.webp',
@@ -2864,27 +3028,30 @@ const RAW_PRODUCTS = [
 		id: 'prod_h1c',
 		category: 'Flexible Hoses & Assemblies',
 		title: 'Generator & Engine Exhaust Bellows',
-		desc: 'Specialised single-bellow expansion joints for generator exhaust connections and engine exhaust systems. Temperature-rated for hot exhaust gas service with SS 316L construction. Available in round or rectangular configuration with interlock liner option.',
+		desc: 'Specialised single-bellow expansion joints for generator exhaust connections, diesel engine exhaust ducting, and industrial engine compartments. SS 316L construction rated to +600°C peak exhaust gas temperature. Size range DN 50 to DN 600 (round) and custom rectangular; interlock liner protects bellows from high-velocity exhaust turbulence. Absorbs axial compression up to 30 mm and lateral offset up to 15 mm.',
 		usage:
-			'Diesel generator exhaust connections, gas engine exhaust systems, industrial engine compartments, and automotive exhaust ducting.',
+			'Diesel generator exhaust connections, gas engine exhaust systems, industrial engine compartments, and automotive exhaust ducting. Essential wherever exhaust backpressure loads, vibration, or thermal expansion must be isolated from the engine block, turbocharger, or silencer.',
 		features: [
-			'Flanged ends — round or rectangular configuration available',
-			'SS 316L construction — rated for exhaust gas temperatures to +400°C',
-			'Single bellow design — absorbs axial and lateral exhaust movement',
-			'Interlock liner option to prevent vibration fatigue on bellows',
-			'Absorbs engine vibration and thermal expansion from exhaust system',
-			'Prevents exhaust load transmission to engine block or silencer',
-			'Available bore sizes: 25 mm to 150 mm',
-			'Quick installation with standard flange drilling',
+			'Flanged ends — round (DN 50 to DN 600) or rectangular configuration available',
+			'SS 316L construction — rated for continuous exhaust gas temperatures to +500°C; peak to +600°C',
+			'Single bellow design — absorbs axial compression up to 30 mm and lateral offset up to 15 mm',
+			'Interlock liner option prevents high-velocity exhaust gas from directly impinging on bellow convolutions',
+			'Absorbs engine vibration and thermal expansion — prevents exhaust load transmission to engine block',
+			'Prevents exhaust load transmission to engine block, turbocharger, or silencer',
+			'Optional external cover/shroud — protects bellow from external physical damage',
+			'Quick installation with standard ANSI/DIN flange drilling',
 		],
 		specs: {
 			Material: 'SS 316L',
-			'Temperature Range': '-20°C to +400°C',
+			'Temperature Range': 'Continuous to +500°C; peak to +600°C',
 			Configuration: 'Single bellow — round or rectangular',
-			'Bore Size': '25 mm to 150 mm',
-			'End Connections': 'Flanged',
-			'Liner Option': 'Interlock liner for vibration protection',
-			Applications: 'Generator exhaust, engine exhaust systems, automotive',
+			'Size Range': 'DN 50 to DN 600 (round); rectangular custom',
+			'Axial Movement': 'Up to 30 mm compression / extension',
+			'Lateral Movement': 'Up to 15 mm offset',
+			'End Connections': 'Flanged (ANSI/DIN standard drilling)',
+			'Liner Option': 'Interlock liner for high-velocity exhaust protection',
+			Applications: 'Generator exhaust, engine exhaust systems, industrial ducting',
+					'HSN Code': '8307',
 		},
 		images: [
 			'generator-exhaust-bellow-1.webp',
@@ -2925,6 +3092,7 @@ const RAW_PRODUCTS = [
 			'Max Working Pressure': 'Up to 40 bar (size-dependent)',
 			'Chemical Resistance': 'Virtually all industrial chemicals',
 			'End Fittings': 'Swaged SS — NPT, BSP, flanged, tri-clamp',
+					'HSN Code': '8307',
 		},
 		images: [
 			'ptfe-lined-hose-1.webp',
@@ -2965,6 +3133,7 @@ const RAW_PRODUCTS = [
 			'Max Working Pressure': 'Up to 420 bar (4-spiral, size-dependent)',
 			'Temperature Range': '-40 to +120 deg C',
 			Standards: 'EN 853, EN 856, SAE 100R1/R2/R12/R13, MSHA',
+					'HSN Code': '8307',
 		},
 		images: [
 			'hydraulic-rubber-hose-1.webp',
@@ -3010,6 +3179,7 @@ const RAW_PRODUCTS = [
 			'Chemical Resistance': 'Virtually all industrial chemicals — PTFE inert',
 			Standards: 'ISO 10380, FDA 21 CFR 177.1550 (food grade)',
 			'End Connections': 'NPT, BSP, Flanged, Tri-clamp, Camlock',
+					'HSN Code': '8307',
 		},
 		images: [
 			'ptfe-braided-hose-1.webp',
@@ -3054,6 +3224,7 @@ const RAW_PRODUCTS = [
 			Braid: 'Single or Double SS wire braid',
 			'End Connections': 'Flanged / Threaded BSP/NPT / Nipple / Plain',
 			Standard: 'ISO 10380',
+					'HSN Code': '8307',
 		},
 		images: [
 			'metallic-flexible-hose-1.webp',
@@ -3098,6 +3269,7 @@ const RAW_PRODUCTS = [
 			Braid: 'Single or Double SS wire braid',
 			'End Connections': 'Heavy-duty flanged or screwed BSP/NPT',
 			'Pressure Test': '1.5× working pressure before dispatch',
+					'HSN Code': '8307',
 		},
 		images: [
 			'steam-hose-1.webp',
@@ -3142,6 +3314,7 @@ const RAW_PRODUCTS = [
 			'End Fittings': 'Tri-clamp DIN/SMS/ISO / Flanged / Plain end',
 			'CIP/SIP': 'Compatible',
 			Standards: 'FDA 21 CFR, EHEDG, 3-A Sanitary (on request)',
+					'HSN Code': '8307',
 		},
 		images: [
 			'food-grade-hose-1.webp',
@@ -3187,6 +3360,7 @@ const RAW_PRODUCTS = [
 			'End Connections': 'CGA / DIN 477 / BS341 / NPT / BSP / Flanged',
 			'Oil-Free': 'Yes — mandatory for oxidising gas service',
 			Test: 'Pressure and gas-tightness certified before dispatch',
+					'HSN Code': '8307',
 		},
 		images: [
 			'oxygen-gas-hose-1.webp',
@@ -3242,6 +3416,7 @@ const RAW_PRODUCTS = [
 			'Cleaning System': 'Pulse-jet / Shaker / Reverse-air compatible',
 			Venturi: 'Included for pulse-jet installations',
 			Custom: 'Dimensions per OEM baghouse drawing',
+					'HSN Code': '8421',
 		},
 		images: [
 			'filter-bag-cage-1.webp',
@@ -3285,6 +3460,7 @@ const RAW_PRODUCTS = [
 			'Probe Gap Range': '0.25-2.5 mm (calibrated at 1.0 mm nominal)',
 			'Probe Temperature Rating': '-50 to +175 deg C',
 			'Cable Type': 'Armoured stainless steel',
+					'HSN Code': '9026',
 		},
 		images: [
 			'vibration-probe-shinkawa-1.webp',
@@ -3343,6 +3519,7 @@ const RAW_PRODUCTS = [
 			Maintenance:
 				'Zero — no periodic maintenance required; not field-repairable',
 			'Reference Manual': 'Woodward Manual 82510 Rev V (Aug 2022)',
+					'HSN Code': '8505',
 		},
 		images: [
 			'woodward-magnetic-pickup-1.webp',
@@ -3364,29 +3541,45 @@ const RAW_PRODUCTS = [
 		id: 'prod_f12',
 		category: 'Industrial Filtration',
 		title: 'Siemens Turbine Control Oil Filters',
-		desc: 'OEM-compatible control oil filter elements for Siemens industrial steam turbine hydraulic governing systems. Microglass deep-bed media with IS27 anti-static specification protects sensitive electrohydraulic servo valves.',
+		desc: 'OEM-compatible control oil filter elements for Siemens industrial steam turbines (SST series) and gas turbines (SGT series). Protects electrohydraulic control (EHC) systems — servo valves, actuators, and hydraulic trip mechanisms — from particle contamination. Five model-specific dimensional configurations available (12 MW, 30 MW, 35 MW, 15 GPM, 60 LPM). Supplied in imported glass fiber (β₂₀₀ absolute), Twill Dutch Weave SS wire mesh (reusable), or synthetic paper media. Max working pressure up to 280 bar.',
 		usage:
-			'Control oil filtration in Siemens turbine hydraulic governing circuits protecting servo valves, actuators, and pilot valves from particle contamination.',
+			'Control oil filtration in Siemens SST and SGT turbine hydraulic governing circuits. Protects servo valves (clearances <5 µm), actuators, pilot valves, and hydraulic trip mechanisms in 12 MW to 250 MW Siemens power units. Suitable for SST-200, SST-300, SST-400, SST-600, SST-800, SST-900 steam turbines and SGT-100 to SGT-800 gas turbines. Critical during commissioning and post-overhaul startup to prevent particle-induced servo failure.',
 		features: [
-			'Siemens turbine control oil system compatible — duplex filter housings',
-			'Microglass deep-bed media with IS27 anti-static treatment',
-			'Flow rating: 350–850 LPM depending on turbine model',
-			'Filtration fineness: 3, 6, 10, 16, 25 µm (beta ratings per ISO 16889)',
-			'Anti-static IS27 spec prevents electrostatic discharge in synthetic control oils below 300 pS/m',
-			'Max operating pressure: up to 63 bar (duplex housing)',
-			'Sealing: Nitrile (standard) or Viton for high-temperature synthetic oils',
-			'ASME / PED / CE compliant housing options',
-			'Dimensional compatible with Eaton / Parker / HYDAC standard elements',
+			'Covers Siemens SST steam turbines (SST-200 to SST-900) and SGT gas turbines (SGT-100 to SGT-800)',
+			'Five model-specific dimensional configurations — 12 MW, 30 MW, 35 MW power units; 15 GPM and 60 LPM flow-rated variants',
+			'12 MW unit: OD 142 mm × ID 88 mm × L 748 mm | 25 µm SS wire mesh | Test pressure 18 bar | MOC: SS 304',
+			'30 MW unit: OD 142 mm × ID 75 mm × L 748 mm | 25 µm SS wire mesh | Test pressure 18 bar | MOC: Zinc coated MS',
+			'35 MW unit: OD 140 mm × ID 90 mm × L 380 mm | 10 µm imported glass fiber | Test pressure 20 bar | MOC: Zinc coated MS',
+			'15 GPM unit: OD 130 mm × ID 75 mm × L 248 mm | 10 µm | Test pressure 18 bar | MOC: Zinc coated MS',
+			'60 LPM unit: OD 74 mm × ID 45 mm × L 148 mm | 10 µm synthetic paper | Test pressure 10 bar | MOC: Zinc coated MS',
+			'Max working temperature: 120°C (all standard models); 250°C (special high-temp grade)',
+			'Max working pressure: up to 280 bar (welded construction elements)',
+			'Glass fiber media: β₂₀₀ absolute rating — achieves NAS cleanliness class required for Siemens EHC servo systems',
+			'SS wire mesh: Twill Dutch Weave (TWD) — stronger and finer than plain weave; cleanable and reusable multiple times',
+			'Synthetic paper media: nominal rating for lower-criticality stages or pre-filtration duties',
+			'Full filtration rating range: 10, 20, 25, 35, 40, 50, 75, 80, 100, 125, 150, 200 µm',
+			'Duplex housing compatible: continuous-flow transfer valve; element change without turbine shutdown',
+			'Differential pressure clogging indicator compatible: dual alarm set points at 70% and 100% clogged',
+			'Joint types: adhesive (standard) or welded (high-pressure / high-temperature service)',
+			'MOC: Zinc coated MS (standard) or SS 304 / SS 316 for corrosive duty',
+			'ASME Section VIII / PED 2014/68/EC / API 614 housing design compliance',
 			'HSN Code: 8421',
 		],
 		specs: {
-			'Flow Capacity': '350–850 LPM (model dependent)',
-			'Filtration Fineness': '3–25 µm (microglass deep bed)',
-			'Anti-Static Rating': 'IS27 — for oils below 300 pS/m',
-			'Max Pressure': 'Up to 63 bar (duplex configuration)',
-			'Seal Material': 'Nitrile or Viton',
-			Standards: 'ISO 16889, PED 2014/68/EC, ASME Sec VIII',
-			'OEM Compatibility': 'Siemens industrial steam turbines — all models',
+			'Turbine Compatibility': 'Siemens SST-200 / 300 / 400 / 600 / 800 / 900; SGT-100 to SGT-800',
+			'Filtration Rating': '10–200 µm full range; 10 µm & 25 µm most common',
+			'Glass Fiber Beta Rating': 'β₂₀₀ (absolute) — NAS cleanliness compliant',
+			'Max Working Pressure': 'Up to 280 bar (welded elements)',
+			'Max Working Temperature': '120°C standard; 250°C high-temp grade',
+			'Model — 12 MW': 'OD 142 mm × ID 88 mm × L 748 mm | 25 µm mesh | 18 bar | SS 304',
+			'Model — 30 MW': 'OD 142 mm × ID 75 mm × L 748 mm | 25 µm mesh | 18 bar | Zinc MS',
+			'Model — 35 MW': 'OD 140 mm × ID 90 mm × L 380 mm | 10 µm glass | 20 bar | Zinc MS',
+			'Model — 15 GPM': 'OD 130 mm × ID 75 mm × L 248 mm | 10 µm | 18 bar | Zinc MS',
+			'Model — 60 LPM': 'OD 74 mm × ID 45 mm × L 148 mm | 10 µm paper | 10 bar | Zinc MS',
+			'Media Types': 'Imported glass fiber (β₂₀₀); Twill Dutch Weave SS mesh (reusable); Synthetic paper',
+			'MOC Options': 'Zinc coated MS; SS 304; SS 316',
+			'Joint Types': 'Adhesive; Welded',
+			Standards: 'ISO 16889, API 614, ASME Sec VIII, PED 2014/68/EC',
 			'HSN Code': '8421',
 		},
 		images: [
@@ -3408,29 +3601,43 @@ const RAW_PRODUCTS = [
 		id: 'prod_f13',
 		category: 'Industrial Filtration',
 		title: 'Triveni Turbine Control Oil Filters',
-		desc: 'OEM-matched control oil filter elements for Triveni steam turbine electrohydraulic governing systems. Designed to maintain ISO 4406 cleanliness class 16/14/11 protecting high-sensitivity servo valves.',
+		desc: 'OEM-matched control oil filter elements for Triveni steam turbine electrohydraulic governing systems. Designed to maintain ISO 4406 cleanliness class 16/14/11 protecting high-sensitivity servo valves. Three standard dimensional configurations cover the complete range of Triveni turbine models from FR-series to TST-series. Max working pressure up to 210 bar; max temperature 250°C. Supplied in imported glass fiber (β₂₀₀ to β₁₀₀₀ absolute), Twill Dutch Weave SS wire mesh (reusable), or synthetic paper media.',
 		usage:
-			'Control oil filtration in Triveni turbine governing systems — particularly critical during commissioning and post-overhaul startup to protect servo valves from particle-induced failure.',
+			'Control oil filtration in Triveni turbine governing systems — particularly critical during commissioning and post-overhaul startup to protect servo valves from particle-induced failure. Compatible with Triveni models FR13, FR13B, FR2, FR2B, FR14A, FR14M, FR14M3HB, FR2S, TST-1030, TST-1030-M, TST-1030-MB, TST-1030-SBM, TST-1060-EB, TST-1060-SB and all other Triveni variants. Protects servo valves with clearances below 5 µm — ISO 4406 Class 16/14/11 required.',
 		features: [
-			'Triveni turbine governing system compatible — drop-in element replacement',
+			'Triveni turbine governing system compatible — drop-in element replacement; no housing modification required',
+			'Three standard dimensional configurations covering complete Triveni turbine range:',
+			'FR-series (FR13/FR13B/FR2/FR2B) — 120–180 LPM flow; OD 180 mm × ID 82 mm × L 261–431 mm',
+			'FR14/TST-1030 series — 120–350 LPM flow; OD 225 mm × ID 100 mm × L 461–581 mm',
+			'TST-1060 series — 350+ LPM flow; OD 270 mm × ID 125 mm × L 551 mm',
+			'Max working pressure: up to 210 bar (welded construction elements)',
+			'Max working temperature: 120°C standard; 250°C high-temperature grade',
+			'Glass fiber media: β₂₀₀ to β₁₀₀₀ absolute rating — achieves NAS cleanliness class required for Triveni EHC servo systems',
+			'SS wire mesh: Twill Dutch Weave (TWD) — cleanable and reusable multiple times',
 			'Filtration fineness: 6, 10, 16, 25 µm (ISO 16889 beta ratings)',
-			'Glass fiber fleece (VG) or Microglass media options',
-			'Targets system cleanliness: ISO 4406 Class 16/14/11',
-			'High collapse resistance per ISO 2941; high burst integrity',
 			'IS27 anti-static specification where synthetic oils are used',
+			'MOC options: Zinc coated MS (standard); SS 304; SS 316 for corrosive duty',
 			'Sealing: Nitrile (P) or Viton (V) end caps',
 			'Compatible with mineral and synthetic turbine control oils',
-			'Exact OEM dimensional replacement — no housing modification required',
 			'HSN Code: 8421',
 		],
 		specs: {
+			'Turbine Compatibility': 'Triveni FR13, FR13B, FR2, FR2B, FR14A, FR14M, FR14M3HB, FR2S, TST-1030/1060 series — all variants',
 			'Flow Capacity': '120–350 LPM (turbine model dependent)',
 			'Filtration Grade': '6–25 µm glass fiber fleece (ISO 16889)',
+			'Glass Fiber Beta Rating': 'β₂₀₀ to β₁₀₀₀ (absolute) — NAS cleanliness compliant',
+			'Max Working Pressure': 'Up to 210 bar (welded elements)',
+			'Max Working Temperature': '120°C standard; 250°C high-temp grade',
+			'Model — FR-series': 'OD 180 mm × ID 82 mm × L 261–431 mm | 120–180 LPM',
+			'Model — FR14/TST-1030': 'OD 225 mm × ID 100 mm × L 461–581 mm | 120–350 LPM',
+			'Model — TST-1060': 'OD 270 mm × ID 125 mm × L 551 mm | 350+ LPM',
+			'Media Types': 'Imported glass fiber (β₂₀₀–β₁₀₀₀); Twill Dutch Weave SS mesh (reusable); Synthetic paper',
+			'MOC Options': 'Zinc coated MS; SS 304; SS 316',
 			'Target Cleanliness': 'ISO 4406 Class 16/14/11',
 			'Seal Options': 'Nitrile / Viton end caps',
 			'Collapse Rating': 'Per ISO 2941 (high)',
-			'OEM Compatibility': 'Triveni steam turbines — all models',
 			'Oil Compatibility': 'Mineral & synthetic turbine control oils',
+			Standards: 'ISO 16889, API 614, ASME Sec VIII, PED 2014/68/EC',
 			'HSN Code': '8421',
 		},
 		images: [
@@ -3477,6 +3684,7 @@ const RAW_PRODUCTS = [
 			'Bore Type': 'Interference fit + keyway (DIN 6885 / OEM spec)',
 			'Angular Misalignment': 'Up to 1.5 deg (gear coupling)',
 			Documentation: 'Material cert + PMI + balancing report + dim inspection',
+					'HSN Code': '8483',
 		},
 		images: [
 			'turbine-coupling-high-low-1.webp',
@@ -3522,6 +3730,7 @@ const RAW_PRODUCTS = [
 			'Operating Temperature': '-40 deg C to +200 deg C',
 			'OEM Equivalents': 'MetaFlex, Bibby, Lovejoy, Rexnord disc pack designs',
 			Lubrication: 'None required — maintenance-free',
+					'HSN Code': '8483',
 		},
 		images: [
 			'metaflex-disc-pack-1.webp',
@@ -3566,6 +3775,7 @@ const RAW_PRODUCTS = [
 			'Connection Types': 'Flanged ANSI/DIN / Screwed BSP-NPT',
 			'Mica Shield': 'Available for corrosive condensate protection',
 			Applications: 'Steam boilers, pressure vessels, condensate drums',
+					'HSN Code': '8483',
 		},
 		images: [
 			'boiler-sight-glass-1.webp',
@@ -3613,6 +3823,7 @@ const RAW_PRODUCTS = [
 			'Ambient Temp': '-20 to +50 deg C (std); -40 deg C option',
 			'SIL Rating': 'SIL 2 available',
 			'Response Time': '10–60 ms (direct acting)',
+			'HSN Code': '8481',
 		},
 		images: [
 			'asco-solenoid-valve-8210-1.webp',
@@ -3656,6 +3867,7 @@ const RAW_PRODUCTS = [
 			Machining: 'Precision CNC to OEM tolerance + CMM verification',
 			Application: 'TDPS alternator generator bearing',
 			Documentation: 'Full inspection report + material certificate',
+					'HSN Code': '8406',
 		},
 		images: [
 			'tdps-alternator-bearing-1.webp',
@@ -3701,6 +3913,7 @@ const RAW_PRODUCTS = [
 			'Alarm Output': 'Optional 1–2 SPDT relay contacts',
 			'Operating Temp': '0 to +55 deg C',
 			'Compatible Brands': 'Beacon, Yokins, Elmeasure, Automatic Systems',
+			'HSN Code': '9026',
 		},
 		images: [
 			'beacon-tachometer-gauge-1.webp',
@@ -3746,6 +3959,7 @@ const RAW_PRODUCTS = [
 			Applications:
 				'Governor speeder springs, trip springs, valve return springs',
 			'OEM Compatibility': 'Triveni, BHEL, Belliss, Maxwatt, Siemens turbines',
+					'HSN Code': '8406',
 		},
 		images: [
 			'turbine-leaf-springs-1.webp',
@@ -3766,9 +3980,9 @@ const RAW_PRODUCTS = [
 		id: 'prod_ts17',
 		category: 'Turbine Spares',
 		title: 'Rotor Journal Polishing Service',
-		desc: 'In-situ or workshop precision journal polishing service for turbine and alternator rotors. Restores bearing surface finish to Ra 0.4 µm or better without removal of the rotor from the machine — minimizing outage duration.',
+		desc: 'In-situ or workshop precision journal polishing service for turbine and alternator rotors. Restores bearing surface finish to Ra 0.4 µm or better without removal of the rotor from the machine — minimizing outage duration. HOW TO ORDER: Share (1) OEM name and turbine model, (2) journal diameter and length, (3) current surface condition or failure description, (4) site or workshop preference. Typical turnaround: 1–3 days for in-situ; 5–10 days for workshop. Often combined with Dynamic Balancing service (see Services page) when rotor is removed.',
 		usage:
-			'Restoration of turbine rotor journal surfaces after bearing failure, contaminated oil damage, or corrosion; alternator rotor slip ring and journal polishing during planned maintenance.',
+			'Restoration of turbine rotor journal surfaces after bearing failure, contaminated oil damage, or corrosion; alternator rotor slip ring and journal polishing during planned maintenance. To enquire, send OEM name, rotor dimensions, and a description or photo of the surface condition via WhatsApp or email — we will confirm scope and turnaround within 24 hours.',
 		features: [
 			'In-situ polishing using purpose-built on-site grinding and polishing equipment',
 			'Achieves surface finish Ra ≤ 0.4 µm (N5) — OEM bearing seating specification',
@@ -3790,6 +4004,10 @@ const RAW_PRODUCTS = [
 			'OEM Compatibility':
 				'All turbine makes — Triveni, BHEL, Siemens, KKK, Man Turbo, Belliss',
 			Documentation: 'Full polishing report with before/after measurements',
+			'Typical Turnaround': '1–3 days (in-situ) / 5–10 days (workshop)',
+			'How to Order': 'Provide OEM name, journal diameter & length, surface condition / failure description',
+			'Related Service': 'Dynamic Balancing (see Services page) — combine when rotor is out',
+					'HSN Code': '8406',
 		},
 		images: [
 			'rotor-journal-polishing-1.webp',
@@ -3834,6 +4052,7 @@ const RAW_PRODUCTS = [
 			'Connection Head': 'IP65 die-cast Al / SS with optional HART transmitter',
 			'ATEX Rating': 'Ex d / Ex ia (hazardous area versions)',
 			'DCS Compatibility': 'Yokogawa, ABB, Siemens, Honeywell, Emerson',
+					'HSN Code': '9025',
 		},
 		images: [
 			'rtd-sensors-turbine-1.webp',
@@ -3854,12 +4073,12 @@ const RAW_PRODUCTS = [
 		id: 'prod_ee6',
 		category: 'Electronic Equipments',
 		title: 'SEMIKRON SKN240/16 Rectifier Diode',
-		desc: 'SEMIKRON SKN240/16 stud-mount power rectifier diode for alternator AVR excitation circuits and turbine-generator rectifier bridges. 240 A average forward current, 1600 V peak reverse voltage.',
+		desc: 'SEMIKRON SKN240/16 stud-mount power rectifier diode for alternator AVR excitation circuits and turbine-generator rectifier bridges. 240 A average forward current, 1600 V peak reverse voltage. Full VRRM voltage range (800 V to 2200 V) available — specify voltage class at order.',
 		usage:
 			'Rotating diode bridge rectifiers in brushless alternators, static AVR excitation panels, turbine-driven generator control circuits, and industrial power rectification in sugar mill and power plant alternators.',
 		features: [
 			'Average forward current IFAV: 240 A (standard recovery stud diode)',
-			'Repetitive peak reverse voltage VRRM: 1600 V',
+			'Repetitive peak reverse voltage VRRM: 1600 V (SKN240/16) — full range: SKN240/08 (800V), /10 (1000V), /12 (1200V), /14 (1400V), /16 (1600V), /18 (1800V), /20 (2000V), /22 (2200V) — specify voltage class at order',
 			'Peak non-repetitive surge current IFSM: 6000 A (10 ms half-sine)',
 			'Forward voltage VF: 1.4 V at rated current',
 			'ISO M16 threaded stud mount — anode to stud (SKN designation)',
@@ -3871,8 +4090,9 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			'Part Number': 'SEMIKRON SKN240/16',
+			'Available VRRM Variants': 'SKN240/08 to SKN240/22 (800V–2200V) — specify at order',
 			'Average Forward Current (IFAV)': '240 A',
-			'Peak Reverse Voltage (VRRM)': '1600 V',
+			'Peak Reverse Voltage (VRRM)': '1600 V (SKN240/16)',
 			'Surge Current (IFSM)': '6000 A (10 ms)',
 			'Forward Voltage (VF)': '1.4 V at rated If',
 			'Mount Type': 'ISO M16 threaded stud — anode to stud',
@@ -3880,6 +4100,7 @@ const RAW_PRODUCTS = [
 			'Max Case Temp (Tc)': '130 deg C',
 			'Case Style': 'Hermetic metal / glass insulator',
 			Application: 'Alternator AVR excitation, generator rectifier bridges',
+			'HSN Code': '8541',
 		},
 		images: [
 			'semikron-skn240-16-1.webp',
@@ -3925,6 +4146,7 @@ const RAW_PRODUCTS = [
 			'Material Verification': 'PMI test before heat treatment',
 			Applications:
 				'Trip latch pivots, governor linkages, blade locking mechanisms',
+					'HSN Code': '8406',
 		},
 		images: [
 			'turbine-fulcrum-pins-1.webp',
@@ -3944,7 +4166,7 @@ const RAW_PRODUCTS = [
 	{
 		id: 'prod_ts19',
 		category: 'Turbine Spares',
-		title: 'Spiral Conveyor Screw (Turbine Auxilaries)',
+		title: 'Spiral Conveyor Screw (Turbine Auxiliaries)',
 		desc: 'Precision fabricated spiral screw conveyors for turbine auxiliary and power plant material handling systems. Custom-manufactured to OEM pitch, diameter, and helix angle specifications in carbon steel, SS, or wear-resistant alloy.',
 		usage:
 			'Ash conveying, biomass feeding, chemical dosing screws, boiler bed material handling, and turbine auxiliary system material conveyors in power plants and process industries.',
@@ -3970,6 +4192,7 @@ const RAW_PRODUCTS = [
 			Standard: 'CEMA Standard or per customer spec',
 			Applications:
 				'Ash conveying, biomass feed, boiler bed material, chemical dosing',
+					'HSN Code': '8406',
 		},
 		images: [
 			'spiral-conveyor-screw-1.webp',
@@ -4016,6 +4239,7 @@ const RAW_PRODUCTS = [
 			'OEM Equivalents': 'Fenner, Lovejoy, KTR, Bibby, local make sleeves',
 			Application:
 				'Turbine-auxiliary, pump, fan, compressor gear coupling drives',
+					'HSN Code': '8406',
 		},
 		images: [
 			'nylon-coupling-sleeve-1.webp',
@@ -4063,6 +4287,7 @@ const RAW_PRODUCTS = [
 			'Bore Type': 'Cylindrical or taper bore (DIN 6885 Sheet 1)',
 			Lubrication: 'None — maintenance-free (PA66 sleeve)',
 			Orientation: 'Horizontal or vertical assembly',
+					'HSN Code': '8406',
 		},
 		images: [
 			'ktr-bowex-coupling-1.webp',
@@ -4400,6 +4625,7 @@ const RAW_PRODUCTS = [
 			'Hydraulic and lubrication systems using HYDAC filter housings across industrial machinery, turbine control oil circuits, injection moulding machines, machine tools, and mobile hydraulic equipment.',
 		features: [
 			'Compatible with HYDAC housing series: 0060, 0110, 0160, 0240, 0330, 0500, 0660, 1300 D/R/T series and more',
+			'Most common cross-reference part numbers: 0160D010BN4HC, 0160D025BN4HC, 0240D010BN4HC, 0330D010BN4HC, 0500D010BN4HC, 0660D010BN4HC, 1300D010BN4HC, 0160D003BN4HC, 0060D010BN4HC, 0110D010BN4HC — specify HYDAC part number for exact cross-reference',
 			'Filter media: Betamicron (BN4HC) microglass or Optimicron (ON) — matched to OEM specification',
 			'Absolute filtration ratings: β10(c) ≥ 1000 (99.9% efficiency at rated micron)',
 			'Micron ratings available: 3, 6, 10, 16, 25 µm per HYDAC model code requirement',
@@ -4450,6 +4676,7 @@ const RAW_PRODUCTS = [
 			'Hydraulic power units, turbine lube and control oil systems, aerospace ground support, industrial machinery, and process filtration systems using Pall filter housings where cost-effective OEM-equivalent elements are required.',
 		features: [
 			'Compatible with Pall housing series: HC, HH, UE, AEW, LCS, HNF, FAX, and HXX series elements',
+			'Most common cross-reference part numbers: HC2206FKN8H, HC2216FKN8H, HC2236FKN8H, HC9600FKN8H, HC9601FKT8H, HC8304FKN16H, HC8314FKT13H, UE219AS20H, UE319AS20H, HC6300FKN8H — specify Pall part number for exact cross-reference',
 			'Microglass filter media — equivalent to Pall Ultipleat and High Capacity element performance',
 			'Absolute filtration rating: β10(c) ≥ 1000; β3(c) ≥ 1000 for fine-grade elements',
 			'Micron ratings: 3, 6, 10, 16, 25 µm (specify Pall part number for exact cross-reference)',
@@ -4500,6 +4727,7 @@ const RAW_PRODUCTS = [
 			'Hydraulic and lube oil systems across Indian industry using Bhagwati filter housings — machine tools, injection moulding, industrial presses, CNC machinery, turbine auxiliary systems, and general hydraulic power units across sugar mills, paper mills, and process plants.',
 		features: [
 			'Bhagwati filter housing compatible — exact part number cross-reference supplied on request',
+			'Most common Bhagwati part numbers: BF-0160-10, BF-0240-10, BF-0330-10, BF-0500-10, BF-0160-25, BF-0330-25, BF-DP-0160-10 (duplex), BF-RL-0330-25 (return line), BF-SU-40 (suction) — specify housing model or existing part number for exact cross-reference',
 			'Media options: glass fiber, Hydroclean absolute, paper, and SS wire mesh per application',
 			'Hydroclean absolute media: β10(c) ≥ 200; β6(c) ≥ 200 efficiency ratings',
 			'Micron ratings: 3, 6, 10, 25, 40, 60 µm standard range',
@@ -4626,6 +4854,7 @@ const RAW_PRODUCTS = [
 				'Triveni, BHEL, Siemens, KKK, Man Turbo, Belliss & Morcom turbines',
 			Documentation: 'PMI material cert + dimensional inspection report',
 			Supply: 'Matched sets with anti-seize compound',
+					'HSN Code': '8406',
 		},
 		images: [
 			'turbine-shear-pins-1.webp',
@@ -4674,6 +4903,7 @@ const RAW_PRODUCTS = [
 			Configurations: 'Single / tandem / triple / quadruple',
 			Mounting: 'SAE flange — BSP or metric ports',
 			Service: 'New manufacture or OEM-spec overhauled + performance tested',
+					'HSN Code': '8406',
 		},
 		images: [
 			'dowty-hydraulic-pump-1.webp',
@@ -4726,6 +4956,7 @@ const RAW_PRODUCTS = [
 				'Explosion-proof solenoids for Zone 1/Zone 2 hazardous areas',
 			Proportional:
 				'Proportional directional valves available for variable control',
+					'HSN Code': '8413',
 		},
 		images: [
 			'directional-control-valve-1.webp',
@@ -4740,6 +4971,364 @@ const RAW_PRODUCTS = [
 			'directional-control-valve-10.webp',
 			'directional-control-valve-11.webp',
 			'directional-control-valve-12.webp',
+		],
+	},
+
+	// ── 8 NEW PRODUCTS — MAY 2026 GAP-FILL ──
+	{
+		id: 'prod_f_bhel',
+		category: 'Industrial Filtration',
+		title: 'BHEL Turbine Lube Oil Filter Elements',
+		desc: 'OEM-matched lube oil filter elements for BHEL steam turbines (100 MW to 500 MW class, including TG sets manufactured at BHEL Haridwar and BHEL Trichy). Designed to protect BHEL lube oil systems — journal bearings, thrust pads, and jacking oil systems — from particle contamination.',
+		usage:
+			'Primary lube oil filtration in BHEL steam turbines used in central public sector thermal power stations (NTPC, APGENCO, WBPDCL, MSPGCL, UPRVUNL, and state utilities). Also suitable for BHEL turbo-sets in captive power plants, steel plants, and process industries. Compatible with BHEL duplex lube oil filter housings and basket strainer internals supplied as part of BHEL turbine lube oil skids.',
+		features: [
+			'OEM-matched for BHEL turbine lube oil systems — 100 MW, 200 MW, 210 MW, 250 MW, 500 MW class TG sets',
+			'Compatible with BHEL duplex lube oil filter housings — drop-in replacement without housing modification',
+			'Filtration fineness: 10, 25, 40 µm (ISO 16889 rated); finer on request for servo system protection',
+			'Filter media: Imported glass fiber (nominal and absolute), SS wire mesh (reusable), Hydroclean paper',
+			'Working pressure: up to 20 bar (standard lube oil system); up to 210 bar (jacking oil system)',
+			'Temperature range: –20°C to +120°C (standard); +250°C high-temp grade',
+			'SS wire mesh elements: cleanable, reusable; suitable for commissioning flush and post-overhaul startup',
+			'Bypass valve compatible — protects bearing supply during cold-start high-viscosity condition',
+			'Duplex housing arrangement: active + standby with transfer valve — element change without turbine trip',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Turbine Compatibility': 'BHEL 100 MW–500 MW class steam turbines (Haridwar/Trichy manufacture)',
+			'Filtration Grades': '10, 25, 40 µm standard; finer on request',
+			'Media Types': 'Glass fiber (absolute/nominal); SS wire mesh (reusable); Hydroclean paper',
+			'Max Working Pressure': 'Up to 20 bar (lube oil); up to 210 bar (jacking oil)',
+			'Temperature Range': '–20°C to +120°C standard; +250°C high-temp',
+			'Housing Compatibility': 'BHEL duplex lube oil filter housing (drop-in)',
+			'Bypass Valve': 'Compatible with cold-start bypass valve',
+			Standards: 'ISO 16889, API 614',
+			'HSN Code': '8421',
+		},
+		images: [
+			'bhel-turbine-filter-1.webp',
+			'bhel-turbine-filter-2.webp',
+			'bhel-turbine-filter-3.webp',
+			'bhel-turbine-filter-4.webp',
+			'bhel-turbine-filter-5.webp',
+			'bhel-turbine-filter-6.webp',
+			'bhel-turbine-filter-7.webp',
+			'bhel-turbine-filter-8.webp',
+			'bhel-turbine-filter-9.webp',
+			'bhel-turbine-filter-10.webp',
+			'bhel-turbine-filter-11.webp',
+			'bhel-turbine-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_f_htc',
+		category: 'Industrial Filtration',
+		title: 'HTC Turbine Filter Elements',
+		desc: 'OEM-matched lube oil and control oil filter elements for HTC (Hindustan Turbines Corporation) steam turbines. Drop-in compatible with HTC filter housings for lube oil and governing system filtration.',
+		usage:
+			'Lube oil and control oil filtration in HTC steam turbines used in sugar mills, paper mills, captive power plants, and process industries across India. Compatible with HTC centrifugal filter housings and standard duplex basket-type lube oil filters supplied as part of HTC turbine lube oil systems.',
+		features: [
+			'OEM-matched for HTC steam turbines — lube oil and control oil filter positions',
+			'Compatible with HTC centrifugal filter housing (CEP type) and standard basket-type duplex housings',
+			'Filtration fineness: 10, 25, 40, 80 µm — specify HTC turbine model and filter position',
+			'Filter media: SS wire mesh (reusable, CEP type), glass fiber (duplex lube oil housing)',
+			'Working pressure: up to 16 bar (lube oil); up to 63 bar (control oil)',
+			'Temperature range: –20°C to +120°C',
+			'SS wire mesh CEP elements: centrifugal end-plug design; cleanable and reusable',
+			'Drop-in replacement — no housing modification required',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Turbine Compatibility': 'HTC steam turbines — lube oil and control oil positions',
+			'Filtration Grades': '10, 25, 40, 80 µm (specify model and position)',
+			'Media Types': 'SS wire mesh CEP (reusable); glass fiber (duplex housing)',
+			'Max Working Pressure': 'Up to 16 bar (lube oil); up to 63 bar (control oil)',
+			'Temperature Range': '–20°C to +120°C',
+			'HSN Code': '8421',
+		},
+		images: [
+			'htc-turbine-filter-1.webp',
+			'htc-turbine-filter-2.webp',
+			'htc-turbine-filter-3.webp',
+			'htc-turbine-filter-4.webp',
+			'htc-turbine-filter-5.webp',
+			'htc-turbine-filter-6.webp',
+			'htc-turbine-filter-7.webp',
+			'htc-turbine-filter-8.webp',
+			'htc-turbine-filter-9.webp',
+			'htc-turbine-filter-10.webp',
+			'htc-turbine-filter-11.webp',
+			'htc-turbine-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_blades',
+		category: 'Turbine Spares',
+		title: 'Steam Turbine Blades (Moving & Stationary)',
+		desc: 'Precision reverse-engineered and manufactured steam turbine blades — moving (rotor) and stationary (stator/nozzle) — in 13% Cr steel, 316L SS, Incoloy, and titanium. Covers LP, IP, and HP stage blade profiles for Triveni, BHEL, Siemens, Belliss & Morcom, and Maxwatt steam turbines.',
+		usage:
+			'Replacement of erosion-damaged, fouled, or broken rotor and stator blades in steam turbines across power generation, sugar mills, paper mills, and process industries. Compatible with Triveni, BHEL, Siemens (SST series), Belliss & Morcom, Maxwatt, Man Turbo, and KKK steam turbine blade rows.',
+		features: [
+			'OEM blade profile replicated from reverse engineering — 3D scan + CMM measurement of original blade',
+			'Blade materials: 13% Cr steel (standard stages), 316L SS (wet-steam LP stages), Incoloy 825 (high-temperature HP stages), Titanium (last-stage LP for erosion resistance)',
+			'Precision machined aerofoil profile with serration-type root attachments: finger-tree (T-root), dove-tail, or T-root per OEM',
+			'Shroud designs: integral Z-lacing wire, loose shroud, interlocked tip shroud, or bare tip per stage design',
+			'Stellite hard-facing on LP last-stage leading edges — erosion protection from wet steam droplets',
+			'Dimensional verification: profile gauge check + CMM inspection report for each blade batch',
+			'PMI material verification before machining — chemical composition certificate supplied',
+			'Dynamic balancing of complete blade set on rotor disc — ISO 1940 / API 670 compliance',
+			'Moving (rotor) and stationary (nozzle/diaphragm) blades supplied separately or as a stage set',
+			'Suitable for life extension programs — blade material upgrade available',
+		],
+		specs: {
+			'OEM Compatibility': 'Triveni, BHEL, Siemens SST, Belliss & Morcom, Maxwatt, Man Turbo, KKK',
+			'Blade Types': 'Moving (rotor) and stationary (stator/nozzle)',
+			Materials: '13% Cr steel / 316L SS / Incoloy 825 / Titanium (per stage)',
+			'Root Attachment': 'Finger-tree (T-root), dove-tail, T-root',
+			Shrouding: 'Z-lacing wire / loose / interlocked tip / bare tip',
+			'Erosion Protection': 'Stellite hard-facing on LP last-stage leading edge',
+			Verification: 'Profile gauge + CMM inspection report per batch',
+			'PMI Certificate': 'Chemical composition certificate supplied',
+			'Balancing Standard': 'ISO 1940 / API 670 (on rotor disc)',
+					'HSN Code': '8406',
+		},
+		images: [
+			'turbine-blades-1.webp',
+			'turbine-blades-2.webp',
+			'turbine-blades-3.webp',
+			'turbine-blades-4.webp',
+			'turbine-blades-5.webp',
+			'turbine-blades-6.webp',
+			'turbine-blades-7.webp',
+			'turbine-blades-8.webp',
+			'turbine-blades-9.webp',
+			'turbine-blades-10.webp',
+			'turbine-blades-11.webp',
+			'turbine-blades-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_gov_cards',
+		category: 'Turbine Spares',
+		title: 'Woodward Governor Control Cards & PCB Assemblies',
+		desc: 'Replacement control cards, PCB assemblies, and plug-in modules for Woodward digital governor systems (505, 505D, 505E, 2301A, 2301D, 7206, MicroNet Plus). Critical spare parts for turbine control systems where card failure causes unplanned shutdown.',
+		usage:
+			'Replacement of failed control cards in Woodward 505, 505D, 505E, 2301A, 2301D, 7206, and MicroNet Plus digital governor panels on Triveni, BHEL, Siemens, KKK, and Maxwatt steam turbines. Covers actuator output cards, speed input cards, analog I/O modules, power supply boards, and communication cards.',
+		features: [
+			'Compatible Woodward governor systems: 505 (9907-162), 505D (8923-032), 505E (8200-1300/1301/1302), 2301A (9905-465), 2301D (8280-0001), 7206 (8273-010), MicroNet Plus (5462-305/311)',
+			'Card types: Speed/load control modules, actuator output cards, analog I/O cards, discrete I/O cards, power supply boards, communication modules (Modbus/Profibus)',
+			'OEM Woodward cards and high-quality compatible equivalents available — specify Woodward part number',
+			'Factory tested and burn-in tested before dispatch — full functional test report supplied',
+			'Long-lead items stocked at our Shamli location for fastest delivery in North India',
+			'Installation guidance provided for card replacement — supports plant electrical and control engineers',
+			'Fault diagnosis service available — submit governor fault code and alarm history for root-cause analysis',
+			'Emergency supply: expedited dispatch available for critical plant outage situations',
+		],
+		specs: {
+			'Compatible Governor Models': 'Woodward 505, 505D, 505E, 2301A, 2301D, 7206, MicroNet Plus',
+			'Card Types': 'Speed/load, actuator output, analog I/O, discrete I/O, power supply, communications',
+			'OEM Turbine Compatibility': 'Triveni, BHEL, Siemens, KKK, Maxwatt turbines with Woodward governors',
+			'Supply Options': 'OEM Woodward cards; compatible equivalents (specify part number)',
+			Testing: 'Factory tested + burn-in; functional test report supplied',
+			'Emergency Supply': 'Expedited dispatch for critical plant outage',
+					'HSN Code': '8406',
+		},
+		images: [
+			'woodward-governor-cards-1.webp',
+			'woodward-governor-cards-2.webp',
+			'woodward-governor-cards-3.webp',
+			'woodward-governor-cards-4.webp',
+			'woodward-governor-cards-5.webp',
+			'woodward-governor-cards-6.webp',
+			'woodward-governor-cards-7.webp',
+			'woodward-governor-cards-8.webp',
+			'woodward-governor-cards-9.webp',
+			'woodward-governor-cards-10.webp',
+			'woodward-governor-cards-11.webp',
+			'woodward-governor-cards-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_shaft_seal_kit',
+		category: 'Turbine Spares',
+		title: 'Complete Shaft Seal Kit — Carbon Ring Gland Assembly',
+		desc: 'Complete shaft seal kit combining all gland sealing components into a single supply: carbon/graphite gland rings, gland housing, spring assembly, gland steam piping connections, and all fasteners. Eliminates multi-vendor procurement and ensures dimensional compatibility between all components.',
+		usage:
+			'Complete gland sealing overhaul or upgrade on steam turbines during planned shutdown. Eliminates the common problem of mismatch between separately procured carbon rings, springs, and housing components. Supplied as a matched kit for Triveni, BHEL, Belliss & Morcom, and Maxwatt turbine gland positions.',
+		features: [
+			'Complete kit: carbon/graphite gland rings + gland housing + spring pack + gland steam connector + fasteners',
+			'All components dimensionally matched and verified against OEM drawing — eliminates assembly mismatch',
+			'OEM turbine compatibility: Triveni (FR and TST series), BHEL, Belliss & Morcom, Maxwatt',
+			'Carbon/graphite grade: standard carbon graphite (up to 600°C); electrographite (up to 700°C) per steam temperature',
+			'Split ring design standard in kit — allows installation without rotor removal, minimising outage time',
+			'Gland housing: CNC machined in CI or alloy steel per OEM specification',
+			'Spring pack: calibrated spring steel — maintains correct sealing pressure across temperature range',
+			'All components supplied with dimension verification report and material certificates',
+			'Reduces procurement lead time versus sourcing each component separately',
+			'Emergency supply available — critical seal kits stocked at Shamli location',
+		],
+		specs: {
+			'Kit Contents': 'Carbon rings + gland housing + spring pack + connectors + fasteners',
+			'OEM Compatibility': 'Triveni FR/TST series, BHEL, Belliss & Morcom, Maxwatt',
+			'Carbon Grade': 'Carbon graphite (≤600°C) / Electrographite (≤700°C)',
+			'Split Ring': 'Standard in kit — no rotor removal required for fitting',
+			'Housing Material': 'CI or alloy steel (per OEM specification)',
+			Documentation: 'Dimension verification report + material certificates for all components',
+			'Supply Advantage': 'Single-supplier kit — eliminates multi-vendor mismatch',
+					'HSN Code': '8406',
+		},
+		images: [
+			'shaft-seal-kit-1.webp',
+			'shaft-seal-kit-2.webp',
+			'shaft-seal-kit-3.webp',
+			'shaft-seal-kit-4.webp',
+			'shaft-seal-kit-5.webp',
+			'shaft-seal-kit-6.webp',
+			'shaft-seal-kit-7.webp',
+			'shaft-seal-kit-8.webp',
+			'shaft-seal-kit-9.webp',
+			'shaft-seal-kit-10.webp',
+			'shaft-seal-kit-11.webp',
+			'shaft-seal-kit-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_rebabbitting',
+		category: 'Turbine Spares',
+		title: 'Bearing Rebabbitting Service',
+		desc: 'Professional rebabbitting (white metal relining) service for steam turbine journal bearings, thrust pads, and compressor bearings. Centrifugal or static casting of tin-base or lead-base white metal to OEM specification, with ultrasonic bond testing on 100% of bearings.',
+		usage:
+			'Refurbishment of worn, damaged, or scored turbine journal bearings and thrust pads where the bearing shell is in good condition but white metal is exhausted, scored, or de-bonded. More cost-effective than full bearing replacement. Applicable to Triveni, BHEL, Siemens, Belliss & Morcom, Man Turbo, KKK, and all major makes of steam turbine, gearbox, and compressor bearings.',
+		features: [
+			'White metal removal — full strip-back of old babbitt by machining',
+			'Shell inspection and preparation — visual + dimensional inspection; dye penetrant test on bond surface',
+			'White metal grade: Tin-base (Babbitt Grade 1/2/3) or Lead-base per OEM specification',
+			'Casting method: centrifugal casting (journal bearings) or static casting (thrust pads) — OEM method matched',
+			'Ultrasonic bond testing — 100% of bearings; pass/fail report issued',
+			'Precision CNC machining of rebabbitted surface to OEM bore dimension and finish',
+			'Oil distribution grooves and feed holes recut to OEM drawing specification',
+			'Surface finish: Ra ≤ 1.6 µm (journal bore) per OEM requirement',
+			'Hardness testing of white metal after casting — per BS/ISO standards',
+			'Complete dimensional inspection report and ultrasonic bond test certificate supplied',
+			'Typical turnaround: 7–14 days from receipt of bearing (emergency 48–72 hour service available)',
+		],
+		specs: {
+			Service: 'Rebabbitting — white metal relining of bearing shells and thrust pads',
+			'White Metal Grade': 'Tin-base Babbitt Grade 1/2/3 or Lead-base (per OEM)',
+			'Casting Method': 'Centrifugal (journal bearings) / Static (thrust pads)',
+			'Bond Integrity Test': 'Ultrasonic bond test — 100% of bearings; pass/fail certificate',
+			'Surface Finish': 'Ra ≤ 1.6 µm (CNC machined bore)',
+			'OEM Compatibility': 'All turbine, compressor, and gearbox bearing makes',
+			'Typical Turnaround': '7–14 working days (48–72 hr emergency available)',
+			Documentation: 'Dimensional inspection + ultrasonic bond test certificate',
+					'HSN Code': '8406',
+		},
+		images: [
+			'rebabbitting-service-1.webp',
+			'rebabbitting-service-2.webp',
+			'rebabbitting-service-3.webp',
+			'rebabbitting-service-4.webp',
+			'rebabbitting-service-5.webp',
+			'rebabbitting-service-6.webp',
+			'rebabbitting-service-7.webp',
+			'rebabbitting-service-8.webp',
+			'rebabbitting-service-9.webp',
+			'rebabbitting-service-10.webp',
+			'rebabbitting-service-11.webp',
+			'rebabbitting-service-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_lube_oil_cooler',
+		category: 'Turbine Spares',
+		title: 'Turbine Lube Oil Cooler (Shell & Tube / Plate Type)',
+		desc: 'Replacement and new-supply lube oil coolers for steam turbine lube oil systems. Shell and tube type and plate heat exchanger type — manufactured to TEMA and ASME VIII standards or to OEM dimensional specification. Cooling medium: cooling water or air.',
+		usage:
+			'Lube oil temperature control in turbine lube oil skids. Maintains lube oil supply temperature at 45–55°C to protect bearings and governor systems. Compatible with Triveni, BHEL, Belliss & Morcom, Maxwatt, Siemens, and Man Turbo turbine lube oil systems. Shell and tube coolers for large power turbines; plate heat exchangers for packaged turbine units.',
+		features: [
+			'Shell and tube type: TEMA C/R/B class; ASME VIII Div. 1 design; SS 316L / Cupro-Nickel / Admiralty tubes per cooling water quality',
+			'Plate type: Stainless steel pressed plates; gasketed or brazed; suitable for clean cooling water service',
+			'OEM dimensional match: shell OD, tube sheet drilling, nozzle positions, and overall length matched to original',
+			'Lube oil side: tube side (standard for turbine service — allows fouling inspection without shell removal)',
+			'Cooling water side: shell side; inlet/outlet nozzles matched to OEM position',
+			'Oil outlet temperature: 45–55°C at rated flow and heat load',
+			'Differential pressure testing: 1.5× design pressure (both sides) before dispatch',
+			'Tube bundle replaceable without new shell purchase — reduces replacement cost',
+			'OEM turbine compatibility: Triveni, BHEL, Belliss & Morcom, Maxwatt, Siemens, Man Turbo',
+			'Custom heat duty calculations provided — submit lube oil flow, inlet temperatures, and cooling water data',
+		],
+		specs: {
+			Type: 'Shell & Tube (TEMA C/R/B) or Plate Heat Exchanger',
+			'Design Standard': 'ASME VIII Div. 1; TEMA',
+			'Tube Material': 'SS 316L / Cupro-Nickel / Admiralty (per cooling water quality)',
+			'Design Temperature': 'Lube oil side: up to 150°C; water side: up to 80°C',
+			'Oil Outlet Temp': '45–55°C at rated duty',
+			'OEM Compatibility': 'Triveni, BHEL, Belliss & Morcom, Maxwatt, Siemens, Man Turbo',
+			Testing: 'Hydrostatic test at 1.5× design pressure (both sides)',
+			'Tube Bundle': 'Replaceable without shell replacement',
+			Documentation: 'TEMA data sheet + hydro test certificate',
+					'HSN Code': '8419',
+		},
+		images: [
+			'lube-oil-cooler-1.webp',
+			'lube-oil-cooler-2.webp',
+			'lube-oil-cooler-3.webp',
+			'lube-oil-cooler-4.webp',
+			'lube-oil-cooler-5.webp',
+			'lube-oil-cooler-6.webp',
+			'lube-oil-cooler-7.webp',
+			'lube-oil-cooler-8.webp',
+			'lube-oil-cooler-9.webp',
+			'lube-oil-cooler-10.webp',
+			'lube-oil-cooler-11.webp',
+			'lube-oil-cooler-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_pressure_instruments',
+		category: 'Turbine Spares',
+		title: 'Lube Oil System Pressure Instruments & Gauges',
+		desc: 'Pressure gauges, transmitters, switches, and differential pressure instruments for turbine lube oil system monitoring and protection. Bourdon tube gauges, electronic pressure transmitters (4–20 mA), and pressure switches for low oil pressure alarm and trip functions.',
+		usage:
+			'Turbine lube oil system pressure monitoring and protection: lube oil header pressure, bearing oil supply pressure, jacking oil pressure, control oil pressure, and filter differential pressure. Compatible with Triveni, BHEL, Siemens, and Belliss & Morcom turbine instrument connection standards.',
+		features: [
+			'Bourdon tube pressure gauges: 0–6 bar, 0–10 bar, 0–16 bar, 0–25 bar ranges — glycerin filled for vibration service',
+			'Electronic pressure transmitters: 4–20 mA HART output; ranges 0–16 bar to 0–250 bar; accuracy ±0.1%; SIL 2 rated for trip systems',
+			'Pressure switches: SPDT contact; adjustable setpoint; ATEX Ex d IIC rated for hazardous area; trip setpoints typically 0.8–1.5 bar for low lube oil pressure',
+			'Differential pressure gauges: for lube oil filter DP monitoring — alarm at 0.5 bar DP, trip at 1.0 bar DP',
+			'Differential pressure transmitters: 4–20 mA; ranges 0–1 bar, 0–2.5 bar, 0–6 bar',
+			'Process connection: ½ inch NPT or BSP (standard); ¼ inch NPT for small gauges',
+			'Wetted parts: SS 316 / Inconel diaphragm options for high-temperature lube oil service',
+			'Temperature rating: –20°C to +120°C process; –40°C to +85°C ambient',
+			'ATEX certified variants for hazardous area (Zone 1/Zone 2) turbine hall installation',
+			'Calibration certificate supplied with each transmitter and switch at dispatch',
+		],
+		specs: {
+			'Instrument Types': 'Bourdon gauges, electronic transmitters (4–20 mA), pressure switches, DP gauges/transmitters',
+			'Pressure Ranges': '0–6, 0–10, 0–16, 0–25 bar (gauges); up to 0–250 bar (transmitters)',
+			'Transmitter Output': '4–20 mA HART; accuracy ±0.1%',
+			'Switch Type': 'SPDT contact, adjustable setpoint',
+			'Process Connection': '½ inch NPT/BSP (standard)',
+			'Wetted Material': 'SS 316 (standard); Inconel diaphragm (high-temp option)',
+			'Temperature Range': '–20°C to +120°C process; –40°C to +85°C ambient',
+			'Hazardous Area': 'ATEX Ex d IIC Zone 1/2 rated variants available',
+			'SIL Rating': 'SIL 2 (transmitters for trip systems)',
+			Calibration: 'Calibration certificate supplied',
+					'HSN Code': '9026',
+		},
+		images: [
+			'lube-oil-pressure-instruments-1.webp',
+			'lube-oil-pressure-instruments-2.webp',
+			'lube-oil-pressure-instruments-3.webp',
+			'lube-oil-pressure-instruments-4.webp',
+			'lube-oil-pressure-instruments-5.webp',
+			'lube-oil-pressure-instruments-6.webp',
+			'lube-oil-pressure-instruments-7.webp',
+			'lube-oil-pressure-instruments-8.webp',
+			'lube-oil-pressure-instruments-9.webp',
+			'lube-oil-pressure-instruments-10.webp',
+			'lube-oil-pressure-instruments-11.webp',
+			'lube-oil-pressure-instruments-12.webp',
 		],
 	},
 ];
@@ -4928,31 +5517,31 @@ const MARQUEE_CSS = `
 
   @keyframes ke-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
   .skeleton-shimmer{
-	position:absolute;inset:0;z-index:0;
-	background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
-	background-size:200% 100%;
-	animation:ke-shimmer 1.25s linear infinite;
+    position:absolute;inset:0;z-index:0;
+    background:linear-gradient(110deg,rgba(148,163,184,.18) 8%,rgba(226,232,240,.55) 18%,rgba(148,163,184,.18) 33%);
+    background-size:200% 100%;
+    animation:ke-shimmer 1.25s linear infinite;
   }
   /* Enhanced skeleton with product icon placeholder */
   .skeleton-product{
-	position:absolute;inset:0;z-index:1;
-	display:flex;align-items:center;justify-content:center;flex-direction:column;
+    position:absolute;inset:0;z-index:1;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
   }
   .skeleton-product::before{
-	content:'';width:48px;height:48px;border-radius:12px;
-	background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
-	animation:ke-shimmer 1.25s linear infinite;
-	background-size:200% 100%;
+    content:'';width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.08));
+    animation:ke-shimmer 1.25s linear infinite;
+    background-size:200% 100%;
   }
   .skeleton-product::after{
-	content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
-	background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
-	background-size:200% 100%;
-	animation:ke-shimmer 1.25s linear infinite;
+    content:'';width:80px;height:10px;border-radius:5px;margin-top:12px;
+    background:linear-gradient(110deg,rgba(148,163,184,.12) 8%,rgba(226,232,240,.35) 18%,rgba(148,163,184,.12) 33%);
+    background-size:200% 100%;
+    animation:ke-shimmer 1.25s linear infinite;
   }
   /* Product image container gradient for contrast */
   .product-img-bg{
-	background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
+    background:radial-gradient(ellipse at 50% 60%,rgba(241,245,249,1) 0%,rgba(226,232,240,.4) 70%,rgba(203,213,225,.15) 100%);
   }
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
@@ -4986,45 +5575,45 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
-	.hero-section{
-	  background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
-	  background-size:cover;
-	  background-position:center center;
-	  background-repeat:no-repeat;
-	}
-	.hero-bg-layer{display:none!important}
-	.hero-desktop-grad{display:none!important}
-	.hero-mobile-vignette{display:none!important}
-	.hero-glow-orb{display:none!important}
-	.hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
-	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
+    .hero-section{
+      background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
+      background-size:cover;
+      background-position:center center;
+      background-repeat:no-repeat;
+    }
+    .hero-bg-layer{display:none!important}
+    .hero-desktop-grad{display:none!important}
+    .hero-mobile-vignette{display:none!important}
+    .hero-glow-orb{display:none!important}
+    .hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
+    .backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
   /* ─── MOBILE TYPOGRAPHY BOOST ─── */
   @media(max-width:640px){
-	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
-	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
-	p{font-size:max(15px,1em);line-height:1.65}
-	.hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-	.glass-hero p{color:#d0e4f5!important}
-	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
+    .bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
+    .bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
+    p{font-size:max(15px,1em);line-height:1.65}
+    .hero-h1{font-size:clamp(2.2rem,9vw,3.6rem)!important;line-height:1.08!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+    .glass-hero p{color:#d0e4f5!important}
+    .eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
-	section h1,section h2,section h3,
-	main>div>h1,main>div>h2{text-align:center}
-	.section-divider{margin-left:auto!important;margin-right:auto!important}
-	nav[aria-label="Breadcrumb"] *,
-	label,input,select,textarea,
-	footer h3,footer li,footer p,
-	address *,
-	[role="tabpanel"] *,
-	.keep-left,
-	.keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
-	article .bg-white h2,article .bg-white p{text-align:left!important}
-	.md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
-	.lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
+    section h1,section h2,section h3,
+    main>div>h1,main>div>h2{text-align:center}
+    .section-divider{margin-left:auto!important;margin-right:auto!important}
+    nav[aria-label="Breadcrumb"] *,
+    label,input,select,textarea,
+    footer h3,footer li,footer p,
+    address *,
+    [role="tabpanel"] *,
+    .keep-left,
+    .keep-left h1,.keep-left h2,.keep-left h3{text-align:left!important}
+    article .bg-white h2,article .bg-white p{text-align:left!important}
+    .md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
+    .lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
   }
 
   /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
@@ -5035,101 +5624,101 @@ const MARQUEE_CSS = `
   /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
   /* Social cards collapse gracefully on small screens */
   .social-card{
-	min-width:0!important;
-	width:100%;
-	max-width:100%;
-	flex-shrink:1;
+    min-width:0!important;
+    width:100%;
+    max-width:100%;
+    flex-shrink:1;
   }
   @media(max-width:640px){
-	/* Social card grid: 1 column on phones, 2 on wider phones */
-	.social-cards-grid{
-	  display:grid!important;
-	  grid-template-columns:1fr 1fr;
-	  gap:0.75rem;
-	  width:100%;
-	}
-	.social-card{
-	  min-width:0!important;
-	  padding:0.75rem!important;
-	  gap:0.625rem!important;
-	}
-	.social-card .social-handle{font-size:13px!important}
-	.social-card .social-sub{display:none}
+    /* Social card grid: 1 column on phones, 2 on wider phones */
+    .social-cards-grid{
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:0.75rem;
+      width:100%;
+    }
+    .social-card{
+      min-width:0!important;
+      padding:0.75rem!important;
+      gap:0.625rem!important;
+    }
+    .social-card .social-handle{font-size:13px!important}
+    .social-card .social-sub{display:none}
   }
   @media(max-width:380px){
-	.social-cards-grid{grid-template-columns:1fr}
+    .social-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
   .dir-card{
-	min-width:0!important;
-	flex-shrink:1;
+    min-width:0!important;
+    flex-shrink:1;
   }
   @media(max-width:640px){
-	.dir-cards-grid{
-	  display:grid!important;
-	  grid-template-columns:1fr 1fr;
-	  gap:0.625rem;
-	  width:100%;
-	}
-	.dir-card{
-	  padding:0.75rem 0.875rem!important;
-	  gap:0.5rem!important;
-	  min-width:0!important;
-	}
-	.dir-card .dir-badge{font-size:10px!important}
+    .dir-cards-grid{
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:0.625rem;
+      width:100%;
+    }
+    .dir-card{
+      padding:0.75rem 0.875rem!important;
+      gap:0.5rem!important;
+      min-width:0!important;
+    }
+    .dir-card .dir-badge{font-size:10px!important}
   }
   @media(max-width:380px){
-	.dir-cards-grid{grid-template-columns:1fr}
+    .dir-cards-grid{grid-template-columns:1fr}
   }
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
-	.thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
-	.thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
+    .thumb-strip{gap:0.5rem!important;padding-bottom:0.5rem!important}
+    .thumb-strip button{width:3.5rem!important;height:3.5rem!important;min-height:3.5rem!important}
   }
 
   /* ─── FEATURED PRODUCTS STRIP — CARD SIZE ─── */
   @media(max-width:480px){
-	.fp-card{width:13rem!important}
+    .fp-card{width:13rem!important}
   }
 
   /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
   @media(max-width:640px){
-	.sd-step-gap{gap:0.875rem!important}
-	.sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
+    .sd-step-gap{gap:0.875rem!important}
+    .sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
   }
 
   /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
   .email-link{
-	word-break:break-all;
-	overflow-wrap:anywhere;
-	min-width:0;
+    word-break:break-all;
+    overflow-wrap:anywhere;
+    min-width:0;
   }
 
   /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
   @media(max-width:767px){
-	.timeline-connector{left:1rem!important}
-	.timeline-card{margin-left:3rem!important;margin-right:0!important}
+    .timeline-connector{left:1rem!important}
+    .timeline-card{margin-left:3rem!important;margin-right:0!important}
   }
 
   /* ─── INDUSTRIES PAGE — HERO BADGE OVERFLOW ─── */
   @media(max-width:480px){
-	.ind-oem-chips{gap:0.375rem!important}
-	.ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
+    .ind-oem-chips{gap:0.375rem!important}
+    .ind-oem-chip{font-size:9px!important;padding:0.25rem 0.5rem!important}
   }
 
   /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
-	a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-	.floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
+    a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
+    .floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
   /* ─── REDUCED MOTION ─── */
   @media(prefers-reduced-motion:reduce){
-	.ke-marquee,.ke-marquee-slow{animation:none;transform:none}
-	.lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
-	*{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
+    .ke-marquee,.ke-marquee-slow{animation:none;transform:none}
+    .lazy-section,.lazy-section.visible{opacity:1;transform:none;transition:none}
+    *{transition-duration:0.01ms!important;animation-duration:0.01ms!important}
   }
 
   /* ─── REUSABLE BUTTON UTILITIES ─── */
@@ -5400,9 +5989,9 @@ if (typeof document !== 'undefined') {
 		// send_page_view:false — we fire all page_view events manually via
 		// trackPageView() so there is no double-count on the initial load.
 		s2.text = `window.dataLayer=window.dataLayer||[];`
-				+ `function gtag(){dataLayer.push(arguments);}`
-				+ `gtag('js',new Date());`
-				+ `gtag('config','${GA4_ID}',{send_page_view:false});`;
+		        + `function gtag(){dataLayer.push(arguments);}`
+		        + `gtag('js',new Date());`
+		        + `gtag('config','${GA4_ID}',{send_page_view:false});`;
 		document.head.appendChild(s2);
 
 		// Fire the first page_view for the initial landing page
@@ -5425,9 +6014,9 @@ if (typeof document !== 'undefined') {
 		cs.id         = 'clarity-script';
 		cs.type       = 'text/javascript';
 		cs.text = `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};`
-				+ `t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;`
-				+ `y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);`
-				+ `})(window,document,"clarity","script","${CLARITY_ID}");`;
+		        + `t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;`
+		        + `y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);`
+		        + `})(window,document,"clarity","script","${CLARITY_ID}");`;
 		document.head.appendChild(cs);
 	}
 }
@@ -6213,7 +6802,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
 								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
-				  ${
+                  ${
 										isActive(link.path)
 											? scrolled
 												? 'text-blue-600'
@@ -6226,7 +6815,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								{link.name}
 								<span
 									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
-				  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+                  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
@@ -6261,8 +6850,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									}}
 									aria-label="Search"
 									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
-					${isSearchOpen ? 'ml-1' : ''}`}
+                    ${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
+                    ${isSearchOpen ? 'ml-1' : ''}`}
 								>
 									<Search
 										className="w-4.5 h-4.5"
@@ -6344,7 +6933,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							type="button"
 							onClick={() => handleNav('/contact')}
 							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
-				${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
+                ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
 							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
 							Get Quote
@@ -6365,7 +6954,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							}}
 							aria-label="Search products and services"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-				${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+                ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							<Search className="h-5 w-5" aria-hidden="true" />
 						</button>
@@ -6378,7 +6967,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							aria-expanded={isOpen}
 							aria-controls="mobile-nav"
 							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-				${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+                ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							{isOpen ? (
 								<X className="h-5 w-5" aria-hidden="true" />
@@ -6478,7 +7067,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 											}}
 											aria-current={isActive(link.path) ? 'page' : undefined}
 											className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
+                        ${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
 										>
 											{link.name}
 											{isActive(link.path) && (
@@ -6506,7 +7095,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								<a
 									href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
 									className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
-					${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
+                    ${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
 								>
 									<Phone className="w-4 h-4" aria-hidden="true" />{' '}
 									{CONTACT_INFO.phones[0]}
@@ -6560,42 +7149,55 @@ CredentialBadge.displayName = 'CredentialBadge';
 const Footer = memo(({ navigate }) => (
 	<footer
 		className="font-sans border-t-4 border-[#0891B2]"
-		style={{ background: '#050d1a', color: '#94a3b8' }}
+		style={{ background: '#050d1a', color: '#ffffff' }}
 		role="contentinfo"
 	>
 		{/* Top cyan gradient accent line */}
 		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4,#67E8F9,#06B6D4,#0891B2)' }} aria-hidden="true" />
 
 		{/* ── Pre-footer CTA band ── */}
-		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderColor: '#0891B233' }}>
-			<div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%,#0891B220 0%,transparent 50%),radial-gradient(circle at 80% 50%,#06B6D420 0%,transparent 50%)' }} aria-hidden="true" />
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
+		<div className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#0A192F 0%,#0d2347 40%,#0a2a52 60%,#0A192F 100%)', borderBottom: '1px solid rgba(8,145,178,0.25)' }}>
+			{/* Cyan glow blobs */}
+			<div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(ellipse 55% 120% at 10% 50%,rgba(6,182,212,0.12) 0%,transparent 70%),radial-gradient(ellipse 40% 100% at 90% 50%,rgba(8,145,178,0.10) 0%,transparent 70%)' }} aria-hidden="true" />
+			{/* Subtle diagonal line texture */}
+			<div className="absolute inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'repeating-linear-gradient(45deg,#06B6D4 0px,#06B6D4 1px,transparent 1px,transparent 24px)' }} aria-hidden="true" />
+			{/* Top cyan border accent */}
+			<div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: 'linear-gradient(90deg,transparent,#06B6D4 30%,#22D3EE 50%,#06B6D4 70%,transparent)' }} aria-hidden="true" />
+
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
+				<div className="flex flex-col md:flex-row items-center justify-between gap-8">
 					<div className="text-center md:text-left">
-						<h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">
+						{/* Eyebrow label */}
+						<p className="font-mono text-xs tracking-[0.2em] uppercase font-semibold mb-2" style={{ color: '#06B6D4' }}>
+							24 × 7 Engineering Support
+						</p>
+						<h2 className="font-serif italic text-2xl md:text-3xl tracking-wide mb-1.5 leading-snug" style={{ color: '#F0F9FF' }}>
 							Need a quote or have an emergency breakdown?
 						</h2>
-						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm" style={{ color: '#67E8F9' }}>
-							Our engineering team responds within 24 hours
+						<p className="font-sans text-sm tracking-wide font-medium" style={{ color: 'rgba(186,230,253,0.75)' }}>
+							Our engineering team responds within <span style={{ color: '#22D3EE', fontWeight: 700 }}>24 hours</span>
 						</p>
 					</div>
 					<div className="flex flex-wrap gap-4 shrink-0 justify-center">
 						<a
 							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-							className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none hover:-translate-y-1"
-							style={{ background: '#0d1f3c', border: '1px solid #0891B2' }}
-							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
-							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
+							className="flex items-center gap-2.5 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 hover:-translate-y-0.5 hover:shadow-[0_6px_24px_rgba(8,145,178,0.45)]"
+							style={{ background: 'rgba(8,145,178,0.15)', border: '1.5px solid #0891B2', backdropFilter: 'blur(8px)' }}
+							onMouseEnter={e => { e.currentTarget.style.background = 'rgba(8,145,178,0.30)'; e.currentTarget.style.borderColor = '#22D3EE'; }}
+							onMouseLeave={e => { e.currentTarget.style.background = 'rgba(8,145,178,0.15)'; e.currentTarget.style.borderColor = '#0891B2'; }}
 						>
-							<Phone className="w-5 h-5 shrink-0" style={{ color: '#67E8F9' }} aria-hidden="true" />
+							<Phone className="w-4 h-4 shrink-0" style={{ color: '#22D3EE' }} aria-hidden="true" />
 							{CONTACT_INFO.phones[0]}
 						</a>
 						<a
 							href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
 							target="_blank" rel="noopener noreferrer"
-							className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbc5a] text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,211,102,0.2)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1"
+							className="flex items-center gap-2.5 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 hover:-translate-y-0.5"
+							style={{ background: 'linear-gradient(135deg,#16a34a,#15803d)', boxShadow: '0 4px 20px rgba(37,211,102,0.25)' }}
+							onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 6px_28px rgba(37,211,102,0.45)'; e.currentTarget.style.background = 'linear-gradient(135deg,#22c55e,#16a34a)'; }}
+							onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 4px 20px rgba(37,211,102,0.25)'; e.currentTarget.style.background = 'linear-gradient(135deg,#16a34a,#15803d)'; }}
 						>
-							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
+							<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
 							WhatsApp Now
 						</a>
 					</div>
@@ -6610,20 +7212,20 @@ const Footer = memo(({ navigate }) => (
 				{/* Col 1 — Brand */}
 				<div className="lg:col-span-4">
 					<div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
-					<p className="text-slate-300 font-sans text-sm leading-relaxed mb-8 max-w-sm">
+					<p className="font-sans text-sm leading-relaxed mb-8 max-w-sm text-white">
 						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
 					</p>
 					<div className="flex flex-col gap-2 mb-8">
 						{[
-							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-emerald-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
-							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-amber-400',  title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
-							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-cyan-400',   title: 'Make In India',       sub: 'Manufactured in India' },
+							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-blue-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
+							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-blue-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
+							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-blue-400', title: 'Make In India',       sub: 'Manufactured in India' },
 						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
 							<CredentialBadge key={title} imgSrc={imgSrc} Icon={Icon} iconColor={iconColor} title={title} sub={sub} />
 						))}
 					</div>
-					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: '#0891B2' }}>OEM Compatible With</p>
-					<p className="text-slate-400 font-mono text-xs leading-relaxed">{OEMS.join(' · ')}</p>
+					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2 text-blue-400">OEM Compatible With</p>
+					<p className="font-mono text-xs leading-relaxed text-white">{OEMS.join(' · ')}</p>
 				</div>
 
 				{/* Col 2 — Navigate */}
@@ -6633,8 +7235,8 @@ const Footer = memo(({ navigate }) => (
 						{NAV_LINKS.map((link) => (
 							<li key={link.name}>
 								<a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" style={{ color: '#0891B2' }} aria-hidden="true" />
+									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform text-blue-400" aria-hidden="true" />
 									<span>{link.name}</span>
 								</a>
 							</li>
@@ -6656,8 +7258,8 @@ const Footer = memo(({ navigate }) => (
 						].map(({ label, id }) => (
 							<li key={id}>
 								<a href={`#/service/${id}`} onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
-									className="text-slate-400 hover:text-white font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<Hexagon className="w-3.5 h-3.5" style={{ color: '#0891B2' }} aria-hidden="true" />
+									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
+									<Hexagon className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
 									<span>{label}</span>
 								</a>
 							</li>
@@ -6670,14 +7272,14 @@ const Footer = memo(({ navigate }) => (
 					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Contact Us</h3>
 					<div className="space-y-5">
 						{[
-							{ id: 'address', Icon: MapPin, content: <p className="text-slate-400 text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-slate-300 hover:text-white font-mono text-sm transition-colors">{p}</a>)}</div> },
+							{ id: 'address', Icon: MapPin, content: <p className="text-white text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
+							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-white hover:text-blue-400 font-mono text-sm transition-colors">{p}</a>)}</div> },
 							{ id: 'mail',    Icon: Mail,   content: (
 								<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
 									{[{ addr: CONTACT_INFO.email, label: 'General' }, { addr: CONTACT_INFO.infoEmail, label: 'Info' }].map(({ addr, label }) => (
-										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-slate-300 hover:text-white text-sm transition-colors">
+										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-white hover:text-blue-400 text-sm transition-colors">
 											<span className="truncate">{addr}</span>
-											<span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: '#0891B2' }}>{label}</span>
+											<span className="font-mono text-[9px] uppercase tracking-widest text-blue-400">{label}</span>
 										</a>
 									))}
 								</div>
@@ -6685,7 +7287,7 @@ const Footer = memo(({ navigate }) => (
 						].map(({ id, Icon, content }) => (
 							<div key={id} className="flex items-start gap-4">
 								<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-									<Icon className="w-4 h-4" style={{ color: '#06B6D4' }} aria-hidden="true" />
+									<Icon className="w-4 h-4 text-blue-400" aria-hidden="true" />
 								</div>
 								{content}
 							</div>
@@ -6730,10 +7332,10 @@ const Footer = memo(({ navigate }) => (
 
 			{/* Bottom bar */}
 			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
-				<p className="text-slate-400 text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
-				<p className="text-slate-400 text-sm flex items-center gap-2">
+				<p className="text-white text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
+				<p className="text-white text-sm flex items-center gap-2">
 					<span>GST:</span>
-					<span className="text-slate-300 font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
+					<span className="text-white font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
 				</p>
 			</div>
 		</div>
@@ -7262,9 +7864,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						<div className="lg:col-span-5 p-6 lg:p-8 bg-white flex flex-col border-b lg:border-b-0 lg:border-r border-slate-100">
 
 							{/* ── Hidden image probers ──
-								Invisible 1×1 images that fire onLoad/onError for every filename.
-								This resolves which images actually exist BEFORE anything visible renders.
-								Only images that pass probe[i]==='ok' appear in the gallery. */}
+							    Invisible 1×1 images that fire onLoad/onError for every filename.
+							    This resolves which images actually exist BEFORE anything visible renders.
+							    Only images that pass probe[i]==='ok' appear in the gallery. */}
 							<div className="sr-only" aria-hidden="true">
 								{allImages.map((src, i) =>
 									probe[i] === undefined ? (
@@ -7378,9 +7980,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							</div>
 
 							{/* ── Dot indicators ──
-								Mobile: compact dots, active pill slightly wider. Gap tight.
-								Desktop (sm+): slightly larger, more breathing room.
-								For >8 images: dots scale down further so they all fit in one row. */}
+							    Mobile: compact dots, active pill slightly wider. Gap tight.
+							    Desktop (sm+): slightly larger, more breathing room.
+							    For >8 images: dots scale down further so they all fit in one row. */}
 							{total > 1 && (
 								<div
 									className="flex justify-center items-center flex-wrap mb-2 mt-1"
@@ -7416,8 +8018,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							)}
 
 							{/* ── Thumbnail grid ──
-								Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
-								Grid aligns left so 3 images don't become 3 huge tiles. */}
+							    Fixed 72px cells, auto-fill wrapping. Never stretches on few images.
+							    Grid aligns left so 3 images don't become 3 huge tiles. */}
 							{total > 1 && (
 								<div
 									ref={thumbStripRef}
@@ -7545,6 +8147,27 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 															</td>
 														</tr>
 													))}
+													{(() => {
+														const cat = product.category || '';
+														let lt = 'Stocked / 2–4 weeks';
+														if (cat === 'Turbine Spares') lt = '2–6 weeks (standard); custom 6–10 weeks';
+														else if (cat === 'Expansion Joints') lt = 'Stocked sizes: 1–2 weeks; custom DN: 3–5 weeks';
+														else if (cat === 'Industrial Strainers') lt = '1–3 weeks (standard); custom 3–6 weeks';
+														else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
+														else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
+														else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
+								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
+								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
+														const totalEntries = Object.keys(product.specs).length;
+														return (
+															<tr className={`transition-colors hover:bg-blue-50/30 ${totalEntries % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+																<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">
+																	Lead Time
+																</th>
+																<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
+															</tr>
+														);
+													})()}
 												</tbody>
 											</table>
 										</div>
@@ -8909,8 +9532,8 @@ const AboutPage = memo(({ navigate }) => {
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
 			<div className="bg-[#0A192F] text-white relative overflow-hidden">
 				{/* About story background image — upload about-story-bg.png to /public/
-			Recommended: wide industrial turbine workshop/factory floor photo
-			Size: 1920×900px, compressed < 250KB */}
+            Recommended: wide industrial turbine workshop/factory floor photo
+            Size: 1920×900px, compressed < 250KB */}
 				<img
 					src="about-story-bg.png"
 					alt=""
@@ -9192,6 +9815,120 @@ const AboutPage = memo(({ navigate }) => {
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				{/* ── PRODUCT RANGE SHOWCASE ────────────────────────────────────────────────
+				    Images are pulled from the same filenames already defined in RAW_PRODUCTS.
+				    Each card uses the first image of the lead product in that category.
+				    No new uploads needed — these files are already expected by the Products page. */}
+				<div className="mb-24 lazy-section">
+					<div className="text-center mb-10">
+						<span className="eyebrow-label text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">
+							Built for Industrial Uptime
+						</span>
+						<h2 className="text-4xl font-black text-slate-900 tracking-tight">
+							If Your Turbine Needs It,<br className="hidden sm:block" /> We Make It.
+						</h2>
+						<div
+							className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full"
+							aria-hidden="true"
+						/>
+						<p className="text-slate-500 text-base max-w-2xl mx-auto mt-5 leading-relaxed">
+							70+ precision-engineered components across 8 categories — from OEM-matched filter elements to turbine spares that ship the same week your plant calls.
+						</p>
+					</div>
+
+					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+						{[
+							{
+								src: 'workshop-gallery-1.webp',
+								alt: 'Keshav Enterprises workshop floor — precision lathes and machining area',
+								caption: 'Workshop Floor',
+								desc: 'Precision CNC lathes, copying lathes, and grinding machines for rotor journal machining, polishing, and labyrinth portion work.',
+								onClick: null,
+								linkLabel: null,
+							},
+							{
+								src: 'workshop-gallery-2.webp',
+								alt: 'Keshav Enterprises engineering services — turbine overhauling, erection, alignment and troubleshooting',
+								caption: 'Our Services',
+								desc: '7 specialist services — turbine erection & commissioning, turnkey overhauling, reverse engineering, dynamic balancing, lube oil flushing, machine alignment, and 24×7 troubleshooting.',
+								onClick: () => navigate('/services'),
+								linkLabel: 'Browse Services',
+							},
+							{
+								src: 'workshop-gallery-products.webp',
+								alt: 'Keshav Enterprises industrial product range — filtration, strainers, expansion joints and turbine spares',
+								caption: 'Product Range',
+								desc: '70+ engineered products across 8 categories — filtration, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.',
+								onClick: () => navigate('/products'),
+								linkLabel: 'Browse Products',
+							},
+							{
+								src: 'workshop-gallery-4.webp',
+								alt: 'Engineer inspecting turbine rotor journal bearing — precision measurement',
+								caption: 'Rotor Inspection',
+								desc: 'Ex-OEM engineers measure and record every clearance, gap, and dimension during inspection — full condition report with each job.',
+								onClick: null,
+								linkLabel: null,
+							},
+						].map(({ src, alt, caption, desc, onClick, linkLabel }) => (
+							<div
+								key={caption}
+								role={onClick ? 'button' : undefined}
+								tabIndex={onClick ? 0 : undefined}
+								onClick={onClick || undefined}
+								onKeyDown={onClick ? (e) => e.key === 'Enter' && onClick() : undefined}
+								className={`group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 transition-all hover:-translate-y-1 hover:shadow-xl${onClick ? ' cursor-pointer hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500' : ' hover:border-slate-400'}`}
+								style={{ aspectRatio: '4/3' }}
+							>
+								<img
+									src={src}
+									alt={alt}
+									loading="lazy"
+									decoding="async"
+									className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+									onError={(e) => { e.target.style.display = 'none'; }}
+								/>
+								{/* Caption + desc overlay */}
+								<div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-900/95 via-slate-900/60 to-transparent px-4 py-4">
+									<p className="text-white font-black text-sm tracking-tight leading-tight mb-1">
+										{caption}
+									</p>
+									<p className="text-slate-300 text-[11px] leading-snug line-clamp-3">
+										{desc}
+									</p>
+									{onClick && linkLabel && (
+										<div className="mt-2 flex items-center gap-1 text-blue-400 text-[11px] font-black uppercase tracking-wider">
+											{linkLabel}
+											<ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+										</div>
+									)}
+								</div>
+								{/* Dot-pattern placeholder */}
+								<div
+									className="absolute inset-0 -z-10 opacity-20"
+									style={{
+										backgroundImage: 'radial-gradient(circle, #3b82f6 1px, transparent 1px)',
+										backgroundSize: '20px 20px',
+									}}
+									aria-hidden="true"
+								/>
+							</div>
+						))}
+					</div>
+
+					{/* Browse all CTA */}
+					<div className="text-center">
+						<button
+							type="button"
+							onClick={() => navigate('/products')}
+							className="inline-flex items-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-xl font-black text-sm hover:bg-blue-600 transition-all shadow-md group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						>
+							Browse Full Product Catalogue
+							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+						</button>
 					</div>
 				</div>
 
@@ -11485,7 +12222,7 @@ const SERVICE_DETAIL_CSS = `
 .sd-reveal      { opacity:0 }
 .sd-reveal-stat { opacity:0 }
 .sd-step-line   { transform-origin:top; transform:scaleY(0);
-				  transition:transform 0.5s ease 0.1s }
+                  transition:transform 0.5s ease 0.1s }
 
 .sd-reveal.sd-visible      { animation:sdFadeUp 0.45s ease forwards }
 .sd-reveal-stat.sd-visible { animation:sdFadeUp 0.35s ease forwards }
@@ -14314,6 +15051,42 @@ const ContactPage = memo(() => {
 							<ExternalLink className="w-4 h-4" aria-hidden="true" /> View on
 							Google
 						</a>
+					</div>
+
+					{/* ── FACILITY PHOTO ──────────────────────────────────────────────────────
+					    Upload one photo to /public/contact-facility.webp
+					    Recommended: exterior shot of the Shamli workshop / building entrance,
+					    or a wide interior floor shot showing equipment. 1200×600px, < 200KB.
+					    If the file is missing the block collapses gracefully. */}
+					<div
+						id="facility-photo-wrapper"
+						className="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 shadow-xl"
+						style={{ display: 'none' /* revealed by onLoad below */ }}
+					>
+						<img
+							src="contact-facility.webp"
+							alt="Keshav Enterprises manufacturing facility — Shamli, Uttar Pradesh"
+							loading="lazy"
+							decoding="async"
+							width="1200"
+							height="480"
+							className="w-full object-cover"
+							style={{ maxHeight: '320px' }}
+							onLoad={(e) => {
+								/* Reveal wrapper only when image actually loads */
+								e.target.closest('#facility-photo-wrapper').style.display = '';
+							}}
+							onError={(e) => {
+								/* Hide wrapper if photo not uploaded yet */
+								e.target.closest('#facility-photo-wrapper').style.display = 'none';
+							}}
+						/>
+						<div className="px-6 py-3 flex items-center gap-2 border-t border-slate-800 bg-slate-900">
+							<Factory className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+							<p className="text-slate-400 text-sm font-bold">
+								Our Manufacturing Facility, Shamli, U.P.
+							</p>
+						</div>
 					</div>
 
 					{/* Embedded Google Map */}
