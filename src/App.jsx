@@ -269,6 +269,63 @@ const SERVICES = [
 	},
 ];
 
+// ─── FOCUS TRAP HOOK ─────────────────────────────────────────────────────────
+// Traps keyboard focus inside a modal dialog. Pass a ref to the modal container.
+// Automatically focuses the first focusable element on mount and cycles Tab /
+// Shift+Tab within the container. Safe to use in concurrent-mode React.
+const FOCUSABLE = [
+	'a[href]',
+	'button:not([disabled])',
+	'input:not([disabled])',
+	'select:not([disabled])',
+	'textarea:not([disabled])',
+	'[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+function useFocusTrap(ref, active = true) {
+	useEffect(() => {
+		if (!active || !ref.current) return;
+		const el = ref.current;
+		// Save the element that had focus before the modal opened so we can restore it
+		const previouslyFocused = document.activeElement;
+		// Move focus into the modal — first focusable child, else the container itself
+		const first = el.querySelector(FOCUSABLE);
+		if (first) first.focus();
+		else el.focus();
+
+		const handleKeyDown = (e) => {
+			if (e.key !== 'Tab') return;
+			const focusable = Array.from(el.querySelectorAll(FOCUSABLE)).filter(
+				(n) => !n.closest('[aria-hidden="true"]'),
+			);
+			if (focusable.length === 0) { e.preventDefault(); return; }
+			const firstEl = focusable[0];
+			const lastEl  = focusable[focusable.length - 1];
+			if (e.shiftKey) {
+				if (document.activeElement === firstEl) {
+					e.preventDefault();
+					lastEl.focus();
+				}
+			} else {
+				if (document.activeElement === lastEl) {
+					e.preventDefault();
+					firstEl.focus();
+				}
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+			// Restore focus to the element that opened the modal
+			if (previouslyFocused && typeof previouslyFocused.focus === 'function') {
+				previouslyFocused.focus();
+			}
+		};
+	}, [active, ref]);
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 const RAW_PRODUCTS = [
 	{
 		id: 'prod_f1',
@@ -872,31 +929,34 @@ const RAW_PRODUCTS = [
 	{
 		id: 'prod_st3',
 		category: 'Industrial Strainers',
-		title: 'Conical (Temporary) Strainer',
-		desc: 'Welded conical strainer installed between standard flanges to remove foreign matter during commissioning or startup. Essential protection during turbine and pump commissioning to capture weld splatter, rust, and construction debris before it damages impellers, seals, and bearings.',
+		title: 'Conical Strainer',
+		desc: 'Welded conical strainer installed between standard flanges to remove foreign matter from pipelines. Fabricated from SS 304/316 wire mesh over a perforated core, the conical geometry delivers up to 100% open area in standard sizes — maximising flow capacity at minimal pressure drop. Essential protection during turbine and pump commissioning to capture weld splatter, rust, and construction debris before it damages impellers, seals, and bearings.',
 		usage:
-			'Pipeline protection for downstream equipment during commissioning and startup. Critical for steam turbine and pump commissioning — installed upstream of turbine steam inlet, pump suction, and compressor suction to capture weld slag, pipe scale, gasket material, and construction debris. Removed after flushing is complete and replaced with permanent strainer or filter.',
+			'Pipeline protection for downstream equipment across commissioning, startup, and continuous service applications. Critical for steam turbine and pump commissioning — installed upstream of turbine steam inlet, pump suction, and compressor suction to capture weld slag, pipe scale, gasket material, and construction debris. Also used as a permanent in-line strainer where the conical geometry suits the available space or pressure-drop budget.',
 		features: [
-			'Welded conical mesh element — installed between standard pipeline flanges; no housing required',
+			'Welded conical wire mesh element — installed between standard pipeline flanges; no external housing required',
 			'Size range: DN 15 to DN 1200 — covers all turbine steam inlet, pump suction, and pipeline sizes',
-			'Mesh range: 0.5 mm, 1 mm, 2 mm, 3 mm, 4 mm, 6 mm standard — finer on request',
-			'MOC: Stainless Steel SS 304/316 standard — corrosion resistant for steam and water service',
-			'ASME Class 125, 150, 300, 600 rated — handles full turbine steam pressure',
+			'Up to 100% open area in standard sizes — maximum flow capacity at minimum pressure drop',
+			'Mesh range: 0.5 mm, 1 mm, 2 mm, 3 mm, 4 mm, 6 mm standard — 37 µm to ¼ inch custom mesh available on request',
+			'Construction: SS perforated plate core with SS wire mesh overlay — inner or outer mesh orientation available per flow direction',
+			'MOC: Stainless Steel SS 304/316 standard; Carbon Steel and Duplex on request',
+			'ASME Class 125, 150, 300, 600 rated — suitable for full turbine steam pressure',
 			'Horizontal and vertical installation positions — orientate as required by pipe layout',
 			'End connections: Flanged, butt-weld, screwed',
-			'Low initial pressure drop — minimal restriction to commissioning flush flow',
-			'Quick removal after commissioning — no tools required beyond flange fasteners',
-			'Most critical application: steam turbine commissioning protection — prevents blade erosion and valve damage from debris',
+			'Low pressure drop — minimal restriction to process flow even at high contamination load',
+			'Key application: steam turbine commissioning protection — prevents blade erosion and valve damage from weld slag and construction debris',
 		],
 		specs: {
-			Design: 'Welded conical wire mesh element',
+			Design: 'Welded conical wire mesh over perforated plate core',
 			'Size Range': 'DN 15 to DN 1200',
-			'Mesh Range': '0.5, 1, 2, 3, 4, 6 mm standard (finer on request)',
-			MOC: 'SS 304/316',
+			'Open Area': 'Up to 100% (standard stock sizes)',
+			'Mesh Range': '0.5, 1, 2, 3, 4, 6 mm standard; 37 µm to ¼ inch custom on request',
+			'Mesh Orientation': 'Inner or outer mesh overlay per flow direction',
+			MOC: 'SS 304/316 standard; CS, Duplex on request',
 			'Pressure Rating': 'ASME Class 125 to 600',
 			'End Connections': 'Flanged, Butt-Weld, Screwed',
 			Installation: 'Horizontal or Vertical',
-			'Primary Use': 'Commissioning & startup pipeline protection',
+			'Primary Applications': 'Commissioning protection, startup pipeline screening, permanent in-line service',
 					'HSN Code': '8421',
 		},
 		images: [
@@ -1000,6 +1060,56 @@ const RAW_PRODUCTS = [
 			'pot-bucket-strainer-10.webp',
 			'pot-bucket-strainer-11.webp',
 			'pot-bucket-strainer-12.webp',
+		],
+	},
+	{
+		id: 'prod_st5b',
+		category: 'Industrial Strainers',
+		title: 'Basket Strainer Elements',
+		desc: 'Replacement and custom-fabricated basket strainer elements for simplex and duplex basket strainer housings. Constructed from SS 304/316 perforated plate with optional wire mesh overlay, wedge wire, or all-welded wire mesh construction. Supplied as exact OEM interchangeable replacements or dimensionally matched to any existing housing — including Eaton, Parker, HYDAC, and fabricated units. Mesh / perforation sizes from 37 µm to 6 mm cover light-debris screening through fine-particle retention.',
+		usage:
+			'Direct replacement elements for installed simplex and duplex basket strainer housings across turbine lube oil systems, governor and control oil circuits, process pipelines, fuel oil systems, cooling water lines, and chemical process streams. Supplied to match existing housing ID, element height, and top plate configuration — specify housing make, size, and current mesh for exact interchange. Compatible with Keshav Enterprises-supplied simplex basket strainers (prod_st1) and duplex basket strainers (prod_st2), as well as OEM and third-party housings.',
+		features: [
+			'Construction types: Perforated plate (standard), Perforated plate + wire mesh overlay, All-welded wire mesh cylinder, Wedge wire basket — specify per application',
+			'Perforation sizes: 0.5, 1, 1.5, 2, 3, 4, 6 mm standard perforated plate',
+			'Wire mesh grades: 20, 30, 40, 50, 60, 80, 100, 120, 150, 200, 325, 400 mesh standard — custom to 37 µm on request',
+			'MOC: SS 304/316 standard; SS 316L, Duplex, Hastelloy C-276, Monel 400, Alloy 20 on request',
+			'Open area: 40–100% depending on perforation pattern and mesh selection',
+			'Sheet thickness: 1–3 mm perforated plate; wire mesh on 5/32" perforated substrate support for structural integrity',
+			'Top plate options: Flat flange, handle fitted, or closed top — matched to existing housing configuration',
+			'Mesh orientation: Inner or outer mesh layer over perforated core per flow direction requirement',
+			'Coatings/Finishes: Electropolishing, passivation available; Halar/Teflon lining for corrosive service on request',
+			'Custom fabrication to any OD, ID, height, and end configuration — supply housing drawing or worn element for dimensional matching',
+			'OEM compatible: Eaton DU/DWF duplex housings, Parker, HYDAC, fabricated simplex/duplex housings',
+			'Supplied individually or as set replacements (both chambers for duplex units)',
+		],
+		specs: {
+			'Construction Types': 'Perforated plate / Perf. plate + wire mesh / All-welded mesh / Wedge wire',
+			'Perforation Sizes': '0.5, 1, 1.5, 2, 3, 4, 6 mm standard',
+			'Wire Mesh Grades': '20 to 400 mesh (standard); custom to 37 µm',
+			'Open Area': '40–100% (depends on perforation pattern and mesh)',
+			'Sheet Thickness': '1–3 mm perforated plate; mesh on 5/32" perf. substrate',
+			MOC: 'SS 304/316 standard; SS 316L, Duplex, Hastelloy, Monel, Alloy 20 on request',
+			'Top Plate': 'Flat flange, handle-fitted, or closed top — matched to housing',
+			'Mesh Orientation': 'Inner or outer overlay per flow direction',
+			'Surface Finish': 'Electropolishing, passivation; Halar/Teflon on request',
+			'OEM Compatibility': 'Eaton DU/DWF, Parker, HYDAC, fabricated housings — custom matched',
+			'Supply Format': 'Individual elements or full-set duplex replacement',
+			'HSN Code': '8421',
+		},
+		images: [
+			'basket-strainer-elements-1.webp',
+			'basket-strainer-elements-2.webp',
+			'basket-strainer-elements-3.webp',
+			'basket-strainer-elements-4.webp',
+			'basket-strainer-elements-5.webp',
+			'basket-strainer-elements-6.webp',
+			'basket-strainer-elements-7.webp',
+			'basket-strainer-elements-8.webp',
+			'basket-strainer-elements-9.webp',
+			'basket-strainer-elements-10.webp',
+			'basket-strainer-elements-11.webp',
+			'basket-strainer-elements-12.webp',
 		],
 	},
 	{
@@ -5332,6 +5442,621 @@ const RAW_PRODUCTS = [
 			'lube-oil-pressure-instruments-12.webp',
 		],
 	},
+
+	// ─── GLAND PACKING ───────────────────────────────────────────────────────────
+	{
+		id: 'prod_gp1',
+		category: 'Turbine Spares',
+		title: 'Gland Packing — Graphite, PTFE, PTFE-Graphite Braided Rope',
+		desc: 'Compression gland packing in graphite, PTFE, and PTFE-graphite braided constructions for valve stem sealing, pump gland boxes, and rotating shaft seals. Supplied as cut rings or coiled rope in square cross-sections from 3 mm to 50 mm. Pure flexible graphite packing for high-temperature steam valve stems; PTFE packing for chemical and corrosive service; PTFE-graphite hybrid (graphitized PTFE) for combined chemical resistance and thermal conductivity across both rotating and reciprocating applications. Asbestos-free throughout — fully compliant with current Indian and international environmental regulations.',
+		usage:
+			'Universal maintenance consumable across all plant types: steam turbine auxiliary valve stem packing (gate, globe, and control valves), centrifugal pump gland boxes, reciprocating pump plunger seals, agitator shaft seals, rotary compressor shaft seals, and heat exchanger channel cover joints. Supplied as rope coil (specify cross-section and length) or as pre-cut rings (specify shaft OD, stuffing box ID, and number of rings). Most frequently procured alongside turbine overhauls, valve repacking during planned shutdowns, and pump mechanical seal conversions where gland packing is retained.',
+		features: [
+			'Three constructions: (1) Pure Flexible Graphite — highest temperature, best thermal conductivity; (2) Pure PTFE — widest chemical resistance, food-safe; (3) PTFE-Graphite Braided — best of both: chemical resistance + lubricity + heat dissipation',
+			'Cross-section range: 3 × 3 mm to 50 × 50 mm square — covers all valve stem and pump gland sizes from ½" to 20" shaft diameter',
+			'Pure flexible graphite packing: temperature range –200°C to +550°C; pressure up to 300 bar (valve); 20 bar (rotating); pH 0–14 (except strong oxidising acids)',
+			'Pure PTFE packing: temperature range –196°C to +260°C; pressure up to 20 bar (valve), 10 bar (rotating); pH 0–14; FDA-compliant grades available',
+			'PTFE-graphite braided packing: temperature –200°C to +280°C; pressure up to 250 bar (valve); rotating to 15 bar; linear velocity up to 12 m/s; self-lubricating',
+			'Interlock braid construction (graphite and PTFE-graphite types) — prevents extrusion under high pressure; resists hardening over time',
+			'Inconel wire reinforcement available in graphite grades — ultrafine mesh reinforcement on each braided strand for extrusion stability and structural integrity',
+			'Corrosion inhibitor impregnation (graphite grades) — passive inhibitor protects valve stems and pump shafts from galvanic corrosion',
+			'Low friction coefficient — valves open and close more easily; lower stem torque; reduced actuator wear',
+			'Asbestos-free: compliant with IS standards, RoHS, REACH, and Indian factory safety regulations',
+			'Supplied as: rope coil (1 m, 5 m, coil lengths), pre-cut rings to drawing, or complete gland packing set (specify valve/pump make and size)',
+		],
+		specs: {
+			Types: 'Pure Flexible Graphite, Pure PTFE, PTFE-Graphite Braided',
+			'Cross-Section Range': '3 × 3 mm to 50 × 50 mm square',
+			'Graphite Grade Temp': '–200°C to +550°C',
+			'PTFE Grade Temp': '–196°C to +260°C',
+			'PTFE-Graphite Temp': '–200°C to +280°C',
+			'Valve Pressure (Graphite)': 'Up to 300 bar',
+			'Rotating Pressure (PTFE-Graphite)': 'Up to 15 bar',
+			'Linear Velocity': 'Up to 12 m/s (PTFE-Graphite rotating)',
+			'pH Range': '0–14 (all types; avoid strong oxidising acids for graphite)',
+			'Reinforcement': 'Inconel wire mesh reinforcement available (graphite grades)',
+			'Supply Format': 'Rope coil or pre-cut rings to drawing',
+			'HSN Code': '8484',
+		},
+		images: [
+			'gland-packing-rope-1.webp',
+			'gland-packing-rope-2.webp',
+			'gland-packing-rope-3.webp',
+			'gland-packing-rope-4.webp',
+			'gland-packing-rope-5.webp',
+			'gland-packing-rope-6.webp',
+			'gland-packing-rope-7.webp',
+			'gland-packing-rope-8.webp',
+			'gland-packing-rope-9.webp',
+			'gland-packing-rope-10.webp',
+			'gland-packing-rope-11.webp',
+			'gland-packing-rope-12.webp',
+		],
+	},
+
+	// ─── HYDRAULIC ACCUMULATORS ──────────────────────────────────────────────────
+	{
+		id: 'prod_hv2',
+		category: 'Hydraulic Components',
+		title: 'Hydraulic Accumulators — Bladder & Piston Type',
+		desc: 'Hydraulic accumulators in bladder and piston configurations for energy storage, pressure pulsation dampening, emergency actuation, and thermal expansion compensation in turbine hydraulic trip circuits, ESV actuator systems, and industrial hydraulic power units. Bladder type: nitrogen-precharged elastomeric bladder inside a seamless steel shell — compact, fast-response, 0.5 to 200 litres, up to 350 bar. Piston type: floating piston separating gas and fluid chambers in a heavy-wall cylinder — higher pressure ratios, larger volumes, suitable for high-temperature oil service. Compatible with HYDAC, Bosch Rexroth, Parker, and EPE accumulator system hardware.',
+		usage:
+			'Critical hydraulic component in steam turbine control and trip systems: ESV (Emergency Stop Valve) hydraulic actuator energy storage — provides closing force for 3–5 full ESV strokes on loss of hydraulic supply; governor hydraulic actuator supply pressure maintenance during pump switchover; turbine trip oil header pressure hold during transients. Also used across industrial HPUs for: shock and pulsation absorption on pump outlet lines; energy storage for intermittent high-flow demand (press, clamp, die-casting); thermal compensation in blocked-in hydraulic circuits; emergency lowering and clamping circuits on loss of pump power.',
+		features: [
+			'Types: Bladder accumulator (standard, fast response, compact) and Piston accumulator (large volume, high pressure ratio, high-temperature oil compatible)',
+			'Bladder accumulator volume range: 0.5 L to 200 L standard; larger on request',
+			'Piston accumulator volume range: 1 L to 454 L standard; larger fabricated on request',
+			'Maximum working pressure: up to 350 bar (bladder); up to 500 bar (piston, special)',
+			'Pre-charge gas: dry industrial nitrogen (min. 99% purity, Class 4.0, filtered to <3 µm) — oxygen and compressed air must NOT be used',
+			'Bladder materials: NBR (mineral oil standard), EPDM (water/water glycol), FKM/Viton (phosphate ester, wide temperature), HNBR (high-temperature oil)',
+			'Shell material: seamless carbon steel (standard); SS 316 on request for corrosive fluids',
+			'Piston seal material: PTFE composite, Polyurethane, or NBR/FKM — specify fluid and temperature at enquiry',
+			'Fluid port: SAE or BSP/NPT screwed (small sizes); flanged to ASME B16.5 (large piston types)',
+			'Efficiency: bladder 70–80% of total volume usable; piston up to 95% of total volume usable',
+			'Safety: pressure relief valve mandatory (supplied as accessory); shut-off and dump valve block assembly available as complete accumulator safety block',
+			'Certifications: PED (Pressure Equipment Directive) compliant; CE marking; IBR certification for steam plant applications on request',
+			'OEM compatible: HYDAC SB/SK series, Parker Hannifin, Bosch Rexroth HAB, EPE equivalents',
+			'Supplied with pre-charge pressure certificate, material test certificate, and hydrostatic test certificate',
+		],
+		specs: {
+			Types: 'Bladder (standard) and Piston (large volume / high pressure ratio)',
+			'Bladder Volume Range': '0.5 L to 200 L standard',
+			'Piston Volume Range': '1 L to 454 L standard',
+			'Max Working Pressure': 'Up to 350 bar (bladder); up to 500 bar (piston special)',
+			'Pre-charge Gas': 'Dry nitrogen — min. 99% purity, <3 µm filtered',
+			'Bladder Materials': 'NBR (mineral oil), EPDM (water/glycol), FKM (phosphate ester), HNBR (HT oil)',
+			'Shell Material': 'Seamless carbon steel standard; SS 316 on request',
+			'Bladder Efficiency': '70–80% of total volume usable',
+			'Piston Efficiency': 'Up to 95% of total volume usable',
+			'Certification': 'PED/CE compliant; IBR on request',
+			'OEM Compatible': 'HYDAC, Parker, Bosch Rexroth, EPE equivalents',
+			'HSN Code': '8412',
+		},
+		images: [
+			'hydraulic-accumulator-1.webp',
+			'hydraulic-accumulator-2.webp',
+			'hydraulic-accumulator-3.webp',
+			'hydraulic-accumulator-4.webp',
+			'hydraulic-accumulator-5.webp',
+			'hydraulic-accumulator-6.webp',
+			'hydraulic-accumulator-7.webp',
+			'hydraulic-accumulator-8.webp',
+			'hydraulic-accumulator-9.webp',
+			'hydraulic-accumulator-10.webp',
+			'hydraulic-accumulator-11.webp',
+			'hydraulic-accumulator-12.webp',
+		],
+	},
+
+	// ─── SAFETY RELIEF VALVES ────────────────────────────────────────────────────
+	{
+		id: 'prod_srv1',
+		category: 'Turbine Spares',
+		title: 'Safety Relief Valves (SRV / PSV) — Spring-Loaded, API 526 / ASME Section I & VIII',
+		desc: 'Spring-loaded safety relief valves (SRV/PSV) for overpressure protection of steam boilers, pressure vessels, steam headers, heat exchangers, and process piping. Supplied to API 526 (flanged steel SRVs for process plant), ASME Section I (power boiler safety valves, snap-action), and ASME Section VIII (pressure vessel relief valves). Three types: Conventional spring-loaded (standard), Balanced bellows (variable or high back-pressure service), Pilot-operated (high set-pressure accuracy, minimum blowdown, large orifice). Body materials from carbon steel through SS 316 and exotic alloys. IBR certification available for Indian boiler and steam system applications.',
+		usage:
+			'Mandatory on every pressure vessel and steam boiler in Indian plants — required under IBR (Indian Boiler Regulations), Factories Act, and IS/ASME codes. Critical applications: steam boiler drum SRVs (ASME Section I / IBR), turbine steam inlet header SRVs, lube oil system relief valves, heat exchanger shell-side relief, hydraulic accumulator safety relief, and thermal relief valves (TRVs) on blocked-in liquid lines. Supplied as direct OEM-matched replacements (specify make, model, set pressure, orifice designation, and inlet/outlet size), or as new installation valves with sizing calculation to API 520.',
+		features: [
+			'Three designs: Conventional spring-loaded, Balanced bellows (for variable back-pressure service), Pilot-operated (high accuracy, low blowdown, high capacity)',
+			'Fluid service: Steam (ASME Section I / VIII), Gas/Vapour, Liquid (proportional relief), Two-phase — specify at enquiry',
+			'API 526 orifice designations: D, E, F, G, H, J, K, L, M, N, P, Q, R — covers all standard steam and process plant capacities',
+			'Inlet size × outlet size: ½ × 1" to 8 × 10" (API 526 standard pairings)',
+			'Inlet pressure class: ASME Class 150, 300, 600, 900, 1500, 2500 — flanged RF or RTJ',
+			'Set pressure range: 1 bar to 700 bar depending on type and body material',
+			'Blowdown: 7–10% standard (steam); adjustable on balanced bellows and pilot-operated types',
+			'Body material: WCB (CS standard), CF8M (SS 316), WC6/WC9 (Cr-Mo alloy for high-temperature steam), CF3M (SS 316L), Hastelloy C on request',
+			'Trim: SS 316 disc and nozzle standard; Stellite-faced for high-cycle or high-velocity steam service',
+			'Spring material: Alloy steel (standard); SS 316 (corrosive service); Inconel (cryogenic and HT)',
+			'IBR certification: available for boiler drum and steam system SRVs — mandatory under Indian Boiler Regulations for steam above 3.5 kg/cm²',
+			'Test and certification: ASME NB (National Board) stamped where required; factory set-pressure test certificate supplied with each valve',
+			'Balanced bellows type: back-pressure compensation up to 50% of set pressure — essential on manifolded relief systems',
+		],
+		specs: {
+			Types: 'Conventional spring-loaded, Balanced bellows, Pilot-operated',
+			Standards: 'API 526, ASME Section I (boiler), ASME Section VIII (pressure vessel)',
+			'API 526 Orifices': 'D through R — all standard designations',
+			'Inlet × Outlet Size': '½ × 1" to 8 × 10" (API 526 standard)',
+			'Pressure Classes': 'ASME Class 150 to 2500 flanged',
+			'Set Pressure Range': '1 bar to 700 bar (type dependent)',
+			'Blowdown': '7–10% standard; adjustable on bellows and pilot types',
+			'Body Material': 'WCB, CF8M (SS 316), WC6/WC9, Hastelloy on request',
+			Trim: 'SS 316 standard; Stellite-faced for steam service',
+			'IBR Certification': 'Available for boiler and steam system applications',
+			'Test Certificate': 'Factory set-pressure test certificate supplied',
+			'HSN Code': '8481',
+		},
+		images: [
+			'safety-relief-valve-srv-1.webp',
+			'safety-relief-valve-srv-2.webp',
+			'safety-relief-valve-srv-3.webp',
+			'safety-relief-valve-srv-4.webp',
+			'safety-relief-valve-srv-5.webp',
+			'safety-relief-valve-srv-6.webp',
+			'safety-relief-valve-srv-7.webp',
+			'safety-relief-valve-srv-8.webp',
+			'safety-relief-valve-srv-9.webp',
+			'safety-relief-valve-srv-10.webp',
+			'safety-relief-valve-srv-11.webp',
+			'safety-relief-valve-srv-12.webp',
+		],
+	},
+
+	// ─── TURBINE LUBE OIL ────────────────────────────────────────────────────────
+	{
+		id: 'prod_oil1',
+		category: 'Turbine Spares',
+		title: 'Steam Turbine Lube Oil — ISO VG 32 / 46 / 68 R&O Inhibited (IS 1012)',
+		desc: 'Premium quality rust and oxidation (R&O)-inhibited turbine lube oils in ISO VG 32, 46, and 68 viscosity grades for steam turbine journal bearings, thrust bearings, governor hydraulic circuits, and coupled gearbox lubrication. Formulated from highly refined or hydroprocessed paraffinic base stocks with antioxidant, rust inhibitor, anti-foam, and demulsifier additive packages to IS 1012 (Indian Standard) and ISO 8068 L-TSA/L-TGB specifications. Approved for Triveni, BHEL, Siemens (KKK), GE, Alstom, and other major steam turbine OEMs. Supplied in 200-litre drums, 20-litre cans, and bulk.',
+		usage:
+			'Correct lube oil grade and cleanliness are as critical as any turbine spare — wrong viscosity or contaminated oil causes bearing failure regardless of filter quality. ISO VG 32: high-speed turbines up to 3000 RPM with light bearing loads (most Triveni and small industrial turbines). ISO VG 46: medium-speed turbines, coupled gearboxes, turbine-gearbox-generator sets — the most common grade in Indian sugar mill and co-generation installations. ISO VG 68: large slow-speed turbines, high bearing load applications, and hydro turbines. Supplied as top-up oil for in-service refill, or as complete lube oil system charge following turbine overhaul or post-flush recharge.',
+		features: [
+			'Grades: ISO VG 32, ISO VG 46, ISO VG 68 — specify per turbine OEM recommendation; IS 1012 R&O type (Normal and Superclean categories)',
+			'Base stock: highly refined or hydroprocessed paraffinic mineral oil — maximum oxidation stability and long drain life',
+			'Key properties: outstanding oxidation and thermal stability (resists sludge and varnish); excellent rust and corrosion protection; superior water separation (demulsibility); anti-foam; low pour point',
+			'OEM approvals: HPCL Turbinol meets Triveni Engineering approval, BHEL Haridwar specification, Siemens TLV 9013/04-01, ALSTOM HTGD 90117, GE GEK 46506e / GEK 32568l / GEK 121608, Mitsubishi MS04-MA-CL001',
+			'Standard IS 1012 (2002) compliant — Indian Standard for turbine lubricating oils (R&O type); Superclean category available',
+			'Cleanliness: standard supply to NAS 8 / ISO 4406 18/16/13; Superclean to NAS 6 / ISO 4406 16/14/11 on request (critical for governor and servo circuits)',
+			'Viscosity index: >95 — stable viscosity across full turbine operating temperature range',
+			'Flash point: >180°C (VG 32); >195°C (VG 46); >215°C (VG 68) — safe for hot bearing environments',
+			'Packaging: 200-litre MS drum, 20-litre HDPE can, 5-litre can; bulk tanker on request for large charges',
+			'Brands: HPCL Turbinol, Bharat Petroleum Turbo Oil, Indian Oil Servospin, or international equivalents (Shell Turbo T, Mobil DTE) — confirm brand at enquiry',
+			'Flush oil service: same grade mineral turbine oil used for post-overhaul lube oil system flush per OEM procedure',
+			'MSDS and TDS (Technical Data Sheet) supplied with each batch; batch analysis certificate on request',
+		],
+		specs: {
+			Grades: 'ISO VG 32, ISO VG 46, ISO VG 68',
+			Standard: 'IS 1012 (R&O type); ISO 8068 L-TSA / L-TGB',
+			'Base Stock': 'Highly refined / hydroprocessed paraffinic mineral oil',
+			'Viscosity Index': '>95',
+			'Flash Point': '>180°C (VG32) / >195°C (VG46) / >215°C (VG68)',
+			'Cleanliness (Standard)': 'NAS 8 / ISO 4406 18/16/13',
+			'Cleanliness (Superclean)': 'NAS 6 / ISO 4406 16/14/11 on request',
+			'OEM Approvals': 'Triveni, BHEL, Siemens, GE, Alstom, Mitsubishi',
+			Packaging: '200 L drum, 20 L can, 5 L can; bulk on request',
+			Brands: 'HPCL Turbinol, BPCL Turbo Oil, IOC Servospin or equivalent',
+			'HSN Code': '2710',
+		},
+		images: [
+			'steam-turbine-lube-oil-1.webp',
+			'steam-turbine-lube-oil-2.webp',
+			'steam-turbine-lube-oil-3.webp',
+			'steam-turbine-lube-oil-4.webp',
+			'steam-turbine-lube-oil-5.webp',
+			'steam-turbine-lube-oil-6.webp',
+			'steam-turbine-lube-oil-7.webp',
+			'steam-turbine-lube-oil-8.webp',
+			'steam-turbine-lube-oil-9.webp',
+			'steam-turbine-lube-oil-10.webp',
+			'steam-turbine-lube-oil-11.webp',
+			'steam-turbine-lube-oil-12.webp',
+		],
+	},
+
+	// ─── STEAM TRAPS ────────────────────────────────────────────────────────────
+	{
+		id: 'prod_trap1',
+		category: 'Turbine Spares',
+		title: 'Steam Trap Assemblies — Thermodynamic, Float & Thermostatic, Inverted Bucket',
+		desc: 'Complete range of steam trap assemblies for turbine steam lines, steam mains, drip legs, steam tracing, heat exchangers, and process heating coils. Three operating principles covered: thermodynamic disc traps for steam main drip points and outdoor service; float & thermostatic (F&T) traps for process heating and heat exchangers; inverted bucket traps for high-pressure steam mains and superheated steam service. All types supplied in CS, SS 304/316, and alloy steel body materials to ASME B16.34 and IS 6896.',
+		usage:
+			'Critical across all steam-using plants — sugar mills, co-generation, refineries, chemical process, and turbine auxiliary steam systems. Thermodynamic disc traps: turbine steam inlet drip legs, steam distribution mains, outdoor steam tracing, and any high-pressure medium-to-light condensate load application. Float & thermostatic traps: heat exchangers, process heating coils, unit heaters, and low-to-medium pressure systems requiring continuous condensate drainage. Inverted bucket traps: superheated steam mains, high-pressure steam distribution, steam jacketing, and applications where sub-cooling of condensate is acceptable. All types: critical for protecting downstream turbine nozzles, blades, and steam paths from water hammer caused by accumulated condensate.',
+		features: [
+			'Three trap types supplied: Thermodynamic disc (TD), Float & thermostatic (F&T), Inverted bucket (IB) — select per application',
+			'Thermodynamic disc: single moving part (disc), compact, vibration-resistant, suitable for outdoor duty and steam main drip points; DN15–DN50, up to ASME Class 600',
+			'Float & thermostatic: continuous condensate discharge at steam temperature, integral thermostatic air vent, suitable for zero-differential pressure operation; DN15–DN50, up to 32 barg',
+			'Inverted bucket: robust mechanical trap for superheated steam and high-pressure steam mains, tolerates water hammer and vibration; DN15–DN100, up to 64 barg',
+			'Body materials: Cast Iron (CI), Carbon Steel (WCB/A105), SS 304 (CF8), SS 316 (CF8M) — specify per pressure, temperature, and corrosion requirement',
+			'End connections: Flanged (ASME B16.5 / IS 1538), Screwed (BSP/NPT), Socket weld — all types available',
+			'Pressure rating: PN16 to PN64 / ANSI Class 150 to Class 600 across the range',
+			'Temperature range: up to 450°C (superheated steam) — material and type dependent',
+			'Design standards: ASME B16.34, IS 6896, ISO 6948 — as applicable per type',
+			'Optional built-in strainer with blowdown plug on thermodynamic disc type — protects seat from pipeline debris',
+			'Insulating cap available for thermodynamic disc traps — reduces heat loss and prevents freeze-up in outdoor service',
+			'Sizing data and condensate load calculations provided on request — specify steam pressure, condensate load, and backpressure',
+		],
+		specs: {
+			Types: 'Thermodynamic Disc (TD), Float & Thermostatic (F&T), Inverted Bucket (IB)',
+			'Size Range': 'DN15 to DN100 (type dependent)',
+			'Pressure Rating': 'PN16 to PN64 / ANSI Class 150 to 600',
+			'Temperature Range': 'Up to 450°C (type and material dependent)',
+			MOC: 'CI, WCB/A105 (CS), CF8 (SS 304), CF8M (SS 316)',
+			'End Connections': 'Flanged (ASME B16.5 / IS 1538), Screwed (BSP/NPT), Socket Weld',
+			'Design Standards': 'ASME B16.34, IS 6896, ISO 6948',
+			'TD Trap Feature': 'Single moving part — disc; built-in strainer and blowdown option',
+			'F&T Trap Feature': 'Continuous discharge; integral thermostatic air vent; zero-ΔP operation',
+			'IB Trap Feature': 'Water hammer resistant; suitable for superheated steam and high backpressure',
+			'HSN Code': '8481',
+		},
+		images: [
+			'steam-trap-assemblies-1.webp',
+			'steam-trap-assemblies-2.webp',
+			'steam-trap-assemblies-3.webp',
+			'steam-trap-assemblies-4.webp',
+			'steam-trap-assemblies-5.webp',
+			'steam-trap-assemblies-6.webp',
+			'steam-trap-assemblies-7.webp',
+			'steam-trap-assemblies-8.webp',
+			'steam-trap-assemblies-9.webp',
+			'steam-trap-assemblies-10.webp',
+			'steam-trap-assemblies-11.webp',
+			'steam-trap-assemblies-12.webp',
+		],
+	},
+
+	// ─── GASKETS ─────────────────────────────────────────────────────────────────
+	{
+		id: 'prod_gk1',
+		category: 'Turbine Spares',
+		title: 'Spiral Wound Gaskets (SWG) — ASME B16.20',
+		desc: 'Spiral wound metallic gaskets to ASME B16.20 for raised face (RF), tongue & groove (T&G), and male & female flanged joints across all pressure classes. Constructed from alternating layers of pre-formed metal strip (SS 304/316/321 or special alloy) and soft filler material (flexible graphite or PTFE), with carbon steel or SS centering/outer ring and optional solid metal inner ring. Supplied for all NPS sizes from ½" to 60" across ASME Class 150 to 2500 — the industry standard gasket for turbine casing joints, steam inlet flanges, steam piping, heat exchanger nozzles, and pressure vessel joints.',
+		usage:
+			'Universal gasket for turbine overhauling and plant maintenance: turbine casing split-line joints, steam inlet and exhaust flanges, HP/LP bypass piping, heat exchanger nozzle flanges, pressure vessel manholes, and all standard ASME B16.5 / B16.47 flanged piping. Essential stock item for plant engineers and procurement managers — required in every planned shutdown and overhaul. Supplied individually to drawing or as complete flange gasket sets for a valve, turbine, or exchanger. Filler selection: flexible graphite for steam, water, and high-temperature service; PTFE for chemical and corrosive service.',
+		features: [
+			'Standard: ASME B16.20 — dimensional conformance to ASME B16.5 and B16.47 Series A & B flanges',
+			'Styles: CG (with centering/outer ring, no inner ring), CGI (with inner ring and outer ring), R (basic wound element only, for T&G and MF flanges)',
+			'Size range: NPS ½" to 60" — covers all turbine, valve, and process piping flanges',
+			'Pressure classes: ASME Class 150, 300, 400, 600, 900, 1500, 2500',
+			'Winding material: SS 304, SS 316, SS 316L, SS 321, Duplex 2205, Monel 400, Inconel 625, Hastelloy C-276 on request',
+			'Filler material: Flexible Graphite (standard — steam, water, hydrocarbons), PTFE (chemical/corrosive service), Mica (very high temperature)',
+			'Outer/centering ring: Carbon Steel (CS) standard; SS 304/316 on request — colour-coded per ASME B16.20 for winding identification',
+			'Inner ring: Supplied where mandated by ASME B16.20 (Class 900 NPS 24+, Class 1500 NPS 12+, Class 2500 NPS 4+, all PTFE-filled gaskets)',
+			'Thickness: 3.2 mm and 4.5 mm standard (type and class dependent)',
+			'Temperature range: –200°C to +550°C (graphite fill); up to +260°C (PTFE fill)',
+			'Supplied with material test certificate (MTC), dimensional inspection report, and ASME B16.20 conformity marking',
+			'Custom sizes, non-standard alloys, and complete flange gasket sets supplied on request with lead drawing',
+		],
+		specs: {
+			Standard: 'ASME B16.20',
+			'Flange Standards': 'ASME B16.5, ASME B16.47 Series A & B',
+			Styles: 'CG (with outer ring), CGI (with inner and outer ring), R (basic)',
+			'Size Range': 'NPS ½" to 60"',
+			'Pressure Classes': 'ASME Class 150 / 300 / 400 / 600 / 900 / 1500 / 2500',
+			'Winding Material': 'SS 304/316/316L/321; Duplex, Monel, Inconel, Hastelloy on request',
+			'Filler Material': 'Flexible Graphite (standard), PTFE, Mica',
+			'Outer Ring MOC': 'Carbon Steel (standard); SS 304/316 on request',
+			'Inner Ring': 'Supplied per ASME B16.20 mandatory requirements',
+			Thickness: '3.2 mm / 4.5 mm (standard)',
+			'Temperature Range': '–200°C to +550°C (graphite); up to +260°C (PTFE)',
+			'HSN Code': '8484',
+		},
+		images: [
+			'spiral-wound-gasket-1.webp',
+			'spiral-wound-gasket-2.webp',
+			'spiral-wound-gasket-3.webp',
+			'spiral-wound-gasket-4.webp',
+			'spiral-wound-gasket-5.webp',
+			'spiral-wound-gasket-6.webp',
+			'spiral-wound-gasket-7.webp',
+			'spiral-wound-gasket-8.webp',
+			'spiral-wound-gasket-9.webp',
+			'spiral-wound-gasket-10.webp',
+			'spiral-wound-gasket-11.webp',
+			'spiral-wound-gasket-12.webp',
+		],
+	},
+	{
+		id: 'prod_gk2',
+		category: 'Turbine Spares',
+		title: 'Ring Joint Gaskets (RTJ) — Oval & Octagonal — ASME B16.20',
+		desc: 'Solid metallic ring joint gaskets (RTJ) in oval and octagonal cross-sections to ASME B16.20 for ring type joint (RTJ) flanges in ASME Class 150 to 2500 and API 6A / 6B / 6BX. Precision-machined from solid bar stock — CS, SS 304/316, Duplex, Monel, Inconel, and soft iron/low-carbon steel — to R, RX, and BX ring groove profiles. Essential sealing component for high-pressure steam turbine flanges (Class 600, 900, 1500), high-pressure valve bonnet joints, wellhead equipment, and any application where raised face gaskets are inadequate due to pressure or temperature.',
+		usage:
+			'High-pressure and high-temperature flanged joints where spiral wound or sheet gaskets are insufficient: HP steam turbine casing flanges (Class 600 and above), high-pressure bypass valves, main steam stop valve bonnets, boiler drum nozzles, and all API 6B / 6BX wellhead and pipeline flanges. RTJ flanges are mandatory on Class 900, 1500, and 2500 piping in many process plant designs. Supplied individually to ring number (R-11 to R-105, RX-20 to RX-210, BX-150 to BX-461) or as a complete set for a valve or flange assembly.',
+		features: [
+			'Ring profiles: R (oval and octagonal — standard pipe flanges), RX (pressure-energised for API 6B), BX (API 6BX high-pressure wellhead and Christmas tree)',
+			'Ring numbers: R-11 through R-105 (ASME B16.5 / B16.47), RX-20 to RX-210, BX-150 to BX-461 (API 6A)',
+			'Size range: NPS ½" to 24" (R / RX series); matches ASME Class 150 to 2500 and API 6A 2000–20000 psi',
+			'MOC: Soft Iron / Low Carbon Steel (LCS), AISI 4130, SS 304, SS 316, SS 316L, Duplex 2205, Monel 400, Inconel 625, Hastelloy C-276',
+			'Hardness: Softer than flange groove hardness — per ASME B16.20 requirements (CS max 90 HRB; SS max 83 HRB; Monel max 75 HRB)',
+			'Surface finish: 63 Ra max on seating faces — precision ground and lapped for leak-tight makeup',
+			'Temperature range: –200°C to +650°C (material dependent)',
+			'Pressure rating: up to 20,000 psi (API 6BX BX series)',
+			'Supplied with dimensional inspection certificate and mill test certificate (MTC)',
+			'Cadmium-free — compliant with RoHS and international environmental standards',
+			'Custom ring numbers, non-standard alloys, and large-bore rings (NPS 26–60) available on request',
+		],
+		specs: {
+			Standard: 'ASME B16.20, API 6A / 6B / 6BX',
+			Profiles: 'R (Oval & Octagonal), RX (pressure-energised), BX (API high-pressure)',
+			'Ring Numbers': 'R-11 to R-105; RX-20 to RX-210; BX-150 to BX-461',
+			'Size Range': 'NPS ½" to 24" standard; custom to NPS 60"',
+			'Pressure Classes': 'ASME Class 150–2500; API 6A 2,000–20,000 psi',
+			MOC: 'Soft Iron, LCS, 4130, SS 304/316/316L, Duplex, Monel, Inconel, Hastelloy',
+			'Hardness': 'Per ASME B16.20 (softer than groove hardness)',
+			'Surface Finish': '63 Ra max on seating faces',
+			'Temperature Range': '–200°C to +650°C (material dependent)',
+			'Max Pressure': 'Up to 20,000 psi (BX series)',
+			'HSN Code': '8484',
+		},
+		images: [
+			'ring-joint-gasket-rtj-1.webp',
+			'ring-joint-gasket-rtj-2.webp',
+			'ring-joint-gasket-rtj-3.webp',
+			'ring-joint-gasket-rtj-4.webp',
+			'ring-joint-gasket-rtj-5.webp',
+			'ring-joint-gasket-rtj-6.webp',
+			'ring-joint-gasket-rtj-7.webp',
+			'ring-joint-gasket-rtj-8.webp',
+			'ring-joint-gasket-rtj-9.webp',
+			'ring-joint-gasket-rtj-10.webp',
+			'ring-joint-gasket-rtj-11.webp',
+			'ring-joint-gasket-rtj-12.webp',
+		],
+	},
+
+	// ─── FILTRATION ──────────────────────────────────────────────────────────────
+	{
+		id: 'prod_f_hp1',
+		category: 'Industrial Filtration',
+		title: 'High-Pressure Single Cartridge Filter Housing — Hydraulic & Lube Oil',
+		desc: 'Heavy-duty single cartridge filter housings for high-pressure hydraulic and lube oil circuits where duplex changeover is not required. Rated to 315–420 bar working pressure, constructed from cast iron head with cold-extruded or machined steel bowl, accepting standard replacement cartridge elements in 2–25 µm filtration ratings. Supplied with visual or electrical differential pressure (DP) indicator, integral bypass valve, and SAE or BSP/NPT ported head. Compatible with replacement elements for Hydac, Parker/Stauff, Rexroth, Schroeder, and UFI filter ranges — reduces procurement to a single vendor.',
+		usage:
+			'Pressure-line filtration for turbine hydraulic governor circuits, actuator supply lines, servo valve circuits, and high-pressure hydraulic power units (HPUs) where continuous operation is acceptable during element change. Also used on machine tool hydraulic circuits, injection moulding machine pressure lines, press circuits, and any application where medium-to-high pressure (up to 420 bar) inline filtration is required without a duplex changeover valve. Inline on the high-pressure side, between pump and actuator — protecting proportional and servo valves from particle contamination.',
+		features: [
+			'Working pressure: 210 bar (standard) / 315 bar (medium-high) / 420 bar (high-pressure) — specify housing series at enquiry',
+			'Flow capacity: 20–500 L/min depending on housing size and element diameter',
+			'Element filtration rating: 2, 3, 5, 10, 16, 25 µm absolute (βx ≥ 200) — glass fibre and wire mesh elements available',
+			'Element collapse rating: 20 bar (standard element), up to 210 bar (H+ series reinforced element)',
+			'Head material: Cast iron (standard), Ductile iron, Aluminium (to 210 bar); Steel for Class 315/420 bar series',
+			'Bowl material: Cold-extruded steel or machined steel — non-welded design for extended fatigue life',
+			'Port connections: SAE Code 61/62 flange (standard for high-pressure); BSP/NPT screwed and BSPP on request',
+			'Bypass valve setting: 3.5 bar (standard) or 6 bar — factory-set, field-adjustable',
+			'DP indicator: Visual pop-up indicator (standard) or electrical switch contact (24 V DC / 240 V AC) for PLC integration',
+			'Seals: NBR (standard), FKM/Viton (phosphate ester and wide-temperature service), EPDM on request',
+			'Mounting: Inline (foot-mounted) or manifold-mounted configurations',
+			'Cross-reference elements: Hydac 0030/0060/0110 series, Parker/Stauff, UFI DF series, Schroeder — confirm at enquiry',
+			'Supplied with element, seals, and DP indicator fitted — ready to install',
+		],
+		specs: {
+			'Working Pressure': '210 bar / 315 bar / 420 bar (series dependent)',
+			'Flow Capacity': '20–500 L/min (housing size dependent)',
+			'Filtration Rating': '2, 3, 5, 10, 16, 25 µm absolute (βx ≥ 200)',
+			'Element Collapse Rating': '20 bar standard; 210 bar H+ reinforced',
+			'Head Material': 'Cast iron / Ductile iron / Aluminium / Steel (pressure dependent)',
+			'Bowl Material': 'Cold-extruded or machined steel — non-welded',
+			'Port Connections': 'SAE Code 61/62 flange; BSP/NPT screwed on request',
+			'Bypass Valve': '3.5 bar or 6 bar — factory set',
+			'DP Indicator': 'Visual pop-up (standard) or electrical switch contact',
+			Seals: 'NBR standard; FKM/Viton, EPDM on request',
+			'Element Compatibility': 'Hydac, Parker/Stauff, UFI, Schroeder — cross-reference on request',
+			'HSN Code': '8421',
+		},
+		images: [
+			'high-pressure-filter-housing-1.webp',
+			'high-pressure-filter-housing-2.webp',
+			'high-pressure-filter-housing-3.webp',
+			'high-pressure-filter-housing-4.webp',
+			'high-pressure-filter-housing-5.webp',
+			'high-pressure-filter-housing-6.webp',
+			'high-pressure-filter-housing-7.webp',
+			'high-pressure-filter-housing-8.webp',
+			'high-pressure-filter-housing-9.webp',
+			'high-pressure-filter-housing-10.webp',
+			'high-pressure-filter-housing-11.webp',
+			'high-pressure-filter-housing-12.webp',
+		],
+	},
+	{
+		id: 'prod_f_mag1',
+		category: 'Industrial Filtration',
+		title: 'Magnetic Filter / Magnetic Separator Assembly — Lube Oil & Hydraulic',
+		desc: 'Inline and off-line magnetic filter assemblies using high-strength rare earth (neodymium) or ferrite magnetic rods to continuously remove ferrous wear particles from turbine lube oil, hydraulic fluid, gear oil, coolant, and cutting oil circuits. Captures sub-micron ferrous particles that mechanical filter elements cannot retain — the primary wear contaminant in turbine and gearbox lube oil systems. Supplied as standalone inline units with flanged or threaded connections, as magnetic rod inserts for existing filter housings, or as modular assemblies integrated with conventional filter housings.',
+		usage:
+			'First-line protection for turbine lube oil systems, governor hydraulic oil circuits, gearbox lubrication, and hydraulic power units. Installed inline in the lube oil return line (between bearing drain and reservoir) or in a bypass loop off the main lube oil header — captures bearing and journal wear metal before it re-circulates and causes further abrasion damage. Especially valuable on older turbines where bearing wear is progressive, and on new turbines post-commissioning to capture running-in wear metal. Also used in: steel mill hydraulic systems, marine gearbox lube circuits, paper mill press roll lubricating systems, and any closed-loop oil circuit where ferrous contamination is a concern.',
+		features: [
+			'Magnet type: Rare earth neodymium (up to 4× stronger than ceramic) — captures sub-micron ferrous particles including steel dust and iron filings down to below 1 µm',
+			'Housing types: Inline pipeline housing (flanged or screwed), magnetic rod insert (for existing strainer or filter housing), bypass canister assembly',
+			'MOC: SS 316 housing and rod sleeve standard — magnetic core fully enclosed, no ceramic-to-fluid contact, no contamination risk from magnet degradation',
+			'Size range: DN15 to DN200 inline models; magnetic rod inserts: 25–100 mm diameter × 100–500 mm length',
+			'Connection: Flanged (ASME B16.5 Class 150/300), Screwed (BSP/NPT ½" to 2")',
+			'Flow rate: 5–600 L/min (housing size dependent)',
+			'Working pressure: up to 16 bar (standard inline); up to 250 bar (high-pressure hydraulic rod inserts)',
+			'Temperature: up to 150°C (standard); up to 200°C (high-temperature neodymium grade)',
+			'Cleaning: Manual — remove magnetic rod sleeve; captured particles release instantly from sleeve surface without tools',
+			'Oil condition monitoring: Particle accumulation on rod provides visual indication of bearing or gear wear rate — valuable maintenance intelligence',
+			'Combination units available: magnetic filter + mechanical filter element in single housing — dual-stage ferrous and non-ferrous particle removal',
+			'Certifications: ISO 9001 manufacturing; CE marked models available',
+		],
+		specs: {
+			'Magnet Type': 'Rare earth neodymium (standard); ferrite on request',
+			'Particle Capture': 'Sub-micron ferrous particles — below 1 µm effective capture',
+			'Housing MOC': 'SS 316 standard',
+			'Size Range': 'DN15–DN200 inline; 25–100 mm dia. rod inserts',
+			Connections: 'Flanged ASME B16.5 Class 150/300; Screwed BSP/NPT ½"–2"',
+			'Flow Rate': '5–600 L/min (size dependent)',
+			'Working Pressure': 'Up to 16 bar (inline); up to 250 bar (HP rod inserts)',
+			'Operating Temperature': 'Up to 150°C standard; up to 200°C (HT grade)',
+			Cleaning: 'Manual rod removal — no tools required',
+			'Combination Units': 'Magnetic + mechanical element in single housing available',
+			'HSN Code': '8421',
+		},
+		images: [
+			'magnetic-filter-assembly-1.webp',
+			'magnetic-filter-assembly-2.webp',
+			'magnetic-filter-assembly-3.webp',
+			'magnetic-filter-assembly-4.webp',
+			'magnetic-filter-assembly-5.webp',
+			'magnetic-filter-assembly-6.webp',
+			'magnetic-filter-assembly-7.webp',
+			'magnetic-filter-assembly-8.webp',
+			'magnetic-filter-assembly-9.webp',
+			'magnetic-filter-assembly-10.webp',
+			'magnetic-filter-assembly-11.webp',
+			'magnetic-filter-assembly-12.webp',
+		],
+	},
+
+	// ─── TURBINE SPARES ──────────────────────────────────────────────────────────
+	{
+		id: 'prod_ts_prv',
+		category: 'Turbine Spares',
+		title: 'Pressure Reducing Valve (PRV) & PRDS Station — Steam Pressure & Temperature Control',
+		desc: 'Pressure Reducing Valves (PRV) and combined Pressure Reducing & Desuperheating Stations (PRDS) for steam conditioning from boiler header pressure to turbine auxiliary and process supply pressures. PRV reduces high upstream steam pressure to a stable, controlled downstream pressure. PRDS combines a Pressure Control Valve (PCV) with an atomising desuperheater and Temperature Control Valve (TCV) to simultaneously reduce both pressure and temperature of superheated steam to the required process conditions. Supplied as split PRDS (separate PRV and desuperheater) or combined compact PRDS unit.',
+		usage:
+			'Essential at every steam letdown point in co-generation, power, sugar, and process plants: HP steam header to LP/MP steam supply; turbine extraction steam conditioning; turbine bypass lines (protects condenser during turbine trips and startup); boiler auxiliary steam to plant services (deaerator, feed heating, fuel oil heating, sootblowing). Sized from DN25 to DN300 (larger on request). PRDS used in turbine bypass applications protects the turbine during startup, load trip, and part-load operation by safely dumping high-pressure superheated steam to condenser conditions.',
+		features: [
+			'Two configurations: Split PRDS (separate PRV and desuperheater) and Combined PRDS (compact single unit with both functions)',
+			'PRV types: Direct-acting (self-contained, small sizes, no external power), Pilot-operated (high accuracy, large sizes), Cage-guided globe valve with pneumatic/electric actuator (for modulating control)',
+			'Desuperheater types: Fixed orifice spray nozzle, Variable annular spray, Sonic spray nozzle (high turndown for turbine bypass)',
+			'Turndown ratio: up to 40:1 on variable desuperheater designs — suitable for highly variable steam flow (turbine bypass service)',
+			'Size range: DN25 to DN300 PRV; DN50 to DN300 desuperheater — larger sizes on request',
+			'Pressure range: inlet up to ANSI Class 2500 / 420 bar; outlet pressure to any required downstream set point',
+			'Temperature range: inlet up to 600°C; outlet temperature controlled to ±2°C of set point with PID control',
+			'Body/pipe material: A106 Gr. B (CS), A335 P11/P22/P91 (alloy steel for high-temperature), SS 316 — per steam conditions',
+			'Control system: PID pneumatic (standard), PLC/DCS-compatible (4–20 mA) with pressure transmitter, temperature RTD, I/P converter',
+			'Instrumentation supplied: pressure gauges, pressure transmitter, temperature gauge, temperature transmitter (RTD), root valves and isolation valves',
+			'Safety: Integral thermal relief valve; fail-safe-close actuator option; upstream and downstream isolation valves included in station scope',
+			'Spray water quality: boiler feedwater quality required — 0.8 mm mesh strainer on water supply line recommended (Forbes Marshall / IS practice)',
+			'Noise: Multistage pressure reduction trim available to reduce noise to within acceptable limits at high-ΔP applications',
+		],
+		specs: {
+			'Configuration': 'Split PRDS or Combined PRDS (compact single unit)',
+			'PRV Types': 'Direct-acting, Pilot-operated, Cage-guided globe with actuator',
+			'Desuperheater Types': 'Fixed orifice, Variable annular, Sonic spray (high turndown)',
+			'Turndown Ratio': 'Up to 40:1 (variable desuperheater)',
+			'Size Range': 'DN25 to DN300 (PRV); DN50 to DN300 (desuperheater)',
+			'Inlet Pressure': 'Up to ANSI Class 2500 / 420 bar',
+			'Inlet Temperature': 'Up to 600°C',
+			'Temperature Control Accuracy': '±2°C of set point (PID)',
+			'Body Material': 'A106 Gr. B (CS), A335 P11/P22/P91 (alloy), SS 316',
+			'Control System': 'PID pneumatic; PLC/DCS 4–20 mA compatible',
+			'Spray Water': 'Boiler feedwater quality; 0.8 mm strainer on water line',
+			'HSN Code': '8481',
+		},
+		images: [
+			'prv-prds-station-1.webp',
+			'prv-prds-station-2.webp',
+			'prv-prds-station-3.webp',
+			'prv-prds-station-4.webp',
+			'prv-prds-station-5.webp',
+			'prv-prds-station-6.webp',
+			'prv-prds-station-7.webp',
+			'prv-prds-station-8.webp',
+			'prv-prds-station-9.webp',
+			'prv-prds-station-10.webp',
+			'prv-prds-station-11.webp',
+			'prv-prds-station-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_overspeed',
+		category: 'Turbine Spares',
+		title: 'Overspeed Trip Device & Speed Switch — Mechanical & Electro-Hydraulic',
+		desc: 'Overspeed trip devices and speed switches for steam turbine protection against catastrophic runaway. Mechanical overspeed trip assemblies use a centrifugal unbalanced plunger or eccentric pin mounted in the turbine shaft — when shaft speed exceeds the trip threshold (typically 110–112% of rated speed), centrifugal force overcomes the pre-set spring force, the plunger protrudes and strikes a trip lever, dumping the hydraulic trip oil header and closing the Emergency Stop Valve (ESV) instantly. Electronic overspeed trip units use magnetic pickup sensors (MPUs) and a speed monitoring relay to provide independent, SIL-rated trip output. Supplied as OEM-matched replacement assemblies or as upgraded electronic trip units for older mechanically governed turbines.',
+		usage:
+			'Mandatory safety device on every steam turbine — protects against destruction of blades, casing, and coupled driven equipment (generator, compressor, pump) when the speed governor fails to control speed after a load trip. Critical during turbine overhauls: overspeed trip plunger springs, bushings, and adjustment assemblies require inspection, dimensional checking, and replacement at every major overhaul. Also required for operational testing — annual or per-shutdown overspeed trip test by controlled speed raise to trip setpoint. Keshav Enterprises supplies: mechanical trip plunger assemblies (complete with spring, bushing, and adjustment nut), electronic speed relays (Woodward ProTech-compatible), magnetic pickup sensors (MPUs) for speed signal input, and trip oil dump valves for hydraulic trip circuits.',
+		features: [
+			'Mechanical trip type: Eccentric pin / unbalanced plunger in turbine shaft — centrifugal actuation; no external power required',
+			'Trip speed setpoint: Typically 110–112% of rated speed (10–12% overspeed) — adjustable by spring pre-load during commissioning',
+			'Trip speed repeatability: ±2% (mechanical cartridge type) — per API 612 and OEM specifications',
+			'Components supplied: Trip plunger/pin cartridge, adjusting spring, bushing, adjustment nut, locking arrangement, and trip lever assembly',
+			'Electronic overspeed relay: Monitors shaft speed via MPU (passive or active magnetic pickup); issues hardwired trip output to solenoid dump valve on ESV',
+			'Electronic trip response: Typically <100 ms from overspeed detection to trip signal — significantly faster than mechanical actuation on large turbines',
+			'Trip oil dump valve: Electro-hydraulic dump valve for hydraulic trip oil header; failsafe spring-return to dump (de-energise to trip)',
+			'MPU sensors: Passive variable reluctance and active Hall-effect types — 5/32" and ¼" thread mounting; 60-tooth and 120-tooth gear wheel compatible',
+			'Hydraulic trip oil operating pressure: 5–25 bar trip oil header (low pressure hydraulic trip circuit)',
+			'Compatibility: Supplied to match Elliott, Triveni, Siemens (KKK), BHEL, GE, Terry, Dresser-Rand, and other OEM turbine trip systems',
+			'OEM alternative: Woodward ProTech-GII, ProTech-SX, MicroNet Safety Module equivalent or replacement where electronic upgrade is required',
+			'Material: SS 316 / alloy steel plunger and spring — corrosion resistant; suitable for lube oil immersion service',
+		],
+		specs: {
+			'Mechanical Trip Type': 'Eccentric pin / unbalanced centrifugal plunger in turbine shaft',
+			'Typical Trip Setpoint': '110–112% of rated speed (10–12% overspeed)',
+			'Trip Repeatability': '±2% (mechanical cartridge)',
+			'Electronic Trip Response': '<100 ms (speed relay to solenoid output)',
+			'MPU Types': 'Passive variable reluctance; active Hall-effect',
+			'Trip Oil Pressure': '5–25 bar (low-pressure hydraulic trip header)',
+			'Dump Valve': 'Electro-hydraulic, spring-return failsafe-to-trip',
+			'Components': 'Plunger cartridge, spring, bushing, adjustment nut, lever, MPU, dump valve',
+			'OEM Compatibility': 'Elliott, Triveni, BHEL, Siemens KKK, GE, Terry, Dresser-Rand',
+			'Electronic Equivalent': 'Woodward ProTech-GII / SX / MicroNet Safety Module compatible',
+			MOC: 'SS 316 / alloy steel — oil-immersion rated',
+			'HSN Code': '8412',
+		},
+		images: [
+			'overspeed-trip-device-1.webp',
+			'overspeed-trip-device-2.webp',
+			'overspeed-trip-device-3.webp',
+			'overspeed-trip-device-4.webp',
+			'overspeed-trip-device-5.webp',
+			'overspeed-trip-device-6.webp',
+			'overspeed-trip-device-7.webp',
+			'overspeed-trip-device-8.webp',
+			'overspeed-trip-device-9.webp',
+			'overspeed-trip-device-10.webp',
+			'overspeed-trip-device-11.webp',
+			'overspeed-trip-device-12.webp',
+		],
+	},
+	{
+		id: 'prod_ts_dp_switch',
+		category: 'Turbine Spares',
+		title: 'Differential Pressure (DP) Switches & Temperature Switches — Turbine Lube Oil & Filter Monitoring',
+		desc: 'Differential pressure (DP) switches and temperature switches for condition monitoring of turbine lube oil filter housings, duplex filter changeover panels, heat exchangers, and process pipelines. DP switches signal filter element blockage by detecting the rising pressure differential across a clogged element — enabling planned maintenance before element bypass occurs and unfiltered oil reaches turbine bearings. Temperature switches provide high/low alarm and trip outputs for lube oil temperature, bearing metal temperature, and process stream temperature monitoring.',
+		usage:
+			'Direct fit or retrofit on existing Keshav Enterprises duplex filter housings (prod_f1, prod_f2 series) and simplex basket strainers — wired to plant DCS, PLC, or local alarm panel for filter condition monitoring. Also used on third-party filter housings, heat exchanger inlet/outlet temperature monitoring, turbine lube oil cooler outlet temperature control, and steam turbine bearing temperature alarm/trip circuits. DP switch output triggers filter changeover alarm (duplex) or maintenance alarm (simplex/basket) before bypass valve lifts and unfiltered oil circulates to bearings.',
+		features: [
+			'DP switch types: Piston type (simple, robust), Diaphragm type (low DP ranges, viscous fluids), Bourdon tube differential type (high-accuracy)',
+			'DP switch setpoint range: 0.3 to 10 bar — covers standard filter bypass settings of 3.5 bar and 6 bar',
+			'Temperature switch types: Bimetallic strip, Vapour pressure, Bulb & capillary — select per response time and accuracy requirement',
+			'Temperature switch setpoint range: –20°C to +200°C (lube oil temperature monitoring range: 40°C low alarm to 75°C high alarm typical)',
+			'Electrical output: SPDT or DPDT microswitch contact (standard); 2-wire solid state NPN/PNP on request',
+			'Contact rating: 5–15 A at 250 V AC / 24–220 V DC (application dependent)',
+			'Process connection: ½" BSP or NPT male (standard); ¼" BSP for small-bore instrument tapping',
+			'Housing: IP65 / IP67 rated aluminium or SS 316 enclosure — suitable for outdoor turbine house installation',
+			'Electrical entry: M20 cable gland entry; terminal block wiring',
+			'Hazardous area: ATEX / IECEx Ex d / Ex e certified versions available for flammable oil mist environments',
+			'Reset: Automatic (standard) or manual reset — manual preferred for trip circuits to prevent auto-restart after fault',
+			'Supplied with: instrument tag, calibration certificate, and setting adjustment instructions',
+		],
+		specs: {
+			'DP Switch Types': 'Piston, Diaphragm, Bourdon tube differential',
+			'DP Setpoint Range': '0.3–10 bar (standard)',
+			'Temperature Switch Types': 'Bimetallic strip, Vapour pressure, Bulb & capillary',
+			'Temperature Setpoint Range': '–20°C to +200°C',
+			'Electrical Output': 'SPDT / DPDT microswitch; NPN/PNP solid state on request',
+			'Contact Rating': '5–15 A at 250 V AC / 24–220 V DC',
+			'Process Connection': '½" BSP/NPT male (standard); ¼" BSP on request',
+			'Housing Rating': 'IP65 / IP67 — aluminium or SS 316',
+			'Hazardous Area': 'ATEX / IECEx Ex d / Ex e available',
+			Reset: 'Automatic (standard) or Manual',
+			'Calibration': 'Certificate supplied',
+			'HSN Code': '9033',
+		},
+		images: [
+			'dp-temperature-switch-1.webp',
+			'dp-temperature-switch-2.webp',
+			'dp-temperature-switch-3.webp',
+			'dp-temperature-switch-4.webp',
+			'dp-temperature-switch-5.webp',
+			'dp-temperature-switch-6.webp',
+			'dp-temperature-switch-7.webp',
+			'dp-temperature-switch-8.webp',
+			'dp-temperature-switch-9.webp',
+			'dp-temperature-switch-10.webp',
+			'dp-temperature-switch-11.webp',
+			'dp-temperature-switch-12.webp',
+		],
+	},
 ];
 
 const MAX_PRODUCT_IMAGES = 12;
@@ -6532,8 +7257,15 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				setIsOpen(false);
 			}
 		};
+		const handleKeyDown = (event) => {
+			if (event.key === 'Escape') setIsOpen(false);
+		};
 		document.addEventListener('mousedown', handleClickOutside);
-		return () => document.removeEventListener('mousedown', handleClickOutside);
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('keydown', handleKeyDown);
+		};
 	}, []);
 
 	const changeLanguage = (langCode) => {
@@ -6556,6 +7288,8 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
 				aria-label="Change Language"
+				aria-haspopup="listbox"
+				aria-expanded={isOpen}
 				className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-[13px] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
 					scrolled
 						? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
@@ -6581,12 +7315,14 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				</svg>
 			</button>
 			{isOpen && (
-				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
-					<div className="max-h-80 overflow-y-auto py-1.5 scrollbar-hide">
+				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-[250]">
+					<div role="listbox" aria-label="Select language" className="max-h-80 overflow-y-auto py-1.5 scrollbar-hide">
 						{LANGUAGES.map((lang) => (
 							<button
 								type="button"
 								key={lang.code}
+								role="option"
+								aria-selected={currentLang === lang.code}
 								onClick={() => changeLanguage(lang.code)}
 								className={`w-full text-left px-3.5 py-2 flex items-center gap-3 transition-colors hover:bg-slate-50 focus:outline-none focus:bg-slate-50 ${currentLang === lang.code ? 'bg-slate-50' : ''}`}
 								style={currentLang === lang.code ? { borderLeft: `3px solid ${lang.color}`, paddingLeft: '10px' } : { borderLeft: '3px solid transparent' }}
@@ -6704,13 +7440,15 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	useEffect(() => {
 		queryRef.current = query;
 	}, [query]);
+	// Defer search computation so keystrokes feel instant even on slow devices
+	const deferredQ = React.useDeferredValue(q);
 	const searchResults = useMemo(() => {
-		if (!q) return [];
+		if (!deferredQ) return [];
 		return [
 			...SERVICES.filter(
 				(s) =>
-					s.title?.toLowerCase().includes(q) ||
-					s.desc?.toLowerCase().includes(q),
+					s.title?.toLowerCase().includes(deferredQ) ||
+					s.desc?.toLowerCase().includes(deferredQ),
 			).map((s) => ({
 				id: s.id,
 				title: s.title,
@@ -6721,9 +7459,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 			})),
 			...RAW_PRODUCTS.filter(
 				(p) =>
-					p.title?.toLowerCase().includes(q) ||
-					p.desc?.toLowerCase().includes(q) ||
-					p.category?.toLowerCase().includes(q),
+					p.title?.toLowerCase().includes(deferredQ) ||
+					p.desc?.toLowerCase().includes(deferredQ) ||
+					p.category?.toLowerCase().includes(deferredQ) ||
+					p.features?.some((f) => f.toLowerCase().includes(deferredQ)),
 			).map((p) => ({
 				id: p.id,
 				title: p.title,
@@ -6734,7 +7473,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				image: p.images?.[0],
 			})),
 		].slice(0, 8);
-	}, [q]);
+	}, [deferredQ]);
 
 	// PERF: combine outside-click and Escape into one effect with one pair of listeners
 	useEffect(() => {
@@ -6764,9 +7503,13 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	const isActive = useCallback(
 		(path) => {
 			if (path === '/' && currentPath !== '/') return false;
-			if (currentPath.startsWith('/product/') && path === '/products')
-				return true;
-			return currentPath.startsWith(path);
+			// Detail pages use a singular prefix (/product/, /service/, /industry/, /blog/)
+			// while nav links point to the plural index (/products, /services, /industries, /blog).
+			if (currentPath.startsWith('/product/')  && path === '/products')   return true;
+			if (currentPath.startsWith('/service/')   && path === '/services')   return true;
+			if (currentPath.startsWith('/industry/')  && path === '/industries') return true;
+			if (currentPath.startsWith('/blog/')      && path === '/blog')       return true;
+			return currentPath === path;
 		},
 		[currentPath],
 	);
@@ -6785,7 +7528,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		>
 			<a
 				href="#main-content"
-				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-100 font-bold"
+				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold"
 			>
 				Skip to main content
 			</a>
@@ -6850,7 +7593,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60]
 					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
 					${isSearchOpen ? 'ml-1' : ''}`}
 								>
@@ -6861,7 +7604,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									/>
 								</button>
 								{isSearchOpen && query && (
-									<div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
+									<div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
 										<div className="max-h-[60vh] overflow-y-auto p-2">
 											{searchResults.length === 0 ? (
 												<div className="p-6 text-center text-slate-500 font-medium text-sm">
@@ -7483,6 +8226,10 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 	const [phone, setPhone]           = useState('');
 	const [descErr, setDescErr]       = useState('');
 	const [_submitted, setSubmitted]   = useState(false);
+	const modalRef = useRef(null);
+
+	// Focus trap — keeps Tab/Shift+Tab inside the dialog
+	useFocusTrap(modalRef, true);
 
 	// Close on Escape
 	useEffect(() => {
@@ -7544,7 +8291,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 
 	return (
 		<div
-			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
+			className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-4"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="report-modal-title"
@@ -7557,7 +8304,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 			/>
 
 			{/* Panel */}
-			<div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden">
+			<div ref={modalRef} className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden" tabIndex={-1}>
 
 				{/* Header */}
 				<div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
@@ -7908,37 +8655,62 @@ const BackToTopButton = memo(() => {
 BackToTopButton.displayName = 'BackToTopButton';
 
 // ─── WHATSAPP CHAT BUBBLE ─────────────────────────────────────
-const WA_GREETING_DELAY = 2500; // ms before greeting appears
+// Timing constants — tweak here without touching logic
+const WA_GREETING_DELAY    = 4000;  // ms after mount before first appearance
+const WA_GREETING_VISIBLE  = 6000;  // ms the bubble stays visible before auto-hiding
+const WA_GREETING_INTERVAL = 45000; // ms between re-appearances (if not dismissed for session)
 
 const WhatsAppBubble = memo(() => {
 	const [showGreeting, setShowGreeting] = useState(false);
-	const [dismissed, setDismissed] = useState(false);
+	const [sessionDone,  setSessionDone]  = useState(() => {
+		try { return !!sessionStorage.getItem('ke_wa_dismissed'); } catch { return false; }
+	});
 
-	// Show greeting after delay, but only once per session
-	useEffect(() => {
-		try {
-			if (sessionStorage.getItem('ke_wa_greeted')) return;
-		} catch { /* ignore */ }
-		const t = setTimeout(() => {
-			setShowGreeting(true);
-			try { sessionStorage.setItem('ke_wa_greeted', '1'); } catch { /* ignore */ }
-		}, WA_GREETING_DELAY);
-		return () => clearTimeout(t);
+	// Refs hold every timer so cleanup always reaches them, even timers
+	// created inside nested callbacks (local `let` vars get captured at closure
+	// creation time — before the inner setTimeout fires — so clearTimeout
+	// would clear `undefined` and the repeat timer would leak forever).
+	const showTimerRef   = useRef(null);
+	const hideTimerRef   = useRef(null);
+	const repeatTimerRef = useRef(null);
+
+	const clearAll = useCallback(() => {
+		clearTimeout(showTimerRef.current);
+		clearTimeout(hideTimerRef.current);
+		clearTimeout(repeatTimerRef.current);
 	}, []);
 
-	const dismiss = (e) => {
+	useEffect(() => {
+		if (sessionDone) return;
+
+		const showBubble = () => {
+			setShowGreeting(true);
+			hideTimerRef.current = setTimeout(() => {
+				setShowGreeting(false);
+				repeatTimerRef.current = setTimeout(showBubble, WA_GREETING_INTERVAL);
+			}, WA_GREETING_VISIBLE);
+		};
+
+		showTimerRef.current = setTimeout(showBubble, WA_GREETING_DELAY);
+
+		return clearAll;
+	}, [sessionDone, clearAll]);
+
+	const dismiss = useCallback((e) => {
 		e.preventDefault();
 		e.stopPropagation();
+		clearAll();                   // cancel any pending show/hide/repeat
 		setShowGreeting(false);
-		setDismissed(true);
-	};
+		setSessionDone(true);
+		try { sessionStorage.setItem('ke_wa_dismissed', '1'); } catch { /* ignore */ }
+	}, [clearAll]);
 
 	return (
 		<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
 			{/* Greeting bubble */}
-			{showGreeting && !dismissed && (
+			{showGreeting && (
 				<div
-					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-55 animate-[fadeSlideUp_0.35s_ease_forwards]"
+					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-[220px] animate-[fadeSlideUp_0.35s_ease_forwards]"
 					role="status"
 					aria-live="polite"
 				>
@@ -7990,6 +8762,172 @@ WhatsAppBubble.displayName = 'WhatsAppBubble';
 const FloatingButtons = memo(() => <WhatsAppBubble />);
 FloatingButtons.displayName = 'FloatingButtons';
 
+// ─── INLINE RFQ FORM ─────────────────────────────────────────
+// Embedded quote request form on product detail pages.
+// Submits via Web3Forms (same key as the contact page).
+// No file upload — keeps the form lightweight for procurement managers on work devices.
+const InlineRFQForm = memo(({ productTitle }) => {
+	const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
+
+	const [open,    setOpen]    = useState(false);
+	const [name,    setName]    = useState('');
+	const [company, setCompany] = useState('');
+	const [email,   setEmail]   = useState('');
+	const [phone,   setPhone]   = useState('');
+	const [qty,     setQty]     = useState('');
+	const [message, setMessage] = useState('');
+	const [status,  setStatus]  = useState('idle'); // idle | sending | success | error
+	const [errMsg,  setErrMsg]  = useState('');
+	const formRef = useRef(null);
+	useFocusTrap(formRef, open);
+
+	const sanitise = (s) => String(s ?? '').trim().slice(0, 500);
+
+	const reset = useCallback(() => {
+		setName(''); setCompany(''); setEmail('');
+		setPhone(''); setQty(''); setMessage('');
+		setStatus('idle'); setErrMsg('');
+	}, []);
+
+	const handleSubmit = useCallback(async () => {
+		if (!name.trim() || !email.trim()) { setErrMsg('Name and email are required.'); return; }
+		setStatus('sending'); setErrMsg('');
+		try {
+			const fd = new FormData();
+			fd.append('access_key', WEB3FORMS_KEY);
+			fd.append('subject',    `Product RFQ — ${sanitise(productTitle)} from ${sanitise(company || name)}`);
+			fd.append('from_name',  'Keshav Enterprises Website');
+			fd.append('Product',    sanitise(productTitle));
+			fd.append('Name',       sanitise(name));
+			fd.append('Company',    sanitise(company));
+			fd.append('Email',      sanitise(email));
+			fd.append('Phone',      sanitise(phone));
+			fd.append('Quantity',   sanitise(qty));
+			fd.append('Message',    sanitise(message));
+			const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+			const data = await res.json();
+			if (!res.ok || data.success === false) throw new Error(data.message || 'Submission failed');
+			setStatus('success');
+		} catch (err) {
+			setErrMsg(err.message || 'Something went wrong. Please try again.');
+			setStatus('error');
+		}
+	}, [name, company, email, phone, qty, message, productTitle]);
+
+	const inputCls = 'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow';
+	const labelCls = 'block text-xs font-black text-slate-500 uppercase tracking-widest mb-1';
+
+	return (
+		<div className="mt-5 border-2 border-blue-100 rounded-2xl overflow-hidden bg-blue-50/40">
+			{/* Toggle header */}
+			<button
+				type="button"
+				onClick={() => { setOpen(o => !o); if (!open) reset(); }}
+				aria-expanded={open}
+				aria-controls="rfq-form-body"
+				className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
+			>
+				<span className="flex items-center gap-3">
+					<Mail className="w-5 h-5 text-blue-600 shrink-0" aria-hidden="true" />
+					<span className="font-black text-slate-800 text-sm tracking-tight">Request a Quote by Email</span>
+					<span className="hidden sm:inline text-xs text-slate-500 font-medium">— no WhatsApp needed</span>
+				</span>
+				<svg
+					aria-hidden="true"
+					className={`w-4 h-4 text-blue-500 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+					fill="none" stroke="currentColor" viewBox="0 0 24 24"
+				>
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+				</svg>
+			</button>
+
+			{/* Collapsible body */}
+			{open && (
+				<div
+					id="rfq-form-body"
+					ref={formRef}
+					className="px-5 pb-5 pt-1 border-t border-blue-100"
+				>
+					{status === 'success' ? (
+						<div className="flex flex-col items-center gap-3 py-8 text-center">
+							<CheckCircle2 className="w-12 h-12 text-green-500" aria-hidden="true" />
+							<p className="font-black text-slate-800 text-base">Quote request sent!</p>
+							<p className="text-sm text-slate-500">We'll get back to you within 1 business day.</p>
+							<button
+								type="button"
+								onClick={reset}
+								className="mt-2 text-blue-600 text-sm font-bold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+							>
+								Send another request
+							</button>
+						</div>
+					) : (
+						<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+							<div>
+								<label htmlFor="rfq-name" className={labelCls}>Name <span className="text-red-500">*</span></label>
+								<input id="rfq-name" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" className={inputCls} />
+							</div>
+							<div>
+								<label htmlFor="rfq-company" className={labelCls}>Company</label>
+								<input id="rfq-company" type="text" autoComplete="organization" value={company} onChange={e => setCompany(e.target.value)} placeholder="Company name" className={inputCls} />
+							</div>
+							<div>
+								<label htmlFor="rfq-email" className={labelCls}>Email <span className="text-red-500">*</span></label>
+								<input id="rfq-email" type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@company.com" className={inputCls} />
+							</div>
+							<div>
+								<label htmlFor="rfq-phone" className={labelCls}>Phone</label>
+								<input id="rfq-phone" type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 98000 00000" className={inputCls} />
+							</div>
+							<div className="sm:col-span-2">
+								<label htmlFor="rfq-qty" className={labelCls}>Quantity / Requirement</label>
+								<input id="rfq-qty" type="text" value={qty} onChange={e => setQty(e.target.value)} placeholder="e.g. 10 units, DN 50, SS 316…" className={inputCls} />
+							</div>
+							<div className="sm:col-span-2">
+								<label htmlFor="rfq-message" className={labelCls}>Additional Details</label>
+								<textarea id="rfq-message" rows={3} value={message} onChange={e => setMessage(e.target.value)} placeholder="Application, pressure rating, delivery location, or any other specs…" className={`${inputCls} resize-none`} />
+							</div>
+
+							{errMsg && (
+								<div role="alert" className="sm:col-span-2 rounded-lg bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-700 font-semibold flex items-center gap-2">
+									<AlertTriangle className="w-4 h-4 shrink-0" aria-hidden="true" />
+									{errMsg}
+								</div>
+							)}
+
+							<div className="sm:col-span-2">
+								<button
+									type="button"
+									onClick={handleSubmit}
+									disabled={status === 'sending'}
+									className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-black py-3.5 rounded-xl text-sm tracking-tight transition-all shadow-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 flex items-center justify-center gap-2"
+								>
+									{status === 'sending' ? (
+										<>
+											<svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+												<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+												<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+											</svg>
+											Sending…
+										</>
+									) : (
+										<>
+											<Mail className="w-4 h-4" aria-hidden="true" />
+											Send Quote Request
+										</>
+									)}
+								</button>
+								<p className="mt-2 text-center text-[11px] text-slate-400">We respond within 1 business day · No spam</p>
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+		</div>
+	);
+});
+InlineRFQForm.displayName = 'InlineRFQForm';
+
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
@@ -8008,6 +8946,10 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	const thumbStripRef               = useRef(null);
 	const touchRef                    = useRef(null);
 	const slidingTimerRef             = useRef(null);
+	const lightboxRef                 = useRef(null);
+
+	// Focus trap for lightbox
+	useFocusTrap(lightboxRef, lightbox);
 
 	const product = useMemo(
 		() => PRODUCTS.find((p) => p.id === productId),
@@ -8533,6 +9475,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									View on IndiaMART
 								</a>
 							</div>
+							<InlineRFQForm productTitle={product.title} />
 							<div className="pt-4">
 								<button
 									type="button"
@@ -8575,12 +9518,14 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		{/* ── Full-screen Lightbox ── */}
 		{lightbox && (
 			<div
-				className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
+				ref={lightboxRef}
+				className="fixed inset-0 z-[9999] bg-black/93 flex items-center justify-center"
 				role="dialog" aria-modal="true"
 				aria-label={`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
 				onClick={() => setLightbox(false)}
 				onTouchStart={onTouchStart}
 				onTouchEnd={onTouchEnd}
+				tabIndex={-1}
 			>
 				<button type="button" onClick={() => setLightbox(false)} aria-label="Close zoom view"
 					className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/25 border border-white/20 rounded-full flex items-center justify-center text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white">
@@ -12733,7 +13678,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 			{/* Reading progress bar — blue-600 matching site CTA */}
 			<div
-				className="fixed top-0 left-0 right-0 z-60 h-0.75 bg-slate-200"
+				className="fixed top-0 left-0 right-0 z-[60] h-0.75 bg-slate-200"
 				aria-hidden="true"
 			>
 				<div
@@ -14929,70 +15874,47 @@ const ContactPage = memo(() => {
 			e.details = 'Please provide details (min 20 characters)';
 		return e;
 	}, [name, email, phone, iType, details]);
-	const handleSubmit = useCallback(async () => {
+	// Shared Web3Forms submit — openWhatsApp=true fires the WA confirmation link on success.
+	// Called by both CTAs so submission logic lives in exactly one place.
+	const submitToWeb3Forms = useCallback(async (openWhatsApp) => {
 		const e = validate();
-		if (Object.keys(e).length > 0) {
-			setErrors(e);
-			return;
-		}
+		if (Object.keys(e).length > 0) { setErrors(e); return; }
 		setErrors({});
 		setStatus('loading');
-
-		// ── Web3Forms — free plan: 250 submissions/month, file attachments supported ──
-		// Sign up at web3forms.com → get your Access Key → paste it below.
-		// The Access Key is safe to expose in client-side code (it is not a secret).
-		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185'; // ← replace with your key
-
+		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
 		try {
-			// FormData is required so the file attachment is included.
-			// Do NOT set Content-Type manually — the browser sets the correct
-			// multipart/form-data boundary automatically when body is FormData.
 			const fd = new FormData();
-
-			// Required Web3Forms fields
 			fd.append('access_key', WEB3FORMS_KEY);
 			fd.append('subject',    `New RFQ — ${sanitise(iType)} from ${sanitise(name)}`);
 			fd.append('from_name',  'Keshav Enterprises Website');
-
-			// Form fields — capitalised keys become column headers in the email
 			fd.append('Company',  sanitise(name));
 			fd.append('Email',    sanitise(email));
 			fd.append('Phone',    sanitise(phone));
 			fd.append('Inquiry',  sanitise(iType));
 			fd.append('Details',  sanitise(details));
-
-			// File attachment — reads the c-files input already in the JSX.
-			// Web3Forms free: single file up to 5 MB.
 			const fileInput = document.getElementById('c-files');
-			if (fileInput?.files?.length > 0) {
-				fd.append('attachment', fileInput.files[0]);
-			}
-
-			const res  = await fetch('https://api.web3forms.com/submit', {
-				method:  'POST',
-				headers: { Accept: 'application/json' },
-				body:    fd,
-			});
+			if (fileInput?.files?.length > 0) fd.append('attachment', fileInput.files[0]);
+			const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
 			const data = await res.json();
-			if (!res.ok || data.success === false)
-				throw new Error(data.message || 'Web3Forms submission failed');
-
-			// WhatsApp as bonus confirmation — always fires on success
-			const msg = [
-				`*New RFQ — Keshav Enterprises*`,
-				`Company: ${sanitise(name)}`,
-				`Email: ${sanitise(email)}`,
-				`Phone: ${sanitise(phone)}`,
-				`Type: ${sanitise(iType)}`,
-				`Details: ${sanitise(details)}`,
-			].join('\n');
-			window.open(waMsg(msg), '_blank', 'noopener');
-
+			if (!res.ok || data.success === false) throw new Error(data.message || 'Web3Forms submission failed');
+			if (openWhatsApp) {
+				const msg = [
+					`*New RFQ — Keshav Enterprises*`,
+					`Company: ${sanitise(name)}`,
+					`Email: ${sanitise(email)}`,
+					`Phone: ${sanitise(phone)}`,
+					`Type: ${sanitise(iType)}`,
+					`Details: ${sanitise(details)}`,
+				].join('\n');
+				window.open(waMsg(msg), '_blank', 'noopener');
+			}
 			setStatus('success');
 		} catch {
 			setStatus('error');
 		}
 	}, [validate, name, email, phone, iType, details]);
+	const handleSubmit = useCallback(() => submitToWeb3Forms(true),  [submitToWeb3Forms]);
+	const handleSubmitEmailOnly = useCallback(() => submitToWeb3Forms(false), [submitToWeb3Forms]);
 	const inputClass = (err) =>
 		`w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50 border rounded-xl font-medium text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
 	return (
@@ -15423,30 +16345,7 @@ const ContactPage = memo(() => {
 							<button
 								type="button"
 								disabled={status === 'loading'}
-								onClick={async () => {
-									const e = validate();
-									if (Object.keys(e).length > 0) { setErrors(e); return; }
-									setErrors({});
-									setStatus('loading');
-									const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
-									try {
-										const fd = new FormData();
-										fd.append('access_key', WEB3FORMS_KEY);
-										fd.append('subject',   `New RFQ — ${sanitise(iType)} from ${sanitise(name)}`);
-										fd.append('from_name', 'Keshav Enterprises Website');
-										fd.append('Company',  sanitise(name));
-										fd.append('Email',    sanitise(email));
-										fd.append('Phone',    sanitise(phone));
-										fd.append('Inquiry',  sanitise(iType));
-										fd.append('Details',  sanitise(details));
-										const fileInput = document.getElementById('c-files');
-										if (fileInput?.files?.length > 0) fd.append('attachment', fileInput.files[0]);
-										const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
-										const data = await res.json();
-										if (!res.ok || data.success === false) throw new Error(data.message || 'Submission failed');
-										setStatus('success');
-									} catch { setStatus('error'); }
-								}}
+											onClick={handleSubmitEmailOnly}
 								className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-base hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 							>
 								<Mail className="w-5 h-5" aria-hidden="true" />
@@ -15724,7 +16623,7 @@ NotFoundPage.displayName = 'NotFoundPage';
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
 	const [currentPath, setCurrentPath] = useState(
-		() => window.location.hash.replace('#', '') || '/',
+		() => { const p = window.location.hash.replace('#', '') || '/'; return p.length > 1 ? p.replace(/\/+$/, '') : p; },
 	);
 	// AUDIT FIX: aria-live region for screen reader route announcements
 	const [routeAnnouncement, setRouteAnnouncement] = useState('');
@@ -15732,7 +16631,7 @@ export default function App() {
 	// Stable window listeners — registered once
 	useEffect(() => {
 		const h = () => {
-			const newPath = window.location.hash.replace('#', '') || '/';
+			const raw = window.location.hash.replace('#', '') || '/'; const newPath = raw.length > 1 ? raw.replace(/\/+$/, '') : raw;
 			setCurrentPath(newPath);
 			// AUDIT FIX: scroll to top on back/forward navigation
 			window.scrollTo({ top: 0, behavior: 'instant' });
@@ -15831,7 +16730,7 @@ export default function App() {
 		const pageName =
 			path === '/'
 				? 'Home'
-				: path.replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
+				: path.replace(/\/+$/, '').replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
 		setRouteAnnouncement(`Navigated to ${pageName} page`);
 	}, []);
 
@@ -15872,8 +16771,6 @@ export default function App() {
 			case '/about':
 				return <AboutPage navigate={navigate} />;
 			case '/blog':
-				return <BlogPage navigate={navigate} />;
-			case '/blog/':
 				return <BlogPage navigate={navigate} />;
 			case '/services':
 				return <ServicesPage navigate={navigate} />;
