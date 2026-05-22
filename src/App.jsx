@@ -8657,8 +8657,8 @@ BackToTopButton.displayName = 'BackToTopButton';
 // ─── WHATSAPP CHAT BUBBLE ─────────────────────────────────────
 // Timing constants — tweak here without touching logic
 const WA_GREETING_DELAY    = 4000;  // ms after mount before first appearance
-const WA_GREETING_VISIBLE  = 6000;  // ms the bubble stays visible before auto-hiding
-const WA_GREETING_INTERVAL = 45000; // ms between re-appearances (if not dismissed for session)
+const WA_GREETING_VISIBLE  = 25000;  // ms the bubble stays visible before auto-hiding
+const WA_GREETING_INTERVAL = 25000; // ms between re-appearances (if not dismissed for session)
 
 const WhatsAppBubble = memo(() => {
 	const [showGreeting, setShowGreeting] = useState(false);
