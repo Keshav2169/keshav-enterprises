@@ -7257,8 +7257,15 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				setIsOpen(false);
 			}
 		};
+		const handleKeyDown = (event) => {
+			if (event.key === 'Escape') setIsOpen(false);
+		};
 		document.addEventListener('mousedown', handleClickOutside);
-		return () => document.removeEventListener('mousedown', handleClickOutside);
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('keydown', handleKeyDown);
+		};
 	}, []);
 
 	const changeLanguage = (langCode) => {
@@ -7433,13 +7440,15 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	useEffect(() => {
 		queryRef.current = query;
 	}, [query]);
+	// Defer search computation so keystrokes feel instant even on slow devices
+	const deferredQ = React.useDeferredValue(q);
 	const searchResults = useMemo(() => {
-		if (!q) return [];
+		if (!deferredQ) return [];
 		return [
 			...SERVICES.filter(
 				(s) =>
-					s.title?.toLowerCase().includes(q) ||
-					s.desc?.toLowerCase().includes(q),
+					s.title?.toLowerCase().includes(deferredQ) ||
+					s.desc?.toLowerCase().includes(deferredQ),
 			).map((s) => ({
 				id: s.id,
 				title: s.title,
@@ -7450,9 +7459,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 			})),
 			...RAW_PRODUCTS.filter(
 				(p) =>
-					p.title?.toLowerCase().includes(q) ||
-					p.desc?.toLowerCase().includes(q) ||
-					p.category?.toLowerCase().includes(q),
+					p.title?.toLowerCase().includes(deferredQ) ||
+					p.desc?.toLowerCase().includes(deferredQ) ||
+					p.category?.toLowerCase().includes(deferredQ) ||
+					p.features?.some((f) => f.toLowerCase().includes(deferredQ)),
 			).map((p) => ({
 				id: p.id,
 				title: p.title,
@@ -7463,7 +7473,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				image: p.images?.[0],
 			})),
 		].slice(0, 8);
-	}, [q]);
+	}, [deferredQ]);
 
 	// PERF: combine outside-click and Escape into one effect with one pair of listeners
 	useEffect(() => {
@@ -7493,9 +7503,13 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	const isActive = useCallback(
 		(path) => {
 			if (path === '/' && currentPath !== '/') return false;
-			if (currentPath.startsWith('/product/') && path === '/products')
-				return true;
-			return currentPath.startsWith(path);
+			// Detail pages use a singular prefix (/product/, /service/, /industry/, /blog/)
+			// while nav links point to the plural index (/products, /services, /industries, /blog).
+			if (currentPath.startsWith('/product/')  && path === '/products')   return true;
+			if (currentPath.startsWith('/service/')   && path === '/services')   return true;
+			if (currentPath.startsWith('/industry/')  && path === '/industries') return true;
+			if (currentPath.startsWith('/blog/')      && path === '/blog')       return true;
+			return currentPath === path;
 		},
 		[currentPath],
 	);
@@ -7579,7 +7593,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60]
 					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
 					${isSearchOpen ? 'ml-1' : ''}`}
 								>
@@ -7590,7 +7604,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									/>
 								</button>
 								{isSearchOpen && query && (
-									<div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
+									<div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
 										<div className="max-h-[60vh] overflow-y-auto p-2">
 											{searchResults.length === 0 ? (
 												<div className="p-6 text-center text-slate-500 font-medium text-sm">
@@ -8277,7 +8291,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 
 	return (
 		<div
-			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
+			className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-4"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="report-modal-title"
@@ -8641,37 +8655,62 @@ const BackToTopButton = memo(() => {
 BackToTopButton.displayName = 'BackToTopButton';
 
 // ─── WHATSAPP CHAT BUBBLE ─────────────────────────────────────
-const WA_GREETING_DELAY = 2500; // ms before greeting appears
+// Timing constants — tweak here without touching logic
+const WA_GREETING_DELAY    = 4000;  // ms after mount before first appearance
+const WA_GREETING_VISIBLE  = 25000;  // ms the bubble stays visible before auto-hiding
+const WA_GREETING_INTERVAL = 25000; // ms between re-appearances (if not dismissed for session)
 
 const WhatsAppBubble = memo(() => {
 	const [showGreeting, setShowGreeting] = useState(false);
-	const [dismissed, setDismissed] = useState(false);
+	const [sessionDone,  setSessionDone]  = useState(() => {
+		try { return !!sessionStorage.getItem('ke_wa_dismissed'); } catch { return false; }
+	});
 
-	// Show greeting after delay, but only once per session
-	useEffect(() => {
-		try {
-			if (sessionStorage.getItem('ke_wa_greeted')) return;
-		} catch { /* ignore */ }
-		const t = setTimeout(() => {
-			setShowGreeting(true);
-			try { sessionStorage.setItem('ke_wa_greeted', '1'); } catch { /* ignore */ }
-		}, WA_GREETING_DELAY);
-		return () => clearTimeout(t);
+	// Refs hold every timer so cleanup always reaches them, even timers
+	// created inside nested callbacks (local `let` vars get captured at closure
+	// creation time — before the inner setTimeout fires — so clearTimeout
+	// would clear `undefined` and the repeat timer would leak forever).
+	const showTimerRef   = useRef(null);
+	const hideTimerRef   = useRef(null);
+	const repeatTimerRef = useRef(null);
+
+	const clearAll = useCallback(() => {
+		clearTimeout(showTimerRef.current);
+		clearTimeout(hideTimerRef.current);
+		clearTimeout(repeatTimerRef.current);
 	}, []);
 
-	const dismiss = (e) => {
+	useEffect(() => {
+		if (sessionDone) return;
+
+		const showBubble = () => {
+			setShowGreeting(true);
+			hideTimerRef.current = setTimeout(() => {
+				setShowGreeting(false);
+				repeatTimerRef.current = setTimeout(showBubble, WA_GREETING_INTERVAL);
+			}, WA_GREETING_VISIBLE);
+		};
+
+		showTimerRef.current = setTimeout(showBubble, WA_GREETING_DELAY);
+
+		return clearAll;
+	}, [sessionDone, clearAll]);
+
+	const dismiss = useCallback((e) => {
 		e.preventDefault();
 		e.stopPropagation();
+		clearAll();                   // cancel any pending show/hide/repeat
 		setShowGreeting(false);
-		setDismissed(true);
-	};
+		setSessionDone(true);
+		try { sessionStorage.setItem('ke_wa_dismissed', '1'); } catch { /* ignore */ }
+	}, [clearAll]);
 
 	return (
 		<div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
 			{/* Greeting bubble */}
-			{showGreeting && !dismissed && (
+			{showGreeting && (
 				<div
-					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-55 animate-[fadeSlideUp_0.35s_ease_forwards]"
+					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-[220px] animate-[fadeSlideUp_0.35s_ease_forwards]"
 					role="status"
 					aria-live="polite"
 				>
@@ -8722,6 +8761,172 @@ WhatsAppBubble.displayName = 'WhatsAppBubble';
 
 const FloatingButtons = memo(() => <WhatsAppBubble />);
 FloatingButtons.displayName = 'FloatingButtons';
+
+// ─── INLINE RFQ FORM ─────────────────────────────────────────
+// Embedded quote request form on product detail pages.
+// Submits via Web3Forms (same key as the contact page).
+// No file upload — keeps the form lightweight for procurement managers on work devices.
+const InlineRFQForm = memo(({ productTitle }) => {
+	const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
+
+	const [open,    setOpen]    = useState(false);
+	const [name,    setName]    = useState('');
+	const [company, setCompany] = useState('');
+	const [email,   setEmail]   = useState('');
+	const [phone,   setPhone]   = useState('');
+	const [qty,     setQty]     = useState('');
+	const [message, setMessage] = useState('');
+	const [status,  setStatus]  = useState('idle'); // idle | sending | success | error
+	const [errMsg,  setErrMsg]  = useState('');
+	const formRef = useRef(null);
+	useFocusTrap(formRef, open);
+
+	const sanitise = (s) => String(s ?? '').trim().slice(0, 500);
+
+	const reset = useCallback(() => {
+		setName(''); setCompany(''); setEmail('');
+		setPhone(''); setQty(''); setMessage('');
+		setStatus('idle'); setErrMsg('');
+	}, []);
+
+	const handleSubmit = useCallback(async () => {
+		if (!name.trim() || !email.trim()) { setErrMsg('Name and email are required.'); return; }
+		setStatus('sending'); setErrMsg('');
+		try {
+			const fd = new FormData();
+			fd.append('access_key', WEB3FORMS_KEY);
+			fd.append('subject',    `Product RFQ — ${sanitise(productTitle)} from ${sanitise(company || name)}`);
+			fd.append('from_name',  'Keshav Enterprises Website');
+			fd.append('Product',    sanitise(productTitle));
+			fd.append('Name',       sanitise(name));
+			fd.append('Company',    sanitise(company));
+			fd.append('Email',      sanitise(email));
+			fd.append('Phone',      sanitise(phone));
+			fd.append('Quantity',   sanitise(qty));
+			fd.append('Message',    sanitise(message));
+			const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
+			const data = await res.json();
+			if (!res.ok || data.success === false) throw new Error(data.message || 'Submission failed');
+			setStatus('success');
+		} catch (err) {
+			setErrMsg(err.message || 'Something went wrong. Please try again.');
+			setStatus('error');
+		}
+	}, [name, company, email, phone, qty, message, productTitle]);
+
+	const inputCls = 'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow';
+	const labelCls = 'block text-xs font-black text-slate-500 uppercase tracking-widest mb-1';
+
+	return (
+		<div className="mt-5 border-2 border-blue-100 rounded-2xl overflow-hidden bg-blue-50/40">
+			{/* Toggle header */}
+			<button
+				type="button"
+				onClick={() => { setOpen(o => !o); if (!open) reset(); }}
+				aria-expanded={open}
+				aria-controls="rfq-form-body"
+				className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
+			>
+				<span className="flex items-center gap-3">
+					<Mail className="w-5 h-5 text-blue-600 shrink-0" aria-hidden="true" />
+					<span className="font-black text-slate-800 text-sm tracking-tight">Request a Quote by Email</span>
+					<span className="hidden sm:inline text-xs text-slate-500 font-medium">— no WhatsApp needed</span>
+				</span>
+				<svg
+					aria-hidden="true"
+					className={`w-4 h-4 text-blue-500 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+					fill="none" stroke="currentColor" viewBox="0 0 24 24"
+				>
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+				</svg>
+			</button>
+
+			{/* Collapsible body */}
+			{open && (
+				<div
+					id="rfq-form-body"
+					ref={formRef}
+					className="px-5 pb-5 pt-1 border-t border-blue-100"
+				>
+					{status === 'success' ? (
+						<div className="flex flex-col items-center gap-3 py-8 text-center">
+							<CheckCircle2 className="w-12 h-12 text-green-500" aria-hidden="true" />
+							<p className="font-black text-slate-800 text-base">Quote request sent!</p>
+							<p className="text-sm text-slate-500">We'll get back to you within 1 business day.</p>
+							<button
+								type="button"
+								onClick={reset}
+								className="mt-2 text-blue-600 text-sm font-bold hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+							>
+								Send another request
+							</button>
+						</div>
+					) : (
+						<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+							<div>
+								<label htmlFor="rfq-name" className={labelCls}>Name <span className="text-red-500">*</span></label>
+								<input id="rfq-name" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" className={inputCls} />
+							</div>
+							<div>
+								<label htmlFor="rfq-company" className={labelCls}>Company</label>
+								<input id="rfq-company" type="text" autoComplete="organization" value={company} onChange={e => setCompany(e.target.value)} placeholder="Company name" className={inputCls} />
+							</div>
+							<div>
+								<label htmlFor="rfq-email" className={labelCls}>Email <span className="text-red-500">*</span></label>
+								<input id="rfq-email" type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@company.com" className={inputCls} />
+							</div>
+							<div>
+								<label htmlFor="rfq-phone" className={labelCls}>Phone</label>
+								<input id="rfq-phone" type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 98000 00000" className={inputCls} />
+							</div>
+							<div className="sm:col-span-2">
+								<label htmlFor="rfq-qty" className={labelCls}>Quantity / Requirement</label>
+								<input id="rfq-qty" type="text" value={qty} onChange={e => setQty(e.target.value)} placeholder="e.g. 10 units, DN 50, SS 316…" className={inputCls} />
+							</div>
+							<div className="sm:col-span-2">
+								<label htmlFor="rfq-message" className={labelCls}>Additional Details</label>
+								<textarea id="rfq-message" rows={3} value={message} onChange={e => setMessage(e.target.value)} placeholder="Application, pressure rating, delivery location, or any other specs…" className={`${inputCls} resize-none`} />
+							</div>
+
+							{errMsg && (
+								<div role="alert" className="sm:col-span-2 rounded-lg bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-700 font-semibold flex items-center gap-2">
+									<AlertTriangle className="w-4 h-4 shrink-0" aria-hidden="true" />
+									{errMsg}
+								</div>
+							)}
+
+							<div className="sm:col-span-2">
+								<button
+									type="button"
+									onClick={handleSubmit}
+									disabled={status === 'sending'}
+									className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-black py-3.5 rounded-xl text-sm tracking-tight transition-all shadow-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 flex items-center justify-center gap-2"
+								>
+									{status === 'sending' ? (
+										<>
+											<svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+												<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+												<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+											</svg>
+											Sending…
+										</>
+									) : (
+										<>
+											<Mail className="w-4 h-4" aria-hidden="true" />
+											Send Quote Request
+										</>
+									)}
+								</button>
+								<p className="mt-2 text-center text-[11px] text-slate-400">We respond within 1 business day · No spam</p>
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+		</div>
+	);
+});
+InlineRFQForm.displayName = 'InlineRFQForm';
 
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
@@ -9270,6 +9475,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									View on IndiaMART
 								</a>
 							</div>
+							<InlineRFQForm productTitle={product.title} />
 							<div className="pt-4">
 								<button
 									type="button"
@@ -9313,7 +9519,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		{lightbox && (
 			<div
 				ref={lightboxRef}
-				className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
+				className="fixed inset-0 z-[9999] bg-black/93 flex items-center justify-center"
 				role="dialog" aria-modal="true"
 				aria-label={`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
 				onClick={() => setLightbox(false)}
@@ -13472,7 +13678,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 			{/* Reading progress bar — blue-600 matching site CTA */}
 			<div
-				className="fixed top-0 left-0 right-0 z-60 h-0.75 bg-slate-200"
+				className="fixed top-0 left-0 right-0 z-[60] h-0.75 bg-slate-200"
 				aria-hidden="true"
 			>
 				<div
@@ -15668,70 +15874,47 @@ const ContactPage = memo(() => {
 			e.details = 'Please provide details (min 20 characters)';
 		return e;
 	}, [name, email, phone, iType, details]);
-	const handleSubmit = useCallback(async () => {
+	// Shared Web3Forms submit — openWhatsApp=true fires the WA confirmation link on success.
+	// Called by both CTAs so submission logic lives in exactly one place.
+	const submitToWeb3Forms = useCallback(async (openWhatsApp) => {
 		const e = validate();
-		if (Object.keys(e).length > 0) {
-			setErrors(e);
-			return;
-		}
+		if (Object.keys(e).length > 0) { setErrors(e); return; }
 		setErrors({});
 		setStatus('loading');
-
-		// ── Web3Forms — free plan: 250 submissions/month, file attachments supported ──
-		// Sign up at web3forms.com → get your Access Key → paste it below.
-		// The Access Key is safe to expose in client-side code (it is not a secret).
-		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185'; // ← replace with your key
-
+		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
 		try {
-			// FormData is required so the file attachment is included.
-			// Do NOT set Content-Type manually — the browser sets the correct
-			// multipart/form-data boundary automatically when body is FormData.
 			const fd = new FormData();
-
-			// Required Web3Forms fields
 			fd.append('access_key', WEB3FORMS_KEY);
 			fd.append('subject',    `New RFQ — ${sanitise(iType)} from ${sanitise(name)}`);
 			fd.append('from_name',  'Keshav Enterprises Website');
-
-			// Form fields — capitalised keys become column headers in the email
 			fd.append('Company',  sanitise(name));
 			fd.append('Email',    sanitise(email));
 			fd.append('Phone',    sanitise(phone));
 			fd.append('Inquiry',  sanitise(iType));
 			fd.append('Details',  sanitise(details));
-
-			// File attachment — reads the c-files input already in the JSX.
-			// Web3Forms free: single file up to 5 MB.
 			const fileInput = document.getElementById('c-files');
-			if (fileInput?.files?.length > 0) {
-				fd.append('attachment', fileInput.files[0]);
-			}
-
-			const res  = await fetch('https://api.web3forms.com/submit', {
-				method:  'POST',
-				headers: { Accept: 'application/json' },
-				body:    fd,
-			});
+			if (fileInput?.files?.length > 0) fd.append('attachment', fileInput.files[0]);
+			const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
 			const data = await res.json();
-			if (!res.ok || data.success === false)
-				throw new Error(data.message || 'Web3Forms submission failed');
-
-			// WhatsApp as bonus confirmation — always fires on success
-			const msg = [
-				`*New RFQ — Keshav Enterprises*`,
-				`Company: ${sanitise(name)}`,
-				`Email: ${sanitise(email)}`,
-				`Phone: ${sanitise(phone)}`,
-				`Type: ${sanitise(iType)}`,
-				`Details: ${sanitise(details)}`,
-			].join('\n');
-			window.open(waMsg(msg), '_blank', 'noopener');
-
+			if (!res.ok || data.success === false) throw new Error(data.message || 'Web3Forms submission failed');
+			if (openWhatsApp) {
+				const msg = [
+					`*New RFQ — Keshav Enterprises*`,
+					`Company: ${sanitise(name)}`,
+					`Email: ${sanitise(email)}`,
+					`Phone: ${sanitise(phone)}`,
+					`Type: ${sanitise(iType)}`,
+					`Details: ${sanitise(details)}`,
+				].join('\n');
+				window.open(waMsg(msg), '_blank', 'noopener');
+			}
 			setStatus('success');
 		} catch {
 			setStatus('error');
 		}
 	}, [validate, name, email, phone, iType, details]);
+	const handleSubmit = useCallback(() => submitToWeb3Forms(true),  [submitToWeb3Forms]);
+	const handleSubmitEmailOnly = useCallback(() => submitToWeb3Forms(false), [submitToWeb3Forms]);
 	const inputClass = (err) =>
 		`w-full px-4 py-3.5 sm:px-5 sm:py-4 bg-slate-50 border rounded-xl font-medium text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${err ? 'border-red-400 bg-red-50' : 'border-slate-200'}`;
 	return (
@@ -16162,30 +16345,7 @@ const ContactPage = memo(() => {
 							<button
 								type="button"
 								disabled={status === 'loading'}
-								onClick={async () => {
-									const e = validate();
-									if (Object.keys(e).length > 0) { setErrors(e); return; }
-									setErrors({});
-									setStatus('loading');
-									const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
-									try {
-										const fd = new FormData();
-										fd.append('access_key', WEB3FORMS_KEY);
-										fd.append('subject',   `New RFQ — ${sanitise(iType)} from ${sanitise(name)}`);
-										fd.append('from_name', 'Keshav Enterprises Website');
-										fd.append('Company',  sanitise(name));
-										fd.append('Email',    sanitise(email));
-										fd.append('Phone',    sanitise(phone));
-										fd.append('Inquiry',  sanitise(iType));
-										fd.append('Details',  sanitise(details));
-										const fileInput = document.getElementById('c-files');
-										if (fileInput?.files?.length > 0) fd.append('attachment', fileInput.files[0]);
-										const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
-										const data = await res.json();
-										if (!res.ok || data.success === false) throw new Error(data.message || 'Submission failed');
-										setStatus('success');
-									} catch { setStatus('error'); }
-								}}
+											onClick={handleSubmitEmailOnly}
 								className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-base hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 							>
 								<Mail className="w-5 h-5" aria-hidden="true" />
@@ -16463,7 +16623,7 @@ NotFoundPage.displayName = 'NotFoundPage';
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
 	const [currentPath, setCurrentPath] = useState(
-		() => window.location.hash.replace('#', '') || '/',
+		() => { const p = window.location.hash.replace('#', '') || '/'; return p.length > 1 ? p.replace(/\/+$/, '') : p; },
 	);
 	// AUDIT FIX: aria-live region for screen reader route announcements
 	const [routeAnnouncement, setRouteAnnouncement] = useState('');
@@ -16471,7 +16631,7 @@ export default function App() {
 	// Stable window listeners — registered once
 	useEffect(() => {
 		const h = () => {
-			const newPath = window.location.hash.replace('#', '') || '/';
+			const raw = window.location.hash.replace('#', '') || '/'; const newPath = raw.length > 1 ? raw.replace(/\/+$/, '') : raw;
 			setCurrentPath(newPath);
 			// AUDIT FIX: scroll to top on back/forward navigation
 			window.scrollTo({ top: 0, behavior: 'instant' });
@@ -16570,7 +16730,7 @@ export default function App() {
 		const pageName =
 			path === '/'
 				? 'Home'
-				: path.replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
+				: path.replace(/\/+$/, '').replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
 		setRouteAnnouncement(`Navigated to ${pageName} page`);
 	}, []);
 
@@ -16611,8 +16771,6 @@ export default function App() {
 			case '/about':
 				return <AboutPage navigate={navigate} />;
 			case '/blog':
-				return <BlogPage navigate={navigate} />;
-			case '/blog/':
 				return <BlogPage navigate={navigate} />;
 			case '/services':
 				return <ServicesPage navigate={navigate} />;

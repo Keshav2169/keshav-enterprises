@@ -6490,7 +6490,7 @@ const LOCAL_SCHEMA = {
 		longitude: 77.3003,
 	},
 	openingHours: 'Mo-Sa 09:00-18:00',
-	openingHoursSpecification: {
+	openingHoursSpecification: [{
 		'@type': 'OpeningHoursSpecification',
 		dayOfWeek: [
 			'Monday',
@@ -6502,7 +6502,7 @@ const LOCAL_SCHEMA = {
 		],
 		opens: '09:00',
 		closes: '18:00',
-	},
+	}],
 	areaServed: [
 		{ '@type': 'Country', name: 'India' },
 		{ '@type': 'AdministrativeArea', name: 'Uttar Pradesh' },
@@ -6632,7 +6632,7 @@ const waMsg = (text) =>
 	`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
 
 // Step 1.1 — sanitise helper: strip WhatsApp markdown chars before building messages
-const sanitise = (str) => str.replace(/[*_~`]/g, '').trim();
+const sanitise = (str) => String(str ?? '').replace(/[*_~`]/g, '').trim().slice(0, 2000);
 
 const getCategoryIcon = (category) => {
 	const cls =
@@ -6784,11 +6784,9 @@ const SEOHead = memo(
 				const key = attrs?.as
 					? `link[rel="${rel}"][as="${attrs.as}"][href="${href}"]`
 					: `link[rel="${rel}"][href="${href}"]`;
-				let t =
-					document.querySelector(key) ||
-					document.querySelector(
-						`link[rel="${rel}"]${attrs?.as ? '' : ''}${!attrs?.as ? `[href="${href}"]` : ''}`,
-					);
+				// Always match by the full key (rel + as + href) to avoid clobbering
+				// a different preload/prefetch link that happens to share the same rel.
+				let t = document.querySelector(key);
 				if (!t) {
 					t = document.createElement('link');
 					t.rel = rel;
@@ -6980,7 +6978,7 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 			type="button"
 			onClick={() => navigate('/')}
 			aria-label="Keshav Enterprises — Home"
-			className="flex items-center gap-3 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
+			className="flex items-center gap-3.5 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
 		>
 			{/* Logo — larger, bare, no box */}
 			{!imgErr ? (
@@ -6988,24 +6986,24 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 					src="keshav-logo.png"
 					alt=""
 					aria-hidden="true"
-					width="48"
-					height="48"
+					width="56"
+					height="56"
 					loading="eager"
 					decoding="async"
 					fetchPriority="high"
-					className="w-12 h-12 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
+					className="w-14 h-14 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
 					onError={() => setImgErr(true)}
 				/>
 			) : (
-				<Settings className="w-12 h-12 shrink-0 text-white" aria-hidden="true" />
+				<Settings className="w-14 h-14 shrink-0 text-white" aria-hidden="true" />
 			)}
 
 			{/* Brand name — two lines, left-aligned, white */}
 			<div className="flex flex-col text-left" style={{ lineHeight: 1 }}>
-				<span className={`font-black uppercase tracking-[0.06em] text-[18px] lg:text-[20px] ${nameCls} transition-colors duration-200`}>
+				<span className={`font-black uppercase tracking-[0.06em] text-[21px] lg:text-[23px] ${nameCls} transition-colors duration-200`}>
 					KESHAV
 				</span>
-				<span className={`font-bold uppercase tracking-[0.14em] text-[12px] lg:text-[13px] mt-0.75 ${tagCls} transition-colors duration-200`}>
+				<span className={`font-bold uppercase tracking-[0.14em] text-[14px] lg:text-[15px] mt-0.75 ${tagCls} transition-colors duration-200`}>
 					ENTERPRISES
 				</span>
 			</div>
@@ -7315,7 +7313,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				</svg>
 			</button>
 			{isOpen && (
-				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-[250]">
+				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
 					<div role="listbox" aria-label="Select language" className="max-h-80 overflow-y-auto py-1.5 scrollbar-hide">
 						{LANGUAGES.map((lang) => (
 							<button
@@ -7528,7 +7526,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		>
 			<a
 				href="#main-content"
-				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold"
+				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-100 font-bold"
 			>
 				Skip to main content
 			</a>
@@ -7593,7 +7591,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-[60]
+									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
 					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
 					${isSearchOpen ? 'ml-1' : ''}`}
 								>
@@ -7604,7 +7602,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									/>
 								</button>
 								{isSearchOpen && query && (
-									<div className="absolute top-full right-0 mt-6 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]">
+									<div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
 										<div className="max-h-[60vh] overflow-y-auto p-2">
 											{searchResults.length === 0 ? (
 												<div className="p-6 text-center text-slate-500 font-medium text-sm">
@@ -8225,7 +8223,6 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 	const [name, setName]             = useState('');
 	const [phone, setPhone]           = useState('');
 	const [descErr, setDescErr]       = useState('');
-	const [_submitted, setSubmitted]   = useState(false);
 	const modalRef = useRef(null);
 
 	// Focus trap — keeps Tab/Shift+Tab inside the dialog
@@ -8282,7 +8279,6 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 		if (phone.trim()) lines.push(`*Contact:* ${sanitise(phone)}`);
 
 		window.open(waMsg(lines.join('\n')), '_blank', 'noopener');
-		setSubmitted(true);
 		setStep(4);
 	}, [context, selectedType, severityConf, description, name, phone]);
 
@@ -8291,7 +8287,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 
 	return (
 		<div
-			className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-4"
+			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="report-modal-title"
@@ -8657,7 +8653,7 @@ BackToTopButton.displayName = 'BackToTopButton';
 // ─── WHATSAPP CHAT BUBBLE ─────────────────────────────────────
 // Timing constants — tweak here without touching logic
 const WA_GREETING_DELAY    = 4000;  // ms after mount before first appearance
-const WA_GREETING_VISIBLE  = 25000;  // ms the bubble stays visible before auto-hiding
+const WA_GREETING_VISIBLE  = 6000;   // ms the bubble stays visible before auto-hiding
 const WA_GREETING_INTERVAL = 25000; // ms between re-appearances (if not dismissed for session)
 
 const WhatsAppBubble = memo(() => {
@@ -8710,7 +8706,7 @@ const WhatsAppBubble = memo(() => {
 			{/* Greeting bubble */}
 			{showGreeting && (
 				<div
-					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-[220px] animate-[fadeSlideUp_0.35s_ease_forwards]"
+					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-55 animate-[fadeSlideUp_0.35s_ease_forwards]"
 					role="status"
 					aria-live="polite"
 				>
@@ -8790,7 +8786,9 @@ const InlineRFQForm = memo(({ productTitle }) => {
 	}, []);
 
 	const handleSubmit = useCallback(async () => {
-		if (!name.trim() || !email.trim()) { setErrMsg('Name and email are required.'); return; }
+		const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+		if (!name.trim())  { setErrMsg('Name is required.'); return; }
+		if (!emailOk)      { setErrMsg('Please enter a valid email address.'); return; }
 		setStatus('sending'); setErrMsg('');
 		try {
 			const fd = new FormData();
@@ -8814,6 +8812,7 @@ const InlineRFQForm = memo(({ productTitle }) => {
 		}
 	}, [name, company, email, phone, qty, message, productTitle]);
 
+	const clearErr = useCallback(() => { if (status === 'error' || errMsg) { setStatus('idle'); setErrMsg(''); } }, [status, errMsg]);
 	const inputCls = 'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow';
 	const labelCls = 'block text-xs font-black text-slate-500 uppercase tracking-widest mb-1';
 
@@ -8865,27 +8864,27 @@ const InlineRFQForm = memo(({ productTitle }) => {
 						<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
 							<div>
 								<label htmlFor="rfq-name" className={labelCls}>Name <span className="text-red-500">*</span></label>
-								<input id="rfq-name" type="text" autoComplete="name" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" className={inputCls} />
+								<input id="rfq-name" type="text" autoComplete="name" value={name} onChange={e => { setName(e.target.value); clearErr(); }} placeholder="Your name" className={inputCls} />
 							</div>
 							<div>
 								<label htmlFor="rfq-company" className={labelCls}>Company</label>
-								<input id="rfq-company" type="text" autoComplete="organization" value={company} onChange={e => setCompany(e.target.value)} placeholder="Company name" className={inputCls} />
+								<input id="rfq-company" type="text" autoComplete="organization" value={company} onChange={e => { setCompany(e.target.value); clearErr(); }} placeholder="Company name" className={inputCls} />
 							</div>
 							<div>
 								<label htmlFor="rfq-email" className={labelCls}>Email <span className="text-red-500">*</span></label>
-								<input id="rfq-email" type="email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@company.com" className={inputCls} />
+								<input id="rfq-email" type="email" autoComplete="email" value={email} onChange={e => { setEmail(e.target.value); clearErr(); }} placeholder="you@company.com" className={inputCls} />
 							</div>
 							<div>
 								<label htmlFor="rfq-phone" className={labelCls}>Phone</label>
-								<input id="rfq-phone" type="tel" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 98000 00000" className={inputCls} />
+								<input id="rfq-phone" type="tel" autoComplete="tel" value={phone} onChange={e => { setPhone(e.target.value); clearErr(); }} placeholder="+91 98000 00000" className={inputCls} />
 							</div>
 							<div className="sm:col-span-2">
 								<label htmlFor="rfq-qty" className={labelCls}>Quantity / Requirement</label>
-								<input id="rfq-qty" type="text" value={qty} onChange={e => setQty(e.target.value)} placeholder="e.g. 10 units, DN 50, SS 316…" className={inputCls} />
+								<input id="rfq-qty" type="text" value={qty} onChange={e => { setQty(e.target.value); clearErr(); }} placeholder="e.g. 10 units, DN 50, SS 316…" className={inputCls} />
 							</div>
 							<div className="sm:col-span-2">
 								<label htmlFor="rfq-message" className={labelCls}>Additional Details</label>
-								<textarea id="rfq-message" rows={3} value={message} onChange={e => setMessage(e.target.value)} placeholder="Application, pressure rating, delivery location, or any other specs…" className={`${inputCls} resize-none`} />
+								<textarea id="rfq-message" rows={3} maxLength={1000} value={message} onChange={e => { setMessage(e.target.value); clearErr(); }} placeholder="Application, pressure rating, delivery location, or any other specs…" className={`${inputCls} resize-none`} />
 							</div>
 
 							{errMsg && (
@@ -9288,9 +9287,10 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									ref={thumbStripRef}
 									className="pt-1 pb-1"
 									style={{
-										display: 'grid',
-										gridTemplateColumns: 'repeat(auto-fill, 72px)',
-										gap: '6px',
+										display: 'flex',
+										flexWrap: 'wrap',
+										justifyContent: 'center',
+										gap: '8px',
 									}}
 									role="list"
 									aria-label="All product images"
@@ -9298,7 +9298,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									{images.map((img, idx) => {
 										const active = idx === safeActive;
 										return (
-											<div key={img} role="listitem" className="relative" style={{ width: 72, height: 72 }}>
+											<div key={img} role="listitem" className="relative shrink-0" style={{ width: 84, height: 84 }}>
 												<button
 													type="button"
 													onClick={() => goTo(idx, idx > safeActive ? 'left' : 'right')}
@@ -9314,9 +9314,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 														src={img}
 														alt={`${product.title} view ${idx + 1}`}
 														loading="lazy"
-														width="72"
-														height="72"
-														className="w-full h-full object-contain p-1"
+														width="84"
+														height="84"
+														className="w-full h-full object-contain p-0.5 bg-white"
 													/>
 												</button>
 												{active && (
@@ -9519,7 +9519,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		{lightbox && (
 			<div
 				ref={lightboxRef}
-				className="fixed inset-0 z-[9999] bg-black/93 flex items-center justify-center"
+				className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
 				role="dialog" aria-modal="true"
 				aria-label={`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
 				onClick={() => setLightbox(false)}
@@ -9973,7 +9973,7 @@ const HomePage = memo(({ navigate }) => {
 	// delaying LCP and causing a brief flash of invisible above-fold content.
 	const [loaded] = useState(true);
 	const [heroErr, setHeroErr] = useState(false);
-	const [lang] = useState('en'); // 'en' | 'hi'
+	const lang = 'en';
 	const featuredProducts = FEATURED_PRODUCTS;
 
 	const heroContent = {
@@ -13678,7 +13678,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 			{/* Reading progress bar — blue-600 matching site CTA */}
 			<div
-				className="fixed top-0 left-0 right-0 z-[60] h-0.75 bg-slate-200"
+				className="fixed top-0 left-0 right-0 z-60 h-0.75 bg-slate-200"
 				aria-hidden="true"
 			>
 				<div
@@ -14461,7 +14461,7 @@ const ProductsPage = memo(({ navigate }) => {
 							type="search"
 							placeholder="Search products, specs, applications..."
 							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
+							onChange={(e) => { setSearchQuery(e.target.value); if (activeCategory !== 'All') setActiveCategory('All'); }}
 							className="w-full pl-14 pr-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-lg font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
 						/>
 						<Search
@@ -14506,7 +14506,7 @@ const ProductsPage = memo(({ navigate }) => {
 								<button
 									type="button"
 									key={cat}
-									onClick={() => setActiveCategory(cat)}
+									onClick={() => { setActiveCategory(cat); setSearchQuery(''); }}
 									aria-pressed={activeCategory === cat}
 									className={`snap-start shrink-0 px-5 py-3 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeCategory === cat ? 'bg-slate-900 text-white border-slate-900 shadow-lg scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'}`}
 								>
@@ -16283,6 +16283,7 @@ const ContactPage = memo(() => {
 								<textarea
 									id="c-details"
 									rows={6}
+									maxLength={2000}
 									value={details}
 									onChange={(e) => setDetails(e.target.value)}
 									aria-required="true"
@@ -16622,20 +16623,63 @@ NotFoundPage.displayName = 'NotFoundPage';
 
 // ─── APP ROOT ─────────────────────────────────────────────────
 export default function App() {
+	// Seed the initial history entry with idx:0 if it has none yet.
+	// This ensures popstate always finds a numeric idx in event.state.
+	if (window.history.state?.idx === undefined) {
+		window.history.replaceState({ idx: 0 }, '', window.location.href);
+	}
+
 	const [currentPath, setCurrentPath] = useState(
 		() => { const p = window.location.hash.replace('#', '') || '/'; return p.length > 1 ? p.replace(/\/+$/, '') : p; },
 	);
 	// AUDIT FIX: aria-live region for screen reader route announcements
 	const [routeAnnouncement, setRouteAnnouncement] = useState('');
+	// Ref mirror of currentPath — lets navigate() read the latest path without
+	// being listed as a dep (which would recreate navigate on every navigation).
+	const currentPathRef   = useRef('/');
+	useEffect(() => { currentPathRef.current = currentPath; }, [currentPath]);
+
+	// ── Scroll restoration ──────────────────────────────────────
+	// scrollPositions[historyIdx] = scrollY for that history entry.
+	// historyIdx is a monotonic counter we store in history.state.
+	// On popstate we compare new idx to current idx to know direction:
+	//   back  (newIdx < curIdx) → restore saved position
+	//   forward (newIdx > curIdx) → scroll to top (new content)
+	const scrollPositions = useRef({});
+	const historyIdxRef   = useRef(0); // idx of the currently visible entry
+	const historyCounter  = useRef(0); // ever-increasing, used when pushing new entries
 
 	// Stable window listeners — registered once
 	useEffect(() => {
-		const h = () => {
-			const raw = window.location.hash.replace('#', '') || '/'; const newPath = raw.length > 1 ? raw.replace(/\/+$/, '') : raw;
+		const h = (event) => {
+			const raw = window.location.hash.replace('#', '') || '/';
+			const newPath = raw.length > 1 ? raw.replace(/\/+$/, '') : raw;
+
+			// Determine direction using the history index stored in state.
+			const newIdx = event.state?.idx ?? 0;
+			const curIdx = historyIdxRef.current;
+			const isBack = newIdx < curIdx;
+
+			// Save scroll of the page we're leaving before React re-renders it.
+			scrollPositions.current[curIdx] = window.scrollY;
+
+			// Update the current index reference.
+			historyIdxRef.current = newIdx;
+
 			setCurrentPath(newPath);
-			// AUDIT FIX: scroll to top on back/forward navigation
-			window.scrollTo({ top: 0, behavior: 'instant' });
-			// AUDIT FIX: move focus to main content for screen readers
+
+			// After React paints the restored/new page, apply scroll.
+			requestAnimationFrame(() => {
+				if (isBack) {
+					// Back: restore saved position for this history entry.
+					const saved = scrollPositions.current[newIdx] ?? 0;
+					window.scrollTo({ top: saved, behavior: 'instant' });
+				} else {
+					// Forward: always start at top.
+					window.scrollTo({ top: 0, behavior: 'instant' });
+				}
+			});
+
 			setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		};
 		window.addEventListener('popstate', h);
@@ -16715,11 +16759,15 @@ export default function App() {
 	}, [currentPath]);
 
 	const navigate = useCallback((path) => {
-		// Scroll to top INSTANTLY before state update — this ensures the new page
-		// always renders from position 0. 'smooth' causes mid-render scroll artifacts
-		// because React paints the new page before the animation completes.
+		// Save scroll of the current page keyed by its history index.
+		scrollPositions.current[historyIdxRef.current] = window.scrollY;
+		// Assign a new, higher index to this forward entry.
+		historyCounter.current += 1;
+		const newIdx = historyCounter.current;
+		historyIdxRef.current = newIdx;
+		// Forward navigation always starts at the top.
 		window.scrollTo({ top: 0, behavior: 'instant' });
-		window.history.pushState(null, '', `#${path}`);
+		window.history.pushState({ path, idx: newIdx }, '', `#${path}`);
 		setCurrentPath(path);
 		// GA4: pushState does NOT fire popstate, so we track every navigation here.
 		// trackPageView is a module-level function defined in the analytics block above.
@@ -16727,11 +16775,15 @@ export default function App() {
 		// AUDIT FIX: move focus to main content after navigation for a11y
 		setTimeout(() => document.getElementById('main-content')?.focus(), 100);
 		// AUDIT FIX: announce route change to screen readers
-		const pageName =
-			path === '/'
-				? 'Home'
-				: path.replace(/\/+$/, '').replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
-		setRouteAnnouncement(`Navigated to ${pageName} page`);
+		// Only announce if the route actually changed — avoids re-announcing
+		// when the user clicks an already-active nav link.
+		if (path !== currentPathRef.current) {
+			const pageName =
+				path === '/'
+					? 'Home'
+					: path.replace(/\/+$/, '').replace(/^\//, '').replace(/\//g, ' — ').replace(/-/g, ' ');
+			setRouteAnnouncement(`Navigated to ${pageName} page`);
+		}
 	}, []);
 
 	// Route resolution — AUDIT FIX: removed useMemo wrapper (JSX inside memo is an anti-pattern),
