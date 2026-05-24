@@ -6629,7 +6629,7 @@ const FAQ_SCHEMA = {
 
 // ─── UTILITY ──────────────────────────────────────────────────
 const waMsg = (text) =>
-	`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(text)}`;
+	`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(String(text ?? '').slice(0, 1500))}`;
 
 // Step 1.1 — sanitise helper: strip WhatsApp markdown chars before building messages
 const sanitise = (str) => String(str ?? '').replace(/[*_~`]/g, '').trim().slice(0, 2000);
@@ -6652,6 +6652,8 @@ const getCategoryIcon = (category) => {
 			return <Hexagon className={cls} />;
 		case 'Electronic Equipments':
 			return <Cpu className={cls} />;
+		case 'Hydraulic Components':
+			return <Wrench className={cls} />;
 		default:
 			return <Settings className="w-16 h-16 text-slate-300" />;
 	}
@@ -7379,25 +7381,35 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	useEffect(() => {
 		let scrollTimeout;
 
+		let lastScrollY = window.scrollY;
+
 		const handleScroll = () => {
 			const currentScrollY = window.scrollY;
+			const scrollingDown = currentScrollY > lastScrollY;
+			lastScrollY = currentScrollY;
+
 			setScrolled(currentScrollY > 20);
 
-			// Smart hide/show logic: Hide while scrolling, show when stopped
+			// Always show when near top, menu open, or search open
 			if (
 				currentScrollY < 100 ||
 				isOpenRef.current ||
 				isSearchOpenRef.current
 			) {
 				setIsVisible(true);
-			} else {
+			} else if (scrollingDown) {
+				// Hide only when scrolling DOWN
 				setIsVisible(false);
+			} else {
+				// Scrolling UP — always show immediately
+				setIsVisible(true);
 			}
 
+			// Belt-and-suspenders: ensure visible after scroll settles
 			clearTimeout(scrollTimeout);
 			scrollTimeout = setTimeout(() => {
 				setIsVisible(true);
-			}, 350); // Show after 350ms of no scrolling
+			}, 350);
 		};
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
@@ -8551,8 +8563,10 @@ const RV_KEY = 'ke_recently_viewed';
 const RV_MAX = 6;
 
 const getRecentlyViewed = () => {
-	try { return JSON.parse(localStorage.getItem(RV_KEY) || '[]'); }
-	catch { return []; }
+	try {
+		const parsed = JSON.parse(localStorage.getItem(RV_KEY) || '[]');
+		return Array.isArray(parsed) ? parsed : [];
+	} catch { return []; }
 };
 
 const addRecentlyViewed = (productId) => {
@@ -9000,7 +9014,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	const probing = probedCount < allImages.length;
 
 	// Clamp activeImg whenever visible images shrink (shouldn't happen, but defensive)
-	const safeActive = Math.min(activeImg, Math.max(0, total - 1));
+	// When total=0 (probing in progress), clamp to 0 to avoid -1 index
+	const safeActive = total === 0 ? 0 : Math.min(activeImg, total - 1);
 
 	// Safety ref: clear isSliding if onAnimationEnd never fires (errored image)
 	const goTo = useCallback((idx, dir) => {
@@ -9197,13 +9212,6 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											{safeActive + 1} / {total}
 										</span>
 									)}
-
-									{/* Counter badge */}
-										{total > 1 && (
-											<span className="absolute bottom-3 right-3 z-10 bg-slate-900/75 text-white text-xs font-bold px-2.5 py-1 rounded-full backdrop-blur-sm pointer-events-none" aria-hidden="true">
-												{safeActive + 1} / {total}
-											</span>
-										)}
 
 										{/* Zoom hint */}
 										{imgLoaded && (
@@ -11133,7 +11141,7 @@ const AboutPage = memo(({ navigate }) => {
 							aria-hidden="true"
 						/>
 						<p className="text-slate-500 text-base max-w-2xl mx-auto mt-5 leading-relaxed">
-							70+ precision-engineered components across 8 categories — from OEM-matched filter elements to turbine spares that ship the same week your plant calls.
+							126 precision-engineered components across 8 categories — from OEM-matched filter elements to turbine spares that ship the same week your plant calls.
 						</p>
 					</div>
 
@@ -11159,7 +11167,7 @@ const AboutPage = memo(({ navigate }) => {
 								src: 'workshop-gallery-products.webp',
 								alt: 'Keshav Enterprises industrial product range — filtration, strainers, expansion joints and turbine spares',
 								caption: 'Product Range',
-								desc: '70+ engineered products across 8 categories — filtration, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.',
+								desc: '126 engineered products across 8 categories — filtration, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.',
 								onClick: () => navigate('/products'),
 								linkLabel: 'Browse Products',
 							},
@@ -12047,7 +12055,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 			case 'p':
 				return (
 					<p
-						key={`block-${i}`}
+						key={`block-p-${i}`}
 						className="text-slate-700 font-medium text-lg leading-relaxed mb-6"
 					>
 						{block.text}
@@ -12055,10 +12063,10 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				);
 			case 'list':
 				return (
-					<ul key={`block-${i}`} className="mb-8 space-y-3">
-						{(block.items ?? []).map((item) => (
+					<ul key={`block-list-${i}`} className="mb-8 space-y-3">
+						{(block.items ?? []).map((item, j) => (
 							<li
-								key={item}
+								key={`li-${i}-${j}`}
 								className="flex items-start gap-3 text-slate-700 font-medium text-base leading-relaxed"
 							>
 								<CheckCircle2
@@ -12073,7 +12081,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 			case 'cta':
 				return (
 					<div
-						key={`block-${i}`}
+						key={`block-cta-${i}`}
 						className="my-10 bg-blue-600 rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-6"
 					>
 						<p className="text-white font-bold text-lg leading-relaxed flex-1">
@@ -15683,8 +15691,8 @@ const IndustriesPage = memo(({ navigate }) => (
 							key={ind.id}
 							className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-300/60 transition-all duration-500 group border border-slate-200 bg-white cursor-pointer w-full text-left"
 							onClick={() => navigate(`/industry/${ind.id}`)}
-							role="region"
-							aria-label={`${ind.title} industry section`}
+							role="article"
+							aria-label={`${ind.title} industry`}
 						>
 							<div
 								className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}
@@ -15861,6 +15869,7 @@ const ContactPage = memo(() => {
 	const [iType, setIType] = useState('');
 	const [details, setDetails] = useState('');
 	const [status, setStatus] = useState('idle');
+	const [submitError, setSubmitError] = useState('');
 	const [errors, setErrors] = useState({});
 	const validate = useCallback(() => {
 		const e = {};
@@ -15880,6 +15889,7 @@ const ContactPage = memo(() => {
 		const e = validate();
 		if (Object.keys(e).length > 0) { setErrors(e); return; }
 		setErrors({});
+		setSubmitError('');
 		setStatus('loading');
 		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
 		try {
@@ -15909,7 +15919,8 @@ const ContactPage = memo(() => {
 				window.open(waMsg(msg), '_blank', 'noopener');
 			}
 			setStatus('success');
-		} catch {
+		} catch (err) {
+			setSubmitError(err?.message || 'Submission failed. Please try again.');
 			setStatus('error');
 		}
 	}, [validate, name, email, phone, iType, details]);
@@ -16101,6 +16112,7 @@ const ContactPage = memo(() => {
 										aria-hidden="true"
 									/>
 									<span>
+										{submitError && <span className="block mb-1 text-sm font-bold text-red-700">{submitError}</span>}
 										Submission failed — please try again or reach us directly:{' '}
 										<a
 											href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
@@ -16132,7 +16144,7 @@ const ContactPage = memo(() => {
 										id="c-name"
 										type="text"
 										value={name}
-										onChange={(e) => setName(e.target.value)}
+										onChange={(e) => { setName(e.target.value); if (status === 'error') { setStatus('idle'); setSubmitError(''); } }}
 										aria-required="true"
 										aria-invalid={!!errors.name}
 										aria-describedby={errors.name ? 'err-name' : undefined}
@@ -16159,7 +16171,7 @@ const ContactPage = memo(() => {
 										id="c-email"
 										type="email"
 										value={email}
-										onChange={(e) => setEmail(e.target.value)}
+										onChange={(e) => { setEmail(e.target.value); if (status === 'error') { setStatus('idle'); setSubmitError(''); } }}
 										aria-required="true"
 										aria-invalid={!!errors.email}
 										aria-describedby={errors.email ? 'err-email' : undefined}
@@ -16188,7 +16200,7 @@ const ContactPage = memo(() => {
 										id="c-phone"
 										type="tel"
 										value={phone}
-										onChange={(e) => setPhone(e.target.value)}
+										onChange={(e) => { setPhone(e.target.value); if (status === 'error') { setStatus('idle'); setSubmitError(''); } }}
 										placeholder="+91 XXXXX XXXXX"
 										aria-required="true"
 										aria-invalid={!!errors.phone}
@@ -16215,7 +16227,7 @@ const ContactPage = memo(() => {
 									<select
 										id="c-type"
 										value={iType}
-										onChange={(e) => setIType(e.target.value)}
+										onChange={(e) => { setIType(e.target.value); if (status === 'error') { setStatus('idle'); setSubmitError(''); } }}
 										aria-required="true"
 										aria-invalid={!!errors.iType}
 										aria-describedby={errors.iType ? 'err-type' : undefined}
@@ -16285,7 +16297,7 @@ const ContactPage = memo(() => {
 									rows={6}
 									maxLength={2000}
 									value={details}
-									onChange={(e) => setDetails(e.target.value)}
+									onChange={(e) => { setDetails(e.target.value); if (status === 'error') { setStatus('idle'); setSubmitError(''); } }}
 									aria-required="true"
 									aria-invalid={!!errors.details}
 									aria-describedby={errors.details ? 'err-details' : undefined}
@@ -16544,9 +16556,10 @@ class ErrorBoundary extends React.Component {
 						<button
 							type="button"
 							onClick={() => {
-								this.setState({ hasError: false, error: null });
+								// Reset error state — React will re-render children cleanly.
+								// reload() would discard this setState immediately, so we don't call it.
 								window.location.hash = '#/';
-								window.location.reload();
+								this.setState({ hasError: false, error: null });
 							}}
 							className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all"
 						>
