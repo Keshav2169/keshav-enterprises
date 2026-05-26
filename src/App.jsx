@@ -6348,199 +6348,57 @@ const MARQUEE_CSS = `
   .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
   .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
 
-  /* ─── FOOTER SOCIAL CARDS — IMPROVED FULL-WIDTH ROW ─── */
-  /* Desktop: 6 equal cards in one line. Mobile: 2-col grid, then scroll. */
-  .social-cards-grid{
-	display:grid;
-	grid-template-columns:repeat(6,1fr);
-	gap:0.625rem;
-	width:100%;
-  }
-  /* Tablet (≤900px): 3 across */
-  @media(max-width:900px){
-	.social-cards-grid{ grid-template-columns:repeat(3,1fr) }
-  }
-  /* Mobile (≤480px): 2 across */
-  @media(max-width:480px){
-	.social-cards-grid{ grid-template-columns:repeat(2,1fr) }
-  }
-  .social-card{
-	display:flex!important;
-	flex-direction:column!important;
-	align-items:flex-start!important;
-	gap:0!important;
-	padding:0.875rem 1rem!important;
-	border-radius:0.75rem;
-	cursor:pointer;
+  /* ─── FOOTER SOCIAL CARDS (ke-soc-card) ─── */
+  /* Sleek grid cards used inside the Footer's Follow Us section.            */
+  /* Layout controlled by .ke-social-grid scoped in Footer's style tag.      */
+  /* Hover states driven by inline JS for per-card brand-color awareness.    */
+  .ke-soc-card{
+	display:flex;flex-direction:column;
+	padding:0.75rem 0.85rem 0.7rem;
+	border-radius:0.65rem;
 	text-decoration:none;
-	position:relative;
-	overflow:hidden;
-	transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.2s ease, background-color 0.2s ease;
+	border:1px solid transparent;
+	cursor:pointer;position:relative;overflow:hidden;
+	transition:transform 0.2s cubic-bezier(.22,.68,0,1.2),box-shadow 0.2s ease,background 0.2s ease,border-color 0.2s ease;
   }
-  .social-card::before{
-	content:'';
-	position:absolute;
-	inset:0;
-	border-radius:inherit;
-	opacity:0;
-	transition:opacity 0.2s ease;
-	pointer-events:none;
+  .ke-soc-card:hover{ transform:translateY(-3px) scale(1.02) }
+  .ke-soc-card:focus{ outline:2px solid currentColor; outline-offset:3px }
+  .ke-soc-arrow{
+	display:block;font-size:9px;font-weight:600;
+	color:#334155;margin-top:0.3rem;
+	transition:color 0.18s,transform 0.18s;
   }
-  .social-card:hover{
-	transform:translateY(-2px);
-	box-shadow:0 8px 24px rgba(0,0,0,0.35);
-  }
-  .social-card .social-icon-wrap{
-	width:2.25rem;
-	height:2.25rem;
-	border-radius:0.5rem;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	flex-shrink:0;
-	margin-bottom:0.625rem;
-	transition:transform 0.18s ease, box-shadow 0.2s ease;
-  }
-  .social-card:hover .social-icon-wrap{
-	transform:scale(1.1);
-  }
-  .social-card .social-platform{
-	font-size:8px;
-	font-weight:800;
-	letter-spacing:0.14em;
-	text-transform:uppercase;
-	line-height:1;
-	margin-bottom:0.2rem;
-	opacity:0.75;
-  }
-  .social-card .social-name{
-	font-size:0.8rem;
-	font-weight:800;
-	color:#fff;
-	line-height:1.25;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	width:100%;
-	margin-bottom:0.15rem;
-  }
-  .social-card .social-handle{
-	font-size:0.7rem;
-	font-weight:600;
-	line-height:1.2;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	width:100%;
-	opacity:0.8;
-  }
-  .social-card .social-cta{
-	font-size:9px;
-	font-weight:600;
-	color:#64748b;
-	margin-top:0.45rem;
-	letter-spacing:0.02em;
-	white-space:nowrap;
-	transition:color 0.15s;
-  }
-  .social-card:hover .social-cta{ color:#94a3b8 }
-  /* Mobile: slightly more compact */
-  @media(max-width:480px){
-	.social-card{ padding:0.75rem 0.875rem!important }
-	.social-card .social-icon-wrap{ width:2rem; height:2rem; margin-bottom:0.5rem }
-	.social-card .social-name{ font-size:0.75rem }
-	.social-card .social-cta{ display:none }
-  }
-
-  /* ─── SOCIAL STRIP — FULL-WIDTH HORIZONTAL CARD ROW ─── */
-  /* 6 cards side-by-side on desktop; horizontal scroll on mobile */
-  .social-strip-scroll{
-	display:flex;
-	flex-direction:row;
-	flex-wrap:nowrap;
-	overflow-x:auto;
-	-webkit-overflow-scrolling:touch;
-	scrollbar-width:none;
-	/* no gap — cards separated by their border-left accent line */
-  }
-  .social-strip-scroll::-webkit-scrollbar{display:none}
-  .social-strip-card{
-	display:flex;
-	flex-direction:row;
-	align-items:center;
-	gap:0.875rem;
-	padding:1.125rem 1.25rem;
-	/* Each card takes exactly 1/6 of the strip, never shrinks below 180px */
-	flex:1 1 0;
-	min-width:180px;
-	max-width:none;
-	border-left:2.5px solid transparent;
-	border-right:1px solid rgba(255,255,255,0.04);
-	cursor:pointer;
-	transition:filter 0.18s ease, background 0.18s ease;
-	text-decoration:none;
-	box-sizing:border-box;
-  }
-  .social-strip-card:last-child{ border-right:none }
-  .social-strip-card:hover{ filter:brightness(1.12) }
-  .social-strip-card .ssc-icon{
-	width:2.75rem;
-	height:2.75rem;
-	border-radius:50%;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	flex-shrink:0;
-  }
-  .social-strip-card .ssc-text{
-	display:flex;
-	flex-direction:column;
-	gap:0.1rem;
-	min-width:0;
-	flex:1;
-  }
-  .social-strip-card .ssc-platform{
-	font-size:8.5px;
-	font-weight:800;
-	letter-spacing:0.13em;
-	text-transform:uppercase;
-	line-height:1;
-  }
-  .social-strip-card .ssc-handle{
-	font-size:0.875rem;
-	font-weight:800;
-	color:#ffffff;
-	line-height:1.25;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-  }
-  .social-strip-card .ssc-cta{
-	font-size:9.5px;
-	font-weight:600;
-	color:#64748b;
-	margin-top:0.2rem;
-	letter-spacing:0.01em;
-	white-space:nowrap;
-  }
-  @media(max-width:900px){
-	/* Below 900px cards no longer fit 6-up — allow horizontal scroll */
-	.social-strip-card{ flex:0 0 195px; min-width:195px }
+  .ke-soc-card:hover .ke-soc-arrow{ transform:translateX(3px) }
+  @media(prefers-reduced-motion:reduce){
+	.ke-soc-card{ transition:none!important; transform:none!important }
   }
 
   /* ─── DIGITAL PROFILES STRIP — SINGLE LINE SCROLL ─── */
   /* Desktop: centred flex, cards never wrap. Mobile: horizontal scroll */
+  /* Mobile: 1-column stack, no scroll ever */
   .dir-strip-scroll{
 	display:flex;
-	flex-wrap:nowrap;
-	overflow-x:auto;
-	-webkit-overflow-scrolling:touch;
-	scrollbar-width:none;
-	gap:1rem;
-	padding-bottom:4px;
+	flex-direction:column;
+	gap:0.625rem;
   }
-  .dir-strip-scroll::-webkit-scrollbar{display:none}
-  .dir-card{flex-shrink:0}
+  /* ≥480px: 2 columns */
+  @media(min-width:480px){
+	.dir-strip-scroll{
+	  flex-direction:row;
+	  flex-wrap:wrap;
+	  gap:0.75rem;
+	}
+	.dir-card{ flex:1 1 calc(50% - 0.375rem); min-width:0 }
+  }
+  /* ≥768px: all in one row, centred */
+  @media(min-width:768px){
+	.dir-strip-scroll{
+	  flex-wrap:nowrap;
+	  justify-content:center;
+	  gap:1rem;
+	}
+	.dir-card{ flex:0 0 auto; min-width:160px }
+  }
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
@@ -8047,248 +7905,330 @@ const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
 CredentialBadge.displayName = 'CredentialBadge';
 
 // ─── FOOTER ───────────────────────────────────────────────────
-const Footer = memo(({ navigate }) => (
-	<footer
-		className="font-sans border-t-4 border-[#0891B2]"
-		style={{ background: '#050d1a', color: '#ffffff' }}
-		role="contentinfo"
-	>
-		{/* Top cyan gradient accent line */}
-		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4,#67E8F9,#06B6D4,#0891B2)' }} aria-hidden="true" />
+const Footer = memo(({ navigate }) => {
+	const year = new Date().getFullYear();
+	return (
+		<footer
+			role="contentinfo"
+			style={{ background: '#050d1a', color: '#fff', fontFamily: 'sans-serif' }}
+		>
+			{/* ── Scoped styles ── */}
+			<style>{`
+				.ke-footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
+				@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
+				@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2fr 1fr 1.25fr 1.5fr}}
 
-		{/* ── Pre-footer CTA band ── */}
-		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderColor: '#0891B233' }}>
-			<div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%,#0891B220 0%,transparent 50%),radial-gradient(circle at 80% 50%,#06B6D420 0%,transparent 50%)' }} aria-hidden="true" />
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
-					<div className="text-center md:text-left">
-						<h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">
-							Need a quote or have an emergency breakdown?
+				.ke-social-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem}
+				@media(min-width:480px){.ke-social-grid{grid-template-columns:repeat(3,1fr)}}
+				@media(min-width:900px){.ke-social-grid{grid-template-columns:repeat(6,1fr)}}
+
+				.ke-col-h3{display:block;font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#fff;margin:0 0 1.1rem;padding-bottom:.5rem;border-bottom:1px solid #0d2040}
+
+				.ke-nav-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;color:#cbd5e1;font-size:.85rem;font-weight:500;padding:.15rem 0;text-align:left;transition:color .15s}
+				.ke-nav-btn:hover,.ke-nav-btn:focus{color:#38BDF8;outline:none}
+
+				.ke-contact-link{color:#cbd5e1;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.55}
+				.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
+
+				.ke-cta-call{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.4rem;border-radius:.6rem;background:#0891B2;color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;border:none;cursor:pointer;transition:background .18s,transform .15s,box-shadow .18s;box-shadow:0 4px 20px #0891B230}
+				.ke-cta-call:hover{background:#06B6D4;transform:translateY(-2px);box-shadow:0 8px 28px #06B6D440}
+				.ke-cta-call:focus{outline:2px solid #38BDF8;outline-offset:3px}
+
+				.ke-cta-wa{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.4rem;border-radius:.6rem;background:#25D366;color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;cursor:pointer;transition:background .18s,transform .15s;border:none}
+				.ke-cta-wa:hover{background:#1daf56;transform:translateY(-2px)}
+				.ke-cta-wa:focus{outline:2px solid #25D366;outline-offset:3px}
+
+				.ke-badge{display:flex;align-items:center;gap:.65rem;padding:.55rem .8rem;margin-bottom:.4rem;background:#071428;border:1px solid #0d2040;border-radius:.6rem;transition:border-color .15s;cursor:default}
+				.ke-badge:hover{border-color:#0891B260}
+
+				.ke-soc-card{display:flex;flex-direction:column;padding:.75rem .85rem .7rem;border-radius:.65rem;text-decoration:none;border:1px solid transparent;background:transparent;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.22,.68,0,1.2),box-shadow .2s ease,background .2s ease,border-color .2s ease}
+				.ke-soc-card:hover{transform:translateY(-3px) scale(1.02)}
+				.ke-soc-card:focus{outline:2px solid currentColor;outline-offset:3px}
+				.ke-soc-arrow{display:block;font-size:9px;font-weight:600;color:#334155;margin-top:.3rem;transition:color .18s,transform .18s}
+				.ke-soc-card:hover .ke-soc-arrow{transform:translateX(3px)}
+
+				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:700;padding:.3rem .7rem;border-radius:2rem;border:1px solid;transition:transform .15s}
+				.ke-ind-tag:hover{transform:translateY(-1px)}
+
+				.ke-all-srv{display:inline-flex;align-items:center;gap:5px;margin-top:1rem;padding:.45rem .8rem;background:#071428;border:1px solid #0891B240;border-radius:.5rem;color:#38BDF8;font-size:.72rem;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s}
+				.ke-all-srv:hover{border-color:#0891B2;background:#0891B215}
+
+				.ke-back-top{display:inline-flex;align-items:center;gap:4px;background:#071428;border:1px solid #0891B240;border-radius:.5rem;padding:.38rem .7rem;color:#38BDF8;font-size:.68rem;font-weight:700;cursor:pointer;transition:border-color .15s,background .15s;letter-spacing:.05em;text-transform:uppercase}
+				.ke-back-top:hover{border-color:#0891B2;background:#0891B215}
+
+				@media(prefers-reduced-motion:reduce){.ke-cta-call,.ke-cta-wa,.ke-soc-card,.ke-ind-tag{transition:none!important;transform:none!important}}
+			`}</style>
+
+			{/* ── Top accent bar ── */}
+			<div aria-hidden="true" style={{ height:'4px', background:'linear-gradient(90deg,#0891B2 0%,#06B6D4 35%,#67E8F9 50%,#06B6D4 65%,#0891B2 100%)' }} />
+
+			{/* ── Pre-footer CTA band ── */}
+			<div style={{ position:'relative', overflow:'hidden', background:'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderBottom:'1px solid #0891B225' }}>
+				<div aria-hidden="true" style={{ position:'absolute', inset:0, pointerEvents:'none', backgroundImage:'radial-gradient(circle at 15% 50%,#0891B218 0%,transparent 55%),radial-gradient(circle at 85% 50%,#06B6D418 0%,transparent 55%)' }} />
+				<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'2.75rem 1.5rem', display:'flex', flexWrap:'wrap', gap:'1.5rem', alignItems:'center', justifyContent:'space-between', position:'relative', zIndex:1 }}>
+					{/* Headline */}
+					<div style={{ flex:'1 1 280px' }}>
+						<span style={{ display:'inline-flex', alignItems:'center', gap:'5px', background:'#FF4500', color:'#fff', fontSize:'9px', fontWeight:800, letterSpacing:'.18em', textTransform:'uppercase', padding:'4px 10px', borderRadius:'99px', marginBottom:'10px' }}>
+							<Zap aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
+							24 h Emergency Support Available
+						</span>
+						<h2 style={{ fontFamily:'Georgia,serif', fontStyle:'italic', fontSize:'clamp(1.1rem,2.5vw,1.6rem)', fontWeight:700, lineHeight:1.35, color:'#fff', margin:'0 0 6px' }}>
+							Need a quote or facing an emergency breakdown?
 						</h2>
-						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm text-white">
-							Our engineering team responds within 24 hours
+						<p style={{ margin:0, fontSize:'.78rem', color:'#94a3b8', fontWeight:500 }}>
+							Our ex-OEM engineering team responds within 24 hours — call or WhatsApp.
 						</p>
 					</div>
-					<div className="flex flex-wrap gap-4 shrink-0 justify-center">
-						<a
-							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-							className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none hover:-translate-y-1"
-							style={{ background: '#0d1f3c', border: '1px solid #0891B2' }}
-							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
-							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
-						>
-							<Phone className="w-5 h-5 shrink-0 text-blue-400" aria-hidden="true" />
+					{/* CTAs */}
+					<div style={{ display:'flex', flexWrap:'wrap', gap:'.75rem', alignItems:'center' }}>
+						<a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="ke-cta-call">
+							<Phone aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
 							{CONTACT_INFO.phones[0]}
 						</a>
-						<a
-							href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
-							target="_blank" rel="noopener noreferrer"
-							className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbc5a] text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,211,102,0.2)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1"
-						>
-							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
+						<a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')} target="_blank" rel="noopener noreferrer" className="ke-cta-wa">
+							<MessageCircle aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
 							WhatsApp Now
 						</a>
 					</div>
 				</div>
 			</div>
-		</div>
 
-		{/* ── Main footer body ── */}
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative z-10">
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16 mb-20">
+			{/* ── Main body ── */}
+			<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'3.5rem 1.5rem 2rem' }}>
 
-				{/* Col 1 — Brand */}
-				<div className="lg:col-span-4">
-					<div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
-					<p className="font-sans text-sm leading-relaxed mb-8 max-w-sm text-white">
-						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
-					</p>
-					<div className="flex flex-col gap-2 mb-8">
-						{[
-							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-blue-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
-							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-blue-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
-							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-blue-400', title: 'Make In India',       sub: 'Manufactured in India' },
-						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
-							<CredentialBadge key={title} imgSrc={imgSrc} Icon={Icon} iconColor={iconColor} title={title} sub={sub} />
-						))}
+				{/* 4-column grid */}
+				<div className="ke-footer-grid" style={{ marginBottom:'2.5rem' }}>
+
+					{/* Col 1 — Brand */}
+					<div>
+						<div style={{ display:'flex', alignItems:'center', gap:'.75rem', marginBottom:'1rem' }}>
+							<div style={{ width:'2.4rem', height:'2.4rem', borderRadius:'.5rem', background:'linear-gradient(135deg,#0891B2,#06B6D4)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+								<Zap aria-hidden="true" style={{ width:'1.2rem', height:'1.2rem', color:'#fff' }} />
+							</div>
+							<div>
+								<p style={{ margin:0, fontWeight:900, fontSize:'.95rem', letterSpacing:'.05em', color:'#fff' }}>KESHAV ENTERPRISES</p>
+								<p style={{ margin:0, fontSize:'.6rem', color:'#38BDF8', letterSpacing:'.15em', textTransform:'uppercase', marginTop:'2px' }}>Turbine Engineering Specialists</p>
+							</div>
+						</div>
+						<p style={{ fontSize:'.78rem', lineHeight:1.75, color:'#94a3b8', marginBottom:'1.25rem', maxWidth:'22rem' }}>
+							20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
+						</p>
+						{/* Credential badges */}
+						<div style={{ marginBottom:'1.25rem' }}>
+							{[
+								{ imgSrc:'msme-logo.png',     Icon:Shield, title:'MSME Registered',    sub:CONTACT_INFO.msme },
+								{ imgSrc:'indiamart-logo.png', Icon:Award,  title:'IndiaMART TrustSeal', sub:'4.3★ Verified Supplier' },
+								{ imgSrc:'make-in-india.png',  Icon:Globe,  title:'Make In India',       sub:'Manufactured in India' },
+							].map(({ imgSrc, Icon, title, sub }) => (
+								<div key={title} className="ke-badge">
+									<div style={{ width:'1.85rem', height:'1.85rem', borderRadius:'.375rem', background:'#0d2040', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+										<img src={imgSrc} alt="" aria-hidden="true" style={{ width:'1.2rem', height:'1.2rem', objectFit:'contain' }} onError={e => { e.currentTarget.style.display='none'; }} />
+									</div>
+									<div>
+										<p style={{ margin:0, fontSize:'.72rem', fontWeight:700, color:'#fff', lineHeight:1.2 }}>{title}</p>
+										<p style={{ margin:0, fontSize:'.62rem', color:'#64748b', lineHeight:1.4, marginTop:'1px' }}>{sub}</p>
+									</div>
+								</div>
+							))}
+						</div>
+						<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#38BDF8', marginBottom:'.5rem' }}>OEM Compatible With</p>
+						<p style={{ fontFamily:'monospace', fontSize:'.67rem', color:'#64748b', lineHeight:1.8 }}>{OEMS.join(' · ')}</p>
 					</div>
-					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2 text-blue-400">OEM Compatible With</p>
-					<p className="font-mono text-xs leading-relaxed text-white">{OEMS.join(' · ')}</p>
 
-				</div>{/* end Col 1 — Brand */}
+					{/* Col 2 — Navigate */}
+					<nav aria-label="Footer site links">
+						<span className="ke-col-h3">Navigate</span>
+						<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.55rem' }}>
+							{NAV_LINKS.map(link => (
+								<li key={link.name}>
+									<button className="ke-nav-btn" onClick={() => navigate(link.path)}>
+										<ChevronRight aria-hidden="true" style={{ width:'.875rem', height:'.875rem', color:'#0891B2', flexShrink:0 }} />
+										{link.name}
+									</button>
+								</li>
+							))}
+						</ul>
+					</nav>
 
-				{/* Col 2 — Navigate */}
-				<nav className="lg:col-span-2" aria-label="Footer site links">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Navigate</h3>
-					<ul className="space-y-4">
-						{NAV_LINKS.map((link) => (
-							<li key={link.name}>
-								<a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
-									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform text-blue-400" aria-hidden="true" />
-									<span>{link.name}</span>
-								</a>
-							</li>
-						))}
-					</ul>
-				</nav>
+					{/* Col 3 — Services */}
+					<div>
+						<span className="ke-col-h3">Core Services</span>
+						<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.55rem' }}>
+							{[
+								{ label:'Turbine Erection',    id:'srv_1' },
+								{ label:'Turnkey Overhauling', id:'srv_2' },
+								{ label:'Reverse Engineering',  id:'srv_3' },
+								{ label:'Dynamic Balancing',    id:'srv_4' },
+								{ label:'Lube Oil Flushing',    id:'srv_5' },
+								{ label:'Machine Alignment',    id:'srv_6' },
+							].map(({ label, id }) => (
+								<li key={id}>
+									<button className="ke-nav-btn" onClick={() => navigate(`/service/${id}`)}>
+										<Hexagon aria-hidden="true" style={{ width:'.75rem', height:'.75rem', color:'#0891B2', flexShrink:0 }} />
+										{label}
+									</button>
+								</li>
+							))}
+						</ul>
+						<button className="ke-all-srv" onClick={() => navigate('/services')}>
+							<ExternalLink aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
+							All Services
+						</button>
+					</div>
 
-				{/* Col 3 — Services */}
-				<div className="lg:col-span-3">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Core Services</h3>
-					<ul className="space-y-4">
-						{[
-							{ label: 'Turbine Erection',    id: 'srv_1' },
-							{ label: 'Turnkey Overhauling', id: 'srv_2' },
-							{ label: 'Reverse Engineering',  id: 'srv_3' },
-							{ label: 'Dynamic Balancing',    id: 'srv_4' },
-							{ label: 'Lube Oil Flushing',    id: 'srv_5' },
-							{ label: 'Machine Alignment',    id: 'srv_6' },
-						].map(({ label, id }) => (
-							<li key={id}>
-								<a href={`#/service/${id}`} onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
-									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<Hexagon className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
-									<span>{label}</span>
-								</a>
-							</li>
-						))}
-					</ul>
-				</div>
-
-				{/* Col 4 — Contact */}
-				<address className="lg:col-span-3 not-italic">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Contact Us</h3>
-					<div className="space-y-5">
-						{[
-							{ id: 'address', Icon: MapPin, content: <p className="text-white text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-white hover:text-blue-400 font-mono text-sm transition-colors">{p}</a>)}</div> },
-							{ id: 'mail',    Icon: Mail,   content: (
-								<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
-									{[{ addr: CONTACT_INFO.email, label: 'General' }, { addr: CONTACT_INFO.infoEmail, label: 'Info' }].map(({ addr, label }) => (
-										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-white hover:text-blue-400 text-sm transition-colors">
-											<span className="truncate">{addr}</span>
-											<span className="font-mono text-[9px] uppercase tracking-widest text-blue-400">{label}</span>
+					{/* Col 4 — Contact */}
+					<address style={{ fontStyle:'normal' }}>
+						<span className="ke-col-h3">Contact Us</span>
+						<div style={{ display:'flex', flexDirection:'column', gap:'.85rem' }}>
+							{/* Address */}
+							<div style={{ display:'flex', gap:'.7rem', alignItems:'flex-start' }}>
+								<div style={{ width:'1.85rem', height:'1.85rem', borderRadius:'.45rem', background:'#071428', border:'1px solid #0d2040', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:'2px' }}>
+									<MapPin aria-hidden="true" style={{ width:'.8rem', height:'.8rem', color:'#38BDF8' }} />
+								</div>
+								<a href={CONTACT_INFO.gmapsShare} target="_blank" rel="noopener noreferrer" className="ke-contact-link">{CONTACT_INFO.address}</a>
+							</div>
+							{/* Phones */}
+							<div style={{ display:'flex', gap:'.7rem', alignItems:'flex-start' }}>
+								<div style={{ width:'1.85rem', height:'1.85rem', borderRadius:'.45rem', background:'#071428', border:'1px solid #0d2040', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:'2px' }}>
+									<Phone aria-hidden="true" style={{ width:'.8rem', height:'.8rem', color:'#38BDF8' }} />
+								</div>
+								<div>
+									{CONTACT_INFO.phones.map(p => (
+										<a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="ke-contact-link" style={{ fontFamily:'monospace', fontWeight:600, fontSize:'.8rem' }}>{p}</a>
+									))}
+								</div>
+							</div>
+							{/* Emails */}
+							<div style={{ display:'flex', gap:'.7rem', alignItems:'flex-start' }}>
+								<div style={{ width:'1.85rem', height:'1.85rem', borderRadius:'.45rem', background:'#071428', border:'1px solid #0d2040', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, marginTop:'2px' }}>
+									<Mail aria-hidden="true" style={{ width:'.8rem', height:'.8rem', color:'#38BDF8' }} />
+								</div>
+								<div style={{ minWidth:0 }}>
+									{[{ addr:CONTACT_INFO.email, label:'General' }, { addr:CONTACT_INFO.infoEmail, label:'Info' }].map(({ addr, label }) => (
+										<a key={addr} href={`mailto:${addr}`} className="ke-contact-link" style={{ marginBottom:'4px' }}>
+											<span style={{ display:'block', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{addr}</span>
+											<span style={{ fontFamily:'monospace', fontSize:'8px', letterSpacing:'.14em', textTransform:'uppercase', color:'#38BDF8' }}>{label}</span>
 										</a>
 									))}
 								</div>
-							)},
-						].map(({ id, Icon, content }) => (
-							<div key={id} className="flex items-start gap-4">
-								<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-									<Icon className="w-4 h-4 text-blue-400" aria-hidden="true" />
-								</div>
-								{content}
 							</div>
-						))}
-					</div>
-				</address>
-			</div>
+						</div>
+					</address>
+				</div>{/* end ke-footer-grid */}
 
-			{/* ── Full-width Follow Us strip ── */}
-			<div className="mt-10 mb-2">
-				<p className="font-bold text-[10px] uppercase tracking-[0.22em] mb-4 text-blue-400 flex items-center gap-2">
-					<span style={{display:'inline-block',width:'1.5rem',height:'1px',background:'#1e3a5f',verticalAlign:'middle'}}/>
-					Follow Us
-					<span style={{display:'inline-block',width:'1.5rem',height:'1px',background:'#1e3a5f',verticalAlign:'middle'}}/>
-				</p>
-				<div className="social-cards-grid" role="list" aria-label="Social media profiles">
-					{SOCIAL_LINKS.map(({ href, label, name, handle, color, icon }) => {
-						const ctaText = name === 'YouTube' ? 'View Channel →' : name === 'Facebook' ? 'View Page →' : 'View Profile →';
-						return (
-							<a
-								key={name}
-								href={href}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={label}
-								role="listitem"
-								className="social-card focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050d1a]"
-								style={{
-									backgroundColor: `${color}13`,
-									border: `1px solid ${color}30`,
-								}}
-								onMouseEnter={e => {
-									e.currentTarget.style.backgroundColor = `${color}26`;
-									e.currentTarget.style.borderColor = `${color}66`;
-									e.currentTarget.style.boxShadow = `0 8px 24px ${color}22`;
-								}}
-								onMouseLeave={e => {
-									e.currentTarget.style.backgroundColor = `${color}13`;
-									e.currentTarget.style.borderColor = `${color}30`;
-									e.currentTarget.style.boxShadow = 'none';
-								}}
-							>
-								{/* Icon */}
-								<div
-									className="social-icon-wrap"
-									style={{ backgroundColor: color, boxShadow: `0 4px 12px ${color}44` }}
+				{/* ── Follow Us ── */}
+				<div style={{ marginBottom:'2rem' }}>
+					<p style={{ display:'flex', alignItems:'center', gap:'.6rem', fontFamily:'monospace', fontSize:'9px', fontWeight:700, letterSpacing:'.22em', textTransform:'uppercase', color:'#06B6D4', marginBottom:'1rem' }}>
+						<span style={{ flex:1, height:'1px', background:'#0d2040' }} />
+						Follow Us
+						<span style={{ flex:1, height:'1px', background:'#0d2040' }} />
+					</p>
+					<div className="ke-social-grid" role="list" aria-label="Social media profiles">
+						{SOCIAL_LINKS.map(({ href, label, name, handle, color, iconBg, icon }) => {
+							const bg = iconBg || color;
+							return (
+								<a
+									key={name}
+									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={label}
+									role="listitem"
+									className="ke-soc-card"
+									style={{ background:`${color}0d`, borderColor:`${color}22` }}
+									onMouseEnter={e => {
+										const el = e.currentTarget;
+										el.style.background = `${color}1c`;
+										el.style.borderColor = `${color}50`;
+										el.style.boxShadow = `0 8px 22px ${color}18`;
+										el.querySelector('.ke-soc-arrow').style.color = color === '#94a3b8' ? '#94a3b8' : color;
+										el.querySelector('.ke-soc-arrow').style.transform = 'translateX(3px)';
+									}}
+									onMouseLeave={e => {
+										const el = e.currentTarget;
+										el.style.background = `${color}0d`;
+										el.style.borderColor = `${color}22`;
+										el.style.boxShadow = 'none';
+										el.querySelector('.ke-soc-arrow').style.color = '#334155';
+										el.querySelector('.ke-soc-arrow').style.transform = 'none';
+									}}
+									onFocus={e => { e.currentTarget.style.outline = `2px solid ${color}`; e.currentTarget.style.outlineOffset = '3px'; }}
+									onBlur={e => { e.currentTarget.style.outline = 'none'; }}
 								>
-									<span style={{ color: '#fff', display:'flex' }}>{icon}</span>
-								</div>
-								{/* Platform label */}
-								<span className="social-platform" style={{ color }}>{name}</span>
-								{/* Name / handle */}
-								<span className="social-name">{handle}</span>
-								{/* CTA */}
-								<span className="social-cta">{ctaText}</span>
-							</a>
-						);
-					})}
+									{/* Top row: icon + platform */}
+									<div style={{ display:'flex', alignItems:'center', gap:'.5rem', marginBottom:'.5rem' }}>
+										<div style={{ width:'1.75rem', height:'1.75rem', borderRadius:'.4rem', background:bg, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, boxShadow:`0 3px 10px ${color}35`, transition:'transform .2s ease' }}>
+											<span style={{ color:'#fff', display:'flex' }}>{icon}</span>
+										</div>
+										<span style={{ fontSize:'7.5px', fontWeight:800, letterSpacing:'.16em', textTransform:'uppercase', color, lineHeight:1, opacity:.9 }}>{name}</span>
+									</div>
+									{/* Handle */}
+									<span style={{ fontSize:'.72rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{handle}</span>
+									{/* Arrow */}
+									<span className="ke-soc-arrow">→</span>
+								</a>
+							);
+						})}
+					</div>
 				</div>
-			</div>
 
-			{/* Divider */}
-			<div className="h-px w-full mb-12" style={{ background: '#0d1f3c' }} />
+				{/* Divider */}
+				<div aria-hidden="true" style={{ height:'1px', background:'#0d2040', marginBottom:'1.75rem' }} />
 
-			{/* Industries panel */}
-			<div className="rounded-xl p-8 mb-10" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-				<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-					<div className="flex-1">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">Industries Served</p>
-						<div className="flex flex-wrap gap-2">
-							{[
-								{ name: 'Power Generation', color: '#facc15' },
-								{ name: 'Sugar Mills',      color: '#4ade80' },
-								{ name: 'Paper & Pulp',     color: '#67E8F9' },
-								{ name: 'Oil & Gas',        color: '#fb923c' },
-								{ name: 'Petrochemical',    color: '#c084fc' },
-								{ name: 'Agro & Food',      color: '#2dd4bf' },
-								{ name: 'Cement',           color: '#a8a29e' },
-							].map(({ name, color }) => (
-								<span key={name} className="text-xs px-3 py-1.5 rounded-full font-bold"
-									style={{ color, background: color + '18', border: `1px solid ${color}44` }}>
-									{name}
-								</span>
-							))}
+				{/* Industries panel */}
+				<div style={{ borderRadius:'.875rem', padding:'1.4rem', background:'#071428', border:'1px solid #0d2040', marginBottom:'1.75rem' }}>
+					<div style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'flex-start', gap:'1.5rem' }}>
+						<div style={{ flex:'1 1 300px' }}>
+							<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.8rem' }}>Industries Served</p>
+							<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem' }}>
+								{[
+									{ name:'Power Generation', color:'#facc15' },
+									{ name:'Sugar Mills',      color:'#4ade80' },
+									{ name:'Paper & Pulp',     color:'#67E8F9' },
+									{ name:'Oil & Gas',        color:'#fb923c' },
+									{ name:'Petrochemical',    color:'#c084fc' },
+									{ name:'Agro & Food',      color:'#2dd4bf' },
+									{ name:'Cement',           color:'#a8a29e' },
+								].map(({ name, color }) => (
+									<span key={name} className="ke-ind-tag" style={{ color, background:color+'18', borderColor:color+'44' }}>{name}</span>
+								))}
+							</div>
+						</div>
+						<div style={{ textAlign:'right', flexShrink:0 }}>
+							<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.5rem' }}>Capability Range</p>
+							<p style={{ margin:0 }}>
+								<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>5 kW</span>
+								<span style={{ fontSize:'1.25rem', fontWeight:300, color:'#38BDF8', margin:'0 .375rem' }}>—</span>
+								<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>27 MW</span>
+							</p>
+							<p style={{ margin:'.25rem 0 0', fontSize:'.6rem', color:'#64748b', letterSpacing:'.1em', textTransform:'uppercase' }}>Back Pressure &amp; Condensing Turbines</p>
 						</div>
 					</div>
-					<div className="lg:text-right shrink-0">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">Capability Range</p>
-						<p className="text-white font-black text-3xl tracking-tight">
-							5 kW <span className="font-normal mx-1" style={{ color: '#0d1f3c' }}>–</span> 27 MW
-						</p>
-					</div>
 				</div>
-			</div>
 
-			{/* Bottom bar */}
-			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
-				<p className="text-white text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
-				<p className="text-white text-sm flex items-center gap-2">
-					<span>GST:</span>
-					<span className="text-white font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
-				</p>
-			</div>{/* end bottom bar */}
-		</div>{/* end max-w-7xl wrapper */}
-	</footer>
-));
+				{/* Bottom bar */}
+				<div style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center', gap:'.75rem', paddingTop:'1.1rem', borderTop:'1px solid #0d2040' }}>
+					<p style={{ margin:0, fontSize:'.78rem', color:'#475569' }}>© {year} Keshav Enterprises. All rights reserved.</p>
+					<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem', alignItems:'center' }}>
+						{[{ label:'GST', value:CONTACT_INFO.gst }, { label:'MSME', value:CONTACT_INFO.msme }].map(({ label, value }) => (
+							<span key={label} style={{ display:'inline-flex', alignItems:'center', gap:'.35rem', background:'#071428', border:'1px solid #0d2040', borderRadius:'.375rem', padding:'.22rem .55rem', fontSize:'.68rem', color:'#64748b' }}>
+								<span style={{ fontWeight:700, color:'#38BDF8', fontSize:'7.5px', letterSpacing:'.1em' }}>{label}</span>
+								<span style={{ fontFamily:'monospace', color:'#94a3b8' }}>{value}</span>
+							</span>
+						))}
+					</div>
+					<button className="ke-back-top" onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} aria-label="Back to top">↑ Top</button>
+				</div>
+
+			</div>{/* end max-w-7xl */}
+		</footer>
+	);
+});
 Footer.displayName = 'Footer';
 
 // ─── SOCIAL LINKS ─────────────────────────────────────────────
 // PERF: module-level constant — SVG icons are stable JSX, no reason to recreate on every render.
-// Each entry: href, label (a11y), name (display), color (brand hex), and inline SVG icon.
-// Order matches the screenshot: LinkedIn → Instagram → Reddit → YouTube → Facebook → X (Twitter)
+// iconBg overrides the icon container background when the platform color is too light (e.g. X/Twitter).
 const SOCIAL_LINKS = [
 	{
 		href: CONTACT_INFO.linkedin,
@@ -8296,7 +8236,7 @@ const SOCIAL_LINKS = [
 		name: 'LinkedIn',
 		handle: CONTACT_INFO.linkedinHandle,
 		color: '#0A66C2',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.instagram,
@@ -8304,15 +8244,7 @@ const SOCIAL_LINKS = [
 		name: 'Instagram',
 		handle: CONTACT_INFO.instagramHandle,
 		color: '#E1306C',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>,
-	},
-	{
-		href: CONTACT_INFO.reddit,
-		label: 'Keshav Enterprises on Reddit',
-		name: 'Reddit',
-		handle: CONTACT_INFO.redditHandle,
-		color: '#FF4500',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.youtube,
@@ -8320,7 +8252,7 @@ const SOCIAL_LINKS = [
 		name: 'YouTube',
 		handle: CONTACT_INFO.youtubeHandle,
 		color: '#FF0000',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.facebook,
@@ -8328,89 +8260,26 @@ const SOCIAL_LINKS = [
 		name: 'Facebook',
 		handle: CONTACT_INFO.facebookHandle,
 		color: '#1877F2',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.twitter,
 		label: 'Keshav Enterprises on X (Twitter)',
 		name: 'X (Twitter)',
 		handle: CONTACT_INFO.twitterHandle,
-		color: '#ffffff',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+		color: '#94a3b8',
+		iconBg: '#1e293b',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.reddit,
+		label: 'Keshav Enterprises on Reddit',
+		name: 'Reddit',
+		handle: CONTACT_INFO.redditHandle,
+		color: '#FF4500',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
 	},
 ];
-
-// ─── SOCIAL STRIP ────────────────────────────────────────────
-// Full-width horizontal card row between DigitalProfilesStrip and Footer.
-// Matches the "CONNECT WITH US" layout from the reference screenshot.
-const SocialStrip = memo(() => {
-	// Label shown below handle — varies by platform
-	const ctaLabel = (name) => {
-		if (name === 'YouTube') return 'View Channel →';
-		if (name === 'Facebook') return 'View Page →';
-		if (name === 'Reddit') return 'View Profile →';
-		return 'View Profile →';
-	};
-	return (
-		<section
-			aria-labelledby="social-strip-heading"
-			style={{ background: '#080e1d', borderTop: '1px solid #0d1f3c', borderBottom: '1px solid #0d1f3c' }}
-		>
-			{/* Eyebrow */}
-			<div className="text-center py-5">
-				<p
-					id="social-strip-heading"
-					className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em]"
-				>
-					Connect With Us
-				</p>
-			</div>
-			{/* Card row */}
-			<div
-				className="social-strip-scroll"
-				role="list"
-				aria-label="Social media profiles"
-			>
-				{SOCIAL_LINKS.map(({ href, label, name, handle, color, icon }) => (
-					<a
-						key={name}
-						href={href}
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label={label}
-						role="listitem"
-						className="social-strip-card focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-inset"
-						style={{
-							background: `${color}0f`,
-							borderLeftColor: color,
-						}}
-					>
-						{/* Platform icon circle */}
-						<div
-							className="ssc-icon"
-							style={{ backgroundColor: `${color}22` }}
-						>
-							<span style={{ color }}>{icon}</span>
-						</div>
-						{/* Text stack */}
-						<div className="ssc-text">
-							<span className="ssc-platform" style={{ color }}>{name}</span>
-							<span className="ssc-handle">{handle}</span>
-							<span className="ssc-cta">{ctaLabel(name)}</span>
-						</div>
-						{/* External link icon */}
-						<ExternalLink
-							className="w-3.5 h-3.5 shrink-0 ml-auto opacity-30 group-hover:opacity-70 transition-opacity"
-							style={{ color }}
-							aria-hidden="true"
-						/>
-					</a>
-				))}
-			</div>
-		</section>
-	);
-});
-SocialStrip.displayName = 'SocialStrip';
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
 // PERF: Defined outside component — constant data, no reason to recreate on every render
@@ -8486,7 +8355,7 @@ const DigitalProfilesStrip = memo(() => {
 				</div>
 				{/* Landscape card row — scrolls on mobile, wraps on desktop */}
 				<div
-					className="dir-strip-scroll justify-start sm:justify-center"
+					className="dir-strip-scroll"
 					role="list"
 					aria-label="Business directory profiles"
 				>
@@ -8498,7 +8367,7 @@ const DigitalProfilesStrip = memo(() => {
 							rel="noopener noreferrer"
 							aria-label={`View Keshav Enterprises on ${p.name}`}
 							role="listitem"
-							className="dir-card group relative flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl px-4 py-3.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[170px]"
+							className="dir-card group relative flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 rounded-2xl px-4 py-3 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 w-full"
 						>
 							{/* Logo square */}
 							<div

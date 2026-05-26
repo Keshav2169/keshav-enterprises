@@ -10,6 +10,7 @@ import {
 	CheckCircle2,
 	ChevronLeft,
 	ChevronRight,
+	ChevronUp,
 	Clock,
 	Cog,
 	Cpu,
@@ -6347,56 +6348,199 @@ const MARQUEE_CSS = `
   .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
   .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
 
-  /* ─── FOOTER SOCIAL CARDS — MOBILE RESPONSIVE ─── */
-  /* Social cards collapse gracefully on small screens */
-  .social-card{
-	min-width:0!important;
+  /* ─── FOOTER SOCIAL CARDS — IMPROVED FULL-WIDTH ROW ─── */
+  /* Desktop: 6 equal cards in one line. Mobile: 2-col grid, then scroll. */
+  .social-cards-grid{
+	display:grid;
+	grid-template-columns:repeat(6,1fr);
+	gap:0.625rem;
 	width:100%;
-	max-width:100%;
-	flex-shrink:1;
   }
-  @media(max-width:640px){
-	/* Social card grid: 1 column on phones, 2 on wider phones */
-	.social-cards-grid{
-	  display:grid!important;
-	  grid-template-columns:1fr 1fr;
-	  gap:0.75rem;
-	  width:100%;
-	}
-	.social-card{
-	  min-width:0!important;
-	  padding:0.75rem!important;
-	  gap:0.625rem!important;
-	}
-	.social-card .social-handle{font-size:13px!important}
-	.social-card .social-sub{display:none}
+  /* Tablet (≤900px): 3 across */
+  @media(max-width:900px){
+	.social-cards-grid{ grid-template-columns:repeat(3,1fr) }
   }
-  @media(max-width:380px){
-	.social-cards-grid{grid-template-columns:1fr}
+  /* Mobile (≤480px): 2 across */
+  @media(max-width:480px){
+	.social-cards-grid{ grid-template-columns:repeat(2,1fr) }
+  }
+  .social-card{
+	display:flex!important;
+	flex-direction:column!important;
+	align-items:flex-start!important;
+	gap:0!important;
+	padding:0.875rem 1rem!important;
+	border-radius:0.75rem;
+	cursor:pointer;
+	text-decoration:none;
+	position:relative;
+	overflow:hidden;
+	transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .social-card::before{
+	content:'';
+	position:absolute;
+	inset:0;
+	border-radius:inherit;
+	opacity:0;
+	transition:opacity 0.2s ease;
+	pointer-events:none;
+  }
+  .social-card:hover{
+	transform:translateY(-2px);
+	box-shadow:0 8px 24px rgba(0,0,0,0.35);
+  }
+  .social-card .social-icon-wrap{
+	width:2.25rem;
+	height:2.25rem;
+	border-radius:0.5rem;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-shrink:0;
+	margin-bottom:0.625rem;
+	transition:transform 0.18s ease, box-shadow 0.2s ease;
+  }
+  .social-card:hover .social-icon-wrap{
+	transform:scale(1.1);
+  }
+  .social-card .social-platform{
+	font-size:8px;
+	font-weight:800;
+	letter-spacing:0.14em;
+	text-transform:uppercase;
+	line-height:1;
+	margin-bottom:0.2rem;
+	opacity:0.75;
+  }
+  .social-card .social-name{
+	font-size:0.8rem;
+	font-weight:800;
+	color:#fff;
+	line-height:1.25;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	width:100%;
+	margin-bottom:0.15rem;
+  }
+  .social-card .social-handle{
+	font-size:0.7rem;
+	font-weight:600;
+	line-height:1.2;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	width:100%;
+	opacity:0.8;
+  }
+  .social-card .social-cta{
+	font-size:9px;
+	font-weight:600;
+	color:#64748b;
+	margin-top:0.45rem;
+	letter-spacing:0.02em;
+	white-space:nowrap;
+	transition:color 0.15s;
+  }
+  .social-card:hover .social-cta{ color:#94a3b8 }
+  /* Mobile: slightly more compact */
+  @media(max-width:480px){
+	.social-card{ padding:0.75rem 0.875rem!important }
+	.social-card .social-icon-wrap{ width:2rem; height:2rem; margin-bottom:0.5rem }
+	.social-card .social-name{ font-size:0.75rem }
+	.social-card .social-cta{ display:none }
   }
 
-  /* ─── DIGITAL PROFILES STRIP — MOBILE ─── */
-  .dir-card{
-	min-width:0!important;
-	flex-shrink:1;
+  /* ─── SOCIAL STRIP — FULL-WIDTH HORIZONTAL CARD ROW ─── */
+  /* 6 cards side-by-side on desktop; horizontal scroll on mobile */
+  .social-strip-scroll{
+	display:flex;
+	flex-direction:row;
+	flex-wrap:nowrap;
+	overflow-x:auto;
+	-webkit-overflow-scrolling:touch;
+	scrollbar-width:none;
+	/* no gap — cards separated by their border-left accent line */
   }
-  @media(max-width:640px){
-	.dir-cards-grid{
-	  display:grid!important;
-	  grid-template-columns:1fr 1fr;
-	  gap:0.625rem;
-	  width:100%;
-	}
-	.dir-card{
-	  padding:0.75rem 0.875rem!important;
-	  gap:0.5rem!important;
-	  min-width:0!important;
-	}
-	.dir-card .dir-badge{font-size:10px!important}
+  .social-strip-scroll::-webkit-scrollbar{display:none}
+  .social-strip-card{
+	display:flex;
+	flex-direction:row;
+	align-items:center;
+	gap:0.875rem;
+	padding:1.125rem 1.25rem;
+	/* Each card takes exactly 1/6 of the strip, never shrinks below 180px */
+	flex:1 1 0;
+	min-width:180px;
+	max-width:none;
+	border-left:2.5px solid transparent;
+	border-right:1px solid rgba(255,255,255,0.04);
+	cursor:pointer;
+	transition:filter 0.18s ease, background 0.18s ease;
+	text-decoration:none;
+	box-sizing:border-box;
   }
-  @media(max-width:380px){
-	.dir-cards-grid{grid-template-columns:1fr}
+  .social-strip-card:last-child{ border-right:none }
+  .social-strip-card:hover{ filter:brightness(1.12) }
+  .social-strip-card .ssc-icon{
+	width:2.75rem;
+	height:2.75rem;
+	border-radius:50%;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	flex-shrink:0;
   }
+  .social-strip-card .ssc-text{
+	display:flex;
+	flex-direction:column;
+	gap:0.1rem;
+	min-width:0;
+	flex:1;
+  }
+  .social-strip-card .ssc-platform{
+	font-size:8.5px;
+	font-weight:800;
+	letter-spacing:0.13em;
+	text-transform:uppercase;
+	line-height:1;
+  }
+  .social-strip-card .ssc-handle{
+	font-size:0.875rem;
+	font-weight:800;
+	color:#ffffff;
+	line-height:1.25;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+  }
+  .social-strip-card .ssc-cta{
+	font-size:9.5px;
+	font-weight:600;
+	color:#64748b;
+	margin-top:0.2rem;
+	letter-spacing:0.01em;
+	white-space:nowrap;
+  }
+  @media(max-width:900px){
+	/* Below 900px cards no longer fit 6-up — allow horizontal scroll */
+	.social-strip-card{ flex:0 0 195px; min-width:195px }
+  }
+
+  /* ─── DIGITAL PROFILES STRIP — SINGLE LINE SCROLL ─── */
+  /* Desktop: centred flex, cards never wrap. Mobile: horizontal scroll */
+  .dir-strip-scroll{
+	display:flex;
+	flex-wrap:nowrap;
+	overflow-x:auto;
+	-webkit-overflow-scrolling:touch;
+	scrollbar-width:none;
+	gap:1rem;
+	padding-bottom:4px;
+  }
+  .dir-strip-scroll::-webkit-scrollbar{display:none}
+  .dir-card{flex-shrink:0}
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
@@ -7007,6 +7151,9 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 				</span>
 				<span className={`font-bold uppercase tracking-[0.14em] text-[14px] lg:text-[15px] mt-0.75 ${tagCls} transition-colors duration-200`}>
 					ENTERPRISES
+				</span>
+				<span className={`font-semibold tracking-[0.08em] text-[9px] lg:text-[10px] mt-1 uppercase italic ${forceWhite ? 'text-white/60' : scrolled ? 'text-slate-400' : 'text-white/60'} transition-colors duration-200`}>
+					Quality &amp; Assurance
 				</span>
 			</div>
 		</button>
@@ -7967,7 +8114,8 @@ const Footer = memo(({ navigate }) => (
 					</div>
 					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2 text-blue-400">OEM Compatible With</p>
 					<p className="font-mono text-xs leading-relaxed text-white">{OEMS.join(' · ')}</p>
-				</div>
+
+				</div>{/* end Col 1 — Brand */}
 
 				{/* Col 2 — Navigate */}
 				<nav className="lg:col-span-2" aria-label="Footer site links">
@@ -8037,6 +8185,59 @@ const Footer = memo(({ navigate }) => (
 				</address>
 			</div>
 
+			{/* ── Full-width Follow Us strip ── */}
+			<div className="mt-10 mb-2">
+				<p className="font-bold text-[10px] uppercase tracking-[0.22em] mb-4 text-blue-400 flex items-center gap-2">
+					<span style={{display:'inline-block',width:'1.5rem',height:'1px',background:'#1e3a5f',verticalAlign:'middle'}}/>
+					Follow Us
+					<span style={{display:'inline-block',width:'1.5rem',height:'1px',background:'#1e3a5f',verticalAlign:'middle'}}/>
+				</p>
+				<div className="social-cards-grid" role="list" aria-label="Social media profiles">
+					{SOCIAL_LINKS.map(({ href, label, name, handle, color, icon }) => {
+						const ctaText = name === 'YouTube' ? 'View Channel →' : name === 'Facebook' ? 'View Page →' : 'View Profile →';
+						return (
+							<a
+								key={name}
+								href={href}
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={label}
+								role="listitem"
+								className="social-card focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050d1a]"
+								style={{
+									backgroundColor: `${color}13`,
+									border: `1px solid ${color}30`,
+								}}
+								onMouseEnter={e => {
+									e.currentTarget.style.backgroundColor = `${color}26`;
+									e.currentTarget.style.borderColor = `${color}66`;
+									e.currentTarget.style.boxShadow = `0 8px 24px ${color}22`;
+								}}
+								onMouseLeave={e => {
+									e.currentTarget.style.backgroundColor = `${color}13`;
+									e.currentTarget.style.borderColor = `${color}30`;
+									e.currentTarget.style.boxShadow = 'none';
+								}}
+							>
+								{/* Icon */}
+								<div
+									className="social-icon-wrap"
+									style={{ backgroundColor: color, boxShadow: `0 4px 12px ${color}44` }}
+								>
+									<span style={{ color: '#fff', display:'flex' }}>{icon}</span>
+								</div>
+								{/* Platform label */}
+								<span className="social-platform" style={{ color }}>{name}</span>
+								{/* Name / handle */}
+								<span className="social-name">{handle}</span>
+								{/* CTA */}
+								<span className="social-cta">{ctaText}</span>
+							</a>
+						);
+					})}
+				</div>
+			</div>
+
 			{/* Divider */}
 			<div className="h-px w-full mb-12" style={{ background: '#0d1f3c' }} />
 
@@ -8078,11 +8279,138 @@ const Footer = memo(({ navigate }) => (
 					<span>GST:</span>
 					<span className="text-white font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
 				</p>
-			</div>
-		</div>
+			</div>{/* end bottom bar */}
+		</div>{/* end max-w-7xl wrapper */}
 	</footer>
 ));
 Footer.displayName = 'Footer';
+
+// ─── SOCIAL LINKS ─────────────────────────────────────────────
+// PERF: module-level constant — SVG icons are stable JSX, no reason to recreate on every render.
+// Each entry: href, label (a11y), name (display), color (brand hex), and inline SVG icon.
+// Order matches the screenshot: LinkedIn → Instagram → Reddit → YouTube → Facebook → X (Twitter)
+const SOCIAL_LINKS = [
+	{
+		href: CONTACT_INFO.linkedin,
+		label: 'Keshav Enterprises on LinkedIn',
+		name: 'LinkedIn',
+		handle: CONTACT_INFO.linkedinHandle,
+		color: '#0A66C2',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.instagram,
+		label: 'Keshav Enterprises on Instagram',
+		name: 'Instagram',
+		handle: CONTACT_INFO.instagramHandle,
+		color: '#E1306C',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.reddit,
+		label: 'Keshav Enterprises on Reddit',
+		name: 'Reddit',
+		handle: CONTACT_INFO.redditHandle,
+		color: '#FF4500',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.youtube,
+		label: 'Keshav Enterprises on YouTube',
+		name: 'YouTube',
+		handle: CONTACT_INFO.youtubeHandle,
+		color: '#FF0000',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.facebook,
+		label: 'Keshav Enterprises on Facebook',
+		name: 'Facebook',
+		handle: CONTACT_INFO.facebookHandle,
+		color: '#1877F2',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.twitter,
+		label: 'Keshav Enterprises on X (Twitter)',
+		name: 'X (Twitter)',
+		handle: CONTACT_INFO.twitterHandle,
+		color: '#ffffff',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+	},
+];
+
+// ─── SOCIAL STRIP ────────────────────────────────────────────
+// Full-width horizontal card row between DigitalProfilesStrip and Footer.
+// Matches the "CONNECT WITH US" layout from the reference screenshot.
+const SocialStrip = memo(() => {
+	// Label shown below handle — varies by platform
+	const ctaLabel = (name) => {
+		if (name === 'YouTube') return 'View Channel →';
+		if (name === 'Facebook') return 'View Page →';
+		if (name === 'Reddit') return 'View Profile →';
+		return 'View Profile →';
+	};
+	return (
+		<section
+			aria-labelledby="social-strip-heading"
+			style={{ background: '#080e1d', borderTop: '1px solid #0d1f3c', borderBottom: '1px solid #0d1f3c' }}
+		>
+			{/* Eyebrow */}
+			<div className="text-center py-5">
+				<p
+					id="social-strip-heading"
+					className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em]"
+				>
+					Connect With Us
+				</p>
+			</div>
+			{/* Card row */}
+			<div
+				className="social-strip-scroll"
+				role="list"
+				aria-label="Social media profiles"
+			>
+				{SOCIAL_LINKS.map(({ href, label, name, handle, color, icon }) => (
+					<a
+						key={name}
+						href={href}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={label}
+						role="listitem"
+						className="social-strip-card focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-inset"
+						style={{
+							background: `${color}0f`,
+							borderLeftColor: color,
+						}}
+					>
+						{/* Platform icon circle */}
+						<div
+							className="ssc-icon"
+							style={{ backgroundColor: `${color}22` }}
+						>
+							<span style={{ color }}>{icon}</span>
+						</div>
+						{/* Text stack */}
+						<div className="ssc-text">
+							<span className="ssc-platform" style={{ color }}>{name}</span>
+							<span className="ssc-handle">{handle}</span>
+							<span className="ssc-cta">{ctaLabel(name)}</span>
+						</div>
+						{/* External link icon */}
+						<ExternalLink
+							className="w-3.5 h-3.5 shrink-0 ml-auto opacity-30 group-hover:opacity-70 transition-opacity"
+							style={{ color }}
+							aria-hidden="true"
+						/>
+					</a>
+				))}
+			</div>
+		</section>
+	);
+});
+SocialStrip.displayName = 'SocialStrip';
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
 // PERF: Defined outside component — constant data, no reason to recreate on every render
@@ -8135,69 +8463,73 @@ const DIGITAL_PROFILES = [
 ];
 
 const DigitalProfilesStrip = memo(() => {
-	const profiles = DIGITAL_PROFILES;
-
 	return (
 		<section
 			aria-labelledby="digital-profiles-heading"
-			className="bg-slate-50 py-14 border-t border-slate-200 cv-auto"
+			className="bg-[#f0f4f8] py-10 border-t border-slate-200"
 		>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="text-center mb-10">
-					<p className="text-xs font-black text-slate-500 uppercase tracking-[0.25em] mb-3">
+				{/* Heading block — matches Image 2 */}
+				<div className="text-center mb-8">
+					<p
+						id="digital-profiles-heading"
+						className="text-[11px] font-black text-slate-400 uppercase tracking-[0.22em] mb-2"
+					>
 						Find Us Everywhere
 					</p>
-					<h2
-						id="digital-profiles-heading"
-						className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-3"
-					>
-						Verified Across India&apos;s Top Business Directories
+					<h2 className="text-2xl sm:text-3xl font-black text-slate-800 mb-3 tracking-tight">
+						Verified Across India's Top Business Directories
 					</h2>
-					<p className="text-slate-500 font-medium text-sm max-w-xl mx-auto">
-						Our business profile is verified and active on every major B2B and
-						local search platform in India.
+					<p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+						Our business profile is verified and active on every major B2B and local search platform in India.
 					</p>
 				</div>
-				<div className="flex flex-wrap justify-center gap-4 dir-cards-grid">
-					{profiles.map((p) => (
+				{/* Landscape card row — scrolls on mobile, wraps on desktop */}
+				<div
+					className="dir-strip-scroll justify-start sm:justify-center"
+					role="list"
+					aria-label="Business directory profiles"
+				>
+					{DIGITAL_PROFILES.map((p) => (
 						<a
 							key={p.name}
 							href={p.href}
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label={`View Keshav Enterprises on ${p.name}`}
-							className="group flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl px-5 py-4 transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dir-card"
+							role="listitem"
+							className="dir-card group relative flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl px-4 py-3.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[170px]"
 						>
+							{/* Logo square */}
 							<div
-								className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
+								className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-slate-100"
 								style={{ backgroundColor: p.badgeBg }}
 							>
 								<img
 									src={p.imgSrc}
-									alt={p.imgAlt}
-									className="w-7 h-7 object-contain"
+									alt=""
+									aria-hidden="true"
+									className="w-8 h-8 object-contain"
 									loading="lazy"
 									decoding="async"
-									fetchPriority="low"
-									width="28"
-									height="28"
+									width="32"
+									height="32"
 								/>
 							</div>
-							<div className="flex flex-col min-w-0">
-								<span className="font-black text-slate-900 text-sm leading-tight group-hover:text-blue-600 transition-colors truncate">
+							{/* Text block */}
+							<div className="flex flex-col min-w-0 flex-1">
+								<span className="font-black text-slate-800 text-sm leading-tight group-hover:text-blue-600 transition-colors whitespace-nowrap">
 									{p.name}
 								</span>
 								<span
-									className="text-[11px] font-black mt-1 px-2 py-0.5 rounded-full w-fit"
-									style={{ color: p.badgeColor, backgroundColor: p.badgeBg }}
+									className="text-[11px] font-black mt-0.5 whitespace-nowrap"
+									style={{ color: p.badgeColor }}
 								>
 									{p.badge}
 								</span>
 							</div>
-							<ExternalLink
-								className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-400 transition-colors ml-auto shrink-0"
-								aria-hidden="true"
-							/>
+							{/* External link icon — top right */}
+							<ExternalLink className="w-3.5 h-3.5 text-slate-300 group-hover:text-blue-400 transition-colors shrink-0 self-start mt-0.5" aria-hidden="true" />
 						</a>
 					))}
 				</div>
@@ -8658,7 +8990,7 @@ const BackToTopButton = memo(() => {
 			aria-label="Back to top"
 			className="fixed bottom-6 left-6 z-50 w-11 h-11 bg-slate-900 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
 		>
-			<ArrowLeft className="w-5 h-5 -rotate-90" aria-hidden="true" />
+			<ChevronUp className="w-5 h-5" aria-hidden="true" />
 		</button>
 	);
 });
@@ -11351,6 +11683,132 @@ const AboutPage = memo(({ navigate }) => {
 									</span>
 								</div>
 							))}
+						</div>
+					</div>
+				</div>
+
+				{/* ── EXPORT CAPABILITIES ──────────────────────────────────────────────── */}
+				<div className="mb-24 lazy-section">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+						{/* Left — text */}
+						<div>
+							<div className="flex items-center gap-3 mb-4">
+								<div className="w-8 h-0.5 bg-blue-600 rounded-full" />
+								<span className="eyebrow-label text-blue-600 font-black text-xs uppercase tracking-[0.25em]">
+									Export Ready
+								</span>
+							</div>
+							<h2 className="keep-left text-4xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
+								Supplying Indian Exporters<br className="hidden sm:block" />
+								<span className="text-blue-600"> Who Ship Globally</span>
+							</h2>
+							<div className="section-divider w-16 h-1 bg-blue-600 mb-6 rounded-full" />
+							<div className="space-y-4 text-slate-600 text-base leading-relaxed keep-left">
+								<p>
+									Keshav Enterprises is verified on{' '}
+									<strong className="text-slate-800">ExportersIndia</strong> as an
+									export-ready supplier — serving Indian exporters who ship
+									turbine engineering spares, industrial filtration products, and
+									OEM-compatible components to overseas end-clients.
+								</p>
+								<p>
+									Our precision-manufactured products — filter elements, expansion
+									joints, strainers, turbine spares, and flexible hose assemblies
+									— are produced to international standards including ISO 16889,
+									API 614, and ASME Sec. VIII, making them suitable for global
+									industrial supply chains.
+								</p>
+							</div>
+							{/* Key export facts */}
+							<div className="mt-7 grid grid-cols-2 gap-4">
+								{[
+									{ stat: 'ISO 16889', label: 'Filtration Standard' },
+									{ stat: 'API 614',   label: 'Lube Oil System Std' },
+									{ stat: 'ASME VIII', label: 'Pressure Vessel Std' },
+									{ stat: 'HSN 8421',  label: 'Export Classification' },
+								].map(({ stat, label }) => (
+									<div
+										key={stat}
+										className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3"
+									>
+										<div className="text-blue-700 font-black text-lg tracking-tight leading-none mb-0.5">
+											{stat}
+										</div>
+										<div className="text-slate-500 text-[11px] font-bold uppercase tracking-wider">
+											{label}
+										</div>
+									</div>
+								))}
+							</div>
+						</div>
+
+						{/* Right — export credentials + product categories */}
+						<div className="space-y-5">
+							{/* Export-verified badge */}
+							<div className="bg-slate-900 rounded-2xl p-6 flex items-center gap-5">
+								<div
+									className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 border border-slate-700"
+									style={{ backgroundColor: '#dcfce7' }}
+								>
+									<Globe className="w-7 h-7" style={{ color: '#166534' }} aria-hidden="true" />
+								</div>
+								<div>
+									<h3 className="keep-left font-black text-white text-base mb-1">ExportersIndia Verified</h3>
+									<p className="text-slate-400 text-sm keep-left">
+										Listed as an export-ready supplier for Indian industrial
+										exporters on ExportersIndia.com
+									</p>
+									<a
+										href={CONTACT_INFO.exportersindia}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="inline-flex items-center gap-1.5 mt-2 text-blue-400 text-xs font-black hover:text-blue-300 transition-colors focus:outline-none focus-visible:underline"
+									>
+										View our profile
+										<ExternalLink className="w-3 h-3" aria-hidden="true" />
+									</a>
+								</div>
+							</div>
+
+							{/* Exportable product categories */}
+							<div className="bg-white border border-slate-200 rounded-2xl p-6">
+								<h3 className="keep-left font-black text-slate-900 text-base mb-4 tracking-tight">
+									Export Product Categories
+								</h3>
+								<ul className="space-y-2.5">
+									{[
+										'Industrial filtration elements — simplex, duplex, and return-line',
+										'Turbine lube oil & control oil filter assemblies',
+										'Metallic & fabric expansion joints and bellows',
+										'Simplex & duplex basket strainers (SS 304 / 316)',
+										'Turbine spares — bearings, seals, labyrinth packings, governors',
+										'Flexible rubber hose assemblies & hydraulic fittings',
+									].map((item) => (
+										<li
+											key={item}
+											className="flex items-start gap-3 text-slate-600 text-sm leading-snug"
+										>
+											<CheckCircle2
+												className="w-4 h-4 text-blue-500 shrink-0 mt-0.5"
+												aria-hidden="true"
+											/>
+											{item}
+										</li>
+									))}
+								</ul>
+							</div>
+
+							{/* MSME + Make in India */}
+							<div className="flex gap-3">
+								<div className="flex-1 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-center">
+									<div className="text-blue-700 font-black text-sm tracking-tight">MSME Registered</div>
+									<div className="text-blue-500 text-[11px] font-bold uppercase tracking-wider mt-0.5">{CONTACT_INFO.msme}</div>
+								</div>
+								<div className="flex-1 bg-orange-50 border border-orange-100 rounded-xl px-4 py-3 text-center">
+									<div className="text-orange-700 font-black text-sm tracking-tight">Make In India</div>
+									<div className="text-orange-500 text-[11px] font-bold uppercase tracking-wider mt-0.5">Vocal For Local</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
