@@ -38,6 +38,7 @@ import {
 	TrendingUp,
 	User,
 	Users,
+	Wind,
 	Wrench,
 	X,
 	Zap,
@@ -6008,6 +6009,319 @@ const RAW_PRODUCTS = [
 			'overspeed-trip-device-12.webp',
 		],
 	},
+	// ─── HVAC & AIR FILTRATION ───────────────────────────────────────────────────
+	{
+		id: 'prod_af1',
+		category: 'HVAC & Air Filtration',
+		title: 'HVAC Pocket Bag Filter (Multi-Pocket Air Filter)',
+		desc: 'High-efficiency multi-pocket bag filters for HVAC air handling units, central air conditioning, and industrial ventilation systems. The extended pleated pocket geometry maximises filtration surface area in a compact frame, delivering low resistance at rated airflow while achieving superior dust-holding capacity and service life. Available in synthetic, glass fibre, and micro-glass media across efficiency classes F5 to F9 per EN 779 / ISO 16890.',
+		usage:
+			'Intermediate and final-stage air filtration in HVAC air handling units (AHUs), central air conditioning plants, clean rooms, hospitals, pharmaceutical facilities, data centres, commercial buildings, food processing areas, and industrial ventilation systems. Installed downstream of coarse pre-filters to capture fine dust, pollen, mould spores, and sub-micron particulates before supply air enters occupied spaces or sensitive equipment.',
+		features: [
+			'Multi-pocket (mini-pleat bag) construction — maximises filter media area in standard frame dimensions for low pressure drop at high airflow',
+			'Efficiency range: F5 / F6 / F7 / F8 / F9 per EN 779; ePM1 / ePM2.5 / ePM10 50%–80% per ISO 16890',
+			'Media types: Synthetic polyester (F5–F7, general HVAC), micro-glass (F8–F9, high-efficiency), electrostatically charged (F6–F8, low-resistance)',
+			'Standard frame sizes: 287×592×600 mm, 490×592×600 mm, 592×592×600 mm, 287×592×360 mm — custom frame dimensions available',
+			'Pocket count: 4, 6, 8, or 10 pockets per frame — pocket count determines face velocity and holding capacity',
+			'Initial resistance: typically 50–90 Pa at rated airflow (F5–F7); 70–120 Pa (F8–F9)',
+			'Final resistance: 250–350 Pa (per EN 779 test conditions)',
+			'Dust-holding capacity: 400–1,200 g/m² (media-dependent) — extended service intervals vs. flat panel or pleated panel filters',
+			'Frame materials: Galvanised steel (standard), powder-coated steel, polypropylene — selected per operating environment',
+			'Temperature rating: up to 70°C standard; high-temperature glass fibre variants up to 120°C',
+			'Moisture resistance: synthetic media designed for high-humidity HVAC duty without media collapse',
+			'Applications: Hospitals (OT prep air, ward supply), pharmaceutical (Grade D / Grade C air prep), clean rooms, data centres, commercial AHUs, industrial process air',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Efficiency Class': 'F5 / F6 / F7 / F8 / F9 (EN 779); ePM1/ePM2.5/ePM10 (ISO 16890)',
+			'Media Types': 'Synthetic polyester / Micro-glass / Electrostatically charged',
+			'Standard Frame Sizes':
+				'287×592×600 mm; 490×592×600 mm; 592×592×600 mm (custom available)',
+			'Pocket Count': '4 / 6 / 8 / 10 pockets per frame',
+			'Initial Resistance (F5–F7)': '50–90 Pa at rated airflow',
+			'Initial Resistance (F8–F9)': '70–120 Pa at rated airflow',
+			'Final Resistance': '250–350 Pa (EN 779 test conditions)',
+			'Dust Holding Capacity': '400–1,200 g/m² (media-dependent)',
+			'Frame Materials': 'Galvanised steel / Powder-coated steel / Polypropylene',
+			'Temperature Rating': 'Up to 70°C standard; 120°C (high-temp glass fibre)',
+			'Test Standard': 'EN 779 / ISO 16890',
+			'HSN Code': '8421',
+		},
+		images: [
+			'hvac-pocket-bag-filter-1.webp',
+			'hvac-pocket-bag-filter-2.webp',
+			'hvac-pocket-bag-filter-3.webp',
+			'hvac-pocket-bag-filter-4.webp',
+			'hvac-pocket-bag-filter-5.webp',
+			'hvac-pocket-bag-filter-6.webp',
+			'hvac-pocket-bag-filter-7.webp',
+			'hvac-pocket-bag-filter-8.webp',
+			'hvac-pocket-bag-filter-9.webp',
+			'hvac-pocket-bag-filter-10.webp',
+			'hvac-pocket-bag-filter-11.webp',
+			'hvac-pocket-bag-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_af2',
+		category: 'HVAC & Air Filtration',
+		title: 'Activated Carbon Vent Filter (Microwave Charcoal Recirculating Air Filter)',
+		desc: 'Activated carbon charcoal air filters for microwave ovens, range hoods, kitchen exhaust ventilation, and general recirculating air purification. The activated carbon granule or carbon-impregnated foam media adsorbs cooking odours, grease vapour, VOCs, and airborne chemical contaminants. Supplied as direct-fit OEM-matched replacement cartridges or universal panels to fit standard appliance filter housings. For industrial and commercial applications: activated carbon panel and granule-bed vent filters for odour control in HVAC recirculating loops, fume cupboards, and solvent-vapour extraction systems.',
+		usage:
+			'Domestic: Microwave oven recirculating air filter replacement; range hood charcoal filter; kitchen exhaust vent filter where ducting to exterior is not available — recirculating air passes through activated carbon to remove cooking odours and VOCs before return to kitchen. Commercial/Industrial: Activated carbon vent filters for HVAC recirculating systems, fume cupboard odour control, laboratory air purification, solvent storage room ventilation, and printing/painting shop odour management.',
+		features: [
+			'Activated carbon media: granular activated carbon (GAC) bed or carbon-impregnated polyurethane foam per application',
+			'Adsorption targets: cooking odours, grease vapour, smoke, VOCs, formaldehyde, hydrogen sulphide, ammonia, and general household/industrial odours',
+			'Domestic OEM-matched: supplied to fit standard microwave oven and range hood filter slots (common brands and sizes covered; custom cut-to-size on request)',
+			'Industrial/commercial grades: activated carbon panel filters (25 mm and 50 mm bed depth), granule tray filters, and carbon-impregnated polyester panel combinations',
+			'Carbon bed depth: 12–50 mm (domestic to industrial) — deeper bed = greater adsorption capacity and longer service life',
+			'Activated carbon type: Coconut shell carbon (highest surface area, best VOC removal), coal-based carbon, or impregnated carbon for specific contaminants (e.g. impregnated with KOH for acid gas removal)',
+			'Typical service life: 3–6 months (domestic recirculating); 6–12 months (industrial, low-concentration duty) — dependent on contaminant concentration',
+			'Combination filter option: carbon layer bonded with G4 pre-filter media — one-piece unit captures both particulates and odours',
+			'Frame: ABS plastic (domestic OEM replacement), galvanised steel / aluminium frame (commercial/industrial)',
+			'Replacement guide: Activated carbon saturates and cannot be regenerated in domestic grade — periodic replacement essential for maintained odour control',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Media Type':
+				'Granular Activated Carbon (GAC) / Carbon-impregnated PU foam / Carbon panel',
+			'Adsorption Targets':
+				'Cooking odours, VOCs, grease vapour, smoke, H₂S, NH₃, formaldehyde',
+			'Domestic Fit': 'OEM-matched microwave and range hood replacement cartridges',
+			'Industrial Grades':
+				'25 mm and 50 mm carbon panel; granule tray; carbon + pre-filter combination',
+			'Carbon Type':
+				'Coconut shell GAC / Coal-based / Impregnated (KOH, KMnO₄ per application)',
+			'Carbon Bed Depth': '12–50 mm (domestic to industrial)',
+			'Typical Service Life':
+				'3–6 months (domestic); 6–12 months (industrial low-concentration)',
+			'Frame Materials': 'ABS plastic (domestic); Galvanised steel / Aluminium (industrial)',
+			'Combination Option': 'Carbon + G4 pre-filter bonded one-piece panel',
+			'HSN Code': '8421',
+		},
+		images: [
+			'activated-carbon-vent-filter-1.webp',
+			'activated-carbon-vent-filter-2.webp',
+			'activated-carbon-vent-filter-3.webp',
+			'activated-carbon-vent-filter-4.webp',
+			'activated-carbon-vent-filter-5.webp',
+			'activated-carbon-vent-filter-6.webp',
+			'activated-carbon-vent-filter-7.webp',
+			'activated-carbon-vent-filter-8.webp',
+			'activated-carbon-vent-filter-9.webp',
+			'activated-carbon-vent-filter-10.webp',
+			'activated-carbon-vent-filter-11.webp',
+			'activated-carbon-vent-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_af3',
+		category: 'HVAC & Air Filtration',
+		title: 'HVAC Metallic Mesh Pre-Filter',
+		desc: 'Washable and reusable aluminium or stainless steel metallic mesh pre-filters for HVAC air handling units, split air conditioning systems, industrial ventilation, and fan coil units. Multi-layer corrugated metal mesh captures large airborne particles, fibres, lint, insects, and coarse dust before they reach downstream fine filter stages, protecting bag filters, pleated panels, and cooling coils from premature loading. The robust all-metal construction allows unlimited wash-and-reuse cycles, delivering a low lifetime cost versus disposable media filters.',
+		usage:
+			'First-stage coarse pre-filtration in HVAC air handling units, commercial split AC outdoor units, industrial process air intakes, spray booths, compressor air intakes, and fan coil units. Installed at air intake louvres and grilles to block insects, fibres, leaves, and large particles. Protects downstream fine filter elements (pocket bag, pleated panel) and cooling coils from gross contamination — extends service intervals of costly downstream stages. Also used as grease filter above commercial cooking ranges and kitchen exhaust hoods.',
+		features: [
+			'Washable and reusable — unlimited wash cycles; clean with warm water and mild detergent or compressed air blowback',
+			'Multi-layer corrugated metallic mesh construction — random fibre / knitted mesh / expanded metal per application',
+			'Efficiency class: G1 / G2 / G3 per EN 779 (coarse particulate capture — fibres, lint, insects, large dust particles)',
+			'Frame materials: Aluminium alloy (lightweight, corrosion-resistant, standard HVAC), SS 304 / 316 (high-humidity, marine, food processing)',
+			'Mesh materials: Aluminium mesh (standard), galvanised steel mesh, SS 304 wire mesh — per environment',
+			'Standard frame sizes: 490×490 mm, 490×592 mm, 592×592 mm, 287×592 mm — custom to any AHU intake or grille dimension',
+			'Thickness: 10 mm, 12 mm, 20 mm, 25 mm — thicker mesh provides greater depth and inertial particle capture efficiency',
+			'Low pressure drop: typically 5–25 Pa at rated face velocity — minimises fan energy impact',
+			'Frame style: slide-in channel frame or clip-in frame for tool-free removal and reinstallation',
+			'Operating temperature: up to 350°C (SS mesh) / 150°C (aluminium mesh) — suitable for pre-filter duty in high-temperature industrial air streams',
+			'Optional features: adhesive oil coating on mesh surface to improve fine particle adhesion; aluminium foam media insert option for higher efficiency pre-filter duty',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Efficiency Class': 'G1 / G2 / G3 (EN 779 / ISO 16890 coarse)',
+			'Mesh Materials': 'Aluminium / Galvanised steel / SS 304 wire mesh',
+			'Frame Materials': 'Aluminium alloy / SS 304 / SS 316',
+			'Standard Sizes':
+				'490×490 mm; 490×592 mm; 592×592 mm; 287×592 mm (custom available)',
+			'Thickness Options': '10 / 12 / 20 / 25 mm',
+			'Pressure Drop': '5–25 Pa at rated face velocity',
+			'Temperature Rating': 'Up to 150°C (aluminium); Up to 350°C (SS mesh)',
+			Maintenance: 'Washable and reusable — unlimited cycles',
+			'Frame Style': 'Slide-in channel or clip-in tool-free removal',
+			'HSN Code': '8421',
+		},
+		images: [
+			'hvac-metallic-mesh-filter-1.webp',
+			'hvac-metallic-mesh-filter-2.webp',
+			'hvac-metallic-mesh-filter-3.webp',
+			'hvac-metallic-mesh-filter-4.webp',
+			'hvac-metallic-mesh-filter-5.webp',
+			'hvac-metallic-mesh-filter-6.webp',
+			'hvac-metallic-mesh-filter-7.webp',
+			'hvac-metallic-mesh-filter-8.webp',
+			'hvac-metallic-mesh-filter-9.webp',
+			'hvac-metallic-mesh-filter-10.webp',
+			'hvac-metallic-mesh-filter-11.webp',
+			'hvac-metallic-mesh-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_af4',
+		category: 'HVAC & Air Filtration',
+		title: 'Pleated Panel Air Filter',
+		desc: 'Pleated panel air filters in rigid frames for HVAC air handling units, fan coil units, split-AC indoor units, and light industrial ventilation. The accordion-pleated synthetic or glass fibre media provides up to 4× the effective filtration area of an equivalent flat-panel filter, delivering lower initial resistance, higher dust-holding capacity, and longer service life. Available across efficiency grades G4 to F9 per EN 779 and ePM1 / ePM2.5 / ePM10 classifications per ISO 16890. Supplied in standard and custom frame sizes for both residential and commercial HVAC applications.',
+		usage:
+			'Primary and intermediate air filtration stage in commercial HVAC air handling units (AHUs), fan coil units (FCUs), rooftop package units, split AC indoor units, hospital ward air supply, pharmaceutical facility HVAC, clean room make-up air systems, and light industrial process ventilation. Protects cooling coils, ductwork, and occupied spaces from dust accumulation. Used as a standalone single-stage filter in low-to-moderate contamination environments and as a pre-filter upstream of bag filter or HEPA stages in high-efficiency systems.',
+		features: [
+			'Accordion-pleated media geometry — up to 4× filtration area vs. flat panel in same frame footprint; lower pressure drop and higher capacity',
+			'Efficiency range: G4 (coarse, EN 779), M5, M6, F7, F8, F9 (fine, EN 779); ePM10 50%+ to ePM1 70%+ (ISO 16890)',
+			'Media types: Synthetic polyester (G4–F7, general HVAC, moisture-tolerant), micro-glass (F8–F9, high-efficiency), electrostatic synthetic (low-resistance F6–F7 equivalent)',
+			'Standard frame depths: 25 mm, 48 mm, 96 mm, 150 mm, 292 mm (extended) — depth determines pleat count and holding capacity',
+			'Standard frame sizes: 287×592 mm, 490×490 mm, 490×592 mm, 592×592 mm — custom to any AHU or FCU dimension',
+			'Frame materials: Galvanised steel (standard), powder-coated steel (colour-coded by efficiency class), polypropylene (moisture-resistant environments)',
+			'Pleat support: internal wire support grid or corrugated glue beads — prevents media collapse at rated and surge velocities',
+			'Initial resistance (G4, 25 mm): typically 20–40 Pa at 2.5 m/s face velocity',
+			'Initial resistance (F7, 96 mm): typically 60–100 Pa at 2.5 m/s face velocity',
+			'Final resistance: 200–250 Pa (per EN 779 standard test conditions)',
+			'Synthetic grade moisture resistance: suitable for HVAC duty including condensing-coil downstream installations',
+			'Bag filter alternative: pleated panel offers rigid one-piece design with no pocket deformation risk — preferred for vertical air-flow AHU installations',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Efficiency Class': 'G4 / M5 / M6 / F7 / F8 / F9 (EN 779); ePM10 / ePM2.5 / ePM1 (ISO 16890)',
+			'Media Types': 'Synthetic polyester / Micro-glass / Electrostatic synthetic',
+			'Frame Depths': '25 / 48 / 96 / 150 / 292 mm',
+			'Standard Frame Sizes':
+				'287×592 mm; 490×490 mm; 490×592 mm; 592×592 mm (custom available)',
+			'Frame Materials': 'Galvanised steel / Powder-coated steel / Polypropylene',
+			'Pleat Support': 'Internal wire grid or corrugated glue beads',
+			'Initial Resistance (G4, 25 mm)': '20–40 Pa at 2.5 m/s face velocity',
+			'Initial Resistance (F7, 96 mm)': '60–100 Pa at 2.5 m/s face velocity',
+			'Final Resistance': '200–250 Pa (EN 779 test conditions)',
+			'Test Standard': 'EN 779 / ISO 16890',
+			'HSN Code': '8421',
+		},
+		images: [
+			'pleated-panel-air-filter-1.webp',
+			'pleated-panel-air-filter-2.webp',
+			'pleated-panel-air-filter-3.webp',
+			'pleated-panel-air-filter-4.webp',
+			'pleated-panel-air-filter-5.webp',
+			'pleated-panel-air-filter-6.webp',
+			'pleated-panel-air-filter-7.webp',
+			'pleated-panel-air-filter-8.webp',
+			'pleated-panel-air-filter-9.webp',
+			'pleated-panel-air-filter-10.webp',
+			'pleated-panel-air-filter-11.webp',
+			'pleated-panel-air-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_af5',
+		category: 'HVAC & Air Filtration',
+		title: 'Pulse-Jet Dust Collector Filter Bag with Pleated or Smooth Cartridge Element',
+		desc: 'Industrial-grade filter bags and pleated cartridge elements for pulse-jet dust collectors and baghouse systems. Supplied as cylindrical woven or needle-felt filter bags (smooth outer surface for standard cage-type housings) or as pleated cartridge elements (accordion-pleated media around a perforated core — up to 5× the filter area of an equivalent smooth bag in the same housing footprint). Both designs are compatible with pulse-jet reverse-flow cleaning. Media options span standard polyester felt, anti-static, PTFE membrane, aramid, and glass fibre for temperatures up to 260°C.',
+		usage:
+			'Industrial dust collection in baghouse filter systems across cement plants, coal handling, steel and foundry operations, grain and flour milling, chemical processing, woodworking, pharmaceutical powder handling, carbon black, mineral processing, and power plant fly ash handling. Pulse-jet cleaning extends on-stream service by continuously regenerating filter elements. Pleated cartridge elements are used in compact cartridge-type dust collectors where higher airflow in a smaller footprint is required — common in pharmaceutical, food, and light industrial applications.',
+		features: [
+			'Two product types in one range: (A) Cylindrical needle-felt / woven filter bag — standard pulse-jet baghouse replacement; (B) Pleated cartridge element — up to 5× the media area in same housing envelope',
+			'Filter bag media options: Polyester needle felt (standard, –20°C to +130°C), Polypropylene felt (acid resistance), Aramid / Nomex (high temperature to 200°C), Glass fibre woven (to 260°C), PPS/Ryton (acid + high temperature), PTFE membrane laminated to any of the above (near-zero residual dust cake, highest cleaning efficiency)',
+			'Pleated cartridge media: Cellulose-polyester blend (general dust), Spunbond polyester (moisture-tolerant), Nano-fibre surface layer (sub-micron dust, low-emission requirement), PTFE membrane (pharmaceutical, chemical)',
+			'Efficiency: Standard polyester felt — 5 µm at ≥99% efficiency; PTFE membrane — 0.3 µm at ≥99.97% (HEPA-class surface filtration)',
+			'Pulse-jet compatibility: All bags/cartridges designed for reverse-pulse regeneration at 4–7 bar compressed air pulse — cage and venturi dimensions matched to housing specification',
+			'Filter bag dimensions: Diameter 100–600 mm; Length 1,000–10,000 mm — manufactured to exact housing cage dimensions (supply cage OEM drawing or dimensions)',
+			'Pleated cartridge dimensions: OD 324 mm × L 660 mm (standard); OD 350 mm × L 700 mm; custom dimensions to suit housing bore and length',
+			'Anti-static and conductive types: carbon fibre blended media or stainless steel fibre-reinforced — for explosive dust (ATEX duty, coal, grain, pharmaceutical)',
+			'End caps: Snap-band, snap-ring, or flange end — galvanised steel, aluminium, or SS per housing type',
+			'PTFE membrane option: surface-loading filtration — dust forms a thin surface cake rather than depth-loading media; superior cleaning with lower pressure drop buildup',
+			'Surface finish: Singed and glazed (smooth inner surface for bag cake release), calendered outer surface (pleated cartridge)',
+			'HSN Code: 8421',
+		],
+		specs: {
+			'Product Types':
+				'(A) Cylindrical filter bag (smooth) | (B) Pleated cartridge element',
+			'Media Options':
+				'Polyester felt / Polypropylene / Aramid / Glass fibre / PPS / PTFE membrane',
+			'Pleated Cartridge Media':
+				'Cellulose-polyester / Spunbond polyester / Nano-fibre / PTFE membrane',
+			'Temperature Range':
+				'–20°C to +130°C (polyester); to +200°C (aramid); to +260°C (glass fibre)',
+			'Standard Bag Efficiency': '5 µm at ≥99% (felt); 0.3 µm at ≥99.97% (PTFE membrane)',
+			'Bag Diameter Range': '100–600 mm',
+			'Bag Length Range': '1,000–10,000 mm',
+			'Pleated Cartridge OD': '324 mm / 350 mm (standard); custom available',
+			'Pleated Cartridge Length': '660 / 700 mm standard; custom',
+			'Pulse-Jet Pressure': '4–7 bar compressed air (reverse-pulse cleaning)',
+			'Anti-Static Options': 'Carbon fibre blend / SS fibre reinforcement (ATEX duty)',
+			'End Cap Types': 'Snap-band / Snap-ring / Flange — galvanised steel / Al / SS',
+			'HSN Code': '8421',
+		},
+		images: [
+			'pulse-jet-dust-collector-filter-1.webp',
+			'pulse-jet-dust-collector-filter-2.webp',
+			'pulse-jet-dust-collector-filter-3.webp',
+			'pulse-jet-dust-collector-filter-4.webp',
+			'pulse-jet-dust-collector-filter-5.webp',
+			'pulse-jet-dust-collector-filter-6.webp',
+			'pulse-jet-dust-collector-filter-7.webp',
+			'pulse-jet-dust-collector-filter-8.webp',
+			'pulse-jet-dust-collector-filter-9.webp',
+			'pulse-jet-dust-collector-filter-10.webp',
+			'pulse-jet-dust-collector-filter-11.webp',
+			'pulse-jet-dust-collector-filter-12.webp',
+		],
+	},
+	{
+		id: 'prod_af6',
+		category: 'HVAC & Air Filtration',
+		title: 'Wound Filter Media Rolls',
+		desc: 'Bulk filter media supplied on rolls for fabricators, OEM filter manufacturers, and end-users who cut-to-size and assemble their own filter panels, pads, or roll-type air intake filters. Available in polyester, polypropylene, glass fibre, activated carbon composite, and aluminium mesh media across efficiency grades G1 to G4 per EN 779. Standard roll widths 500 mm to 2,000 mm; roll lengths 10 m to 100 m. Applications include HVAC panel fabrication, spray booth curtain filters, roll-type auto-advance intake filters, and cut-to-fit pad replacements for AHU intakes, fan housings, and ventilation grilles.',
+		usage:
+			'OEM filter panel and pad fabrication; spray booth curtain and wall filter replacement media; roll-type auto-advance media for continuously advancing roll filter systems on industrial air intakes; cut-to-fit pad filters for HVAC intakes, fan housings, compressor air intakes, generator enclosure intakes, ventilation grilles, and evaporative cooler inlet screens. Purchased by filter fabricators, HVAC contractors, industrial maintenance teams, and plant engineers who require bulk media for custom filter construction or large-area pad filter replacement.',
+		features: [
+			'Media types: Polyester needle felt (general HVAC duty, G2–G4), Polypropylene synthetic (moisture and chemical resistant), Glass fibre mat (high-temperature, G3–G4), Activated carbon composite (odour + particulate dual-function), Aluminium mesh (washable, G1–G2)',
+			'Efficiency class: G1 to G4 per EN 779 — coarse filtration for pre-filter and intake applications',
+			'Standard roll widths: 500 mm, 1,000 mm, 1,500 mm, 2,000 mm — non-standard widths on request (slitting service available)',
+			'Standard roll lengths: 10 m, 20 m, 50 m, 100 m per roll (bulk pallet quantities for OEM supply)',
+			'Media thickness: 10 mm, 20 mm, 25 mm, 30 mm, 50 mm — thicker media provides greater depth and holding capacity',
+			'Weight (density): 200 g/m² to 600 g/m² (light intake screens to heavy-duty pre-filter pads)',
+			'Typical initial pressure drop: 8–30 Pa at 1.0 m/s face velocity (media-grade dependent)',
+			'Self-extinguishing / fire-retardant grades: available per FMVSS302 and UL 94 classifications for applications requiring fire safety certification',
+			'Activated carbon composite roll: carbon-impregnated polyester layer bonded to G4 pre-filter backing — single roll provides dual particulate + odour control',
+			'Roll-type auto-advance filter compatibility: media rolls sized and tensioned to suit continuously advancing intake filter systems used on industrial compressor and gas turbine inlets',
+			'Supply format: wound on cardboard core; plastic sleeve or wrap outer packaging — suitable for long-term storage before use',
+			'Colour coding: white (polyester), grey (glass fibre), black (carbon composite), silver (aluminium mesh) — simplifies stock identification',
+			'HSN Code: 5603 / 7019 / 8421',
+		],
+		specs: {
+			'Media Types':
+				'Polyester needle felt / Polypropylene / Glass fibre mat / Activated carbon composite / Aluminium mesh',
+			'Efficiency Class': 'G1 to G4 per EN 779',
+			'Standard Roll Widths': '500 / 1,000 / 1,500 / 2,000 mm (custom slitting available)',
+			'Standard Roll Lengths': '10 / 20 / 50 / 100 m per roll',
+			'Media Thickness': '10 / 20 / 25 / 30 / 50 mm',
+			'Media Weight': '200–600 g/m²',
+			'Initial Pressure Drop': '8–30 Pa at 1.0 m/s face velocity (grade-dependent)',
+			'Fire-Retardant Grades': 'Available (FMVSS302 / UL 94)',
+			'Carbon Composite Option':
+				'Carbon-impregnated polyester + G4 pre-filter bonded roll',
+			'Auto-Advance Compatibility': 'Roll-type continuously advancing intake filter systems',
+			'HSN Code': '5603 / 7019 / 8421',
+		},
+		images: [
+			'wound-filter-media-roll-1.webp',
+			'wound-filter-media-roll-2.webp',
+			'wound-filter-media-roll-3.webp',
+			'wound-filter-media-roll-4.webp',
+			'wound-filter-media-roll-5.webp',
+			'wound-filter-media-roll-6.webp',
+			'wound-filter-media-roll-7.webp',
+			'wound-filter-media-roll-8.webp',
+			'wound-filter-media-roll-9.webp',
+			'wound-filter-media-roll-10.webp',
+			'wound-filter-media-roll-11.webp',
+			'wound-filter-media-roll-12.webp',
+		],
+	},
+
 	{
 		id: 'prod_ts_dp_switch',
 		category: 'Turbine Spares',
@@ -6104,6 +6418,7 @@ const INDUSTRIES = [
 			'Rotor dynamic balancing and alignment',
 			'Emergency stop valve manufacturing',
 			'Filter elements and strainers supply',
+			'HVAC pleated panel filters for control rooms & turbine halls',
 		],
 		turbines: '5 MW – 27 MW',
 	},
@@ -6204,6 +6519,7 @@ const INDUSTRIES = [
 			'Anti-vibration mounts for machinery isolation',
 			'Tank breather filters for oil storage systems',
 			'Y-type strainers for process fluid lines',
+			'HVAC pocket bag filters for GMP food production areas',
 		],
 		turbines: 'Triveni, Maxwatt, Chola Turbo',
 	},
@@ -6225,6 +6541,8 @@ const INDUSTRIES = [
 			'SS corrugated hose assemblies for high-temp & abrasive media transfer',
 			'Y-type & conical strainers for raw meal slurry lines',
 			'Babbitt bearings for kiln support rollers & compressor trains',
+			'Pulse-jet dust collector filter bags for baghouse vent systems',
+			'Pleated panel & metallic mesh HVAC filters for control rooms',
 		],
 		turbines: 'Kiln Drives · Ball Mills · VRMs · Compressors',
 	},
@@ -6348,199 +6666,69 @@ const MARQUEE_CSS = `
   .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
   .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
 
-  /* ─── FOOTER SOCIAL CARDS — IMPROVED FULL-WIDTH ROW ─── */
-  /* Desktop: 6 equal cards in one line. Mobile: 2-col grid, then scroll. */
-  .social-cards-grid{
-	display:grid;
-	grid-template-columns:repeat(6,1fr);
-	gap:0.625rem;
-	width:100%;
-  }
-  /* Tablet (≤900px): 3 across */
-  @media(max-width:900px){
-	.social-cards-grid{ grid-template-columns:repeat(3,1fr) }
-  }
-  /* Mobile (≤480px): 2 across */
-  @media(max-width:480px){
-	.social-cards-grid{ grid-template-columns:repeat(2,1fr) }
-  }
-  .social-card{
-	display:flex!important;
-	flex-direction:column!important;
-	align-items:flex-start!important;
-	gap:0!important;
-	padding:0.875rem 1rem!important;
-	border-radius:0.75rem;
-	cursor:pointer;
+  /* ─── FOOTER SOCIAL CARDS (ke-soc-card) ─── */
+  /* Sleek grid cards used inside the Footer's Follow Us section.            */
+  /* Layout controlled by .ke-social-grid scoped in Footer's style tag.      */
+  /* Hover states driven by inline JS for per-card brand-color awareness.    */
+  .ke-soc-card{
+	display:flex;flex-direction:column;
+	padding:0.75rem 0.85rem 0.7rem;
+	border-radius:0.65rem;
 	text-decoration:none;
-	position:relative;
-	overflow:hidden;
-	transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.2s ease, background-color 0.2s ease;
+	border:1px solid transparent;
+	cursor:pointer;position:relative;overflow:hidden;
+	transition:transform 0.2s cubic-bezier(.22,.68,0,1.2),box-shadow 0.2s ease,background 0.2s ease,border-color 0.2s ease;
   }
-  .social-card::before{
-	content:'';
-	position:absolute;
-	inset:0;
-	border-radius:inherit;
-	opacity:0;
-	transition:opacity 0.2s ease;
-	pointer-events:none;
+  .ke-soc-card:hover{ transform:translateY(-3px) scale(1.02) }
+  .ke-soc-card:focus{ outline:2px solid currentColor; outline-offset:3px }
+  .ke-soc-arrow{
+	display:block;font-size:9px;font-weight:600;
+	color:#334155;margin-top:0.3rem;
+	transition:color 0.18s,transform 0.18s;
   }
-  .social-card:hover{
-	transform:translateY(-2px);
-	box-shadow:0 8px 24px rgba(0,0,0,0.35);
-  }
-  .social-card .social-icon-wrap{
-	width:2.25rem;
-	height:2.25rem;
-	border-radius:0.5rem;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	flex-shrink:0;
-	margin-bottom:0.625rem;
-	transition:transform 0.18s ease, box-shadow 0.2s ease;
-  }
-  .social-card:hover .social-icon-wrap{
-	transform:scale(1.1);
-  }
-  .social-card .social-platform{
-	font-size:8px;
-	font-weight:800;
-	letter-spacing:0.14em;
-	text-transform:uppercase;
-	line-height:1;
-	margin-bottom:0.2rem;
-	opacity:0.75;
-  }
-  .social-card .social-name{
-	font-size:0.8rem;
-	font-weight:800;
-	color:#fff;
-	line-height:1.25;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	width:100%;
-	margin-bottom:0.15rem;
-  }
-  .social-card .social-handle{
-	font-size:0.7rem;
-	font-weight:600;
-	line-height:1.2;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-	width:100%;
-	opacity:0.8;
-  }
-  .social-card .social-cta{
-	font-size:9px;
-	font-weight:600;
-	color:#64748b;
-	margin-top:0.45rem;
-	letter-spacing:0.02em;
-	white-space:nowrap;
-	transition:color 0.15s;
-  }
-  .social-card:hover .social-cta{ color:#94a3b8 }
-  /* Mobile: slightly more compact */
-  @media(max-width:480px){
-	.social-card{ padding:0.75rem 0.875rem!important }
-	.social-card .social-icon-wrap{ width:2rem; height:2rem; margin-bottom:0.5rem }
-	.social-card .social-name{ font-size:0.75rem }
-	.social-card .social-cta{ display:none }
-  }
-
-  /* ─── SOCIAL STRIP — FULL-WIDTH HORIZONTAL CARD ROW ─── */
-  /* 6 cards side-by-side on desktop; horizontal scroll on mobile */
-  .social-strip-scroll{
-	display:flex;
-	flex-direction:row;
-	flex-wrap:nowrap;
-	overflow-x:auto;
-	-webkit-overflow-scrolling:touch;
-	scrollbar-width:none;
-	/* no gap — cards separated by their border-left accent line */
-  }
-  .social-strip-scroll::-webkit-scrollbar{display:none}
-  .social-strip-card{
-	display:flex;
-	flex-direction:row;
-	align-items:center;
-	gap:0.875rem;
-	padding:1.125rem 1.25rem;
-	/* Each card takes exactly 1/6 of the strip, never shrinks below 180px */
-	flex:1 1 0;
-	min-width:180px;
-	max-width:none;
-	border-left:2.5px solid transparent;
-	border-right:1px solid rgba(255,255,255,0.04);
-	cursor:pointer;
-	transition:filter 0.18s ease, background 0.18s ease;
-	text-decoration:none;
-	box-sizing:border-box;
-  }
-  .social-strip-card:last-child{ border-right:none }
-  .social-strip-card:hover{ filter:brightness(1.12) }
-  .social-strip-card .ssc-icon{
-	width:2.75rem;
-	height:2.75rem;
-	border-radius:50%;
-	display:flex;
-	align-items:center;
-	justify-content:center;
-	flex-shrink:0;
-  }
-  .social-strip-card .ssc-text{
-	display:flex;
-	flex-direction:column;
-	gap:0.1rem;
-	min-width:0;
-	flex:1;
-  }
-  .social-strip-card .ssc-platform{
-	font-size:8.5px;
-	font-weight:800;
-	letter-spacing:0.13em;
-	text-transform:uppercase;
-	line-height:1;
-  }
-  .social-strip-card .ssc-handle{
-	font-size:0.875rem;
-	font-weight:800;
-	color:#ffffff;
-	line-height:1.25;
-	white-space:nowrap;
-	overflow:hidden;
-	text-overflow:ellipsis;
-  }
-  .social-strip-card .ssc-cta{
-	font-size:9.5px;
-	font-weight:600;
-	color:#64748b;
-	margin-top:0.2rem;
-	letter-spacing:0.01em;
-	white-space:nowrap;
-  }
-  @media(max-width:900px){
-	/* Below 900px cards no longer fit 6-up — allow horizontal scroll */
-	.social-strip-card{ flex:0 0 195px; min-width:195px }
+  .ke-soc-card:hover .ke-soc-arrow{ transform:translateX(3px) }
+  @media(prefers-reduced-motion:reduce){
+	.ke-soc-card{ transition:none!important; transform:none!important }
   }
 
   /* ─── DIGITAL PROFILES STRIP — SINGLE LINE SCROLL ─── */
   /* Desktop: centred flex, cards never wrap. Mobile: horizontal scroll */
+  /* Mobile: 1-column stack, no scroll ever */
+  /* ─── DIGITAL PROFILES STRIP ─────────────────────────────────
+     Mobile  (<480px)  : 1-column stack, no scroll
+     Tablet  (480-767px): 2-column grid
+     Desktop (≥768px)   : single centred row, cards auto-sized
+     The card element never uses w-full on desktop so the row
+     doesn't wrap — flex-shrink:0 + width:auto keeps it tight.
+  ─────────────────────────────────────────────────────────── */
   .dir-strip-scroll{
-	display:flex;
-	flex-wrap:nowrap;
-	overflow-x:auto;
-	-webkit-overflow-scrolling:touch;
-	scrollbar-width:none;
-	gap:1rem;
-	padding-bottom:4px;
+	display:grid;
+	grid-template-columns:1fr;
+	gap:0.625rem;
   }
-  .dir-strip-scroll::-webkit-scrollbar{display:none}
-  .dir-card{flex-shrink:0}
+  @media(min-width:480px){
+	.dir-strip-scroll{
+	  grid-template-columns:repeat(2,1fr);
+	  gap:0.75rem;
+	}
+  }
+  @media(min-width:768px){
+	.dir-strip-scroll{
+	  display:flex;
+	  flex-direction:row;
+	  flex-wrap:nowrap;
+	  justify-content:center;
+	  align-items:stretch;
+	  gap:1rem;
+	}
+	/* On desktop each card sizes itself — NO w-full override */
+	.dir-card{
+	  flex:0 1 auto;
+	  width:auto!important;
+	  min-width:180px;
+	  max-width:220px;
+	}
+  }
 
   /* ─── PRODUCT DETAIL — THUMBNAIL STRIP ─── */
   @media(max-width:640px){
@@ -6685,6 +6873,10 @@ const LOCAL_SCHEMA = {
 			},
 			{
 				'@type': 'Offer',
+				itemOffered: { '@type': 'Service', name: 'HVAC & Air Filtration Supply' },
+			},
+			{
+				'@type': 'Offer',
 				itemOffered: { '@type': 'Service', name: 'Machine Alignment' },
 			},
 			{
@@ -6713,6 +6905,8 @@ const LOCAL_SCHEMA = {
 		'Steam Turbine Maintenance',
 		'Turbine Reverse Engineering',
 		'Lube Oil Filtration',
+		'HVAC Air Filtration',
+		'Industrial Dust Collection',
 		'Industrial Expansion Joints',
 		'Turbine Spares Manufacturing',
 		'Dynamic Balancing',
@@ -6768,6 +6962,22 @@ const FAQ_SCHEMA = {
 				text: 'Keshav Turbo Services is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India.',
 			},
 		},
+		{
+			'@type': 'Question',
+			name: 'Does Keshav Enterprises supply HVAC air filters and dust collector bags?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Yes. Keshav Enterprises supplies a full range of HVAC and air filtration products including multi-pocket bag filters (F5–F9, EN 779 / ISO 16890), pleated panel air filters, metallic mesh pre-filters, activated carbon vent filters, pulse-jet dust collector filter bags (polyester, aramid, PTFE membrane), pleated cartridge elements, and bulk filter media rolls. These are supplied for industrial AHUs, control rooms, baghouse dust collectors in cement and power plants, and food-grade production environments.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: 'What is the lead time for HVAC air filters and filter media from Keshav Enterprises?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Standard HVAC filter grades (metallic mesh pre-filters, common pleated panel sizes, and pocket bag filters in F7/F8) are available ex-stock or within 1 week. Custom frame sizes, special efficiency grades (F9, HEPA-class), anti-static dust collector bags, and PTFE membrane elements are manufactured to order with a typical lead time of 2–4 weeks. Contact us on WhatsApp with your AHU dimensions or baghouse bag specifications for a same-day quotation.',
+			},
+		},
 	],
 };
 
@@ -6790,6 +7000,8 @@ const getCategoryIcon = (category) => {
 			return <Layers className={cls} />;
 		case 'Turbine Spares':
 			return <Cog className={cls} />;
+		case 'HVAC & Air Filtration':
+			return <Wind className={cls} />;
 		case 'Flexible Hoses & Assemblies':
 			return <Activity className={cls} />;
 		case 'Industrial Rubber Products':
@@ -7355,18 +7567,246 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 ProductCard.displayName = 'ProductCard';
 
 // ─── LANGUAGE SWITCHER ────────────────────────────────────────
-const LANGUAGES = [
-	{ code: 'en',    name: 'English',    flag: '🇮🇳', color: '#FF9933' }, // India saffron
-	{ code: 'hi',    name: 'Hindi',      flag: '🇮🇳', color: '#138808' }, // India green
-	{ code: 'zh-CN', name: 'Mandarin',   flag: '🇨🇳', color: '#DE2910' }, // China red
-	{ code: 'es',    name: 'Spanish',    flag: '🇪🇸', color: '#c60b1e' }, // Spain red
-	{ code: 'fr',    name: 'French',     flag: '🇫🇷', color: '#0055A4' }, // France blue
-	{ code: 'ar',    name: 'Arabic',     flag: '🇦🇪', color: '#009A44' }, // UAE green
-	{ code: 'ru',    name: 'Russian',    flag: '🇷🇺', color: '#D52B1E' }, // Russia red
-	{ code: 'pt',    name: 'Portuguese', flag: '🇵🇹', color: '#006600' }, // Portugal green
-	{ code: 'de',    name: 'German',     flag: '🇩🇪', color: '#DD0000' }, // Germany red
-	{ code: 'ja',    name: 'Japanese',   flag: '🇯🇵', color: '#BC002D' }, // Japan red
+// Inline SVG flags for top-10 languages — zero network requests
+const FLAG_SVGS = {
+	in: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="200" y="0"   fill="#FF9933"/>
+			<rect width="900" height="200" y="200" fill="#FFFFFF"/>
+			<rect width="900" height="200" y="400" fill="#138808"/>
+			<circle cx="450" cy="300" r="60" fill="none" stroke="#000080" strokeWidth="6"/>
+			{[...Array(24)].map((_, i) => {
+				const a = (i * 15 - 90) * Math.PI / 180;
+				return <line key={i} x1="450" y1="300" x2={450 + 60 * Math.cos(a)} y2={300 + 60 * Math.sin(a)} stroke="#000080" strokeWidth="2"/>;
+			})}
+			<circle cx="450" cy="300" r="8" fill="#000080"/>
+		</svg>
+	),
+	cn: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="600" fill="#DE2910"/>
+			<polygon points="150,75 173,145 240,145 187,187 208,257 150,215 92,257 113,187 60,145 127,145" fill="#FFDE00"/>
+			<polygon points="255,30 264,57 292,57 270,73 278,100 255,84 232,100 240,73 218,57 246,57" fill="#FFDE00"/>
+			<polygon points="315,90 324,117 352,117 330,133 338,160 315,144 292,160 300,133 278,117 306,117" fill="#FFDE00"/>
+			<polygon points="315,180 324,207 352,207 330,223 338,250 315,234 292,250 300,223 278,207 306,207" fill="#FFDE00"/>
+			<polygon points="255,240 264,267 292,267 270,283 278,310 255,294 232,310 240,283 218,267 246,267" fill="#FFDE00"/>
+		</svg>
+	),
+	es: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="600" fill="#c60b1e"/>
+			<rect width="900" height="300" y="150" fill="#ffc400"/>
+		</svg>
+	),
+	fr: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="300" height="600" x="0"   fill="#002395"/>
+			<rect width="300" height="600" x="300" fill="#FFFFFF"/>
+			<rect width="300" height="600" x="600" fill="#ED2939"/>
+		</svg>
+	),
+	ae: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="600" fill="#FFFFFF"/>
+			<rect width="900" height="200" y="0"   fill="#00732F"/>
+			<rect width="900" height="200" y="400" fill="#000000"/>
+			<rect width="225" height="600" x="0"   fill="#FF0000"/>
+		</svg>
+	),
+	ru: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="200" y="0"   fill="#FFFFFF"/>
+			<rect width="900" height="200" y="200" fill="#0039A6"/>
+			<rect width="900" height="200" y="400" fill="#D52B1E"/>
+		</svg>
+	),
+	pt: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="600" fill="#FF0000"/>
+			<rect width="360" height="600" x="0"   fill="#006600"/>
+			<circle cx="360" cy="300" r="90" fill="#FFD700" stroke="#000" strokeWidth="3"/>
+			<circle cx="360" cy="300" r="60" fill="#FFFFFF" stroke="#000" strokeWidth="2"/>
+		</svg>
+	),
+	de: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="200" y="0"   fill="#000000"/>
+			<rect width="900" height="200" y="200" fill="#DD0000"/>
+			<rect width="900" height="200" y="400" fill="#FFCE00"/>
+		</svg>
+	),
+	jp: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="600" fill="#FFFFFF"/>
+			<circle cx="450" cy="300" r="180" fill="#BC002D"/>
+		</svg>
+	),
+};
+
+const FLAG_IMG = ({ flagCode, size = 24 }) => (
+	<span
+		aria-hidden="true"
+		style={{
+			display: 'inline-flex',
+			width: size,
+			height: Math.round(size * 0.67),
+			borderRadius: 2,
+			overflow: 'hidden',
+			flexShrink: 0,
+			boxShadow: '0 0 0 1px rgba(0,0,0,0.12)',
+		}}
+	>
+		{flagCode && FLAG_SVGS[flagCode]
+			? FLAG_SVGS[flagCode]
+			: <span style={{ background: '#e2e8f0', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}><Globe style={{ width: size * 0.65, height: size * 0.65 }} /></span>
+		}
+	</span>
+);
+
+// Top 10 shown by default (with inline SVG flags); all others appear only via search
+const TOP_LANGUAGES = [
+	{ code: 'en',    name: 'English',    flagCode: 'in', color: '#FF9933' },
+	{ code: 'hi',    name: 'Hindi',      flagCode: 'in', color: '#138808' },
+	{ code: 'zh-CN', name: 'Mandarin',   flagCode: 'cn', color: '#DE2910' },
+	{ code: 'es',    name: 'Spanish',    flagCode: 'es', color: '#c60b1e' },
+	{ code: 'fr',    name: 'French',     flagCode: 'fr', color: '#0055A4' },
+	{ code: 'ar',    name: 'Arabic',     flagCode: 'ae', color: '#009A44' },
+	{ code: 'ru',    name: 'Russian',    flagCode: 'ru', color: '#D52B1E' },
+	{ code: 'pt',    name: 'Portuguese', flagCode: 'pt', color: '#006600' },
+	{ code: 'de',    name: 'German',     flagCode: 'de', color: '#DD0000' },
+	{ code: 'ja',    name: 'Japanese',   flagCode: 'jp', color: '#BC002D' },
 ];
+
+// All Google Translate supported languages (flagCode null = globe icon)
+const ALL_LANGUAGES = [
+	...TOP_LANGUAGES,
+	{ code: 'af',    name: 'Afrikaans',           flagCode: null, color: '#1a73e8' },
+	{ code: 'sq',    name: 'Albanian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'am',    name: 'Amharic',              flagCode: null, color: '#1a73e8' },
+	{ code: 'hy',    name: 'Armenian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'as',    name: 'Assamese',             flagCode: null, color: '#1a73e8' },
+	{ code: 'ay',    name: 'Aymara',               flagCode: null, color: '#1a73e8' },
+	{ code: 'az',    name: 'Azerbaijani',          flagCode: null, color: '#1a73e8' },
+	{ code: 'bm',    name: 'Bambara',              flagCode: null, color: '#1a73e8' },
+	{ code: 'eu',    name: 'Basque',               flagCode: null, color: '#1a73e8' },
+	{ code: 'be',    name: 'Belarusian',           flagCode: null, color: '#1a73e8' },
+	{ code: 'bn',    name: 'Bengali',              flagCode: null, color: '#1a73e8' },
+	{ code: 'bho',   name: 'Bhojpuri',             flagCode: null, color: '#1a73e8' },
+	{ code: 'bs',    name: 'Bosnian',              flagCode: null, color: '#1a73e8' },
+	{ code: 'bg',    name: 'Bulgarian',            flagCode: null, color: '#1a73e8' },
+	{ code: 'ca',    name: 'Catalan',              flagCode: null, color: '#1a73e8' },
+	{ code: 'ceb',   name: 'Cebuano',              flagCode: null, color: '#1a73e8' },
+	{ code: 'ny',    name: 'Chichewa',             flagCode: null, color: '#1a73e8' },
+	{ code: 'zh-TW', name: 'Chinese (Traditional)',flagCode: null, color: '#1a73e8' },
+	{ code: 'co',    name: 'Corsican',             flagCode: null, color: '#1a73e8' },
+	{ code: 'hr',    name: 'Croatian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'cs',    name: 'Czech',                flagCode: null, color: '#1a73e8' },
+	{ code: 'da',    name: 'Danish',               flagCode: null, color: '#1a73e8' },
+	{ code: 'dv',    name: 'Dhivehi',              flagCode: null, color: '#1a73e8' },
+	{ code: 'doi',   name: 'Dogri',                flagCode: null, color: '#1a73e8' },
+	{ code: 'nl',    name: 'Dutch',                flagCode: null, color: '#1a73e8' },
+	{ code: 'eo',    name: 'Esperanto',            flagCode: null, color: '#1a73e8' },
+	{ code: 'et',    name: 'Estonian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'ee',    name: 'Ewe',                  flagCode: null, color: '#1a73e8' },
+	{ code: 'tl',    name: 'Filipino',             flagCode: null, color: '#1a73e8' },
+	{ code: 'fi',    name: 'Finnish',              flagCode: null, color: '#1a73e8' },
+	{ code: 'fy',    name: 'Frisian',              flagCode: null, color: '#1a73e8' },
+	{ code: 'gl',    name: 'Galician',             flagCode: null, color: '#1a73e8' },
+	{ code: 'ka',    name: 'Georgian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'el',    name: 'Greek',                flagCode: null, color: '#1a73e8' },
+	{ code: 'gn',    name: 'Guarani',              flagCode: null, color: '#1a73e8' },
+	{ code: 'gu',    name: 'Gujarati',             flagCode: null, color: '#1a73e8' },
+	{ code: 'ht',    name: 'Haitian Creole',       flagCode: null, color: '#1a73e8' },
+	{ code: 'ha',    name: 'Hausa',                flagCode: null, color: '#1a73e8' },
+	{ code: 'haw',   name: 'Hawaiian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'iw',    name: 'Hebrew',               flagCode: null, color: '#1a73e8' },
+	{ code: 'hmn',   name: 'Hmong',                flagCode: null, color: '#1a73e8' },
+	{ code: 'hu',    name: 'Hungarian',            flagCode: null, color: '#1a73e8' },
+	{ code: 'is',    name: 'Icelandic',            flagCode: null, color: '#1a73e8' },
+	{ code: 'ig',    name: 'Igbo',                 flagCode: null, color: '#1a73e8' },
+	{ code: 'ilo',   name: 'Ilocano',              flagCode: null, color: '#1a73e8' },
+	{ code: 'id',    name: 'Indonesian',           flagCode: null, color: '#1a73e8' },
+	{ code: 'ga',    name: 'Irish',                flagCode: null, color: '#1a73e8' },
+	{ code: 'it',    name: 'Italian',              flagCode: null, color: '#1a73e8' },
+	{ code: 'jw',    name: 'Javanese',             flagCode: null, color: '#1a73e8' },
+	{ code: 'kn',    name: 'Kannada',              flagCode: null, color: '#1a73e8' },
+	{ code: 'kk',    name: 'Kazakh',               flagCode: null, color: '#1a73e8' },
+	{ code: 'km',    name: 'Khmer',                flagCode: null, color: '#1a73e8' },
+	{ code: 'rw',    name: 'Kinyarwanda',          flagCode: null, color: '#1a73e8' },
+	{ code: 'gom',   name: 'Konkani',              flagCode: null, color: '#1a73e8' },
+	{ code: 'ko',    name: 'Korean',               flagCode: null, color: '#1a73e8' },
+	{ code: 'kri',   name: 'Krio',                 flagCode: null, color: '#1a73e8' },
+	{ code: 'ku',    name: 'Kurdish (Kurmanji)',    flagCode: null, color: '#1a73e8' },
+	{ code: 'ckb',   name: 'Kurdish (Sorani)',      flagCode: null, color: '#1a73e8' },
+	{ code: 'ky',    name: 'Kyrgyz',               flagCode: null, color: '#1a73e8' },
+	{ code: 'lo',    name: 'Lao',                  flagCode: null, color: '#1a73e8' },
+	{ code: 'la',    name: 'Latin',                flagCode: null, color: '#1a73e8' },
+	{ code: 'lv',    name: 'Latvian',              flagCode: null, color: '#1a73e8' },
+	{ code: 'ln',    name: 'Lingala',              flagCode: null, color: '#1a73e8' },
+	{ code: 'lt',    name: 'Lithuanian',           flagCode: null, color: '#1a73e8' },
+	{ code: 'lg',    name: 'Luganda',              flagCode: null, color: '#1a73e8' },
+	{ code: 'lb',    name: 'Luxembourgish',        flagCode: null, color: '#1a73e8' },
+	{ code: 'mk',    name: 'Macedonian',           flagCode: null, color: '#1a73e8' },
+	{ code: 'mai',   name: 'Maithili',             flagCode: null, color: '#1a73e8' },
+	{ code: 'mg',    name: 'Malagasy',             flagCode: null, color: '#1a73e8' },
+	{ code: 'ms',    name: 'Malay',                flagCode: null, color: '#1a73e8' },
+	{ code: 'ml',    name: 'Malayalam',            flagCode: null, color: '#1a73e8' },
+	{ code: 'mt',    name: 'Maltese',              flagCode: null, color: '#1a73e8' },
+	{ code: 'mi',    name: 'Maori',                flagCode: null, color: '#1a73e8' },
+	{ code: 'mr',    name: 'Marathi',              flagCode: null, color: '#1a73e8' },
+	{ code: 'mni-Mtei', name: 'Meitei (Manipuri)', flagCode: null, color: '#1a73e8' },
+	{ code: 'lus',   name: 'Mizo',                 flagCode: null, color: '#1a73e8' },
+	{ code: 'mn',    name: 'Mongolian',            flagCode: null, color: '#1a73e8' },
+	{ code: 'my',    name: 'Myanmar (Burmese)',    flagCode: null, color: '#1a73e8' },
+	{ code: 'ne',    name: 'Nepali',               flagCode: null, color: '#1a73e8' },
+	{ code: 'no',    name: 'Norwegian',            flagCode: null, color: '#1a73e8' },
+	{ code: 'or',    name: 'Odia (Oriya)',         flagCode: null, color: '#1a73e8' },
+	{ code: 'om',    name: 'Oromo',                flagCode: null, color: '#1a73e8' },
+	{ code: 'ps',    name: 'Pashto',               flagCode: null, color: '#1a73e8' },
+	{ code: 'fa',    name: 'Persian',              flagCode: null, color: '#1a73e8' },
+	{ code: 'pl',    name: 'Polish',               flagCode: null, color: '#1a73e8' },
+	{ code: 'pa',    name: 'Punjabi',              flagCode: null, color: '#1a73e8' },
+	{ code: 'qu',    name: 'Quechua',              flagCode: null, color: '#1a73e8' },
+	{ code: 'ro',    name: 'Romanian',             flagCode: null, color: '#1a73e8' },
+	{ code: 'sm',    name: 'Samoan',               flagCode: null, color: '#1a73e8' },
+	{ code: 'sa',    name: 'Sanskrit',             flagCode: null, color: '#1a73e8' },
+	{ code: 'gd',    name: 'Scots Gaelic',         flagCode: null, color: '#1a73e8' },
+	{ code: 'nso',   name: 'Sepedi',               flagCode: null, color: '#1a73e8' },
+	{ code: 'sr',    name: 'Serbian',              flagCode: null, color: '#1a73e8' },
+	{ code: 'st',    name: 'Sesotho',              flagCode: null, color: '#1a73e8' },
+	{ code: 'sn',    name: 'Shona',                flagCode: null, color: '#1a73e8' },
+	{ code: 'sd',    name: 'Sindhi',               flagCode: null, color: '#1a73e8' },
+	{ code: 'si',    name: 'Sinhala',              flagCode: null, color: '#1a73e8' },
+	{ code: 'sk',    name: 'Slovak',               flagCode: null, color: '#1a73e8' },
+	{ code: 'sl',    name: 'Slovenian',            flagCode: null, color: '#1a73e8' },
+	{ code: 'so',    name: 'Somali',               flagCode: null, color: '#1a73e8' },
+	{ code: 'su',    name: 'Sundanese',            flagCode: null, color: '#1a73e8' },
+	{ code: 'sw',    name: 'Swahili',              flagCode: null, color: '#1a73e8' },
+	{ code: 'sv',    name: 'Swedish',              flagCode: null, color: '#1a73e8' },
+	{ code: 'tg',    name: 'Tajik',                flagCode: null, color: '#1a73e8' },
+	{ code: 'ta',    name: 'Tamil',                flagCode: null, color: '#1a73e8' },
+	{ code: 'tt',    name: 'Tatar',                flagCode: null, color: '#1a73e8' },
+	{ code: 'te',    name: 'Telugu',               flagCode: null, color: '#1a73e8' },
+	{ code: 'th',    name: 'Thai',                 flagCode: null, color: '#1a73e8' },
+	{ code: 'ti',    name: 'Tigrinya',             flagCode: null, color: '#1a73e8' },
+	{ code: 'ts',    name: 'Tsonga',               flagCode: null, color: '#1a73e8' },
+	{ code: 'tr',    name: 'Turkish',              flagCode: null, color: '#1a73e8' },
+	{ code: 'tk',    name: 'Turkmen',              flagCode: null, color: '#1a73e8' },
+	{ code: 'ak',    name: 'Twi',                  flagCode: null, color: '#1a73e8' },
+	{ code: 'uk',    name: 'Ukrainian',            flagCode: null, color: '#1a73e8' },
+	{ code: 'ur',    name: 'Urdu',                 flagCode: null, color: '#1a73e8' },
+	{ code: 'ug',    name: 'Uyghur',               flagCode: null, color: '#1a73e8' },
+	{ code: 'uz',    name: 'Uzbek',                flagCode: null, color: '#1a73e8' },
+	{ code: 'vi',    name: 'Vietnamese',           flagCode: null, color: '#1a73e8' },
+	{ code: 'cy',    name: 'Welsh',                flagCode: null, color: '#1a73e8' },
+	{ code: 'xh',    name: 'Xhosa',                flagCode: null, color: '#1a73e8' },
+	{ code: 'yi',    name: 'Yiddish',              flagCode: null, color: '#1a73e8' },
+	{ code: 'yo',    name: 'Yoruba',               flagCode: null, color: '#1a73e8' },
+	{ code: 'zu',    name: 'Zulu',                 flagCode: null, color: '#1a73e8' },
+];
+
+// LANGUAGES alias used by the active-lang lookup elsewhere
+const LANGUAGES = ALL_LANGUAGES;
 
 // Cookie helpers (avoids direct document.cookie access per lint rules)
 const getCookie = (name) => {
@@ -7388,6 +7828,7 @@ const setCookie = (name, value, attrs = {}) => {
 
 const LanguageSwitcher = memo(({ scrolled }) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [langSearch, setLangSearch] = useState('');
 	const [currentLang, setCurrentLang] = useState(() => {
 		const langVal = getCookie('googtrans');
 		if (langVal) {
@@ -7397,15 +7838,17 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 		return 'en';
 	});
 	const ref = useRef(null);
+	const searchRef = useRef(null);
 
 	useEffect(() => {
 		const handleClickOutside = (event) => {
 			if (ref.current && !ref.current.contains(event.target)) {
 				setIsOpen(false);
+				setLangSearch('');
 			}
 		};
 		const handleKeyDown = (event) => {
-			if (event.key === 'Escape') setIsOpen(false);
+			if (event.key === 'Escape') { setIsOpen(false); setLangSearch(''); }
 		};
 		document.addEventListener('mousedown', handleClickOutside);
 		document.addEventListener('keydown', handleKeyDown);
@@ -7415,9 +7858,15 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 		};
 	}, []);
 
+	useEffect(() => {
+		if (isOpen) setTimeout(() => searchRef.current?.focus(), 50);
+		else setLangSearch('');
+	}, [isOpen]);
+
 	const changeLanguage = (langCode) => {
 		setCurrentLang(langCode);
 		setIsOpen(false);
+		setLangSearch('');
 		setCookie('googtrans', `/en/${langCode}`, {
 			path: '/',
 			domain: window.location.hostname,
@@ -7428,6 +7877,14 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 
 	const activeLang =
 		LANGUAGES.find((l) => l.code === currentLang) || LANGUAGES[0];
+
+	const isSearching = langSearch.trim().length > 0;
+	const filteredLangs = isSearching
+		? ALL_LANGUAGES.filter((l) =>
+				l.name.toLowerCase().includes(langSearch.toLowerCase()) ||
+				l.code.toLowerCase().includes(langSearch.toLowerCase())
+		  )
+		: TOP_LANGUAGES;
 
 	return (
 		<div className="relative" ref={ref}>
@@ -7443,13 +7900,12 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 						: 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'
 				}`}
 			>
-				<span className="flex items-center gap-1.5">
-					<span aria-hidden="true" className="text-[18px]" style={{ lineHeight: 1 }}>
-						{activeLang.flag}
-					</span>
-					<span className="tracking-wide text-[13px] font-black" style={{ color: activeLang.color, lineHeight: 1 }}>
-						{activeLang.code.toUpperCase()}
-					</span>
+				<FLAG_IMG flagCode={activeLang.flagCode} size={22} />
+				<span
+					className="text-[12px] font-black tracking-widest leading-none"
+					style={{ color: scrolled ? activeLang.color : '#ffffff' }}
+				>
+					{activeLang.code === 'zh-CN' ? 'ZH' : activeLang.code.toUpperCase()}
 				</span>
 				<svg
 					aria-hidden="true"
@@ -7462,9 +7918,41 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				</svg>
 			</button>
 			{isOpen && (
-				<div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
-					<div role="listbox" aria-label="Select language" className="max-h-80 overflow-y-auto py-1.5 scrollbar-hide">
-						{LANGUAGES.map((lang) => (
+				<div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-250">
+					{/* Search box */}
+					<div className="px-3 pt-3 pb-2 border-b border-slate-100">
+						<div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5">
+							<Search className="w-3.5 h-3.5 text-slate-400 shrink-0" aria-hidden="true" />
+							<input
+								ref={searchRef}
+								type="text"
+								value={langSearch}
+								onChange={(e) => setLangSearch(e.target.value)}
+								placeholder="Search language…"
+								className="flex-1 bg-transparent text-[12px] text-slate-700 placeholder-slate-400 outline-none"
+								aria-label="Search languages"
+							/>
+							{langSearch && (
+								<button type="button" onClick={() => setLangSearch('')} className="text-slate-400 hover:text-slate-600" aria-label="Clear search">
+									<X className="w-3 h-3" />
+								</button>
+							)}
+						</div>
+					</div>
+					{/* Label row */}
+					<div className="px-3.5 pt-2 pb-1 flex items-center justify-between">
+						<span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+							{isSearching ? `${filteredLangs.length} result${filteredLangs.length !== 1 ? 's' : ''}` : 'Popular'}
+						</span>
+						{!isSearching && (
+							<span className="text-[10px] text-slate-400">{ALL_LANGUAGES.length} total · search to see all</span>
+						)}
+					</div>
+					<div role="listbox" aria-label="Select language" className="max-h-64 overflow-y-auto py-1 scrollbar-hide">
+						{filteredLangs.length === 0 && (
+							<p className="text-center text-[12px] text-slate-400 py-4">No languages found</p>
+						)}
+						{filteredLangs.map((lang) => (
 							<button
 								type="button"
 								key={lang.code}
@@ -7475,7 +7963,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 								style={currentLang === lang.code ? { borderLeft: `3px solid ${lang.color}`, paddingLeft: '10px' } : { borderLeft: '3px solid transparent' }}
 							>
 								{/* Flag */}
-								<span className="text-2xl leading-none shrink-0">{lang.flag}</span>
+								<FLAG_IMG flagCode={lang.flagCode} size={28} />
 
 								{/* Name + code stacked */}
 								<div className="flex flex-col leading-none gap-0.75 min-w-0">
@@ -7764,8 +8252,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									<div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
 										<div className="max-h-[60vh] overflow-y-auto p-2">
 											{searchResults.length === 0 ? (
-												<div className="p-6 text-center text-slate-500 font-medium text-sm">
-													No results found for &ldquo;{query}&rdquo;
+												<div className="p-8 text-center" role="status" aria-live="polite">
+													<Search className="w-9 h-9 text-slate-300 mx-auto mb-3" aria-hidden="true" />
+													<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
+													<p className="text-xs text-slate-400 leading-relaxed">Try: <span className="font-medium text-blue-600">Turbine Overhauling</span>, <span className="font-medium text-blue-600">Dynamic Balancing</span>, <span className="font-medium text-blue-600">Lube Oil</span></p>
 												</div>
 											) : (
 												<ul className="space-y-1">
@@ -7903,8 +8393,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							{query && (
 								<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
 									{searchResults.length === 0 ? (
-										<div className="p-4 text-center text-slate-500 text-sm">
-											No results for &ldquo;{query}&rdquo;
+										<div className="p-6 text-center" role="status" aria-live="polite">
+											<Search className="w-8 h-8 text-slate-300 mx-auto mb-2" aria-hidden="true" />
+											<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
+											<p className="text-xs text-slate-400">Try: Turbine Overhauling, Dynamic Balancing, Lube Oil</p>
 										</div>
 									) : (
 										<ul className="divide-y divide-slate-100">
@@ -7971,6 +8463,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
 										>
 											{link.name}
+											{isActive(link.path) && <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-600 mr-2 shrink-0" aria-hidden="true" />}
 											{isActive(link.path) && (
 												<span
 													className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"
@@ -8047,248 +8540,378 @@ const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
 CredentialBadge.displayName = 'CredentialBadge';
 
 // ─── FOOTER ───────────────────────────────────────────────────
-const Footer = memo(({ navigate }) => (
-	<footer
-		className="font-sans border-t-4 border-[#0891B2]"
-		style={{ background: '#050d1a', color: '#ffffff' }}
-		role="contentinfo"
-	>
-		{/* Top cyan gradient accent line */}
-		<div className="h-0.5 w-full" style={{ background: 'linear-gradient(90deg,#0891B2,#06B6D4,#67E8F9,#06B6D4,#0891B2)' }} aria-hidden="true" />
+const Footer = memo(({ navigate }) => {
+	const year = new Date().getFullYear();
+	return (
+		<footer
+			role="contentinfo"
+			style={{ background: '#050d1a', color: '#fff', fontFamily: 'sans-serif' }}
+		>
+			{/* ── Scoped styles ── */}
+			<style>{`
+				/* ── Grid layouts ── */
+				.ke-footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
+				@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
+				@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2.2fr 1fr 1.25fr 1.6fr}}
 
-		{/* ── Pre-footer CTA band ── */}
-		<div className="border-b relative overflow-hidden" style={{ background: 'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderColor: '#0891B233' }}>
-			<div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%,#0891B220 0%,transparent 50%),radial-gradient(circle at 80% 50%,#06B6D420 0%,transparent 50%)' }} aria-hidden="true" />
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10">
-				<div className="flex flex-col md:flex-row items-center justify-between gap-6">
-					<div className="text-center md:text-left">
-						<h2 className="text-white font-serif italic text-2xl md:text-3xl tracking-wide mb-2 drop-shadow-md">
-							Need a quote or have an emergency breakdown?
+				.ke-social-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem}
+				@media(min-width:480px){.ke-social-grid{grid-template-columns:repeat(3,1fr)}}
+				@media(min-width:900px){.ke-social-grid{grid-template-columns:repeat(6,1fr)}}
+
+				/* ── Column heading ── */
+				.ke-col-h3{
+					display:flex;align-items:center;gap:.5rem;
+					font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+					color:#38BDF8;margin:0 0 1.1rem;padding-bottom:.6rem;
+					border-bottom:1px solid #0d2040;
+				}
+				.ke-col-h3::before{content:'';display:inline-block;width:3px;height:12px;background:#0891B2;border-radius:99px;flex-shrink:0}
+
+				/* ── Nav/service links ── */
+				.ke-nav-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;color:#94a3b8;font-size:.83rem;font-weight:500;padding:.2rem 0;text-align:left;transition:color .15s,gap .15s}
+				.ke-nav-btn:hover,.ke-nav-btn:focus{color:#e2e8f0;gap:.6rem;outline:none}
+
+				/* ── Contact links ── */
+				.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
+				.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
+
+				/* ── CTA buttons ── */
+				.ke-cta-call{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#0891B2,#0e7490);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;border:none;cursor:pointer;transition:transform .15s,box-shadow .18s;box-shadow:0 4px 20px #0891B240}
+				.ke-cta-call:hover{transform:translateY(-2px);box-shadow:0 10px 32px #0891B250}
+				.ke-cta-call:focus{outline:2px solid #38BDF8;outline-offset:3px}
+
+				.ke-cta-wa{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .18s;border:none;box-shadow:0 4px 20px #22c55e30}
+				.ke-cta-wa:hover{transform:translateY(-2px);box-shadow:0 10px 32px #22c55e40}
+				.ke-cta-wa:focus{outline:2px solid #22c55e;outline-offset:3px}
+
+				/* ── Credential badges ── */
+				.ke-badge{
+					display:flex;align-items:center;gap:.85rem;
+					padding:.75rem 1rem;margin-bottom:.5rem;
+					background:linear-gradient(135deg,#071428 0%,#0a1c38 100%);
+					border:1px solid #132040;border-radius:.75rem;
+					transition:border-color .2s,box-shadow .2s;cursor:default;
+				}
+				.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
+
+				/* ── Social cards ── */
+				.ke-soc-card{display:flex;flex-direction:column;padding:.75rem .85rem .7rem;border-radius:.65rem;text-decoration:none;border:1px solid transparent;background:transparent;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.22,.68,0,1.2),box-shadow .2s ease,background .2s ease,border-color .2s ease}
+				.ke-soc-card:hover{transform:translateY(-3px) scale(1.02)}
+				.ke-soc-card:focus{outline:2px solid currentColor;outline-offset:3px}
+				.ke-soc-arrow{display:block;font-size:9px;font-weight:600;color:#334155;margin-top:.3rem;transition:color .18s,transform .18s}
+				.ke-soc-card:hover .ke-soc-arrow{transform:translateX(3px)}
+
+				/* ── Industry tags ── */
+				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
+				.ke-ind-tag:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+
+				/* ── All services ghost btn ── */
+				.ke-all-srv{display:inline-flex;align-items:center;gap:5px;margin-top:1rem;padding:.45rem .875rem;background:transparent;border:1px solid #1e3a5f;border-radius:.5rem;color:#38BDF8;font-size:.72rem;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+				.ke-all-srv:hover{border-color:#0891B2;background:#0891B215;color:#fff}
+
+				/* ── Contact icon wrapper ── */
+				.ke-contact-icon{width:1.9rem;height:1.9rem;border-radius:.45rem;background:#0a1a30;border:1px solid #132040;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:border-color .15s,background .15s}
+				.ke-contact-row:hover .ke-contact-icon{background:#0891B220;border-color:#0891B260}
+
+				/* ── Reduced motion ── */
+				@media(prefers-reduced-motion:reduce){.ke-cta-call,.ke-cta-wa,.ke-soc-card,.ke-ind-tag{transition:none!important;transform:none!important}}
+			`}</style>
+
+			{/* ── Top accent bar ── */}
+			<div aria-hidden="true" style={{ height:'4px', background:'linear-gradient(90deg,#0891B2 0%,#06B6D4 35%,#67E8F9 50%,#06B6D4 65%,#0891B2 100%)' }} />
+
+			{/* ── Pre-footer CTA band ── */}
+			<div style={{ position:'relative', overflow:'hidden', background:'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderBottom:'1px solid #0891B225' }}>
+				<div aria-hidden="true" style={{ position:'absolute', inset:0, pointerEvents:'none', backgroundImage:'radial-gradient(circle at 15% 50%,#0891B218 0%,transparent 55%),radial-gradient(circle at 85% 50%,#06B6D418 0%,transparent 55%)' }} />
+				<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'2.75rem 1.5rem', display:'flex', flexWrap:'wrap', gap:'1.5rem', alignItems:'center', justifyContent:'space-between', position:'relative', zIndex:1 }}>
+					{/* Headline */}
+					<div style={{ flex:'1 1 280px' }}>
+						<span style={{ display:'inline-flex', alignItems:'center', gap:'5px', background:'#FF4500', color:'#fff', fontSize:'9px', fontWeight:800, letterSpacing:'.18em', textTransform:'uppercase', padding:'4px 10px', borderRadius:'99px', marginBottom:'10px' }}>
+							<Zap aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
+							24 h Emergency Support Available
+						</span>
+						<h2 style={{ fontFamily:'Georgia,serif', fontStyle:'italic', fontSize:'clamp(1.1rem,2.5vw,1.6rem)', fontWeight:700, lineHeight:1.35, color:'#fff', margin:'0 0 6px' }}>
+							Need a quote or facing an emergency breakdown?
 						</h2>
-						<p className="font-mono text-sm tracking-wide uppercase font-semibold drop-shadow-sm text-white">
-							Our engineering team responds within 24 hours
+						<p style={{ margin:0, fontSize:'.78rem', color:'#94a3b8', fontWeight:500 }}>
+							Our ex-OEM engineering team responds within 24 hours — call or WhatsApp.
 						</p>
 					</div>
-					<div className="flex flex-wrap gap-4 shrink-0 justify-center">
-						<a
-							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-							className="flex items-center gap-2 text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none hover:-translate-y-1"
-							style={{ background: '#0d1f3c', border: '1px solid #0891B2' }}
-							onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.borderColor = '#06B6D4'; }}
-							onMouseLeave={e => { e.currentTarget.style.background = '#0d1f3c'; e.currentTarget.style.borderColor = '#0891B2'; }}
-						>
-							<Phone className="w-5 h-5 shrink-0 text-blue-400" aria-hidden="true" />
+					{/* CTAs */}
+					<div style={{ display:'flex', flexWrap:'wrap', gap:'.75rem', alignItems:'center' }}>
+						<a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="ke-cta-call">
+							<Phone aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
 							{CONTACT_INFO.phones[0]}
 						</a>
-						<a
-							href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
-							target="_blank" rel="noopener noreferrer"
-							className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1fbc5a] text-white px-7 py-3.5 rounded-xl font-bold text-sm transition-all focus:outline-none shadow-[0_4px_20px_rgba(37,211,102,0.2)] hover:shadow-[0_6px_25px_rgba(37,211,102,0.4)] hover:-translate-y-1"
-						>
-							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />
+						<a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')} target="_blank" rel="noopener noreferrer" className="ke-cta-wa">
+							<MessageCircle aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
 							WhatsApp Now
 						</a>
 					</div>
 				</div>
 			</div>
-		</div>
 
-		{/* ── Main footer body ── */}
-		<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12 relative z-10">
-			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16 mb-20">
+			{/* ── Main body ── */}
+			<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'3.5rem 1.5rem 2rem' }}>
 
-				{/* Col 1 — Brand */}
-				<div className="lg:col-span-4">
-					<div className="mb-6"><BrandLogo scrolled={false} forceWhite={true} navigate={navigate} /></div>
-					<p className="font-sans text-sm leading-relaxed mb-8 max-w-sm text-white">
-						20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
-					</p>
-					<div className="flex flex-col gap-2 mb-8">
-						{[
-							{ imgSrc: 'msme-logo.png',     Icon: Shield, iconColor: 'text-blue-400', title: 'MSME Registered',    sub: CONTACT_INFO.msme },
-							{ imgSrc: 'indiamart-logo.png', Icon: Award,  iconColor: 'text-blue-400', title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier' },
-							{ imgSrc: 'make-in-india.png',  Icon: Globe,  iconColor: 'text-blue-400', title: 'Make In India',       sub: 'Manufactured in India' },
-						].map(({ imgSrc, Icon, iconColor, title, sub }) => (
-							<CredentialBadge key={title} imgSrc={imgSrc} Icon={Icon} iconColor={iconColor} title={title} sub={sub} />
-						))}
+				{/* 4-column grid */}
+				<div className="ke-footer-grid" style={{ marginBottom:'2.5rem' }}>
+
+					{/* Col 1 — Brand */}
+					<div>
+						{/* ── Logo block — uses BrandLogo so it always matches navbar ── */}
+						<div style={{ marginBottom:'1rem', paddingBottom:'1rem', borderBottom:'1px solid #0d2040' }}>
+							<BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
+						</div>
+
+						<p style={{ fontSize:'.82rem', lineHeight:1.8, color:'#94a3b8', marginBottom:'1.5rem', maxWidth:'22rem' }}>
+							20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
+						</p>
+
+						{/* ── Credential badges — larger logos ── */}
+						<div style={{ marginBottom:'1.25rem' }}>
+							{[
+								{
+									imgSrc: 'msme-logo.png', FallbackIcon: Shield,
+									title: 'MSME Registered', sub: CONTACT_INFO.msme,
+									accentColor: '#38BDF8', bg: '#071e38',
+								},
+								{
+									imgSrc: 'indiamart-logo.png', FallbackIcon: Award,
+									title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier',
+									accentColor: '#fb923c', bg: '#1c1200',
+								},
+								{
+									imgSrc: 'make-in-india.png', FallbackIcon: Globe,
+									title: 'Make In India', sub: 'Manufactured in India',
+									accentColor: '#4ade80', bg: '#001a0a',
+								},
+							].map(({ imgSrc, FallbackIcon, title, sub, accentColor, bg }) => {
+								const [err, setErr] = useState(false);
+								return (
+									<div key={title} className="ke-badge">
+										{/* Logo container — compact holder, white bg, larger icon */}
+										<div style={{
+											width:'2rem', height:'2rem', borderRadius:'.45rem',
+											background:'#ffffff', border:`1px solid ${accentColor}25`,
+											display:'flex', alignItems:'center', justifyContent:'center',
+											flexShrink:0, padding:'2px',
+										}}>
+											{!err ? (
+												<img
+													src={imgSrc} alt="" aria-hidden="true"
+													style={{ width:'1.6rem', height:'1.6rem', objectFit:'contain' }}
+													onError={() => setErr(true)}
+												/>
+											) : (
+												<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color: accentColor }} />
+											)}
+										</div>
+										{/* Text */}
+										<div style={{ minWidth:0, flex:1 }}>
+											<p style={{ margin:0, fontSize:'.78rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.25 }}>{title}</p>
+											<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#64748b', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
+										</div>
+										{/* Accent dot */}
+										<div style={{ width:'6px', height:'6px', borderRadius:'50%', background: accentColor, flexShrink:0, opacity:.8 }} aria-hidden="true" />
+									</div>
+								);
+							})}
+						</div>
+
+						{/* OEM list */}
+						<p style={{ fontSize:'8.5px', fontWeight:700, letterSpacing:'.2em', textTransform:'uppercase', color:'#38BDF8', marginBottom:'.4rem' }}>OEM Compatible With</p>
+						<p style={{ fontFamily:'monospace', fontSize:'.66rem', color:'#475569', lineHeight:1.9 }}>{OEMS.join(' · ')}</p>
 					</div>
-					<p className="font-bold text-[10px] uppercase tracking-[0.2em] mb-2 text-blue-400">OEM Compatible With</p>
-					<p className="font-mono text-xs leading-relaxed text-white">{OEMS.join(' · ')}</p>
 
-				</div>{/* end Col 1 — Brand */}
+					{/* Col 2 — Navigate */}
+					<nav aria-label="Footer site links">
+						<span className="ke-col-h3">Navigate</span>
+						<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.55rem' }}>
+							{NAV_LINKS.map(link => (
+								<li key={link.name}>
+									<button className="ke-nav-btn" onClick={() => navigate(link.path)}>
+										<ChevronRight aria-hidden="true" style={{ width:'.875rem', height:'.875rem', color:'#0891B2', flexShrink:0 }} />
+										{link.name}
+									</button>
+								</li>
+							))}
+						</ul>
+					</nav>
 
-				{/* Col 2 — Navigate */}
-				<nav className="lg:col-span-2" aria-label="Footer site links">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Navigate</h3>
-					<ul className="space-y-4">
-						{NAV_LINKS.map((link) => (
-							<li key={link.name}>
-								<a href={`#${link.path}`} onClick={e => { e.preventDefault(); navigate(link.path); }}
-									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform text-blue-400" aria-hidden="true" />
-									<span>{link.name}</span>
-								</a>
-							</li>
-						))}
-					</ul>
-				</nav>
+					{/* Col 3 — Services */}
+					<div>
+						<span className="ke-col-h3">Core Services</span>
+						<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.55rem' }}>
+							{[
+								{ label:'Turbine Erection',    id:'srv_1' },
+								{ label:'Turnkey Overhauling', id:'srv_2' },
+								{ label:'Reverse Engineering',  id:'srv_3' },
+								{ label:'Dynamic Balancing',    id:'srv_4' },
+								{ label:'Lube Oil Flushing',    id:'srv_5' },
+								{ label:'Machine Alignment',    id:'srv_6' },
+							].map(({ label, id }) => (
+								<li key={id}>
+									<button className="ke-nav-btn" onClick={() => navigate(`/service/${id}`)}>
+										<Hexagon aria-hidden="true" style={{ width:'.75rem', height:'.75rem', color:'#0891B2', flexShrink:0 }} />
+										{label}
+									</button>
+								</li>
+							))}
+						</ul>
+						<button className="ke-all-srv" onClick={() => navigate('/services')}>
+							<ExternalLink aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
+							All Services
+						</button>
+					</div>
 
-				{/* Col 3 — Services */}
-				<div className="lg:col-span-3">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Core Services</h3>
-					<ul className="space-y-4">
-						{[
-							{ label: 'Turbine Erection',    id: 'srv_1' },
-							{ label: 'Turnkey Overhauling', id: 'srv_2' },
-							{ label: 'Reverse Engineering',  id: 'srv_3' },
-							{ label: 'Dynamic Balancing',    id: 'srv_4' },
-							{ label: 'Lube Oil Flushing',    id: 'srv_5' },
-							{ label: 'Machine Alignment',    id: 'srv_6' },
-						].map(({ label, id }) => (
-							<li key={id}>
-								<a href={`#/service/${id}`} onClick={e => { e.preventDefault(); navigate(`/service/${id}`); }}
-									className="text-white hover:text-blue-400 font-medium text-sm transition-colors flex items-center gap-3 group focus:outline-none w-fit">
-									<Hexagon className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
-									<span>{label}</span>
-								</a>
-							</li>
-						))}
-					</ul>
-				</div>
-
-				{/* Col 4 — Contact */}
-				<address className="lg:col-span-3 not-italic">
-					<h3 className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-6 pb-2 inline-block" style={{ borderBottom: '1px solid #0d1f3c' }}>Contact Us</h3>
-					<div className="space-y-5">
-						{[
-							{ id: 'address', Icon: MapPin, content: <p className="text-white text-sm leading-relaxed">{CONTACT_INFO.address}</p> },
-							{ id: 'phone',   Icon: Phone,  content: <div className="flex flex-col gap-1.5 mt-1">{CONTACT_INFO.phones.map(p => <a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="text-white hover:text-blue-400 font-mono text-sm transition-colors">{p}</a>)}</div> },
-							{ id: 'mail',    Icon: Mail,   content: (
-								<div className="flex flex-col gap-2 mt-1 min-w-0 flex-1">
-									{[{ addr: CONTACT_INFO.email, label: 'General' }, { addr: CONTACT_INFO.infoEmail, label: 'Info' }].map(({ addr, label }) => (
-										<a key={addr} href={`mailto:${addr}`} className="flex flex-col text-white hover:text-blue-400 text-sm transition-colors">
-											<span className="truncate">{addr}</span>
-											<span className="font-mono text-[9px] uppercase tracking-widest text-blue-400">{label}</span>
+					{/* Col 4 — Contact */}
+					<address style={{ fontStyle:'normal' }}>
+						<span className="ke-col-h3">Contact Us</span>
+						<div style={{ display:'flex', flexDirection:'column', gap:'.85rem' }}>
+							{/* Address */}
+							<div className="ke-contact-row" style={{ display:'flex', gap:'.75rem', alignItems:'flex-start' }}>
+								<div className="ke-contact-icon"><MapPin aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#38BDF8' }} /></div>
+								<a href={CONTACT_INFO.gmapsShare} target="_blank" rel="noopener noreferrer" className="ke-contact-link">{CONTACT_INFO.address}</a>
+							</div>
+							{/* Phones */}
+							<div className="ke-contact-row" style={{ display:'flex', gap:'.75rem', alignItems:'flex-start' }}>
+								<div className="ke-contact-icon"><Phone aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#38BDF8' }} /></div>
+								<div>
+									{CONTACT_INFO.phones.map(p => (
+										<a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="ke-contact-link" style={{ fontFamily:'monospace', fontWeight:600, fontSize:'.82rem' }}>{p}</a>
+									))}
+								</div>
+							</div>
+							{/* Emails */}
+							<div className="ke-contact-row" style={{ display:'flex', gap:'.75rem', alignItems:'flex-start' }}>
+								<div className="ke-contact-icon"><Mail aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#38BDF8' }} /></div>
+								<div style={{ minWidth:0 }}>
+									{[{ addr:CONTACT_INFO.email, label:'General' }, { addr:CONTACT_INFO.infoEmail, label:'Info' }].map(({ addr, label }) => (
+										<a key={addr} href={`mailto:${addr}`} className="ke-contact-link" style={{ marginBottom:'6px' }}>
+											<span style={{ display:'block', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{addr}</span>
+											<span style={{ fontFamily:'monospace', fontSize:'8px', letterSpacing:'.14em', textTransform:'uppercase', color:'#38BDF8', opacity:.8 }}>{label}</span>
 										</a>
 									))}
 								</div>
-							)},
-						].map(({ id, Icon, content }) => (
-							<div key={id} className="flex items-start gap-4">
-								<div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 mt-0.5" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-									<Icon className="w-4 h-4 text-blue-400" aria-hidden="true" />
-								</div>
-								{content}
 							</div>
-						))}
-					</div>
-				</address>
-			</div>
+						</div>
+					</address>
+				</div>{/* end ke-footer-grid */}
 
-			{/* ── Full-width Follow Us strip ── */}
-			<div className="mt-10 mb-2">
-				<p className="font-bold text-[10px] uppercase tracking-[0.22em] mb-4 text-blue-400 flex items-center gap-2">
-					<span style={{display:'inline-block',width:'1.5rem',height:'1px',background:'#1e3a5f',verticalAlign:'middle'}}/>
-					Follow Us
-					<span style={{display:'inline-block',width:'1.5rem',height:'1px',background:'#1e3a5f',verticalAlign:'middle'}}/>
-				</p>
-				<div className="social-cards-grid" role="list" aria-label="Social media profiles">
-					{SOCIAL_LINKS.map(({ href, label, name, handle, color, icon }) => {
-						const ctaText = name === 'YouTube' ? 'View Channel →' : name === 'Facebook' ? 'View Page →' : 'View Profile →';
-						return (
-							<a
-								key={name}
-								href={href}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={label}
-								role="listitem"
-								className="social-card focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[#050d1a]"
-								style={{
-									backgroundColor: `${color}13`,
-									border: `1px solid ${color}30`,
-								}}
-								onMouseEnter={e => {
-									e.currentTarget.style.backgroundColor = `${color}26`;
-									e.currentTarget.style.borderColor = `${color}66`;
-									e.currentTarget.style.boxShadow = `0 8px 24px ${color}22`;
-								}}
-								onMouseLeave={e => {
-									e.currentTarget.style.backgroundColor = `${color}13`;
-									e.currentTarget.style.borderColor = `${color}30`;
-									e.currentTarget.style.boxShadow = 'none';
-								}}
-							>
-								{/* Icon */}
-								<div
-									className="social-icon-wrap"
-									style={{ backgroundColor: color, boxShadow: `0 4px 12px ${color}44` }}
+				{/* ── Follow Us ── */}
+				<div style={{ marginBottom:'2rem' }}>
+					<p style={{ display:'flex', alignItems:'center', gap:'.6rem', fontFamily:'monospace', fontSize:'9px', fontWeight:700, letterSpacing:'.22em', textTransform:'uppercase', color:'#06B6D4', marginBottom:'1rem' }}>
+						<span style={{ flex:1, height:'1px', background:'#0d2040' }} />
+						Follow Us
+						<span style={{ flex:1, height:'1px', background:'#0d2040' }} />
+					</p>
+					<div className="ke-social-grid" role="list" aria-label="Social media profiles">
+						{SOCIAL_LINKS.map(({ href, label, name, handle, color, iconBg, icon }) => {
+							const bg = iconBg || color;
+							return (
+								<a
+									key={name}
+									href={href}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={label}
+									role="listitem"
+									className="ke-soc-card"
+									style={{ background:`${color}0d`, borderColor:`${color}22` }}
+									onMouseEnter={e => {
+										const el = e.currentTarget;
+										el.style.background = `${color}1c`;
+										el.style.borderColor = `${color}50`;
+										el.style.boxShadow = `0 8px 22px ${color}18`;
+										el.querySelector('.ke-soc-arrow').style.color = color === '#94a3b8' ? '#94a3b8' : color;
+										el.querySelector('.ke-soc-arrow').style.transform = 'translateX(3px)';
+									}}
+									onMouseLeave={e => {
+										const el = e.currentTarget;
+										el.style.background = `${color}0d`;
+										el.style.borderColor = `${color}22`;
+										el.style.boxShadow = 'none';
+										el.querySelector('.ke-soc-arrow').style.color = '#334155';
+										el.querySelector('.ke-soc-arrow').style.transform = 'none';
+									}}
+									onFocus={e => { e.currentTarget.style.outline = `2px solid ${color}`; e.currentTarget.style.outlineOffset = '3px'; }}
+									onBlur={e => { e.currentTarget.style.outline = 'none'; }}
 								>
-									<span style={{ color: '#fff', display:'flex' }}>{icon}</span>
-								</div>
-								{/* Platform label */}
-								<span className="social-platform" style={{ color }}>{name}</span>
-								{/* Name / handle */}
-								<span className="social-name">{handle}</span>
-								{/* CTA */}
-								<span className="social-cta">{ctaText}</span>
-							</a>
-						);
-					})}
+									{/* Top row: icon + platform */}
+									<div style={{ display:'flex', alignItems:'center', gap:'.5rem', marginBottom:'.5rem' }}>
+										<div style={{ width:'1.75rem', height:'1.75rem', borderRadius:'.4rem', background:bg, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, boxShadow:`0 3px 10px ${color}35`, transition:'transform .2s ease' }}>
+											<span style={{ color:'#fff', display:'flex' }}>{icon}</span>
+										</div>
+										<span style={{ fontSize:'7.5px', fontWeight:800, letterSpacing:'.16em', textTransform:'uppercase', color, lineHeight:1, opacity:.9 }}>{name}</span>
+									</div>
+									{/* Handle */}
+									<span style={{ fontSize:'.72rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{handle}</span>
+									{/* Arrow */}
+									<span className="ke-soc-arrow">→</span>
+								</a>
+							);
+						})}
+					</div>
 				</div>
-			</div>
 
-			{/* Divider */}
-			<div className="h-px w-full mb-12" style={{ background: '#0d1f3c' }} />
+				{/* Divider */}
+				<div aria-hidden="true" style={{ height:'1px', background:'#0d2040', marginBottom:'1.75rem' }} />
 
-			{/* Industries panel */}
-			<div className="rounded-xl p-8 mb-10" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>
-				<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-					<div className="flex-1">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-4">Industries Served</p>
-						<div className="flex flex-wrap gap-2">
-							{[
-								{ name: 'Power Generation', color: '#facc15' },
-								{ name: 'Sugar Mills',      color: '#4ade80' },
-								{ name: 'Paper & Pulp',     color: '#67E8F9' },
-								{ name: 'Oil & Gas',        color: '#fb923c' },
-								{ name: 'Petrochemical',    color: '#c084fc' },
-								{ name: 'Agro & Food',      color: '#2dd4bf' },
-								{ name: 'Cement',           color: '#a8a29e' },
-							].map(({ name, color }) => (
-								<span key={name} className="text-xs px-3 py-1.5 rounded-full font-bold"
-									style={{ color, background: color + '18', border: `1px solid ${color}44` }}>
-									{name}
-								</span>
-							))}
+				{/* Industries panel */}
+				<div style={{ borderRadius:'.875rem', padding:'1.4rem', background:'#071428', border:'1px solid #0d2040', marginBottom:'1.75rem' }}>
+					<div style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'flex-start', gap:'1.5rem' }}>
+						<div style={{ flex:'1 1 300px' }}>
+							<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.8rem' }}>Industries Served</p>
+							<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem' }}>
+								{[
+									{ name:'Power Generation', color:'#facc15' },
+									{ name:'Sugar Mills',      color:'#4ade80' },
+									{ name:'Paper & Pulp',     color:'#67E8F9' },
+									{ name:'Oil & Gas',        color:'#fb923c' },
+									{ name:'Petrochemical',    color:'#c084fc' },
+									{ name:'Agro & Food',      color:'#2dd4bf' },
+									{ name:'Cement',           color:'#a8a29e' },
+								].map(({ name, color }) => (
+									<span key={name} className="ke-ind-tag" style={{ color, background:color+'18', borderColor:color+'44' }}>{name}</span>
+								))}
+							</div>
+						</div>
+						<div style={{ textAlign:'right', flexShrink:0 }}>
+							<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.5rem' }}>Capability Range</p>
+							<p style={{ margin:0 }}>
+								<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>5 kW</span>
+								<span style={{ fontSize:'1.25rem', fontWeight:300, color:'#38BDF8', margin:'0 .375rem' }}>—</span>
+								<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>27 MW</span>
+							</p>
+							<p style={{ margin:'.25rem 0 0', fontSize:'.6rem', color:'#64748b', letterSpacing:'.1em', textTransform:'uppercase' }}>Back Pressure &amp; Condensing Turbines</p>
 						</div>
 					</div>
-					<div className="lg:text-right shrink-0">
-						<p className="font-bold text-[11px] text-white uppercase tracking-[0.2em] mb-2">Capability Range</p>
-						<p className="text-white font-black text-3xl tracking-tight">
-							5 kW <span className="font-normal mx-1" style={{ color: '#0d1f3c' }}>–</span> 27 MW
-						</p>
-					</div>
 				</div>
-			</div>
 
-			{/* Bottom bar */}
-			<div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6" style={{ borderTop: '1px solid #0d1f3c' }}>
-				<p className="text-white text-sm">© {new Date().getFullYear()} Keshav Enterprises. All rights reserved.</p>
-				<p className="text-white text-sm flex items-center gap-2">
-					<span>GST:</span>
-					<span className="text-white font-mono px-2 py-0.5 rounded" style={{ background: '#071428', border: '1px solid #0d1f3c' }}>{CONTACT_INFO.gst}</span>
-				</p>
-			</div>{/* end bottom bar */}
-		</div>{/* end max-w-7xl wrapper */}
-	</footer>
-));
+				{/* Bottom bar */}
+				<div style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center', gap:'.75rem', paddingTop:'1.1rem', borderTop:'1px solid #0d2040' }}>
+					<p style={{ margin:0, fontSize:'.78rem', color:'#475569' }}>© {year} Keshav Enterprises. All rights reserved.</p>
+					<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem', alignItems:'center' }}>
+						{[{ label:'GST', value:CONTACT_INFO.gst }, { label:'MSME', value:CONTACT_INFO.msme }].map(({ label, value }) => (
+							<span key={label} style={{ display:'inline-flex', alignItems:'center', gap:'.35rem', background:'#071428', border:'1px solid #0d2040', borderRadius:'.375rem', padding:'.22rem .55rem', fontSize:'.68rem', color:'#64748b' }}>
+								<span style={{ fontWeight:700, color:'#38BDF8', fontSize:'7.5px', letterSpacing:'.1em' }}>{label}</span>
+								<span style={{ fontFamily:'monospace', color:'#94a3b8' }}>{value}</span>
+							</span>
+						))}
+					</div>
+					<button className="ke-back-top" onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} aria-label="Back to top">↑ Top</button>
+				</div>
+
+			</div>{/* end max-w-7xl */}
+		</footer>
+	);
+});
 Footer.displayName = 'Footer';
 
 // ─── SOCIAL LINKS ─────────────────────────────────────────────
 // PERF: module-level constant — SVG icons are stable JSX, no reason to recreate on every render.
-// Each entry: href, label (a11y), name (display), color (brand hex), and inline SVG icon.
-// Order matches the screenshot: LinkedIn → Instagram → Reddit → YouTube → Facebook → X (Twitter)
+// iconBg overrides the icon container background when the platform color is too light (e.g. X/Twitter).
 const SOCIAL_LINKS = [
 	{
 		href: CONTACT_INFO.linkedin,
@@ -8296,7 +8919,7 @@ const SOCIAL_LINKS = [
 		name: 'LinkedIn',
 		handle: CONTACT_INFO.linkedinHandle,
 		color: '#0A66C2',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.instagram,
@@ -8304,15 +8927,7 @@ const SOCIAL_LINKS = [
 		name: 'Instagram',
 		handle: CONTACT_INFO.instagramHandle,
 		color: '#E1306C',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>,
-	},
-	{
-		href: CONTACT_INFO.reddit,
-		label: 'Keshav Enterprises on Reddit',
-		name: 'Reddit',
-		handle: CONTACT_INFO.redditHandle,
-		color: '#FF4500',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.youtube,
@@ -8320,7 +8935,7 @@ const SOCIAL_LINKS = [
 		name: 'YouTube',
 		handle: CONTACT_INFO.youtubeHandle,
 		color: '#FF0000',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.facebook,
@@ -8328,89 +8943,26 @@ const SOCIAL_LINKS = [
 		name: 'Facebook',
 		handle: CONTACT_INFO.facebookHandle,
 		color: '#1877F2',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>,
 	},
 	{
 		href: CONTACT_INFO.twitter,
 		label: 'Keshav Enterprises on X (Twitter)',
 		name: 'X (Twitter)',
 		handle: CONTACT_INFO.twitterHandle,
-		color: '#ffffff',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+		color: '#94a3b8',
+		iconBg: '#1e293b',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
+	},
+	{
+		href: CONTACT_INFO.reddit,
+		label: 'Keshav Enterprises on Reddit',
+		name: 'Reddit',
+		handle: CONTACT_INFO.redditHandle,
+		color: '#FF4500',
+		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
 	},
 ];
-
-// ─── SOCIAL STRIP ────────────────────────────────────────────
-// Full-width horizontal card row between DigitalProfilesStrip and Footer.
-// Matches the "CONNECT WITH US" layout from the reference screenshot.
-const SocialStrip = memo(() => {
-	// Label shown below handle — varies by platform
-	const ctaLabel = (name) => {
-		if (name === 'YouTube') return 'View Channel →';
-		if (name === 'Facebook') return 'View Page →';
-		if (name === 'Reddit') return 'View Profile →';
-		return 'View Profile →';
-	};
-	return (
-		<section
-			aria-labelledby="social-strip-heading"
-			style={{ background: '#080e1d', borderTop: '1px solid #0d1f3c', borderBottom: '1px solid #0d1f3c' }}
-		>
-			{/* Eyebrow */}
-			<div className="text-center py-5">
-				<p
-					id="social-strip-heading"
-					className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em]"
-				>
-					Connect With Us
-				</p>
-			</div>
-			{/* Card row */}
-			<div
-				className="social-strip-scroll"
-				role="list"
-				aria-label="Social media profiles"
-			>
-				{SOCIAL_LINKS.map(({ href, label, name, handle, color, icon }) => (
-					<a
-						key={name}
-						href={href}
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label={label}
-						role="listitem"
-						className="social-strip-card focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-inset"
-						style={{
-							background: `${color}0f`,
-							borderLeftColor: color,
-						}}
-					>
-						{/* Platform icon circle */}
-						<div
-							className="ssc-icon"
-							style={{ backgroundColor: `${color}22` }}
-						>
-							<span style={{ color }}>{icon}</span>
-						</div>
-						{/* Text stack */}
-						<div className="ssc-text">
-							<span className="ssc-platform" style={{ color }}>{name}</span>
-							<span className="ssc-handle">{handle}</span>
-							<span className="ssc-cta">{ctaLabel(name)}</span>
-						</div>
-						{/* External link icon */}
-						<ExternalLink
-							className="w-3.5 h-3.5 shrink-0 ml-auto opacity-30 group-hover:opacity-70 transition-opacity"
-							style={{ color }}
-							aria-hidden="true"
-						/>
-					</a>
-				))}
-			</div>
-		</section>
-	);
-});
-SocialStrip.displayName = 'SocialStrip';
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
 // PERF: Defined outside component — constant data, no reason to recreate on every render
@@ -8486,7 +9038,7 @@ const DigitalProfilesStrip = memo(() => {
 				</div>
 				{/* Landscape card row — scrolls on mobile, wraps on desktop */}
 				<div
-					className="dir-strip-scroll justify-start sm:justify-center"
+					className="dir-strip-scroll"
 					role="list"
 					aria-label="Business directory profiles"
 				>
@@ -8498,7 +9050,7 @@ const DigitalProfilesStrip = memo(() => {
 							rel="noopener noreferrer"
 							aria-label={`View Keshav Enterprises on ${p.name}`}
 							role="listitem"
-							className="dir-card group relative flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 rounded-2xl px-4 py-3.5 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 min-w-[170px]"
+							className="dir-card group relative flex items-center gap-3 bg-white border border-slate-200 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 rounded-2xl px-4 py-3 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 						>
 							{/* Logo square */}
 							<div
@@ -8973,24 +9525,53 @@ RecentlyViewedStrip.displayName = 'RecentlyViewedStrip';
 // ─── BACK TO TOP BUTTON ───────────────────────────────────────
 const BackToTopButton = memo(() => {
 	const [visible, setVisible] = useState(false);
+	const [progress, setProgress] = useState(0);
 
 	useEffect(() => {
-		const h = () => setVisible(window.scrollY > 400);
-		window.addEventListener('scroll', h, { passive: true });
-		h();
-		return () => window.removeEventListener('scroll', h);
+		const onScroll = () => {
+			const scrollY = window.scrollY;
+			const docH = document.documentElement.scrollHeight - window.innerHeight;
+			setVisible(scrollY > 400);
+			setProgress(docH > 0 ? Math.min(100, (scrollY / docH) * 100) : 0);
+		};
+		window.addEventListener('scroll', onScroll, { passive: true });
+		onScroll();
+		return () => window.removeEventListener('scroll', onScroll);
 	}, []);
-
-	if (!visible) return null;
 
 	return (
 		<button
 			type="button"
 			onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 			aria-label="Back to top"
-			className="fixed bottom-6 left-6 z-50 w-11 h-11 bg-slate-900 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+			style={{
+				position: 'fixed', bottom: '1.5rem', left: '1.5rem', zIndex: 50,
+				width: '2.75rem', height: '2.75rem',
+				background: '#0f172a', borderRadius: '50%',
+				display: 'flex', alignItems: 'center', justifyContent: 'center',
+				boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+				transition: 'opacity .25s ease, transform .25s ease, background .2s',
+				opacity: visible ? 1 : 0,
+				transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.85)',
+				pointerEvents: visible ? 'auto' : 'none',
+				border: 'none', cursor: 'pointer',
+			}}
+			onMouseEnter={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.transform = 'translateY(-2px) scale(1.08)'; }}
+			onMouseLeave={e => { e.currentTarget.style.background = '#0f172a'; e.currentTarget.style.transform = visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.85)'; }}
 		>
-			<ChevronUp className="w-5 h-5" aria-hidden="true" />
+			{/* Circular progress ring */}
+			<svg width="44" height="44" viewBox="0 0 44 44" style={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }} aria-hidden="true">
+				<circle cx="22" cy="22" r="19" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5" />
+				<circle
+					cx="22" cy="22" r="19" fill="none"
+					stroke="#3b82f6" strokeWidth="2.5"
+					strokeDasharray={`${2 * Math.PI * 19}`}
+					strokeDashoffset={`${2 * Math.PI * 19 * (1 - progress / 100)}`}
+					strokeLinecap="round"
+					style={{ transition: 'stroke-dashoffset .1s linear' }}
+				/>
+			</svg>
+			<ChevronUp className="w-4 h-4 text-white relative z-10" aria-hidden="true" />
 		</button>
 	);
 });
@@ -9085,16 +9666,17 @@ const WhatsAppBubble = memo(() => {
 				</span>
 			</a>
 
-			{/* WhatsApp FAB */}
+			{/* WhatsApp FAB — with hover label for discoverability */}
 			<a
 				href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Chat with Keshav Enterprises on WhatsApp"
 				onClick={() => setShowGreeting(false)}
-				className="bg-[#25D366] text-white p-3.5 rounded-full shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] hover:scale-110 transition-all duration-300"
+				className="ke-wa-fab flex items-center gap-2 bg-[#25D366] text-white pl-3.5 pr-4 py-3.5 rounded-full shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 			>
-				<MessageCircle className="w-6 h-6" aria-hidden="true" />
+				<MessageCircle className="w-6 h-6 shrink-0" aria-hidden="true" />
+				<span className="ke-wa-label" aria-hidden="true">Chat</span>
 			</a>
 		</div>
 	);
@@ -9759,6 +10341,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 														else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
 														else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
 														else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
+								else if (cat === 'HVAC & Air Filtration') lt = 'Standard grades: ex-stock to 1 week; custom sizes/special media: 2–4 weeks';
 								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
 								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
 														const totalEntries = Object.keys(product.specs).length;
@@ -10588,61 +11171,64 @@ const HomePage = memo(({ navigate }) => {
 					</div>
 				</div>
 			</section>
-			{/* Stats */}
-			<section
-				className="bg-slate-900 py-12 md:py-14 border-b border-slate-800"
-				aria-labelledby="stats-heading"
-			>
-				<h2 id="stats-heading" className="sr-only">
-					Company statistics
-				</h2>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-						{[
-							{
-								Icon: Clock,
-								stat: '20+',
-								label: 'Years Experience',
-								sub: 'In turbine engineering',
-							},
-							{
-								Icon: Settings,
-								stat: '10+',
-								label: 'OEM Brands',
-								sub: 'Triveni, Siemens, BHEL & more',
-							},
-							{
-								Icon: TrendingUp,
-								stat: '27 MW',
-								label: 'Max Turbine',
-								sub: 'Upto 27M.W.',
-							},
-							{
-								Icon: Users,
-								stat: '24x7',
-								label: 'Emergency Support',
-								sub: 'Multi-location response',
-							},
-						].map(({ Icon, stat, label, sub }) => (
-							<div key={label} className="text-center">
-								<div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-									<Icon
-										className="w-6 h-6 text-blue-400"
-										aria-hidden="true"
-									/>
-								</div>
-								<div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1">
-									{stat}
-								</div>
-								<div className="text-sm font-bold text-slate-300 uppercase tracking-widest mb-1">
-									{label}
-								</div>
-								<div className="text-xs text-slate-400 font-medium">{sub}</div>
+			{/* Stats — IntersectionObserver count-up + entrance animation */}
+			{(() => {
+				const STATS = [
+					{ Icon: Clock,      end: 20,   suffix: '+',    label: 'Years Experience', sub: 'In turbine engineering' },
+					{ Icon: Settings,   end: 10,   suffix: '+',    label: 'OEM Brands',       sub: 'Triveni, Siemens, BHEL & more' },
+					{ Icon: TrendingUp, end: 27,   suffix: ' MW',  label: 'Max Turbine',      sub: 'Up to 27 MW capacity' },
+					{ Icon: Users,      end: null, suffix: '24×7', label: 'Emergency Support', sub: 'Multi-location response' },
+				];
+				function StatNum({ end, suffix }) {
+					const [val, setVal] = useState(0);
+					const [fired, setFired] = useState(false);
+					const ref = useRef(null);
+					useEffect(() => {
+						if (end === null) return;
+						const obs = new IntersectionObserver(([entry]) => {
+							if (!entry.isIntersecting || fired) return;
+							setFired(true);
+							const duration = 1400;
+							const start = performance.now();
+							const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+							const tick = (now) => {
+								const progress = Math.min((now - start) / duration, 1);
+								setVal(Math.round(easeOut(progress) * end));
+								if (progress < 1) requestAnimationFrame(tick);
+							};
+							requestAnimationFrame(tick);
+						}, { threshold: 0.4 });
+						if (ref.current) obs.observe(ref.current);
+						return () => obs.disconnect();
+					}, [end, fired]);
+					if (end === null) return <span ref={ref} className="ke-stat-num">{suffix}</span>;
+					return <span ref={ref} className="ke-stat-num">{val}{suffix}</span>;
+				}
+				return (
+					<section
+						className="bg-slate-900 py-12 md:py-14 border-b border-slate-800"
+						aria-labelledby="stats-heading"
+					>
+						<h2 id="stats-heading" className="sr-only">Company statistics</h2>
+						<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+							<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+								{STATS.map(({ Icon, end, suffix, label, sub }, i) => (
+									<div key={label} className="text-center" style={{ animationDelay: `${i * 120}ms` }}>
+										<div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+											<Icon className="w-6 h-6 text-blue-400" aria-hidden="true" />
+										</div>
+										<div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1" aria-label={`${end ?? ''}${suffix}`}>
+											<StatNum end={end} suffix={suffix} />
+										</div>
+										<div className="type-label text-slate-300 mb-1">{label}</div>
+										<div className="text-xs text-slate-400 font-medium">{sub}</div>
+									</div>
+								))}
 							</div>
-						))}
-					</div>
-				</div>
-			</section>
+						</div>
+					</section>
+				);
+			})()}
 			{/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
 			<section
 				className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto"
@@ -10759,7 +11345,7 @@ const HomePage = memo(({ navigate }) => {
 								'Turbine tripped unexpectedly and nobody in the plant can explain why?',
 						};
 						return (
-							<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+							<div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(min(100%,340px),1fr))",gap:"2rem",justifyItems:"stretch"}}>
 								{SERVICES.map((service) => {
 									const Icon = SERVICE_ICONS[service.id];
 									return (
@@ -10865,7 +11451,7 @@ const HomePage = memo(({ navigate }) => {
 								className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group"
 							>
 								{/* Service tag */}
-								<span className="self-start text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full mb-6">
+								<span className="self-start text-[10px] font-semibold uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full mb-6">
 									{service}
 								</span>
 								{/* Stars */}
@@ -10897,18 +11483,30 @@ const HomePage = memo(({ navigate }) => {
 								</blockquote>
 								{/* Attribution */}
 								<figcaption className="flex items-center gap-4 pt-5 border-t border-slate-200">
-									<div className="w-10 h-10 rounded-full bg-blue-600/10 border border-blue-200 flex items-center justify-center shrink-0">
-										<Users
-											className="w-5 h-5 text-blue-600"
-											aria-hidden="true"
-										/>
+									{/* Initials avatar */}
+									<div
+										className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shrink-0 text-white font-bold text-sm select-none"
+										aria-hidden="true"
+									>
+										{name.split(' ').map(w => w[0]).join('').slice(0, 2)}
 									</div>
-									<div>
-										<p className="font-black text-slate-900 text-sm">{name}</p>
-										<p className="text-slate-500 font-medium text-xs">
+									<div className="flex-1 min-w-0">
+										<p className="font-semibold text-slate-900 text-sm">{name}</p>
+										<p className="text-slate-500 font-medium text-xs truncate">
 											{company} · {location}
 										</p>
 									</div>
+									{/* Verified via IndiaMART badge */}
+									<a
+										href={CONTACT_INFO.indiamart}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="shrink-0 flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 hover:bg-emerald-100 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400"
+										title="Verified via IndiaMART"
+									>
+										<svg width="8" height="8" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M10.28 2.28a1 1 0 00-1.41 0L5 6.15 3.13 4.28a1 1 0 00-1.41 1.41l2.58 2.58a1 1 0 001.41 0l4.57-4.57a1 1 0 000-1.42z"/></svg>
+										Verified
+									</a>
 								</figcaption>
 							</figure>
 						))}
@@ -11119,7 +11717,7 @@ const AboutPage = memo(({ navigate }) => {
 		{
 			year: '2015',
 			title: 'Product Range Expansion',
-			desc: 'Launched a comprehensive industrial product line covering filtration, expansion joints, strainers, rubber products, and flexible hose assemblies.',
+			desc: 'Launched a comprehensive industrial product line covering filtration, HVAC air filters, expansion joints, strainers, rubber products, and flexible hose assemblies.',
 		},
 		{
 			year: '2020',
@@ -11418,7 +12016,7 @@ const AboutPage = memo(({ navigate }) => {
 									'Dynamic balancing to ISO 1940 / API 670 (50–2,000 kg)',
 									'Lube oil flushing per ISO 4406:99 cleanliness classification',
 									'Machine alignment using latest laser alignment technology',
-									'Manufacturing: filter elements, expansion joints, strainers',
+									'Manufacturing: filter elements, HVAC air filters, expansion joints, strainers',
 									'Turbine spares: bearings, seals, rotors, governors, valves',
 									'24×7 emergency breakdown response, multi-location engineers',
 								].map((item) => (
@@ -11473,7 +12071,7 @@ const AboutPage = memo(({ navigate }) => {
 							aria-hidden="true"
 						/>
 						<p className="text-slate-500 text-base max-w-2xl mx-auto mt-5 leading-relaxed">
-							126 precision-engineered components across 8 categories — from OEM-matched filter elements to turbine spares that ship the same week your plant calls.
+							{PRODUCTS.length}+ precision-engineered components across 9 categories — from OEM-matched filter elements and HVAC air filters to turbine spares that ship the same week your plant calls.
 						</p>
 					</div>
 
@@ -11497,9 +12095,9 @@ const AboutPage = memo(({ navigate }) => {
 							},
 							{
 								src: 'workshop-gallery-products.webp',
-								alt: 'Keshav Enterprises industrial product range — filtration, strainers, expansion joints and turbine spares',
+								alt: 'Keshav Enterprises industrial product range — filtration, HVAC air filters, strainers, expansion joints and turbine spares',
 								caption: 'Product Range',
-								desc: '126 engineered products across 8 categories — filtration, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.',
+								desc: `${PRODUCTS.length} engineered products across 9 categories — filtration, HVAC air filters, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.`,
 								onClick: () => navigate('/products'),
 								linkLabel: 'Browse Products',
 							},
@@ -11779,6 +12377,8 @@ const AboutPage = memo(({ navigate }) => {
 									{[
 										'Industrial filtration elements — simplex, duplex, and return-line',
 										'Turbine lube oil & control oil filter assemblies',
+										'HVAC air filters — pocket bag, pleated panel, metallic mesh, activated carbon',
+										'Pulse-jet dust collector filter bags & cartridge elements',
 										'Metallic & fabric expansion joints and bellows',
 										'Simplex & duplex basket strainers (SS 304 / 316)',
 										'Turbine spares — bearings, seals, labyrinth packings, governors',
@@ -12195,6 +12795,132 @@ const BLOG_POSTS = [
 			},
 		],
 	},
+	{
+		id: 'post_6',
+		slug: 'hvac-air-filter-selection-guide-industrial',
+		title:
+			'HVAC Air Filter Selection Guide for Industrial Facilities — F5 to F9 and Everything In Between',
+		excerpt:
+			'Pocket bag filters, pleated panels, metallic mesh pre-filters, activated carbon — choosing the wrong grade costs money and risks equipment damage. This guide explains which HVAC filter to use, where, and why.',
+		date: '2026-04-20',
+		author: 'Keshav Enterprises Engineering Team',
+		readTime: '7 min read',
+		tags: ['HVAC', 'Air Filtration', 'AHU Filters', 'Maintenance'],
+		coverImage: 'blog-hvac-filter-selection.webp',
+		content: [
+			{
+				type: 'p',
+				text: 'Walk into any industrial plant in India — a sugar mill, a pharmaceutical factory, a cement control room — and you will find HVAC air handling units (AHUs) quietly keeping people and sensitive equipment alive. Walk a little further and you will often find those AHUs running with the wrong filter grade, a clogged-out bag that was last replaced two years ago, or no pre-filter at all. The results are predictable: DCS cabinets full of dust, cooling coils coated in grey felt, and electricity bills 15–20% higher than they need to be.',
+			},
+			{ type: 'h2', text: 'Understanding Efficiency Classes — EN 779 and ISO 16890' },
+			{
+				type: 'p',
+				text: 'Two standards govern HVAC filter efficiency. The older EN 779 uses grades G1 through F9 — G (coarse) grades capture large particles, M (medium) and F (fine) grades capture progressively smaller ones. The newer ISO 16890 uses particle size-based classifications: ePM10, ePM2.5, and ePM1, with a percentage capture efficiency. If your filter supplier quotes only an EN 779 grade, ask for the ISO 16890 ePM1 efficiency — it is the more meaningful number for air quality.',
+			},
+			{
+				type: 'list',
+				items: [
+					'G1–G4 (ISO Coarse): Captures lint, fibres, insects, large dust — used as pre-filters and in metallic mesh washable panels',
+					'M5–M6 (ISO ePM10 ≥50%): Pollen, coarse dust, sand — suitable for non-critical industrial ventilation',
+					'F7 (ISO ePM1 ≥50%): General HVAC standard — the minimum for occupied offices, control rooms, and AHUs feeding sensitive equipment',
+					'F8 (ISO ePM1 ≥70%): Hospital ward supply, pharmaceutical Grade D preparation areas',
+					'F9 (ISO ePM1 ≥85%): Pre-filter upstream of HEPA for cleanrooms and critical pharmaceutical areas',
+				],
+			},
+			{ type: 'h2', text: 'Step 1 — Start with a Metallic Mesh Pre-Filter (G1–G3)' },
+			{
+				type: 'p',
+				text: 'Every AHU in a heavy industrial environment — cement plant, power station, steel mill — should have a washable aluminium or SS mesh pre-filter at the first stage. Cost: a few hundred rupees. Benefit: the downstream bag or pleated filter lasts 2–3× longer because it never has to handle the coarse load. Aluminium mesh handles temperatures up to 150°C; SS mesh up to 350°C. Clean with compressed air blowback or warm water every 4–6 weeks.',
+			},
+			{ type: 'h2', text: 'Step 2 — Choose Your Main Filter: Pocket Bag or Pleated Panel?' },
+			{
+				type: 'p',
+				text: 'Both pocket bag filters and pleated panel filters are available from G4 to F9, but they suit different AHU configurations. Pocket bag filters (multi-pocket) have a larger media area and longer service life in high-dust environments — the pockets extend into the airstream, maximising contact area. They are the standard choice for large industrial AHUs, commercial buildings, and hospitals. Pleated panel filters are more compact (25–96 mm deep vs 600 mm pocket length) and rigid, making them the preferred choice for fan coil units (FCUs), split-AC units, and vertical-airflow AHUs where space is limited.',
+			},
+			{
+				type: 'list',
+				items: [
+					'Pocket bag filter: high dust load, large AHU, F5–F9, 3,000–5,000 m³/h+ per section',
+					'Pleated panel (25 mm): FCU/split AC replacement, G4–F7, compact vertical airflow',
+					'Pleated panel (96 mm): Mid-size AHU, F7–F8, rigid construction — no pocket collapse risk',
+					'Pleated panel (292 mm extended): Final-stage high-efficiency in pharmaceutical HVAC, F8–F9',
+				],
+			},
+			{ type: 'h2', text: 'Step 3 — Add Activated Carbon for Odour Control' },
+			{
+				type: 'p',
+				text: 'If your facility has odour problems — kitchens, chemical storage, painting shops, printing presses, or any area with VOC emissions — a particulate filter alone will not solve the problem. Activated carbon (GAC) adsorbs cooking odours, solvents, hydrogen sulphide, formaldehyde, and most common industrial VOCs. In HVAC applications, activated carbon is typically supplied as a panel filter with a 25–50 mm granular carbon bed, or as a combination filter with a G4 particulate pre-filter bonded to the carbon layer. The carbon panel goes after the particulate filter in the air stream — putting it first wastes expensive carbon capacity on dust loading.',
+			},
+			{ type: 'h2', text: 'How to Size Filter Replacement Intervals' },
+			{
+				type: 'p',
+				text: 'The single best practice is to install a differential pressure (DP) gauge across each filter stage and replace at 250 Pa final pressure drop — not on a calendar schedule. Calendar replacement wastes serviceable filters; run-to-failure causes the filter to collapse or bypass, contaminating the AHU coil with everything it was supposed to capture. If DP gauges are not practical, replace every 3 months in heavy industrial environments (cement, power, steel), every 6 months in light industrial, and annually in clean commercial environments — adjusting based on visual inspection.',
+			},
+			{
+				type: 'cta',
+				text: 'We supply HVAC pocket bag filters, pleated panel filters, metallic mesh pre-filters, and activated carbon vent filters for industrial and commercial AHUs across India. Contact us on WhatsApp with your AHU make, model, and frame dimensions for a matched replacement quotation.',
+			},
+		],
+	},
+	{
+		id: 'post_7',
+		slug: 'pulse-jet-dust-collector-filter-bag-selection',
+		title:
+			'How to Select the Right Pulse-Jet Dust Collector Filter Bag — Media, Finish & Anti-Static Guide for Indian Plants',
+		excerpt:
+			'Choosing the wrong filter bag media for your baghouse — wrong temperature rating, wrong surface treatment, or missing anti-static — costs plant engineers weeks of downtime and expensive emergency replacements. Here is the complete selection guide.',
+		date: '2026-05-01',
+		author: 'Keshav Enterprises Engineering Team',
+		readTime: '8 min read',
+		tags: ['Dust Collector', 'Filter Bags', 'Baghouse', 'Industrial Filtration', 'Cement', 'HVAC'],
+		coverImage: 'blog-dust-collector-filter-bag.webp',
+		content: [
+			{
+				type: 'p',
+				text: 'Pulse-jet baghouses are the workhorses of industrial dust control across India — cement plants, coal handling systems, grain mills, pharmaceutical powder processing, and chemical plants all depend on them to meet emission norms and protect workers. Yet replacement filter bag selection is still often done by habit ("same as before") rather than engineering. When the "same as before" bag was wrong for the application, the new set fails just as fast as the last one.',
+			},
+			{ type: 'h2', text: 'Step 1 — Know Your Flue Gas Temperature' },
+			{
+				type: 'p',
+				text: 'Temperature is the most critical selection parameter and the most common cause of premature bag failure. Every media type has a continuous service temperature limit and a peak (surge) temperature limit. Exceeding the continuous limit by even 10–15°C cuts filter life by 50% or more through hydrolysis (in humid flue gas) or oxidation (in dry, oxygen-containing gas).',
+			},
+			{
+				type: 'list',
+				items: [
+					'Polyester needle felt: continuous 130°C, peak 150°C — general industrial dust, ambient to low-temperature applications',
+					'Polypropylene felt: continuous 90°C, peak 110°C — acid gas environments, chemical plants (better acid resistance than polyester, lower temperature)',
+					'Aramid / Nomex: continuous 200°C, peak 220°C — kiln exhaust, asphalt plants, glass furnace, dryer outlet',
+					'PPS (Ryton): continuous 190°C, peak 210°C — acid + heat combination (sulphur-bearing flue gas from coal combustion)',
+					'Glass fibre woven: continuous 260°C, peak 280°C — cement kiln raw meal, waste incineration, high-temperature process gas',
+					'PTFE membrane on any base: same temp rating as base media + near-zero residual dust cake — highest cleaning efficiency',
+				],
+			},
+			{ type: 'h2', text: 'Step 2 — Smooth Bag or Pleated Cartridge?' },
+			{
+				type: 'p',
+				text: 'Standard pulse-jet baghouses use cylindrical filter bags — smooth outer surface — supported on a metal cage. This is the correct choice for high dust-loading applications: cement, fly ash, coal, mineral processing. The smooth outer surface allows the pulse-jet compressed air shock to eject the dust cake efficiently. Pleated cartridge elements — accordion-pleated media around a perforated core — provide up to 5× the filtration area in the same housing footprint, but are better suited to lighter dust loads in pharmaceutical, food, and light chemical applications where the higher media area enables lower face velocity and very low residual pressure drop.',
+			},
+			{ type: 'h2', text: 'Step 3 — Surface Treatment: Plain, Singed, Glazed, or PTFE Membrane?' },
+			{
+				type: 'p',
+				text: 'The outer surface treatment of a needle-felt bag determines how well the dust cake releases during pulse-jet cleaning and how long the bag resists blinding (permanent clogging). Plain felt has a rough fibre surface — adequate for coarse, dry, non-sticky dust. Singed felt has the surface fibres thermally removed, producing a smoother surface — improved cake release for most industrial dust. Calendered (glazed) felt is hot-pressed to further smooth and densify the surface — best for fine, cohesive, or slightly sticky dust such as pharmaceutical powders or fine cement. PTFE membrane laminated to the outer surface — the premium option — provides surface-loading filtration. Dust forms a thin cake on the smooth PTFE and releases completely with each pulse, maintaining near-initial pressure drop throughout the bag life. Emission performance is also superior, often achieving outlet dust concentrations of 2–5 mg/Nm³ vs 20–50 mg/Nm³ for plain felt.',
+			},
+			{ type: 'h2', text: 'Step 4 — Anti-Static and Conductive Bags for Explosive Dust' },
+			{
+				type: 'p',
+				text: 'For dust collector applications handling electrically resistive dust that can accumulate static charge — coal, grain, flour, pharmaceutical powders, polymer powder — standard polyester bags are a fire and explosion hazard. The dust cake on a plain polyester bag can develop a static discharge (spark) energetic enough to ignite a dust cloud in the outlet plenum. Anti-static bags use one of two approaches: (1) carbon fibre blended into the polyester media — the conductive fibres dissipate charge continuously; (2) stainless steel fibre woven into the needlefelt at 1–3% by weight — provides both static dissipation and improved strength. Always specify anti-static (conductive) bags for coal dust, grain dust, flour, and any powder with a Kst value above zero.',
+			},
+			{ type: 'h2', text: 'Matching Bag Dimensions to Your Cage' },
+			{
+				type: 'p',
+				text: 'Replacement filter bags must match the existing cage diameter and length exactly — even 5 mm diameter difference prevents proper sealing at the top snap ring. Before ordering, measure: outer diameter of the bag mouth (snap band OD), bag length from snap ring face to closed bottom, and the end cap type (snap ring, snap band, or flange). If the original OEM bag label is still readable, note the part number — this identifies the exact cage geometry. If labels are gone, pull one cage from the housing, measure it, and supply these dimensions with your order.',
+			},
+			{
+				type: 'cta',
+				text: 'We supply pulse-jet filter bags in polyester, aramid, PPS, glass fibre, and PTFE membrane grades, along with pleated cartridge elements, for cement, power, pharmaceutical, and grain handling baghouses across India. Send us your bag dimensions and application details on WhatsApp for a same-day quotation.',
+			},
+		],
+	},
 ];
 
 // ─── BLOG LIST PAGE ────────────────────────────────────────────
@@ -12205,8 +12931,8 @@ const BlogPage = memo(({ navigate }) => (
 		className="pt-20 pb-20 bg-slate-50 min-h-screen"
 	>
 		<SEOHead
-			title="Engineering Blog — Turbine Maintenance & Industrial Insights"
-			description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."
+			title="Engineering Blog — Turbine Maintenance, Industrial Filtration & HVAC Insights"
+			description="Technical articles on steam turbine overhauling, lube oil filtration, HVAC air filter selection, pulse-jet dust collectors, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."
 			canonicalPath="/blog"
 			pageType="website"
 		/>
@@ -12227,9 +12953,9 @@ const BlogPage = memo(({ navigate }) => (
 					aria-hidden="true"
 				/>
 				<p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">
-					Technical insights on turbine maintenance, lube oil systems, reverse
-					engineering, and industrial best practices — from our engineering
-					team.
+					Technical insights on turbine maintenance, lube oil systems, HVAC air
+					filtration, dust collection, reverse engineering, and industrial best
+					practices — from our engineering team.
 				</p>
 			</div>
 		</div>
@@ -12277,7 +13003,7 @@ const BlogPage = memo(({ navigate }) => (
 									{BLOG_POSTS[0].tags.map((tag) => (
 										<span
 											key={tag}
-											className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"
+											className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider"
 										>
 											{tag}
 										</span>
@@ -12335,7 +13061,7 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Remaining posts grid */}
 			{BLOG_POSTS.length > 1 && (
 				<div>
-					<h2 className="text-2xl font-black text-slate-900 mb-8 tracking-tight">
+					<h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
 						More Articles
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -12378,13 +13104,13 @@ const BlogPage = memo(({ navigate }) => (
 										{post.tags.slice(0, 2).map((tag) => (
 											<span
 												key={tag}
-												className="bg-slate-100 text-slate-600 text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider"
+												className="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider"
 											>
 												{tag}
 											</span>
 										))}
 									</div>
-									<h3 className="text-xl font-black text-slate-900 mb-3 leading-tight tracking-tight group-hover:text-blue-600 transition-colors">
+									<h3 className="text-xl font-bold text-slate-900 mb-3 leading-tight tracking-tight group-hover:text-blue-600 transition-colors">
 										<a
 											href={`#/blog/${post.slug}`}
 											onClick={(e) => {
@@ -14891,8 +15617,8 @@ const ProductsPage = memo(({ navigate }) => {
 			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
 			<SEOHead
-				title="Product Catalog — Turbine Spares, Filters, Expansion Joints"
-				description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}
+				title="Product Catalog — Turbine Spares, Filters, Expansion Joints, HVAC Air Filters"
+				description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, HVAC air filters, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}
 				canonicalPath="/products"
 				pageType="website"
 			/>
@@ -15154,11 +15880,23 @@ const INDUSTRY_DETAILS = {
 					'Relief valve set to OEM pressure specification',
 				],
 			},
+			{
+				name: 'Pleated Panel Air Filters (Control Room & Turbine Hall HVAC)',
+				purpose:
+					'Replacement HVAC filters for power plant control room AHUs, turbine hall ventilation units, and electrical switchgear room air coolers — keeps cooling air clean and protects sensitive equipment from coal dust and fly ash contamination.',
+				features: [
+					'F7 efficiency to capture fine fly ash and coal dust',
+					'Galvanised steel frame with synthetic media',
+					'Standard AHU sizes stocked; custom on request',
+					'Metallic mesh pre-filter also available for first-stage duty',
+				],
+			},
 		],
 		keyFacts: [
 			'27 MW maximum turbine capacity handled',
 			'20+ years OEM-trained engineering experience',
 			'API 614 & ISO 4406:99 compliant products',
+			'HVAC filter supply for control rooms and turbine halls',
 			'24×7 emergency breakdown support',
 		],
 	},
@@ -15609,18 +16347,30 @@ const INDUSTRY_DETAILS = {
 					'Trial run and vibration sign-off included',
 				],
 			},
+			{
+				name: 'HVAC Pocket Bag Filters (Food Plant Air Handling)',
+				purpose:
+					'Multi-pocket bag filters for food processing facility AHUs — removes airborne flour, starch dust, and mould spores from supply air to production areas, cold stores, and packaging lines.',
+				features: [
+					'F7 / F8 efficiency for allergen and mould spore capture',
+					'Synthetic polyester media — moisture-tolerant for humid food environments',
+					'Standard AHU frame sizes; custom dimensions on request',
+					'Complements GMP air quality requirements for food-grade zones',
+				],
+			},
 		],
 		keyFacts: [
 			'FDA 21 CFR compliant hose products',
 			'Agro co-gen turbine specialist',
 			'Tank breather filters for edible oil storage',
+			'F7/F8 HVAC bag filters for GMP food production air quality',
 			'Complete pump vibration isolation solutions',
 		],
 	},
 	ind_7: {
 		heroSub:
-			'Lube oil filtration, expansion joints, strainers & vibration isolation for cement plant machinery',
-		overview: `Cement manufacturing is one of the most abrasive and dust-laden industrial environments on earth. Rotary kilns operating at 200–400°C shell temperature, ball mills running continuously for months, and crusher trains generating massive dust clouds place extreme demands on every lubrication, sealing, and piping component. Keshav Enterprises supplies the precision-grade filtration, expansion joints, and anti-vibration solutions that keep cement plants running at 330+ days per year.`,
+			'Lube oil filtration, pulse-jet dust collector bags, HVAC air filters, expansion joints & vibration isolation for cement plant machinery',
+		overview: `Cement manufacturing is one of the most abrasive and dust-laden industrial environments on earth. Rotary kilns operating at 200–400°C shell temperature, ball mills running continuously for months, and crusher trains generating massive dust clouds place extreme demands on every lubrication, sealing, and piping component. Keshav Enterprises supplies the precision-grade filtration, pulse-jet dust collector filter bags, HVAC air filters, expansion joints, and anti-vibration solutions that keep cement plants running at 330+ days per year.`,
 		challenges: [
 			{
 				title: 'Extreme Dust & Abrasive Contamination',
@@ -15728,11 +16478,34 @@ const INDUSTRY_DETAILS = {
 					'In stock for rapid dispatch',
 				],
 			},
+			{
+				name: 'Pulse-Jet Dust Collector Filter Bags & Cartridges',
+				purpose:
+					'Replacement filter bags and pleated cartridge elements for cement plant baghouse dust collectors on kiln exhaust, raw mill vents, clinker cooler, coal mill, packing plant, and silo vent systems — retains fine cement dust and meets emission norms.',
+				features: [
+					'Polyester needle-felt (standard) and PTFE membrane (high-efficiency, low-emission)',
+					'Anti-static grades for coal mill applications (ATEX)',
+					'Cage-compatible dimensions to existing baghouse housing',
+					'Pulse-jet cleaning rated at 4–7 bar compressed air',
+				],
+			},
+			{
+				name: 'Pleated Panel Air Filters (Control Room & Electrical Panel HVAC)',
+				purpose:
+					'Filters for cement plant control room AHUs and electrical panel cooling units — prevents abrasive cement dust from entering sensitive instrumentation, PLCs, and DCS cabinets.',
+				features: [
+					'F7 / F8 efficiency for fine cement dust retention',
+					'Galvanised steel frame for humid cement plant environments',
+					'Standard AHU frame sizes or custom-cut to panel dimensions',
+					'Replacement supply on service schedule',
+				],
+			},
 		],
 		keyFacts: [
 			'330+ days/year continuous operation supported',
 			'Dust-resistant filtration products stocked',
 			'High-temp expansion joints up to 450°C',
+			'Pulse-jet baghouse bags for all cement plant vent points',
 			'Complete vibration isolation solutions',
 		],
 	},
@@ -15790,6 +16563,12 @@ const INDUSTRY_PRODUCT_IDS = {
 	'Air Breather & Tank Breather Filters (Lube Oil Reservoirs)': 'prod_f4',
 	'SS Corrugated Flexible Hose Assemblies': 'prod_h1',
 	'Conical & Y-Type Strainers (Raw Mill & Conveyor Pumps)': 'prod_st3',
+	'Pulse-Jet Dust Collector Filter Bags & Cartridges': 'prod_af5',
+	'Pleated Panel Air Filters (Control Room & Electrical Panel HVAC)': 'prod_af4',
+	// ind_6 — Agro & Food (HVAC addition)
+	'HVAC Pocket Bag Filters (Food Plant Air Handling)': 'prod_af1',
+	// ind_1 — Power Generation (HVAC addition)
+	'Pleated Panel Air Filters (Control Room & Turbine Hall HVAC)': 'prod_af4',
 };
 
 const IndustryDetailPage = memo(({ industryId, navigate }) => {
@@ -16222,6 +17001,11 @@ const IndustriesPage = memo(({ navigate }) => (
 												</span>
 											))}
 										</div>
+										{/* Always-visible CTA pill — ensures touch-device users see the affordance */}
+										<div className="flex items-center gap-1.5 text-white/90 text-xs font-semibold bg-white/15 border border-white/25 rounded-full px-4 py-1.5 backdrop-blur-sm mt-1 group-hover:bg-white/25 transition-colors">
+											Explore Solutions
+											<ArrowRight className="w-3 h-3" aria-hidden="true" />
+										</div>
 									</div>
 								</div>
 
@@ -16244,7 +17028,7 @@ const IndustriesPage = memo(({ navigate }) => (
 									<p className="text-slate-600 font-medium text-base leading-relaxed mb-8 border-l-4 border-slate-200 pl-5">
 										{ind.desc}
 									</p>
-									<h4 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-5">
+									<h4 className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-5">
 										Key Applications &amp; Products
 									</h4>
 									<ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
@@ -16721,6 +17505,9 @@ const ContactPage = memo(() => {
 										<option value="Filter Element RFQ">
 											Filter Element RFQ (specify OEM make)
 										</option>
+										<option value="HVAC &amp; Air Filtration RFQ">
+											HVAC &amp; Air Filtration RFQ (Bag Filters / Carbon Filters / Media Rolls)
+										</option>
 										<option value="Turbine Spares RFQ">
 											Turbine Spares RFQ (Bearings / Seals / Valves)
 										</option>
@@ -16746,7 +17533,7 @@ const ContactPage = memo(() => {
 							<div className="mb-8">
 								<label
 									htmlFor="c-details"
-									className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-3"
+									className="block text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3"
 								>
 									Requirements / RFQ Details <span aria-hidden="true">*</span>
 								</label>
@@ -16758,10 +17545,25 @@ const ContactPage = memo(() => {
 									onChange={(e) => { setDetails(e.target.value); if (status === 'error') { setStatus('idle'); setSubmitError(''); } }}
 									aria-required="true"
 									aria-invalid={!!errors.details}
-									aria-describedby={errors.details ? 'err-details' : undefined}
+									aria-describedby={errors.details ? 'err-details' : 'c-details-counter'}
 									className={`${inputClass(errors.details)} resize-none shadow-inner`}
 									placeholder="Tell us about your requirement — OEM/turbine make, model, quantity, part number, drawing reference, or describe the fault/symptom you're experiencing. The more detail you share, the faster and more useful our response will be."
 								/>
+								{/* Live character counter — reduces failed submissions */}
+								<div id="c-details-counter" className="flex items-center justify-between mt-1.5 px-0.5" aria-live="polite">
+									<span className={`ke-char-count ${
+										details.length >= 20 ? 'ke-char-ok' :
+										details.length >= 10 ? 'ke-char-warn' : 'ke-char-err'
+									}`}>
+										{details.length === 0
+											? 'Minimum 20 characters required'
+											: details.length < 20
+												? `${20 - details.length} more character${20 - details.length !== 1 ? 's' : ''} needed`
+												: `✓ Looks good!`
+										}
+									</span>
+									<span className="ke-char-count text-slate-400">{details.length} / 2000</span>
+								</div>
 								{errors.details && (
 									<p
 										id="err-details"
@@ -16933,19 +17735,34 @@ const ContactPage = memo(() => {
 								Our Manufacturing Facility — Shamli, U.P.
 							</h2>
 						</div>
-						<div className="w-full h-100 relative bg-slate-100">
-							<iframe
-								title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
-								src={CONTACT_INFO.googleMapsEmbed}
-								width="100%"
-								height="100%"
-								style={{ border: 0 }}
-								allowFullScreen
-								loading="lazy"
-								referrerPolicy="no-referrer-when-downgrade"
-								className="absolute inset-0"
-							/>
-						</div>
+						{/* Map with loading skeleton — prevents blank white flash on slow connections */}
+						{(() => {
+							const [mapLoaded, setMapLoaded] = useState(false);
+							return (
+								<div className="w-full h-100 relative bg-slate-100">
+									{/* Skeleton placeholder shown until iframe fires onLoad */}
+									{!mapLoaded && (
+										<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
+											<div className="skeleton-shimmer absolute inset-0 rounded-none" />
+											<MapPin className="w-10 h-10 text-slate-300 relative z-10" aria-hidden="true" />
+											<p className="text-sm font-medium text-slate-400 relative z-10">Loading map…</p>
+										</div>
+									)}
+									<iframe
+										title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
+										src={CONTACT_INFO.googleMapsEmbed}
+										width="100%"
+										height="100%"
+										style={{ border: 0, opacity: mapLoaded ? 1 : 0, transition: 'opacity .4s ease' }}
+										allowFullScreen
+										loading="lazy"
+										referrerPolicy="no-referrer-when-downgrade"
+										className="absolute inset-0"
+										onLoad={() => setMapLoaded(true)}
+									/>
+								</div>
+							);
+						})()}
 						<div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
 							<p className="text-slate-500 font-medium text-sm">
 								{CONTACT_INFO.address}
@@ -17052,40 +17869,54 @@ const NotFoundPage = memo(({ navigate }) => (
 			canonicalPath="/404"
 			noIndex={true}
 		/>
-		<div className="text-center max-w-lg">
-			<p className="text-8xl font-black text-blue-600 mb-4">404</p>
-			<h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4">
-				Page Not Found
+		<div className="text-center max-w-2xl w-full">
+			<p className="text-8xl font-black text-blue-600 mb-4" aria-hidden="true">404</p>
+			<h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+				Page not found
 			</h1>
-			<p className="text-slate-500 font-medium mb-8">
+			<p className="text-slate-500 font-medium mb-8 max-w-md mx-auto">
 				The page you&apos;re looking for doesn&apos;t exist or has been moved.
-				Let us help you find what you need.
+				Here are some helpful links to get you back on track.
 			</p>
-			<div className="flex flex-col sm:flex-row gap-4 justify-center">
+			{/* Primary actions */}
+			<div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
 				<button
 					type="button"
 					onClick={() => navigate('/')}
-					className="bg-blue-600 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2"
+					className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2"
 				>
-					<ArrowLeft className="w-4 h-4" /> Go Home
-				</button>
-				<button
-					type="button"
-					onClick={() => navigate('/products')}
-					className="bg-slate-900 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-slate-800 transition-all shadow-md"
-				>
-					Browse Products
+					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Go Home
 				</button>
 				<a
-					href={waMsg(
-						"Hi, I couldn't find a page on your website. Can you help?",
-					)}
+					href={waMsg("Hi, I couldn\'t find a page on your website. Can you help?")}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="bg-[#25D366] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2"
+					className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2"
 				>
-					<MessageCircle className="w-4 h-4" /> WhatsApp
+					<MessageCircle className="w-4 h-4" aria-hidden="true" /> Ask on WhatsApp
 				</a>
+			</div>
+			{/* Quick-links grid */}
+			<p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">Or jump to</p>
+			<div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+				{[
+					{ label: 'Services',  path: '/services',  Icon: Settings },
+					{ label: 'Products',  path: '/products',  Icon: Layers },
+					{ label: 'Industries',path: '/industries', Icon: Factory },
+					{ label: 'Contact',   path: '/contact',   Icon: Phone },
+				].map(({ label, path, Icon }) => (
+					<button
+						key={path}
+						type="button"
+						onClick={() => navigate(path)}
+						className="flex flex-col items-center gap-2 bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all text-slate-700 hover:text-blue-600 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+					>
+						<div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center group-hover:bg-blue-50 transition-colors border border-slate-100">
+							<Icon className="w-5 h-5" aria-hidden="true" />
+						</div>
+						<span className="text-sm font-semibold">{label}</span>
+					</button>
+				))}
 			</div>
 		</div>
 	</main>

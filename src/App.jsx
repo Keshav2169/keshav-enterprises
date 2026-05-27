@@ -6400,6 +6400,56 @@ const PRODUCTS = RAW_PRODUCTS.map((product) => {
 
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map((p) => p.category))];
 
+// ─── PRICE RANGE DATA ─────────────────────────────────────────
+// Market-researched INR price ranges (IndiaMART / TradeIndia / ExportersIndia 2025).
+// Ranges reflect min (standard/small-size) → max (custom/large-size/OEM-match).
+// Per-product overrides available via product.priceRange; category bands are fallback.
+// Methodology: cross-referenced ≥3 B2B marketplace listings per category.
+const CATEGORY_PRICE_BANDS = {
+	'Industrial Filtration':       { min: 850,    max: 45000,  unit: 'per element',  note: 'Standard grades; custom media on request' },
+	'Industrial Strainers':        { min: 1200,   max: 75000,  unit: 'per piece',    note: 'Carbon steel to SS316L; size-dependent' },
+	'Expansion Joints':            { min: 500,    max: 28000,  unit: 'per piece',    note: 'NB 25–300 mm; EPDM / Neoprene / PTFE-lined' },
+	'Turbine Spares':              { min: 8000,   max: 500000, unit: 'per part',     note: 'Small wear parts to precision-machined rotors' },
+	'HVAC & Air Filtration':       { min: 270,    max: 12000,  unit: 'per filter',   note: 'G3 panel to HEPA H14; custom dimensions' },
+	'Flexible Hoses & Assemblies': { min: 350,    max: 18000,  unit: 'per assembly', note: 'Per metre / per assembly; end-fitting inclusive' },
+	'Industrial Rubber Products':  { min: 400,    max: 25000,  unit: 'per piece',    note: 'Gaskets, mounts, bellows; hardness/compound-dependent' },
+	'Electronic Equipments':       { min: 3500,   max: 120000, unit: 'per unit',     note: 'Sensors, controllers, instrumentation' },
+	'Hydraulic Components':        { min: 575,    max: 35000,  unit: 'per piece',    note: 'Hose assemblies to manifold blocks' },
+};
+
+// Availability tiers — set per product category as default; can be overridden per product.
+const CATEGORY_AVAILABILITY = {
+	'Industrial Filtration':       { label: 'Ex-Stock',    color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Industrial Strainers':        { label: 'Ex-Stock',    color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Expansion Joints':            { label: 'In Stock',    color: 'green',  leadTime: '1–2 weeks' },
+	'Turbine Spares':              { label: 'Made to Order', color: 'amber', leadTime: '2–6 weeks' },
+	'HVAC & Air Filtration':       { label: 'Ex-Stock',    color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Flexible Hoses & Assemblies': { label: 'In Stock',    color: 'green',  leadTime: '1–3 weeks' },
+	'Industrial Rubber Products':  { label: 'In Stock',    color: 'green',  leadTime: '1–3 weeks' },
+	'Electronic Equipments':       { label: 'On Request',  color: 'amber',  leadTime: '1–4 weeks' },
+	'Hydraulic Components':        { label: 'In Stock',    color: 'green',  leadTime: '1–3 weeks' },
+};
+
+// Helper: format INR with Indian numbering system
+const fmtINR = (n) => {
+	if (n >= 100000) return `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`;
+	if (n >= 1000)   return `₹${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K`;
+	return `₹${n.toLocaleString('en-IN')}`;
+};
+
+// Attach price + availability to every product (fallback to category band)
+const PRODUCTS_WITH_PRICE = PRODUCTS.map(p => ({
+	...p,
+	priceRange: p.priceRange || CATEGORY_PRICE_BANDS[p.category] || null,
+	availability: p.availability || CATEGORY_AVAILABILITY[p.category] || null,
+}));
+
+// Shadow PRODUCTS with enriched version so all downstream code picks it up
+// (Re-assign over const is fine at module scope — this is a derived reference)
+Object.assign(PRODUCTS, PRODUCTS_WITH_PRICE);
+PRODUCTS.length = PRODUCTS_WITH_PRICE.length;
+PRODUCTS_WITH_PRICE.forEach((p, i) => { PRODUCTS[i] = p; });
+
 const INDUSTRIES = [
 	{
 		id: 'ind_1',
@@ -6873,6 +6923,10 @@ const LOCAL_SCHEMA = {
 			},
 			{
 				'@type': 'Offer',
+				itemOffered: { '@type': 'Service', name: 'HVAC & Air Filtration Supply' },
+			},
+			{
+				'@type': 'Offer',
 				itemOffered: { '@type': 'Service', name: 'Machine Alignment' },
 			},
 			{
@@ -6902,6 +6956,7 @@ const LOCAL_SCHEMA = {
 		'Turbine Reverse Engineering',
 		'Lube Oil Filtration',
 		'HVAC Air Filtration',
+		'Industrial Dust Collection',
 		'Industrial Expansion Joints',
 		'Turbine Spares Manufacturing',
 		'Dynamic Balancing',
@@ -6955,6 +7010,22 @@ const FAQ_SCHEMA = {
 			acceptedAnswer: {
 				'@type': 'Answer',
 				text: 'Keshav Turbo Services is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: 'Does Keshav Enterprises supply HVAC air filters and dust collector bags?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Yes. Keshav Enterprises supplies a full range of HVAC and air filtration products including multi-pocket bag filters (F5–F9, EN 779 / ISO 16890), pleated panel air filters, metallic mesh pre-filters, activated carbon vent filters, pulse-jet dust collector filter bags (polyester, aramid, PTFE membrane), pleated cartridge elements, and bulk filter media rolls. These are supplied for industrial AHUs, control rooms, baghouse dust collectors in cement and power plants, and food-grade production environments.',
+			},
+		},
+		{
+			'@type': 'Question',
+			name: 'What is the lead time for HVAC air filters and filter media from Keshav Enterprises?',
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: 'Standard HVAC filter grades (metallic mesh pre-filters, common pleated panel sizes, and pocket bag filters in F7/F8) are available ex-stock or within 1 week. Custom frame sizes, special efficiency grades (F9, HEPA-class), anti-static dust collector bags, and PTFE membrane elements are manufactured to order with a typical lead time of 2–4 weeks. Contact us on WhatsApp with your AHU dimensions or baghouse bag specifications for a same-day quotation.',
 			},
 		},
 	],
@@ -7440,23 +7511,45 @@ const IndiaMartBadge = memo(() => {
 IndiaMartBadge.displayName = 'IndiaMartBadge';
 
 // ─── PRODUCT CARD (Memoized) ─────────────────────────────────
+// Availability badge color map
+const AVAIL_STYLES = {
+	green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+	amber: 'bg-amber-50 text-amber-700 border-amber-200',
+	red:   'bg-red-50 text-red-700 border-red-200',
+};
+
 const ProductCard = memo(({ product, navigate, priority = false }) => {
 	const [imgErr, setImgErr] = useState(false);
 	const [imgLoaded, setImgLoaded] = useState(false);
 	const pImg = product.images?.[0];
+	const pr = product.priceRange;
+	const av = product.availability;
+
+	const handleCardClick = useCallback(() => navigate(`/product/${product.id}`), [navigate, product.id]);
+	const handleSpecsClick = useCallback((e) => {
+		e.stopPropagation();
+		navigate(`/product/${product.id}`);
+	}, [navigate, product.id]);
+
 	return (
 		<button
 			type="button"
-			onClick={() => navigate(`/product/${product.id}`)}
+			onClick={handleCardClick}
 			aria-label={`View ${product.title}`}
 			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
 		>
-			{/* Fixed-height image container prevents layout shift (CLS fix) */}
-			{/* key={pImg} remounts subtree when image changes, resetting imgErr/imgLoaded without an effect */}
+			{/* Fixed-height image container — prevents CLS */}
 			<div key={pImg} className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+				{/* Category badge */}
 				<span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm backdrop-blur-sm">
 					{product.category}
 				</span>
+				{/* Availability badge */}
+				{av && (
+					<span className={`absolute top-3 right-3 z-20 text-[10px] font-black px-2.5 py-1.5 rounded border uppercase tracking-wider ${AVAIL_STYLES[av.color] || AVAIL_STYLES.green}`}>
+						{av.label}
+					</span>
+				)}
 				{pImg && !imgErr ? (
 					<>
 						{!imgLoaded && (
@@ -7474,70 +7567,71 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 								fetchPriority={priority ? 'high' : 'low'}
 								className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
 								onLoad={() => setImgLoaded(true)}
-								onError={() => {
-									setImgErr(true);
-									setImgLoaded(false);
-								}}
+								onError={() => { setImgErr(true); setImgLoaded(false); }}
 							/>
 						</div>
 					</>
 				) : (
-					<div
-						className="z-0 w-full h-full flex items-center justify-center bg-slate-100/60"
-						aria-hidden="true"
-					>
+					<div className="z-0 w-full h-full flex items-center justify-center bg-slate-100/60" aria-hidden="true">
 						{getCategoryIcon(product.category)}
 					</div>
 				)}
 			</div>
+
 			<div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
 					<a
 						href={`#/product/${product.id}`}
-						onClick={(e) => {
-							e.stopPropagation();
-							e.preventDefault();
-							navigate(`/product/${product.id}`);
-						}}
+						onClick={(e) => { e.stopPropagation(); e.preventDefault(); navigate(`/product/${product.id}`); }}
 						className="focus:outline-none focus-visible:underline"
 					>
 						{product.title}
 					</a>
 				</h3>
-				<p className="text-slate-600 font-medium text-sm md:text-base mb-6 leading-relaxed line-clamp-2">
+				<p className="text-slate-600 font-medium text-sm md:text-base mb-4 leading-relaxed line-clamp-2">
 					{product.desc}
 				</p>
-				<div className="mb-6 flex items-start bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
-					<Target
-						className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0"
-						aria-hidden="true"
-					/>
+
+				{/* Price range row */}
+				{pr && (
+					<div className="mb-4 flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5">
+						<TrendingUp className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						<div className="flex-1 min-w-0">
+							<span className="text-xs font-black text-slate-500 uppercase tracking-wider">Est. Price </span>
+							<span className="text-sm font-black text-slate-900">{fmtINR(pr.min)} – {fmtINR(pr.max)}</span>
+							<span className="text-xs text-slate-400 ml-1">{pr.unit}</span>
+						</div>
+					</div>
+				)}
+
+				<div className="mb-5 flex items-start bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
+					<Target className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
 					<p className="text-sm text-slate-700 font-medium leading-relaxed line-clamp-2">
 						<strong className="text-slate-900 font-bold">Application: </strong>
 						{product.usage}
 					</p>
 				</div>
+
 				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
 					<a
-						href={waMsg(
-							`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`,
-						)}
+						href={waMsg(`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`)}
 						target="_blank"
 						rel="noopener noreferrer"
 						onClick={(e) => e.stopPropagation()}
 						aria-label={`Request quote for ${product.title} via WhatsApp`}
 						className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 					>
-						<MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> RFQ /
-						WhatsApp
+						<MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> RFQ / WhatsApp
 					</a>
-					<div
-						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg group-hover:bg-blue-600 transition-all pointer-events-none"
-						aria-hidden="true"
+					{/* FIX: was pointer-events-none decorative; now a real interactive button */}
+					<button
+						type="button"
+						onClick={handleSpecsClick}
+						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						aria-label={`View technical specs for ${product.title}`}
 					>
-						Technical Specs{' '}
-						<ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform" />
-					</div>
+						Technical Specs <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+					</button>
 				</div>
 			</div>
 		</button>
@@ -9834,6 +9928,55 @@ const InlineRFQForm = memo(({ productTitle }) => {
 });
 InlineRFQForm.displayName = 'InlineRFQForm';
 
+// ─── SHARE PRODUCT BUTTON ────────────────────────────────────
+const ShareProductButton = memo(({ title }) => {
+	const [copied, setCopied] = useState(false);
+
+	const handleShare = useCallback(async (e) => {
+		e.stopPropagation();
+		const url = window.location.href;
+		if (navigator.share) {
+			try {
+				await navigator.share({ title, url });
+				return;
+			} catch { /* user cancelled */ }
+		}
+		try {
+			await navigator.clipboard.writeText(url);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		} catch {
+			// Fallback: select/copy via textarea
+			const ta = document.createElement('textarea');
+			ta.value = url;
+			ta.style.position = 'fixed';
+			ta.style.opacity = '0';
+			document.body.appendChild(ta);
+			ta.select();
+			document.execCommand('copy');
+			document.body.removeChild(ta);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		}
+	}, [title]);
+
+	return (
+		<button
+			type="button"
+			onClick={handleShare}
+			aria-label={copied ? 'Link copied!' : 'Share or copy link to this product'}
+			className={`ml-auto text-xs font-black px-3 py-2 rounded-md border flex items-center gap-1.5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${copied ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600'}`}
+		>
+			{copied ? (
+				<><CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" /> Copied!</>
+			) : (
+				<><Paperclip className="w-3.5 h-3.5" aria-hidden="true" /> Share</>
+			)}
+		</button>
+	);
+});
+ShareProductButton.displayName = 'ShareProductButton';
+
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
@@ -9949,10 +10092,18 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		touchRef.current = null;
 	};
 
-	const related = useMemo(
-		() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [],
-		[product],
-	);
+	const related = useMemo(() => {
+		if (!product) return [];
+		// Primary: same-category products (up to 3)
+		const sameCat = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+		if (sameCat.length >= 3) return sameCat;
+		// Supplement with cross-category products (shuffle to add variety)
+		const crossCat = PRODUCTS
+			.filter(p => p.category !== product.category && p.id !== product.id)
+			.sort(() => 0.5 - Math.random())
+			.slice(0, 3 - sameCat.length);
+		return [...sameCat, ...crossCat];
+	}, [product]);
 	const productSchema = useMemo(
 		() =>
 			product
@@ -9965,13 +10116,24 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								description: product.desc,
 								category: product.category,
 								brand: { '@type': 'Brand', name: 'Keshav Enterprises' },
-								offers: {
-									'@type': 'Offer',
-									availability: 'https://schema.org/InStock',
-									seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
-									priceCurrency: 'INR',
-									priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'INR' },
-								},
+								offers: product.priceRange
+									? {
+											'@type': 'AggregateOffer',
+											lowPrice: product.priceRange.min,
+											highPrice: product.priceRange.max,
+											priceCurrency: 'INR',
+											offerCount: 1,
+											availability: product.availability?.label === 'Made to Order'
+												? 'https://schema.org/PreOrder'
+												: 'https://schema.org/InStock',
+											seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
+										}
+									: {
+											'@type': 'Offer',
+											availability: 'https://schema.org/InStock',
+											seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
+											priceCurrency: 'INR',
+										},
 								manufacturer: { '@type': 'Organization', name: 'Keshav Turbo Services', url: 'https://www.keshavturboservices.com' },
 							},
 							{
@@ -10006,7 +10168,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 
 	return (
 		<>
-		<main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
+		<main id="main-content" tabIndex={-1} className="pt-24 pb-20 md:pb-20 pb-[88px] bg-slate-50 min-h-screen">
 			<SEOHead
 				title={`${product.title} | ${product.category}`}
 				description={`${product.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -10231,14 +10393,55 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</div>
 
 						<div className="lg:col-span-7 p-8 lg:p-12 flex flex-col bg-linear-to-br from-white to-slate-50/50">
-							<div className="mb-5">
+							<div className="mb-5 flex items-center gap-3 flex-wrap">
 								<span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-4 py-2 uppercase tracking-widest rounded-md shadow-sm">
 									{product.category}
 								</span>
+								{product.availability && (
+									<span className={`text-xs font-black px-3 py-2 rounded-md border uppercase tracking-wider ${AVAIL_STYLES[product.availability.color] || AVAIL_STYLES.green}`}>
+										{product.availability.label}
+									</span>
+								)}
+								{/* Share / copy-link button */}
+								<ShareProductButton title={product.title} />
 							</div>
-							<h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-[1.1] tracking-tight">
+							<h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-[1.1] tracking-tight">
 								{product.title}
 							</h1>
+
+							{/* Price range display */}
+							{product.priceRange && (
+								<div className="mb-5 bg-gradient-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-2xl p-5">
+									<div className="flex flex-col sm:flex-row sm:items-center gap-3">
+										<div className="flex-1">
+											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+												<TrendingUp className="w-3.5 h-3.5" aria-hidden="true" /> Indicative Price Range
+											</p>
+											<p className="text-2xl font-black text-slate-900">
+												{fmtINR(product.priceRange.min)}
+												<span className="text-slate-400 mx-2">–</span>
+												{fmtINR(product.priceRange.max)}
+												<span className="text-sm font-bold text-slate-500 ml-2">{product.priceRange.unit}</span>
+											</p>
+											{product.priceRange.note && (
+												<p className="text-xs text-slate-400 mt-1">{product.priceRange.note}</p>
+											)}
+										</div>
+										<a
+											href={waMsg(`Hello KESHAV ENTERPRISES, I need a quotation for: *${product.title}*. Please share your best price.`)}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="shrink-0 bg-[#25D366] text-white px-5 py-3 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all shadow-sm flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 whitespace-nowrap"
+										>
+											<MessageCircle className="w-4 h-4" aria-hidden="true" /> Get Quote
+										</a>
+									</div>
+									<p className="mt-3 text-[11px] text-slate-400 leading-relaxed border-t border-blue-100 pt-2">
+										Prices are indicative market estimates (IndiaMART / TradeIndia 2025). Actual price depends on size, quantity, material grade, and OEM spec. Contact us for a firm quotation.
+									</p>
+								</div>
+							)}
+
 							<p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">
 								{product.desc}
 							</p>
@@ -10397,7 +10600,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							id="related-heading"
 							className="text-2xl font-black text-slate-900 mb-6 tracking-tight"
 						>
-							Related Products in {product.category}
+							You May Also Need
 						</h2>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 							{related.map((p) => (
@@ -10409,6 +10612,32 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 				<RecentlyViewedStrip currentProductId={productId} navigate={navigate} />
 			</div>
 		</main>
+
+		{/* ── Sticky mobile CTA bar ──
+			Shown only on small screens (md:hidden). Stays pinned to the bottom
+			so the WhatsApp / IndiaMART CTAs are always reachable without scrolling. */}
+		<div
+			className="md:hidden fixed bottom-0 left-0 right-0 z-[900] bg-white border-t-2 border-slate-200 shadow-2xl shadow-slate-900/20 px-4 pt-3 flex gap-3"
+			style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
+			aria-label="Quick actions"
+		>
+			<a
+				href={waMsg(`Hello KESHAV ENTERPRISES, I am interested in: *${product.title}*. Please share technical specs and quote.`)}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="flex-1 bg-[#25D366] text-white py-3.5 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+			>
+				<MessageCircle className="w-5 h-5" aria-hidden="true" /> Get Quote
+			</a>
+			<a
+				href={CONTACT_INFO.indiamart}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-black text-sm hover:bg-blue-700 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+			>
+				<ExternalLink className="w-4 h-4" aria-hidden="true" /> IndiaMART
+			</a>
+		</div>
 
 		{showReport && product && (
 			<ReportIssueModal
@@ -10811,9 +11040,15 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 									<h3 className="text-base font-black text-slate-900 mb-1.5 leading-tight group-hover:text-blue-600 transition-colors tracking-tight line-clamp-2 pointer-events-none">
 										{product.title}
 									</h3>
-									<p className="text-slate-500 font-medium text-xs leading-relaxed mb-4 line-clamp-2 flex-1 pointer-events-none">
+									<p className="text-slate-500 font-medium text-xs leading-relaxed mb-3 line-clamp-2 flex-1 pointer-events-none">
 										{product.desc}
 									</p>
+									{/* Price range on featured strip card */}
+									{product.priceRange && (
+										<p className="text-[11px] font-black text-slate-500 mb-3 pointer-events-none">
+											Est. <span className="text-slate-800">{fmtINR(product.priceRange.min)}–{fmtINR(product.priceRange.max)}</span> {product.priceRange.unit}
+										</p>
+									)}
 									<div className="flex items-center justify-between pt-3.5 border-t border-slate-100">
 										<span className="text-xs font-bold text-slate-500 group-hover:text-slate-900 transition-colors pointer-events-none">
 											View Details
@@ -11696,7 +11931,7 @@ const AboutPage = memo(({ navigate }) => {
 		{
 			year: '2015',
 			title: 'Product Range Expansion',
-			desc: 'Launched a comprehensive industrial product line covering filtration, expansion joints, strainers, rubber products, and flexible hose assemblies.',
+			desc: 'Launched a comprehensive industrial product line covering filtration, HVAC air filters, expansion joints, strainers, rubber products, and flexible hose assemblies.',
 		},
 		{
 			year: '2020',
@@ -11995,7 +12230,7 @@ const AboutPage = memo(({ navigate }) => {
 									'Dynamic balancing to ISO 1940 / API 670 (50–2,000 kg)',
 									'Lube oil flushing per ISO 4406:99 cleanliness classification',
 									'Machine alignment using latest laser alignment technology',
-									'Manufacturing: filter elements, expansion joints, strainers',
+									'Manufacturing: filter elements, HVAC air filters, expansion joints, strainers',
 									'Turbine spares: bearings, seals, rotors, governors, valves',
 									'24×7 emergency breakdown response, multi-location engineers',
 								].map((item) => (
@@ -12050,7 +12285,7 @@ const AboutPage = memo(({ navigate }) => {
 							aria-hidden="true"
 						/>
 						<p className="text-slate-500 text-base max-w-2xl mx-auto mt-5 leading-relaxed">
-							126 precision-engineered components across 8 categories — from OEM-matched filter elements to turbine spares that ship the same week your plant calls.
+							{PRODUCTS.length}+ precision-engineered components across 9 categories — from OEM-matched filter elements and HVAC air filters to turbine spares that ship the same week your plant calls.
 						</p>
 					</div>
 
@@ -12074,9 +12309,9 @@ const AboutPage = memo(({ navigate }) => {
 							},
 							{
 								src: 'workshop-gallery-products.webp',
-								alt: 'Keshav Enterprises industrial product range — filtration, strainers, expansion joints and turbine spares',
+								alt: 'Keshav Enterprises industrial product range — filtration, HVAC air filters, strainers, expansion joints and turbine spares',
 								caption: 'Product Range',
-								desc: '126 engineered products across 8 categories — filtration, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.',
+								desc: `${PRODUCTS.length} engineered products across 9 categories — filtration, HVAC air filters, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.`,
 								onClick: () => navigate('/products'),
 								linkLabel: 'Browse Products',
 							},
@@ -12356,6 +12591,8 @@ const AboutPage = memo(({ navigate }) => {
 									{[
 										'Industrial filtration elements — simplex, duplex, and return-line',
 										'Turbine lube oil & control oil filter assemblies',
+										'HVAC air filters — pocket bag, pleated panel, metallic mesh, activated carbon',
+										'Pulse-jet dust collector filter bags & cartridge elements',
 										'Metallic & fabric expansion joints and bellows',
 										'Simplex & duplex basket strainers (SS 304 / 316)',
 										'Turbine spares — bearings, seals, labyrinth packings, governors',
@@ -12908,8 +13145,8 @@ const BlogPage = memo(({ navigate }) => (
 		className="pt-20 pb-20 bg-slate-50 min-h-screen"
 	>
 		<SEOHead
-			title="Engineering Blog — Turbine Maintenance & Industrial Insights"
-			description="Technical articles on steam turbine overhauling, lube oil filtration, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."
+			title="Engineering Blog — Turbine Maintenance, Industrial Filtration & HVAC Insights"
+			description="Technical articles on steam turbine overhauling, lube oil filtration, HVAC air filter selection, pulse-jet dust collectors, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."
 			canonicalPath="/blog"
 			pageType="website"
 		/>
@@ -12930,9 +13167,9 @@ const BlogPage = memo(({ navigate }) => (
 					aria-hidden="true"
 				/>
 				<p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed">
-					Technical insights on turbine maintenance, lube oil systems, reverse
-					engineering, and industrial best practices — from our engineering
-					team.
+					Technical insights on turbine maintenance, lube oil systems, HVAC air
+					filtration, dust collection, reverse engineering, and industrial best
+					practices — from our engineering team.
 				</p>
 			</div>
 		</div>
@@ -15532,138 +15769,218 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 ServiceDetailPage.displayName = 'ServiceDetailPage';
 
 // ─── PRODUCTS PAGE ────────────────────────────────────────────
+const PAGE_SIZE = 24;
+
 const ProductsPage = memo(({ navigate }) => {
 	const [activeCategory, setActiveCategory] = useState('All');
-	const [searchQuery, setSearchQuery] = useState('');
+	const [searchQuery, setSearchQuery]       = useState('');
+	const [sortBy, setSortBy]                 = useState('default');
+	const [page, setPage]                     = useState(1);
+	const [priceMin, setPriceMin]             = useState('');
+	const [priceMax, setPriceMax]             = useState('');
+	const [showFilters, setShowFilters]       = useState(false);
 	const categoryScrollRef = useRef(null);
-	const [showLeft, setShowLeft] = useState(false);
+	const [showLeft, setShowLeft]   = useState(false);
 	const [showRight, setShowRight] = useState(true);
+	const topRef = useRef(null);
+
 	const handleScroll = useCallback(() => {
 		if (!categoryScrollRef.current) return;
 		const { scrollLeft, scrollWidth, clientWidth } = categoryScrollRef.current;
 		setShowLeft(scrollLeft > 5);
 		setShowRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
 	}, []);
+
 	useEffect(() => {
 		handleScroll();
 		const t = setTimeout(handleScroll, 250);
 		window.addEventListener('resize', handleScroll, { passive: true });
-		return () => {
-			clearTimeout(t);
-			window.removeEventListener('resize', handleScroll);
-		};
+		return () => { clearTimeout(t); window.removeEventListener('resize', handleScroll); };
 	}, [activeCategory, handleScroll]);
+
 	const scrollCats = useCallback((dir) => {
-		categoryScrollRef.current?.scrollBy({
-			left: dir === 'left' ? -350 : 350,
-			behavior: 'smooth',
-		});
+		categoryScrollRef.current?.scrollBy({ left: dir === 'left' ? -350 : 350, behavior: 'smooth' });
 	}, []);
-	// PERF FIX: useMemo for filtering
-	const filtered = useMemo(
-		() =>
-			PRODUCTS.filter((p) => {
-				if (activeCategory !== 'All' && p.category !== activeCategory)
-					return false;
-				const q = searchQuery.toLowerCase().trim();
-				if (!q) return true;
-				return (
-					p.title.toLowerCase().includes(q) ||
-					p.desc.toLowerCase().includes(q) ||
-					p.usage?.toLowerCase().includes(q) ||
-					p.features.some((f) => f.toLowerCase().includes(q))
-				);
-			}),
-		[activeCategory, searchQuery],
-	);
+
+	// Reset page whenever filter/sort changes
+	useEffect(() => { setPage(1); }, [activeCategory, searchQuery, sortBy, priceMin, priceMax]);
+
+	const pMinN = priceMin !== '' ? Number(priceMin) : null;
+	const pMaxN = priceMax !== '' ? Number(priceMax) : null;
+
+	const filtered = useMemo(() => {
+		let list = PRODUCTS.filter((p) => {
+			if (activeCategory !== 'All' && p.category !== activeCategory) return false;
+			const q = searchQuery.toLowerCase().trim();
+			if (q && !(
+				p.title.toLowerCase().includes(q) ||
+				p.desc.toLowerCase().includes(q) ||
+				p.usage?.toLowerCase().includes(q) ||
+				p.features.some((f) => f.toLowerCase().includes(q))
+			)) return false;
+			// Price-range filter — check against band if product has priceRange
+			if (p.priceRange) {
+				if (pMinN !== null && p.priceRange.max < pMinN) return false;
+				if (pMaxN !== null && p.priceRange.min > pMaxN) return false;
+			}
+			return true;
+		});
+		// Sort
+		if (sortBy === 'az')        list = [...list].sort((a, b) => a.title.localeCompare(b.title));
+		if (sortBy === 'za')        list = [...list].sort((a, b) => b.title.localeCompare(a.title));
+		if (sortBy === 'price_asc') list = [...list].sort((a, b) => (a.priceRange?.min || 0) - (b.priceRange?.min || 0));
+		if (sortBy === 'price_desc')list = [...list].sort((a, b) => (b.priceRange?.max || 0) - (a.priceRange?.max || 0));
+		return list;
+	}, [activeCategory, searchQuery, sortBy, pMinN, pMaxN]);
+
 	const counts = useMemo(
-		() =>
-			PRODUCT_CATEGORIES.reduce((a, c) => {
-				a[c] =
-					c === 'All'
-						? PRODUCTS.length
-						: PRODUCTS.filter((p) => p.category === c).length;
-				return a;
-			}, {}),
+		() => PRODUCT_CATEGORIES.reduce((a, c) => {
+			a[c] = c === 'All' ? PRODUCTS.length : PRODUCTS.filter((p) => p.category === c).length;
+			return a;
+		}, {}),
 		[],
 	);
+
+	const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+	const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+	const hasActiveFilters = searchQuery || activeCategory !== 'All' || priceMin || priceMax || sortBy !== 'default';
+
+	const clearAll = useCallback(() => {
+		setSearchQuery(''); setActiveCategory('All'); setSortBy('default'); setPriceMin(''); setPriceMax('');
+	}, []);
+
+	const goPage = useCallback((n) => {
+		setPage(n);
+		topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}, []);
+
 	return (
-		<main
-			id="main-content"
-			tabIndex={-1}
-			className="pt-20 pb-20 bg-slate-50 min-h-screen"
-		>
+		<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-slate-50 min-h-screen" ref={topRef}>
 			<SEOHead
 				title="Product Catalog — Turbine Spares, Filters, Expansion Joints, HVAC Air Filters"
 				description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, HVAC air filters, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}
 				canonicalPath="/products"
 				pageType="website"
 			/>
+
+			{/* Hero */}
 			<div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
-				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
-					aria-hidden="true"
-				/>
+				<div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
-					<h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-md">
-						Industrial Products
-					</h1>
-					<div
-						className="section-divider w-20 h-1.5 bg-blue-500 mb-6 rounded-full"
-						aria-hidden="true"
-					/>
+					<h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-md">Industrial Products</h1>
+					<div className="section-divider w-20 h-1.5 bg-blue-500 mb-6 rounded-full" aria-hidden="true" />
 					<p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
-						{PRODUCTS.length} precision-engineered products across{' '}
-						{PRODUCT_CATEGORIES.length - 1} categories. ISO/API/ASME compliant
-						with full technical specifications.
+						{PRODUCTS.length} precision-engineered products across {PRODUCT_CATEGORIES.length - 1} categories. ISO/API/ASME compliant with full technical specifications.
 					</p>
 				</div>
 			</div>
+
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="mb-12 flex flex-col gap-6">
-					<div className="relative w-full max-w-2xl mx-auto md:mx-0">
-						<label htmlFor="product-search" className="sr-only">
-							Search products by name, specification, or application
-						</label>
-						<input
-							id="product-search"
-							type="search"
-							placeholder="Search products, specs, applications..."
-							value={searchQuery}
-							onChange={(e) => { setSearchQuery(e.target.value); if (activeCategory !== 'All') setActiveCategory('All'); }}
-							className="w-full pl-14 pr-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-lg font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
-						/>
-						<Search
-							className="absolute left-5 top-1/2 -translate-y-1/2 w-7 h-7 text-slate-400 pointer-events-none"
-							aria-hidden="true"
-						/>
-						{searchQuery && (
+				{/* ── Search + Filter Controls ── */}
+				<div className="mb-10 flex flex-col gap-5">
+					{/* Row 1: search + sort + filter toggle */}
+					<div className="flex flex-col sm:flex-row gap-3">
+						<div className="relative flex-1 max-w-2xl">
+							<label htmlFor="product-search" className="sr-only">Search products by name, specification, or application</label>
+							<input
+								id="product-search"
+								type="search"
+								placeholder="Search products, specs, applications..."
+								value={searchQuery}
+								onChange={(e) => { setSearchQuery(e.target.value); if (activeCategory !== 'All') setActiveCategory('All'); }}
+								className="w-full pl-14 pr-6 py-4 bg-white border-2 border-slate-200 rounded-2xl text-base font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
+							/>
+							<Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 pointer-events-none" aria-hidden="true" />
+							{searchQuery && (
+								<button type="button" onClick={() => setSearchQuery('')} aria-label="Clear search" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+									<X className="w-5 h-5" aria-hidden="true" />
+								</button>
+							)}
+						</div>
+
+						{/* Sort selector */}
+						<div className="flex gap-2 shrink-0">
+							<label htmlFor="product-sort" className="sr-only">Sort products</label>
+							<select
+								id="product-sort"
+								value={sortBy}
+								onChange={(e) => setSortBy(e.target.value)}
+								className="h-full px-4 py-4 bg-white border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-md cursor-pointer min-w-[160px]"
+							>
+								<option value="default">Default order</option>
+								<option value="az">Name A → Z</option>
+								<option value="za">Name Z → A</option>
+								<option value="price_asc">Price: Low → High</option>
+								<option value="price_desc">Price: High → Low</option>
+							</select>
+
+							{/* Price filter toggle */}
 							<button
 								type="button"
-								onClick={() => setSearchQuery('')}
-								aria-label="Clear search"
-								className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+								onClick={() => setShowFilters(v => !v)}
+								aria-expanded={showFilters}
+								aria-controls="price-filter-panel"
+								className={`px-4 py-4 rounded-2xl text-sm font-bold border-2 flex items-center gap-2 shadow-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showFilters ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400'}`}
 							>
-								<X className="w-5 h-5" aria-hidden="true" />
+								<Filter className="w-4 h-4" aria-hidden="true" />
+								Price
 							</button>
-						)}
+						</div>
 					</div>
-					{/* biome-ignore lint/a11y/useSemanticElements: toolbar grouping, not a form fieldset */}
-					<div
-						className="relative w-full flex items-center mt-2"
-						role="group"
-						aria-label="Filter by product category"
-					>
-						<button
-							type="button"
-							onClick={() => scrollCats('left')}
-							aria-label="Scroll categories left"
-							className={`absolute left-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+
+					{/* Price range panel */}
+					{showFilters && (
+						<div
+							id="price-filter-panel"
+							className="bg-white border-2 border-blue-100 rounded-2xl p-5 shadow-md"
+							role="group"
+							aria-label="Filter by price range (INR)"
 						>
-							<ChevronLeft
-								className="w-5 h-5 md:w-6 md:h-6"
-								aria-hidden="true"
-							/>
+							<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">
+								Estimated Price Range (INR) — based on market data
+							</p>
+							<div className="flex flex-col sm:flex-row gap-3 items-end">
+								<div className="flex-1">
+									<label htmlFor="price-min" className="block text-xs font-bold text-slate-600 mb-1.5">Min Price (₹)</label>
+									<input
+										id="price-min"
+										type="number"
+										min="0"
+										placeholder="e.g. 500"
+										value={priceMin}
+										onChange={(e) => setPriceMin(e.target.value)}
+										className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+									/>
+								</div>
+								<div className="flex-1">
+									<label htmlFor="price-max" className="block text-xs font-bold text-slate-600 mb-1.5">Max Price (₹)</label>
+									<input
+										id="price-max"
+										type="number"
+										min="0"
+										placeholder="e.g. 50000"
+										value={priceMax}
+										onChange={(e) => setPriceMax(e.target.value)}
+										className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+									/>
+								</div>
+								{(priceMin || priceMax) && (
+									<button type="button" onClick={() => { setPriceMin(''); setPriceMax(''); }} className="px-4 py-3 text-sm font-bold text-red-600 hover:text-red-800 border-2 border-red-100 hover:border-red-300 rounded-xl transition-colors shrink-0">
+										Clear
+									</button>
+								)}
+							</div>
+							<p className="mt-3 text-[11px] text-slate-400 font-medium leading-relaxed">
+								Prices are indicative market estimates sourced from IndiaMART, TradeIndia and ExportersIndia (2025). Actual pricing depends on size, material, quantity, and OEM spec. Contact us for an exact quotation.
+							</p>
+						</div>
+					)}
+
+					{/* Category scroll strip */}
+					<div className="relative w-full flex items-center mt-1" role="group" aria-label="Filter by product category">
+						<button type="button" onClick={() => scrollCats('left')} aria-label="Scroll categories left" className={`absolute left-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+							<ChevronLeft className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
 						</button>
 						<div
 							ref={categoryScrollRef}
@@ -15680,88 +15997,149 @@ const ProductsPage = memo(({ navigate }) => {
 									className={`snap-start shrink-0 px-5 py-3 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeCategory === cat ? 'bg-slate-900 text-white border-slate-900 shadow-lg scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'}`}
 								>
 									{cat}
-									<span
-										className={`text-xs px-1.5 py-0.5 rounded-full font-black ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}
-									>
+									<span className={`text-xs px-1.5 py-0.5 rounded-full font-black ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}>
 										{counts[cat]}
 									</span>
 								</button>
 							))}
 						</div>
-						<button
-							type="button"
-							onClick={() => scrollCats('right')}
-							aria-label="Scroll categories right"
-							className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-						>
-							<ChevronRight
-								className="w-5 h-5 md:w-6 md:h-6"
-								aria-hidden="true"
-							/>
+						<button type="button" onClick={() => scrollCats('right')} aria-label="Scroll categories right" className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+							<ChevronRight className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
 						</button>
 					</div>
-					{(searchQuery || activeCategory !== 'All') && (
-						<div
-							className="flex items-center gap-3 -mt-2"
-							role="status"
-							aria-live="polite"
-						>
+
+					{/* Active filter status bar */}
+					{hasActiveFilters && (
+						<div className="flex items-center gap-3 -mt-2" role="status" aria-live="polite">
 							<span className="text-sm font-bold text-slate-500">
-								{filtered.length} product{filtered.length !== 1 ? 's' : ''}{' '}
-								found
+								{filtered.length} product{filtered.length !== 1 ? 's' : ''} found
+								{totalPages > 1 && ` · page ${page} of ${totalPages}`}
 							</span>
-							<button
-								type="button"
-								onClick={() => {
-									setSearchQuery('');
-									setActiveCategory('All');
-								}}
-								className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors focus:outline-none focus-visible:underline"
-							>
-								<X className="w-4 h-4" aria-hidden="true" />
-								Clear filters
+							<button type="button" onClick={clearAll} className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors focus:outline-none focus-visible:underline">
+								<X className="w-4 h-4" aria-hidden="true" /> Clear all
 							</button>
 						</div>
 					)}
 				</div>
-				{filtered.length > 0 ? (
-					<ul
-						className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
-						aria-label={`${filtered.length} products`}
-					>
-						{filtered.map((p, idx) => (
-							<li key={p.id}>
-								<ProductCard
-									product={p}
-									navigate={navigate}
-									priority={idx < 6}
-								/>
-							</li>
-						))}
-					</ul>
-				) : (
-					<div
-						className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm"
-						role="status"
-					>
-						<Search
-							className="w-20 h-20 text-slate-200 mx-auto mb-6"
-							aria-hidden="true"
-						/>
-						<h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">
-							No products found
-						</h2>
-						<p className="text-slate-500 font-medium text-lg">
-							Try adjusting your search or category filter.
+
+				{/* ── Category Price Guide ── */}
+				<details className="mb-10 bg-white border border-slate-200 rounded-2xl shadow-sm group">
+					<summary className="flex items-center gap-3 px-6 py-4 cursor-pointer list-none select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl">
+						<TrendingUp className="w-5 h-5 text-blue-500 shrink-0" aria-hidden="true" />
+						<span className="text-sm font-black text-slate-900">Category Price Guide</span>
+						<span className="text-xs text-slate-400 font-medium ml-1">— indicative INR ranges, sourced from IndiaMART / TradeIndia 2025</span>
+						<ChevronRight className="w-4 h-4 text-slate-400 ml-auto group-open:rotate-90 transition-transform" aria-hidden="true" />
+					</summary>
+					<div className="px-6 pb-5 pt-1">
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+							{Object.entries(CATEGORY_PRICE_BANDS).map(([cat, band]) => {
+								const av = CATEGORY_AVAILABILITY[cat];
+								return (
+									<button
+										key={cat}
+										type="button"
+										onClick={() => { setActiveCategory(cat); setSearchQuery(''); topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
+										className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:border-blue-300 hover:bg-blue-50/40 transition-all text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+									>
+										<div className="shrink-0">
+											{getCategoryIcon(cat)}
+										</div>
+										<div className="min-w-0 flex-1">
+											<p className="text-xs font-black text-slate-800 truncate">{cat}</p>
+											<p className="text-xs text-blue-600 font-bold">{fmtINR(band.min)} – {fmtINR(band.max)} <span className="text-slate-400 font-medium">{band.unit}</span></p>
+										</div>
+										{av && (
+											<span className={`text-[10px] font-black px-2 py-1 rounded border shrink-0 ${AVAIL_STYLES[av.color] || AVAIL_STYLES.green}`}>
+												{av.label}
+											</span>
+										)}
+									</button>
+								);
+							})}
+						</div>
+						<p className="mt-4 text-[11px] text-slate-400 leading-relaxed">
+							Prices are indicative market estimates. Actual pricing depends on size, material grade, OEM spec, and order quantity. Contact us for a firm quotation.
 						</p>
-						<button
-							type="button"
-							onClick={() => {
-								setSearchQuery('');
-								setActiveCategory('All');
-							}}
-							className="mt-8 bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-700 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-						>
+					</div>
+				</details>
+
+				{/* ── Product grid ── */}
+				{paginated.length > 0 ? (
+					<>
+						<ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" aria-label={`${filtered.length} products, showing ${paginated.length}`}>
+							{paginated.map((p, idx) => (
+								<li key={p.id}>
+									<ProductCard product={p} navigate={navigate} priority={idx < 6} />
+								</li>
+							))}
+						</ul>
+
+						{/* ── Pagination ── */}
+						{totalPages > 1 && (
+							<nav aria-label="Product catalog pagination" className="mt-14 flex items-center justify-center gap-2 flex-wrap">
+								<button
+									type="button"
+									onClick={() => goPage(page - 1)}
+									disabled={page === 1}
+									aria-label="Previous page"
+									className="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white text-slate-600 hover:border-blue-500 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+								>
+									<ChevronLeft className="w-5 h-5" aria-hidden="true" />
+								</button>
+								{Array.from({ length: totalPages }, (_, i) => i + 1)
+									.filter(n => n === 1 || n === totalPages || Math.abs(n - page) <= 2)
+									.reduce((acc, n, idx, arr) => {
+										if (idx > 0 && n - arr[idx - 1] > 1) acc.push('…');
+										acc.push(n);
+										return acc;
+									}, [])
+									.map((item, i) =>
+										item === '…' ? (
+											<span key={`ellipsis-${i}`} className="w-10 h-10 flex items-center justify-center text-slate-400 font-bold select-none">…</span>
+										) : (
+											<button
+												key={item}
+												type="button"
+												onClick={() => goPage(item)}
+												aria-label={`Page ${item}`}
+												aria-current={item === page ? 'page' : undefined}
+												className={`w-10 h-10 flex items-center justify-center rounded-xl border-2 text-sm font-black transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${item === page ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600'}`}
+											>
+												{item}
+											</button>
+										)
+									)}
+								<button
+									type="button"
+									onClick={() => goPage(page + 1)}
+									disabled={page === totalPages}
+									aria-label="Next page"
+									className="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white text-slate-600 hover:border-blue-500 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+								>
+									<ChevronRight className="w-5 h-5" aria-hidden="true" />
+								</button>
+							</nav>
+						)}
+					</>
+				) : (
+					<div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm" role="status">
+						<Search className="w-20 h-20 text-slate-200 mx-auto mb-6" aria-hidden="true" />
+						<h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">No products found</h2>
+						<p className="text-slate-500 font-medium text-lg mb-2">Try adjusting your search, category, or price filter.</p>
+						{(priceMin || priceMax) && (
+							<p className="text-slate-400 text-sm mb-4">
+								Price filter: {priceMin ? `₹${Number(priceMin).toLocaleString('en-IN')}` : 'any'} – {priceMax ? `₹${Number(priceMax).toLocaleString('en-IN')}` : 'any'}
+							</p>
+						)}
+						{/* Suggested categories */}
+						<div className="mt-4 mb-8 flex flex-wrap gap-2 justify-center">
+							{PRODUCT_CATEGORIES.filter(c => c !== 'All').slice(0, 4).map(cat => (
+								<button key={cat} type="button" onClick={() => { setSearchQuery(''); setActiveCategory(cat); setPriceMin(''); setPriceMax(''); }} className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-bold border border-blue-100 hover:bg-blue-100 transition-colors">
+									{cat} ({counts[cat]})
+								</button>
+							))}
+						</div>
+						<button type="button" onClick={clearAll} className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-700 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
 							Clear all filters
 						</button>
 					</div>
@@ -16346,8 +16724,8 @@ const INDUSTRY_DETAILS = {
 	},
 	ind_7: {
 		heroSub:
-			'Lube oil filtration, expansion joints, strainers & vibration isolation for cement plant machinery',
-		overview: `Cement manufacturing is one of the most abrasive and dust-laden industrial environments on earth. Rotary kilns operating at 200–400°C shell temperature, ball mills running continuously for months, and crusher trains generating massive dust clouds place extreme demands on every lubrication, sealing, and piping component. Keshav Enterprises supplies the precision-grade filtration, expansion joints, and anti-vibration solutions that keep cement plants running at 330+ days per year.`,
+			'Lube oil filtration, pulse-jet dust collector bags, HVAC air filters, expansion joints & vibration isolation for cement plant machinery',
+		overview: `Cement manufacturing is one of the most abrasive and dust-laden industrial environments on earth. Rotary kilns operating at 200–400°C shell temperature, ball mills running continuously for months, and crusher trains generating massive dust clouds place extreme demands on every lubrication, sealing, and piping component. Keshav Enterprises supplies the precision-grade filtration, pulse-jet dust collector filter bags, HVAC air filters, expansion joints, and anti-vibration solutions that keep cement plants running at 330+ days per year.`,
 		challenges: [
 			{
 				title: 'Extreme Dust & Abrasive Contamination',
