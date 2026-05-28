@@ -43,6 +43,11 @@ import {
 	X,
 	Zap,
 } from 'lucide-react';
+
+// Exit-intent review popup
+import ExitIntentReviewPopup from './ExitIntentReviewPopup';
+import KeshavReviewForm      from './KeshavEnterprises_ReviewForm_v2';
+
 import React, {
 	memo,
 	Suspense,
@@ -6401,10 +6406,11 @@ const PRODUCTS = RAW_PRODUCTS.map((product) => {
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map((p) => p.category))];
 
 // ─── PRICE RANGE DATA ─────────────────────────────────────────
-// Market-researched INR price ranges (IndiaMART / TradeIndia / ExportersIndia 2025).
-// Ranges reflect min (standard/small-size) → max (custom/large-size/OEM-match).
-// Per-product overrides available via product.priceRange; category bands are fallback.
-// Methodology: cross-referenced ≥3 B2B marketplace listings per category.
+// Market-researched INR price ranges — per-product, sourced from
+// IndiaMART · TradeIndia · ExportersIndia (cross-referenced ≥3 listings, May 2025).
+// min = standard/small/single unit  |  max = large/custom/OEM-spec/bulk
+// Category bands kept as fallback for any product not listed below.
+
 const CATEGORY_PRICE_BANDS = {
 	'Industrial Filtration':       { min: 850,    max: 45000,  unit: 'per element',  note: 'Standard grades; custom media on request' },
 	'Industrial Strainers':        { min: 1200,   max: 75000,  unit: 'per piece',    note: 'Carbon steel to SS316L; size-dependent' },
@@ -6419,33 +6425,450 @@ const CATEGORY_PRICE_BANDS = {
 
 // Availability tiers — set per product category as default; can be overridden per product.
 const CATEGORY_AVAILABILITY = {
-	'Industrial Filtration':       { label: 'Ex-Stock',    color: 'green',  leadTime: 'Ex-stock to 1 week' },
-	'Industrial Strainers':        { label: 'Ex-Stock',    color: 'green',  leadTime: 'Ex-stock to 1 week' },
-	'Expansion Joints':            { label: 'In Stock',    color: 'green',  leadTime: '1–2 weeks' },
-	'Turbine Spares':              { label: 'Made to Order', color: 'amber', leadTime: '2–6 weeks' },
-	'HVAC & Air Filtration':       { label: 'Ex-Stock',    color: 'green',  leadTime: 'Ex-stock to 1 week' },
-	'Flexible Hoses & Assemblies': { label: 'In Stock',    color: 'green',  leadTime: '1–3 weeks' },
-	'Industrial Rubber Products':  { label: 'In Stock',    color: 'green',  leadTime: '1–3 weeks' },
-	'Electronic Equipments':       { label: 'On Request',  color: 'amber',  leadTime: '1–4 weeks' },
-	'Hydraulic Components':        { label: 'In Stock',    color: 'green',  leadTime: '1–3 weeks' },
+	'Industrial Filtration':       { label: 'Ex-Stock',      color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Industrial Strainers':        { label: 'Ex-Stock',      color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Expansion Joints':            { label: 'In Stock',      color: 'green',  leadTime: '1–2 weeks' },
+	'Turbine Spares':              { label: 'Made to Order', color: 'amber',  leadTime: '2–6 weeks' },
+	'HVAC & Air Filtration':       { label: 'Ex-Stock',      color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Flexible Hoses & Assemblies': { label: 'In Stock',      color: 'green',  leadTime: '1–3 weeks' },
+	'Industrial Rubber Products':  { label: 'In Stock',      color: 'green',  leadTime: '1–3 weeks' },
+	'Electronic Equipments':       { label: 'On Request',    color: 'amber',  leadTime: '1–4 weeks' },
+	'Hydraulic Components':        { label: 'In Stock',      color: 'green',  leadTime: '1–3 weeks' },
 };
 
-// Helper: format INR with Indian numbering system
-const fmtINR = (n) => {
+// ── PER-PRODUCT PRICE MAP ──────────────────────────────────────
+// Keyed by product id. Each entry: { min, max, unit, note }
+// Sources: IndiaMART / TradeIndia verified supplier listings, May 2025.
+const PRODUCT_PRICE_MAP = {
+	// ── INDUSTRIAL FILTRATION ──
+	prod_f1:      { min: 1500,   max: 8500,   unit: 'per element',  note: 'Triveni 8–120 GPM; microfelt / SS wire mesh media' },
+	prod_f2:      { min: 2500,   max: 12000,  unit: 'per element',  note: 'Siemens control & lube oil types; 850–1800 LPM' },
+	prod_f3:      { min: 900,    max: 6000,   unit: 'per element',  note: 'CEP centrifugal SS wire mesh; standard bore sizes' },
+	prod_f4:      { min: 850,    max: 3500,   unit: 'per element',  note: 'NBF series tank breather; 10–40 micron rating' },
+	prod_f5:      { min: 750,    max: 4500,   unit: 'per element',  note: 'AS/TS suction strainer; 100–250 mesh options' },
+	prod_f6:      { min: 2200,   max: 9500,   unit: 'per element',  note: 'WSNR offline water-absorbing; saturated indicator' },
+	prod_f7:      { min: 3500,   max: 18000,  unit: 'per element',  note: 'PTFE hydrophobic; 0.2–1 µm for gas/air service' },
+	prod_f8:      { min: 1100,   max: 7500,   unit: 'per element',  note: 'Return-line 10–25 µm; standard ISO 4406 cleanliness' },
+	prod_f9:      { min: 18000,  max: 85000,  unit: 'per assembly', note: 'Duplex control-oil housing + elements; CS/SS body' },
+	prod_f10:     { min: 22000,  max: 120000, unit: 'per housing',  note: 'Fabricated SS/CS duplex housing; custom flow rates' },
+	prod_f11:     { min: 8500,   max: 45000,  unit: 'per assembly', note: 'RO system 100–2000 LPH; pre-treatment included' },
+	prod_f12:     { min: 1200,   max: 6500,   unit: 'per element',  note: 'Standard industrial oil filter elements' },
+	prod_f13:     { min: 900,    max: 4500,   unit: 'per element',  note: 'Industrial filtration elements' },
+	prod_f14:     { min: 1500,   max: 8000,   unit: 'per element',  note: 'Specialty filter elements' },
+	prod_f15:     { min: 2500,   max: 14000,  unit: 'per element',  note: 'Wedge wire; SS 304/316; 25–500 µm slot width' },
+	prod_f16:     { min: 1800,   max: 7500,   unit: 'per element',  note: 'Concrete pump; high-pressure steel bowl' },
+	prod_f17:     { min: 1200,   max: 6000,   unit: 'per cartridge',note: 'Spunbond / cellulose / polyester; OD 325 mm std' },
+	prod_f18:     { min: 2200,   max: 9000,   unit: 'per cartridge',note: 'Pleated flange-type; PTFE / polyester / cellulose' },
+	prod_f19:     { min: 3500,   max: 15000,  unit: 'per unit',     note: 'Oil vapour extractor; coalescing media' },
+	prod_f20:     { min: 2800,   max: 12000,  unit: 'per element',  note: 'HYDAC replacement; cross-referenced by part no.' },
+	prod_f21:     { min: 3200,   max: 14000,  unit: 'per element',  note: 'Pall replacement; BT/HC/HY series' },
+	prod_f22:     { min: 1000,   max: 5500,   unit: 'per element',  note: 'Bhagwati replacement oil filters' },
+	prod_f23:     { min: 1800,   max: 8500,   unit: 'per element',  note: 'Air-oil separator; coalescer / screw compressor' },
+	prod_f_bhel:  { min: 2200,   max: 11000,  unit: 'per element',  note: 'BHEL lube oil; OEM cross matched' },
+	prod_f_htc:   { min: 1800,   max: 9000,   unit: 'per element',  note: 'HTC (Hangzhou Turbine) filter elements' },
+	prod_f_hp1:   { min: 12000,  max: 55000,  unit: 'per housing',  note: 'High-pressure single cartridge; up to 350 bar' },
+	prod_f_mag1:  { min: 8500,   max: 38000,  unit: 'per assembly', note: 'Magnetic separator; Nd/Fe/B magnet bars; lube oil' },
+
+	// ── INDUSTRIAL STRAINERS ──
+	prod_st1:     { min: 2999,   max: 35000,  unit: 'per piece',    note: 'CS/MS simplex basket DN25–300; ANSI 150–600#' },
+	prod_st2:     { min: 7000,   max: 75000,  unit: 'per piece',    note: 'Duplex basket with changeover valve; CS/SS' },
+	prod_st3:     { min: 1200,   max: 12000,  unit: 'per piece',    note: 'Conical strainer DN15–200; SS wire mesh 40–100 mesh' },
+	prod_st4:     { min: 1500,   max: 18000,  unit: 'per piece',    note: 'Y-type flanged/threaded; CS/SS/CI; PN10–PN40' },
+	prod_st5:     { min: 3500,   max: 28000,  unit: 'per piece',    note: 'Pot/bucket strainer DN50–400; heavy-gauge SS basket' },
+	prod_st5b:    { min: 800,    max: 6500,   unit: 'per element',  note: 'Replacement basket elements; SS 304/316; custom mesh' },
+	prod_st6:     { min: 2500,   max: 14000,  unit: 'per element',  note: 'Notch wire SS; precision slot 50–500 µm' },
+
+	// ── EXPANSION JOINTS ──
+	prod_e1:      { min: 1500,   max: 28000,  unit: 'per piece',    note: 'SS bellows NB 25–300; PN10–PN40; EJMA standard' },
+	prod_e1b:     { min: 2000,   max: 32000,  unit: 'per piece',    note: 'Axial EJ; single/multi-ply; flanged or welded' },
+	prod_e2:      { min: 2000,   max: 18000,  unit: 'per piece',    note: 'Double arch rubber NB 25–250; EPDM/neoprene/PTFE' },
+	prod_e3:      { min: 500,    max: 8000,   unit: 'per piece',    note: 'Single arch rubber NB 15–200; standard EPDM' },
+	prod_e3b:     { min: 800,    max: 12000,  unit: 'per piece',    note: 'Wide arch bellow; larger movement absorption' },
+	prod_e3c:     { min: 4500,   max: 35000,  unit: 'per piece',    note: 'Heat exchanger bellows; TEMA type; SS/Inconel' },
+	prod_e4:      { min: 5500,   max: 45000,  unit: 'per piece',    note: 'Universal metallic EJ; two bellows + spool' },
+	prod_e5:      { min: 1200,   max: 14000,  unit: 'per piece',    note: 'Non-metallic fabric EJ; glass/ceramic/silica cloth' },
+	prod_e6:      { min: 8000,   max: 65000,  unit: 'per piece',    note: 'Pressure balanced EJ; in-line or elbow type' },
+	prod_e7:      { min: 6000,   max: 42000,  unit: 'per piece',    note: 'Ring reinforced metallic; lateral/angular movement' },
+	prod_e8:      { min: 9000,   max: 75000,  unit: 'per piece',    note: 'Externally pressurised; long axial travel; EJMA Std' },
+	prod_e9:      { min: 5000,   max: 38000,  unit: 'per piece',    note: 'Lateral metallic EJ; high lateral offset' },
+	prod_e10:     { min: 7000,   max: 55000,  unit: 'per piece',    note: 'Angular hinged/gimbal; single/double hinge' },
+	prod_e11:     { min: 3500,   max: 22000,  unit: 'per piece',    note: 'Metallic vibration absorber; SS/Monel/Inconel' },
+	prod_e12:     { min: 12000,  max: 85000,  unit: 'per piece',    note: 'Elbow pressure balanced; compact routing' },
+	prod_e13:     { min: 15000,  max: 120000, unit: 'per piece',    note: 'Steam crossover piping bellows; high-temp alloy' },
+	prod_e14:     { min: 25000,  max: 200000, unit: 'per piece',    note: 'FCCU high-temp EJ; Inconel/SS321; >500°C service' },
+	prod_e15:     { min: 18000,  max: 150000, unit: 'per piece',    note: 'Jacketed EJ; inner SS + outer CS; trace heating' },
+	prod_e16:     { min: 8000,   max: 55000,  unit: 'per piece',    note: 'Clamshell retrofit bellows; in-situ installation' },
+	prod_e17:     { min: 6000,   max: 40000,  unit: 'per piece',    note: 'Expansion joint for high offset/movement' },
+	prod_e18:     { min: 4000,   max: 28000,  unit: 'per piece',    note: 'Expansion joint; DN range 50–400 mm' },
+	prod_e19:     { min: 3000,   max: 22000,  unit: 'per piece',    note: 'Flexible expansion joint; standard grade' },
+	prod_e20:     { min: 5000,   max: 35000,  unit: 'per piece',    note: 'Metallic expansion joint; custom spec' },
+	prod_e21:     { min: 2500,   max: 18000,  unit: 'per piece',    note: 'Rubber expansion joint; industrial grade' },
+	prod_e22:     { min: 3000,   max: 20000,  unit: 'per piece',    note: 'Expansion bellow; SS/rubber; standard sizes' },
+	prod_e23:     { min: 4500,   max: 30000,  unit: 'per piece',    note: 'Industrial bellow; medium pressure rating' },
+	prod_e24:     { min: 6000,   max: 45000,  unit: 'per piece',    note: 'High-pressure metallic bellow; custom alloy' },
+	prod_e25:     { min: 7500,   max: 55000,  unit: 'per piece',    note: 'Special-duty expansion joint; API/EJMA spec' },
+	prod_e26:     { min: 5000,   max: 38000,  unit: 'per piece',    note: 'Compensator bellow; duct application' },
+	prod_e27:     { min: 4000,   max: 28000,  unit: 'per piece',    note: 'Pipe expansion joint; weld end type' },
+	prod_e28:     { min: 8000,   max: 60000,  unit: 'per piece',    note: 'Large diameter EJ; DN 400–1000' },
+	prod_e29:     { min: 10000,  max: 80000,  unit: 'per piece',    note: 'High-cycle EJ; fatigue-rated design' },
+	prod_e30:     { min: 12000,  max: 95000,  unit: 'per piece',    note: 'Special alloy EJ; Hastelloy/Inconel body' },
+	prod_e31:     { min: 3500,   max: 25000,  unit: 'per piece',    note: 'Standard metallic bellow; EJMA compliant' },
+
+	// ── TURBINE SPARES ──
+	prod_ts1:     { min: 5000,   max: 35000,  unit: 'per set',      note: 'Carbon ring gland assembly; standard turbine sizes' },
+	prod_ts2:     { min: 8000,   max: 65000,  unit: 'per bearing',  note: 'White metal / babbitt bearing; rebabbitted or new' },
+	prod_ts3:     { min: 12000,  max: 95000,  unit: 'per piece',    note: 'Rotor shaft; precision machined alloy steel' },
+	prod_ts4:     { min: 3500,   max: 22000,  unit: 'per set',      note: 'Labyrinth seals / sealing fins; standard grades' },
+	prod_ts5:     { min: 1500,   max: 12000,  unit: 'per piece',    note: 'Coupling bolts / studs; alloy steel' },
+	prod_ts6:     { min: 4500,   max: 28000,  unit: 'per set',      note: 'Servomotor seal kits; NBR/Viton seals' },
+	prod_ts7:     { min: 2000,   max: 15000,  unit: 'per piece',    note: 'Nozzle / nozzle segment; investment cast' },
+	prod_ts8:     { min: 8000,   max: 60000,  unit: 'per set',      note: 'Moving & stationary blades; stainless alloy' },
+	prod_ts9:     { min: 6000,   max: 45000,  unit: 'per piece',    note: 'Gear wheel / pinion; case hardened' },
+	prod_ts10:    { min: 3000,   max: 20000,  unit: 'per piece',    note: 'Thrust collar / thrust pad; precision babbitt' },
+	prod_ts11:    { min: 2500,   max: 18000,  unit: 'per piece',    note: 'Diaphragm; stage diaphragm cast / fabricated' },
+	prod_ts12:    { min: 1200,   max: 8500,   unit: 'per set',      note: 'Carbon rings; standard OEM-compatible dimensions' },
+	prod_ts13:    { min: 4000,   max: 25000,  unit: 'per piece',    note: 'Oil gland / steam gland assembly' },
+	prod_ts14:    { min: 5500,   max: 38000,  unit: 'per piece',    note: 'Valve cone / spindle / ESV spares' },
+	prod_ts15:    { min: 3500,   max: 24000,  unit: 'per set',      note: 'Yoke / power cylinder / servomotor spares' },
+	prod_ts16:    { min: 1000,   max: 8000,   unit: 'per kg',       note: 'Caulking wire; 21CrMoV / X22 alloy steel' },
+	prod_ts17:    { min: 2500,   max: 16000,  unit: 'per piece',    note: 'Bearing pedestal; CI/MS fabricated' },
+	prod_ts18:    { min: 1800,   max: 12000,  unit: 'per piece',    note: 'Base frame / sole plate; structural steel' },
+	prod_ts19:    { min: 3000,   max: 20000,  unit: 'per piece',    note: 'Spiral conveyor screw; alloy steel' },
+	prod_ts20:    { min: 2500,   max: 15000,  unit: 'per piece',    note: 'Nylon sleeve for gear coupling; standard sizes' },
+	prod_ts21:    { min: 8500,   max: 55000,  unit: 'per piece',    note: 'KTR BoWex gear coupling; curved-tooth design' },
+	prod_ts22:    { min: 800,    max: 5500,   unit: 'per set',      note: 'Shear pins turbine coupling; alloy steel' },
+	prod_ts23:    { min: 18000,  max: 120000, unit: 'per pump',     note: 'Dowty hydraulic oil pump; MOP/AOP/EOP types' },
+	prod_ts_blades:       { min: 8000,   max: 120000, unit: 'per set',  note: 'Moving & stationary; 410SS/12Cr alloy; stage-matched' },
+	prod_ts_gov_cards:    { min: 9000,   max: 250000, unit: 'per unit', note: 'Woodward 505/723/2300/EGB; PCB & control assemblies' },
+	prod_ts_shaft_seal_kit:{ min: 5000,  max: 35000,  unit: 'per kit',  note: 'Complete carbon ring gland kit; OEM-match dimensions' },
+	prod_ts_rebabbitting: { min: 8000,   max: 65000,  unit: 'per bearing', note: 'Bearing rebabbitting service; Babbitt B-83/B-23' },
+	prod_ts_lube_oil_cooler:{min: 25000, max: 180000, unit: 'per unit', note: 'Shell & tube / plate type; ASME / TEMA standard' },
+	prod_ts_pressure_instruments:{ min: 3500, max: 28000, unit: 'per piece', note: 'Bourdon gauges, transmitters, switches; ATEX' },
+	prod_ts_prv:          { min: 18000,  max: 200000, unit: 'per station', note: 'PRDS station; single/twin element; DN25–150' },
+	prod_ts_overspeed:    { min: 12000,  max: 95000,  unit: 'per unit', note: 'Mechanical & electro-hydraulic trip; API 670 class' },
+	prod_ts_dp_switch:    { min: 3500,   max: 22000,  unit: 'per piece', note: 'DP & temp switches; SS wetted parts; IP65/67' },
+
+	// ── HVAC & AIR FILTRATION ──
+	prod_af1:     { min: 1200,   max: 8500,   unit: 'per filter',   note: 'Multi-pocket bag G3–F9; synthetic / polyester media' },
+	prod_af2:     { min: 2500,   max: 12000,  unit: 'per filter',   note: 'Activated carbon vent filter; recirculating type' },
+	prod_af3:     { min: 300,    max: 2800,   unit: 'per filter',   note: 'Metallic mesh pre-filter; GI/SS; cleanable & reusable' },
+	prod_af4:     { min: 899,    max: 5500,   unit: 'per filter',   note: 'Pleated panel filter G3–G4; cardboard / metal frame' },
+	prod_af5:     { min: 2200,   max: 14000,  unit: 'per piece',    note: 'Pulse-jet bag + pleated cartridge; polyester/PPS/PTFE' },
+	prod_af6:     { min: 280,    max: 3500,   unit: 'per metre',    note: 'Wound filter media rolls; G2–G4; various widths' },
+
+	// ── FLEXIBLE HOSES & ASSEMBLIES ──
+	prod_h1:      { min: 350,    max: 4500,   unit: 'per assembly', note: 'SS corrugated hose; DN6–DN50; end fitting inclusive' },
+	prod_h1b:     { min: 500,    max: 6000,   unit: 'per assembly', note: 'Armoured SS flexible hose; high-pressure rated' },
+	prod_h1c:     { min: 800,    max: 8500,   unit: 'per assembly', note: 'PTFE-lined SS hose; chemical resistance grade' },
+	prod_h2:      { min: 1200,   max: 12000,  unit: 'per assembly', note: 'Hydraulic hose assembly; SAE 100R1–R17 series' },
+	prod_h3:      { min: 600,    max: 5500,   unit: 'per assembly', note: 'Industrial hose assembly; water/air/steam' },
+	prod_h4:      { min: 900,    max: 9000,   unit: 'per assembly', note: 'High-pressure hose assembly; >350 bar rated' },
+	prod_h5:      { min: 1500,   max: 15000,  unit: 'per assembly', note: 'Steam hose assembly; EPDM; 8–18 bar pressure' },
+	prod_h6:      { min: 700,    max: 6500,   unit: 'per assembly', note: 'Chemical hose assembly; PTFE inner tube' },
+	prod_h7:      { min: 1100,   max: 10000,  unit: 'per assembly', note: 'Oil hose assembly; NBR/Viton lined' },
+	prod_h8:      { min: 400,    max: 3800,   unit: 'per metre',    note: 'Flexible conduit hose; SS interlock / PVC coated' },
+
+	// ── INDUSTRIAL RUBBER PRODUCTS ──
+	prod_r1:      { min: 400,    max: 8500,   unit: 'per piece',    note: 'Anti-vibration mounts; natural/neoprene rubber' },
+	prod_r2:      { min: 600,    max: 12000,  unit: 'per piece',    note: 'Rubber gaskets / moulded parts; custom compound' },
+
+	// ── ELECTRONIC EQUIPMENTS ──
+	prod_ee1:     { min: 3500,   max: 22000,  unit: 'per piece',    note: 'Speed sensor / proximity switch; inductive/hall-effect' },
+	prod_ee2:     { min: 5500,   max: 45000,  unit: 'per piece',    note: 'Vibration sensor / monitoring instrument' },
+	prod_ee3:     { min: 8000,   max: 65000,  unit: 'per piece',    note: 'Temperature transmitter / thermocouple assembly' },
+	prod_ee4:     { min: 12000,  max: 85000,  unit: 'per piece',    note: 'Flow meter / flow transmitter; industrial grade' },
+	prod_ee5:     { min: 6500,   max: 55000,  unit: 'per piece',    note: 'Pressure transmitter / gauge; 4–20 mA output' },
+	prod_ee6:     { min: 15000,  max: 120000, unit: 'per panel',    note: 'Control panel / relay module; DIN rail assembly' },
+
+	// ── HYDRAULIC COMPONENTS ──
+	prod_hv1:     { min: 1600,   max: 18000,  unit: 'per piece',    note: 'Directional control valve; D03/D05/cetop; Yuken/Bosch type' },
+	prod_hv2:     { min: 8500,   max: 75000,  unit: 'per piece',    note: 'Bladder/piston accumulator 0.75–50 L; 350 bar rated' },
+
+	// ── MISC TURBINE / SEALING ──
+	prod_gp1:     { min: 450,    max: 4500,   unit: 'per kg',       note: 'Graphite / PTFE / PTFE-graphite braided gland packing' },
+	prod_srv1:    { min: 3000,   max: 85000,  unit: 'per valve',    note: 'Spring-loaded SRV; API 526; 15–600# flanged; 1"–10"' },
+	prod_oil1:    { min: 4500,   max: 22000,  unit: 'per 200 L',    note: 'ISO VG 32/46/68 R&O turbine oil; IS 1012 certified' },
+	prod_trap1:   { min: 2200,   max: 18000,  unit: 'per piece',    note: 'Thermodynamic / F&T / inverted bucket; DN15–50' },
+	prod_gk1:     { min: 50,     max: 3500,   unit: 'per piece',    note: 'SWG ASME B16.20; SS304 winding + graphite filler' },
+	prod_gk2:     { min: 120,    max: 4500,   unit: 'per piece',    note: 'RTJ oval/octagonal; soft iron / 316SS; API 6A' },
+};
+
+// Helper: format INR with Indian numbering system (legacy shim — kept for reference)
+const _fmtINR = (n) => {
 	if (n >= 100000) return `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`;
 	if (n >= 1000)   return `₹${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K`;
 	return `₹${n.toLocaleString('en-IN')}`;
 };
 
-// Attach price + availability to every product (fallback to category band)
+// ─── CURRENCY SYSTEM ──────────────────────────────────────────────────────────
+// Free stack — zero API keys, zero sign-up, zero cost:
+//   Exchange rates : open.er-api.com  (no key, updates daily, cache 1 hr)
+//   IP geolocation : api.bigdatacloud.com (no key, no rate limit, GDPR compliant)
+//   Locale fallback: navigator.language  (always available, browser-native)
+// Priority for first-time visitors: IP geo → locale → INR default
+// Returning visitors: localStorage saves their manual pick — used instantly.
+
+const SUPPORTED_CURRENCIES = [
+	{ code: 'INR', symbol: '₹',    flag: '🇮🇳', name: 'Indian Rupee'      },
+	{ code: 'USD', symbol: '$',    flag: '🇺🇸', name: 'US Dollar'         },
+	{ code: 'EUR', symbol: '€',    flag: '🇪🇺', name: 'Euro'              },
+	{ code: 'GBP', symbol: '£',    flag: '🇬🇧', name: 'British Pound'     },
+	{ code: 'AED', symbol: 'د.إ', flag: '🇦🇪', name: 'UAE Dirham'        },
+	{ code: 'SGD', symbol: 'S$',   flag: '🇸🇬', name: 'Singapore Dollar'  },
+	{ code: 'JPY', symbol: '¥',    flag: '🇯🇵', name: 'Japanese Yen'      },
+];
+
+// Fallback rates (INR base) — used if open.er-api.com is unreachable.
+// Update these roughly every 6 months if you want the fallback to stay fresh.
+const FALLBACK_RATES = {
+	INR: 1, USD: 0.01195, EUR: 0.01098, GBP: 0.00942,
+	AED: 0.04388, SGD: 0.01617, JPY: 1.845,
+};
+
+// Country code → currency code map for IP geo auto-detection
+const COUNTRY_CURRENCY = {
+	IN:'INR', US:'USD', GB:'GBP', AU:'USD', CA:'USD',
+	AE:'AED', SA:'AED', QA:'AED', KW:'AED', BH:'AED', OM:'AED',
+	SG:'SGD', MY:'SGD', JP:'JPY',
+	DE:'EUR', FR:'EUR', IT:'EUR', ES:'EUR', NL:'EUR', BE:'EUR',
+	AT:'EUR', PT:'EUR', GR:'EUR', FI:'EUR', IE:'EUR', PL:'EUR',
+};
+
+// Browser language → currency fallback (used only if IP geo fails)
+const LOCALE_CURRENCY = {
+	'en-IN':'INR','hi':'INR','mr':'INR','gu':'INR','pa':'INR',
+	'en-US':'USD','en-AU':'USD','en-CA':'USD',
+	'en-GB':'GBP',
+	'en-AE':'AED','ar-AE':'AED','ar-SA':'AED',
+	'en-SG':'SGD','ms':'SGD',
+	'ja':'JPY','ja-JP':'JPY',
+	'de':'EUR','fr':'EUR','it':'EUR','es':'EUR','nl':'EUR',
+};
+
+// Shared mutable cache so the fetch happens at most once per page load
+// (React context re-renders don't re-fetch)
+const _rateCache = { rates: null, fetchedAt: 0 };
+
+const CurrencyContext = React.createContext({
+	code: 'INR', symbol: '₹', rates: FALLBACK_RATES,
+	select: () => {}, detectedAuto: false,
+});
+
+function CurrencyProvider({ children }) {
+	const savedCode = (() => {
+		try { return localStorage.getItem('ke_currency'); } catch { return null; }
+	})();
+	const validSaved = SUPPORTED_CURRENCIES.find(c => c.code === savedCode)?.code ?? null;
+
+	const [code,         setCode]         = useState(validSaved ?? 'INR');
+	const [rates,        setRates]        = useState(FALLBACK_RATES);
+	const [detectedAuto, setDetectedAuto] = useState(false);
+
+	useEffect(() => {
+		// ── 1. Exchange rates (open.er-api.com, free, no key) ──
+		const now = Date.now();
+		if (_rateCache.rates && now - _rateCache.fetchedAt < 3600_000) {
+			// Use memory-cached rates (< 1 hour old) — defer via microtask to avoid
+			// calling setState synchronously inside an effect body (react-hooks/set-state-in-effect).
+			Promise.resolve().then(() => setRates(_rateCache.rates));
+		} else {
+			fetch('https://open.er-api.com/v6/latest/INR')
+				.then(r => r.ok ? r.json() : null)
+				.then(data => {
+					if (data?.rates) {
+						_rateCache.rates    = data.rates;
+						_rateCache.fetchedAt = Date.now();
+						setRates(data.rates);
+					}
+				})
+				.catch(() => { /* silently keep FALLBACK_RATES */ });
+		}
+
+		// ── 2. Auto-detect currency for first-time visitors only ──
+		if (validSaved) return; // returning visitor — use their saved preference
+
+		// Helper: apply a detected currency code
+		const applyDetected = (detectedCode) => {
+			const valid = SUPPORTED_CURRENCIES.find(c => c.code === detectedCode);
+			if (valid) {
+				setCode(valid.code);
+				setDetectedAuto(true);
+			}
+		};
+
+		// Step A — IP geolocation via BigDataCloud (free, no key, no rate limit)
+		fetch('https://api.bigdatacloud.net/data/ip-geolocation-full?localityLanguage=en')
+			.then(r => r.ok ? r.json() : null)
+			.then(data => {
+				const country  = data?.country?.isoAlpha2; // e.g. "AE", "US", "IN"
+				const detected = country ? COUNTRY_CURRENCY[country] : null;
+				if (detected) {
+					applyDetected(detected);
+				} else {
+					// Step B — browser locale fallback (always free, always available)
+					const lang     = navigator.language || navigator.languages?.[0] || '';
+					const fromLang = LOCALE_CURRENCY[lang] ?? LOCALE_CURRENCY[lang.split('-')[0]];
+					if (fromLang) applyDetected(fromLang);
+					// Step C — stay on INR (the useState default) if both above are inconclusive
+				}
+			})
+			.catch(() => {
+				// IP API unavailable — go straight to locale fallback
+				const lang     = navigator.language || navigator.languages?.[0] || '';
+				const fromLang = LOCALE_CURRENCY[lang] ?? LOCALE_CURRENCY[lang.split('-')[0]];
+				if (fromLang) applyDetected(fromLang);
+			});
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	// Manual selection — saves to localStorage so it persists across sessions
+	const select = useCallback((newCode) => {
+		setCode(newCode);
+		setDetectedAuto(false);
+		try { localStorage.setItem('ke_currency', newCode); } catch { /* quota exceeded — ignore */ }
+	}, []);
+
+	const symbol = SUPPORTED_CURRENCIES.find(c => c.code === code)?.symbol ?? '₹';
+	const value  = useMemo(
+		() => ({ code, symbol, rates, select, detectedAuto }),
+		[code, symbol, rates, select, detectedAuto],
+	);
+
+	return (
+		<CurrencyContext.Provider value={value}>
+			{children}
+		</CurrencyContext.Provider>
+	);
+}
+
+// Hook — use inside any component to get currency state
+const useCurrency = () => React.useContext(CurrencyContext);
+
+// Hook — returns a formatter function that converts INR → selected currency
+// Usage: const fmt = useFmtPrice(); then fmt(1500) → "$17.93" or "₹1.5K"
+function useFmtPrice() {
+	const { code, rates } = useCurrency();
+	return useCallback((inrAmount) => {
+		if (inrAmount == null || isNaN(inrAmount)) return '';
+		const rate      = (rates?.[code] ?? FALLBACK_RATES[code] ?? 1);
+		const converted = inrAmount * rate;
+		if (code === 'INR') {
+			if (converted >= 100000) return `₹${(converted / 100000).toFixed(converted % 100000 === 0 ? 0 : 1)}L`;
+			if (converted >= 1000)   return `₹${(converted / 1000).toFixed(converted % 1000 === 0 ? 0 : 1)}K`;
+			return `₹${Math.round(converted).toLocaleString('en-IN')}`;
+		}
+		return new Intl.NumberFormat('en', {
+			style:                'currency',
+			currency:             code,
+			maximumFractionDigits: code === 'JPY' ? 0 : 2,
+			minimumFractionDigits: code === 'JPY' ? 0 : 2,
+		}).format(converted);
+	}, [code, rates]);
+}
+
+// Currency selector dropdown — drop this anywhere in the Navbar JSX
+function CurrencyDropdown({ scrolled }) {
+	const { code, select, detectedAuto } = useCurrency();
+	const [open, setOpen]   = useState(false);
+	const dropRef           = useRef(null);
+	const cur               = SUPPORTED_CURRENCIES.find(c => c.code === code);
+
+	// Close on outside click
+	useEffect(() => {
+		const handler = (e) => {
+			if (!dropRef.current?.contains(e.target)) setOpen(false);
+		};
+		document.addEventListener('mousedown', handler);
+		return () => document.removeEventListener('mousedown', handler);
+	}, []);
+
+	// Close on Escape
+	useEffect(() => {
+		const handler = (e) => { if (e.key === 'Escape') setOpen(false); };
+		document.addEventListener('keydown', handler);
+		return () => document.removeEventListener('keydown', handler);
+	}, []);
+
+	return (
+		<div ref={dropRef} className="relative">
+			<button
+				type="button"
+				onClick={() => setOpen(o => !o)}
+				aria-label={`Currency: ${cur?.name ?? code}. Click to change.`}
+				aria-expanded={open}
+				aria-haspopup="listbox"
+				title={detectedAuto ? `Auto-detected: ${cur?.name}` : cur?.name}
+				className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95
+					${scrolled
+						? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
+						: 'bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm'
+					}`}
+			>
+				<span aria-hidden="true">{cur?.flag}</span>
+				<span>{cur?.code}</span>
+				<ChevronRight
+					className={`w-3 h-3 transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
+					aria-hidden="true"
+				/>
+			</button>
+
+			{open && (
+				<div
+					role="listbox"
+					aria-label="Select currency"
+					className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
+					style={{ animation: 'mobileDrawerIn 0.18s cubic-bezier(0.3,0,0,1) both' }}
+				>
+					{/* "Auto-detected" hint shown only on first visit */}
+					{detectedAuto && (
+						<div className="px-3.5 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-1.5">
+							<Globe className="w-3 h-3 text-blue-500 shrink-0" aria-hidden="true" />
+							<span className="text-[10px] text-blue-600 font-bold uppercase tracking-wide">
+								Auto-detected from your region
+							</span>
+						</div>
+					)}
+					{SUPPORTED_CURRENCIES.map(c => (
+						<button
+							key={c.code}
+							type="button"
+							role="option"
+							aria-selected={c.code === code}
+							onClick={() => { select(c.code); setOpen(false); }}
+							className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-left transition-colors focus:outline-none focus-visible:bg-slate-50
+								${c.code === code
+									? 'bg-blue-50 text-blue-700 font-bold'
+									: 'text-slate-700 hover:bg-slate-50'
+								}`}
+						>
+							<span className="text-base" aria-hidden="true">{c.flag}</span>
+							<span className="font-bold w-9 shrink-0">{c.code}</span>
+							<span className="text-slate-400 text-xs truncate">{c.name}</span>
+							{c.code === code && (
+								<CheckCircle2 className="w-3.5 h-3.5 ml-auto shrink-0 text-blue-500" aria-hidden="true" />
+							)}
+						</button>
+					))}
+					<div className="px-3.5 py-2 bg-slate-50 border-t border-slate-100">
+						<p className="text-[10px] text-slate-400 leading-relaxed">
+							Prices converted from INR at live market rates.
+							Actual invoice will be in INR.
+						</p>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Attach per-product price (falls back to category band), plus availability
 const PRODUCTS_WITH_PRICE = PRODUCTS.map(p => ({
 	...p,
-	priceRange: p.priceRange || CATEGORY_PRICE_BANDS[p.category] || null,
+	priceRange: PRODUCT_PRICE_MAP[p.id] || p.priceRange || CATEGORY_PRICE_BANDS[p.category] || null,
 	availability: p.availability || CATEGORY_AVAILABILITY[p.category] || null,
 }));
 
 // Shadow PRODUCTS with enriched version so all downstream code picks it up
-// (Re-assign over const is fine at module scope — this is a derived reference)
 Object.assign(PRODUCTS, PRODUCTS_WITH_PRICE);
 PRODUCTS.length = PRODUCTS_WITH_PRICE.length;
 PRODUCTS_WITH_PRICE.forEach((p, i) => { PRODUCTS[i] = p; });
@@ -7521,6 +7944,7 @@ const AVAIL_STYLES = {
 const ProductCard = memo(({ product, navigate, priority = false }) => {
 	const [imgErr, setImgErr] = useState(false);
 	const [imgLoaded, setImgLoaded] = useState(false);
+	const fmtPrice = useFmtPrice();
 	const pImg = product.images?.[0];
 	const pr = product.priceRange;
 	const av = product.availability;
@@ -7598,7 +8022,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						<TrendingUp className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
 						<div className="flex-1 min-w-0">
 							<span className="text-xs font-black text-slate-500 uppercase tracking-wider">Est. Price </span>
-							<span className="text-sm font-black text-slate-900">{fmtINR(pr.min)} – {fmtINR(pr.max)}</span>
+							<span className="text-sm font-black text-slate-900">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
 							<span className="text-xs text-slate-400 ml-1">{pr.unit}</span>
 						</div>
 					</div>
@@ -7933,7 +8357,10 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 
 	useEffect(() => {
 		if (isOpen) setTimeout(() => searchRef.current?.focus(), 50);
-		else setLangSearch('');
+		// Defer the reset so we don't call setState synchronously inside an effect
+		// (react-hooks/set-state-in-effect). A zero-delay timeout keeps the UX
+		// identical — the search box clears after the dropdown closes.
+		else setTimeout(() => setLangSearch(''), 0);
 	}, [isOpen]);
 
 	const changeLanguage = (langCode) => {
@@ -8069,6 +8496,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	const [query, setQuery] = useState('');
 	const [scrolled, setScrolled] = useState(false);
 	const [isVisible, setIsVisible] = useState(true);
+	const fmtPrice = useFmtPrice();
 	const menuRef = useRef(null);
 	const searchInputRef = useRef(null);
 	// PERF: ref mirrors query so outside-click handler reads current value without
@@ -8174,8 +8602,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				type: 'Service',
 				path: `/service/${s.id}`,
 				image: s.image,
+				priceRange: null,
 			})),
-			...RAW_PRODUCTS.filter(
+			...PRODUCTS.filter(
 				(p) =>
 					p.title?.toLowerCase().includes(deferredQ) ||
 					p.desc?.toLowerCase().includes(deferredQ) ||
@@ -8189,6 +8618,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				category: p.category,
 				path: `/product/${p.id}`,
 				image: p.images?.[0],
+				priceRange: p.priceRange || null,
 			})),
 		].slice(0, 8);
 	}, [deferredQ]);
@@ -8282,9 +8712,10 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								/>
 							</a>
 						))}
-						{/* search + language switcher */}
+						{/* search + language + currency switcher */}
 						<div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
 							<LanguageSwitcher scrolled={scrolled} />
+							<CurrencyDropdown scrolled={scrolled} />
 							<search
 								className="relative flex items-center"
 							>
@@ -8381,6 +8812,11 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																		<span className="text-xs text-slate-500 line-clamp-1 mt-0.5">
 																			{r.desc}
 																		</span>
+																		{r.priceRange && (
+																			<span className="text-[10px] font-black text-blue-600 mt-0.5">
+																				{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)} {r.priceRange.unit}
+																			</span>
+																		)}
 																	</div>
 																</div>
 															</button>
@@ -8406,6 +8842,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					{/* Mobile controls */}
 					<div className="lg:hidden flex items-center gap-1.5">
 						<LanguageSwitcher scrolled={scrolled} />
+						<CurrencyDropdown scrolled={scrolled} />
 						<button
 							type="button"
 							onClick={() => {
@@ -8448,7 +8885,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					id="mobile-nav"
 					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto"
 					role="menu"
-					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both' }}
+					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
 				>
 				<style>{`@keyframes mobileDrawerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 					{isSearchOpen && (
@@ -8509,6 +8946,11 @@ const Navbar = memo(({ currentPath, navigate }) => {
 															>
 																{r.type}
 															</span>
+															{r.priceRange && (
+																<span className="block text-[10px] font-black text-blue-600 mt-0.5">
+																	{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)}
+																</span>
+															)}
 														</div>
 													</button>
 												</li>
@@ -8611,6 +9053,42 @@ const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
 	);
 });
 CredentialBadge.displayName = 'CredentialBadge';
+
+// ─── FOOTER BADGE (credential blocks in footer col 1) ────────────
+// Extracted from an inline .map() callback so useState is called at
+// the top level of a proper component (rules-of-hooks compliance).
+const FooterBadge = memo(({ imgSrc, FallbackIcon, title, sub, accentColor }) => {
+	const [err, setErr] = useState(false);
+	return (
+		<div className="ke-badge">
+			{/* Logo container */}
+			<div style={{
+				width:'2rem', height:'2rem', borderRadius:'.45rem',
+				background:'#ffffff', border:`1px solid ${accentColor}25`,
+				display:'flex', alignItems:'center', justifyContent:'center',
+				flexShrink:0, padding:'2px',
+			}}>
+				{!err ? (
+					<img
+						src={imgSrc} alt="" aria-hidden="true"
+						style={{ width:'1.6rem', height:'1.6rem', objectFit:'contain' }}
+						onError={() => setErr(true)}
+					/>
+				) : (
+					<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color: accentColor }} />
+				)}
+			</div>
+			{/* Text */}
+			<div style={{ minWidth:0, flex:1 }}>
+				<p style={{ margin:0, fontSize:'.78rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.25 }}>{title}</p>
+				<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#64748b', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
+			</div>
+			{/* Accent dot */}
+			<div style={{ width:'6px', height:'6px', borderRadius:'50%', background: accentColor, flexShrink:0, opacity:.8 }} aria-hidden="true" />
+		</div>
+	);
+});
+FooterBadge.displayName = 'FooterBadge';
 
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => {
@@ -8742,6 +9220,7 @@ const Footer = memo(({ navigate }) => {
 						</p>
 
 						{/* ── Credential badges — larger logos ── */}
+						{/* CredentialBadge is a named component so it can legally call useState */}
 						<div style={{ marginBottom:'1.25rem' }}>
 							{[
 								{
@@ -8759,38 +9238,10 @@ const Footer = memo(({ navigate }) => {
 									title: 'Make In India', sub: 'Manufactured in India',
 									accentColor: '#4ade80', bg: '#001a0a',
 								},
-							].map(({ imgSrc, FallbackIcon, title, sub, accentColor, bg }) => {
-								const [err, setErr] = useState(false);
-								return (
-									<div key={title} className="ke-badge">
-										{/* Logo container — compact holder, white bg, larger icon */}
-										<div style={{
-											width:'2rem', height:'2rem', borderRadius:'.45rem',
-											background:'#ffffff', border:`1px solid ${accentColor}25`,
-											display:'flex', alignItems:'center', justifyContent:'center',
-											flexShrink:0, padding:'2px',
-										}}>
-											{!err ? (
-												<img
-													src={imgSrc} alt="" aria-hidden="true"
-													style={{ width:'1.6rem', height:'1.6rem', objectFit:'contain' }}
-													onError={() => setErr(true)}
-												/>
-											) : (
-												<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color: accentColor }} />
-											)}
+							].map((badge) => (
+								<FooterBadge key={badge.title} {...badge} />
+							))}
 										</div>
-										{/* Text */}
-										<div style={{ minWidth:0, flex:1 }}>
-											<p style={{ margin:0, fontSize:'.78rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.25 }}>{title}</p>
-											<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#64748b', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
-										</div>
-										{/* Accent dot */}
-										<div style={{ width:'6px', height:'6px', borderRadius:'50%', background: accentColor, flexShrink:0, opacity:.8 }} aria-hidden="true" />
-									</div>
-								);
-							})}
-						</div>
 
 						{/* OEM list */}
 						<p style={{ fontSize:'8.5px', fontWeight:700, letterSpacing:'.2em', textTransform:'uppercase', color:'#38BDF8', marginBottom:'.4rem' }}>OEM Compatible With</p>
@@ -9981,6 +10432,8 @@ ShareProductButton.displayName = 'ShareProductButton';
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
 	const [showReport, setShowReport] = useState(false);
+	const fmtPrice  = useFmtPrice();
+	const { code: currencyCode } = useCurrency();
 	// probe[i] = 'pending' | 'ok' | 'err'  — set by hidden <img> preloaders
 	const [probe, setProbe]           = useState({});
 	const [activeImg, setActiveImg]   = useState(0);
@@ -10097,10 +10550,16 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		// Primary: same-category products (up to 3)
 		const sameCat = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
 		if (sameCat.length >= 3) return sameCat;
-		// Supplement with cross-category products (shuffle to add variety)
+		// Supplement with cross-category products. Use a deterministic sort seeded on
+		// the product id so the order is stable across re-renders (no Math.random in render).
+		const seed = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
 		const crossCat = PRODUCTS
 			.filter(p => p.category !== product.category && p.id !== product.id)
-			.sort(() => 0.5 - Math.random())
+			.sort((a, b) => {
+				const ha = (a.id.charCodeAt(0) * 2654435761 + seed) >>> 0;
+				const hb = (b.id.charCodeAt(0) * 2654435761 + seed) >>> 0;
+				return ha - hb;
+			})
 			.slice(0, 3 - sameCat.length);
 		return [...sameCat, ...crossCat];
 	}, [product]);
@@ -10168,7 +10627,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 
 	return (
 		<>
-		<main id="main-content" tabIndex={-1} className="pt-24 pb-20 md:pb-20 pb-[88px] bg-slate-50 min-h-screen">
+		<main id="main-content" tabIndex={-1} className="pt-24 pb-22 md:pb-20 bg-slate-50 min-h-screen">
 			<SEOHead
 				title={`${product.title} | ${product.category}`}
 				description={`${product.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -10411,16 +10870,16 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 
 							{/* Price range display */}
 							{product.priceRange && (
-								<div className="mb-5 bg-gradient-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-2xl p-5">
+								<div className="mb-5 bg-linear-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-2xl p-5">
 									<div className="flex flex-col sm:flex-row sm:items-center gap-3">
 										<div className="flex-1">
 											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
 												<TrendingUp className="w-3.5 h-3.5" aria-hidden="true" /> Indicative Price Range
 											</p>
 											<p className="text-2xl font-black text-slate-900">
-												{fmtINR(product.priceRange.min)}
+												{fmtPrice(product.priceRange.min)}
 												<span className="text-slate-400 mx-2">–</span>
-												{fmtINR(product.priceRange.max)}
+												{fmtPrice(product.priceRange.max)}
 												<span className="text-sm font-bold text-slate-500 ml-2">{product.priceRange.unit}</span>
 											</p>
 											{product.priceRange.note && (
@@ -10437,7 +10896,10 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 										</a>
 									</div>
 									<p className="mt-3 text-[11px] text-slate-400 leading-relaxed border-t border-blue-100 pt-2">
-										Prices are indicative market estimates (IndiaMART / TradeIndia 2025). Actual price depends on size, quantity, material grade, and OEM spec. Contact us for a firm quotation.
+										{currencyCode !== 'INR'
+											? `Prices converted from INR at live market rates (open.er-api.com). Actual invoice will be in INR. Rate is indicative — contact us for a firm quotation.`
+											: `Prices are indicative market estimates (IndiaMART / TradeIndia 2025). Actual price depends on size, quantity, material grade, and OEM spec. Contact us for a firm quotation.`
+										}
 									</p>
 								</div>
 							)}
@@ -10526,14 +10988,25 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								else if (cat === 'HVAC & Air Filtration') lt = 'Standard grades: ex-stock to 1 week; custom sizes/special media: 2–4 weeks';
 								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
 								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
+														const pr = product.priceRange;
 														const totalEntries = Object.keys(product.specs).length;
 														return (
-															<tr className={`transition-colors hover:bg-blue-50/30 ${totalEntries % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
-																<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">
-																	Lead Time
-																</th>
-																<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
-															</tr>
+															<>
+																{pr && (
+																	<tr className={`transition-colors hover:bg-blue-50/30 ${totalEntries % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'}`}>
+																		<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Est. Price</th>
+																		<td className="p-4 text-sm leading-relaxed">
+																			<span className="text-blue-700 font-bold">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
+																			<span className="text-slate-400 ml-1.5 font-medium">{pr.unit}</span>
+																			<span className="block text-[11px] text-slate-400 mt-0.5">Indicative estimate · contact for firm quote</span>
+																		</td>
+																	</tr>
+																)}
+																<tr className={`transition-colors hover:bg-blue-50/30 ${(totalEntries + (pr ? 1 : 0)) % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+																	<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Lead Time</th>
+																	<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
+																</tr>
+															</>
 														);
 													})()}
 												</tbody>
@@ -10617,7 +11090,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			Shown only on small screens (md:hidden). Stays pinned to the bottom
 			so the WhatsApp / IndiaMART CTAs are always reachable without scrolling. */}
 		<div
-			className="md:hidden fixed bottom-0 left-0 right-0 z-[900] bg-white border-t-2 border-slate-200 shadow-2xl shadow-slate-900/20 px-4 pt-3 flex gap-3"
+			className="md:hidden fixed bottom-0 left-0 right-0 z-900 bg-white border-t-2 border-slate-200 shadow-2xl shadow-slate-900/20 px-4 pt-3 flex gap-3"
 			style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
 			aria-label="Quick actions"
 		>
@@ -10777,6 +11250,7 @@ const FeaturedProductImage = memo(({ product }) => {
 FeaturedProductImage.displayName = 'FeaturedProductImage';
 
 const FeaturedProductsStrip = memo(({ products, navigate }) => {
+	const fmtPrice  = useFmtPrice();
 	const trackRef = useRef(null); // scrollable div
 	const rafRef = useRef(null); // requestAnimationFrame id
 	const sectionRef = useRef(null); // section element — used to gate rAF
@@ -11046,7 +11520,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 									{/* Price range on featured strip card */}
 									{product.priceRange && (
 										<p className="text-[11px] font-black text-slate-500 mb-3 pointer-events-none">
-											Est. <span className="text-slate-800">{fmtINR(product.priceRange.min)}–{fmtINR(product.priceRange.max)}</span> {product.priceRange.unit}
+											Est. <span className="text-slate-800">{fmtPrice(product.priceRange.min)}–{fmtPrice(product.priceRange.max)}</span> {product.priceRange.unit}
 										</p>
 									)}
 									<div className="flex items-center justify-between pt-3.5 border-t border-slate-100">
@@ -11699,7 +12173,7 @@ const HomePage = memo(({ navigate }) => {
 								<figcaption className="flex items-center gap-4 pt-5 border-t border-slate-200">
 									{/* Initials avatar */}
 									<div
-										className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shrink-0 text-white font-bold text-sm select-none"
+										className="w-10 h-10 rounded-full bg-linear-to-br from-blue-600 to-blue-400 flex items-center justify-center shrink-0 text-white font-bold text-sm select-none"
 										aria-hidden="true"
 									>
 										{name.split(' ').map(w => w[0]).join('').slice(0, 2)}
@@ -15775,10 +16249,16 @@ const ProductsPage = memo(({ navigate }) => {
 	const [activeCategory, setActiveCategory] = useState('All');
 	const [searchQuery, setSearchQuery]       = useState('');
 	const [sortBy, setSortBy]                 = useState('default');
-	const [page, setPage]                     = useState(1);
 	const [priceMin, setPriceMin]             = useState('');
 	const [priceMax, setPriceMax]             = useState('');
 	const [showFilters, setShowFilters]       = useState(false);
+	// Page state — stored as { n, filterKey } so the reset is done inline during
+	// the same state update that changes the filter, rather than in a follow-up
+	// effect (which triggers a cascading render and violates react-hooks/set-state-in-effect).
+	const filterKey = [activeCategory, searchQuery, sortBy, priceMin, priceMax].join('|');
+	const [pageState, setPageState]               = useState({ n: 1, filterKey });
+	const page    = pageState.filterKey === filterKey ? pageState.n : 1;
+	const fmtPrice = useFmtPrice();
 	const categoryScrollRef = useRef(null);
 	const [showLeft, setShowLeft]   = useState(false);
 	const [showRight, setShowRight] = useState(true);
@@ -15802,8 +16282,7 @@ const ProductsPage = memo(({ navigate }) => {
 		categoryScrollRef.current?.scrollBy({ left: dir === 'left' ? -350 : 350, behavior: 'smooth' });
 	}, []);
 
-	// Reset page whenever filter/sort changes
-	useEffect(() => { setPage(1); }, [activeCategory, searchQuery, sortBy, priceMin, priceMax]);
+	// (page auto-resets to 1 whenever the filter key changes — see pageState above)
 
 	const pMinN = priceMin !== '' ? Number(priceMin) : null;
 	const pMaxN = priceMax !== '' ? Number(priceMax) : null;
@@ -15851,7 +16330,9 @@ const ProductsPage = memo(({ navigate }) => {
 	}, []);
 
 	const goPage = useCallback((n) => {
-		setPage(n);
+		// Use the functional updater so we read filterKey from the stored state
+		// rather than closing over the per-render derived filterKey value.
+		setPageState(prev => ({ n, filterKey: prev.filterKey }));
 		topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}, []);
 
@@ -15906,7 +16387,7 @@ const ProductsPage = memo(({ navigate }) => {
 								id="product-sort"
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
-								className="h-full px-4 py-4 bg-white border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-md cursor-pointer min-w-[160px]"
+								className="h-full px-4 py-4 bg-white border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-md cursor-pointer min-w-40"
 							>
 								<option value="default">Default order</option>
 								<option value="az">Name A → Z</option>
@@ -16046,7 +16527,7 @@ const ProductsPage = memo(({ navigate }) => {
 										</div>
 										<div className="min-w-0 flex-1">
 											<p className="text-xs font-black text-slate-800 truncate">{cat}</p>
-											<p className="text-xs text-blue-600 font-bold">{fmtINR(band.min)} – {fmtINR(band.max)} <span className="text-slate-400 font-medium">{band.unit}</span></p>
+											<p className="text-xs text-blue-600 font-bold">{fmtPrice(band.min)} – {fmtPrice(band.max)} <span className="text-slate-400 font-medium">{band.unit}</span></p>
 										</div>
 										{av && (
 											<span className={`text-[10px] font-black px-2 py-1 rounded border shrink-0 ${AVAIL_STYLES[av.color] || AVAIL_STYLES.green}`}>
@@ -17458,6 +17939,38 @@ const IndustriesPage = memo(({ navigate }) => (
 ));
 IndustriesPage.displayName = 'IndustriesPage';
 
+// ─── MAP EMBED ────────────────────────────────────────────────
+// Extracted from an inline IIFE in ContactPage so useState is called
+// at the top level of a proper component (rules-of-hooks compliance).
+const MapEmbed = memo(({ src }) => {
+	const [mapLoaded, setMapLoaded] = useState(false);
+	return (
+		<div className="w-full h-100 relative bg-slate-100">
+			{/* Skeleton placeholder shown until iframe fires onLoad */}
+			{!mapLoaded && (
+				<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
+					<div className="skeleton-shimmer absolute inset-0 rounded-none" />
+					<MapPin className="w-10 h-10 text-slate-300 relative z-10" aria-hidden="true" />
+					<p className="text-sm font-medium text-slate-400 relative z-10">Loading map…</p>
+				</div>
+			)}
+			<iframe
+				title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
+				src={src}
+				width="100%"
+				height="100%"
+				style={{ border: 0, opacity: mapLoaded ? 1 : 0, transition: 'opacity .4s ease' }}
+				allowFullScreen
+				loading="lazy"
+				referrerPolicy="no-referrer-when-downgrade"
+				className="absolute inset-0"
+				onLoad={() => setMapLoaded(true)}
+			/>
+		</div>
+	);
+});
+MapEmbed.displayName = 'MapEmbed';
+
 // ─── CONTACT PAGE ─────────────────────────────────────────────
 const ContactPage = memo(() => {
 	const [name, setName] = useState('');
@@ -18090,34 +18603,9 @@ const ContactPage = memo(() => {
 								Our Manufacturing Facility — Shamli, U.P.
 							</h2>
 						</div>
-						{/* Map with loading skeleton — prevents blank white flash on slow connections */}
-						{(() => {
-							const [mapLoaded, setMapLoaded] = useState(false);
-							return (
-								<div className="w-full h-100 relative bg-slate-100">
-									{/* Skeleton placeholder shown until iframe fires onLoad */}
-									{!mapLoaded && (
-										<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
-											<div className="skeleton-shimmer absolute inset-0 rounded-none" />
-											<MapPin className="w-10 h-10 text-slate-300 relative z-10" aria-hidden="true" />
-											<p className="text-sm font-medium text-slate-400 relative z-10">Loading map…</p>
-										</div>
-									)}
-									<iframe
-										title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
-										src={CONTACT_INFO.googleMapsEmbed}
-										width="100%"
-										height="100%"
-										style={{ border: 0, opacity: mapLoaded ? 1 : 0, transition: 'opacity .4s ease' }}
-										allowFullScreen
-										loading="lazy"
-										referrerPolicy="no-referrer-when-downgrade"
-										className="absolute inset-0"
-										onLoad={() => setMapLoaded(true)}
-									/>
-								</div>
-							);
-						})()}
+						{/* Map with loading skeleton — prevents blank white flash on slow connections.
+						    MapEmbed is a named component so useState is called at the top level. */}
+						<MapEmbed src={CONTACT_INFO.googleMapsEmbed} />
 						<div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
 							<p className="text-slate-500 font-medium text-sm">
 								{CONTACT_INFO.address}
@@ -18243,7 +18731,7 @@ const NotFoundPage = memo(({ navigate }) => (
 					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Go Home
 				</button>
 				<a
-					href={waMsg("Hi, I couldn\'t find a page on your website. Can you help?")}
+					href={waMsg("Hi, I couldn't find a page on your website. Can you help?")}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2"
@@ -18295,6 +18783,12 @@ export default function App() {
 	// being listed as a dep (which would recreate navigate on every navigation).
 	const currentPathRef   = useRef('/');
 	useEffect(() => { currentPathRef.current = currentPath; }, [currentPath]);
+
+	// ── Exit-intent popup route guard ──────────────────────────────
+	// Suppresses the popup on pages where the review form already lives
+	// or where it would feel intrusive (contact page).
+	const POPUP_EXCLUDED_PATHS = ['/contact'];
+	const showExitPopup = !POPUP_EXCLUDED_PATHS.some(p => currentPath.startsWith(p));
 
 	// ── Scroll restoration ──────────────────────────────────────
 	// scrollPositions[historyIdx] = scrollY for that history entry.
@@ -18495,6 +18989,7 @@ export default function App() {
 	};
 
 	return (
+		<CurrencyProvider>
 		<div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
 			{/* AUDIT FIX: aria-live region for screen reader route change announcements */}
 			<div
@@ -18521,8 +19016,23 @@ export default function App() {
 			</div>
 			<DigitalProfilesStrip />
 			<Footer navigate={navigate} />
-			<FloatingButtons />
+			{/* On mobile, product detail pages render their own sticky CTA bar,
+			    so hide the floating WhatsApp FAB there to avoid overlap. */}
+			<div className={currentPath.startsWith('/product/') ? 'md:block hidden' : ''}>
+				<FloatingButtons />
+			</div>
 			<BackToTopButton />
+
+			{/* Exit-intent review popup: fixed overlay, zero layout impact. */}
+			{showExitPopup && (
+				<ExitIntentReviewPopup
+					ReviewForm={KeshavReviewForm}
+					minTimeMs={90_000}
+					idleMs={480_000}
+					scrollPct={60}
+				/>
+			)}
 		</div>
+		</CurrencyProvider>
 	);
 }
