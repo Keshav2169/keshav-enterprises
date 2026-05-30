@@ -43,6 +43,7 @@ import { useState, useCallback, useMemo, useReducer, useEffect, useRef } from "r
 import {
   Star, CheckCircle2, ChevronRight, ChevronLeft, Send, Wrench,
   Package, MessageSquare, User, Search, X, RotateCcw, Layers, ArrowRight,
+  ShoppingCart, ClipboardList,
 } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────
@@ -136,39 +137,42 @@ const SOCIAL_LINKS = [
    ───────────────────────────────────────────────────────────────── */
 const ALL_PRODUCTS = {
   "Industrial Filtration": [
-    { id:"prod_f1",    title:"Triveni Turbine Lube Oil Filter Elements" },
-    { id:"prod_f2",    title:"Siemens Turbine Lube Oil Filter Elements" },
-    { id:"prod_f3",    title:"SS Wire Mesh (CEP) Centrifugal Filter Elements" },
-    { id:"prod_f4",    title:"Tank Breather Filter Elements (NBF Series)" },
-    { id:"prod_f5",    title:"Hydraulic Suction Strainer Elements (AS/TS Series)" },
-    { id:"prod_f6",    title:"WaterSorp Offline Filter Elements (WSNR Series)" },
-    { id:"prod_f7",    title:"PTFE Hydrophobic Air & Gas Filter Elements" },
-    { id:"prod_f8",    title:"Return-Line Filter Elements" },
-    { id:"prod_f9",    title:"Duplex Control Oil Filter Assembly" },
-    { id:"prod_f10",   title:"Duplex Fabricated Filter Housing" },
-    { id:"prod_f11",   title:"Reverse Osmosis (RO) Filter Assemblies" },
-    { id:"prod_f12",   title:"Siemens Turbine Control Oil Filters" },
-    { id:"prod_f13",   title:"Triveni Turbine Control Oil Filters" },
-    { id:"prod_f14",   title:"Filter Bag & Support Cage Assembly" },
-    { id:"prod_f15",   title:"Wedge Wire Filter Element" },
-    { id:"prod_f16",   title:"Concrete Pump Filter Element" },
-    { id:"prod_f17",   title:"Dust Collector Filter Cartridge" },
-    { id:"prod_f18",   title:"Pleated Dust Collector Filter Cartridge (Flange-Type)" },
-    { id:"prod_f19",   title:"Oil Vapour Extractor Filter" },
-    { id:"prod_f20",   title:"HYDAC Replacement Filter Elements" },
-    { id:"prod_f21",   title:"Pall Replacement Filter Elements" },
-    { id:"prod_f22",   title:"Bhagwati Replacement Oil Filters" },
-    { id:"prod_f23",   title:"Air Oil Separator Filter" },
-    { id:"prod_f_bhel",title:"BHEL Turbine Lube Oil Filter Elements" },
-    { id:"prod_f_htc", title:"HTC Turbine Filter Elements" },
+    { id:"prod_f1",      title:"Triveni Turbine Lube Oil Filter Elements" },
+    { id:"prod_f2",      title:"Siemens Turbine Lube Oil Filter Elements" },
+    { id:"prod_f_bhel",  title:"BHEL Turbine Lube Oil Filter Elements" },
+    { id:"prod_f_htc",   title:"HTC Turbine Filter Elements" },
+    { id:"prod_f3",      title:"SS Wire Mesh (CEP) Centrifugal Filter Elements" },
+    { id:"prod_f4",      title:"Tank Breather Filter Elements (NBF Series)" },
+    { id:"prod_f5",      title:"Hydraulic Suction Strainer Elements (AS/TS Series)" },
+    { id:"prod_f6",      title:"WaterSorp Offline Filter Elements (WSNR Series)" },
+    { id:"prod_f7",      title:"PTFE Hydrophobic Air & Gas Filter Elements" },
+    { id:"prod_f8",      title:"Return-Line Filter Elements" },
+    { id:"prod_f9",      title:"Duplex Control Oil Filter Assembly" },
+    { id:"prod_f10",     title:"Duplex Fabricated Filter Housing" },
+    { id:"prod_f11",     title:"Reverse Osmosis (RO) Filter Assemblies" },
+    { id:"prod_f12",     title:"Siemens Turbine Control Oil Filters" },
+    { id:"prod_f13",     title:"Triveni Turbine Control Oil Filters" },
+    { id:"prod_f14",     title:"Filter Bag & Support Cage Assembly" },
+    { id:"prod_f15",     title:"Wedge Wire Filter Element" },
+    { id:"prod_f16",     title:"Concrete Pump Filter Element" },
+    { id:"prod_f17",     title:"Dust Collector Filter Cartridge" },
+    { id:"prod_f18",     title:"Pleated Dust Collector Filter Cartridge (Flange-Type)" },
+    { id:"prod_f19",     title:"Oil Vapour Extractor Filter" },
+    { id:"prod_f20",     title:"HYDAC Replacement Filter Elements" },
+    { id:"prod_f21",     title:"Pall Replacement Filter Elements" },
+    { id:"prod_f22",     title:"Bhagwati Replacement Oil Filters" },
+    { id:"prod_f23",     title:"Air Oil Separator Filter" },
+    { id:"prod_f_hp1",   title:"High-Pressure Single Cartridge Filter Housing — Hydraulic & Lube Oil" },
+    { id:"prod_f_mag1",  title:"Magnetic Filter / Magnetic Separator Assembly — Lube Oil & Hydraulic" },
   ],
   "Industrial Strainers": [
-    { id:"prod_st1", title:"Simplex Basket Strainer" },
-    { id:"prod_st2", title:"Duplex Basket Strainer" },
-    { id:"prod_st3", title:"Conical (Temporary) Strainer" },
-    { id:"prod_st4", title:"Y-Type Strainer" },
-    { id:"prod_st5", title:"Pot / Bucket Type Strainer" },
-    { id:"prod_st6", title:"Stainless Steel Notch Wire Strainer Element" },
+    { id:"prod_st1",  title:"Simplex Basket Strainer" },
+    { id:"prod_st2",  title:"Duplex Basket Strainer" },
+    { id:"prod_st3",  title:"Conical Strainer" },
+    { id:"prod_st4",  title:"Y-Type Strainer" },
+    { id:"prod_st5",  title:"Pot / Bucket Type Strainer" },
+    { id:"prod_st5b", title:"Basket Strainer Elements" },
+    { id:"prod_st6",  title:"Stainless Steel Notch Wire Strainer Element" },
   ],
   "Expansion Joints": [
     { id:"prod_e1",  title:"Stainless Steel Metallic Bellows Expansion Joint" },
@@ -207,35 +211,44 @@ const ALL_PRODUCTS = {
     { id:"prod_e31", title:"MS & SS Industrial Duct Systems" },
   ],
   "Turbine Spares": [
-    { id:"prod_ts1",  title:"Carbon & Graphite Gland Sealing Rings" },
-    { id:"prod_ts2",  title:"Labyrinth Shaft Sealing Packings" },
-    { id:"prod_ts3",  title:"Babbitt Journal Bearings & Thrust Pads" },
-    { id:"prod_ts4",  title:"Emergency Stop Valves (ESV)" },
-    { id:"prod_ts5",  title:"Turbine Lube Oil Pumps & Mechanical Seals" },
-    { id:"prod_ts6",  title:"High-Purity Electrographite Sealing Rings" },
-    { id:"prod_ts7",  title:"Complete Turbine Rotor Assemblies" },
-    { id:"prod_ts8",  title:"Precision Turbine Gears & Worm Wheels" },
-    { id:"prod_ts9",  title:"Turbine Nozzles & Diaphragms" },
-    { id:"prod_ts10", title:"Mechanical Centrifugal Speed Governors" },
-    { id:"prod_ts11", title:"Turbine Throttle (Control) Valves" },
-    { id:"prod_ts12", title:"High/Low Speed Couplings for Turbines" },
-    { id:"prod_ts13", title:"Flexible Disc Pack (MetaFlex)" },
-    { id:"prod_ts14", title:"Boiler Sight Glass — Round / Reflex" },
-    { id:"prod_ts15", title:"Spherical White Metal Bearing — TDPS Alternator" },
-    { id:"prod_ts16", title:"Leaf Springs for Turbine Governors" },
-    { id:"prod_ts17", title:"Rotor Journal Polishing Service" },
-    { id:"prod_ts18", title:"Fulcrum Pins — Blade Locking / Trip Mechanism Linkage" },
-    { id:"prod_ts19", title:"Spiral Conveyor Screw (Turbine Auxiliaries)" },
-    { id:"prod_ts20", title:"Nylon Sleeve for Gear Coupling" },
-    { id:"prod_ts21", title:"KTR BoWex Curved-Tooth Gear Coupling" },
-    { id:"prod_ts22", title:"Shear Pins (Turbine Coupling)" },
-    { id:"prod_ts23", title:"Dowty Hydraulic Oil Pumps" },
-    { id:"prod_ts_blades",               title:"Steam Turbine Blades (Moving & Stationary)" },
-    { id:"prod_ts_gov_cards",            title:"Woodward Governor Control Cards & PCB Assemblies" },
-    { id:"prod_ts_shaft_seal_kit",       title:"Complete Shaft Seal Kit — Carbon Ring Gland Assembly" },
-    { id:"prod_ts_rebabbitting",         title:"Bearing Rebabbitting Service" },
-    { id:"prod_ts_lube_oil_cooler",      title:"Turbine Lube Oil Cooler (Shell & Tube / Plate Type)" },
+    { id:"prod_ts1",                   title:"Carbon & Graphite Gland Sealing Rings" },
+    { id:"prod_ts2",                   title:"Labyrinth Shaft Sealing Packings" },
+    { id:"prod_ts3",                   title:"Babbitt Journal Bearings & Thrust Pads" },
+    { id:"prod_ts4",                   title:"Emergency Stop Valves (ESV)" },
+    { id:"prod_ts5",                   title:"Turbine Lube Oil Pumps & Mechanical Seals" },
+    { id:"prod_ts6",                   title:"High-Purity Electrographite Sealing Rings" },
+    { id:"prod_ts7",                   title:"Complete Turbine Rotor Assemblies" },
+    { id:"prod_ts8",                   title:"Precision Turbine Gears & Worm Wheels" },
+    { id:"prod_ts9",                   title:"Turbine Nozzles & Diaphragms" },
+    { id:"prod_ts10",                  title:"Mechanical Centrifugal Speed Governors" },
+    { id:"prod_ts11",                  title:"Turbine Throttle (Control) Valves" },
+    { id:"prod_ts12",                  title:"High/Low Speed Couplings for Turbines" },
+    { id:"prod_ts13",                  title:"Flexible Disc Pack (MetaFlex)" },
+    { id:"prod_ts14",                  title:"Boiler Sight Glass — Round / Reflex" },
+    { id:"prod_ts15",                  title:"Spherical White Metal Bearing — TDPS Alternator" },
+    { id:"prod_ts16",                  title:"Leaf Springs for Turbine Governors" },
+    { id:"prod_ts17",                  title:"Rotor Journal Polishing Service" },
+    { id:"prod_ts18",                  title:"Fulcrum Pins — Blade Locking / Trip Mechanism Linkage" },
+    { id:"prod_ts19",                  title:"Spiral Conveyor Screw (Turbine Auxiliaries)" },
+    { id:"prod_ts20",                  title:"Nylon Sleeve for Gear Coupling" },
+    { id:"prod_ts21",                  title:"KTR BoWex Curved-Tooth Gear Coupling" },
+    { id:"prod_ts22",                  title:"Shear Pins (Turbine Coupling)" },
+    { id:"prod_ts23",                  title:"Dowty Hydraulic Oil Pumps" },
+    { id:"prod_ts_blades",             title:"Steam Turbine Blades (Moving & Stationary)" },
+    { id:"prod_ts_gov_cards",          title:"Woodward Governor Control Cards & PCB Assemblies" },
+    { id:"prod_ts_shaft_seal_kit",     title:"Complete Shaft Seal Kit — Carbon Ring Gland Assembly" },
+    { id:"prod_ts_rebabbitting",       title:"Bearing Rebabbitting Service" },
+    { id:"prod_ts_lube_oil_cooler",    title:"Turbine Lube Oil Cooler (Shell & Tube / Plate Type)" },
     { id:"prod_ts_pressure_instruments", title:"Lube Oil System Pressure Instruments & Gauges" },
+    { id:"prod_gp1",                   title:"Gland Packing — Graphite, PTFE, PTFE-Graphite Braided Rope" },
+    { id:"prod_srv1",                  title:"Safety Relief Valves (SRV / PSV) — Spring-Loaded, API 526 / ASME" },
+    { id:"prod_oil1",                  title:"Steam Turbine Lube Oil — ISO VG 32 / 46 / 68 R&O Inhibited" },
+    { id:"prod_trap1",                 title:"Steam Trap Assemblies — Thermodynamic, Float & Thermostatic, Inverted Bucket" },
+    { id:"prod_gk1",                   title:"Spiral Wound Gaskets (SWG) — ASME B16.20" },
+    { id:"prod_gk2",                   title:"Ring Joint Gaskets (RTJ) — Oval & Octagonal — ASME B16.20" },
+    { id:"prod_ts_prv",                title:"Pressure Reducing Valve (PRV) & PRDS Station" },
+    { id:"prod_ts_overspeed",          title:"Overspeed Trip Device & Speed Switch — Mechanical & Electro-Hydraulic" },
+    { id:"prod_ts_dp_switch",          title:"Differential Pressure (DP) Switches & Temperature Switches" },
   ],
   "Industrial Rubber Products": [
     { id:"prod_r1", title:"Custom Extruded Rubber Profiles & Seals" },
@@ -263,6 +276,15 @@ const ALL_PRODUCTS = {
   ],
   "Hydraulic Components": [
     { id:"prod_hv1", title:"Directional Control Valves (All Major Makes)" },
+    { id:"prod_hv2", title:"Hydraulic Accumulators — Bladder & Piston Type" },
+  ],
+  "HVAC & Air Filtration": [
+    { id:"prod_af1", title:"HVAC Pocket Bag Filter (Multi-Pocket Air Filter)" },
+    { id:"prod_af2", title:"Activated Carbon Vent Filter" },
+    { id:"prod_af3", title:"HVAC Metallic Mesh Pre-Filter" },
+    { id:"prod_af4", title:"Pleated Panel Air Filter" },
+    { id:"prod_af5", title:"Pulse-Jet Dust Collector Filter Bag with Pleated or Smooth Cartridge Element" },
+    { id:"prod_af6", title:"Wound Filter Media Rolls" },
   ],
 };
 
@@ -275,6 +297,7 @@ const CAT_COLORS = {
   "Flexible Hoses & Assemblies": "#2563eb",
   "Electronic Equipments":       "#db2777",
   "Hydraulic Components":        "#65a30d",
+  "HVAC & Air Filtration":       "#0e7490",
 };
 
 // Flat list derived once at module scope (read-only, cheap)
@@ -325,10 +348,13 @@ const SERVICE_RATINGS = [
 ];
 
 const SERVICES_LIST = [
-  "Turbine Erection & Commissioning","Turnkey Overhauling & Maintenance",
-  "Precision Reverse Engineering","Dynamic Balancing & Rotor Machining",
-  "Lube Oil Flushing","Machine Alignment","Emergency Troubleshooting",
-  "Bearing Rebabbitting","Rotor Journal Polishing","Vibration Analysis",
+  "Turbine Erection & Commissioning",
+  "Turnkey Overhauling & Maintenance",
+  "Precision Reverse Engineering",
+  "Dynamic Balancing & Rotor Machining",
+  "Lube Oil Flushing",
+  "Machine Alignment",
+  "Troubleshooting Service",
 ];
 const INDUSTRIES = [
   "Sugar / Distillery","Paper & Pulp","Steel / Metals","Petrochemical",
@@ -541,16 +567,17 @@ function Field({ id, label, required, error, children }) {
   );
 }
 
-/** Chip / pill multi-select */
+/** Chip / pill multi-select — uses <button role="checkbox"> with keyboard support */
 function ChipSelect({ options, selected, onToggle, color }) {
   return (
-    <div style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
+    <div role="group" style={{ display:"flex", flexWrap:"wrap", gap:7 }}>
       {options.map(opt => {
         const on = selected.includes(opt);
         return (
           <button key={opt} type="button"
             role="checkbox" aria-checked={on}
             onClick={() => onToggle(opt)}
+            onKeyDown={e => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); onToggle(opt); } }}
             style={{ padding:"7px 14px", borderRadius:9999,
               border:`1.5px solid ${on ? color : T.border}`,
               background: on ? color + "14" : T.surface,
@@ -655,8 +682,7 @@ function ProductSelector({ selected, onToggle }) {
         <input
           id="product-search"
           type="search"
-          aria-label="Search products"
-          placeholder="Search 113 products…"
+          placeholder={`Search ${ALL_LIST.length} products…`}
           value={query} onChange={e => setQuery(e.target.value)}
           style={{ ...S.inp(false), paddingLeft:34 }} />
         {query && (
@@ -761,6 +787,9 @@ function ProductSelector({ selected, onToggle }) {
    and set WEB3FORMS_ACCESS_KEY at the top of this file.
    ───────────────────────────────────────────────────────────────── */
 async function submitToBackend(state) {
+  if (WEB3FORMS_ACCESS_KEY === "YOUR_WEB3FORMS_KEY_HERE") {
+    throw new Error("⚠️ Web3Forms key not configured.");
+  }
   const { identity, selected, prodRatings, genRatings,
           svcTypes, svcDetails, svcRatings, feedback,
           question, aiReply, reviewType } = state;
@@ -844,6 +873,50 @@ async function submitToBackend(state) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   INQUIRY SUBMIT HELPER — sends product inquiry via Web3Forms
+   ───────────────────────────────────────────────────────────────── */
+async function submitInquiry({ name, company, email, phone, countryCode, message, selectedIds }) {
+  if (WEB3FORMS_ACCESS_KEY === "YOUR_WEB3FORMS_KEY_HERE") {
+    throw new Error("⚠️ Web3Forms key not configured.");
+  }
+  const dialCode = PHONE_COUNTRIES.find(c => c.code === (countryCode || DEFAULT_COUNTRY_CODE))?.dial || "";
+  const productLines = selectedIds.map(id => {
+    const p = ALL_LIST.find(x => x.id === id);
+    return `  • ${p?.title ?? id}`;
+  }).join("\n");
+
+  const body = [
+    `=== KESHAV ENTERPRISES — PRODUCT INQUIRY ===`,
+    ``,
+    `FROM`,
+    `Name:    ${name}`,
+    `Company: ${company || "—"}`,
+    `Email:   ${email  || "—"}`,
+    `Phone:   ${phone  ? `${dialCode} ${phone}` : "—"}`,
+    ``,
+    `PRODUCTS OF INTEREST (${selectedIds.length})`,
+    productLines || "  (none specified)",
+    ``,
+    `MESSAGE`,
+    message || "—",
+  ].join("\n");
+
+  const res = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      subject:    `Product Inquiry from ${name}${company ? ` (${company})` : ""}`,
+      from_name:  "Keshav Enterprises Inquiry Form",
+      email:      email || "noreply@keshaventerprises.in",
+      message:    body,
+    }),
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.message || "Inquiry submission failed");
+}
+
+/* ─────────────────────────────────────────────────────────────────
    AI HELPER  — calls your Cloudflare Worker proxy
    The Worker holds the Anthropic API key server-side so it never
    reaches the browser. See deployment guide Step 3 for Worker code.
@@ -864,12 +937,256 @@ async function fetchAIReply(question) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
+   INQUIRY PANEL  — standalone product inquiry form embedded inside
+   the same popup / page shell. Reuses ALL_PRODUCTS / ProductSelector.
+   Exported as named export so ExitIntentReviewPopup can use it inline.
+   ───────────────────────────────────────────────────────────────── */
+export function InquiryPanel({ prefill = {}, onBack, onSubmitSuccess }) {
+  const [selectedIds, setSelectedIds]   = useState([]);
+  const [name,        setName]          = useState(prefill.name    || "");
+  const [company,     setCompany]       = useState(prefill.company || "");
+  const [email,       setEmail]         = useState(prefill.email   || "");
+  const [phone,       setPhone]         = useState(prefill.phone   || "");
+  const [countryCode, setCountryCode]   = useState(prefill.countryCode || DEFAULT_COUNTRY_CODE);
+  const [message,     setMessage]       = useState("");
+  const [errors,      setErrors]        = useState({});
+  const [submitting,  setSubmitting]    = useState(false);
+  const [submitted,   setSubmitted]     = useState(false);
+  const [submitError, setSubmitError]   = useState(null);
+
+  const toggleProduct = useCallback(id =>
+    setSelectedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  , []);
+
+  const validate = () => {
+    const errs = {};
+    if (!name.trim()) errs.name = "Name is required";
+    if (email && !EMAIL_RE.test(email.trim())) errs.email = "Enter a valid email";
+    const phoneErr = validatePhone(phone, countryCode);
+    if (phoneErr) errs.phone = phoneErr;
+    if (selectedIds.length === 0 && !message.trim())
+      errs.products = "Please select at least one product or describe what you need";
+    return errs;
+  };
+
+  const handleSend = async () => {
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setSubmitting(true); setSubmitError(null);
+    try {
+      await submitInquiry({ name, company, email, phone, countryCode, message, selectedIds });
+      setSubmitted(true);
+      onSubmitSuccess?.(); // notify popup parent (e.g. for auto-dismiss)
+    } catch (err) {
+      setSubmitError(err.message || "Could not send inquiry. Please try again.");
+    } finally { setSubmitting(false); }
+  };
+
+  if (submitted) {
+    return (
+      <div style={{ padding:"32px 24px", textAlign:"center" }}>
+        <div style={{ width:56, height:56, borderRadius:"50%", background:"#dcfce7",
+          display:"flex", alignItems:"center", justifyContent:"center",
+          margin:"0 auto 14px" }}>
+          <CheckCircle2 size={30} color={T.ok} />
+        </div>
+        <h3 style={{ fontFamily:T.font, fontSize:19, fontWeight:900,
+          color:T.ink, marginBottom:8 }}>Inquiry Sent!</h3>
+        <p style={{ fontFamily:T.font, fontSize:13.5, color:T.muted,
+          lineHeight:1.6, marginBottom:20 }}>
+          Thank you, <strong>{name.split(" ")[0]}</strong>! Our team will get back to you
+          shortly at{" "}
+          <a href="https://wa.me/916397363268"
+            style={{ color:"#25d366", fontWeight:700, textDecoration:"none" }}>
+            WhatsApp
+          </a>{" "}or via email.
+        </p>
+        {selectedIds.length > 0 && (
+          <div style={{ background:T.infoBg, borderRadius:10,
+            padding:"11px 15px", border:`1px solid ${T.infoBorder}`,
+            textAlign:"left", marginBottom:16 }}>
+            <p style={{ fontFamily:T.font, fontSize:11, fontWeight:700,
+              color:T.brand, textTransform:"uppercase", letterSpacing:"0.07em",
+              marginBottom:7 }}>Products you enquired about</p>
+            {selectedIds.map(id => {
+              const p = ALL_LIST.find(x => x.id === id);
+              return (
+                <div key={id} style={{ display:"flex", alignItems:"center", gap:7,
+                  marginBottom:4 }}>
+                  <CheckCircle2 size={12} color={T.ok} />
+                  <span style={{ fontFamily:T.font, fontSize:12.5,
+                    color:T.ink }}>{p?.title ?? id}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+        <button type="button"
+          onClick={() => { setSubmitted(false); setSelectedIds([]); setMessage(""); setErrors({});
+            setPhone(""); setCountryCode(DEFAULT_COUNTRY_CODE); }}
+          style={{ padding:"9px 20px", borderRadius:10, border:`1.5px solid ${T.border}`,
+            background:T.white, fontFamily:T.font, fontSize:13,
+            fontWeight:600, color:T.muted, cursor:"pointer" }}>
+          <RotateCcw size={13} style={{ marginRight:6, verticalAlign:"middle" }} />
+          New Inquiry
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ padding:"20px 22px 24px",
+      display:"flex", flexDirection:"column", gap:14 }}>
+
+      {/* Info banner */}
+      <div style={{ background:"#f0fdf4", borderRadius:T.radius,
+        padding:"11px 14px", border:"1px solid #bbf7d0" }}>
+        <p style={{ fontFamily:T.font, fontSize:13, color:"#15803d",
+          fontWeight:500, lineHeight:1.5 }}>
+          🛒 Select the products you're interested in, add your requirements,
+          and we'll get back to you with availability, pricing & lead time.
+        </p>
+      </div>
+
+      {/* Contact row */}
+      <div style={{ display:"grid",
+        gridTemplateColumns:"repeat(auto-fit, minmax(180px, 1fr))", gap:12 }}>
+        <div>
+          <label htmlFor="inq_name" style={S.lbl}>
+            Your Name <span style={{ color:T.danger }}>*</span>
+          </label>
+          <input id="inq_name" type="text" placeholder="e.g. Rajesh Kumar"
+            value={name} onChange={e => { setName(e.target.value); setErrors(p => ({ ...p, name:undefined })); }}
+            style={S.inp(!!errors.name)} />
+          {errors.name && <p style={S.errMsg}>{errors.name}</p>}
+        </div>
+        <div>
+          <label htmlFor="inq_company" style={S.lbl}>Company</label>
+          <input id="inq_company" type="text" placeholder="e.g. ABC Sugar Mills"
+            value={company} onChange={e => setCompany(e.target.value)}
+            style={S.inp(false)} />
+        </div>
+      </div>
+
+      <div style={{ display:"grid",
+        gridTemplateColumns:"repeat(auto-fit, minmax(180px, 1fr))", gap:12 }}>
+        <div>
+          <label htmlFor="inq_email" style={S.lbl}>Email</label>
+          <input id="inq_email" type="email" placeholder="you@company.com"
+            value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({ ...p, email:undefined })); }}
+            style={S.inp(!!errors.email)} />
+          {errors.email && <p style={S.errMsg}>{errors.email}</p>}
+        </div>
+        <div>
+          <label htmlFor="inq_phone" style={S.lbl}>Phone</label>
+          <div style={{ display:"flex", borderRadius:10,
+            border:`1.5px solid ${errors.phone ? T.danger : T.border}`,
+            overflow:"hidden", background:T.surface }}>
+            <div style={{ position:"relative", flexShrink:0 }}>
+              <select id="inq_phone_country"
+                value={countryCode}
+                onChange={e => { setCountryCode(e.target.value); setPhone(""); }}
+                style={{ height:"100%", padding:"10px 26px 10px 8px",
+                  background:"transparent", border:"none",
+                  borderRight:`1.5px solid ${T.border}`,
+                  fontFamily:T.font, fontSize:13, color:T.ink,
+                  cursor:"pointer", outline:"none",
+                  appearance:"none", WebkitAppearance:"none", minWidth:84 }}>
+                {PHONE_COUNTRIES.map(c => (
+                  <option key={c.code} value={c.code}>{c.flag} {c.dial || "—"}</option>
+                ))}
+              </select>
+              <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"
+                style={{ position:"absolute", right:6, top:"50%",
+                  transform:"translateY(-50%)", pointerEvents:"none", fill:T.muted }}>
+                <path d="M1 3l4 4 4-4"/>
+              </svg>
+            </div>
+            <input id="inq_phone" type="tel"
+              placeholder={PHONE_COUNTRIES.find(c => c.code === countryCode)?.hint || "Number"}
+              value={phone}
+              onChange={e => { setPhone(e.target.value.replace(/[^\d\s\-().]/g, "")); setErrors(p => ({ ...p, phone:undefined })); }}
+              onBlur={e => { const err = validatePhone(e.target.value, countryCode); if (err) setErrors(p => ({ ...p, phone:err })); }}
+              style={{ flex:1, padding:"10px 10px", border:"none",
+                background:"transparent", fontFamily:T.font, fontSize:13,
+                color:T.ink, outline:"none", minWidth:0 }} />
+          </div>
+          {errors.phone && <p style={S.errMsg}>{errors.phone}</p>}
+        </div>
+      </div>
+
+      {/* Product selector */}
+      <div>
+        <label style={{ ...S.lbl, marginBottom:8 }}>
+          Products of Interest
+          {selectedIds.length > 0 && (
+            <span style={{ marginLeft:8, background:T.brand, color:T.white,
+              borderRadius:9999, padding:"1px 8px", fontSize:10.5,
+              fontWeight:700, letterSpacing:"0.04em" }}>
+              {selectedIds.length} selected
+            </span>
+          )}
+        </label>
+        {errors.products && <p role="alert" style={{ ...S.errMsg, marginBottom:6 }}>{errors.products}</p>}
+        <ProductSelector selected={selectedIds} onToggle={toggleProduct} />
+      </div>
+
+      {/* Requirements message */}
+      <div>
+        <label htmlFor="inq_message" style={S.lbl}>
+          Requirements / Specifications
+        </label>
+        <textarea id="inq_message"
+          placeholder="Describe your requirements — quantity, specifications, application, urgency, etc."
+          value={message}
+          onChange={e => { setMessage(e.target.value); setErrors(p => ({ ...p, products:undefined })); }}
+          style={{ ...S.txta(false), minHeight:90 }} />
+      </div>
+
+      {/* Submit error */}
+      {submitError && (
+        <div role="alert" style={{ background:"#fef2f2", borderRadius:T.radius,
+          padding:"11px 14px", border:"1px solid #fecaca" }}>
+          <p style={{ fontFamily:T.font, fontSize:13, color:T.danger }}>{submitError}</p>
+        </div>
+      )}
+
+      {/* Send button */}
+      <button type="button" onClick={handleSend} disabled={submitting}
+        style={{ display:"flex", alignItems:"center", justifyContent:"center",
+          gap:8, padding:"12px 24px", borderRadius:10, border:"none",
+          background: submitting ? "#64748b" : "#059669",
+          color:T.white, fontFamily:T.font, fontWeight:700, fontSize:14,
+          cursor: submitting ? "not-allowed" : "pointer",
+          boxShadow:"0 4px 14px #05996940", transition:"background .2s" }}>
+        {submitting
+          ? <><span style={{ width:13, height:13,
+              border:"2px solid rgba(255,255,255,.3)", borderTop:"2px solid #fff",
+              borderRadius:"50%", animation:"spin .8s linear infinite",
+              display:"inline-block" }} />Sending…</>
+          : <><Send size={15} />Send Inquiry</>}
+      </button>
+
+      <p style={{ fontFamily:T.font, fontSize:11.5, color:"#94a3b8",
+        textAlign:"center", lineHeight:1.5 }}>
+        Or reach us directly on{" "}
+        <a href="https://wa.me/916397363268" target="_blank" rel="noopener noreferrer"
+          style={{ color:"#25d366", fontWeight:700, textDecoration:"none" }}>
+          WhatsApp +91 6397363268
+        </a>
+      </p>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    MAIN FORM COMPONENT
    ───────────────────────────────────────────────────────────────── */
 // onSubmitSuccess (optional): called after successful submit.
 // Used by ExitIntentReviewPopup to show its own thank-you screen.
 // popupMode (optional): hides the full-page shell when true.
 export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) {
+  const [mode, setMode] = useState("review"); // "review" | "inquiry"
   const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
   const stepContainerRef = useRef(null);
 
@@ -890,7 +1207,9 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
   useEffect(() => {
     if (!state.submitted) {
       try {
-        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(state));
+        // Exclude transient/in-flight fields — they must not be restored
+        const { submitting, submitError, aiThinking, aiReply, ...draftable } = state;
+        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draftable));
       } catch (_) { /* storage quota exceeded — ignore */ }
     } else {
       sessionStorage.removeItem(DRAFT_KEY);
@@ -930,7 +1249,7 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
   }, [state.genRatings, state.svcRatings, state.prodRatings]);
 
   // ── Validation & navigation ──────────────────────────────────────
-  const validateStep = () => {
+  const validateStep = useCallback(() => {
     if (curStepId === "identity") {
       const errors = validateIdentity(state.identity);
       if (Object.keys(errors).length) {
@@ -951,17 +1270,18 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
       return false;
     }
     return true;
-  };
+  }, [curStepId, state.identity, state.reviewType, state.selected, state.svcTypes]);
 
-  const goNext = () => {
+  const goNext = useCallback(() => {
     if (!validateStep()) return;
     if (state.stepIndex < totalSteps - 1) {
       dispatch({ type:"SET_STEP", v: state.stepIndex + 1 });
     }
-  };
-  const goBack = () => {
+  }, [validateStep, state.stepIndex, totalSteps]);
+
+  const goBack = useCallback(() => {
     if (state.stepIndex > 0) dispatch({ type:"SET_STEP", v: state.stepIndex - 1 });
-  };
+  }, [state.stepIndex]);
 
   // ── Submit ───────────────────────────────────────────────────────
   const handleSubmit = async () => {
@@ -1282,7 +1602,35 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
       );
 
       /* ── PATH SELECTION ── */
-      case "path": return (
+      case "path": {
+        const REVIEW_OPTS = [
+          { type:"products", icon:Package, color:"#0891b2",
+            label:"Products Only",
+            desc:"I purchased spare parts, filter elements, expansion joints, hoses, or other products.",
+            badge:`${ALL_LIST.length} products across 9 categories` },
+          { type:"services", icon:Wrench, color:"#059669",
+            label:"Services Only",
+            desc:"I used Keshav Enterprises for turbine maintenance, overhauling, alignment, balancing, or other on-site services.",
+            badge:"10 service categories" },
+          { type:"both", icon:Layers, color:"#7c3aed",
+            label:"Both Products & Services",
+            desc:"I purchased products AND used maintenance or engineering services — I want to review both.",
+            badge:"Full review" },
+        ];
+        const curIdx = REVIEW_OPTS.findIndex(o => o.type === state.reviewType);
+
+        const handleReviewTypeKey = (e, idx) => {
+          let next = -1;
+          if (e.key === "ArrowDown" || e.key === "ArrowRight") next = (idx + 1) % REVIEW_OPTS.length;
+          if (e.key === "ArrowUp"   || e.key === "ArrowLeft")  next = (idx - 1 + REVIEW_OPTS.length) % REVIEW_OPTS.length;
+          if (next === -1) return;
+          e.preventDefault();
+          dispatch({ type:"SET_REVIEW_TYPE", v: REVIEW_OPTS[next].type });
+          // Move focus to the newly selected button
+          document.getElementById(`review-type-${REVIEW_OPTS[next].type}`)?.focus();
+        };
+
+        return (
         <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
           <div style={{ background:T.infoBg, borderRadius:T.radius,
             padding:"11px 15px", border:`1px solid ${T.infoBorder}`, marginBottom:4 }}>
@@ -1293,26 +1641,18 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
           </div>
           {fe.reviewType && <p role="alert" style={S.errMsg}>{fe.reviewType}</p>}
 
-          {[
-            { type:"products", icon:Package, color:"#0891b2",
-              label:"Products Only",
-              desc:"I purchased spare parts, filter elements, expansion joints, hoses, or other products.",
-              badge:"113 products across 8 categories" },
-            { type:"services", icon:Wrench, color:"#059669",
-              label:"Services Only",
-              desc:"I used Keshav Enterprises for turbine maintenance, overhauling, alignment, balancing, or other on-site services.",
-              badge:"10 service categories" },
-            { type:"both", icon:Layers, color:"#7c3aed",
-              label:"Both Products & Services",
-              desc:"I purchased products AND used maintenance or engineering services — I want to review both.",
-              badge:"Full review" },
-          ].map(opt => {
+          <div role="radiogroup" aria-label="Review type" style={{ display:"flex", flexDirection:"column", gap:10 }}>
+          {REVIEW_OPTS.map((opt, idx) => {
             const Icon  = opt.icon;
             const active = state.reviewType === opt.type;
             return (
-              <button key={opt.type} type="button"
+              <button key={opt.type}
+                id={`review-type-${opt.type}`}
+                type="button"
                 role="radio" aria-checked={active}
+                tabIndex={active || (curIdx === -1 && idx === 0) ? 0 : -1}
                 onClick={() => dispatch({ type:"SET_REVIEW_TYPE", v:opt.type })}
+                onKeyDown={e => handleReviewTypeKey(e, idx)}
                 style={{ display:"flex", alignItems:"flex-start", gap:14,
                   padding:"16px 18px", borderRadius:T.radiusLg,
                   border:`2px solid ${active ? opt.color : T.border}`,
@@ -1354,6 +1694,7 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
               </button>
             );
           })}
+          </div>
 
           {state.reviewType && (
             <div style={{ background:T.okBg, borderRadius:T.radius,
@@ -1370,7 +1711,8 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
             </div>
           )}
         </div>
-      );
+        );
+      }
 
       /* ── PRODUCTS SELECTION ── */
       case "products": return (
@@ -1562,7 +1904,7 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
             </div>
             <p style={{ fontSize:12.5, color:"#475569", marginBottom:11,
               lineHeight:1.5, fontFamily:T.font }}>
-              Ask anything about our 113 products, spare parts availability, pricing,
+              Ask anything about our 132 products, spare parts availability, pricing,
               or technical services — get an instant AI-powered answer.
             </p>
             <Field id="ai-question" label="Your question">
@@ -1627,7 +1969,7 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
   /* ──────────────────────────────────────────────────────────────
      MAIN SHELL
      ────────────────────────────────────────────────────────────── */
-  const CurIcon = steps[state.stepIndex]?.icon || User;
+  const CurIcon    = steps[state.stepIndex]?.icon || User;
   const isLastStep = state.stepIndex === totalSteps - 1;
 
   return (
@@ -1708,8 +2050,7 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
 
         {/* ── FORM CARD ── */}
         <main>
-          <form onSubmit={e => e.preventDefault()} noValidate
-            aria-label="Customer review form">
+          <div role="form" aria-label="Customer review form" noValidate>
 
             {/* ── Dev warning: keys not configured ── */}
             {(WEB3FORMS_ACCESS_KEY === "YOUR_WEB3FORMS_KEY_HERE" ||
@@ -1743,7 +2084,49 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
             <div style={{ background:T.white, borderRadius:20,
               boxShadow:"0 20px 60px rgba(0,0,0,.35)", overflow:"hidden" }}>
 
-              {/* Step pills */}
+              {/* ── Mode Tab Switcher ── */}
+              <div style={{ display:"flex", borderBottom:`1px solid ${T.border}`,
+                background:"linear-gradient(135deg,#f8fafc,#f1f5f9)" }}>
+                {[
+                  { id:"review",  icon:ClipboardList, label:"Leave a Review",   color:T.brand      },
+                  { id:"inquiry", icon:ShoppingCart,  label:"Inquire Products",  color:"#059669"    },
+                ].map(tab => {
+                  const Icon = tab.icon;
+                  const active = mode === tab.id;
+                  return (
+                    <button key={tab.id} type="button"
+                      onClick={() => setMode(tab.id)}
+                      aria-pressed={active}
+                      style={{ flex:1, display:"flex", alignItems:"center",
+                        justifyContent:"center", gap:7,
+                        padding:"13px 10px",
+                        background: active ? T.white : "transparent",
+                        borderBottom: active ? `2.5px solid ${tab.color}` : "2.5px solid transparent",
+                        color: active ? tab.color : T.muted,
+                        fontFamily:T.font, fontWeight:700, fontSize:13,
+                        cursor:"pointer", border:"none",
+                        borderRight: tab.id === "review" ? `1px solid ${T.border}` : "none",
+                        transition:"all .2s" }}>
+                      <Icon size={15} aria-hidden="true" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* ── Inquiry mode ── */}
+              {mode === "inquiry" && (
+                <InquiryPanel prefill={{
+                  name:        state.identity.name,
+                  company:     state.identity.company,
+                  email:       state.identity.email,
+                  phone:       state.identity.phone,
+                  countryCode: state.identity.countryCode,
+                }} />
+              )}
+
+              {/* ── Review mode ── */}
+              {mode === "review" && (<>
               <nav aria-label="Form progress"
                 style={{ padding:"16px 20px 0",
                   background:"linear-gradient(135deg,#f8fafc,#f1f5f9)",
@@ -1862,9 +2245,10 @@ export default function ReviewForm({ onSubmitSuccess, popupMode = false } = {}) 
                   </button>
                 )}
               </div>
+              </>)}
             </div>
 
-          </form>
+          </div>{/* /form */}
         </main>
 
       </div>

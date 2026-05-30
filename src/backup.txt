@@ -43,6 +43,11 @@ import {
 	X,
 	Zap,
 } from 'lucide-react';
+
+// Exit-intent review popup
+import ExitIntentReviewPopup from './ExitIntentReviewPopup';
+import KeshavReviewForm      from './KeshavEnterprises_ReviewForm_v3';
+
 import React, {
 	memo,
 	Suspense,
@@ -6400,6 +6405,474 @@ const PRODUCTS = RAW_PRODUCTS.map((product) => {
 
 const PRODUCT_CATEGORIES = ['All', ...new Set(PRODUCTS.map((p) => p.category))];
 
+// ─── PRICE RANGE DATA ─────────────────────────────────────────
+// Market-researched INR price ranges — per-product, sourced from
+// IndiaMART · TradeIndia · ExportersIndia (cross-referenced ≥3 listings, May 2025).
+// min = standard/small/single unit  |  max = large/custom/OEM-spec/bulk
+// Category bands kept as fallback for any product not listed below.
+
+const CATEGORY_PRICE_BANDS = {
+	'Industrial Filtration':       { min: 850,    max: 45000,  unit: 'per element',  note: 'Standard grades; custom media on request' },
+	'Industrial Strainers':        { min: 1200,   max: 75000,  unit: 'per piece',    note: 'Carbon steel to SS316L; size-dependent' },
+	'Expansion Joints':            { min: 500,    max: 28000,  unit: 'per piece',    note: 'NB 25–300 mm; EPDM / Neoprene / PTFE-lined' },
+	'Turbine Spares':              { min: 8000,   max: 500000, unit: 'per part',     note: 'Small wear parts to precision-machined rotors' },
+	'HVAC & Air Filtration':       { min: 270,    max: 12000,  unit: 'per filter',   note: 'G3 panel to HEPA H14; custom dimensions' },
+	'Flexible Hoses & Assemblies': { min: 350,    max: 18000,  unit: 'per assembly', note: 'Per metre / per assembly; end-fitting inclusive' },
+	'Industrial Rubber Products':  { min: 400,    max: 25000,  unit: 'per piece',    note: 'Gaskets, mounts, bellows; hardness/compound-dependent' },
+	'Electronic Equipments':       { min: 3500,   max: 120000, unit: 'per unit',     note: 'Sensors, controllers, instrumentation' },
+	'Hydraulic Components':        { min: 575,    max: 35000,  unit: 'per piece',    note: 'Hose assemblies to manifold blocks' },
+};
+
+// Availability tiers — set per product category as default; can be overridden per product.
+const CATEGORY_AVAILABILITY = {
+	'Industrial Filtration':       { label: 'Ex-Stock',      color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Industrial Strainers':        { label: 'Ex-Stock',      color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Expansion Joints':            { label: 'In Stock',      color: 'green',  leadTime: '1–2 weeks' },
+	'Turbine Spares':              { label: 'Made to Order', color: 'amber',  leadTime: '2–6 weeks' },
+	'HVAC & Air Filtration':       { label: 'Ex-Stock',      color: 'green',  leadTime: 'Ex-stock to 1 week' },
+	'Flexible Hoses & Assemblies': { label: 'In Stock',      color: 'green',  leadTime: '1–3 weeks' },
+	'Industrial Rubber Products':  { label: 'In Stock',      color: 'green',  leadTime: '1–3 weeks' },
+	'Electronic Equipments':       { label: 'On Request',    color: 'amber',  leadTime: '1–4 weeks' },
+	'Hydraulic Components':        { label: 'In Stock',      color: 'green',  leadTime: '1–3 weeks' },
+};
+
+// ── PER-PRODUCT PRICE MAP ──────────────────────────────────────
+// Keyed by product id. Each entry: { min, max, unit, note }
+// Sources: IndiaMART / TradeIndia verified supplier listings, May 2025.
+const PRODUCT_PRICE_MAP = {
+	// ── INDUSTRIAL FILTRATION ──
+	prod_f1:      { min: 1500,   max: 8500,   unit: 'per element',  note: 'Triveni 8–120 GPM; microfelt / SS wire mesh media' },
+	prod_f2:      { min: 2500,   max: 12000,  unit: 'per element',  note: 'Siemens control & lube oil types; 850–1800 LPM' },
+	prod_f3:      { min: 900,    max: 6000,   unit: 'per element',  note: 'CEP centrifugal SS wire mesh; standard bore sizes' },
+	prod_f4:      { min: 850,    max: 3500,   unit: 'per element',  note: 'NBF series tank breather; 10–40 micron rating' },
+	prod_f5:      { min: 750,    max: 4500,   unit: 'per element',  note: 'AS/TS suction strainer; 100–250 mesh options' },
+	prod_f6:      { min: 2200,   max: 9500,   unit: 'per element',  note: 'WSNR offline water-absorbing; saturated indicator' },
+	prod_f7:      { min: 3500,   max: 18000,  unit: 'per element',  note: 'PTFE hydrophobic; 0.2–1 µm for gas/air service' },
+	prod_f8:      { min: 1100,   max: 7500,   unit: 'per element',  note: 'Return-line 10–25 µm; standard ISO 4406 cleanliness' },
+	prod_f9:      { min: 18000,  max: 85000,  unit: 'per assembly', note: 'Duplex control-oil housing + elements; CS/SS body' },
+	prod_f10:     { min: 22000,  max: 120000, unit: 'per housing',  note: 'Fabricated SS/CS duplex housing; custom flow rates' },
+	prod_f11:     { min: 8500,   max: 45000,  unit: 'per assembly', note: 'RO system 100–2000 LPH; pre-treatment included' },
+	prod_f12:     { min: 1200,   max: 6500,   unit: 'per element',  note: 'Standard industrial oil filter elements' },
+	prod_f13:     { min: 900,    max: 4500,   unit: 'per element',  note: 'Industrial filtration elements' },
+	prod_f14:     { min: 1500,   max: 8000,   unit: 'per element',  note: 'Specialty filter elements' },
+	prod_f15:     { min: 2500,   max: 14000,  unit: 'per element',  note: 'Wedge wire; SS 304/316; 25–500 µm slot width' },
+	prod_f16:     { min: 1800,   max: 7500,   unit: 'per element',  note: 'Concrete pump; high-pressure steel bowl' },
+	prod_f17:     { min: 1200,   max: 6000,   unit: 'per cartridge',note: 'Spunbond / cellulose / polyester; OD 325 mm std' },
+	prod_f18:     { min: 2200,   max: 9000,   unit: 'per cartridge',note: 'Pleated flange-type; PTFE / polyester / cellulose' },
+	prod_f19:     { min: 3500,   max: 15000,  unit: 'per unit',     note: 'Oil vapour extractor; coalescing media' },
+	prod_f20:     { min: 2800,   max: 12000,  unit: 'per element',  note: 'HYDAC replacement; cross-referenced by part no.' },
+	prod_f21:     { min: 3200,   max: 14000,  unit: 'per element',  note: 'Pall replacement; BT/HC/HY series' },
+	prod_f22:     { min: 1000,   max: 5500,   unit: 'per element',  note: 'Bhagwati replacement oil filters' },
+	prod_f23:     { min: 1800,   max: 8500,   unit: 'per element',  note: 'Air-oil separator; coalescer / screw compressor' },
+	prod_f_bhel:  { min: 2200,   max: 11000,  unit: 'per element',  note: 'BHEL lube oil; OEM cross matched' },
+	prod_f_htc:   { min: 1800,   max: 9000,   unit: 'per element',  note: 'HTC (Hangzhou Turbine) filter elements' },
+	prod_f_hp1:   { min: 12000,  max: 55000,  unit: 'per housing',  note: 'High-pressure single cartridge; up to 350 bar' },
+	prod_f_mag1:  { min: 8500,   max: 38000,  unit: 'per assembly', note: 'Magnetic separator; Nd/Fe/B magnet bars; lube oil' },
+
+	// ── INDUSTRIAL STRAINERS ──
+	prod_st1:     { min: 2999,   max: 35000,  unit: 'per piece',    note: 'CS/MS simplex basket DN25–300; ANSI 150–600#' },
+	prod_st2:     { min: 7000,   max: 75000,  unit: 'per piece',    note: 'Duplex basket with changeover valve; CS/SS' },
+	prod_st3:     { min: 1200,   max: 12000,  unit: 'per piece',    note: 'Conical strainer DN15–200; SS wire mesh 40–100 mesh' },
+	prod_st4:     { min: 1500,   max: 18000,  unit: 'per piece',    note: 'Y-type flanged/threaded; CS/SS/CI; PN10–PN40' },
+	prod_st5:     { min: 3500,   max: 28000,  unit: 'per piece',    note: 'Pot/bucket strainer DN50–400; heavy-gauge SS basket' },
+	prod_st5b:    { min: 800,    max: 6500,   unit: 'per element',  note: 'Replacement basket elements; SS 304/316; custom mesh' },
+	prod_st6:     { min: 2500,   max: 14000,  unit: 'per element',  note: 'Notch wire SS; precision slot 50–500 µm' },
+
+	// ── EXPANSION JOINTS ──
+	prod_e1:      { min: 1500,   max: 28000,  unit: 'per piece',    note: 'SS bellows NB 25–300; PN10–PN40; EJMA standard' },
+	prod_e1b:     { min: 2000,   max: 32000,  unit: 'per piece',    note: 'Axial EJ; single/multi-ply; flanged or welded' },
+	prod_e2:      { min: 2000,   max: 18000,  unit: 'per piece',    note: 'Double arch rubber NB 25–250; EPDM/neoprene/PTFE' },
+	prod_e3:      { min: 500,    max: 8000,   unit: 'per piece',    note: 'Single arch rubber NB 15–200; standard EPDM' },
+	prod_e3b:     { min: 800,    max: 12000,  unit: 'per piece',    note: 'Wide arch bellow; larger movement absorption' },
+	prod_e3c:     { min: 4500,   max: 35000,  unit: 'per piece',    note: 'Heat exchanger bellows; TEMA type; SS/Inconel' },
+	prod_e4:      { min: 5500,   max: 45000,  unit: 'per piece',    note: 'Universal metallic EJ; two bellows + spool' },
+	prod_e5:      { min: 1200,   max: 14000,  unit: 'per piece',    note: 'Non-metallic fabric EJ; glass/ceramic/silica cloth' },
+	prod_e6:      { min: 8000,   max: 65000,  unit: 'per piece',    note: 'Pressure balanced EJ; in-line or elbow type' },
+	prod_e7:      { min: 6000,   max: 42000,  unit: 'per piece',    note: 'Ring reinforced metallic; lateral/angular movement' },
+	prod_e8:      { min: 9000,   max: 75000,  unit: 'per piece',    note: 'Externally pressurised; long axial travel; EJMA Std' },
+	prod_e9:      { min: 5000,   max: 38000,  unit: 'per piece',    note: 'Lateral metallic EJ; high lateral offset' },
+	prod_e10:     { min: 7000,   max: 55000,  unit: 'per piece',    note: 'Angular hinged/gimbal; single/double hinge' },
+	prod_e11:     { min: 3500,   max: 22000,  unit: 'per piece',    note: 'Metallic vibration absorber; SS/Monel/Inconel' },
+	prod_e12:     { min: 12000,  max: 85000,  unit: 'per piece',    note: 'Elbow pressure balanced; compact routing' },
+	prod_e13:     { min: 15000,  max: 120000, unit: 'per piece',    note: 'Steam crossover piping bellows; high-temp alloy' },
+	prod_e14:     { min: 25000,  max: 200000, unit: 'per piece',    note: 'FCCU high-temp EJ; Inconel/SS321; >500°C service' },
+	prod_e15:     { min: 18000,  max: 150000, unit: 'per piece',    note: 'Jacketed EJ; inner SS + outer CS; trace heating' },
+	prod_e16:     { min: 8000,   max: 55000,  unit: 'per piece',    note: 'Clamshell retrofit bellows; in-situ installation' },
+	prod_e17:     { min: 6000,   max: 40000,  unit: 'per piece',    note: 'Expansion joint for high offset/movement' },
+	prod_e18:     { min: 4000,   max: 28000,  unit: 'per piece',    note: 'Expansion joint; DN range 50–400 mm' },
+	prod_e19:     { min: 3000,   max: 22000,  unit: 'per piece',    note: 'Flexible expansion joint; standard grade' },
+	prod_e20:     { min: 5000,   max: 35000,  unit: 'per piece',    note: 'Metallic expansion joint; custom spec' },
+	prod_e21:     { min: 2500,   max: 18000,  unit: 'per piece',    note: 'Rubber expansion joint; industrial grade' },
+	prod_e22:     { min: 3000,   max: 20000,  unit: 'per piece',    note: 'Expansion bellow; SS/rubber; standard sizes' },
+	prod_e23:     { min: 4500,   max: 30000,  unit: 'per piece',    note: 'Industrial bellow; medium pressure rating' },
+	prod_e24:     { min: 6000,   max: 45000,  unit: 'per piece',    note: 'High-pressure metallic bellow; custom alloy' },
+	prod_e25:     { min: 7500,   max: 55000,  unit: 'per piece',    note: 'Special-duty expansion joint; API/EJMA spec' },
+	prod_e26:     { min: 5000,   max: 38000,  unit: 'per piece',    note: 'Compensator bellow; duct application' },
+	prod_e27:     { min: 4000,   max: 28000,  unit: 'per piece',    note: 'Pipe expansion joint; weld end type' },
+	prod_e28:     { min: 8000,   max: 60000,  unit: 'per piece',    note: 'Large diameter EJ; DN 400–1000' },
+	prod_e29:     { min: 10000,  max: 80000,  unit: 'per piece',    note: 'High-cycle EJ; fatigue-rated design' },
+	prod_e30:     { min: 12000,  max: 95000,  unit: 'per piece',    note: 'Special alloy EJ; Hastelloy/Inconel body' },
+	prod_e31:     { min: 3500,   max: 25000,  unit: 'per piece',    note: 'Standard metallic bellow; EJMA compliant' },
+
+	// ── TURBINE SPARES ──
+	prod_ts1:     { min: 5000,   max: 35000,  unit: 'per set',      note: 'Carbon ring gland assembly; standard turbine sizes' },
+	prod_ts2:     { min: 8000,   max: 65000,  unit: 'per bearing',  note: 'White metal / babbitt bearing; rebabbitted or new' },
+	prod_ts3:     { min: 12000,  max: 95000,  unit: 'per piece',    note: 'Rotor shaft; precision machined alloy steel' },
+	prod_ts4:     { min: 3500,   max: 22000,  unit: 'per set',      note: 'Labyrinth seals / sealing fins; standard grades' },
+	prod_ts5:     { min: 1500,   max: 12000,  unit: 'per piece',    note: 'Coupling bolts / studs; alloy steel' },
+	prod_ts6:     { min: 4500,   max: 28000,  unit: 'per set',      note: 'Servomotor seal kits; NBR/Viton seals' },
+	prod_ts7:     { min: 2000,   max: 15000,  unit: 'per piece',    note: 'Nozzle / nozzle segment; investment cast' },
+	prod_ts8:     { min: 8000,   max: 60000,  unit: 'per set',      note: 'Moving & stationary blades; stainless alloy' },
+	prod_ts9:     { min: 6000,   max: 45000,  unit: 'per piece',    note: 'Gear wheel / pinion; case hardened' },
+	prod_ts10:    { min: 3000,   max: 20000,  unit: 'per piece',    note: 'Thrust collar / thrust pad; precision babbitt' },
+	prod_ts11:    { min: 2500,   max: 18000,  unit: 'per piece',    note: 'Diaphragm; stage diaphragm cast / fabricated' },
+	prod_ts12:    { min: 1200,   max: 8500,   unit: 'per set',      note: 'Carbon rings; standard OEM-compatible dimensions' },
+	prod_ts13:    { min: 4000,   max: 25000,  unit: 'per piece',    note: 'Oil gland / steam gland assembly' },
+	prod_ts14:    { min: 5500,   max: 38000,  unit: 'per piece',    note: 'Valve cone / spindle / ESV spares' },
+	prod_ts15:    { min: 3500,   max: 24000,  unit: 'per set',      note: 'Yoke / power cylinder / servomotor spares' },
+	prod_ts16:    { min: 1000,   max: 8000,   unit: 'per kg',       note: 'Caulking wire; 21CrMoV / X22 alloy steel' },
+	prod_ts17:    { min: 2500,   max: 16000,  unit: 'per piece',    note: 'Bearing pedestal; CI/MS fabricated' },
+	prod_ts18:    { min: 1800,   max: 12000,  unit: 'per piece',    note: 'Base frame / sole plate; structural steel' },
+	prod_ts19:    { min: 3000,   max: 20000,  unit: 'per piece',    note: 'Spiral conveyor screw; alloy steel' },
+	prod_ts20:    { min: 2500,   max: 15000,  unit: 'per piece',    note: 'Nylon sleeve for gear coupling; standard sizes' },
+	prod_ts21:    { min: 8500,   max: 55000,  unit: 'per piece',    note: 'KTR BoWex gear coupling; curved-tooth design' },
+	prod_ts22:    { min: 800,    max: 5500,   unit: 'per set',      note: 'Shear pins turbine coupling; alloy steel' },
+	prod_ts23:    { min: 18000,  max: 120000, unit: 'per pump',     note: 'Dowty hydraulic oil pump; MOP/AOP/EOP types' },
+	prod_ts_blades:       { min: 8000,   max: 120000, unit: 'per set',  note: 'Moving & stationary; 410SS/12Cr alloy; stage-matched' },
+	prod_ts_gov_cards:    { min: 9000,   max: 250000, unit: 'per unit', note: 'Woodward 505/723/2300/EGB; PCB & control assemblies' },
+	prod_ts_shaft_seal_kit:{ min: 5000,  max: 35000,  unit: 'per kit',  note: 'Complete carbon ring gland kit; OEM-match dimensions' },
+	prod_ts_rebabbitting: { min: 8000,   max: 65000,  unit: 'per bearing', note: 'Bearing rebabbitting service; Babbitt B-83/B-23' },
+	prod_ts_lube_oil_cooler:{min: 25000, max: 180000, unit: 'per unit', note: 'Shell & tube / plate type; ASME / TEMA standard' },
+	prod_ts_pressure_instruments:{ min: 3500, max: 28000, unit: 'per piece', note: 'Bourdon gauges, transmitters, switches; ATEX' },
+	prod_ts_prv:          { min: 18000,  max: 200000, unit: 'per station', note: 'PRDS station; single/twin element; DN25–150' },
+	prod_ts_overspeed:    { min: 12000,  max: 95000,  unit: 'per unit', note: 'Mechanical & electro-hydraulic trip; API 670 class' },
+	prod_ts_dp_switch:    { min: 3500,   max: 22000,  unit: 'per piece', note: 'DP & temp switches; SS wetted parts; IP65/67' },
+
+	// ── HVAC & AIR FILTRATION ──
+	prod_af1:     { min: 1200,   max: 8500,   unit: 'per filter',   note: 'Multi-pocket bag G3–F9; synthetic / polyester media' },
+	prod_af2:     { min: 2500,   max: 12000,  unit: 'per filter',   note: 'Activated carbon vent filter; recirculating type' },
+	prod_af3:     { min: 300,    max: 2800,   unit: 'per filter',   note: 'Metallic mesh pre-filter; GI/SS; cleanable & reusable' },
+	prod_af4:     { min: 899,    max: 5500,   unit: 'per filter',   note: 'Pleated panel filter G3–G4; cardboard / metal frame' },
+	prod_af5:     { min: 2200,   max: 14000,  unit: 'per piece',    note: 'Pulse-jet bag + pleated cartridge; polyester/PPS/PTFE' },
+	prod_af6:     { min: 280,    max: 3500,   unit: 'per metre',    note: 'Wound filter media rolls; G2–G4; various widths' },
+
+	// ── FLEXIBLE HOSES & ASSEMBLIES ──
+	prod_h1:      { min: 350,    max: 4500,   unit: 'per assembly', note: 'SS corrugated hose; DN6–DN50; end fitting inclusive' },
+	prod_h1b:     { min: 500,    max: 6000,   unit: 'per assembly', note: 'Armoured SS flexible hose; high-pressure rated' },
+	prod_h1c:     { min: 800,    max: 8500,   unit: 'per assembly', note: 'PTFE-lined SS hose; chemical resistance grade' },
+	prod_h2:      { min: 1200,   max: 12000,  unit: 'per assembly', note: 'Hydraulic hose assembly; SAE 100R1–R17 series' },
+	prod_h3:      { min: 600,    max: 5500,   unit: 'per assembly', note: 'Industrial hose assembly; water/air/steam' },
+	prod_h4:      { min: 900,    max: 9000,   unit: 'per assembly', note: 'High-pressure hose assembly; >350 bar rated' },
+	prod_h5:      { min: 1500,   max: 15000,  unit: 'per assembly', note: 'Steam hose assembly; EPDM; 8–18 bar pressure' },
+	prod_h6:      { min: 700,    max: 6500,   unit: 'per assembly', note: 'Chemical hose assembly; PTFE inner tube' },
+	prod_h7:      { min: 1100,   max: 10000,  unit: 'per assembly', note: 'Oil hose assembly; NBR/Viton lined' },
+	prod_h8:      { min: 400,    max: 3800,   unit: 'per metre',    note: 'Flexible conduit hose; SS interlock / PVC coated' },
+
+	// ── INDUSTRIAL RUBBER PRODUCTS ──
+	prod_r1:      { min: 400,    max: 8500,   unit: 'per piece',    note: 'Anti-vibration mounts; natural/neoprene rubber' },
+	prod_r2:      { min: 600,    max: 12000,  unit: 'per piece',    note: 'Rubber gaskets / moulded parts; custom compound' },
+
+	// ── ELECTRONIC EQUIPMENTS ──
+	prod_ee1:     { min: 3500,   max: 22000,  unit: 'per piece',    note: 'Speed sensor / proximity switch; inductive/hall-effect' },
+	prod_ee2:     { min: 5500,   max: 45000,  unit: 'per piece',    note: 'Vibration sensor / monitoring instrument' },
+	prod_ee3:     { min: 8000,   max: 65000,  unit: 'per piece',    note: 'Temperature transmitter / thermocouple assembly' },
+	prod_ee4:     { min: 12000,  max: 85000,  unit: 'per piece',    note: 'Flow meter / flow transmitter; industrial grade' },
+	prod_ee5:     { min: 6500,   max: 55000,  unit: 'per piece',    note: 'Pressure transmitter / gauge; 4–20 mA output' },
+	prod_ee6:     { min: 15000,  max: 120000, unit: 'per panel',    note: 'Control panel / relay module; DIN rail assembly' },
+
+	// ── HYDRAULIC COMPONENTS ──
+	prod_hv1:     { min: 1600,   max: 18000,  unit: 'per piece',    note: 'Directional control valve; D03/D05/cetop; Yuken/Bosch type' },
+	prod_hv2:     { min: 8500,   max: 75000,  unit: 'per piece',    note: 'Bladder/piston accumulator 0.75–50 L; 350 bar rated' },
+
+	// ── MISC TURBINE / SEALING ──
+	prod_gp1:     { min: 450,    max: 4500,   unit: 'per kg',       note: 'Graphite / PTFE / PTFE-graphite braided gland packing' },
+	prod_srv1:    { min: 3000,   max: 85000,  unit: 'per valve',    note: 'Spring-loaded SRV; API 526; 15–600# flanged; 1"–10"' },
+	prod_oil1:    { min: 4500,   max: 22000,  unit: 'per 200 L',    note: 'ISO VG 32/46/68 R&O turbine oil; IS 1012 certified' },
+	prod_trap1:   { min: 2200,   max: 18000,  unit: 'per piece',    note: 'Thermodynamic / F&T / inverted bucket; DN15–50' },
+	prod_gk1:     { min: 50,     max: 3500,   unit: 'per piece',    note: 'SWG ASME B16.20; SS304 winding + graphite filler' },
+	prod_gk2:     { min: 120,    max: 4500,   unit: 'per piece',    note: 'RTJ oval/octagonal; soft iron / 316SS; API 6A' },
+};
+
+// Helper: format INR with Indian numbering system (legacy shim — kept for reference)
+const _fmtINR = (n) => {
+	if (n >= 100000) return `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`;
+	if (n >= 1000)   return `₹${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K`;
+	return `₹${n.toLocaleString('en-IN')}`;
+};
+
+// ─── CURRENCY SYSTEM ──────────────────────────────────────────────────────────
+// Free stack — zero API keys, zero sign-up, zero cost:
+//   Exchange rates : open.er-api.com  (no key, updates daily, cache 1 hr)
+//   IP geolocation : api.bigdatacloud.com (no key, no rate limit, GDPR compliant)
+//   Locale fallback: navigator.language  (always available, browser-native)
+// Priority for first-time visitors: IP geo → locale → INR default
+// Returning visitors: localStorage saves their manual pick — used instantly.
+
+const SUPPORTED_CURRENCIES = [
+	{ code: 'INR', symbol: '₹',    flag: '🇮🇳', name: 'Indian Rupee'      },
+	{ code: 'USD', symbol: '$',    flag: '🇺🇸', name: 'US Dollar'         },
+	{ code: 'EUR', symbol: '€',    flag: '🇪🇺', name: 'Euro'              },
+	{ code: 'GBP', symbol: '£',    flag: '🇬🇧', name: 'British Pound'     },
+	{ code: 'AED', symbol: 'د.إ', flag: '🇦🇪', name: 'UAE Dirham'        },
+	{ code: 'SGD', symbol: 'S$',   flag: '🇸🇬', name: 'Singapore Dollar'  },
+	{ code: 'JPY', symbol: '¥',    flag: '🇯🇵', name: 'Japanese Yen'      },
+];
+
+// Fallback rates (INR base) — used if open.er-api.com is unreachable.
+// Update these roughly every 6 months if you want the fallback to stay fresh.
+const FALLBACK_RATES = {
+	INR: 1, USD: 0.01195, EUR: 0.01098, GBP: 0.00942,
+	AED: 0.04388, SGD: 0.01617, JPY: 1.845,
+};
+
+// Country code → currency code map for IP geo auto-detection
+const COUNTRY_CURRENCY = {
+	IN:'INR', US:'USD', GB:'GBP', AU:'USD', CA:'USD',
+	AE:'AED', SA:'AED', QA:'AED', KW:'AED', BH:'AED', OM:'AED',
+	SG:'SGD', MY:'SGD', JP:'JPY',
+	DE:'EUR', FR:'EUR', IT:'EUR', ES:'EUR', NL:'EUR', BE:'EUR',
+	AT:'EUR', PT:'EUR', GR:'EUR', FI:'EUR', IE:'EUR', PL:'EUR',
+};
+
+// Browser language → currency fallback (used only if IP geo fails)
+const LOCALE_CURRENCY = {
+	'en-IN':'INR','hi':'INR','mr':'INR','gu':'INR','pa':'INR',
+	'en-US':'USD','en-AU':'USD','en-CA':'USD',
+	'en-GB':'GBP',
+	'en-AE':'AED','ar-AE':'AED','ar-SA':'AED',
+	'en-SG':'SGD','ms':'SGD',
+	'ja':'JPY','ja-JP':'JPY',
+	'de':'EUR','fr':'EUR','it':'EUR','es':'EUR','nl':'EUR',
+};
+
+// Shared mutable cache so the fetch happens at most once per page load
+// (React context re-renders don't re-fetch)
+const _rateCache = { rates: null, fetchedAt: 0 };
+
+const CurrencyContext = React.createContext({
+	code: 'INR', symbol: '₹', rates: FALLBACK_RATES,
+	select: () => {}, detectedAuto: false,
+});
+
+function CurrencyProvider({ children }) {
+	const savedCode = (() => {
+		try { return localStorage.getItem('ke_currency'); } catch { return null; }
+	})();
+	const validSaved = SUPPORTED_CURRENCIES.find(c => c.code === savedCode)?.code ?? null;
+
+	const [code,         setCode]         = useState(validSaved ?? 'INR');
+	const [rates,        setRates]        = useState(FALLBACK_RATES);
+	const [detectedAuto, setDetectedAuto] = useState(false);
+
+	useEffect(() => {
+		// ── 1. Exchange rates (open.er-api.com, free, no key) ──
+		const now = Date.now();
+		if (_rateCache.rates && now - _rateCache.fetchedAt < 3600_000) {
+			// Use memory-cached rates (< 1 hour old) — defer via microtask to avoid
+			// calling setState synchronously inside an effect body (react-hooks/set-state-in-effect).
+			Promise.resolve().then(() => setRates(_rateCache.rates));
+		} else {
+			fetch('https://open.er-api.com/v6/latest/INR')
+				.then(r => r.ok ? r.json() : null)
+				.then(data => {
+					if (data?.rates) {
+						_rateCache.rates    = data.rates;
+						_rateCache.fetchedAt = Date.now();
+						setRates(data.rates);
+					}
+				})
+				.catch(() => { /* silently keep FALLBACK_RATES */ });
+		}
+
+		// ── 2. Auto-detect currency for first-time visitors only ──
+		if (validSaved) return; // returning visitor — use their saved preference
+
+		// Helper: apply a detected currency code
+		const applyDetected = (detectedCode) => {
+			const valid = SUPPORTED_CURRENCIES.find(c => c.code === detectedCode);
+			if (valid) {
+				setCode(valid.code);
+				setDetectedAuto(true);
+			}
+		};
+
+		// Step A — IP geolocation via BigDataCloud (free, no key, no rate limit)
+		fetch('https://api.bigdatacloud.net/data/ip-geolocation-full?localityLanguage=en')
+			.then(r => r.ok ? r.json() : null)
+			.then(data => {
+				const country  = data?.country?.isoAlpha2; // e.g. "AE", "US", "IN"
+				const detected = country ? COUNTRY_CURRENCY[country] : null;
+				if (detected) {
+					applyDetected(detected);
+				} else {
+					// Step B — browser locale fallback (always free, always available)
+					const lang     = navigator.language || navigator.languages?.[0] || '';
+					const fromLang = LOCALE_CURRENCY[lang] ?? LOCALE_CURRENCY[lang.split('-')[0]];
+					if (fromLang) applyDetected(fromLang);
+					// Step C — stay on INR (the useState default) if both above are inconclusive
+				}
+			})
+			.catch(() => {
+				// IP API unavailable — go straight to locale fallback
+				const lang     = navigator.language || navigator.languages?.[0] || '';
+				const fromLang = LOCALE_CURRENCY[lang] ?? LOCALE_CURRENCY[lang.split('-')[0]];
+				if (fromLang) applyDetected(fromLang);
+			});
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	// Manual selection — saves to localStorage so it persists across sessions
+	const select = useCallback((newCode) => {
+		setCode(newCode);
+		setDetectedAuto(false);
+		try { localStorage.setItem('ke_currency', newCode); } catch { /* quota exceeded — ignore */ }
+	}, []);
+
+	const symbol = SUPPORTED_CURRENCIES.find(c => c.code === code)?.symbol ?? '₹';
+	const value  = useMemo(
+		() => ({ code, symbol, rates, select, detectedAuto }),
+		[code, symbol, rates, select, detectedAuto],
+	);
+
+	return (
+		<CurrencyContext.Provider value={value}>
+			{children}
+		</CurrencyContext.Provider>
+	);
+}
+
+// Hook — use inside any component to get currency state
+const useCurrency = () => React.useContext(CurrencyContext);
+
+// Hook — returns a formatter function that converts INR → selected currency
+// Usage: const fmt = useFmtPrice(); then fmt(1500) → "$17.93" or "₹1.5K"
+function useFmtPrice() {
+	const { code, rates } = useCurrency();
+	return useCallback((inrAmount) => {
+		if (inrAmount == null || isNaN(inrAmount)) return '';
+		const rate      = (rates?.[code] ?? FALLBACK_RATES[code] ?? 1);
+		const converted = inrAmount * rate;
+		if (code === 'INR') {
+			if (converted >= 100000) return `₹${(converted / 100000).toFixed(converted % 100000 === 0 ? 0 : 1)}L`;
+			if (converted >= 1000)   return `₹${(converted / 1000).toFixed(converted % 1000 === 0 ? 0 : 1)}K`;
+			return `₹${Math.round(converted).toLocaleString('en-IN')}`;
+		}
+		return new Intl.NumberFormat('en', {
+			style:                'currency',
+			currency:             code,
+			maximumFractionDigits: code === 'JPY' ? 0 : 2,
+			minimumFractionDigits: code === 'JPY' ? 0 : 2,
+		}).format(converted);
+	}, [code, rates]);
+}
+
+// Currency selector dropdown — drop this anywhere in the Navbar JSX
+function CurrencyDropdown({ scrolled }) {
+	const { code, select, detectedAuto } = useCurrency();
+	const [open, setOpen]   = useState(false);
+	const dropRef           = useRef(null);
+	const cur               = SUPPORTED_CURRENCIES.find(c => c.code === code);
+
+	// Close on outside click
+	useEffect(() => {
+		const handler = (e) => {
+			if (!dropRef.current?.contains(e.target)) setOpen(false);
+		};
+		document.addEventListener('mousedown', handler);
+		return () => document.removeEventListener('mousedown', handler);
+	}, []);
+
+	// Close on Escape
+	useEffect(() => {
+		const handler = (e) => { if (e.key === 'Escape') setOpen(false); };
+		document.addEventListener('keydown', handler);
+		return () => document.removeEventListener('keydown', handler);
+	}, []);
+
+	return (
+		<div ref={dropRef} className="relative">
+			<button
+				type="button"
+				onClick={() => setOpen(o => !o)}
+				aria-label={`Currency: ${cur?.name ?? code}. Click to change.`}
+				aria-expanded={open}
+				aria-haspopup="listbox"
+				title={detectedAuto ? `Auto-detected: ${cur?.name}` : cur?.name}
+				className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95
+					${scrolled
+						? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
+						: 'bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm'
+					}`}
+			>
+				<span aria-hidden="true">{cur?.flag}</span>
+				<span>{cur?.code}</span>
+				<ChevronRight
+					className={`w-3 h-3 transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
+					aria-hidden="true"
+				/>
+			</button>
+
+			{open && (
+				<div
+					role="listbox"
+					aria-label="Select currency"
+					className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
+					style={{ animation: 'mobileDrawerIn 0.18s cubic-bezier(0.3,0,0,1) both' }}
+				>
+					{/* "Auto-detected" hint shown only on first visit */}
+					{detectedAuto && (
+						<div className="px-3.5 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-1.5">
+							<Globe className="w-3 h-3 text-blue-500 shrink-0" aria-hidden="true" />
+							<span className="text-[10px] text-blue-600 font-bold uppercase tracking-wide">
+								Auto-detected from your region
+							</span>
+						</div>
+					)}
+					{SUPPORTED_CURRENCIES.map(c => (
+						<button
+							key={c.code}
+							type="button"
+							role="option"
+							aria-selected={c.code === code}
+							onClick={() => { select(c.code); setOpen(false); }}
+							className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-left transition-colors focus:outline-none focus-visible:bg-slate-50
+								${c.code === code
+									? 'bg-blue-50 text-blue-700 font-bold'
+									: 'text-slate-700 hover:bg-slate-50'
+								}`}
+						>
+							<span className="text-base" aria-hidden="true">{c.flag}</span>
+							<span className="font-bold w-9 shrink-0">{c.code}</span>
+							<span className="text-slate-400 text-xs truncate">{c.name}</span>
+							{c.code === code && (
+								<CheckCircle2 className="w-3.5 h-3.5 ml-auto shrink-0 text-blue-500" aria-hidden="true" />
+							)}
+						</button>
+					))}
+					<div className="px-3.5 py-2 bg-slate-50 border-t border-slate-100">
+						<p className="text-[10px] text-slate-400 leading-relaxed">
+							Prices converted from INR at live market rates.
+							Actual invoice will be in INR.
+						</p>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Attach per-product price (falls back to category band), plus availability
+const PRODUCTS_WITH_PRICE = PRODUCTS.map(p => ({
+	...p,
+	priceRange: PRODUCT_PRICE_MAP[p.id] || p.priceRange || CATEGORY_PRICE_BANDS[p.category] || null,
+	availability: p.availability || CATEGORY_AVAILABILITY[p.category] || null,
+}));
+
+// Shadow PRODUCTS with enriched version so all downstream code picks it up
+Object.assign(PRODUCTS, PRODUCTS_WITH_PRICE);
+PRODUCTS.length = PRODUCTS_WITH_PRICE.length;
+PRODUCTS_WITH_PRICE.forEach((p, i) => { PRODUCTS[i] = p; });
+
 const INDUSTRIES = [
 	{
 		id: 'ind_1',
@@ -7461,23 +7934,44 @@ const IndiaMartBadge = memo(() => {
 IndiaMartBadge.displayName = 'IndiaMartBadge';
 
 // ─── PRODUCT CARD (Memoized) ─────────────────────────────────
+// Availability badge color map
+const AVAIL_STYLES = {
+	green: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+	amber: 'bg-amber-50 text-amber-700 border-amber-200',
+	red:   'bg-red-50 text-red-700 border-red-200',
+};
+
 const ProductCard = memo(({ product, navigate, priority = false }) => {
 	const [imgErr, setImgErr] = useState(false);
 	const [imgLoaded, setImgLoaded] = useState(false);
+	const fmtPrice = useFmtPrice();
 	const pImg = product.images?.[0];
+	const av = product.availability;
+
+	const handleCardClick = useCallback(() => navigate(`/product/${product.id}`), [navigate, product.id]);
+	const handleSpecsClick = useCallback((e) => {
+		e.stopPropagation();
+		navigate(`/product/${product.id}`);
+	}, [navigate, product.id]);
+
 	return (
-		<button
-			type="button"
-			onClick={() => navigate(`/product/${product.id}`)}
-			aria-label={`View ${product.title}`}
-			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
+		<div
+			role="group"
+			aria-label={`${product.title} product card`}
+			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
 		>
-			{/* Fixed-height image container prevents layout shift (CLS fix) */}
-			{/* key={pImg} remounts subtree when image changes, resetting imgErr/imgLoaded without an effect */}
-			<div key={pImg} className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+			{/* Fixed-height image container — prevents CLS */}
+			<div key={pImg} onClick={handleCardClick} className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer">
+				{/* Category badge */}
 				<span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm backdrop-blur-sm">
 					{product.category}
 				</span>
+				{/* Availability badge */}
+				{av && (
+					<span className={`absolute top-3 right-3 z-20 text-[10px] font-black px-2.5 py-1.5 rounded border uppercase tracking-wider ${AVAIL_STYLES[av.color] || AVAIL_STYLES.green}`}>
+						{av.label}
+					</span>
+				)}
 				{pImg && !imgErr ? (
 					<>
 						{!imgLoaded && (
@@ -7495,73 +7989,79 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 								fetchPriority={priority ? 'high' : 'low'}
 								className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? 'is-loaded' : ''}`}
 								onLoad={() => setImgLoaded(true)}
-								onError={() => {
-									setImgErr(true);
-									setImgLoaded(false);
-								}}
+								onError={() => { setImgErr(true); setImgLoaded(false); }}
 							/>
 						</div>
 					</>
 				) : (
-					<div
-						className="z-0 w-full h-full flex items-center justify-center bg-slate-100/60"
-						aria-hidden="true"
-					>
+					<div className="z-0 w-full h-full flex items-center justify-center bg-slate-100/60" aria-hidden="true">
 						{getCategoryIcon(product.category)}
 					</div>
 				)}
 			</div>
-			<div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
+
+			<div onClick={handleCardClick} className="p-6 md:p-8 flex-1 flex flex-col bg-white cursor-pointer">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
 					<a
 						href={`#/product/${product.id}`}
-						onClick={(e) => {
-							e.stopPropagation();
-							e.preventDefault();
-							navigate(`/product/${product.id}`);
-						}}
+						onClick={(e) => { e.stopPropagation(); e.preventDefault(); navigate(`/product/${product.id}`); }}
 						className="focus:outline-none focus-visible:underline"
 					>
 						{product.title}
 					</a>
 				</h3>
-				<p className="text-slate-600 font-medium text-sm md:text-base mb-6 leading-relaxed line-clamp-2">
+				<p className="text-slate-600 font-medium text-sm md:text-base mb-4 leading-relaxed line-clamp-2">
 					{product.desc}
 				</p>
-				<div className="mb-6 flex items-start bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
-					<Target
-						className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0"
-						aria-hidden="true"
-					/>
+
+				<div className="mb-5 flex items-start bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
+					<Target className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
 					<p className="text-sm text-slate-700 font-medium leading-relaxed line-clamp-2">
 						<strong className="text-slate-900 font-bold">Application: </strong>
 						{product.usage}
 					</p>
 				</div>
-				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
-					<a
-						href={waMsg(
-							`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`,
+
+				{/* Indicative price band */}
+				{product.priceRange && (
+					<div className="mb-4 flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5">
+						<TrendingUp className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						<span className="text-sm font-black text-slate-900">
+							{fmtPrice(product.priceRange.min)}
+							{product.priceRange.max !== product.priceRange.min && (
+								<> – {fmtPrice(product.priceRange.max)}</>
+							)}
+						</span>
+						{product.priceRange.unit && (
+							<span className="text-xs text-slate-400 font-semibold">{product.priceRange.unit}</span>
 						)}
+						<span className="ml-auto text-[10px] text-slate-400 font-medium italic">indicative</span>
+					</div>
+				)}
+
+				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100" onClick={(e) => e.stopPropagation()}>
+					<a
+						href={waMsg(`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`)}
 						target="_blank"
 						rel="noopener noreferrer"
 						onClick={(e) => e.stopPropagation()}
 						aria-label={`Request quote for ${product.title} via WhatsApp`}
 						className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 					>
-						<MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> RFQ /
-						WhatsApp
+						<MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> RFQ / WhatsApp
 					</a>
-					<div
-						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg group-hover:bg-blue-600 transition-all pointer-events-none"
-						aria-hidden="true"
+					{/* FIX: was pointer-events-none decorative; now a real interactive button */}
+					<button
+						type="button"
+						onClick={handleSpecsClick}
+						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						aria-label={`View technical specs for ${product.title}`}
 					>
-						Technical Specs{' '}
-						<ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform" />
-					</div>
+						Technical Specs <ArrowRight className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+					</button>
 				</div>
 			</div>
-		</button>
+		</div>
 	);
 });
 ProductCard.displayName = 'ProductCard';
@@ -7860,7 +8360,10 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 
 	useEffect(() => {
 		if (isOpen) setTimeout(() => searchRef.current?.focus(), 50);
-		else setLangSearch('');
+		// Defer the reset so we don't call setState synchronously inside an effect
+		// (react-hooks/set-state-in-effect). A zero-delay timeout keeps the UX
+		// identical — the search box clears after the dropdown closes.
+		else setTimeout(() => setLangSearch(''), 0);
 	}, [isOpen]);
 
 	const changeLanguage = (langCode) => {
@@ -7996,6 +8499,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	const [query, setQuery] = useState('');
 	const [scrolled, setScrolled] = useState(false);
 	const [isVisible, setIsVisible] = useState(true);
+	const fmtPrice = useFmtPrice();
 	const menuRef = useRef(null);
 	const searchInputRef = useRef(null);
 	// PERF: ref mirrors query so outside-click handler reads current value without
@@ -8101,8 +8605,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				type: 'Service',
 				path: `/service/${s.id}`,
 				image: s.image,
+				priceRange: null,
 			})),
-			...RAW_PRODUCTS.filter(
+			...PRODUCTS.filter(
 				(p) =>
 					p.title?.toLowerCase().includes(deferredQ) ||
 					p.desc?.toLowerCase().includes(deferredQ) ||
@@ -8116,6 +8621,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				category: p.category,
 				path: `/product/${p.id}`,
 				image: p.images?.[0],
+				priceRange: p.priceRange || null,
 			})),
 		].slice(0, 8);
 	}, [deferredQ]);
@@ -8215,16 +8721,36 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							<search
 								className="relative flex items-center"
 							>
-								<div
-									className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 xl:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
-								>
+								{/* Desktop: always-visible compact search bar */}
+								<div className="hidden lg:flex items-center relative mr-1">
+									<label htmlFor="nav-search-desktop" className="sr-only">Search products and services</label>
+									<Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none ${scrolled ? 'text-slate-400' : 'text-slate-400'}`} aria-hidden="true" />
 									<input
+										id="nav-search-desktop"
 										ref={searchInputRef}
 										type="text"
 										placeholder="Search products & services..."
 										value={query}
+										onChange={(e) => { setQuery(e.target.value); setIsSearchOpen(!!e.target.value); }}
+										onFocus={() => { if (query) setIsSearchOpen(true); }}
+										className={`w-48 xl:w-60 border rounded-full py-2 px-4 pl-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:w-64 xl:focus:w-72 transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400' : 'bg-white/10 backdrop-blur border-white/25 text-white placeholder:text-slate-400'}`}
+									/>
+									{query && (
+										<button type="button" onClick={() => { setQuery(''); setIsSearchOpen(false); }} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+											<X className="w-3 h-3" aria-hidden="true" />
+										</button>
+									)}
+								</div>
+								{/* Mobile: slide-out search (unchanged) */}
+								<div
+									className={`lg:hidden absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
+								>
+									<input
+										type="text"
+										placeholder="Search products & services..."
+										value={query}
 										onChange={(e) => setQuery(e.target.value)}
-										className={`w-64 xl:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
+										className={`w-64 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
 									/>
 								</div>
 								<button
@@ -8238,7 +8764,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+									className={`lg:hidden p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
 					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
 					${isSearchOpen ? 'ml-1' : ''}`}
 								>
@@ -8248,8 +8774,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										style={{ width: '18px', height: '18px' }}
 									/>
 								</button>
-								{isSearchOpen && query && (
-									<div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
+								{(isSearchOpen || query) && query && (
+									<div className="absolute top-full right-0 mt-2 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
 										<div className="max-h-[60vh] overflow-y-auto p-2">
 											{searchResults.length === 0 ? (
 												<div className="p-8 text-center" role="status" aria-live="polite">
@@ -8308,6 +8834,11 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																		<span className="text-xs text-slate-500 line-clamp-1 mt-0.5">
 																			{r.desc}
 																		</span>
+																		{r.priceRange && (
+																			<span className="text-[10px] font-black text-blue-600 mt-0.5">
+																				{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)} {r.priceRange.unit}
+																			</span>
+																		)}
 																	</div>
 																</div>
 															</button>
@@ -8375,7 +8906,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					id="mobile-nav"
 					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto"
 					role="menu"
-					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both' }}
+					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
 				>
 				<style>{`@keyframes mobileDrawerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
 					{isSearchOpen && (
@@ -8436,6 +8967,11 @@ const Navbar = memo(({ currentPath, navigate }) => {
 															>
 																{r.type}
 															</span>
+															{r.priceRange && (
+																<span className="block text-[10px] font-black text-blue-600 mt-0.5">
+																	{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)}
+																</span>
+															)}
 														</div>
 													</button>
 												</li>
@@ -8538,6 +9074,42 @@ const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
 	);
 });
 CredentialBadge.displayName = 'CredentialBadge';
+
+// ─── FOOTER BADGE (credential blocks in footer col 1) ────────────
+// Extracted from an inline .map() callback so useState is called at
+// the top level of a proper component (rules-of-hooks compliance).
+const FooterBadge = memo(({ imgSrc, FallbackIcon, title, sub, accentColor }) => {
+	const [err, setErr] = useState(false);
+	return (
+		<div className="ke-badge">
+			{/* Logo container */}
+			<div style={{
+				width:'2rem', height:'2rem', borderRadius:'.45rem',
+				background:'#ffffff', border:`1px solid ${accentColor}25`,
+				display:'flex', alignItems:'center', justifyContent:'center',
+				flexShrink:0, padding:'2px',
+			}}>
+				{!err ? (
+					<img
+						src={imgSrc} alt="" aria-hidden="true"
+						style={{ width:'1.6rem', height:'1.6rem', objectFit:'contain' }}
+						onError={() => setErr(true)}
+					/>
+				) : (
+					<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color: accentColor }} />
+				)}
+			</div>
+			{/* Text */}
+			<div style={{ minWidth:0, flex:1 }}>
+				<p style={{ margin:0, fontSize:'.78rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.25 }}>{title}</p>
+				<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#64748b', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
+			</div>
+			{/* Accent dot */}
+			<div style={{ width:'6px', height:'6px', borderRadius:'50%', background: accentColor, flexShrink:0, opacity:.8 }} aria-hidden="true" />
+		</div>
+	);
+});
+FooterBadge.displayName = 'FooterBadge';
 
 // ─── FOOTER ───────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => {
@@ -8669,6 +9241,7 @@ const Footer = memo(({ navigate }) => {
 						</p>
 
 						{/* ── Credential badges — larger logos ── */}
+						{/* CredentialBadge is a named component so it can legally call useState */}
 						<div style={{ marginBottom:'1.25rem' }}>
 							{[
 								{
@@ -8686,38 +9259,10 @@ const Footer = memo(({ navigate }) => {
 									title: 'Make In India', sub: 'Manufactured in India',
 									accentColor: '#4ade80', bg: '#001a0a',
 								},
-							].map(({ imgSrc, FallbackIcon, title, sub, accentColor, bg }) => {
-								const [err, setErr] = useState(false);
-								return (
-									<div key={title} className="ke-badge">
-										{/* Logo container — compact holder, white bg, larger icon */}
-										<div style={{
-											width:'2rem', height:'2rem', borderRadius:'.45rem',
-											background:'#ffffff', border:`1px solid ${accentColor}25`,
-											display:'flex', alignItems:'center', justifyContent:'center',
-											flexShrink:0, padding:'2px',
-										}}>
-											{!err ? (
-												<img
-													src={imgSrc} alt="" aria-hidden="true"
-													style={{ width:'1.6rem', height:'1.6rem', objectFit:'contain' }}
-													onError={() => setErr(true)}
-												/>
-											) : (
-												<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color: accentColor }} />
-											)}
+							].map((badge) => (
+								<FooterBadge key={badge.title} {...badge} />
+							))}
 										</div>
-										{/* Text */}
-										<div style={{ minWidth:0, flex:1 }}>
-											<p style={{ margin:0, fontSize:'.78rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.25 }}>{title}</p>
-											<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#64748b', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
-										</div>
-										{/* Accent dot */}
-										<div style={{ width:'6px', height:'6px', borderRadius:'50%', background: accentColor, flexShrink:0, opacity:.8 }} aria-hidden="true" />
-									</div>
-								);
-							})}
-						</div>
 
 						{/* OEM list */}
 						<p style={{ fontSize:'8.5px', fontWeight:700, letterSpacing:'.2em', textTransform:'uppercase', color:'#38BDF8', marginBottom:'.4rem' }}>OEM Compatible With</p>
@@ -8953,14 +9498,6 @@ const SOCIAL_LINKS = [
 		color: '#94a3b8',
 		iconBg: '#1e293b',
 		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
-	},
-	{
-		href: CONTACT_INFO.reddit,
-		label: 'Keshav Enterprises on Reddit',
-		name: 'Reddit',
-		handle: CONTACT_INFO.redditHandle,
-		color: '#FF4500',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
 	},
 ];
 
@@ -9855,10 +10392,136 @@ const InlineRFQForm = memo(({ productTitle }) => {
 });
 InlineRFQForm.displayName = 'InlineRFQForm';
 
+// ─── SHARE PRODUCT BUTTON ────────────────────────────────────
+const ShareProductButton = memo(({ title }) => {
+	const [copied, setCopied] = useState(false);
+
+	const handleShare = useCallback(async (e) => {
+		e.stopPropagation();
+		const url = window.location.href;
+		if (navigator.share) {
+			try {
+				await navigator.share({ title, url });
+				return;
+			} catch { /* user cancelled */ }
+		}
+		try {
+			await navigator.clipboard.writeText(url);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		} catch {
+			// Fallback: select/copy via textarea
+			const ta = document.createElement('textarea');
+			ta.value = url;
+			ta.style.position = 'fixed';
+			ta.style.opacity = '0';
+			document.body.appendChild(ta);
+			ta.select();
+			document.execCommand('copy');
+			document.body.removeChild(ta);
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000);
+		}
+	}, [title]);
+
+	return (
+		<button
+			type="button"
+			onClick={handleShare}
+			aria-label={copied ? 'Link copied!' : 'Share or copy link to this product'}
+			className={`ml-auto text-xs font-black px-3 py-2 rounded-md border flex items-center gap-1.5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${copied ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600'}`}
+		>
+			{copied ? (
+				<><CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" /> Copied!</>
+			) : (
+				<><Paperclip className="w-3.5 h-3.5" aria-hidden="true" /> Share</>
+			)}
+		</button>
+	);
+});
+ShareProductButton.displayName = 'ShareProductButton';
+
+// ─── SPECS TABLE (collapsible for dense spec lists) ─────────
+// Shows first 8 rows by default; "Show all" expands the rest.
+// Appends lead-time and price rows just like the original table.
+const SPECS_PREVIEW_ROWS = 8;
+
+const SpecsTable = memo(({ product, fmtPrice, currencyCode }) => {
+	const allEntries = Object.entries(product.specs || {});
+	const hasMore = allEntries.length > SPECS_PREVIEW_ROWS;
+	const [expanded, setExpanded] = useState(false);
+	const shown = expanded ? allEntries : allEntries.slice(0, SPECS_PREVIEW_ROWS);
+
+	// Derive lead time (mirrors original logic)
+	const cat = product.category || '';
+	let lt = 'Stocked / 2–4 weeks';
+	if (cat === 'Turbine Spares') lt = '2–6 weeks (standard); custom 6–10 weeks';
+	else if (cat === 'Expansion Joints') lt = 'Stocked sizes: 1–2 weeks; custom DN: 3–5 weeks';
+	else if (cat === 'Industrial Strainers') lt = '1–3 weeks (standard); custom 3–6 weeks';
+	else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
+	else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
+	else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
+	else if (cat === 'HVAC & Air Filtration') lt = 'Standard grades: ex-stock to 1 week; custom sizes/special media: 2–4 weeks';
+	else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
+	else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
+
+	const pr = product.priceRange;
+	const hiddenCount = allEntries.length - SPECS_PREVIEW_ROWS;
+
+	return (
+		<div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm overflow-x-auto">
+			<table className="w-full text-left border-collapse min-w-[320px]">
+				<caption className="sr-only">Technical specifications for {product.title}</caption>
+				<tbody className="divide-y divide-slate-100">
+					{shown.map(([k, v], i) => (
+						<tr key={k} className={`transition-colors hover:bg-blue-50/30 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+							<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">{k}</th>
+							<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{v}</td>
+						</tr>
+					))}
+					{/* Always-visible rows: price + lead time */}
+					{pr && (
+						<tr className={`transition-colors hover:bg-blue-50/30 ${shown.length % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'}`}>
+							<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Est. Price</th>
+							<td className="p-4 text-sm leading-relaxed">
+								<span className="text-blue-700 font-bold">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
+								<span className="text-slate-400 ml-1.5 font-medium">{pr.unit}</span>
+								<span className="block text-[11px] text-slate-400 mt-0.5">Indicative estimate · contact for firm quote</span>
+							</td>
+						</tr>
+					)}
+					<tr className={`transition-colors hover:bg-blue-50/30 ${(shown.length + (pr ? 1 : 0)) % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+						<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Lead Time</th>
+						<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
+					</tr>
+				</tbody>
+			</table>
+			{/* Expand / collapse control */}
+			{hasMore && (
+				<button
+					type="button"
+					onClick={() => setExpanded(e => !e)}
+					aria-expanded={expanded}
+					className="w-full flex items-center justify-center gap-2 py-3 text-xs font-black text-blue-600 bg-blue-50 hover:bg-blue-100 border-t border-blue-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset"
+				>
+					{expanded ? (
+						<><ChevronUp className="w-4 h-4" aria-hidden="true" /> Show fewer specs</>
+					) : (
+						<><ChevronRight className="w-4 h-4" aria-hidden="true" /> Show all {hiddenCount} more specifications</>
+					)}
+				</button>
+			)}
+		</div>
+	);
+});
+SpecsTable.displayName = 'SpecsTable';
+
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
 	const [showReport, setShowReport] = useState(false);
+	const fmtPrice  = useFmtPrice();
+	const { code: currencyCode } = useCurrency();
 	// probe[i] = 'pending' | 'ok' | 'err'  — set by hidden <img> preloaders
 	const [probe, setProbe]           = useState({});
 	const [activeImg, setActiveImg]   = useState(0);
@@ -9970,10 +10633,24 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 		touchRef.current = null;
 	};
 
-	const related = useMemo(
-		() => product ? PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3) : [],
-		[product],
-	);
+	const related = useMemo(() => {
+		if (!product) return [];
+		// Primary: same-category products (up to 3)
+		const sameCat = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+		if (sameCat.length >= 3) return sameCat;
+		// Supplement with cross-category products. Use a deterministic sort seeded on
+		// the product id so the order is stable across re-renders (no Math.random in render).
+		const seed = product.id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+		const crossCat = PRODUCTS
+			.filter(p => p.category !== product.category && p.id !== product.id)
+			.sort((a, b) => {
+				const ha = (a.id.charCodeAt(0) * 2654435761 + seed) >>> 0;
+				const hb = (b.id.charCodeAt(0) * 2654435761 + seed) >>> 0;
+				return ha - hb;
+			})
+			.slice(0, 3 - sameCat.length);
+		return [...sameCat, ...crossCat];
+	}, [product]);
 	const productSchema = useMemo(
 		() =>
 			product
@@ -9986,13 +10663,24 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								description: product.desc,
 								category: product.category,
 								brand: { '@type': 'Brand', name: 'Keshav Enterprises' },
-								offers: {
-									'@type': 'Offer',
-									availability: 'https://schema.org/InStock',
-									seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
-									priceCurrency: 'INR',
-									priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'INR' },
-								},
+								offers: product.priceRange
+									? {
+											'@type': 'AggregateOffer',
+											lowPrice: product.priceRange.min,
+											highPrice: product.priceRange.max,
+											priceCurrency: 'INR',
+											offerCount: 1,
+											availability: product.availability?.label === 'Made to Order'
+												? 'https://schema.org/PreOrder'
+												: 'https://schema.org/InStock',
+											seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
+										}
+									: {
+											'@type': 'Offer',
+											availability: 'https://schema.org/InStock',
+											seller: { '@type': 'Organization', name: 'Keshav Enterprises' },
+											priceCurrency: 'INR',
+										},
 								manufacturer: { '@type': 'Organization', name: 'Keshav Turbo Services', url: 'https://www.keshavturboservices.com' },
 							},
 							{
@@ -10027,7 +10715,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 
 	return (
 		<>
-		<main id="main-content" tabIndex={-1} className="pt-24 pb-20 bg-slate-50 min-h-screen">
+		<main id="main-content" tabIndex={-1} className="pt-24 pb-22 md:pb-20 bg-slate-50 min-h-screen">
 			<SEOHead
 				title={`${product.title} | ${product.category}`}
 				description={`${product.desc} — Keshav Enterprises, Shamli, UP.`}
@@ -10220,7 +10908,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									{images.map((img, idx) => {
 										const active = idx === safeActive;
 										return (
-											<div key={img} role="listitem" className="relative shrink-0" style={{ width: 84, height: 84 }}>
+											<div key={img} role="listitem" className="relative shrink-0" style={{ width: 'clamp(56px, 15vw, 84px)', height: 'clamp(56px, 15vw, 84px)' }}>
 												<button
 													type="button"
 													onClick={() => goTo(idx, idx > safeActive ? 'left' : 'right')}
@@ -10252,14 +10940,58 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						</div>
 
 						<div className="lg:col-span-7 p-8 lg:p-12 flex flex-col bg-linear-to-br from-white to-slate-50/50">
-							<div className="mb-5">
+							<div className="mb-5 flex items-center gap-3 flex-wrap">
 								<span className="bg-blue-50 text-blue-700 border border-blue-200 text-xs font-black px-4 py-2 uppercase tracking-widest rounded-md shadow-sm">
 									{product.category}
 								</span>
+								{product.availability && (
+									<span className={`text-xs font-black px-3 py-2 rounded-md border uppercase tracking-wider ${AVAIL_STYLES[product.availability.color] || AVAIL_STYLES.green}`}>
+										{product.availability.label}
+									</span>
+								)}
+								{/* Share / copy-link button */}
+								<ShareProductButton title={product.title} />
 							</div>
-							<h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-5 leading-[1.1] tracking-tight">
+							<h1 className="text-3xl md:text-4xl font-black text-slate-900 mb-4 leading-[1.1] tracking-tight">
 								{product.title}
 							</h1>
+
+							{/* Price range display */}
+							{product.priceRange && (
+								<div className="mb-5 bg-linear-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-2xl p-5">
+									<div className="flex flex-col sm:flex-row sm:items-center gap-3">
+										<div className="flex-1">
+											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+												<TrendingUp className="w-3.5 h-3.5" aria-hidden="true" /> Indicative Price Range
+											</p>
+											<p className="text-2xl font-black text-slate-900">
+												{fmtPrice(product.priceRange.min)}
+												<span className="text-slate-400 mx-2">–</span>
+												{fmtPrice(product.priceRange.max)}
+												<span className="text-sm font-bold text-slate-500 ml-2">{product.priceRange.unit}</span>
+											</p>
+											{product.priceRange.note && (
+												<p className="text-xs text-slate-400 mt-1">{product.priceRange.note}</p>
+											)}
+										</div>
+										<a
+											href={waMsg(`Hello KESHAV ENTERPRISES, I need a quotation for: *${product.title}*. Please share your best price.`)}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="shrink-0 bg-[#25D366] text-white px-5 py-3 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all shadow-sm flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 whitespace-nowrap"
+										>
+											<MessageCircle className="w-4 h-4" aria-hidden="true" /> Get Quote
+										</a>
+									</div>
+									<p className="mt-3 text-[11px] text-slate-400 leading-relaxed border-t border-blue-100 pt-2">
+										{currencyCode !== 'INR'
+											? `Prices converted from INR at live market rates (open.er-api.com). Actual invoice will be in INR. Rate is indicative — contact us for a firm quotation.`
+											: `Prices vary by turbine model, OEM spec, material grade, and order quantity. The range shown reflects our typical market spread — contact us for a firm quotation.`
+										}
+									</p>
+								</div>
+							)}
+
 							<p className="text-slate-600 font-medium text-lg mb-8 leading-relaxed">
 								{product.desc}
 							</p>
@@ -10310,6 +11042,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									aria-labelledby={`tab-${tab}`}
 								>
 									{tab === 'specs' && product.specs && (
+										<SpecsTable product={product} fmtPrice={fmtPrice} currencyCode={currencyCode} />
+								)}
+								{tab === 'specs' && product.specs && false && (
 										<div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm overflow-x-auto">
 											<table className="w-full text-left border-collapse min-w-[320px]">
 												<caption className="sr-only">
@@ -10344,14 +11079,25 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								else if (cat === 'HVAC & Air Filtration') lt = 'Standard grades: ex-stock to 1 week; custom sizes/special media: 2–4 weeks';
 								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
 								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
+														const pr = product.priceRange;
 														const totalEntries = Object.keys(product.specs).length;
 														return (
-															<tr className={`transition-colors hover:bg-blue-50/30 ${totalEntries % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
-																<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">
-																	Lead Time
-																</th>
-																<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
-															</tr>
+															<>
+																{pr && (
+																	<tr className={`transition-colors hover:bg-blue-50/30 ${totalEntries % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'}`}>
+																		<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Est. Price</th>
+																		<td className="p-4 text-sm leading-relaxed">
+																			<span className="text-blue-700 font-bold">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
+																			<span className="text-slate-400 ml-1.5 font-medium">{pr.unit}</span>
+																			<span className="block text-[11px] text-slate-400 mt-0.5">Indicative estimate · contact for firm quote</span>
+																		</td>
+																	</tr>
+																)}
+																<tr className={`transition-colors hover:bg-blue-50/30 ${(totalEntries + (pr ? 1 : 0)) % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+																	<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Lead Time</th>
+																	<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
+																</tr>
+															</>
 														);
 													})()}
 												</tbody>
@@ -10376,27 +11122,35 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									)}
 								</div>
 							</div>
-							<div className="mt-auto pt-8 border-t border-slate-200 flex flex-col sm:flex-row gap-5">
+							<div className="mt-auto pt-8 border-t border-slate-200 flex flex-col gap-3">
 								<a
 									href={waMsg(
 										`Hello KESHAV ENTERPRISES, I am interested in: *${product.title}*. Please share technical specs and quote.`,
 									)}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="flex-1 bg-[#25D366] text-white py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+									className="w-full bg-[#25D366] text-white py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 								>
 									<MessageCircle className="w-6 h-6 mr-3" aria-hidden="true" />{' '}
 									Request Quote via WhatsApp
 								</a>
-								<a
-									href={CONTACT_INFO.indiamart}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex-1 bg-white border-2 border-slate-900 text-slate-900 py-5 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-all shadow-sm hover:-translate-y-0.5 flex items-center justify-center tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-								>
-									<ExternalLink className="w-6 h-6 mr-3" aria-hidden="true" />{' '}
-									View on IndiaMART
-								</a>
+								<div className="flex items-center justify-center gap-4 pt-1">
+									<a
+										href={CONTACT_INFO.indiamart}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="text-slate-500 hover:text-blue-600 text-sm font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus-visible:underline"
+									>
+										<ExternalLink className="w-4 h-4" aria-hidden="true" /> Also on IndiaMART
+									</a>
+									<span className="text-slate-200" aria-hidden="true">|</span>
+									<a
+										href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+										className="text-slate-500 hover:text-blue-600 text-sm font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus-visible:underline"
+									>
+										<Phone className="w-4 h-4" aria-hidden="true" /> Call us
+									</a>
+								</div>
 							</div>
 							<InlineRFQForm productTitle={product.title} />
 							<div className="pt-4">
@@ -10418,7 +11172,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							id="related-heading"
 							className="text-2xl font-black text-slate-900 mb-6 tracking-tight"
 						>
-							Related Products in {product.category}
+							You May Also Need
 						</h2>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 							{related.map((p) => (
@@ -10430,6 +11184,32 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 				<RecentlyViewedStrip currentProductId={productId} navigate={navigate} />
 			</div>
 		</main>
+
+		{/* ── Sticky mobile CTA bar ──
+			Shown only on small screens (md:hidden). Stays pinned to the bottom
+			so the WhatsApp / IndiaMART CTAs are always reachable without scrolling. */}
+		<div
+			className="md:hidden fixed bottom-0 left-0 right-0 z-900 bg-white border-t-2 border-slate-200 shadow-2xl shadow-slate-900/20 px-4 pt-3 flex gap-3"
+			style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom, 0px))' }}
+			aria-label="Quick actions"
+		>
+			<a
+				href={waMsg(`Hello KESHAV ENTERPRISES, I am interested in: *${product.title}*. Please share technical specs and quote.`)}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="flex-1 bg-[#25D366] text-white py-3.5 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+			>
+				<MessageCircle className="w-5 h-5" aria-hidden="true" /> Get Quote
+			</a>
+			<a
+				href={CONTACT_INFO.indiamart}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-black text-sm hover:bg-blue-700 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+			>
+				<ExternalLink className="w-4 h-4" aria-hidden="true" /> IndiaMART
+			</a>
+		</div>
 
 		{showReport && product && (
 			<ReportIssueModal
@@ -10832,7 +11612,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 									<h3 className="text-base font-black text-slate-900 mb-1.5 leading-tight group-hover:text-blue-600 transition-colors tracking-tight line-clamp-2 pointer-events-none">
 										{product.title}
 									</h3>
-									<p className="text-slate-500 font-medium text-xs leading-relaxed mb-4 line-clamp-2 flex-1 pointer-events-none">
+									<p className="text-slate-500 font-medium text-xs leading-relaxed mb-3 line-clamp-2 flex-1 pointer-events-none">
 										{product.desc}
 									</p>
 									<div className="flex items-center justify-between pt-3.5 border-t border-slate-100">
@@ -11423,19 +12203,21 @@ const HomePage = memo(({ navigate }) => {
 						{[
 							{
 								quote:
-									'Their ex-Triveni engineers handled our 12 MW turbine overhaul during the annual shutdown — all clearances documented, rotor balanced, and back online ahead of schedule. First time in six years we had zero issues at first start-up.',
+									'Their ex-Triveni engineers handled our 12 MW Triveni turbine overhaul during the annual shutdown — all clearances documented, rotor balanced to ISO G1.0, and back online ahead of schedule. First time in six years we had zero issues at first start-up.',
 								name: 'Plant Manager',
 								company: 'Sugar & Co-Gen Plant',
 								location: 'Uttar Pradesh',
 								service: 'Turbine Overhauling',
+								detail: '12 MW Triveni · Planned Shutdown',
 							},
 							{
 								quote:
-									'We had a critical bearing failure at 2 AM during peak crushing season. Keshav Enterprises had an engineer at site by morning with the replacement Babbitt bearing ready. Downtime was under 14 hours — that saved us crores in cane losses.',
+									'We had a critical babbitt bearing failure on our Belliss & Morcom turbine at 2 AM during peak crushing season. Keshav Enterprises had an engineer at site by morning with the replacement bearing ready. Downtime was under 14 hours — that saved us crores in cane losses.',
 								name: 'Maintenance Head',
 								company: 'Sugar Mill',
 								location: 'Haryana',
 								service: 'Emergency Breakdown Response',
+								detail: 'Belliss & Morcom · Bearing Failure',
 							},
 							{
 								quote:
@@ -11444,8 +12226,9 @@ const HomePage = memo(({ navigate }) => {
 								company: 'Paper Mill & Power Plant',
 								location: 'Punjab',
 								service: 'Reverse Engineering',
+								detail: 'Belliss & Morcom · Obsolete Spares',
 							},
-						].map(({ quote, name, company, location, service }) => (
+						].map(({ quote, name, company, location, service, detail }) => (
 							<figure
 								key={name}
 								className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group"
@@ -11485,7 +12268,7 @@ const HomePage = memo(({ navigate }) => {
 								<figcaption className="flex items-center gap-4 pt-5 border-t border-slate-200">
 									{/* Initials avatar */}
 									<div
-										className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shrink-0 text-white font-bold text-sm select-none"
+										className="w-10 h-10 rounded-full bg-linear-to-br from-blue-600 to-blue-400 flex items-center justify-center shrink-0 text-white font-bold text-sm select-none"
 										aria-hidden="true"
 									>
 										{name.split(' ').map(w => w[0]).join('').slice(0, 2)}
@@ -11495,6 +12278,9 @@ const HomePage = memo(({ navigate }) => {
 										<p className="text-slate-500 font-medium text-xs truncate">
 											{company} · {location}
 										</p>
+										{detail && (
+											<p className="text-blue-600 font-bold text-[10px] uppercase tracking-wide mt-0.5">{detail}</p>
+										)}
 									</div>
 									{/* Verified via IndiaMART badge */}
 									<a
@@ -11766,7 +12552,7 @@ const AboutPage = memo(({ navigate }) => {
 			/>
 
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
-			<div className="bg-[#0A192F] text-white relative overflow-hidden">
+			<div className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600">
 				{/* About story background image — upload about-story-bg.png to /public/
 			Recommended: wide industrial turbine workshop/factory floor photo
 			Size: 1920×900px, compressed < 250KB */}
@@ -14881,8 +15667,8 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 			{/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
 			<div
-				className="bg-[#0A192F] text-white relative overflow-hidden"
-				style={{ borderBottom: '8px solid #2563eb', minHeight: '480px' }}
+				className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600"
+				style={{ minHeight: '480px' }}
 			>
 				{/* Grid texture — matches ServicesPage hero */}
 				<div
@@ -15555,138 +16341,253 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 ServiceDetailPage.displayName = 'ServiceDetailPage';
 
 // ─── PRODUCTS PAGE ────────────────────────────────────────────
+const PAGE_SIZE = 24;
+
 const ProductsPage = memo(({ navigate }) => {
 	const [activeCategory, setActiveCategory] = useState('All');
-	const [searchQuery, setSearchQuery] = useState('');
+	const [searchQuery, setSearchQuery]       = useState('');
+	const [sortBy, setSortBy]                 = useState('default');
+	const [priceMin, setPriceMin]             = useState('');
+	const [priceMax, setPriceMax]             = useState('');
+	const [showFilters, setShowFilters]       = useState(false);
+	// Page state — stored as { n, filterKey } so the reset is done inline during
+	// the same state update that changes the filter, rather than in a follow-up
+	// effect (which triggers a cascading render and violates react-hooks/set-state-in-effect).
+	const filterKey = [activeCategory, searchQuery, sortBy, priceMin, priceMax].join('|');
+	const [pageState, setPageState]               = useState({ n: 1, filterKey });
+	const page    = pageState.filterKey === filterKey ? pageState.n : 1;
 	const categoryScrollRef = useRef(null);
-	const [showLeft, setShowLeft] = useState(false);
+	const [showLeft, setShowLeft]   = useState(false);
 	const [showRight, setShowRight] = useState(true);
+	const topRef = useRef(null);
+
 	const handleScroll = useCallback(() => {
 		if (!categoryScrollRef.current) return;
 		const { scrollLeft, scrollWidth, clientWidth } = categoryScrollRef.current;
 		setShowLeft(scrollLeft > 5);
 		setShowRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
 	}, []);
+
 	useEffect(() => {
 		handleScroll();
 		const t = setTimeout(handleScroll, 250);
 		window.addEventListener('resize', handleScroll, { passive: true });
-		return () => {
-			clearTimeout(t);
-			window.removeEventListener('resize', handleScroll);
-		};
+		return () => { clearTimeout(t); window.removeEventListener('resize', handleScroll); };
 	}, [activeCategory, handleScroll]);
+
 	const scrollCats = useCallback((dir) => {
-		categoryScrollRef.current?.scrollBy({
-			left: dir === 'left' ? -350 : 350,
-			behavior: 'smooth',
-		});
+		categoryScrollRef.current?.scrollBy({ left: dir === 'left' ? -350 : 350, behavior: 'smooth' });
 	}, []);
-	// PERF FIX: useMemo for filtering
-	const filtered = useMemo(
-		() =>
-			PRODUCTS.filter((p) => {
-				if (activeCategory !== 'All' && p.category !== activeCategory)
-					return false;
-				const q = searchQuery.toLowerCase().trim();
-				if (!q) return true;
-				return (
-					p.title.toLowerCase().includes(q) ||
-					p.desc.toLowerCase().includes(q) ||
-					p.usage?.toLowerCase().includes(q) ||
-					p.features.some((f) => f.toLowerCase().includes(q))
-				);
-			}),
-		[activeCategory, searchQuery],
-	);
+
+	// (page auto-resets to 1 whenever the filter key changes — see pageState above)
+
+	const pMinN = priceMin !== '' ? Number(priceMin) : null;
+	const pMaxN = priceMax !== '' ? Number(priceMax) : null;
+
+	const filtered = useMemo(() => {
+		let list = PRODUCTS.filter((p) => {
+			if (activeCategory !== 'All' && p.category !== activeCategory) return false;
+			const q = searchQuery.toLowerCase().trim();
+			if (q && !(
+				p.title.toLowerCase().includes(q) ||
+				p.desc.toLowerCase().includes(q) ||
+				p.usage?.toLowerCase().includes(q) ||
+				p.features.some((f) => f.toLowerCase().includes(q))
+			)) return false;
+			// Price-range filter — check against band if product has priceRange
+			if (p.priceRange) {
+				if (pMinN !== null && p.priceRange.max < pMinN) return false;
+				if (pMaxN !== null && p.priceRange.min > pMaxN) return false;
+			}
+			return true;
+		});
+		// Sort
+		if (sortBy === 'az')        list = [...list].sort((a, b) => a.title.localeCompare(b.title));
+		if (sortBy === 'za')        list = [...list].sort((a, b) => b.title.localeCompare(a.title));
+		if (sortBy === 'price_asc') list = [...list].sort((a, b) => (a.priceRange?.min || 0) - (b.priceRange?.min || 0));
+		if (sortBy === 'price_desc')list = [...list].sort((a, b) => (b.priceRange?.max || 0) - (a.priceRange?.max || 0));
+		return list;
+	}, [activeCategory, searchQuery, sortBy, pMinN, pMaxN]);
+
 	const counts = useMemo(
-		() =>
-			PRODUCT_CATEGORIES.reduce((a, c) => {
-				a[c] =
-					c === 'All'
-						? PRODUCTS.length
-						: PRODUCTS.filter((p) => p.category === c).length;
-				return a;
-			}, {}),
+		() => PRODUCT_CATEGORIES.reduce((a, c) => {
+			a[c] = c === 'All' ? PRODUCTS.length : PRODUCTS.filter((p) => p.category === c).length;
+			return a;
+		}, {}),
 		[],
 	);
+
+	const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+	const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+	const hasActiveFilters = searchQuery || activeCategory !== 'All' || priceMin || priceMax || sortBy !== 'default';
+
+	const clearAll = useCallback(() => {
+		setSearchQuery(''); setActiveCategory('All'); setSortBy('default'); setPriceMin(''); setPriceMax('');
+	}, []);
+
+	const goPage = useCallback((n) => {
+		// Use the functional updater so we read filterKey from the stored state
+		// rather than closing over the per-render derived filterKey value.
+		setPageState(prev => ({ n, filterKey: prev.filterKey }));
+		topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}, []);
+
 	return (
-		<main
-			id="main-content"
-			tabIndex={-1}
-			className="pt-20 pb-20 bg-slate-50 min-h-screen"
-		>
+		<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-slate-50 min-h-screen" ref={topRef}>
 			<SEOHead
 				title="Product Catalog — Turbine Spares, Filters, Expansion Joints, HVAC Air Filters"
 				description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, HVAC air filters, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}
 				canonicalPath="/products"
 				pageType="website"
 			/>
+
+			{/* Hero */}
 			<div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
-				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
-					aria-hidden="true"
-				/>
+				<div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
-					<h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-md">
-						Industrial Products
-					</h1>
-					<div
-						className="section-divider w-20 h-1.5 bg-blue-500 mb-6 rounded-full"
-						aria-hidden="true"
-					/>
+					<h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-md">Industrial Products</h1>
+					<div className="section-divider w-20 h-1.5 bg-blue-500 mb-6 rounded-full" aria-hidden="true" />
 					<p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
-						{PRODUCTS.length} precision-engineered products across{' '}
-						{PRODUCT_CATEGORIES.length - 1} categories. ISO/API/ASME compliant
-						with full technical specifications.
+						{PRODUCTS.length} precision-engineered products across {PRODUCT_CATEGORIES.length - 1} categories. ISO/API/ASME compliant with full technical specifications.
 					</p>
+					{/* Export destinations */}
+					<div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+						<span className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+							<Globe className="w-3 h-3 text-blue-500" aria-hidden="true" /> Exported to
+						</span>
+						{[
+							{ flag: '🇦🇪', label: 'UAE' },
+							{ flag: '🇺🇸', label: 'USA' },
+							{ flag: '🇬🇧', label: 'UK' },
+							{ flag: '🇸🇬', label: 'Singapore' },
+							{ flag: '🇯🇵', label: 'Japan' },
+							{ flag: '🇪🇺', label: 'Europe' },
+						].map(({ flag, label }) => (
+							<span key={label} className="inline-flex items-center gap-1 bg-white/10 border border-white/15 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+								<span aria-hidden="true">{flag}</span>{label}
+							</span>
+						))}
+						<span className="text-slate-600 text-xs">&amp; more</span>
+					</div>
+					<p className="mt-1.5 text-[11px] text-slate-600 tracking-wide">
+						Sea · Air · Courier &nbsp;·&nbsp; CIF / FOB on request
+					</p>
+					{/* Currency selector */}
+					<div className="mt-7 flex justify-center">
+						<div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3">
+							<span className="text-slate-300 text-xs font-black uppercase tracking-widest">View prices in</span>
+							<CurrencyDropdown scrolled={false} />
+						</div>
+					</div>
 				</div>
 			</div>
+
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="mb-12 flex flex-col gap-6">
-					<div className="relative w-full max-w-2xl mx-auto md:mx-0">
-						<label htmlFor="product-search" className="sr-only">
-							Search products by name, specification, or application
-						</label>
-						<input
-							id="product-search"
-							type="search"
-							placeholder="Search products, specs, applications..."
-							value={searchQuery}
-							onChange={(e) => { setSearchQuery(e.target.value); if (activeCategory !== 'All') setActiveCategory('All'); }}
-							className="w-full pl-14 pr-6 py-5 bg-white border-2 border-slate-200 rounded-2xl text-lg font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
-						/>
-						<Search
-							className="absolute left-5 top-1/2 -translate-y-1/2 w-7 h-7 text-slate-400 pointer-events-none"
-							aria-hidden="true"
-						/>
-						{searchQuery && (
+				{/* ── Search + Filter Controls ── */}
+				<div className="mb-10 flex flex-col gap-5">
+					{/* Row 1: search + sort + filter toggle */}
+					<div className="flex flex-col sm:flex-row gap-3">
+						<div className="relative flex-1 max-w-2xl">
+							<label htmlFor="product-search" className="sr-only">Search products by name, specification, or application</label>
+							<input
+								id="product-search"
+								type="search"
+								placeholder="Search products, specs, applications..."
+								value={searchQuery}
+								onChange={(e) => { setSearchQuery(e.target.value); if (activeCategory !== 'All') setActiveCategory('All'); }}
+								className="w-full pl-14 pr-6 py-4 bg-white border-2 border-slate-200 rounded-2xl text-base font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
+							/>
+							<Search className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 pointer-events-none" aria-hidden="true" />
+							{searchQuery && (
+								<button type="button" onClick={() => setSearchQuery('')} aria-label="Clear search" className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+									<X className="w-5 h-5" aria-hidden="true" />
+								</button>
+							)}
+						</div>
+
+						{/* Sort selector */}
+						<div className="flex gap-2 shrink-0">
+							<label htmlFor="product-sort" className="sr-only">Sort products</label>
+							<select
+								id="product-sort"
+								value={sortBy}
+								onChange={(e) => setSortBy(e.target.value)}
+								className="h-full px-4 py-4 bg-white border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-md cursor-pointer min-w-40"
+							>
+								<option value="default">Default order</option>
+								<option value="az">Name A → Z</option>
+								<option value="za">Name Z → A</option>
+								<option value="price_asc">Price: Low → High</option>
+								<option value="price_desc">Price: High → Low</option>
+							</select>
+
+							{/* Price filter toggle */}
 							<button
 								type="button"
-								onClick={() => setSearchQuery('')}
-								aria-label="Clear search"
-								className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+								onClick={() => setShowFilters(v => !v)}
+								aria-expanded={showFilters}
+								aria-controls="price-filter-panel"
+								className={`px-4 py-4 rounded-2xl text-sm font-bold border-2 flex items-center gap-2 shadow-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showFilters ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-slate-700 border-slate-200 hover:border-blue-400'}`}
 							>
-								<X className="w-5 h-5" aria-hidden="true" />
+								<Filter className="w-4 h-4" aria-hidden="true" />
+								Price
 							</button>
-						)}
+						</div>
 					</div>
-					{/* biome-ignore lint/a11y/useSemanticElements: toolbar grouping, not a form fieldset */}
-					<div
-						className="relative w-full flex items-center mt-2"
-						role="group"
-						aria-label="Filter by product category"
-					>
-						<button
-							type="button"
-							onClick={() => scrollCats('left')}
-							aria-label="Scroll categories left"
-							className={`absolute left-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+
+					{/* Price range panel */}
+					{showFilters && (
+						<div
+							id="price-filter-panel"
+							className="bg-white border-2 border-blue-100 rounded-2xl p-5 shadow-md"
+							role="group"
+							aria-label="Filter by price range (INR)"
 						>
-							<ChevronLeft
-								className="w-5 h-5 md:w-6 md:h-6"
-								aria-hidden="true"
-							/>
+							<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">
+								Estimated Price Range (INR) — based on market data
+							</p>
+							<div className="flex flex-col sm:flex-row gap-3 items-end">
+								<div className="flex-1">
+									<label htmlFor="price-min" className="block text-xs font-bold text-slate-600 mb-1.5">Min Price (₹)</label>
+									<input
+										id="price-min"
+										type="number"
+										min="0"
+										placeholder="e.g. 500"
+										value={priceMin}
+										onChange={(e) => setPriceMin(e.target.value)}
+										className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+									/>
+								</div>
+								<div className="flex-1">
+									<label htmlFor="price-max" className="block text-xs font-bold text-slate-600 mb-1.5">Max Price (₹)</label>
+									<input
+										id="price-max"
+										type="number"
+										min="0"
+										placeholder="e.g. 50000"
+										value={priceMax}
+										onChange={(e) => setPriceMax(e.target.value)}
+										className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+									/>
+								</div>
+								{(priceMin || priceMax) && (
+									<button type="button" onClick={() => { setPriceMin(''); setPriceMax(''); }} className="px-4 py-3 text-sm font-bold text-red-600 hover:text-red-800 border-2 border-red-100 hover:border-red-300 rounded-xl transition-colors shrink-0">
+										Clear
+									</button>
+								)}
+							</div>
+							<p className="mt-3 text-[11px] text-slate-400 font-medium leading-relaxed">
+								Prices are indicative market estimates sourced from IndiaMART, TradeIndia and ExportersIndia (2025). Actual pricing depends on size, material, quantity, and OEM spec. Contact us for an exact quotation.
+							</p>
+						</div>
+					)}
+
+					{/* Category scroll strip */}
+					<div className="relative w-full flex items-center mt-1" role="group" aria-label="Filter by product category">
+						<button type="button" onClick={() => scrollCats('left')} aria-label="Scroll categories left" className={`absolute left-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+							<ChevronLeft className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
 						</button>
 						<div
 							ref={categoryScrollRef}
@@ -15703,88 +16604,114 @@ const ProductsPage = memo(({ navigate }) => {
 									className={`snap-start shrink-0 px-5 py-3 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeCategory === cat ? 'bg-slate-900 text-white border-slate-900 shadow-lg scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'}`}
 								>
 									{cat}
-									<span
-										className={`text-xs px-1.5 py-0.5 rounded-full font-black ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}
-									>
+									<span className={`text-xs px-1.5 py-0.5 rounded-full font-black ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}>
 										{counts[cat]}
 									</span>
 								</button>
 							))}
 						</div>
-						<button
-							type="button"
-							onClick={() => scrollCats('right')}
-							aria-label="Scroll categories right"
-							className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-						>
-							<ChevronRight
-								className="w-5 h-5 md:w-6 md:h-6"
-								aria-hidden="true"
-							/>
+						<button type="button" onClick={() => scrollCats('right')} aria-label="Scroll categories right" className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+							<ChevronRight className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
 						</button>
 					</div>
-					{(searchQuery || activeCategory !== 'All') && (
-						<div
-							className="flex items-center gap-3 -mt-2"
-							role="status"
-							aria-live="polite"
-						>
+
+					{/* Active filter status bar */}
+					{hasActiveFilters && (
+						<div className="flex items-center gap-3 -mt-2" role="status" aria-live="polite">
 							<span className="text-sm font-bold text-slate-500">
-								{filtered.length} product{filtered.length !== 1 ? 's' : ''}{' '}
-								found
+								{filtered.length} product{filtered.length !== 1 ? 's' : ''} found
+								{totalPages > 1 && ` · page ${page} of ${totalPages}`}
 							</span>
-							<button
-								type="button"
-								onClick={() => {
-									setSearchQuery('');
-									setActiveCategory('All');
-								}}
-								className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors focus:outline-none focus-visible:underline"
-							>
-								<X className="w-4 h-4" aria-hidden="true" />
-								Clear filters
+							<button type="button" onClick={clearAll} className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors focus:outline-none focus-visible:underline">
+								<X className="w-4 h-4" aria-hidden="true" /> Clear all
 							</button>
 						</div>
 					)}
 				</div>
-				{filtered.length > 0 ? (
-					<ul
-						className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8"
-						aria-label={`${filtered.length} products`}
-					>
-						{filtered.map((p, idx) => (
-							<li key={p.id}>
-								<ProductCard
-									product={p}
-									navigate={navigate}
-									priority={idx < 6}
-								/>
-							</li>
-						))}
-					</ul>
+
+				{/* ── Indicative pricing notice ── */}
+				<p className="mb-6 flex items-center gap-2 text-[11px] text-slate-400 leading-relaxed">
+					<AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" aria-hidden="true" />
+					Prices shown are indicative. Actual pricing depends on size, quantity, and spec. <button type="button" onClick={() => navigate('/contact')} className="text-blue-500 font-bold hover:underline focus:outline-none focus-visible:underline">Contact us</button> for a firm quotation.
+				</p>
+
+				{/* ── Product grid ── */}
+				{paginated.length > 0 ? (
+					<>
+						<ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" aria-label={`${filtered.length} products, showing ${paginated.length}`}>
+							{paginated.map((p, idx) => (
+								<li key={p.id}>
+									<ProductCard product={p} navigate={navigate} priority={idx < 6} />
+								</li>
+							))}
+						</ul>
+
+						{/* ── Pagination ── */}
+						{totalPages > 1 && (
+							<nav aria-label="Product catalog pagination" className="mt-14 flex items-center justify-center gap-2 flex-wrap">
+								<button
+									type="button"
+									onClick={() => goPage(page - 1)}
+									disabled={page === 1}
+									aria-label="Previous page"
+									className="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white text-slate-600 hover:border-blue-500 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+								>
+									<ChevronLeft className="w-5 h-5" aria-hidden="true" />
+								</button>
+								{Array.from({ length: totalPages }, (_, i) => i + 1)
+									.filter(n => n === 1 || n === totalPages || Math.abs(n - page) <= 2)
+									.reduce((acc, n, idx, arr) => {
+										if (idx > 0 && n - arr[idx - 1] > 1) acc.push('…');
+										acc.push(n);
+										return acc;
+									}, [])
+									.map((item, i) =>
+										item === '…' ? (
+											<span key={`ellipsis-${i}`} className="w-10 h-10 flex items-center justify-center text-slate-400 font-bold select-none">…</span>
+										) : (
+											<button
+												key={item}
+												type="button"
+												onClick={() => goPage(item)}
+												aria-label={`Page ${item}`}
+												aria-current={item === page ? 'page' : undefined}
+												className={`w-10 h-10 flex items-center justify-center rounded-xl border-2 text-sm font-black transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${item === page ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600'}`}
+											>
+												{item}
+											</button>
+										)
+									)}
+								<button
+									type="button"
+									onClick={() => goPage(page + 1)}
+									disabled={page === totalPages}
+									aria-label="Next page"
+									className="w-10 h-10 flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white text-slate-600 hover:border-blue-500 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+								>
+									<ChevronRight className="w-5 h-5" aria-hidden="true" />
+								</button>
+							</nav>
+						)}
+					</>
 				) : (
-					<div
-						className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm"
-						role="status"
-					>
-						<Search
-							className="w-20 h-20 text-slate-200 mx-auto mb-6"
-							aria-hidden="true"
-						/>
-						<h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">
-							No products found
-						</h2>
-						<p className="text-slate-500 font-medium text-lg">
-							Try adjusting your search or category filter.
-						</p>
-						<button
-							type="button"
-							onClick={() => {
-								setSearchQuery('');
-								setActiveCategory('All');
-							}}
-							className="mt-8 bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-700 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-						>
+					<div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-300 shadow-sm" role="status">
+						<Search className="w-20 h-20 text-slate-200 mx-auto mb-6" aria-hidden="true" />
+						<h2 className="text-3xl font-black text-slate-900 tracking-tight mb-2">No products found</h2>
+						<p className="text-slate-500 font-medium text-lg mb-2">Try adjusting your search, category, or price filter.</p>
+						{(priceMin || priceMax) && (
+							<p className="text-slate-400 text-sm mb-4">
+								Price filter: {priceMin ? `₹${Number(priceMin).toLocaleString('en-IN')}` : 'any'} – {priceMax ? `₹${Number(priceMax).toLocaleString('en-IN')}` : 'any'}
+							</p>
+						)}
+						{/* Suggested categories */}
+						<div className="mt-4 mb-8 flex flex-wrap gap-2 justify-center">
+							{PRODUCT_CATEGORIES.filter(c => c !== 'All').slice(0, 4).map(cat => (
+								<button key={cat} type="button" onClick={() => { setSearchQuery(''); setActiveCategory(cat); setPriceMin(''); setPriceMax(''); }} className="px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-bold border border-blue-100 hover:bg-blue-100 transition-colors">
+									{cat} ({counts[cat]})
+								</button>
+							))}
+						</div>
+						<button type="button" onClick={clearAll} className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-700 transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
 							Clear all filters
 						</button>
 					</div>
@@ -16677,9 +17604,9 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					</div>
 					{/* Key Facts Strip */}
 					<div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-						{detail.keyFacts.map((fact) => (
+						{detail.keyFacts.map((fact, i) => (
 							<div
-								key={fact.label}
+								key={i}
 								className="bg-white/[0.07] border border-white/[0.14] rounded-xl px-5 py-4 flex items-start gap-3"
 							>
 								<CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
@@ -17103,6 +18030,38 @@ const IndustriesPage = memo(({ navigate }) => (
 ));
 IndustriesPage.displayName = 'IndustriesPage';
 
+// ─── MAP EMBED ────────────────────────────────────────────────
+// Extracted from an inline IIFE in ContactPage so useState is called
+// at the top level of a proper component (rules-of-hooks compliance).
+const MapEmbed = memo(({ src }) => {
+	const [mapLoaded, setMapLoaded] = useState(false);
+	return (
+		<div className="w-full h-100 relative bg-slate-100">
+			{/* Skeleton placeholder shown until iframe fires onLoad */}
+			{!mapLoaded && (
+				<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
+					<div className="skeleton-shimmer absolute inset-0 rounded-none" />
+					<MapPin className="w-10 h-10 text-slate-300 relative z-10" aria-hidden="true" />
+					<p className="text-sm font-medium text-slate-400 relative z-10">Loading map…</p>
+				</div>
+			)}
+			<iframe
+				title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
+				src={src}
+				width="100%"
+				height="100%"
+				style={{ border: 0, opacity: mapLoaded ? 1 : 0, transition: 'opacity .4s ease' }}
+				allowFullScreen
+				loading="lazy"
+				referrerPolicy="no-referrer-when-downgrade"
+				className="absolute inset-0"
+				onLoad={() => setMapLoaded(true)}
+			/>
+		</div>
+	);
+});
+MapEmbed.displayName = 'MapEmbed';
+
 // ─── CONTACT PAGE ─────────────────────────────────────────────
 const ContactPage = memo(() => {
 	const [name, setName] = useState('');
@@ -17183,43 +18142,33 @@ const ContactPage = memo(() => {
 				pageType="website"
 				schema={FAQ_SCHEMA}
 			/>
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
-					<h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">
-						Talk to an Engineer
-					</h1>
-					<div
-						className="section-divider w-24 h-1.5 bg-blue-600 mb-6 rounded-full"
-						aria-hidden="true"
-					/>
-					<p className="text-lg font-medium text-slate-500 max-w-2xl mb-6">
-						Share your requirements below. Our engineering team — not a sales
-						desk — reviews every inquiry and responds with a technical answer
-						within 24 hours.
+
+			{/* Hero — matches site-wide dark banner pattern */}
+			<div className="bg-[#0A192F] text-white py-16 mb-12 relative overflow-hidden border-b-8 border-blue-600">
+				<div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
+					<h1 className="text-4xl md:text-6xl font-black mb-5 tracking-tight drop-shadow-md">Talk to an Engineer</h1>
+					<div className="section-divider w-24 h-1.5 bg-blue-500 mb-6 rounded-full" aria-hidden="true" />
+					<p className="text-slate-300 font-medium max-w-2xl mx-auto text-lg leading-relaxed mb-6">
+						Share your requirements and our engineering team — not a sales desk — will respond with a technical answer within 24 hours.
 					</p>
-					{/* Fear-reduction trust row */}
-					<div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
+					{/* Trust signals inline */}
+					<div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
 						{[
-							{ Icon: Shield, text: 'Confidential RFQ handling' },
+							{ Icon: Shield,       text: 'Confidential RFQ handling' },
 							{ Icon: CheckCircle2, text: 'No obligation consultation' },
-							{
-								Icon: Clock,
-								text: '24-hour response (emergency: within the hour)',
-							},
+							{ Icon: Clock,        text: '24-hour response' },
 						].map(({ Icon, text }) => (
-							<div
-								key={text}
-								className="flex items-center gap-2 text-slate-500 text-sm font-bold"
-							>
-								<Icon
-									className="w-4 h-4 text-blue-500 shrink-0"
-									aria-hidden="true"
-								/>
-								<span>{text}</span>
+							<div key={text} className="flex items-center gap-2 text-slate-400 text-sm font-semibold">
+								<Icon className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+								{text}
 							</div>
 						))}
 					</div>
 				</div>
+			</div>
+
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
 					<div className="lg:col-span-1 space-y-6">
 						{[
@@ -17735,34 +18684,9 @@ const ContactPage = memo(() => {
 								Our Manufacturing Facility — Shamli, U.P.
 							</h2>
 						</div>
-						{/* Map with loading skeleton — prevents blank white flash on slow connections */}
-						{(() => {
-							const [mapLoaded, setMapLoaded] = useState(false);
-							return (
-								<div className="w-full h-100 relative bg-slate-100">
-									{/* Skeleton placeholder shown until iframe fires onLoad */}
-									{!mapLoaded && (
-										<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
-											<div className="skeleton-shimmer absolute inset-0 rounded-none" />
-											<MapPin className="w-10 h-10 text-slate-300 relative z-10" aria-hidden="true" />
-											<p className="text-sm font-medium text-slate-400 relative z-10">Loading map…</p>
-										</div>
-									)}
-									<iframe
-										title="Keshav Enterprises location map — Shamli, Uttar Pradesh"
-										src={CONTACT_INFO.googleMapsEmbed}
-										width="100%"
-										height="100%"
-										style={{ border: 0, opacity: mapLoaded ? 1 : 0, transition: 'opacity .4s ease' }}
-										allowFullScreen
-										loading="lazy"
-										referrerPolicy="no-referrer-when-downgrade"
-										className="absolute inset-0"
-										onLoad={() => setMapLoaded(true)}
-									/>
-								</div>
-							);
-						})()}
+						{/* Map with loading skeleton — prevents blank white flash on slow connections.
+						    MapEmbed is a named component so useState is called at the top level. */}
+						<MapEmbed src={CONTACT_INFO.googleMapsEmbed} />
 						<div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
 							<p className="text-slate-500 font-medium text-sm">
 								{CONTACT_INFO.address}
@@ -17888,7 +18812,7 @@ const NotFoundPage = memo(({ navigate }) => (
 					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Go Home
 				</button>
 				<a
-					href={waMsg("Hi, I couldn\'t find a page on your website. Can you help?")}
+					href={waMsg("Hi, I couldn't find a page on your website. Can you help?")}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2"
@@ -17940,6 +18864,12 @@ export default function App() {
 	// being listed as a dep (which would recreate navigate on every navigation).
 	const currentPathRef   = useRef('/');
 	useEffect(() => { currentPathRef.current = currentPath; }, [currentPath]);
+
+	// ── Exit-intent popup route guard ──────────────────────────────
+	// Suppresses the popup on pages where the review form already lives
+	// or where it would feel intrusive (contact page).
+	const POPUP_EXCLUDED_PATHS = ['/contact'];
+	const showExitPopup = !POPUP_EXCLUDED_PATHS.some(p => currentPath.startsWith(p));
 
 	// ── Scroll restoration ──────────────────────────────────────
 	// scrollPositions[historyIdx] = scrollY for that history entry.
@@ -18140,6 +19070,7 @@ export default function App() {
 	};
 
 	return (
+		<CurrencyProvider>
 		<div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
 			{/* AUDIT FIX: aria-live region for screen reader route change announcements */}
 			<div
@@ -18166,8 +19097,24 @@ export default function App() {
 			</div>
 			<DigitalProfilesStrip />
 			<Footer navigate={navigate} />
-			<FloatingButtons />
+			{/* On mobile, product detail pages render their own sticky CTA bar,
+			    so hide the floating WhatsApp FAB there to avoid overlap. */}
+			<div className={currentPath.startsWith('/product/') ? 'md:block hidden' : ''}>
+				<FloatingButtons />
+			</div>
 			<BackToTopButton />
+
+			{/* Exit-intent review popup: fixed overlay, zero layout impact. */}
+			{showExitPopup && (
+				<ExitIntentReviewPopup
+					ReviewForm={KeshavReviewForm}
+					minTimeMs={240_000}
+					idleMs={480_000}
+					scrollPct={60}
+					navigate={navigate}
+				/>
+			)}
 		</div>
+		</CurrencyProvider>
 	);
 }

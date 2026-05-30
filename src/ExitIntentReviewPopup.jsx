@@ -6,19 +6,21 @@
  * HOW TO USE IN App.jsx:
  *   1. Import this file:
  *        import ExitIntentReviewPopup from './ExitIntentReviewPopup';
- *        import KeshavReviewForm      from './KeshavEnterprises_ReviewForm_v2';
+ *        import KeshavReviewForm      from './KeshavEnterprises_ReviewForm_v3';
  *
  *   2. Inside your App() return, add the wrapper ONCE at the very end
  *      (just before the closing </div>):
  *        <ExitIntentReviewPopup ReviewForm={KeshavReviewForm} />
  *
  * EXPERT EXIT-INTENT LOGIC (multi-signal):
- *   • Desktop  — mouseleave toward the browser top chrome (cursor y < threshold)
- *   • Mobile   — visibilitychange, but only after tab is hidden for > 8 s
- *                (short WhatsApp checks are ignored — that's normal behaviour)
+ *   • Desktop    — mouseleave toward the browser top chrome (cursor y < 20 px)
+ *   • Mobile     — visibilitychange, but only after tab is hidden for > 8 s
+ *                  (short WhatsApp checks are ignored — that's normal behaviour)
  *   • Inactivity — 8-minute idle timer reset on any user interaction
  *   • Scroll depth — ALL signals require the user to have scrolled ≥ 60 % of page
  *                    (popup never fires on a shallow bounce)
+ *                    iOS momentum scroll now tracked via touchmove event
+ *                    Division-by-zero guarded for short/non-scrollable pages
  *   • Rapid back-navigation — popstate fires faster than normal browsing
  *   • pagehide NOT used — fires on every SPA navigation, redundant noise
  *   • Smart suppression:
@@ -28,18 +30,21 @@
  *       – Never shows on the contact page (App.jsx POPUP_EXCLUDED_PATHS)
  *       – Dismissed automatically after form submission
  *
- * POPUP CONTENT:
- *   Lightweight teaser only (star rating + optional comment).
- *   Full KeshavReviewForm is NOT loaded inside the popup — it would
- *   be overwhelming for someone who just came to browse. A "Leave a
- *   full review" link navigates to /contact for users who want to say more.
- *   The ReviewForm prop is kept for API compatibility but is no longer rendered.
+ * RELIABILITY IMPROVEMENTS:
+ *   • hiddenTimer stored in ref — cleared correctly on unmount (no leak)
+ *   • mountedRef guards all async callbacks after component unmount
+ *   • dismiss() animation guarded — won't setState after unmount
+ *   • Web3Forms response body checked (data.success) not just HTTP status
+ *   • console.debug gated behind NODE_ENV !== 'production'
+ *   • submitted/inquiryOpen reset defensively on every open
  *
  * PROPS:
  *   ReviewForm  (required) — kept for API compatibility; not rendered in popup
  *   minTimeMs   (optional) — minimum ms before popup can fire (default 90000)
  *   idleMs      (optional) — inactivity ms before popup fires (default 480000)
  *   scrollPct   (optional) — scroll depth % required to unlock firing (default 60)
+ *   navigate    (optional) — SPA router navigate fn; if provided, "Leave a full review"
+ *                            uses it instead of mutating window.location.hash directly
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -49,6 +54,9 @@ import {
   useRef,
   useState,
 } from 'react';
+
+// InquiryPanel is exported from the v3 review form for inline use in the popup
+import ReviewFormV3, { InquiryPanel } from './KeshavEnterprises_ReviewForm_v3';
 
 /* ── Constants ──────────────────────────────────────────────────── */
 const SESSION_KEY   = 'ke_exit_shown_v1';       // shown this session?
@@ -110,6 +118,7 @@ export default function ExitIntentReviewPopup({
   const [closing,  setClosing]  = useState(false);   // for exit animation
   const [dontShow, setDontShow] = useState(false);   // checkbox state
   const [submitted, setSubmitted] = useState(false); // form submitted
+  const [inquiryOpen, setInquiryOpen] = useState(false); // inline inquiry panel
   // Ref mirror of dontShow — lets dismiss() always read the latest value
   // regardless of when the useCallback was last re-created.
   const dontShowRef = useRef(false);
@@ -120,6 +129,14 @@ export default function ExitIntentReviewPopup({
   const overlayRef    = useRef(null);
   const closeButtonRef = useRef(null);
   const scrollDepthRef = useRef(false);              // true once user has scrolled ≥ scrollPct
+  const hiddenTimerRef = useRef(null);               // ref so cleanup can clear it on unmount
+  const mountedRef     = useRef(true);               // guards async callbacks after unmount
+
+  /* ── Unmount guard ────────────────────────────────────────────── */
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   /* ── Single-fire gate ─────────────────────────────────────────── */
   const tryFire = useCallback((reason) => {
@@ -131,7 +148,11 @@ export default function ExitIntentReviewPopup({
 
     firedRef.current = true;
     markShownThisSession();
-    console.debug('[ExitIntent] triggered via:', reason);
+    if (process.env.NODE_ENV !== 'production') {
+      console.debug('[ExitIntent] triggered via:', reason);
+    }
+    setSubmitted(false);  // defensive reset — ensures clean state on every open
+    setInquiryOpen(false);
     setOpen(true);
 
     // Move focus into the overlay for accessibility
@@ -146,12 +167,15 @@ export default function ExitIntentReviewPopup({
 
   /* ── Close helpers ────────────────────────────────────────────── */
   const dismiss = useCallback(() => {
+    if (!mountedRef.current) return;
     setClosing(true);
-    setTimeout(() => { setOpen(false); setClosing(false); }, 320);
-    // Read the ref so this is always current even when called from a timeout
-    // (e.g. the 2.2 s post-submit auto-dismiss) without needing dontShow in deps.
+    setTimeout(() => {
+      if (!mountedRef.current) return;
+      setOpen(false);
+      setClosing(false);
+    }, 320);
     if (dontShowRef.current) markSuppressed();
-  }, []); // stable — no deps needed because we read via ref
+  }, []);
 
   const handleSubmitSuccess = useCallback(() => {
     setSubmitted(true);
@@ -169,14 +193,16 @@ export default function ExitIntentReviewPopup({
      * Guard: only fire if the tab has been hidden for > 8 s.
      * A quick WhatsApp check typically returns in < 5 s — that's normal
      * behaviour, not exit intent. We start a timer on hide; cancel on show. */
-    let hiddenTimer = null;
     const HIDDEN_GRACE_MS = 8_000;
     const onVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
-        hiddenTimer = setTimeout(() => tryFire('visibilitychange-prolonged'), HIDDEN_GRACE_MS);
+        hiddenTimerRef.current = setTimeout(
+          () => tryFire('visibilitychange-prolonged'),
+          HIDDEN_GRACE_MS
+        );
       } else {
         // User came back within the grace window — cancel
-        clearTimeout(hiddenTimer);
+        clearTimeout(hiddenTimerRef.current);
       }
     };
 
@@ -185,11 +211,15 @@ export default function ExitIntentReviewPopup({
      * makes the page bfcache-ineligible if we do real work inside it.
      * App.jsx already registers an empty pagehide listener for bfcache. */
 
-    /* Scroll depth: once user has seen ≥ scrollPct % of the page, unlock firing */
-    const onScroll = () => {
+    /* Scroll depth — consolidated handler used by both scroll and touchmove.
+     * Guards against division-by-zero on short pages where
+     * scrollHeight === clientHeight (scrollable distance is 0). */
+    const checkScrollDepth = () => {
       if (scrollDepthRef.current) return;
-      const el  = document.documentElement;
-      const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+      const el = document.documentElement;
+      const scrollable = el.scrollHeight - el.clientHeight;
+      if (scrollable <= 0) return; // page not tall enough to scroll — skip
+      const pct = (el.scrollTop / scrollable) * 100;
       if (pct >= scrollPct) {
         scrollDepthRef.current = true;
         // Don't fire immediately — wait for a later exit-intent signal
@@ -201,21 +231,24 @@ export default function ExitIntentReviewPopup({
     const onPopState = () => tryFire('back-navigation');
 
     /* Idle reset events */
-    const IDLE_EVENTS = ['mousemove','keydown','scroll','click','touchstart'];
+    const IDLE_EVENTS = ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'];
     IDLE_EVENTS.forEach(ev => window.addEventListener(ev, resetIdle, { passive: true }));
     resetIdle(); // start the clock
 
     /* Attach all signals */
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('visibilitychange', onVisibilityChange);
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // scroll covers desktop + Android; touchmove covers iOS momentum scroll
+    window.addEventListener('scroll',    checkScrollDepth, { passive: true });
+    window.addEventListener('touchmove', checkScrollDepth, { passive: true });
     window.addEventListener('popstate', onPopState);
 
     return () => {
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      clearTimeout(hiddenTimer);
-      window.removeEventListener('scroll', onScroll);
+      clearTimeout(hiddenTimerRef.current);
+      window.removeEventListener('scroll',    checkScrollDepth);
+      window.removeEventListener('touchmove', checkScrollDepth);
       window.removeEventListener('popstate', onPopState);
       IDLE_EVENTS.forEach(ev => window.removeEventListener(ev, resetIdle));
       clearTimeout(idleTimer.current);
@@ -257,7 +290,7 @@ export default function ExitIntentReviewPopup({
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Share your feedback with Keshav Enterprises"
+        aria-labelledby="ke-popup-title"
         ref={overlayRef}
         onClick={(e) => { if (e.target === e.currentTarget) dismiss(); }}
         style={{
@@ -316,30 +349,49 @@ export default function ExitIntentReviewPopup({
 
               {/* Calm label — no pulse dot */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                {inquiryOpen && (
+                  <button
+                    type="button"
+                    onClick={() => setInquiryOpen(false)}
+                    aria-label="Back to feedback"
+                    style={{
+                      background: 'rgba(255,255,255,.15)', border: '1px solid rgba(255,255,255,.25)',
+                      borderRadius: 6, color: '#fff', cursor: 'pointer',
+                      padding: '2px 10px 2px 6px', fontSize: 12, fontWeight: 600,
+                      fontFamily: "'Outfit', sans-serif", display: 'flex', alignItems: 'center', gap: 4,
+                    }}
+                  >
+                    ← Back
+                  </button>
+                )}
                 <span style={{
                   fontFamily: "'Outfit', sans-serif",
                   fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
                   textTransform: 'uppercase', color: 'rgba(255,255,255,.6)',
                 }}>
-                  Quick feedback
+                  {inquiryOpen ? 'Product Inquiry' : 'Quick feedback'}
                 </span>
               </div>
 
-              <h2 style={{
+              <h2 id="ke-popup-title" style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontSize: 21, fontWeight: 800, color: '#ffffff',
                 margin: 0, lineHeight: 1.25,
               }}>
-                How was your experience<br />
-                <span style={{ color: '#bfdbfe' }}>with Keshav Enterprises?</span>
+                {inquiryOpen
+                  ? <>Inquire about our<br /><span style={{ color: '#bfdbfe' }}>products</span></>
+                  : <>How was your experience<br /><span style={{ color: '#bfdbfe' }}>with Keshav Enterprises?</span></>
+                }
               </h2>
               <p style={{
                 fontFamily: "'Outfit', sans-serif",
                 fontSize: 13, color: 'rgba(255,255,255,.75)',
                 margin: '8px 0 0', lineHeight: 1.5,
               }}>
-                Your feedback takes 2 minutes and helps us serve you better.
-                Rate our products, services, or report an issue.
+                {inquiryOpen
+                  ? 'Select products, add your requirements, and we\'ll respond with pricing & availability.'
+                  : 'Your feedback takes 2 minutes and helps us serve you better. Rate our products, services, or report an issue.'
+                }
               </p>
 
               {/* Close button */}
@@ -401,7 +453,18 @@ export default function ExitIntentReviewPopup({
                * the thank-you screen; a "Leave a full review" link opens the
                * review form page directly for users who want to say more.
                */
-              <PopupTeaserForm onSubmitSuccess={handleSubmitSuccess} onDismiss={dismiss} navigate={navigate} />
+              inquiryOpen
+                ? <InquiryPanel
+                    prefill={{}}
+                    onBack={() => setInquiryOpen(false)}
+                    onSubmitSuccess={handleSubmitSuccess}
+                  />
+                : <PopupTeaserForm
+                    onSubmitSuccess={handleSubmitSuccess}
+                    onDismiss={dismiss}
+                    navigate={navigate}
+                    onInquiry={() => setInquiryOpen(true)}
+                  />
             )}
           </div>
 
@@ -477,7 +540,7 @@ if (process.env.NODE_ENV !== 'production' && WEB3FORMS_KEY === 'YOUR_WEB3FORMS_K
   );
 }
 
-function PopupTeaserForm({ onSubmitSuccess, onDismiss, navigate }) {
+function PopupTeaserForm({ onSubmitSuccess, onDismiss, navigate, onInquiry }) {
   const [rating,    setRating]    = useState(0);
   const [hovered,   setHovered]   = useState(0);
   const [comment,   setComment]   = useState('');
@@ -497,8 +560,10 @@ function PopupTeaserForm({ onSubmitSuccess, onDismiss, navigate }) {
       body.append('rating',     String(rating));
       body.append('comment',    comment.trim() || '(none)');
       body.append('source',     'exit-intent-popup');
-      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body });
-      if (!res.ok) throw new Error('Network error');
+      const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', body });
+      const data = await res.json();
+      // Web3Forms returns HTTP 200 even on failure — must check data.success
+      if (!res.ok || !data.success) throw new Error(data.message || 'Submission failed');
       onSubmitSuccess();
     } catch {
       setError('Submission failed — please try again.');
@@ -546,9 +611,11 @@ function PopupTeaserForm({ onSubmitSuccess, onDismiss, navigate }) {
                 onChange={() => { setRating(n); setError(''); }}
                 required
                 style={{
-                  // Visually hidden but still in the a11y tree and focusable
+                  // Visually hidden but still in the a11y tree and keyboard-focusable.
+                  // clip+overflow hides it; border:0+padding:0 prevent any layout bleed.
                   position: 'absolute', width: 1, height: 1,
                   overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap',
+                  border: 0, padding: 0, margin: 0,
                 }}
               />
               <svg width="36" height="36" viewBox="0 0 24 24" aria-hidden="true">
@@ -634,7 +701,27 @@ function PopupTeaserForm({ onSubmitSuccess, onDismiss, navigate }) {
           Leave a full review
         </a>
       </p>
+
+      {/* Inquiry shortcut */}
+      <div style={{ padding: '8px 0 6px', borderTop: '1px solid #f1f5f9', marginTop: 8 }}>
+        <button
+          type="button"
+          onClick={onInquiry}
+          style={{
+            width: '100%', padding: '9px 0', borderRadius: 9,
+            background: '#f0fdf4', border: '1.5px solid #bbf7d0',
+            color: '#15803d', cursor: 'pointer',
+            fontFamily: ff, fontSize: 13, fontWeight: 700,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+            transition: 'background .18s',
+          }}
+        >
+          🛒 Inquire about our Products
+        </button>
+        <p style={{ fontFamily: ff, fontSize: 11, color: '#94a3b8', textAlign: 'center', margin: '5px 0 0' }}>
+          Get pricing &amp; availability for any of our products
+        </p>
+      </div>
     </div>
   );
 }
-

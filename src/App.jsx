@@ -46,7 +46,7 @@ import {
 
 // Exit-intent review popup
 import ExitIntentReviewPopup from './ExitIntentReviewPopup';
-import KeshavReviewForm      from './KeshavEnterprises_ReviewForm_v2';
+import KeshavReviewForm      from './KeshavEnterprises_ReviewForm_v3';
 
 import React, {
 	memo,
@@ -101,10 +101,10 @@ const CONTACT_INFO = {
 const NAV_LINKS = [
 	{ name: 'Home', path: '/' },
 	{ name: 'About', path: '/about' },
-	{ name: 'Blog', path: '/blog' },
 	{ name: 'Services', path: '/services' },
 	{ name: 'Products', path: '/products' },
 	{ name: 'Industries', path: '/industries' },
+	{ name: 'Blog', path: '/blog' },
 	{ name: 'Contact', path: '/contact' },
 ];
 
@@ -7946,7 +7946,6 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 	const [imgLoaded, setImgLoaded] = useState(false);
 	const fmtPrice = useFmtPrice();
 	const pImg = product.images?.[0];
-	const pr = product.priceRange;
 	const av = product.availability;
 
 	const handleCardClick = useCallback(() => navigate(`/product/${product.id}`), [navigate, product.id]);
@@ -7956,14 +7955,13 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 	}, [navigate, product.id]);
 
 	return (
-		<button
-			type="button"
-			onClick={handleCardClick}
-			aria-label={`View ${product.title}`}
-			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full cursor-pointer outline-none focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
+		<div
+			role="group"
+			aria-label={`${product.title} product card`}
+			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
 		>
 			{/* Fixed-height image container — prevents CLS */}
-			<div key={pImg} className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
+			<div key={pImg} onClick={handleCardClick} className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer">
 				{/* Category badge */}
 				<span className="absolute top-3 left-3 bg-white/95 text-slate-900 border border-slate-200 text-[10px] font-black px-3 py-1.5 uppercase tracking-widest rounded z-20 shadow-sm backdrop-blur-sm">
 					{product.category}
@@ -8002,7 +8000,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 				)}
 			</div>
 
-			<div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
+			<div onClick={handleCardClick} className="p-6 md:p-8 flex-1 flex flex-col bg-white cursor-pointer">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
 					<a
 						href={`#/product/${product.id}`}
@@ -8016,18 +8014,6 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 					{product.desc}
 				</p>
 
-				{/* Price range row */}
-				{pr && (
-					<div className="mb-4 flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5">
-						<TrendingUp className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
-						<div className="flex-1 min-w-0">
-							<span className="text-xs font-black text-slate-500 uppercase tracking-wider">Est. Price </span>
-							<span className="text-sm font-black text-slate-900">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
-							<span className="text-xs text-slate-400 ml-1">{pr.unit}</span>
-						</div>
-					</div>
-				)}
-
 				<div className="mb-5 flex items-start bg-blue-50/50 p-4 rounded-lg border border-blue-100/50 group-hover:bg-blue-50 group-hover:border-blue-200 transition-colors">
 					<Target className="w-5 h-5 text-blue-600 mr-3 mt-0.5 shrink-0" aria-hidden="true" />
 					<p className="text-sm text-slate-700 font-medium leading-relaxed line-clamp-2">
@@ -8036,7 +8022,24 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 					</p>
 				</div>
 
-				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
+				{/* Indicative price band */}
+				{product.priceRange && (
+					<div className="mb-4 flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5">
+						<TrendingUp className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						<span className="text-sm font-black text-slate-900">
+							{fmtPrice(product.priceRange.min)}
+							{product.priceRange.max !== product.priceRange.min && (
+								<> – {fmtPrice(product.priceRange.max)}</>
+							)}
+						</span>
+						{product.priceRange.unit && (
+							<span className="text-xs text-slate-400 font-semibold">{product.priceRange.unit}</span>
+						)}
+						<span className="ml-auto text-[10px] text-slate-400 font-medium italic">indicative</span>
+					</div>
+				)}
+
+				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100" onClick={(e) => e.stopPropagation()}>
 					<a
 						href={waMsg(`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`)}
 						target="_blank"
@@ -8058,7 +8061,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 					</button>
 				</div>
 			</div>
-		</button>
+		</div>
 	);
 });
 ProductCard.displayName = 'ProductCard';
@@ -8712,23 +8715,42 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								/>
 							</a>
 						))}
-						{/* search + language + currency switcher */}
+						{/* search + language switcher */}
 						<div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
 							<LanguageSwitcher scrolled={scrolled} />
-							<CurrencyDropdown scrolled={scrolled} />
 							<search
 								className="relative flex items-center"
 							>
-								<div
-									className={`absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 xl:w-80 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
-								>
+								{/* Desktop: always-visible compact search bar */}
+								<div className="hidden lg:flex items-center relative mr-1">
+									<label htmlFor="nav-search-desktop" className="sr-only">Search products and services</label>
+									<Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none ${scrolled ? 'text-slate-400' : 'text-slate-400'}`} aria-hidden="true" />
 									<input
+										id="nav-search-desktop"
 										ref={searchInputRef}
 										type="text"
 										placeholder="Search products & services..."
 										value={query}
+										onChange={(e) => { setQuery(e.target.value); setIsSearchOpen(!!e.target.value); }}
+										onFocus={() => { if (query) setIsSearchOpen(true); }}
+										className={`w-48 xl:w-60 border rounded-full py-2 px-4 pl-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:w-64 xl:focus:w-72 transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400' : 'bg-white/10 backdrop-blur border-white/25 text-white placeholder:text-slate-400'}`}
+									/>
+									{query && (
+										<button type="button" onClick={() => { setQuery(''); setIsSearchOpen(false); }} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+											<X className="w-3 h-3" aria-hidden="true" />
+										</button>
+									)}
+								</div>
+								{/* Mobile: slide-out search (unchanged) */}
+								<div
+									className={`lg:hidden absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
+								>
+									<input
+										type="text"
+										placeholder="Search products & services..."
+										value={query}
 										onChange={(e) => setQuery(e.target.value)}
-										className={`w-64 xl:w-80 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
+										className={`w-64 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
 									/>
 								</div>
 								<button
@@ -8742,7 +8764,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										}
 									}}
 									aria-label="Search"
-									className={`p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
+									className={`lg:hidden p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
 					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
 					${isSearchOpen ? 'ml-1' : ''}`}
 								>
@@ -8752,8 +8774,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										style={{ width: '18px', height: '18px' }}
 									/>
 								</button>
-								{isSearchOpen && query && (
-									<div className="absolute top-full right-0 mt-6 w-125 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
+								{(isSearchOpen || query) && query && (
+									<div className="absolute top-full right-0 mt-2 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
 										<div className="max-h-[60vh] overflow-y-auto p-2">
 											{searchResults.length === 0 ? (
 												<div className="p-8 text-center" role="status" aria-live="polite">
@@ -8777,9 +8799,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 															>
 																<div className="flex gap-3 w-full items-center">
 																	<div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-																		<span className="text-slate-400 font-black text-xs uppercase tracking-widest">
-																			{r.title.substring(0, 2)}
-																		</span>
+																		<div className="w-6 h-6 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
+																			{getCategoryIcon(r.category)}
+																		</div>
 																		{r.image && (
 																			<img
 																				src={r.image}
@@ -8842,7 +8864,6 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					{/* Mobile controls */}
 					<div className="lg:hidden flex items-center gap-1.5">
 						<LanguageSwitcher scrolled={scrolled} />
-						<CurrencyDropdown scrolled={scrolled} />
 						<button
 							type="button"
 							onClick={() => {
@@ -8923,9 +8944,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 														className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none"
 													>
 														<div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
-															<span className="text-slate-400 font-black text-xs">
-																{r.title.substring(0, 2)}
-															</span>
+														<div className="w-5 h-5 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
+															{getCategoryIcon(r.category)}
+														</div>
 															{r.image && (
 																<img
 																	src={r.image}
@@ -9478,14 +9499,6 @@ const SOCIAL_LINKS = [
 		iconBg: '#1e293b',
 		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>,
 	},
-	{
-		href: CONTACT_INFO.reddit,
-		label: 'Keshav Enterprises on Reddit',
-		name: 'Reddit',
-		handle: CONTACT_INFO.redditHandle,
-		color: '#FF4500',
-		icon: <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>,
-	},
 ];
 
 // ─── DIGITAL PROFILES STRIP ──────────────────────────────────
@@ -9542,21 +9555,21 @@ const DigitalProfilesStrip = memo(() => {
 	return (
 		<section
 			aria-labelledby="digital-profiles-heading"
-			className="bg-[#f0f4f8] py-10 border-t border-slate-200"
+			className="bg-[#f0f4f8] py-6 sm:py-10 border-t border-slate-200"
 		>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				{/* Heading block — matches Image 2 */}
-				<div className="text-center mb-8">
+				{/* Heading block */}
+				<div className="text-center mb-4 sm:mb-8">
 					<p
 						id="digital-profiles-heading"
 						className="text-[11px] font-black text-slate-400 uppercase tracking-[0.22em] mb-2"
 					>
 						Find Us Everywhere
 					</p>
-					<h2 className="text-2xl sm:text-3xl font-black text-slate-800 mb-3 tracking-tight">
+					<h2 className="hidden sm:block text-2xl sm:text-3xl font-black text-slate-800 mb-3 tracking-tight">
 						Verified Across India's Top Business Directories
 					</h2>
-					<p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+					<p className="hidden sm:block text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
 						Our business profile is verified and active on every major B2B and local search platform in India.
 					</p>
 				</div>
@@ -10428,6 +10441,81 @@ const ShareProductButton = memo(({ title }) => {
 });
 ShareProductButton.displayName = 'ShareProductButton';
 
+// ─── SPECS TABLE (collapsible for dense spec lists) ─────────
+// Shows first 8 rows by default; "Show all" expands the rest.
+// Appends lead-time and price rows just like the original table.
+const SPECS_PREVIEW_ROWS = 8;
+
+const SpecsTable = memo(({ product, fmtPrice, currencyCode }) => {
+	const allEntries = Object.entries(product.specs || {});
+	const hasMore = allEntries.length > SPECS_PREVIEW_ROWS;
+	const [expanded, setExpanded] = useState(false);
+	const shown = expanded ? allEntries : allEntries.slice(0, SPECS_PREVIEW_ROWS);
+
+	// Derive lead time (mirrors original logic)
+	const cat = product.category || '';
+	let lt = 'Stocked / 2–4 weeks';
+	if (cat === 'Turbine Spares') lt = '2–6 weeks (standard); custom 6–10 weeks';
+	else if (cat === 'Expansion Joints') lt = 'Stocked sizes: 1–2 weeks; custom DN: 3–5 weeks';
+	else if (cat === 'Industrial Strainers') lt = '1–3 weeks (standard); custom 3–6 weeks';
+	else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
+	else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
+	else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
+	else if (cat === 'HVAC & Air Filtration') lt = 'Standard grades: ex-stock to 1 week; custom sizes/special media: 2–4 weeks';
+	else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
+	else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
+
+	const pr = product.priceRange;
+	const hiddenCount = allEntries.length - SPECS_PREVIEW_ROWS;
+
+	return (
+		<div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm overflow-x-auto">
+			<table className="w-full text-left border-collapse min-w-[320px]">
+				<caption className="sr-only">Technical specifications for {product.title}</caption>
+				<tbody className="divide-y divide-slate-100">
+					{shown.map(([k, v], i) => (
+						<tr key={k} className={`transition-colors hover:bg-blue-50/30 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+							<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">{k}</th>
+							<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{v}</td>
+						</tr>
+					))}
+					{/* Always-visible rows: price + lead time */}
+					{pr && (
+						<tr className={`transition-colors hover:bg-blue-50/30 ${shown.length % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'}`}>
+							<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Est. Price</th>
+							<td className="p-4 text-sm leading-relaxed">
+								<span className="text-blue-700 font-bold">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
+								<span className="text-slate-400 ml-1.5 font-medium">{pr.unit}</span>
+								<span className="block text-[11px] text-slate-400 mt-0.5">Indicative estimate · contact for firm quote</span>
+							</td>
+						</tr>
+					)}
+					<tr className={`transition-colors hover:bg-blue-50/30 ${(shown.length + (pr ? 1 : 0)) % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
+						<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Lead Time</th>
+						<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
+					</tr>
+				</tbody>
+			</table>
+			{/* Expand / collapse control */}
+			{hasMore && (
+				<button
+					type="button"
+					onClick={() => setExpanded(e => !e)}
+					aria-expanded={expanded}
+					className="w-full flex items-center justify-center gap-2 py-3 text-xs font-black text-blue-600 bg-blue-50 hover:bg-blue-100 border-t border-blue-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset"
+				>
+					{expanded ? (
+						<><ChevronUp className="w-4 h-4" aria-hidden="true" /> Show fewer specs</>
+					) : (
+						<><ChevronRight className="w-4 h-4" aria-hidden="true" /> Show all {hiddenCount} more specifications</>
+					)}
+				</button>
+			)}
+		</div>
+	);
+});
+SpecsTable.displayName = 'SpecsTable';
+
 // ─── PRODUCT DETAIL PAGE ─────────────────────────────────────
 // PERF: memo prevents re-render when parent re-renders but productId/navigate are unchanged
 const ProductDetailPage = memo(({ productId, navigate }) => {
@@ -10820,7 +10908,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									{images.map((img, idx) => {
 										const active = idx === safeActive;
 										return (
-											<div key={img} role="listitem" className="relative shrink-0" style={{ width: 84, height: 84 }}>
+											<div key={img} role="listitem" className="relative shrink-0" style={{ width: 'clamp(56px, 15vw, 84px)', height: 'clamp(56px, 15vw, 84px)' }}>
 												<button
 													type="button"
 													onClick={() => goTo(idx, idx > safeActive ? 'left' : 'right')}
@@ -10898,7 +10986,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									<p className="mt-3 text-[11px] text-slate-400 leading-relaxed border-t border-blue-100 pt-2">
 										{currencyCode !== 'INR'
 											? `Prices converted from INR at live market rates (open.er-api.com). Actual invoice will be in INR. Rate is indicative — contact us for a firm quotation.`
-											: `Prices are indicative market estimates (IndiaMART / TradeIndia 2025). Actual price depends on size, quantity, material grade, and OEM spec. Contact us for a firm quotation.`
+											: `Prices vary by turbine model, OEM spec, material grade, and order quantity. The range shown reflects our typical market spread — contact us for a firm quotation.`
 										}
 									</p>
 								</div>
@@ -10954,6 +11042,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									aria-labelledby={`tab-${tab}`}
 								>
 									{tab === 'specs' && product.specs && (
+										<SpecsTable product={product} fmtPrice={fmtPrice} currencyCode={currencyCode} />
+								)}
+								{tab === 'specs' && product.specs && false && (
 										<div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm overflow-x-auto">
 											<table className="w-full text-left border-collapse min-w-[320px]">
 												<caption className="sr-only">
@@ -11031,27 +11122,35 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									)}
 								</div>
 							</div>
-							<div className="mt-auto pt-8 border-t border-slate-200 flex flex-col sm:flex-row gap-5">
+							<div className="mt-auto pt-8 border-t border-slate-200 flex flex-col gap-3">
 								<a
 									href={waMsg(
 										`Hello KESHAV ENTERPRISES, I am interested in: *${product.title}*. Please share technical specs and quote.`,
 									)}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="flex-1 bg-[#25D366] text-white py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+									className="w-full bg-[#25D366] text-white py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg hover:-translate-y-0.5 flex items-center justify-center tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 								>
 									<MessageCircle className="w-6 h-6 mr-3" aria-hidden="true" />{' '}
 									Request Quote via WhatsApp
 								</a>
-								<a
-									href={CONTACT_INFO.indiamart}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex-1 bg-white border-2 border-slate-900 text-slate-900 py-5 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-all shadow-sm hover:-translate-y-0.5 flex items-center justify-center tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
-								>
-									<ExternalLink className="w-6 h-6 mr-3" aria-hidden="true" />{' '}
-									View on IndiaMART
-								</a>
+								<div className="flex items-center justify-center gap-4 pt-1">
+									<a
+										href={CONTACT_INFO.indiamart}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="text-slate-500 hover:text-blue-600 text-sm font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus-visible:underline"
+									>
+										<ExternalLink className="w-4 h-4" aria-hidden="true" /> Also on IndiaMART
+									</a>
+									<span className="text-slate-200" aria-hidden="true">|</span>
+									<a
+										href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+										className="text-slate-500 hover:text-blue-600 text-sm font-bold flex items-center gap-1.5 transition-colors focus:outline-none focus-visible:underline"
+									>
+										<Phone className="w-4 h-4" aria-hidden="true" /> Call us
+									</a>
+								</div>
 							</div>
 							<InlineRFQForm productTitle={product.title} />
 							<div className="pt-4">
@@ -11250,7 +11349,6 @@ const FeaturedProductImage = memo(({ product }) => {
 FeaturedProductImage.displayName = 'FeaturedProductImage';
 
 const FeaturedProductsStrip = memo(({ products, navigate }) => {
-	const fmtPrice  = useFmtPrice();
 	const trackRef = useRef(null); // scrollable div
 	const rafRef = useRef(null); // requestAnimationFrame id
 	const sectionRef = useRef(null); // section element — used to gate rAF
@@ -11463,6 +11561,10 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 							<ChevronRight className="w-5 h-5" aria-hidden="true" />
 						</button>
 					</div>
+					<span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-400 font-medium select-none" aria-hidden="true">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M18 11a2 2 0 0 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+						drag to explore
+					</span>
 					<button
 						type="button"
 						onClick={() => navigate('/products')}
@@ -11517,12 +11619,6 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 									<p className="text-slate-500 font-medium text-xs leading-relaxed mb-3 line-clamp-2 flex-1 pointer-events-none">
 										{product.desc}
 									</p>
-									{/* Price range on featured strip card */}
-									{product.priceRange && (
-										<p className="text-[11px] font-black text-slate-500 mb-3 pointer-events-none">
-											Est. <span className="text-slate-800">{fmtPrice(product.priceRange.min)}–{fmtPrice(product.priceRange.max)}</span> {product.priceRange.unit}
-										</p>
-									)}
 									<div className="flex items-center justify-between pt-3.5 border-t border-slate-100">
 										<span className="text-xs font-bold text-slate-500 group-hover:text-slate-900 transition-colors pointer-events-none">
 											View Details
@@ -12111,19 +12207,21 @@ const HomePage = memo(({ navigate }) => {
 						{[
 							{
 								quote:
-									'Their ex-Triveni engineers handled our 12 MW turbine overhaul during the annual shutdown — all clearances documented, rotor balanced, and back online ahead of schedule. First time in six years we had zero issues at first start-up.',
+									'Their ex-Triveni engineers handled our 12 MW Triveni turbine overhaul during the annual shutdown — all clearances documented, rotor balanced to ISO G1.0, and back online ahead of schedule. First time in six years we had zero issues at first start-up.',
 								name: 'Plant Manager',
 								company: 'Sugar & Co-Gen Plant',
 								location: 'Uttar Pradesh',
 								service: 'Turbine Overhauling',
+								detail: '12 MW Triveni · Planned Shutdown',
 							},
 							{
 								quote:
-									'We had a critical bearing failure at 2 AM during peak crushing season. Keshav Enterprises had an engineer at site by morning with the replacement Babbitt bearing ready. Downtime was under 14 hours — that saved us crores in cane losses.',
+									'We had a critical babbitt bearing failure on our Belliss & Morcom turbine at 2 AM during peak crushing season. Keshav Enterprises had an engineer at site by morning with the replacement bearing ready. Downtime was under 14 hours — that saved us crores in cane losses.',
 								name: 'Maintenance Head',
 								company: 'Sugar Mill',
 								location: 'Haryana',
 								service: 'Emergency Breakdown Response',
+								detail: 'Belliss & Morcom · Bearing Failure',
 							},
 							{
 								quote:
@@ -12132,8 +12230,9 @@ const HomePage = memo(({ navigate }) => {
 								company: 'Paper Mill & Power Plant',
 								location: 'Punjab',
 								service: 'Reverse Engineering',
+								detail: 'Belliss & Morcom · Obsolete Spares',
 							},
-						].map(({ quote, name, company, location, service }) => (
+						].map(({ quote, name, company, location, service, detail }) => (
 							<figure
 								key={name}
 								className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group"
@@ -12183,6 +12282,9 @@ const HomePage = memo(({ navigate }) => {
 										<p className="text-slate-500 font-medium text-xs truncate">
 											{company} · {location}
 										</p>
+										{detail && (
+											<p className="text-blue-600 font-bold text-[10px] uppercase tracking-wide mt-0.5">{detail}</p>
+										)}
 									</div>
 									{/* Verified via IndiaMART badge */}
 									<a
@@ -12454,7 +12556,7 @@ const AboutPage = memo(({ navigate }) => {
 			/>
 
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
-			<div className="bg-[#0A192F] text-white relative overflow-hidden">
+			<div className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600">
 				{/* About story background image — upload about-story-bg.png to /public/
 			Recommended: wide industrial turbine workshop/factory floor photo
 			Size: 1920×900px, compressed < 250KB */}
@@ -13651,7 +13753,6 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Featured post */}
 			{BLOG_POSTS.length > 0 && (
 				<div
-					role="article"
 					className="mb-16 group cursor-pointer w-full text-left"
 					onClick={() => navigate(`/blog/${BLOG_POSTS[0].slug}`)}
 				>
@@ -13671,18 +13772,20 @@ const BlogPage = memo(({ navigate }) => (
 									className="media-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
 									onLoad={(e) => {
 										e.currentTarget.classList.add('is-loaded');
+										const fb = e.currentTarget.parentElement?.querySelector('.blog-img-fallback');
+										if (fb) fb.style.display = 'none';
 									}}
 									onError={(e) => {
 										e.target.style.display = 'none';
 									}}
 								/>
-								<div className="absolute inset-0 bg-linear-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
+								<div className="blog-img-fallback absolute inset-0 bg-linear-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
 									<BookOpen
 										className="w-24 h-24 text-white/20"
 										aria-hidden="true"
 									/>
 								</div>
-								<span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-black px-3 py-1.5 uppercase tracking-widest rounded-full shadow-lg">
+								<span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-black px-3 py-1.5 uppercase tracking-widest rounded-full shadow-lg z-10">
 									Featured
 								</span>
 							</div>
@@ -13749,18 +13852,24 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Remaining posts grid */}
 			{BLOG_POSTS.length > 1 && (
 				<div>
-					<h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
+					<h2 className="text-2xl font-black text-slate-900 mb-8 tracking-tight">
 						More Articles
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{BLOG_POSTS.slice(1).map((post) => (
-							<button
-								type="button"
+							<article
 								key={post.id}
-								onClick={() => navigate(`/blog/${post.slug}`)}
-								aria-label={`Read post: ${post.title}`}
-								className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group cursor-pointer flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-left w-full"
+								className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col"
 							>
+								<a
+									href={`#/blog/${post.slug}`}
+									onClick={(e) => {
+										e.preventDefault();
+										navigate(`/blog/${post.slug}`);
+									}}
+									aria-label={`Read post: ${post.title}`}
+									className="flex flex-col flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-2xl"
+								>
 								<div className="h-52 bg-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
 									<div className="skeleton-shimmer" aria-hidden="true" />
 									<img
@@ -13775,12 +13884,14 @@ const BlogPage = memo(({ navigate }) => (
 										className="media-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
 										onLoad={(e) => {
 											e.currentTarget.classList.add('is-loaded');
+											const fb = e.currentTarget.parentElement?.querySelector('.blog-img-fallback');
+											if (fb) fb.style.display = 'none';
 										}}
 										onError={(e) => {
 											e.target.style.display = 'none';
 										}}
 									/>
-									<div className="absolute inset-0 bg-linear-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
+									<div className="blog-img-fallback absolute inset-0 bg-linear-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
 										<BookOpen
 											className="w-16 h-16 text-white/20"
 											aria-hidden="true"
@@ -13799,17 +13910,7 @@ const BlogPage = memo(({ navigate }) => (
 										))}
 									</div>
 									<h3 className="text-xl font-bold text-slate-900 mb-3 leading-tight tracking-tight group-hover:text-blue-600 transition-colors">
-										<a
-											href={`#/blog/${post.slug}`}
-											onClick={(e) => {
-												e.stopPropagation();
-												e.preventDefault();
-												navigate(`/blog/${post.slug}`);
-											}}
-											className="focus:outline-none focus-visible:underline"
-										>
-											{post.title}
-										</a>
+										{post.title}
 									</h3>
 									<p className="text-slate-600 font-medium text-sm leading-relaxed mb-5 line-clamp-3">
 										{post.excerpt}
@@ -13843,7 +13944,8 @@ const BlogPage = memo(({ navigate }) => (
 										</div>
 									</div>
 								</div>
-							</button>
+								</a>
+							</article>
 						))}
 					</div>
 				</div>
@@ -14273,7 +14375,7 @@ const ServicesPage = memo(({ navigate }) => (
 												{service.oems.slice(0, 6).map((oem) => (
 													<span
 														key={oem}
-														className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip"
+														className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip pointer-events-none select-none"
 													>
 														{oem}
 													</span>
@@ -14339,11 +14441,11 @@ const ServicesPage = memo(({ navigate }) => (
 								<div className="flex flex-wrap gap-4">
 									<button
 										type="button"
-										onClick={() => navigate(`/service/${service.id}`)}
-										aria-label={`View full details for ${service.title}`}
+										onClick={() => navigate('/contact')}
+										aria-label={`Inquire about ${service.title}`}
 										className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-md hover:shadow-xl flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 									>
-										View Full Details{' '}
+										Inquire About This Service{' '}
 										<ArrowRight
 											className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform"
 											aria-hidden="true"
@@ -14351,11 +14453,11 @@ const ServicesPage = memo(({ navigate }) => (
 									</button>
 									<button
 										type="button"
-										onClick={() => navigate('/contact')}
-										aria-label={`Inquire about ${service.title}`}
-										className="border-2 border-slate-900 text-slate-900 px-8 py-4 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm hover:shadow-lg flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+										onClick={() => navigate(`/service/${service.id}`)}
+										aria-label={`View full details for ${service.title}`}
+										className="border-2 border-slate-300 text-slate-600 px-8 py-4 rounded-xl font-black text-lg hover:border-slate-500 hover:text-slate-900 transition-colors shadow-sm flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 									>
-										Inquire About This Service{' '}
+										View Full Details{' '}
 										<ArrowRight
 											className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform"
 											aria-hidden="true"
@@ -15569,8 +15671,8 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 			{/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
 			<div
-				className="bg-[#0A192F] text-white relative overflow-hidden"
-				style={{ borderBottom: '8px solid #2563eb', minHeight: '480px' }}
+				className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600"
+				style={{ minHeight: '480px' }}
 			>
 				{/* Grid texture — matches ServicesPage hero */}
 				<div
@@ -16258,7 +16360,6 @@ const ProductsPage = memo(({ navigate }) => {
 	const filterKey = [activeCategory, searchQuery, sortBy, priceMin, priceMax].join('|');
 	const [pageState, setPageState]               = useState({ n: 1, filterKey });
 	const page    = pageState.filterKey === filterKey ? pageState.n : 1;
-	const fmtPrice = useFmtPrice();
 	const categoryScrollRef = useRef(null);
 	const [showLeft, setShowLeft]   = useState(false);
 	const [showRight, setShowRight] = useState(true);
@@ -16354,6 +16455,35 @@ const ProductsPage = memo(({ navigate }) => {
 					<p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl leading-relaxed">
 						{PRODUCTS.length} precision-engineered products across {PRODUCT_CATEGORIES.length - 1} categories. ISO/API/ASME compliant with full technical specifications.
 					</p>
+					{/* Export destinations */}
+					<div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+						<span className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+							<Globe className="w-3 h-3 text-blue-500" aria-hidden="true" /> Exported to
+						</span>
+						{[
+							{ flag: '🇦🇪', label: 'UAE' },
+							{ flag: '🇺🇸', label: 'USA' },
+							{ flag: '🇬🇧', label: 'UK' },
+							{ flag: '🇸🇬', label: 'Singapore' },
+							{ flag: '🇯🇵', label: 'Japan' },
+							{ flag: '🇪🇺', label: 'Europe' },
+						].map(({ flag, label }) => (
+							<span key={label} className="inline-flex items-center gap-1 bg-white/10 border border-white/15 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full">
+								<span aria-hidden="true">{flag}</span>{label}
+							</span>
+						))}
+						<span className="text-slate-600 text-xs">&amp; more</span>
+					</div>
+					<p className="mt-1.5 text-[11px] text-slate-600 tracking-wide">
+						Sea · Air · Courier &nbsp;·&nbsp; CIF / FOB on request
+					</p>
+					{/* Currency selector */}
+					<div className="mt-7 flex justify-center">
+						<div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3">
+							<span className="text-slate-300 text-xs font-black uppercase tracking-widest">View prices in</span>
+							<CurrencyDropdown scrolled={false} />
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -16503,46 +16633,11 @@ const ProductsPage = memo(({ navigate }) => {
 					)}
 				</div>
 
-				{/* ── Category Price Guide ── */}
-				<details className="mb-10 bg-white border border-slate-200 rounded-2xl shadow-sm group">
-					<summary className="flex items-center gap-3 px-6 py-4 cursor-pointer list-none select-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl">
-						<TrendingUp className="w-5 h-5 text-blue-500 shrink-0" aria-hidden="true" />
-						<span className="text-sm font-black text-slate-900">Category Price Guide</span>
-						<span className="text-xs text-slate-400 font-medium ml-1">— indicative INR ranges, sourced from IndiaMART / TradeIndia 2025</span>
-						<ChevronRight className="w-4 h-4 text-slate-400 ml-auto group-open:rotate-90 transition-transform" aria-hidden="true" />
-					</summary>
-					<div className="px-6 pb-5 pt-1">
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-							{Object.entries(CATEGORY_PRICE_BANDS).map(([cat, band]) => {
-								const av = CATEGORY_AVAILABILITY[cat];
-								return (
-									<button
-										key={cat}
-										type="button"
-										onClick={() => { setActiveCategory(cat); setSearchQuery(''); topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }}
-										className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:border-blue-300 hover:bg-blue-50/40 transition-all text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-									>
-										<div className="shrink-0">
-											{getCategoryIcon(cat)}
-										</div>
-										<div className="min-w-0 flex-1">
-											<p className="text-xs font-black text-slate-800 truncate">{cat}</p>
-											<p className="text-xs text-blue-600 font-bold">{fmtPrice(band.min)} – {fmtPrice(band.max)} <span className="text-slate-400 font-medium">{band.unit}</span></p>
-										</div>
-										{av && (
-											<span className={`text-[10px] font-black px-2 py-1 rounded border shrink-0 ${AVAIL_STYLES[av.color] || AVAIL_STYLES.green}`}>
-												{av.label}
-											</span>
-										)}
-									</button>
-								);
-							})}
-						</div>
-						<p className="mt-4 text-[11px] text-slate-400 leading-relaxed">
-							Prices are indicative market estimates. Actual pricing depends on size, material grade, OEM spec, and order quantity. Contact us for a firm quotation.
-						</p>
-					</div>
-				</details>
+				{/* ── Indicative pricing notice ── */}
+				<p className="mb-6 flex items-center gap-2 text-[11px] text-slate-400 leading-relaxed">
+					<AlertTriangle className="w-3.5 h-3.5 text-amber-400 shrink-0" aria-hidden="true" />
+					Prices shown are indicative. Actual pricing depends on size, quantity, and spec. <button type="button" onClick={() => navigate('/contact')} className="text-blue-500 font-bold hover:underline focus:outline-none focus-visible:underline">Contact us</button> for a firm quotation.
+				</p>
 
 				{/* ── Product grid ── */}
 				{paginated.length > 0 ? (
@@ -17513,9 +17608,9 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					</div>
 					{/* Key Facts Strip */}
 					<div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-						{detail.keyFacts.map((fact) => (
+						{detail.keyFacts.map((fact, i) => (
 							<div
-								key={fact.label}
+								key={i}
 								className="bg-white/[0.07] border border-white/[0.14] rounded-xl px-5 py-4 flex items-start gap-3"
 							>
 								<CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
@@ -18051,43 +18146,33 @@ const ContactPage = memo(() => {
 				pageType="website"
 				schema={FAQ_SCHEMA}
 			/>
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="text-center max-w-4xl mx-auto mb-16 flex flex-col items-center">
-					<h1 className="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">
-						Talk to an Engineer
-					</h1>
-					<div
-						className="section-divider w-24 h-1.5 bg-blue-600 mb-6 rounded-full"
-						aria-hidden="true"
-					/>
-					<p className="text-lg font-medium text-slate-500 max-w-2xl mb-6">
-						Share your requirements below. Our engineering team — not a sales
-						desk — reviews every inquiry and responds with a technical answer
-						within 24 hours.
+
+			{/* Hero — matches site-wide dark banner pattern */}
+			<div className="bg-[#0A192F] text-white py-16 mb-12 relative overflow-hidden border-b-8 border-blue-600">
+				<div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]" aria-hidden="true" />
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
+					<h1 className="text-4xl md:text-6xl font-black mb-5 tracking-tight drop-shadow-md">Talk to an Engineer</h1>
+					<div className="section-divider w-24 h-1.5 bg-blue-500 mb-6 rounded-full" aria-hidden="true" />
+					<p className="text-slate-300 font-medium max-w-2xl mx-auto text-lg leading-relaxed mb-6">
+						Share your requirements and our engineering team — not a sales desk — will respond with a technical answer within 24 hours.
 					</p>
-					{/* Fear-reduction trust row */}
-					<div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
+					{/* Trust signals inline */}
+					<div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
 						{[
-							{ Icon: Shield, text: 'Confidential RFQ handling' },
+							{ Icon: Shield,       text: 'Confidential RFQ handling' },
 							{ Icon: CheckCircle2, text: 'No obligation consultation' },
-							{
-								Icon: Clock,
-								text: '24-hour response (emergency: within the hour)',
-							},
+							{ Icon: Clock,        text: '24-hour response' },
 						].map(({ Icon, text }) => (
-							<div
-								key={text}
-								className="flex items-center gap-2 text-slate-500 text-sm font-bold"
-							>
-								<Icon
-									className="w-4 h-4 text-blue-500 shrink-0"
-									aria-hidden="true"
-								/>
-								<span>{text}</span>
+							<div key={text} className="flex items-center gap-2 text-slate-400 text-sm font-semibold">
+								<Icon className="w-4 h-4 text-blue-400 shrink-0" aria-hidden="true" />
+								{text}
 							</div>
 						))}
 					</div>
 				</div>
+			</div>
+
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
 					<div className="lg:col-span-1 space-y-6">
 						{[
@@ -18787,7 +18872,7 @@ export default function App() {
 	// ── Exit-intent popup route guard ──────────────────────────────
 	// Suppresses the popup on pages where the review form already lives
 	// or where it would feel intrusive (contact page).
-	const POPUP_EXCLUDED_PATHS = ['/contact'];
+	const POPUP_EXCLUDED_PATHS = ['/contact', '/product/', '/service/'];
 	const showExitPopup = !POPUP_EXCLUDED_PATHS.some(p => currentPath.startsWith(p));
 
 	// ── Scroll restoration ──────────────────────────────────────
@@ -19023,13 +19108,16 @@ export default function App() {
 			</div>
 			<BackToTopButton />
 
-			{/* Exit-intent review popup: fixed overlay, zero layout impact. */}
+			{/* Exit-intent review popup: fixed overlay, zero layout impact.
+			    Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
+			    minTimeMs raised to 10 min so only genuinely engaged visitors see it. */}
 			{showExitPopup && (
 				<ExitIntentReviewPopup
 					ReviewForm={KeshavReviewForm}
-					minTimeMs={90_000}
+					minTimeMs={600_000}
 					idleMs={480_000}
 					scrollPct={60}
+					navigate={navigate}
 				/>
 			)}
 		</div>

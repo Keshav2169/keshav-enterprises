@@ -4,28 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- ══ FAVICON ══════════════════════════════════════════════════════════
-         Inline SVG data-URI — zero network request, zero 404.
-         Replace with real files once keshav-logo.png / favicon.ico are
-         in /public:
-           <link rel="icon" type="image/png" href="/keshav-logo.png" />
-           <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    ════════════════════════════════════════════════════════════════════════ -->
-    <link
-      rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230A192F'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='system-ui'>⚙️</text></svg>"
-    />
-    <!-- Once you have the logo file in /public, also add: -->
-    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" /> -->
+    <!-- ══ FAVICON ══════════════════════════════════════════════════════════ -->
+    <link rel="icon" type="image/png" href="%BASE_URL%keshav-logo.png" />
+    <link rel="apple-touch-icon" href="%BASE_URL%keshav-logo.png" />
 
     <!-- ══ WEB APP MANIFEST ══════════════════════════════════════════════ -->
-    <!-- Create /public/site.webmanifest with the content shown below this file -->
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
 
-    <!-- ══ PRIMARY SEO ═══════════════════════════════════════════════════
-         These are the static fallback values — React SEOHead overrides
-         title, description, canonical, and robots per-page after hydration.
-    ════════════════════════════════════════════════════════════════════════ -->
+    <!-- ══ PRIMARY SEO ═══════════════════════════════════════════════════ -->
     <title>Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares, Shamli UP India</title>
     <meta
       name="description"
@@ -42,19 +28,17 @@
     <!-- Canonical — prevents www vs non-www duplicate indexing -->
     <link rel="canonical" href="https://www.keshavturboservices.com/" />
 
-    <!-- ══ OPEN GRAPH ════════════════════════════════════════════════════
-         Static fallback. React SEOHead overrides these after hydration.
-    ════════════════════════════════════════════════════════════════════════ -->
-    <meta property="og:type"        content="website" />
-    <meta property="og:site_name"   content="Keshav Turbo Services" />
-    <meta property="og:locale"      content="en_IN" />
-    <meta property="og:title"       content="Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares" />
-    <meta property="og:description" content="Ex-OEM turbine engineers. Overhauling, reverse engineering, dynamic balancing &amp; OEM-compatible spares for 5 kW–27 MW steam turbines. Shamli, UP India." />
-    <meta property="og:image"       content="https://www.keshavturboservices.com/og-image.webp" />
+    <!-- ══ OPEN GRAPH ════════════════════════════════════════════════════ -->
+    <meta property="og:type"         content="website" />
+    <meta property="og:site_name"    content="Keshav Turbo Services" />
+    <meta property="og:locale"       content="en_IN" />
+    <meta property="og:title"        content="Keshav Turbo Services — Steam Turbine Overhauling &amp; Spares" />
+    <meta property="og:description"  content="Ex-OEM turbine engineers. Overhauling, reverse engineering, dynamic balancing &amp; OEM-compatible spares for 5 kW–27 MW steam turbines. Shamli, UP India." />
+    <meta property="og:image"        content="https://www.keshavturboservices.com/og-image.webp" />
     <meta property="og:image:width"  content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt"    content="Keshav Turbo Services — Industrial Steam Turbine Engineering" />
-    <meta property="og:url"         content="https://www.keshavturboservices.com/" />
+    <meta property="og:url"          content="https://www.keshavturboservices.com/" />
 
     <!-- ══ TWITTER CARD ═════════════════════════════════════════════════ -->
     <meta name="twitter:card"        content="summary_large_image" />
@@ -65,29 +49,23 @@
     <meta name="twitter:image"       content="https://www.keshavturboservices.com/og-image.webp" />
 
     <!-- ══ GEO / LOCAL BUSINESS ════════════════════════════════════════ -->
-    <meta name="geo.region"       content="IN-UP" />
-    <meta name="geo.placename"    content="Shamli, Uttar Pradesh, India" />
-    <meta name="geo.position"     content="29.4476;77.3003" />
-    <meta name="ICBM"             content="29.4476, 77.3003" />
+    <meta name="geo.region"    content="IN-UP" />
+    <meta name="geo.placename" content="Shamli, Uttar Pradesh, India" />
+    <meta name="geo.position"  content="29.4476;77.3003" />
+    <meta name="ICBM"          content="29.4476, 77.3003" />
 
     <!-- ══ AI / LLM DISCOVERY (llmstxt.org) ════════════════════════════ -->
     <link rel="help" href="/llms.txt" />
     <link rel="help" href="/llms-full.txt" />
 
-    <!-- ══ PERFORMANCE — PRECONNECT ════════════════════════════════════
-         Tells the browser to open TCP/TLS connections to these origins
-         before any request actually needs them, saving ~150–300 ms.
-    ════════════════════════════════════════════════════════════════════════ -->
+    <!-- ══ PERFORMANCE — PRECONNECT ════════════════════════════════════ -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://api.whatsapp.com" />
     <link rel="dns-prefetch" href="https://www.indiamart.com" />
     <link rel="dns-prefetch" href="https://translate.google.com" />
 
-    <!-- ══ GOOGLE TRANSLATE ══════════════════════════════════════════════
-         Suppresses the intrusive top-bar banner and tooltip overlays.
-         The widget div is in <body> — hidden by CSS below.
-    ════════════════════════════════════════════════════════════════════════ -->
+    <!-- ══ GOOGLE TRANSLATE ══════════════════════════════════════════════ -->
     <style>
       /* Prevent Google Translate from pushing the page down */
       body { top: 0 !important; }
