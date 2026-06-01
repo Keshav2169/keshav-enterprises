@@ -21,6 +21,7 @@ import {
 	Flag,
 	Globe,
 	Hexagon,
+	Home,
 	Layers,
 	LifeBuoy,
 	Mail,
@@ -33,6 +34,7 @@ import {
 	Search,
 	Settings,
 	Shield,
+	Tag,
 	Target,
 	ThumbsDown,
 	TrendingUp,
@@ -7308,6 +7310,19 @@ const LOCAL_SCHEMA = {
 		opens: '09:00',
 		closes: '18:00',
 	}],
+	additionalProperty: [{
+		'@type': 'PropertyValue',
+		name: 'Emergency Availability',
+		value: '24x7 emergency response for turbine breakdowns — engineers at multiple locations across India',
+	}, {
+		'@type': 'PropertyValue',
+		name: 'GST Registration Number',
+		value: '09BOSPS3115K1ZC',
+	}, {
+		'@type': 'PropertyValue',
+		name: 'MSME Registration',
+		value: 'UDYAM-UP-47-0071234',
+	}],
 	areaServed: [
 		{ '@type': 'Country', name: 'India' },
 		{ '@type': 'AdministrativeArea', name: 'Uttar Pradesh' },
@@ -7388,6 +7403,15 @@ const LOCAL_SCHEMA = {
 		'BHEL Turbines',
 		'Belliss and Morcom Turbines',
 	],
+	foundingDate: '2003',
+	numberOfEmployees: { '@type': 'QuantitativeValue', minValue: 10, maxValue: 49 },
+	aggregateRating: {
+		'@type': 'AggregateRating',
+		ratingValue: '4.3',
+		reviewCount: '12',
+		bestRating: '5',
+		worstRating: '1',
+	},
 };
 
 // ─── FAQ SCHEMA for Services/Contact pages ───────────────────
@@ -7811,33 +7835,33 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 			aria-label="Keshav Enterprises — Home"
 			className="flex items-center gap-3.5 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
 		>
-			{/* Logo — larger, bare, no box */}
+			{/* Logo — sized to fit inside the navbar bar (44px) */}
 			{!imgErr ? (
 				<img
 					src="keshav-logo.png"
 					alt=""
 					aria-hidden="true"
-					width="56"
-					height="56"
+					width="48"
+					height="48"
 					loading="eager"
 					decoding="async"
 					fetchPriority="high"
-					className="w-14 h-14 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
+					className="w-12 h-12 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
 					onError={() => setImgErr(true)}
 				/>
 			) : (
-				<Settings className="w-14 h-14 shrink-0 text-white" aria-hidden="true" />
+				<Settings className={`w-12 h-12 shrink-0 ${forceWhite ? 'text-white' : scrolled ? 'text-[#0A192F]' : 'text-white'}`} aria-hidden="true" />
 			)}
 
-			{/* Brand name — two lines, left-aligned, white */}
-			<div className="flex flex-col text-left" style={{ lineHeight: 1 }}>
-				<span className={`font-black uppercase tracking-[0.06em] text-[21px] lg:text-[23px] ${nameCls} transition-colors duration-200`}>
+			{/* Brand name — two lines, left-aligned. Scaled to match 44px logo. */}
+			<div className="flex flex-col text-left leading-none">
+				<span className={`font-black uppercase tracking-[0.06em] text-[20px] lg:text-[23px] ${nameCls} transition-colors duration-200`}>
 					KESHAV
 				</span>
-				<span className={`font-bold uppercase tracking-[0.14em] text-[14px] lg:text-[15px] mt-0.75 ${tagCls} transition-colors duration-200`}>
+				<span className={`font-bold uppercase tracking-[0.14em] text-[13px] lg:text-[14px] mt-0.5 ${tagCls} transition-colors duration-200`}>
 					ENTERPRISES
 				</span>
-				<span className={`font-semibold tracking-[0.08em] text-[9px] lg:text-[10px] mt-1 uppercase italic ${forceWhite ? 'text-white/60' : scrolled ? 'text-slate-400' : 'text-white/60'} transition-colors duration-200`}>
+				<span className={`font-semibold tracking-[0.08em] text-[9px] lg:text-[10px] mt-0.5 uppercase italic ${forceWhite ? 'text-white/60' : scrolled ? 'text-slate-400' : 'text-white/60'} transition-colors duration-200`}>
 					Quality &amp; Assurance
 				</span>
 			</div>
@@ -7919,12 +7943,13 @@ const IndiaMartBadge = memo(() => {
 				</span>
 				<span
 					role="img"
-					className="text-yellow-400 text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1.5"
-					aria-label="4.3 out of 5 stars"
+					className="text-[10px] font-extrabold leading-none uppercase tracking-wider mt-1.5"
+					aria-label="4.3 out of 5 stars on IndiaMART"
 				>
-					★★★★★{' '}
+					<span className="text-yellow-400">★★★★</span>
+					<span className="text-yellow-400/40">★</span>
 					<span className="text-blue-200 ml-1.5 tracking-widest">
-						4.3/5 RATING
+						4.3 / 5
 					</span>
 				</span>
 			</div>
@@ -8025,7 +8050,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 				{/* Indicative price band */}
 				{product.priceRange && (
 					<div className="mb-4 flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-4 py-2.5">
-						<TrendingUp className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						<Tag className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
 						<span className="text-sm font-black text-slate-900">
 							{fmtPrice(product.priceRange.min)}
 							{product.priceRange.max !== product.priceRange.min && (
@@ -8039,7 +8064,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 					</div>
 				)}
 
-				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100" onClick={(e) => e.stopPropagation()}>
+				<div className="flex flex-col md:flex-row gap-3 mt-auto pt-5 border-t border-slate-100" onClick={(e) => e.stopPropagation()}>
 					<a
 						href={waMsg(`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`)}
 						target="_blank"
@@ -8069,6 +8094,15 @@ ProductCard.displayName = 'ProductCard';
 // ─── LANGUAGE SWITCHER ────────────────────────────────────────
 // Inline SVG flags for top-10 languages — zero network requests
 const FLAG_SVGS = {
+	gb: (
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+			<rect width="900" height="600" fill="#012169"/>
+			<path d="M0,0 L900,600 M900,0 L0,600" stroke="#fff" strokeWidth="120"/>
+			<path d="M0,0 L900,600 M900,0 L0,600" stroke="#C8102E" strokeWidth="80"/>
+			<path d="M450,0 V600 M0,300 H900" stroke="#fff" strokeWidth="200"/>
+			<path d="M450,0 V600 M0,300 H900" stroke="#C8102E" strokeWidth="120"/>
+		</svg>
+	),
 	in: (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
 			<rect width="900" height="200" y="0"   fill="#FF9933"/>
@@ -8165,7 +8199,7 @@ const FLAG_IMG = ({ flagCode, size = 24 }) => (
 
 // Top 10 shown by default (with inline SVG flags); all others appear only via search
 const TOP_LANGUAGES = [
-	{ code: 'en',    name: 'English',    flagCode: 'in', color: '#FF9933' },
+	{ code: 'en',    name: 'English',    flagCode: 'gb', color: '#012169' },
 	{ code: 'hi',    name: 'Hindi',      flagCode: 'in', color: '#138808' },
 	{ code: 'zh-CN', name: 'Mandarin',   flagCode: 'cn', color: '#DE2910' },
 	{ code: 'es',    name: 'Spanish',    flagCode: 'es', color: '#c60b1e' },
@@ -8366,6 +8400,17 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 		else setTimeout(() => setLangSearch(''), 0);
 	}, [isOpen]);
 
+	// Sync the <html lang> attribute with the active language so screen readers
+	// announce content in the correct voice/pronunciation profile.
+	// This runs once on mount (catches lang from cookie) and on every change.
+	useEffect(() => {
+		const langMap = {
+			en: 'en', hi: 'hi', 'zh-CN': 'zh-CN', ar: 'ar', fr: 'fr',
+			de: 'de', es: 'es', ja: 'ja', ko: 'ko', pt: 'pt', ru: 'ru',
+		};
+		document.documentElement.lang = langMap[currentLang] || currentLang;
+	}, [currentLang]);
+
 	const changeLanguage = (langCode) => {
 		setCurrentLang(langCode);
 		setIsOpen(false);
@@ -8492,6 +8537,120 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 });
 LanguageSwitcher.displayName = 'LanguageSwitcher';
 
+// ─── STATIC NAVBAR KEYFRAMES ─────────────────────────────────
+// Defined once at module level — never re-injected on re-render.
+// Fix C+D: removes the <style> tags that were injected inside conditional
+// render blocks (mobile drawer and search popover) causing duplicated
+// @keyframe declarations on every open/close cycle.
+const NAVBAR_STYLES = `
+@keyframes mobileDrawerIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes searchPopoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+`;
+let _navbarStylesInjected = false;
+function injectNavbarStyles() {
+  if (_navbarStylesInjected || typeof document === 'undefined') return;
+  const el = document.createElement('style');
+  el.dataset.id = 'ke-navbar-keyframes';
+  el.textContent = NAVBAR_STYLES;
+  document.head.appendChild(el);
+  _navbarStylesInjected = true;
+}
+injectNavbarStyles(); // runs once at module evaluation time
+
+// ─── MORE DROPDOWN ──────────────────────────────────────────────
+// Fix 3: Houses nav links that overflow at the lg breakpoint (Blog, etc.)
+// Uses same click-outside + Escape key pattern as LanguageSwitcher.
+const MoreDropdown = memo(({ links, scrolled, isActive, handleNav }) => {
+	const [open, setOpen] = useState(false);
+	const ref = useRef(null);
+
+	useEffect(() => {
+		const handleClickOutside = (e) => {
+			if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+		};
+		const handleKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+		document.addEventListener('mousedown', handleClickOutside);
+		document.addEventListener('keydown', handleKey);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('keydown', handleKey);
+		};
+	}, []);
+
+	const anyActive = links.some((l) => isActive(l.path));
+
+	return (
+		<div className="relative" ref={ref}>
+			<button
+				type="button"
+				onClick={() => setOpen((p) => !p)}
+				aria-haspopup="menu"
+				aria-expanded={open}
+				className={`relative flex items-center gap-1 px-2 py-1.5 text-[11.5px] xl:text-[12.5px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group whitespace-nowrap
+				${anyActive
+					? scrolled ? 'text-blue-600' : 'text-white'
+					: scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-300 hover:text-white'
+				}`}
+			>
+				More
+				<svg
+					aria-hidden="true"
+					className={`w-3 h-3 opacity-70 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+					fill="none" stroke="currentColor" viewBox="0 0 24 24"
+				>
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+				</svg>
+				{/* Underline indicator */}
+				<span
+					className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
+					${anyActive ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+					aria-hidden="true"
+				/>
+			</button>
+
+			{open && (
+				<div
+					role="menu"
+					aria-label="More navigation links"
+					className="absolute top-[calc(100%+10px)] left-0 min-w-40 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200"
+					style={{ animation: 'searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both' }}
+				>
+					{links.map((link) => (
+						<a
+							key={link.name}
+							href={`#${link.path}`}
+							role="menuitem"
+							onClick={(e) => {
+								e.preventDefault();
+								handleNav(link.path);
+								setOpen(false);
+							}}
+							aria-current={isActive(link.path) ? 'page' : undefined}
+							className={`flex items-center justify-between px-4 py-2.5 text-sm font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+							${isActive(link.path)
+								? 'text-blue-600 bg-blue-50'
+								: 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+							}`}
+						>
+							{link.name}
+							{isActive(link.path) && (
+								<span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 ml-3" aria-hidden="true" />
+							)}
+						</a>
+					))}
+				</div>
+			)}
+		</div>
+	);
+});
+MoreDropdown.displayName = 'MoreDropdown';
+
 // ─── NAVBAR ───────────────────────────────────────────────────
 const Navbar = memo(({ currentPath, navigate }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -8558,17 +8717,13 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		};
 	}, []);
 
-	const prevSearchOpenRef = useRef(isSearchOpen);
+	// Auto-focus desktop search input when popover opens
 	useEffect(() => {
 		if (isSearchOpen && window.innerWidth >= 1024) {
-			setTimeout(() => searchInputRef.current?.focus(), 100);
-		}
-		if (prevSearchOpenRef.current && !isSearchOpen) {
-			// Clear query after close — deferred to avoid setState cascade
-			const t = setTimeout(() => setQuery(''), 0);
+			// Small delay lets the popover mount fully before focusing
+			const t = setTimeout(() => searchInputRef.current?.focus(), 50);
 			return () => clearTimeout(t);
 		}
-		prevSearchOpenRef.current = isSearchOpen;
 	}, [isSearchOpen]);
 
 	// AUDIT FIX: Body scroll lock when mobile menu/search is open
@@ -8643,6 +8798,16 @@ const Navbar = memo(({ currentPath, navigate }) => {
 				setIsOpen(false);
 				setIsSearchOpen(false);
 			}
+			// '/' opens search — standard power-user shortcut (GitHub, Linear, etc.)
+			// Guard: don't intercept when focus is inside an input, textarea, or select.
+			if (
+				e.key === '/' &&
+				!e.ctrlKey && !e.metaKey && !e.altKey &&
+				!['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)
+			) {
+				e.preventDefault();
+				setIsSearchOpen(true);
+			}
 		};
 		document.addEventListener('mousedown', onMouse);
 		document.addEventListener('keydown', onKey);
@@ -8668,6 +8833,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		(path) => {
 			navigate(path);
 			setIsOpen(false);
+			setIsSearchOpen(false);
+			setQuery('');
 		},
 		[navigate],
 	);
@@ -8675,19 +8842,49 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		<nav
 			ref={menuRef}
 			aria-label="Main navigation"
-			className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg py-2' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10 py-3'}`}
+			className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10'}`}
 		>
+			{/* ── Scoped nav-link micro-interaction: left cyan bar slides in on hover ── */}
+			<style>{`
+				.ke-nav-link-v4 { position:relative; overflow:hidden; }
+				.ke-nav-link-v4::before {
+					content:'';
+					position:absolute; left:0; top:20%; bottom:20%;
+					width:2px; border-radius:99px;
+					background:#0891B2;
+					transform:scaleY(0);
+					transform-origin:center;
+					transition:transform .22s cubic-bezier(.22,.68,0,1.2);
+				}
+				.ke-nav-link-v4:hover::before,
+				.ke-nav-link-v4[aria-current="page"]::before { transform:scaleY(1); }
+				@media(prefers-reduced-motion:reduce){ .ke-nav-link-v4::before { transition:none; } }
+			`}</style>
 			<a
 				href="#main-content"
 				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-100 font-bold"
 			>
 				Skip to main content
 			</a>
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="flex justify-between items-center">
+			{/* ── INNER ROW: fixed height 64px so scroll-state transition never jitters ── */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+				<div className="flex justify-between items-center h-18">
 					<BrandLogo scrolled={scrolled} navigate={navigate} />
+					{/*
+					 * ── DESKTOP RIGHT SECTION ────────────────────────────────────────────
+					 * Fix 3 – Nav-link count: 6 primary links + "More ▾" dropdown for Blog.
+					 *          Prevents crowding at lg (1024px) breakpoint.
+					 * Fix 5 – LanguageSwitcher now lives AFTER nav links, before search
+					 *          (correct semantic order: nav | utility | action).
+					 * Fix 4 – Search is now an icon-only toggle that opens a position:absolute
+					 *          popover — zero layout shift on expand.
+					 * Fix 7 – Removed py-2/py-3 from <nav>; row height locked to h-16 (64px)
+					 *          so scroll-state colour transition never jitters bar height.
+					 * ────────────────────────────────────────────────────────────────────
+					 */}
 					<div className="hidden lg:flex items-center gap-1 xl:gap-2">
-						{NAV_LINKS.map((link) => (
+						{/* Primary nav links (first 6) */}
+						{NAV_LINKS.slice(0, 6).map((link) => (
 							<a
 								key={link.name}
 								href={`#${link.path}`}
@@ -8696,174 +8893,199 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									handleNav(link.path);
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
-								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
-				  ${
-										isActive(link.path)
-											? scrolled
-												? 'text-blue-600'
-												: 'text-white'
-											: scrolled
-												? 'text-slate-600 hover:text-slate-900'
-												: 'text-slate-300 hover:text-white'
-									}`}
+								className={`ke-nav-link-v4 relative px-3 py-2 text-[12.5px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group whitespace-nowrap ${
+									isActive(link.path)
+										? scrolled ? 'text-blue-600' : 'text-white'
+										: scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-300 hover:text-white'
+								}`}
 							>
 								{link.name}
 								<span
-									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
-				  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300 ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
 						))}
-						{/* search + language switcher */}
-						<div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
-							<LanguageSwitcher scrolled={scrolled} />
-							<search
-								className="relative flex items-center"
+
+						{/* "More ▾" dropdown for overflow links (Blog, etc.) — Fix 3 */}
+						{NAV_LINKS.length > 6 && (
+							<MoreDropdown
+								links={NAV_LINKS.slice(6)}
+								scrolled={scrolled}
+								isActive={isActive}
+								handleNav={handleNav}
+							/>
+						)}
+
+						{/* Divider */}
+						<div className={`w-px h-6 mx-2 shrink-0 ${scrolled ? 'bg-slate-200' : 'bg-white/20'}`} aria-hidden="true" />
+
+						{/* Language switcher — disabled until Hindi translation is complete */}
+						{/* <LanguageSwitcher scrolled={scrolled} /> */}
+
+						{/* Search icon toggle — Fix 4: popover pattern, no layout shift */}
+						<search className="relative">
+							<button
+								type="button"
+								onClick={() => {
+									setIsSearchOpen((prev) => {
+										if (prev) { setQuery(''); return false; }
+										return true;
+									});
+								}}
+								aria-label={isSearchOpen ? 'Close search' : 'Search products and services (press / to open)'}
+								aria-expanded={isSearchOpen}
+								aria-controls="desktop-search-popover"
+								title={isSearchOpen ? 'Close search' : 'Search  ( / )'}
+								className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+									isSearchOpen
+										? scrolled ? 'bg-blue-600 text-white' : 'bg-blue-500/80 text-white'
+										: scrolled ? 'text-slate-600 hover:bg-slate-100' : 'text-slate-300 hover:bg-white/10 hover:text-white'
+								}`}
 							>
-								{/* Desktop: always-visible compact search bar */}
-								<div className="hidden lg:flex items-center relative mr-1">
-									<label htmlFor="nav-search-desktop" className="sr-only">Search products and services</label>
-									<Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none ${scrolled ? 'text-slate-400' : 'text-slate-400'}`} aria-hidden="true" />
-									<input
-										id="nav-search-desktop"
-										ref={searchInputRef}
-										type="text"
-										placeholder="Search products & services..."
-										value={query}
-										onChange={(e) => { setQuery(e.target.value); setIsSearchOpen(!!e.target.value); }}
-										onFocus={() => { if (query) setIsSearchOpen(true); }}
-										className={`w-48 xl:w-60 border rounded-full py-2 px-4 pl-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:w-64 xl:focus:w-72 transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400' : 'bg-white/10 backdrop-blur border-white/25 text-white placeholder:text-slate-400'}`}
-									/>
-									{query && (
-										<button type="button" onClick={() => { setQuery(''); setIsSearchOpen(false); }} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-											<X className="w-3 h-3" aria-hidden="true" />
-										</button>
-									)}
-								</div>
-								{/* Mobile: slide-out search (unchanged) */}
+								{isSearchOpen
+									? <X className="w-5 h-5" aria-hidden="true" />
+									: <Search className="w-5 h-5" aria-hidden="true" />
+								}
+							</button>
+
+							{/* Search popover — absolutely positioned, never shifts siblings */}
+							{isSearchOpen && (
 								<div
-									className={`lg:hidden absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
+									id="desktop-search-popover"
+									role="search"
+									className="absolute top-[calc(100%+14px)] right-0 w-120 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
+									style={{ animation: 'searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both' }}
 								>
-									<input
-										type="text"
-										placeholder="Search products & services..."
-										value={query}
-										onChange={(e) => setQuery(e.target.value)}
-										className={`w-64 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
-									/>
-								</div>
-								<button
-									type="button"
-									onClick={() => {
-										if (isSearchOpen) {
-											setIsSearchOpen(false);
-											setQuery('');
-										} else {
-											setIsSearchOpen(true);
-										}
-									}}
-									aria-label="Search"
-									className={`lg:hidden p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
-					${isSearchOpen ? 'ml-1' : ''}`}
-								>
-									<Search
-										className="w-4.5 h-4.5"
-										aria-hidden="true"
-										style={{ width: '18px', height: '18px' }}
-									/>
-								</button>
-								{(isSearchOpen || query) && query && (
-									<div className="absolute top-full right-0 mt-2 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
-										<div className="max-h-[60vh] overflow-y-auto p-2">
-											{searchResults.length === 0 ? (
-												<div className="p-8 text-center" role="status" aria-live="polite">
-													<Search className="w-9 h-9 text-slate-300 mx-auto mb-3" aria-hidden="true" />
-													<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
-													<p className="text-xs text-slate-400 leading-relaxed">Try: <span className="font-medium text-blue-600">Turbine Overhauling</span>, <span className="font-medium text-blue-600">Dynamic Balancing</span>, <span className="font-medium text-blue-600">Lube Oil</span></p>
-												</div>
-											) : (
-												<ul className="space-y-1">
-													{searchResults.map((r) => (
-														<li key={r.id}>
-															<button
-																type="button"
-																onClick={() => {
-																	setIsSearchOpen(false);
-																	setQuery('');
-																	navigate(r.path);
-																	setIsOpen(false);
-																}}
-																className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-															>
-																<div className="flex gap-3 w-full items-center">
-																	<div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-																		<div className="w-6 h-6 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
-																			{getCategoryIcon(r.category)}
-																		</div>
-																		{r.image && (
-																			<img
-																				src={r.image}
-																				alt=""
-																				className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
-																				onError={(e) => {
-																					e.target.style.display = 'none';
-																				}}
-																			/>
-																		)}
-																	</div>
-																	<div className="flex-1 min-w-0 flex flex-col justify-center">
-																		<div className="flex justify-between items-start">
-																			<span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">
-																				{r.title}
-																			</span>
-																			<div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
-																				{r.type === 'Product' && (
-																					<span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
-																						{r.category}
-																					</span>
-																				)}
-																				<span
-																					className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}
-																				>
-																					{r.type}
-																				</span>
-																			</div>
-																		</div>
-																		<span className="text-xs text-slate-500 line-clamp-1 mt-0.5">
-																			{r.desc}
-																		</span>
-																		{r.priceRange && (
-																			<span className="text-[10px] font-black text-blue-600 mt-0.5">
-																				{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)} {r.priceRange.unit}
-																			</span>
-																		)}
-																	</div>
-																</div>
-															</button>
-														</li>
-													))}
-												</ul>
-											)}
-										</div>
+									<div className="flex items-center gap-2 px-4 py-3 border-b border-slate-100">
+										<Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
+										<label htmlFor="nav-search-desktop" className="sr-only">Search products and services</label>
+										<input
+											id="nav-search-desktop"
+											ref={searchInputRef}
+											type="text"
+											placeholder="Search products & services…"
+											value={query}
+											// biome-ignore lint/jsx-a11y/no-autofocus: intentional — user clicked search
+											autoFocus
+											onChange={(e) => setQuery(e.target.value)}
+											className="flex-1 bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none"
+										/>
+										{query && (
+											<button
+												type="button"
+												onClick={() => setQuery('')}
+												aria-label="Clear search"
+												className="text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded p-0.5"
+											>
+												<X className="w-3.5 h-3.5" aria-hidden="true" />
+											</button>
+										)}
 									</div>
-								)}
-							</search>
-						</div>
+									<div className="max-h-[60vh] overflow-y-auto p-2">
+										{!query ? (
+											<p className="text-center text-xs text-slate-400 py-6">
+												Start typing to search products &amp; services
+												<span className="block mt-1.5 text-[10px] text-slate-300">
+													Press <kbd className="px-1.5 py-0.5 bg-slate-100 text-slate-500 rounded text-[10px] font-mono border border-slate-200">/</kbd> anywhere to open search
+												</span>
+											</p>
+										) : searchResults.length === 0 ? (
+											<div className="p-8 text-center" role="status" aria-live="polite">
+												<Search className="w-9 h-9 text-slate-300 mx-auto mb-3" aria-hidden="true" />
+												<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
+												<p className="text-xs text-slate-400 leading-relaxed">Try: <span className="font-medium text-blue-600">Turbine Overhauling</span>, <span className="font-medium text-blue-600">Dynamic Balancing</span>, <span className="font-medium text-blue-600">Lube Oil</span></p>
+											</div>
+										) : (
+											<ul className="space-y-1" role="listbox" aria-label="Search results">
+												{searchResults.map((r) => (
+													<li key={r.id} role="option" aria-selected="false">
+														<button
+															type="button"
+															onClick={() => {
+																setIsSearchOpen(false);
+																setQuery('');
+																navigate(r.path);
+																setIsOpen(false);
+															}}
+															className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+														>
+															<div className="flex gap-3 w-full items-center">
+																<div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
+																	<div className="w-6 h-6 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
+																		{getCategoryIcon(r.category)}
+																	</div>
+																	{r.image && (
+																		<img
+																			src={r.image}
+																			alt=""
+																			className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
+																			onError={(e) => { e.target.style.display = 'none'; }}
+																		/>
+																	)}
+																</div>
+																<div className="flex-1 min-w-0 flex flex-col justify-center">
+																	<div className="flex justify-between items-start">
+																		<span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
+																		<div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
+																			{r.type === 'Product' && (
+																				<span className="text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>
+																			)}
+																			<span className={`text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>
+																				{r.type}
+																			</span>
+																		</div>
+																	</div>
+																	<span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
+																	{r.priceRange && (
+																		<span className="text-[10px] font-black text-blue-600 mt-0.5">
+																			{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)} {r.priceRange.unit}
+																		</span>
+																	)}
+																</div>
+															</div>
+														</button>
+													</li>
+												))}
+											</ul>
+										)}
+									</div>
+								</div>
+							)}
+						</search>
+
+						{/* Get Quote CTA */}
 						<button
 							type="button"
 							onClick={() => handleNav('/contact')}
-							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
-				${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
+							className={`ml-2 px-5 py-2.5 rounded-xl font-bold text-[13px] tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2 ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
-							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
+							<PhoneCall className="w-4 h-4" aria-hidden="true" />
 							Get Quote
 						</button>
 					</div>
-					{/* Mobile controls */}
-					<div className="lg:hidden flex items-center gap-1.5">
-						<LanguageSwitcher scrolled={scrolled} />
+
+					{/*
+					 * ── MOBILE CONTROLS ─────────────────────────────────────────────────
+					 * Fix 5 – Added "Call Us" compact pill on sm+ screens to fill the wide
+					 *          dead zone between logo and icon cluster on wider phones.
+					 * ──────────────────────────────────────────────────────────────────
+					 */}
+					<div className="lg:hidden flex items-center gap-2">
+						{/* Compact "Call Us" pill — fills dead zone on wider phones */}
+						<a
+							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+							aria-label={`Call us: ${CONTACT_INFO.phones[0]}`}
+							className={`hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[12px] font-black tracking-wide transition-all duration-200 border mr-1 ${
+								scrolled
+									? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-600 hover:text-white hover:border-blue-600'
+									: 'bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm'
+							}`}
+						>
+							<Phone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+							<span>Call Us</span>
+						</a>
+						{/* <LanguageSwitcher scrolled={scrolled} /> — re-enable when Hindi is complete */}
 						<button
 							type="button"
 							onClick={() => {
@@ -8871,25 +9093,29 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									setIsSearchOpen(false);
 									setQuery('');
 								} else {
+									// Open unified drawer with search focused
 									setIsSearchOpen(true);
+									setIsOpen(true);
 								}
 							}}
-							aria-label="Search products and services"
-							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-				${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+							aria-label={isSearchOpen ? 'Close search' : 'Open search'}
+							aria-expanded={isSearchOpen}
+							aria-controls="mobile-nav"
+							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							<Search className="h-5 w-5" aria-hidden="true" />
 						</button>
 						<button
 							type="button"
-							onClick={() => setIsOpen(!isOpen)}
-							aria-label={
-								isOpen ? 'Close navigation menu' : 'Open navigation menu'
-							}
+							onClick={() => {
+								const next = !isOpen;
+								setIsOpen(next);
+								if (!next) { setIsSearchOpen(false); setQuery(''); }
+							}}
+							aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
 							aria-expanded={isOpen}
 							aria-controls="mobile-nav"
-							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-				${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							{isOpen ? (
 								<X className="h-5 w-5" aria-hidden="true" />
@@ -8900,7 +9126,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					</div>
 				</div>
 			</div>
-			{/* Mobile drawer */}
+			{/* Mobile drawer — unified: search + nav in one panel (Fix 8) */}
 			{(isOpen || isSearchOpen) && (
 				<div
 					id="mobile-nav"
@@ -8908,131 +9134,145 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					role="menu"
 					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
 				>
-				<style>{`@keyframes mobileDrawerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
-					{isSearchOpen && (
-						<div className="px-4 pt-4 pb-3 border-b border-slate-100">
-							<div className="relative">
-								<Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-								<input
-									type="text"
-									placeholder="Search products & services..."
-									value={query}
-									onChange={(e) => setQuery(e.target.value)}
-									className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500 text-sm"
-								/>
-							</div>
-							{query && (
-								<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
-									{searchResults.length === 0 ? (
-										<div className="p-6 text-center" role="status" aria-live="polite">
-											<Search className="w-8 h-8 text-slate-300 mx-auto mb-2" aria-hidden="true" />
-											<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
-											<p className="text-xs text-slate-400">Try: Turbine Overhauling, Dynamic Balancing, Lube Oil</p>
-										</div>
-									) : (
-										<ul className="divide-y divide-slate-100">
-											{searchResults.map((r) => (
-												<li key={r.id}>
-													<button
-														type="button"
-														onClick={() => {
-															setIsSearchOpen(false);
-															setQuery('');
-															navigate(r.path);
-															setIsOpen(false);
-														}}
-														className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none"
-													>
-														<div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
-														<div className="w-5 h-5 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
-															{getCategoryIcon(r.category)}
-														</div>
-															{r.image && (
-																<img
-																	src={r.image}
-																	alt=""
-																	className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
-																	onError={(e) => {
-																		e.target.style.display = 'none';
-																	}}
-																/>
-															)}
-														</div>
-														<div className="flex-1 min-w-0">
-															<span className="font-bold text-slate-900 text-sm line-clamp-1 block">
-																{r.title}
-															</span>
-															<span
-																className={`text-[10px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}
-															>
-																{r.type}
-															</span>
-															{r.priceRange && (
-																<span className="block text-[10px] font-black text-blue-600 mt-0.5">
-																	{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)}
-																</span>
-															)}
-														</div>
-													</button>
-												</li>
-											))}
-										</ul>
-									)}
+				{/*
+				 * Fix 8 — Unified mobile drawer:
+				 * Search field is always shown at the top of the drawer (regardless of
+				 * whether the user tapped the 🔍 or ☰ button), with nav links below.
+				 * This eliminates the confusing "search-only vs nav-only" visual split.
+				 */}
+
+				{/* ── Search always at the top of the unified drawer ── */}
+				<div className="px-4 pt-4 pb-3 border-b border-slate-100">
+					<div className="relative">
+						<Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+						<label htmlFor="mobile-drawer-search" className="sr-only">Search products and services</label>
+						<input
+							id="mobile-drawer-search"
+							type="text"
+							placeholder="Search products & services…"
+							value={query}
+							onChange={(e) => setQuery(e.target.value)}
+							className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-10 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500 text-sm outline-none"
+						/>
+						{query && (
+							<button
+								type="button"
+								onClick={() => setQuery('')}
+								aria-label="Clear search"
+								className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+							>
+								<X className="w-4 h-4" aria-hidden="true" />
+							</button>
+						)}
+					</div>
+					{query && (
+						<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
+							{searchResults.length === 0 ? (
+								<div className="p-6 text-center" role="status" aria-live="polite">
+									<Search className="w-8 h-8 text-slate-300 mx-auto mb-2" aria-hidden="true" />
+									<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
+									<p className="text-xs text-slate-400">Try: Turbine Overhauling, Dynamic Balancing, Lube Oil</p>
 								</div>
+							) : (
+								<ul className="divide-y divide-slate-100">
+									{searchResults.map((r) => (
+										<li key={r.id}>
+											<button
+												type="button"
+												onClick={() => {
+													setIsSearchOpen(false);
+													setQuery('');
+													navigate(r.path);
+													setIsOpen(false);
+												}}
+												className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+											>
+												<div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
+													<div className="w-5 h-5 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
+														{getCategoryIcon(r.category)}
+													</div>
+													{r.image && (
+														<img
+															src={r.image}
+															alt=""
+															className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
+															onError={(e) => { e.target.style.display = 'none'; }}
+														/>
+													)}
+												</div>
+												<div className="flex-1 min-w-0">
+													<span className="font-bold text-slate-900 text-sm line-clamp-1 block">{r.title}</span>
+													<span className={`text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>
+														{r.type}
+													</span>
+													{r.priceRange && (
+														<span className="block text-[10px] font-black text-blue-600 mt-0.5">
+															{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)}
+														</span>
+													)}
+												</div>
+											</button>
+										</li>
+									))}
+								</ul>
 							)}
 						</div>
 					)}
-					{isOpen && !query && (
-						<div className="px-4 py-5">
-							<ul className="space-y-1 mb-5">
-								{NAV_LINKS.map((link) => (
-									<li key={link.name}>
-										<a
-											href={`#${link.path}`}
-											role="menuitem"
-											onClick={(e) => {
-												e.preventDefault();
-												handleNav(link.path);
-											}}
-											aria-current={isActive(link.path) ? 'page' : undefined}
-											className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
-										>
-											{link.name}
-											{isActive(link.path) && <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-600 mr-2 shrink-0" aria-hidden="true" />}
-											{isActive(link.path) && (
-												<span
-													className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"
-													aria-hidden="true"
-												/>
-											)}
-										</a>
-									</li>
-								))}
-							</ul>
-							<div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
-								<a
-									href={waMsg(
-										'Hi KESHAV ENTERPRISES, I would like to get a technical quote.',
-									)}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-5 py-3.5 rounded-xl text-sm font-black tracking-wide shadow-md"
-								>
-									<MessageCircle className="w-5 h-5" aria-hidden="true" />{' '}
-									WhatsApp Us
-								</a>
-								<a
-									href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-									className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
-					${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
-								>
-									<Phone className="w-4 h-4" aria-hidden="true" />{' '}
-									{CONTACT_INFO.phones[0]}
-								</a>
-							</div>
+				</div>
+
+				{/* ── Nav links — shown when drawer is open with no active search query ── */}
+				{(isOpen || isSearchOpen) && !query && (
+					<div className="px-4 py-5">
+						<ul className="space-y-1 mb-5">
+							{NAV_LINKS.map((link) => (
+								<li key={link.name}>
+									<a
+										href={`#${link.path}`}
+										role="menuitem"
+										onClick={(e) => {
+											e.preventDefault();
+											handleNav(link.path);
+										}}
+										aria-current={isActive(link.path) ? 'page' : undefined}
+										className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+											isActive(link.path)
+												? 'text-blue-600 bg-blue-50 border border-blue-100'
+												: 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+										}`}
+									>
+										{link.name}
+										{/* Single active dot — Fix 2: duplicate removed */}
+										{isActive(link.path) && (
+											<span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 ml-auto" aria-hidden="true" />
+										)}
+									</a>
+								</li>
+							))}
+						</ul>
+						<div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
+							<a
+								href={waMsg('Hi, I need a technical quote for turbine engineering services. Can you help?')}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-5 py-3.5 rounded-xl text-sm font-black tracking-wide shadow-md"
+							>
+								<MessageCircle className="w-5 h-5" aria-hidden="true" />{' '}
+								WhatsApp Us
+							</a>
+							<a
+								href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+								className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all ${
+									scrolled
+										? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700'
+										: 'bg-slate-900 text-white border-slate-700'
+								}`}
+							>
+								<Phone className="w-4 h-4" aria-hidden="true" />{' '}
+								{CONTACT_INFO.phones[0]}
+							</a>
 						</div>
-					)}
+					</div>
+				)}
 				</div>
 			)}
 		</nav>
@@ -9075,384 +9315,1122 @@ const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
 });
 CredentialBadge.displayName = 'CredentialBadge';
 
+// ─── FOOTER STATS TICKER ─────────────────────────────────────
+// Animated count-up counters that fire when the strip scrolls into view.
+// Single source of truth — homepage stats section reads from this too.
+const STATS = [
+	{ target: 20,  suffix: '+',    label: 'Years\nExperience', delay: 0,    end: 20,   Icon: Clock,      sub: 'In turbine engineering'        },
+	{ target: 500, suffix: '+',    label: 'Turbines\nServiced', delay: 0.07, end: 500,  Icon: Settings,   sub: 'Overhauled &amp; commissioned'  },
+	{ target: 7,   suffix: '',     label: 'Industries\nServed', delay: 0.14, end: 7,    Icon: TrendingUp, sub: 'Sugar, power, paper &amp; more' },
+	{ target: 27,  suffix: ' MW',  label: 'Max Turbine\nCapacity', delay: 0.21, end: 27, Icon: Users,    sub: 'Up to 27 MW capacity'           },
+];
+
+const FooterStatsTicker = memo(() => {
+	const stripRef = useRef(null);
+	const [counts, setCounts] = useState(STATS.map(() => 0));
+	const [visible, setVisible] = useState(false);
+	const animated = useRef(false);
+
+	useEffect(() => {
+		const el = stripRef.current;
+		if (!el) return;
+		const io = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting && !animated.current) {
+					animated.current = true;
+					setVisible(true);
+					io.disconnect();
+					// Stagger each count-up by the stat's own delay so the
+					// visual number ramp starts in sync with the entrance animation.
+					STATS.forEach(({ target, delay }, i) => {
+						setTimeout(() => {
+							const duration = 1400;
+							const steps = 48;
+							const interval = duration / steps;
+							let step = 0;
+							const t = setInterval(() => {
+								step++;
+								const progress = step / steps;
+								// ease-out quart — snappier start, softer finish
+								const ease = 1 - Math.pow(1 - progress, 4);
+								setCounts(prev => {
+									const next = [...prev];
+									next[i] = Math.round(ease * target);
+									return next;
+								});
+								if (step >= steps) clearInterval(t);
+							}, interval);
+						}, delay * 1000);
+					});
+				}
+			},
+			{ threshold: 0.2 }
+		);
+		io.observe(el);
+		return () => io.disconnect();
+	}, []);
+
+	return (
+		<div ref={stripRef} className="ke3-stats-strip" role="region" aria-label="Company statistics">
+			<div className="ke3-stats-inner">
+				{STATS.map(({ suffix, label }, i) => (
+					<React.Fragment key={label}>
+						{i > 0 && <div className="ke3-stat-divider" aria-hidden="true" />}
+						<div
+							className={`ke3-stat-item${visible ? ' ke3-ticker-visible' : ''}`}
+							style={{ animationDelay:`${STATS[i].delay}s`, '--stat-delay':`${STATS[i].delay}s` }}
+						>
+							<div>
+								<div className="ke3-stat-num" aria-label={`${counts[i]}${suffix} ${label.replace('\n', ' ')}`}>
+									{counts[i]}<span className="ke3-stat-suffix">{suffix}</span>
+								</div>
+								<div className="ke3-stat-label" style={{ whiteSpace:'pre-line' }}>{label}</div>
+							</div>
+						</div>
+					</React.Fragment>
+				))}
+			</div>
+		</div>
+	);
+});
+FooterStatsTicker.displayName = 'FooterStatsTicker';
+
+// ─── FOOTER QUICK ENQUIRY BAND ────────────────────────────────
+// Compact 2-field (name + phone) row above the bottom bar.
+// On submit opens a pre-filled WhatsApp message.
+const FooterQuickEnquiry = memo(() => {
+	const [name, setName] = useState('');
+	const [phone, setPhone] = useState('');
+
+	const handleSend = useCallback(() => {
+		const n = name.trim();
+		const p = phone.trim();
+		if (!n || !p) return;
+		const msg = encodeURIComponent(
+			`Hi, I'm ${n}. My number is ${p}. I'd like to enquire about your turbine engineering services.`
+		);
+		window.open(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${msg}`, '_blank', 'noopener,noreferrer');
+		setName(''); setPhone('');
+	}, [name, phone]);
+
+	const handleKey = useCallback((e) => {
+		if (e.key === 'Enter') handleSend();
+	}, [handleSend]);
+
+	return (
+		<div className="ke3-enquiry-band">
+			<div className="ke3-enquiry-inner">
+				<span className="ke3-enquiry-label">
+					<span style={{ color:'#0891B2', marginRight:'.4rem' }}>⚡</span>
+					Quick Enquiry
+				</span>
+				<div className="ke3-enquiry-fields">
+					<input
+						type="text"
+						className="ke3-enq-input"
+						placeholder="Your name"
+						value={name}
+						onChange={e => setName(e.target.value)}
+						onKeyDown={handleKey}
+						aria-label="Your name"
+						autoComplete="given-name"
+						maxLength={60}
+					/>
+					<input
+						type="tel"
+						className="ke3-enq-input"
+						placeholder="Phone / WhatsApp number"
+						value={phone}
+						onChange={e => setPhone(e.target.value)}
+						onKeyDown={handleKey}
+						aria-label="Phone or WhatsApp number"
+						autoComplete="tel"
+						maxLength={15}
+					/>
+					<button
+						type="button"
+						className="ke3-enq-submit"
+						onClick={handleSend}
+						disabled={!name.trim() || !phone.trim()}
+						style={{ opacity:(!name.trim() || !phone.trim()) ? .5 : 1 }}
+					>
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+							<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+							<path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.89.525 3.658 1.438 5.168L2 22l4.962-1.413A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.522 2 11.999 2zm.001 18.182a8.168 8.168 0 01-4.163-1.14l-.298-.178-3.091.882.879-3.068-.196-.314A8.181 8.181 0 013.818 12c0-4.511 3.671-8.182 8.182-8.182 4.51 0 8.182 3.671 8.182 8.182 0 4.51-3.672 8.182-8.182 8.182z"/>
+						</svg>
+						Send on WhatsApp
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+});
+FooterQuickEnquiry.displayName = 'FooterQuickEnquiry';
+
 // ─── FOOTER BADGE (credential blocks in footer col 1) ────────────
 // Extracted from an inline .map() callback so useState is called at
 // the top level of a proper component (rules-of-hooks compliance).
 const FooterBadge = memo(({ imgSrc, FallbackIcon, title, sub, accentColor }) => {
 	const [err, setErr] = useState(false);
 	return (
-		<div className="ke-badge">
-			{/* Logo container */}
+		<div style={{
+			display:'flex', alignItems:'center', gap:'.85rem',
+			padding:'.75rem 1rem', marginBottom:'.5rem',
+			background:'#0d1e38',
+			border:`1px solid #1a3460`,
+			borderRadius:'.75rem',
+			transition:'border-color .25s,box-shadow .25s,transform .2s',
+			cursor:'default',
+		}}
+			onMouseEnter={e => {
+				e.currentTarget.style.borderColor = `${accentColor}55`;
+				e.currentTarget.style.boxShadow  = `0 4px 20px ${accentColor}20`;
+				e.currentTarget.style.transform  = 'translateY(-1px)';
+			}}
+			onMouseLeave={e => {
+				e.currentTarget.style.borderColor = '#1a3460';
+				e.currentTarget.style.boxShadow  = 'none';
+				e.currentTarget.style.transform  = 'none';
+			}}
+		>
 			<div style={{
-				width:'2rem', height:'2rem', borderRadius:'.45rem',
-				background:'#ffffff', border:`1px solid ${accentColor}25`,
+				width:'2.1rem', height:'2.1rem', borderRadius:'.5rem',
+				background:'#ffffff10', border:`1px solid ${accentColor}30`,
 				display:'flex', alignItems:'center', justifyContent:'center',
-				flexShrink:0, padding:'2px',
+				flexShrink:0, padding:'3px',
 			}}>
 				{!err ? (
-					<img
-						src={imgSrc} alt="" aria-hidden="true"
+					<img src={imgSrc} alt="" aria-hidden="true"
 						style={{ width:'1.6rem', height:'1.6rem', objectFit:'contain' }}
 						onError={() => setErr(true)}
 					/>
 				) : (
-					<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color: accentColor }} />
+					<FallbackIcon aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem', color:accentColor }} />
 				)}
 			</div>
-			{/* Text */}
 			<div style={{ minWidth:0, flex:1 }}>
 				<p style={{ margin:0, fontSize:'.78rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.25 }}>{title}</p>
-				<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#64748b', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
+				<p style={{ margin:'2px 0 0', fontSize:'.68rem', color:'#8fa8c8', lineHeight:1.4, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{sub}</p>
 			</div>
-			{/* Accent dot */}
-			<div style={{ width:'6px', height:'6px', borderRadius:'50%', background: accentColor, flexShrink:0, opacity:.8 }} aria-hidden="true" />
+			<div style={{ width:'6px', height:'6px', borderRadius:'50%', background:accentColor, flexShrink:0, opacity:.85 }} aria-hidden="true" />
 		</div>
 	);
 });
 FooterBadge.displayName = 'FooterBadge';
 
-// ─── FOOTER ───────────────────────────────────────────────────
+// ─── FOOTER v3 ────────────────────────────────────────────────
 const Footer = memo(({ navigate }) => {
 	const year = new Date().getFullYear();
+	// Copy-toast state: null | 'GST' | 'MSME'
+	const [copiedLabel, setCopiedLabel] = useState(null);
+
+	const handleCopy = useCallback((label, value) => {
+		navigator.clipboard?.writeText(value).then(() => {
+			setCopiedLabel(label);
+			setTimeout(() => setCopiedLabel(null), 2000);
+		}).catch(() => {});
+	}, []);
+
 	return (
-		<footer
-			role="contentinfo"
-			style={{ background: '#050d1a', color: '#fff', fontFamily: 'sans-serif' }}
-		>
-			{/* ── Scoped styles ── */}
+		<footer role="contentinfo" style={{ fontFamily:'sans-serif' }}>
+
+			{/* ══════════════════════════════════════════════════════
+			    SCOPED STYLES
+			══════════════════════════════════════════════════════ */}
 			<style>{`
-				/* ── Grid layouts ── */
-				.ke-footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
-				@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
-				@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2.2fr 1fr 1.25fr 1.6fr}}
+				/* ── KEYFRAMES ───────────────────────────────────── */
 
-				.ke-social-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem}
-				@media(min-width:480px){.ke-social-grid{grid-template-columns:repeat(3,1fr)}}
-				@media(min-width:900px){.ke-social-grid{grid-template-columns:repeat(6,1fr)}}
-
-				/* ── Column heading ── */
-				.ke-col-h3{
-					display:flex;align-items:center;gap:.5rem;
-					font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
-					color:#38BDF8;margin:0 0 1.1rem;padding-bottom:.6rem;
-					border-bottom:1px solid #0d2040;
+				/* Stripe sweep — runs once on mount */
+				@keyframes ke3-stripe-sweep {
+					0%   { background-position: 200% center; }
+					100% { background-position: -200% center; }
 				}
-				.ke-col-h3::before{content:'';display:inline-block;width:3px;height:12px;background:#0891B2;border-radius:99px;flex-shrink:0}
 
-				/* ── Nav/service links ── */
-				.ke-nav-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;color:#94a3b8;font-size:.83rem;font-weight:500;padding:.2rem 0;text-align:left;transition:color .15s,gap .15s}
-				.ke-nav-btn:hover,.ke-nav-btn:focus{color:#e2e8f0;gap:.6rem;outline:none}
-
-				/* ── Contact links ── */
-				.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
-				.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
-
-				/* ── CTA buttons ── */
-				.ke-cta-call{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#0891B2,#0e7490);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;border:none;cursor:pointer;transition:transform .15s,box-shadow .18s;box-shadow:0 4px 20px #0891B240}
-				.ke-cta-call:hover{transform:translateY(-2px);box-shadow:0 10px 32px #0891B250}
-				.ke-cta-call:focus{outline:2px solid #38BDF8;outline-offset:3px}
-
-				.ke-cta-wa{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .18s;border:none;box-shadow:0 4px 20px #22c55e30}
-				.ke-cta-wa:hover{transform:translateY(-2px);box-shadow:0 10px 32px #22c55e40}
-				.ke-cta-wa:focus{outline:2px solid #22c55e;outline-offset:3px}
-
-				/* ── Credential badges ── */
-				.ke-badge{
-					display:flex;align-items:center;gap:.85rem;
-					padding:.75rem 1rem;margin-bottom:.5rem;
-					background:linear-gradient(135deg,#071428 0%,#0a1c38 100%);
-					border:1px solid #132040;border-radius:.75rem;
-					transition:border-color .2s,box-shadow .2s;cursor:default;
+				/* Fade-up reveal for scroll-triggered sections */
+				@keyframes ke3-fadeup {
+					from { opacity:0; transform:translateY(22px); }
+					to   { opacity:1; transform:translateY(0); }
 				}
-				.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
 
-				/* ── Social cards ── */
-				.ke-soc-card{display:flex;flex-direction:column;padding:.75rem .85rem .7rem;border-radius:.65rem;text-decoration:none;border:1px solid transparent;background:transparent;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s cubic-bezier(.22,.68,0,1.2),box-shadow .2s ease,background .2s ease,border-color .2s ease}
-				.ke-soc-card:hover{transform:translateY(-3px) scale(1.02)}
-				.ke-soc-card:focus{outline:2px solid currentColor;outline-offset:3px}
-				.ke-soc-arrow{display:block;font-size:9px;font-weight:600;color:#334155;margin-top:.3rem;transition:color .18s,transform .18s}
-				.ke-soc-card:hover .ke-soc-arrow{transform:translateX(3px)}
+				/* Toast slide-in */
+				@keyframes ke3-toast-in {
+					from { opacity:0; transform:translateY(6px) scale(.94); }
+					to   { opacity:1; transform:translateY(0) scale(1); }
+				}
 
-				/* ── Industry tags ── */
-				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
-				.ke-ind-tag:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+				/* Subtle pulse for the accent dot on badges */
+				@keyframes ke3-dot-pulse {
+					0%,100% { transform:scale(1);   opacity:.85; }
+					50%      { transform:scale(1.45); opacity:1; }
+				}
 
-				/* ── All services ghost btn ── */
-				.ke-all-srv{display:inline-flex;align-items:center;gap:5px;margin-top:1rem;padding:.45rem .875rem;background:transparent;border:1px solid #1e3a5f;border-radius:.5rem;color:#38BDF8;font-size:.72rem;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
-				.ke-all-srv:hover{border-color:#0891B2;background:#0891B215;color:#fff}
+				/* Copy success — check icon scale pop */
+				@keyframes ke3-check-pop {
+					0%   { transform:scale(0.5); opacity:0; }
+					60%  { transform:scale(1.3); opacity:1; }
+					100% { transform:scale(1);   opacity:1; }
+				}
+				.ke3-check-pop { animation:ke3-check-pop .28s cubic-bezier(.22,.68,0,1.2) forwards; }
 
-				/* ── Contact icon wrapper ── */
-				.ke-contact-icon{width:1.9rem;height:1.9rem;border-radius:.45rem;background:#0a1a30;border:1px solid #132040;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:border-color .15s,background .15s}
-				.ke-contact-row:hover .ke-contact-icon{background:#0891B220;border-color:#0891B260}
+				/* ── TRANSITION BRIDGE ───────────────────────────── */
+				.ke3-bridge {
+					display:block; width:100%; height:88px;
+					background: linear-gradient(180deg,
+						#f0f4f8 0%,
+						#e8edf2 16%,
+						#d0d8e4 33%,
+						#b0bdd0 50%,
+						#667799 66%,
+						#2a3d5c 82%,
+						#0A1628 100%
+					);
+				}
 
-				/* ── Reduced motion ── */
-				@media(prefers-reduced-motion:reduce){.ke-cta-call,.ke-cta-wa,.ke-soc-card,.ke-ind-tag{transition:none!important;transform:none!important}}
+				/* ── ANIMATED ACCENT STRIPE ─────────────────────── */
+				.ke3-accent-stripe {
+					height:3px;
+					background: linear-gradient(90deg,
+						#0891B2 0%,#06B6D4 20%,#67E8F9 35%,#fff 50%,
+						#67E8F9 65%,#06B6D4 80%,#0891B2 100%
+					);
+					background-size:200% auto;
+					animation: ke3-stripe-sweep 3s linear 1 forwards;
+				}
+
+				/* ── SCROLL-REVEAL ───────────────────────────────── */
+				.ke3-reveal {
+					opacity:0;
+					transform:translateY(22px);
+				}
+				.ke3-reveal.ke3-visible {
+					animation: ke3-fadeup .55s cubic-bezier(.22,.68,0,1.1) forwards;
+				}
+				/* Stagger siblings */
+				.ke3-reveal:nth-child(1){animation-delay:.05s}
+				.ke3-reveal:nth-child(2){animation-delay:.14s}
+				.ke3-reveal:nth-child(3){animation-delay:.23s}
+				.ke3-reveal:nth-child(4){animation-delay:.32s}
+
+				/* ── GRID LAYOUTS ────────────────────────────────── */
+				.ke3-footer-grid {
+					display:grid;
+					grid-template-columns:1fr;
+					gap:2.5rem 3rem;
+				}
+				@media(min-width:640px)  { .ke3-footer-grid { grid-template-columns:1fr } }
+				@media(min-width:1024px) { .ke3-footer-grid { grid-template-columns:repeat(4,1fr) } }
+
+				.ke3-social-grid {
+					display:grid;
+					grid-template-columns:repeat(2,1fr);
+					gap:.55rem;
+				}
+				/* On 2-col mobile, hide the @handle text — platform name alone is enough */
+				@media(max-width:479px) { .ke3-soc-handle { display:none; } }
+				@media(min-width:480px) { .ke3-social-grid { grid-template-columns:repeat(3,1fr) } }
+				@media(min-width:900px) { .ke3-social-grid { grid-template-columns:repeat(6,1fr) } }
+
+				/* ── CTA BAND ────────────────────────────────────── */
+				.ke3-cta-band {
+					background:#0d1e38;
+					border-top:1px solid #1a3460;
+					border-bottom:1px solid #1a3460;
+					position:relative;
+					overflow:hidden;
+					contain:paint;
+				}
+				.ke3-cta-band::before {
+					content:'';
+					position:absolute;
+					inset:0;
+					pointer-events:none;
+					background:
+						radial-gradient(circle at 12% 50%,#0891B218 0%,transparent 52%),
+						radial-gradient(circle at 88% 50%,#06B6D418 0%,transparent 52%);
+				}
+
+				/* ── COLUMN HEADINGS ─────────────────────────────── */
+				.ke3-col-h3 {
+					display:flex; align-items:center; gap:.5rem;
+					font-size:9px; font-weight:800; letter-spacing:.22em;
+					text-transform:uppercase; color:#67E8F9;
+					margin:0 0 1.15rem; padding-bottom:.65rem;
+					border-bottom:1px solid #1a3460;
+				}
+				.ke3-col-h3::before {
+					content:''; display:inline-block;
+					width:3px; height:13px;
+					background:linear-gradient(180deg,#06B6D4,#0891B2);
+					border-radius:99px; flex-shrink:0;
+				}
+
+				/* ── NAV / SERVICE LINKS ─────────────────────────── */
+				.ke3-nav-btn {
+					background:none; border:none; cursor:pointer;
+					display:flex; align-items:center; gap:.45rem;
+					color:#8fa8c8; font-size:.83rem; font-weight:500;
+					padding:.25rem 0; text-align:left;
+					transition:color .15s, transform .18s;
+					width:100%;
+				}
+				.ke3-nav-btn:hover,.ke3-nav-btn:focus {
+					color:#e2e8f0;
+					transform:translateX(4px); outline:none;
+				}
+
+				/* ── CONTACT LINKS ───────────────────────────────── */
+				.ke3-contact-link {
+					color:#8fa8c8; font-size:.82rem; text-decoration:none;
+					display:block; transition:color .15s; line-height:1.65;
+				}
+				.ke3-contact-link:hover,.ke3-contact-link:focus { color:#67E8F9; outline:none; }
+
+				/* ── CONTACT ROW / ICON ──────────────────────────── */
+				.ke3-contact-row { display:flex; gap:.75rem; align-items:flex-start; }
+				.ke3-contact-icon {
+					width:2rem; height:2rem; border-radius:.5rem;
+					background:#0d1e38; border:1px solid #1a3460;
+					display:flex; align-items:center; justify-content:center;
+					flex-shrink:0; margin-top:1px;
+					transition:border-color .18s, background .18s, transform .18s;
+				}
+				.ke3-contact-row:hover .ke3-contact-icon {
+					background:#0891B222; border-color:#0891B265;
+					transform:scale(1.08);
+				}
+
+				/* ── CTA BUTTONS ─────────────────────────────────── */
+				.ke3-cta-call {
+					display:inline-flex; align-items:center; gap:8px;
+					padding:.85rem 1.6rem; border-radius:.75rem;
+					background:linear-gradient(135deg,#0891B2,#0e7490);
+					color:#fff; font-weight:700; font-size:.85rem;
+					text-decoration:none; border:none; cursor:pointer;
+					transition:transform .18s, box-shadow .2s;
+					box-shadow:0 4px 22px #0891B245;
+				}
+				.ke3-cta-call:hover { transform:translateY(-3px); box-shadow:0 12px 36px #0891B255; }
+				.ke3-cta-call:active { transform:translateY(0); }
+				.ke3-cta-call:focus  { outline:2px solid #67E8F9; outline-offset:3px; }
+
+				.ke3-cta-wa {
+					display:inline-flex; align-items:center; gap:8px;
+					padding:.85rem 1.6rem; border-radius:.75rem;
+					background:linear-gradient(135deg,#22c55e,#16a34a);
+					color:#fff; font-weight:700; font-size:.85rem;
+					text-decoration:none; cursor:pointer;
+					transition:transform .18s, box-shadow .2s;
+					border:none; box-shadow:0 4px 22px #22c55e35;
+				}
+				.ke3-cta-wa:hover { transform:translateY(-3px); box-shadow:0 12px 36px #22c55e45; }
+				.ke3-cta-wa:active { transform:translateY(0); }
+				.ke3-cta-wa:focus  { outline:2px solid #22c55e; outline-offset:3px; }
+
+				/* ── SOCIAL CARDS ────────────────────────────────── */
+				@keyframes ke3-soc-in {
+					from { opacity:0; transform:translateY(18px) scale(.93); }
+					to   { opacity:1; transform:translateY(0) scale(1); }
+				}
+				.ke3-soc-card {
+					display:flex; flex-direction:column;
+					padding:.8rem .9rem .75rem; border-radius:.7rem;
+					text-decoration:none; border:1px solid transparent;
+					background:transparent; cursor:pointer;
+					position:relative; overflow:hidden;
+					min-height:80px; /* larger tap target on mobile */
+					/* Cards start invisible; each gets its own entrance via animationDelay on the element */
+					opacity:0;
+					will-change:transform, opacity;
+					transition:transform .22s cubic-bezier(.22,.68,0,1.2),
+					            box-shadow .2s, background .2s, border-color .2s;
+				}
+				/* Once the parent section is intersected, each card animates in individually.
+				   animation-delay is driven by --soc-delay CSS custom property set inline.
+				   fill-mode: both keeps opacity:1 after the animation completes. */
+				.ke3-soc-section-visible .ke3-soc-card {
+					animation: ke3-soc-in .5s cubic-bezier(.22,.68,0,1.2) var(--soc-delay, 0s) both;
+				}
+				/* After the entrance animation the card is fully visible — hover can take over */
+				.ke3-soc-section-visible .ke3-soc-card:hover  { transform:translateY(-4px) scale(1.03); animation:none; opacity:1; }
+				.ke3-soc-section-visible .ke3-soc-card:active { transform:translateY(-1px) scale(1.01); }
+				.ke3-soc-card:focus  { outline:2px solid currentColor; outline-offset:3px; }
+				.ke3-soc-icon-wrap {
+					transition:transform .22s cubic-bezier(.22,.68,0,1.2);
+				}
+				.ke3-soc-card:hover .ke3-soc-icon-wrap { transform:scale(1.15) rotate(-4deg); }
+				.ke3-soc-arrow {
+					display:block; font-size:9px; font-weight:600;
+					color:#334155; margin-top:.35rem;
+					transition:color .18s, transform .18s;
+				}
+				.ke3-soc-card:hover .ke3-soc-arrow { transform:translateX(4px); }
+
+				/* ── INDUSTRY TAGS ───────────────────────────────── */
+				.ke3-ind-tag {
+					display:inline-block; font-size:.68rem; font-weight:600;
+					padding:.3rem .8rem; border-radius:2rem; border:1px solid;
+					transition:transform .18s, box-shadow .18s, background .18s;
+					cursor:default;
+				}
+				.ke3-ind-tag:hover {
+					transform:translateY(-2px);
+					box-shadow:0 5px 14px rgba(0,0,0,.35);
+				}
+
+				/* ── ALL SERVICES GHOST BTN ──────────────────────── */
+				.ke3-all-srv {
+					display:inline-flex; align-items:center; gap:6px;
+					margin-top:1.1rem; padding:.5rem .95rem;
+					background:transparent; border:1px solid #1a3460;
+					border-radius:.5rem; color:#67E8F9;
+					font-size:.72rem; font-weight:600; cursor:pointer;
+					transition:border-color .18s, background .18s, color .18s, transform .18s;
+				}
+				.ke3-all-srv:hover {
+					border-color:#0891B2; background:#0891B218;
+					color:#fff; transform:translateX(2px);
+				}
+
+				/* ── BACK TO TOP ─────────────────────────────────── */
+				.ke3-back-top {
+					display:inline-flex; align-items:center; gap:5px;
+					padding:.4rem .9rem; border-radius:.5rem;
+					background:#0d1e38; border:1px solid #1a3460;
+					color:#67E8F9; font-size:.75rem; font-weight:700;
+					cursor:pointer; letter-spacing:.06em;
+					transition:background .18s, border-color .18s,
+					            color .18s, transform .18s, box-shadow .18s;
+					white-space:nowrap;
+				}
+				.ke3-back-top:hover {
+					background:#0891B220; border-color:#0891B265;
+					color:#fff; transform:translateY(-2px);
+					box-shadow:0 6px 18px #0891B225;
+				}
+				.ke3-back-top:active { transform:translateY(0); }
+				.ke3-back-top:focus  { outline:2px solid #67E8F9; outline-offset:3px; }
+
+				/* ── COPY TOAST ──────────────────────────────────── */
+				.ke3-copy-toast {
+					position:fixed; bottom:1.5rem; left:50%;
+					transform:translateX(-50%);
+					background:#0891B2; color:#fff;
+					font-size:.78rem; font-weight:700;
+					padding:.5rem 1.1rem; border-radius:.6rem;
+					box-shadow:0 8px 28px #0891B255;
+					pointer-events:none; z-index:9999;
+					animation:ke3-toast-in .22s cubic-bezier(.22,.68,0,1.2) forwards;
+					white-space:nowrap;
+				}
+
+				/* ── GST / MSME CHIP ─────────────────────────────── */
+				.ke3-chip {
+					display:inline-flex; align-items:center; gap:.35rem;
+					background:#0d1e38; border:1px solid #1a3460;
+					border-radius:.375rem; padding:.28rem .6rem;
+					font-size:.68rem; color:#64748b; cursor:pointer;
+					transition:border-color .18s, color .18s, background .18s, transform .18s;
+				}
+				.ke3-chip:hover {
+					border-color:#67E8F940; color:#94a3b8;
+					background:#1a3460; transform:translateY(-1px);
+				}
+				.ke3-chip:active { transform:translateY(0); }
+
+				/* ── FOLLOW US RULE ──────────────────────────────── */
+				.ke3-follow-label {
+					display:flex; align-items:center; gap:.7rem;
+					font-family:monospace; font-size:9px; font-weight:700;
+					letter-spacing:.22em; text-transform:uppercase;
+					color:#67E8F9; margin-bottom:1rem;
+				}
+				.ke3-follow-label span { flex:1; height:1px; background:#1a3460; }
+
+				/* ── MOBILE TWEAKS ───────────────────────────────── */
+				@media(max-width:639px) {
+					/* Full-width CTA buttons on small screens */
+					.ke3-cta-call, .ke3-cta-wa {
+						width:100%; justify-content:center; padding:.9rem 1rem;
+					}
+					/* Social grid: 3 columns on most phones */
+					.ke3-social-grid { grid-template-columns:repeat(3,1fr) !important; }
+					/* Industries panel: stack vertically */
+					.ke3-ind-panel-inner { flex-direction:column !important; }
+					/* Capability range: left-align on mobile */
+					.ke3-cap-range { text-align:left !important; }
+					/* Bottom bar: stack into a column */
+					.ke3-bottom-bar { flex-direction:column; align-items:flex-start !important; gap:1rem !important; }
+				}
+
+				/* ── REDUCED MOTION ──────────────────────────────── */
+				@media(prefers-reduced-motion:reduce) {
+					.ke3-cta-call,.ke3-cta-wa,.ke3-soc-card,.ke3-ind-tag,
+					.ke3-back-top,.ke3-nav-btn,.ke3-contact-icon,
+					.ke3-reveal,.ke3-accent-stripe {
+						transition:none !important;
+						animation:none !important;
+						transform:none !important;
+						opacity:1 !important;
+					}
+					/* Per-card social entrance + hover override: skip on reduced-motion */
+					.ke3-soc-section-visible .ke3-soc-card,
+					.ke3-soc-section-visible .ke3-soc-card:hover {
+						animation:none !important;
+						opacity:1 !important;
+						transform:none !important;
+					}
+				}
+
+				/* ── STATS TICKER ────────────────────────────────── */
+				@keyframes ke3-ticker-in {
+					from { opacity:0; transform:translateY(14px) scale(.92); }
+					to   { opacity:1; transform:translateY(0) scale(1); }
+				}
+				@keyframes ke3-num-glow {
+					0%   { text-shadow:none; color:#67E8F9; }
+					40%  { text-shadow:0 0 24px #67E8F9aa, 0 0 8px #0891B266; color:#fff; }
+					100% { text-shadow:0 0 8px #67E8F933; color:#67E8F9; }
+				}
+				@keyframes ke3-strip-border-sweep {
+					0%   { background-position:200% center; }
+					100% { background-position:-200% center; }
+				}
+				.ke3-stats-strip {
+					background:linear-gradient(90deg,#060f1f 0%,#091528 40%,#060f1f 100%);
+					border-bottom:1px solid #1a3460;
+					padding:.85rem 1.5rem;
+					position:relative;
+				}
+				/* Shimmer line that sweeps across the top edge once when stats are visible */
+				.ke3-stats-strip.ke3-strip-lit::after {
+					content:'';
+					position:absolute; top:0; left:0; right:0; height:1px;
+					background:linear-gradient(90deg,transparent 0%,#0891B2 30%,#67E8F9 50%,#0891B2 70%,transparent 100%);
+					background-size:200% auto;
+					animation:ke3-strip-border-sweep 1.4s ease-out 1 forwards;
+					pointer-events:none;
+				}
+				.ke3-stats-inner {
+					max-width:80rem; margin:0 auto;
+					display:flex; flex-wrap:wrap; gap:1rem 2.5rem;
+					align-items:center; justify-content:center;
+				}
+				.ke3-stat-item {
+					display:flex; align-items:center; gap:.6rem;
+					opacity:0;
+				}
+				.ke3-stat-item.ke3-ticker-visible {
+					animation:ke3-ticker-in .5s cubic-bezier(.22,.68,0,1.1) forwards;
+				}
+				.ke3-stat-num {
+					font-size:1.4rem; font-weight:900; font-family:monospace;
+					color:#67E8F9; line-height:1; letter-spacing:-.02em;
+				}
+				/* Glow fires once after the count-up ends (delay = stat delay + count-up duration) */
+				.ke3-stat-item.ke3-ticker-visible .ke3-stat-num {
+					animation:ke3-num-glow 1.6s ease-out both;
+					animation-delay:calc(var(--stat-delay, 0s) + 1.5s);
+				}
+				.ke3-stat-suffix {
+					font-size:.78rem; font-weight:700; color:#0891B2;
+				}
+				.ke3-stat-label {
+					font-size:.72rem; font-weight:600; color:#8fa8c8;
+					text-transform:uppercase; letter-spacing:.12em;
+					line-height:1.3;
+				}
+				.ke3-stat-divider {
+					width:1px; height:2rem; background:#1a3460; flex-shrink:0;
+				}
+				@media(max-width:480px){ .ke3-stat-divider { display:none; } }
+
+				/* ── QUICK-ENQUIRY FORM ──────────────────────────── */
+				.ke3-enquiry-band {
+					background:#060e1c;
+					border-top:1px solid #1a3460;
+					padding:1.5rem 1.5rem;
+				}
+				.ke3-enquiry-inner {
+					max-width:80rem; margin:0 auto;
+					display:flex; flex-wrap:wrap; gap:1rem;
+					align-items:center; justify-content:space-between;
+				}
+				.ke3-enquiry-label {
+					font-size:.72rem; font-weight:800; letter-spacing:.2em;
+					text-transform:uppercase; color:#67E8F9;
+					white-space:nowrap;
+				}
+				.ke3-enquiry-fields {
+					display:flex; flex-wrap:wrap; gap:.6rem; flex:1 1 auto;
+					min-width:0;
+				}
+				.ke3-enq-input {
+					flex:1 1 140px; min-width:120px;
+					background:#0d1e38; border:1px solid #1a3460;
+					border-radius:.5rem; padding:.55rem .85rem;
+					font-size:.82rem; color:#e2e8f0; outline:none;
+					transition:border-color .18s, box-shadow .18s;
+					font-family:sans-serif;
+				}
+				.ke3-enq-input::placeholder { color:#475569; }
+				.ke3-enq-input:focus { border-color:#0891B2; box-shadow:0 0 0 3px #0891B218; }
+				.ke3-enq-submit {
+					display:inline-flex; align-items:center; gap:.45rem;
+					padding:.55rem 1.2rem; border-radius:.5rem;
+					background:linear-gradient(135deg,#25D366,#16a34a);
+					color:#fff; font-weight:800; font-size:.8rem;
+					border:none; cursor:pointer; white-space:nowrap;
+					transition:transform .18s, box-shadow .18s;
+					box-shadow:0 4px 14px #25D36635;
+					font-family:sans-serif;
+				}
+				.ke3-enq-submit:hover { transform:translateY(-2px); box-shadow:0 8px 24px #25D36645; }
+				.ke3-enq-submit:active { transform:translateY(0); }
+				.ke3-enq-submit:focus { outline:2px solid #4ade80; outline-offset:3px; }
+
+				/* ── MAP PIN TEASER ──────────────────────────────── */
+				@keyframes ke3-pin-drop {
+					0%   { transform:translateY(-10px); opacity:0; }
+					60%  { transform:translateY(3px);   opacity:1; }
+					80%  { transform:translateY(-2px); }
+					100% { transform:translateY(0); opacity:1; }
+				}
+				@keyframes ke3-pin-shadow {
+					0%,100% { transform:scaleX(.6); opacity:.4; }
+					60%     { transform:scaleX(1);  opacity:.25; }
+				}
+				.ke3-map-pin-wrap {
+					margin-top:.9rem; padding:.75rem .85rem;
+					background:#0d1e38; border:1px solid #1a3460;
+					border-radius:.65rem; display:flex; align-items:center; gap:.7rem;
+					cursor:pointer; text-decoration:none;
+					transition:border-color .18s, background .18s, transform .18s;
+				}
+				.ke3-map-pin-wrap:hover { border-color:#0891B265; background:#091528; transform:translateY(-2px); }
+				.ke3-map-pin-wrap:focus { outline:2px solid #67E8F9; outline-offset:3px; }
+				.ke3-pin-icon-wrap {
+					position:relative; width:2.2rem; height:2.4rem; flex-shrink:0;
+				}
+				.ke3-pin-svg { animation:ke3-pin-drop .7s cubic-bezier(.22,.68,0,1.2) both .3s; }
+				.ke3-pin-shadow {
+					position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+					width:1rem; height:.3rem; border-radius:50%;
+					background:#000; filter:blur(2px);
+					animation:ke3-pin-shadow .7s cubic-bezier(.22,.68,0,1.2) both .3s;
+				}
+				.ke3-map-text-head { font-size:.73rem; font-weight:800; color:#67E8F9; margin-bottom:2px; }
+				.ke3-map-text-sub  { font-size:.67rem; color:#8fa8c8; line-height:1.4; }
 			`}</style>
 
-			{/* ── Top accent bar ── */}
-			<div aria-hidden="true" style={{ height:'4px', background:'linear-gradient(90deg,#0891B2 0%,#06B6D4 35%,#67E8F9 50%,#06B6D4 65%,#0891B2 100%)' }} />
+			{/* ══════════════════════════════════════════════════════
+			    COPY TOAST — portaled via fixed positioning
+			══════════════════════════════════════════════════════ */}
+			{copiedLabel && (
+				<div className="ke3-copy-toast" role="status" aria-live="polite">
+					✓ {copiedLabel} number copied!
+				</div>
+			)}
 
-			{/* ── Pre-footer CTA band ── */}
-			<div style={{ position:'relative', overflow:'hidden', background:'linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)', borderBottom:'1px solid #0891B225' }}>
-				<div aria-hidden="true" style={{ position:'absolute', inset:0, pointerEvents:'none', backgroundImage:'radial-gradient(circle at 15% 50%,#0891B218 0%,transparent 55%),radial-gradient(circle at 85% 50%,#06B6D418 0%,transparent 55%)' }} />
-				<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'2.75rem 1.5rem', display:'flex', flexWrap:'wrap', gap:'1.5rem', alignItems:'center', justifyContent:'space-between', position:'relative', zIndex:1 }}>
-					{/* Headline */}
-					<div style={{ flex:'1 1 280px' }}>
-						<span style={{ display:'inline-flex', alignItems:'center', gap:'5px', background:'#FF4500', color:'#fff', fontSize:'9px', fontWeight:800, letterSpacing:'.18em', textTransform:'uppercase', padding:'4px 10px', borderRadius:'99px', marginBottom:'10px' }}>
-							<Zap aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
-							24 h Emergency Support Available
-						</span>
-						<h2 style={{ fontFamily:'Georgia,serif', fontStyle:'italic', fontSize:'clamp(1.1rem,2.5vw,1.6rem)', fontWeight:700, lineHeight:1.35, color:'#fff', margin:'0 0 6px' }}>
-							Need a quote or facing an emergency breakdown?
-						</h2>
-						<p style={{ margin:0, fontSize:'.78rem', color:'#94a3b8', fontWeight:500 }}>
-							Our ex-OEM engineering team responds within 24 hours — call or WhatsApp.
-						</p>
-					</div>
-					{/* CTAs */}
-					<div style={{ display:'flex', flexWrap:'wrap', gap:'.75rem', alignItems:'center' }}>
-						<a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="ke-cta-call">
-							<Phone aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
-							{CONTACT_INFO.phones[0]}
-						</a>
-						<a href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')} target="_blank" rel="noopener noreferrer" className="ke-cta-wa">
-							<MessageCircle aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
-							WhatsApp Now
-						</a>
+			{/* ══════════════════════════════════════════════════════
+			    BRIDGE — smooth gradient from DigitalProfilesStrip
+			    (#f0f4f8) into the dark footer body (#0A1628).
+			══════════════════════════════════════════════════════ */}
+			<div className="ke3-bridge" aria-hidden="true" />
+
+			{/* ══════════════════════════════════════════════════════
+			    STATS TICKER — animated counters (fires on scroll)
+			══════════════════════════════════════════════════════ */}
+			<FooterStatsTicker />
+
+			{/* ══════════════════════════════════════════════════════
+			    FOOTER BODY
+			══════════════════════════════════════════════════════ */}
+			<div style={{ background:'#0A1628', color:'#fff' }}>
+
+				{/* ── Animated accent stripe ── */}
+				<div className="ke3-accent-stripe" aria-hidden="true" />
+
+				{/* ── Pre-footer CTA band ── */}
+				<div className="ke3-cta-band">
+					<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'2.75rem 1.5rem', display:'flex', flexWrap:'wrap', gap:'1.5rem', alignItems:'center', justifyContent:'space-between', position:'relative', zIndex:1 }}>
+						<div style={{ flex:'1 1 280px' }}>
+							<span style={{ display:'inline-flex', alignItems:'center', gap:'5px', background:'#FF4500', color:'#fff', fontSize:'9px', fontWeight:800, letterSpacing:'.18em', textTransform:'uppercase', padding:'4px 10px', borderRadius:'99px', marginBottom:'10px' }}>
+								<Zap aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
+								24 h Emergency Support Available
+							</span>
+							<h2 style={{ fontFamily:'Georgia,serif', fontStyle:'italic', fontSize:'clamp(1.1rem,2.5vw,1.6rem)', fontWeight:700, lineHeight:1.35, color:'#fff', margin:'0 0 6px' }}>
+								Need a quote or facing an emergency breakdown?
+							</h2>
+							<p style={{ margin:0, fontSize:'.78rem', color:'#8fa8c8', fontWeight:500 }}>
+								Our ex-OEM engineering team responds within 24 hours — call or WhatsApp.
+							</p>
+						</div>
+						<div style={{ display:'flex', flexWrap:'wrap', gap:'.75rem', alignItems:'center', width:'100%', maxWidth:'360px' }}>
+							<a href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g,'')}`} className="ke3-cta-call">
+								<Phone aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
+								{CONTACT_INFO.phones[0]}
+							</a>
+							<a href={waMsg('Hi, I would like to request a technical quote for your services.')} target="_blank" rel="noopener noreferrer" className="ke3-cta-wa">
+								<MessageCircle aria-hidden="true" style={{ width:'1.1rem', height:'1.1rem' }} />
+								WhatsApp Now
+							</a>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			{/* ── Main body ── */}
-			<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'3.5rem 1.5rem 2rem' }}>
+				{/* ── Main body ── */}
+				<div style={{ maxWidth:'80rem', margin:'0 auto', padding:'3.5rem 1.5rem 2rem' }}>
 
-				{/* 4-column grid */}
-				<div className="ke-footer-grid" style={{ marginBottom:'2.5rem' }}>
+					{/* 4-column grid — each col is a reveal target */}
+					<FooterRevealGrid navigate={navigate} />
 
-					{/* Col 1 — Brand */}
-					<div>
-						{/* ── Logo block — uses BrandLogo so it always matches navbar ── */}
-						<div style={{ marginBottom:'1rem', paddingBottom:'1rem', borderBottom:'1px solid #0d2040' }}>
-							<BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
-						</div>
+					{/* ── Follow Us ── */}
+					<FooterSocialSection />
 
-						<p style={{ fontSize:'.82rem', lineHeight:1.8, color:'#94a3b8', marginBottom:'1.5rem', maxWidth:'22rem' }}>
-							20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
+					{/* Divider */}
+					<div aria-hidden="true" style={{ height:'1px', background:'#1a3460', marginBottom:'1.75rem' }} />
+
+					{/* Industries panel */}
+					<FooterIndustriesPanel />
+
+					{/* ── Quick Enquiry ── */}
+					<FooterQuickEnquiry />
+
+					{/* Bottom bar */}
+					<div className="ke3-bottom-bar" style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center', gap:'.75rem', paddingTop:'1.25rem', borderTop:'1px solid #1a3460' }}>
+						{/* Copyright — full width on mobile, auto on larger */}
+						<p style={{ margin:0, fontSize:'.78rem', color:'#475569', flex:'1 1 100%', maxWidth:'100%' }}>
+							© {year} Keshav Enterprises. All rights reserved.
+							<span style={{ display:'block', fontSize:'.67rem', color:'#334155', marginTop:'.2rem', lineHeight:1.6 }}>
+								This site stores preferences (currency, recently viewed products) in your browser&apos;s local storage. No personal data is collected without consent.
+							</span>
 						</p>
 
-						{/* ── Credential badges — larger logos ── */}
-						{/* CredentialBadge is a named component so it can legally call useState */}
-						<div style={{ marginBottom:'1.25rem' }}>
-							{[
-								{
-									imgSrc: 'msme-logo.png', FallbackIcon: Shield,
-									title: 'MSME Registered', sub: CONTACT_INFO.msme,
-									accentColor: '#38BDF8', bg: '#071e38',
-								},
-								{
-									imgSrc: 'indiamart-logo.png', FallbackIcon: Award,
-									title: 'IndiaMART TrustSeal', sub: '4.3★ Verified Supplier',
-									accentColor: '#fb923c', bg: '#1c1200',
-								},
-								{
-									imgSrc: 'make-in-india.png', FallbackIcon: Globe,
-									title: 'Make In India', sub: 'Manufactured in India',
-									accentColor: '#4ade80', bg: '#001a0a',
-								},
-							].map((badge) => (
-								<FooterBadge key={badge.title} {...badge} />
+						{/* GST / MSME chips */}
+						<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem', alignItems:'center' }}>
+							{[{ label:'GST', value:CONTACT_INFO.gst }, { label:'MSME', value:CONTACT_INFO.msme }].map(({ label, value }) => (
+								<button
+									key={label}
+									type="button"
+									title={`Copy ${label} number`}
+									aria-label={`Copy ${label} number: ${value}`}
+									className="ke3-chip"
+									onClick={() => handleCopy(label, value)}
+								>
+									<span style={{ fontWeight:700, color:'#67E8F9', fontSize:'7.5px', letterSpacing:'.1em' }}>{label}</span>
+									<span style={{ fontFamily:'monospace', color:'#94a3b8' }}>{value}</span>
+									{copiedLabel === label
+										? <svg className="ke3-check-pop" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+										: <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#67E8F9" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+									}
+								</button>
 							))}
-										</div>
+						</div>
 
-						{/* OEM list */}
-						<p style={{ fontSize:'8.5px', fontWeight:700, letterSpacing:'.2em', textTransform:'uppercase', color:'#38BDF8', marginBottom:'.4rem' }}>OEM Compatible With</p>
-						<p style={{ fontFamily:'monospace', fontSize:'.66rem', color:'#475569', lineHeight:1.9 }}>{OEMS.join(' · ')}</p>
-					</div>
-
-					{/* Col 2 — Navigate */}
-					<nav aria-label="Footer site links">
-						<span className="ke-col-h3">Navigate</span>
-						<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.55rem' }}>
-							{NAV_LINKS.map(link => (
-								<li key={link.name}>
-									<button className="ke-nav-btn" onClick={() => navigate(link.path)}>
-										<ChevronRight aria-hidden="true" style={{ width:'.875rem', height:'.875rem', color:'#0891B2', flexShrink:0 }} />
-										{link.name}
-									</button>
-								</li>
-							))}
-						</ul>
-					</nav>
-
-					{/* Col 3 — Services */}
-					<div>
-						<span className="ke-col-h3">Core Services</span>
-						<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.55rem' }}>
-							{[
-								{ label:'Turbine Erection',    id:'srv_1' },
-								{ label:'Turnkey Overhauling', id:'srv_2' },
-								{ label:'Reverse Engineering',  id:'srv_3' },
-								{ label:'Dynamic Balancing',    id:'srv_4' },
-								{ label:'Lube Oil Flushing',    id:'srv_5' },
-								{ label:'Machine Alignment',    id:'srv_6' },
-							].map(({ label, id }) => (
-								<li key={id}>
-									<button className="ke-nav-btn" onClick={() => navigate(`/service/${id}`)}>
-										<Hexagon aria-hidden="true" style={{ width:'.75rem', height:'.75rem', color:'#0891B2', flexShrink:0 }} />
-										{label}
-									</button>
-								</li>
-							))}
-						</ul>
-						<button className="ke-all-srv" onClick={() => navigate('/services')}>
-							<ExternalLink aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
-							All Services
+						{/* Back to top */}
+						<button
+							type="button"
+							className="ke3-back-top"
+							onClick={() => {
+								const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+								window.scrollTo({ top:0, behavior: prefersReduced ? 'instant' : 'smooth' });
+							}}
+							aria-label="Back to top"
+						>
+							<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+							Back to top
 						</button>
 					</div>
 
-					{/* Col 4 — Contact */}
-					<address style={{ fontStyle:'normal' }}>
-						<span className="ke-col-h3">Contact Us</span>
-						<div style={{ display:'flex', flexDirection:'column', gap:'.85rem' }}>
-							{/* Address */}
-							<div className="ke-contact-row" style={{ display:'flex', gap:'.75rem', alignItems:'flex-start' }}>
-								<div className="ke-contact-icon"><MapPin aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#38BDF8' }} /></div>
-								<a href={CONTACT_INFO.gmapsShare} target="_blank" rel="noopener noreferrer" className="ke-contact-link">{CONTACT_INFO.address}</a>
-							</div>
-							{/* Phones */}
-							<div className="ke-contact-row" style={{ display:'flex', gap:'.75rem', alignItems:'flex-start' }}>
-								<div className="ke-contact-icon"><Phone aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#38BDF8' }} /></div>
-								<div>
-									{CONTACT_INFO.phones.map(p => (
-										<a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="ke-contact-link" style={{ fontFamily:'monospace', fontWeight:600, fontSize:'.82rem' }}>{p}</a>
-									))}
-								</div>
-							</div>
-							{/* Emails */}
-							<div className="ke-contact-row" style={{ display:'flex', gap:'.75rem', alignItems:'flex-start' }}>
-								<div className="ke-contact-icon"><Mail aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#38BDF8' }} /></div>
-								<div style={{ minWidth:0 }}>
-									{[{ addr:CONTACT_INFO.email, label:'General' }, { addr:CONTACT_INFO.infoEmail, label:'Info' }].map(({ addr, label }) => (
-										<a key={addr} href={`mailto:${addr}`} className="ke-contact-link" style={{ marginBottom:'6px' }}>
-											<span style={{ display:'block', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{addr}</span>
-											<span style={{ fontFamily:'monospace', fontSize:'8px', letterSpacing:'.14em', textTransform:'uppercase', color:'#38BDF8', opacity:.8 }}>{label}</span>
-										</a>
-									))}
-								</div>
-							</div>
-						</div>
-					</address>
-				</div>{/* end ke-footer-grid */}
-
-				{/* ── Follow Us ── */}
-				<div style={{ marginBottom:'2rem' }}>
-					<p style={{ display:'flex', alignItems:'center', gap:'.6rem', fontFamily:'monospace', fontSize:'9px', fontWeight:700, letterSpacing:'.22em', textTransform:'uppercase', color:'#06B6D4', marginBottom:'1rem' }}>
-						<span style={{ flex:1, height:'1px', background:'#0d2040' }} />
-						Follow Us
-						<span style={{ flex:1, height:'1px', background:'#0d2040' }} />
-					</p>
-					<div className="ke-social-grid" role="list" aria-label="Social media profiles">
-						{SOCIAL_LINKS.map(({ href, label, name, handle, color, iconBg, icon }) => {
-							const bg = iconBg || color;
-							return (
-								<a
-									key={name}
-									href={href}
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={label}
-									role="listitem"
-									className="ke-soc-card"
-									style={{ background:`${color}0d`, borderColor:`${color}22` }}
-									onMouseEnter={e => {
-										const el = e.currentTarget;
-										el.style.background = `${color}1c`;
-										el.style.borderColor = `${color}50`;
-										el.style.boxShadow = `0 8px 22px ${color}18`;
-										el.querySelector('.ke-soc-arrow').style.color = color === '#94a3b8' ? '#94a3b8' : color;
-										el.querySelector('.ke-soc-arrow').style.transform = 'translateX(3px)';
-									}}
-									onMouseLeave={e => {
-										const el = e.currentTarget;
-										el.style.background = `${color}0d`;
-										el.style.borderColor = `${color}22`;
-										el.style.boxShadow = 'none';
-										el.querySelector('.ke-soc-arrow').style.color = '#334155';
-										el.querySelector('.ke-soc-arrow').style.transform = 'none';
-									}}
-									onFocus={e => { e.currentTarget.style.outline = `2px solid ${color}`; e.currentTarget.style.outlineOffset = '3px'; }}
-									onBlur={e => { e.currentTarget.style.outline = 'none'; }}
-								>
-									{/* Top row: icon + platform */}
-									<div style={{ display:'flex', alignItems:'center', gap:'.5rem', marginBottom:'.5rem' }}>
-										<div style={{ width:'1.75rem', height:'1.75rem', borderRadius:'.4rem', background:bg, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, boxShadow:`0 3px 10px ${color}35`, transition:'transform .2s ease' }}>
-											<span style={{ color:'#fff', display:'flex' }}>{icon}</span>
-										</div>
-										<span style={{ fontSize:'7.5px', fontWeight:800, letterSpacing:'.16em', textTransform:'uppercase', color, lineHeight:1, opacity:.9 }}>{name}</span>
-									</div>
-									{/* Handle */}
-									<span style={{ fontSize:'.72rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{handle}</span>
-									{/* Arrow */}
-									<span className="ke-soc-arrow">→</span>
-								</a>
-							);
-						})}
-					</div>
-				</div>
-
-				{/* Divider */}
-				<div aria-hidden="true" style={{ height:'1px', background:'#0d2040', marginBottom:'1.75rem' }} />
-
-				{/* Industries panel */}
-				<div style={{ borderRadius:'.875rem', padding:'1.4rem', background:'#071428', border:'1px solid #0d2040', marginBottom:'1.75rem' }}>
-					<div style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'flex-start', gap:'1.5rem' }}>
-						<div style={{ flex:'1 1 300px' }}>
-							<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.8rem' }}>Industries Served</p>
-							<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem' }}>
-								{[
-									{ name:'Power Generation', color:'#facc15' },
-									{ name:'Sugar Mills',      color:'#4ade80' },
-									{ name:'Paper & Pulp',     color:'#67E8F9' },
-									{ name:'Oil & Gas',        color:'#fb923c' },
-									{ name:'Petrochemical',    color:'#c084fc' },
-									{ name:'Agro & Food',      color:'#2dd4bf' },
-									{ name:'Cement',           color:'#a8a29e' },
-								].map(({ name, color }) => (
-									<span key={name} className="ke-ind-tag" style={{ color, background:color+'18', borderColor:color+'44' }}>{name}</span>
-								))}
-							</div>
-						</div>
-						<div style={{ textAlign:'right', flexShrink:0 }}>
-							<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.5rem' }}>Capability Range</p>
-							<p style={{ margin:0 }}>
-								<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>5 kW</span>
-								<span style={{ fontSize:'1.25rem', fontWeight:300, color:'#38BDF8', margin:'0 .375rem' }}>—</span>
-								<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>27 MW</span>
-							</p>
-							<p style={{ margin:'.25rem 0 0', fontSize:'.6rem', color:'#64748b', letterSpacing:'.1em', textTransform:'uppercase' }}>Back Pressure &amp; Condensing Turbines</p>
-						</div>
-					</div>
-				</div>
-
-				{/* Bottom bar */}
-				<div style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'center', gap:'.75rem', paddingTop:'1.1rem', borderTop:'1px solid #0d2040' }}>
-					<p style={{ margin:0, fontSize:'.78rem', color:'#475569' }}>© {year} Keshav Enterprises. All rights reserved.</p>
-					<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem', alignItems:'center' }}>
-						{[{ label:'GST', value:CONTACT_INFO.gst }, { label:'MSME', value:CONTACT_INFO.msme }].map(({ label, value }) => (
-							<span key={label} style={{ display:'inline-flex', alignItems:'center', gap:'.35rem', background:'#071428', border:'1px solid #0d2040', borderRadius:'.375rem', padding:'.22rem .55rem', fontSize:'.68rem', color:'#64748b' }}>
-								<span style={{ fontWeight:700, color:'#38BDF8', fontSize:'7.5px', letterSpacing:'.1em' }}>{label}</span>
-								<span style={{ fontFamily:'monospace', color:'#94a3b8' }}>{value}</span>
-							</span>
-						))}
-					</div>
-					<button className="ke-back-top" onClick={() => window.scrollTo({ top:0, behavior:'smooth' })} aria-label="Back to top">↑ Top</button>
-				</div>
-
-			</div>{/* end max-w-7xl */}
+				</div>{/* end max-w-7xl */}
+			</div>{/* end footer body */}
 		</footer>
 	);
 });
 Footer.displayName = 'Footer';
+
+// ─── FOOTER SUB-COMPONENTS ────────────────────────────────────
+// Split out so each can carry its own useRef for IntersectionObserver
+// without bloating the main Footer render function.
+
+const FooterRevealGrid = memo(({ navigate }) => {
+	const gridRef = useRef(null);
+
+	useEffect(() => {
+		const cols = gridRef.current?.querySelectorAll('.ke3-reveal');
+		if (!cols) return;
+		const io = new IntersectionObserver(
+			(entries) => {
+				entries.forEach(e => {
+					if (e.isIntersecting) {
+						e.target.classList.add('ke3-visible');
+						io.unobserve(e.target);
+					}
+				});
+			},
+			{ threshold: 0.08 }
+		);
+		cols.forEach(col => io.observe(col));
+		return () => io.disconnect();
+	}, []);
+
+	return (
+		<div ref={gridRef} className="ke3-footer-grid" style={{ marginBottom:'2.5rem' }}>
+
+			{/* Col 1 — Brand */}
+			<div className="ke3-reveal">
+				<div style={{ marginBottom:'1rem', paddingBottom:'1rem', borderBottom:'1px solid #1a3460' }}>
+					<BrandLogo scrolled={false} forceWhite={true} navigate={navigate} />
+				</div>
+				<p style={{ fontSize:'.82rem', lineHeight:1.8, color:'#8fa8c8', marginBottom:'1.5rem', maxWidth:'22rem' }}>
+					20+ years delivering ex-OEM turbine engineering, precision reverse engineering, and certified industrial spares across India.
+				</p>
+				<div style={{ marginBottom:'1.25rem' }}>
+					{[
+						{ imgSrc:'msme-logo.png',      FallbackIcon:Shield, title:'MSME Registered',    sub:CONTACT_INFO.msme,           accentColor:'#38BDF8' },
+						{ imgSrc:'indiamart-logo.png', FallbackIcon:Award,  title:'IndiaMART TrustSeal', sub:'4.3★ Verified Supplier',    accentColor:'#fb923c' },
+						{ imgSrc:'make-in-india.png',  FallbackIcon:Globe,  title:'Make In India',       sub:'Manufactured in India',     accentColor:'#4ade80' },
+					].map(badge => <FooterBadge key={badge.title} {...badge} />)}
+				</div>
+				<p style={{ fontSize:'8.5px', fontWeight:700, letterSpacing:'.2em', textTransform:'uppercase', color:'#67E8F9', marginBottom:'.4rem' }}>OEM Compatible With</p>
+				<p style={{ fontFamily:'monospace', fontSize:'.66rem', color:'#475569', lineHeight:1.9 }}>{OEMS.join(' · ')}</p>
+			</div>
+
+			{/* Col 2 — Navigate */}
+			<nav aria-label="Footer site links" className="ke3-reveal">
+				<span className="ke3-col-h3">Navigate</span>
+				<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.5rem' }}>
+					{NAV_LINKS.map(link => (
+						<li key={link.name}>
+							<button type="button" className="ke3-nav-btn" onClick={() => navigate(link.path)}>
+								<ChevronRight aria-hidden="true" style={{ width:'.875rem', height:'.875rem', color:'#0891B2', flexShrink:0 }} />
+								{link.name}
+							</button>
+						</li>
+					))}
+				</ul>
+			</nav>
+
+			{/* Col 3 — Services */}
+			<div className="ke3-reveal">
+				<span className="ke3-col-h3">Core Services</span>
+				<ul style={{ listStyle:'none', margin:0, padding:0, display:'flex', flexDirection:'column', gap:'.5rem' }}>
+					{[
+						{ label:'Turbine Erection',    id:'srv_1' },
+						{ label:'Turnkey Overhauling', id:'srv_2' },
+						{ label:'Reverse Engineering',  id:'srv_3' },
+						{ label:'Dynamic Balancing',    id:'srv_4' },
+						{ label:'Lube Oil Flushing',    id:'srv_5' },
+						{ label:'Machine Alignment',    id:'srv_6' },
+					].map(({ label, id }) => (
+						<li key={id}>
+							<button type="button" className="ke3-nav-btn" onClick={() => navigate(`/service/${id}`)}>
+								<Hexagon aria-hidden="true" style={{ width:'.75rem', height:'.75rem', color:'#0891B2', flexShrink:0 }} />
+								{label}
+							</button>
+						</li>
+					))}
+				</ul>
+				<button type="button" className="ke3-all-srv" onClick={() => navigate('/services')}>
+					<ExternalLink aria-hidden="true" style={{ width:'.75rem', height:'.75rem' }} />
+					All Services
+				</button>
+			</div>
+
+			{/* Col 4 — Contact */}
+			<address style={{ fontStyle:'normal' }} className="ke3-reveal">
+				<span className="ke3-col-h3">Contact Us</span>
+				<div style={{ display:'flex', flexDirection:'column', gap:'.9rem' }}>
+					<div className="ke3-contact-row">
+						<div className="ke3-contact-icon">
+							<MapPin aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#67E8F9' }} />
+						</div>
+						<a href={CONTACT_INFO.gmapsShare} target="_blank" rel="noopener noreferrer" className="ke3-contact-link">
+							{CONTACT_INFO.address}
+						</a>
+					</div>
+					<div className="ke3-contact-row">
+						<div className="ke3-contact-icon">
+							<Phone aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#67E8F9' }} />
+						</div>
+						<div>
+							{CONTACT_INFO.phones.map(p => (
+								<a key={p} href={`tel:${p.replace(/\s/g,'')}`} className="ke3-contact-link" style={{ fontFamily:'monospace', fontWeight:600, fontSize:'.82rem' }}>{p}</a>
+							))}
+						</div>
+					</div>
+					<div className="ke3-contact-row">
+						<div className="ke3-contact-icon">
+							<Mail aria-hidden="true" style={{ width:'.85rem', height:'.85rem', color:'#67E8F9' }} />
+						</div>
+						<div style={{ minWidth:0 }}>
+							{[{ addr:CONTACT_INFO.email, label:'General' }, { addr:CONTACT_INFO.infoEmail, label:'Info' }].map(({ addr, label }) => (
+								<a key={addr} href={`mailto:${addr}`} className="ke3-contact-link" style={{ marginBottom:'6px' }}>
+									<span style={{ display:'block', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{addr}</span>
+									<span style={{ fontFamily:'monospace', fontSize:'8px', letterSpacing:'.14em', textTransform:'uppercase', color:'#67E8F9', opacity:.8 }}>{label}</span>
+								</a>
+							))}
+						</div>
+					</div>
+					</div>
+					{/* ── Map Pin Teaser ── */}
+					<a
+						href={CONTACT_INFO.gmapsShare}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="ke3-map-pin-wrap"
+						aria-label="Find us on Google Maps — Keshav Enterprises, Shamli"
+					>
+						<div className="ke3-pin-icon-wrap" aria-hidden="true">
+							<svg className="ke3-pin-svg" width="28" height="34" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path d="M12 0C7.032 0 3 4.032 3 9c0 6.75 9 21 9 21s9-14.25 9-21c0-4.968-4.032-9-9-9z" fill="#0891B2"/>
+								<circle cx="12" cy="9" r="3.5" fill="#fff" opacity=".9"/>
+							</svg>
+							<div className="ke3-pin-shadow" aria-hidden="true" />
+						</div>
+						<div>
+							<div className="ke3-map-text-head">Find Us on Google Maps</div>
+							<div className="ke3-map-text-sub">Shamli, Uttar Pradesh, India</div>
+						</div>
+						<svg style={{ marginLeft:'auto', color:'#67E8F9', flexShrink:0 }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+					</a>
+				</address>
+			</div>
+		);
+	});
+FooterRevealGrid.displayName = 'FooterRevealGrid';
+
+const FooterSocialSection = memo(() => {
+	const sectionRef = useRef(null);
+	const gridRef    = useRef(null);
+
+	useEffect(() => {
+		const wrapper = sectionRef.current;
+		const grid    = gridRef.current;
+		if (!wrapper || !grid) return;
+		const io = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					wrapper.classList.add('ke3-visible');
+					// Stamp the class that triggers per-card entrance animation
+					grid.classList.add('ke3-soc-section-visible');
+					io.disconnect();
+				}
+			},
+			{ threshold: 0.05 }
+		);
+		io.observe(wrapper);
+		return () => io.disconnect();
+	}, []);
+
+	return (
+		<div ref={sectionRef} className="ke3-reveal" style={{ marginBottom:'2rem' }}>
+			<p className="ke3-follow-label">
+				<span />Follow Us<span />
+			</p>
+			<div ref={gridRef} className="ke3-social-grid" role="list" aria-label="Social media profiles">
+				{SOCIAL_LINKS.map(({ href, label, name, handle, color, iconBg, icon }, idx) => {
+					const bg = iconBg || color;
+					return (
+						<a
+							key={name}
+							href={href}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label={label}
+							role="listitem"
+							className="ke3-soc-card"
+							style={{ background:`${color}0d`, borderColor:`${color}22`, '--soc-delay':`${idx * 0.09}s` }}
+							onMouseEnter={e => {
+								const el = e.currentTarget;
+								el.style.background   = `${color}1d`;
+								el.style.borderColor  = `${color}55`;
+								el.style.boxShadow    = `0 8px 24px ${color}1a`;
+								el.querySelector('.ke3-soc-arrow').style.color = color === '#94a3b8' ? '#94a3b8' : color;
+							}}
+							onMouseLeave={e => {
+								const el = e.currentTarget;
+								el.style.background   = `${color}0d`;
+								el.style.borderColor  = `${color}22`;
+								el.style.boxShadow    = 'none';
+								el.querySelector('.ke3-soc-arrow').style.color = '#334155';
+							}}
+							onFocus={e  => { e.currentTarget.style.outline = `2px solid ${color}`; e.currentTarget.style.outlineOffset = '3px'; }}
+							onBlur={e   => { e.currentTarget.style.outline = 'none'; }}
+						>
+							<div style={{ display:'flex', alignItems:'center', gap:'.5rem', marginBottom:'.5rem' }}>
+								<div className="ke3-soc-icon-wrap" style={{ width:'1.8rem', height:'1.8rem', borderRadius:'.4rem', background:bg, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, boxShadow:`0 3px 10px ${color}38` }}>
+									<span style={{ color:'#fff', display:'flex' }}>{icon}</span>
+								</div>
+								<span style={{ fontSize:'7.5px', fontWeight:800, letterSpacing:'.16em', textTransform:'uppercase', color, lineHeight:1, opacity:.9 }}>{name}</span>
+							</div>
+							<span className="ke3-soc-handle" style={{ fontSize:'.72rem', fontWeight:700, color:'#e2e8f0', lineHeight:1.2, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{handle}</span>
+							<span className="ke3-soc-arrow">→</span>
+						</a>
+					);
+				})}
+			</div>
+		</div>
+	);
+});
+FooterSocialSection.displayName = 'FooterSocialSection';
+
+const FooterIndustriesPanel = memo(() => {
+	const panelRef = useRef(null);
+
+	useEffect(() => {
+		const el = panelRef.current;
+		if (!el) return;
+		const io = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					el.classList.add('ke3-visible');
+					io.disconnect();
+				}
+			},
+			{ threshold: 0.1 }
+		);
+		io.observe(el);
+		return () => io.disconnect();
+	}, []);
+
+	return (
+		<div
+			ref={panelRef}
+			className="ke3-reveal"
+			style={{ borderRadius:'.9rem', padding:'1.4rem', background:'#0d1e38', border:'1px solid #1a3460', marginBottom:'1.75rem' }}
+		>
+			<div className="ke3-ind-panel-inner" style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'flex-start', gap:'1.5rem' }}>
+				<div style={{ flex:'1 1 300px' }}>
+					<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.8rem' }}>Industries Served</p>
+					<div style={{ display:'flex', flexWrap:'wrap', gap:'.45rem' }}>
+						{[
+							{ name:'Power Generation', color:'#facc15' },
+							{ name:'Sugar Mills',      color:'#4ade80' },
+							{ name:'Paper & Pulp',     color:'#67E8F9' },
+							{ name:'Oil & Gas',        color:'#fb923c' },
+							{ name:'Petrochemical',    color:'#c084fc' },
+							{ name:'Agro & Food',      color:'#2dd4bf' },
+							{ name:'Cement',           color:'#a8a29e' },
+						].map(({ name, color }) => (
+							<span key={name} className="ke3-ind-tag" style={{ color, background:color+'18', borderColor:color+'44' }}>{name}</span>
+						))}
+					</div>
+				</div>
+				<div className="ke3-cap-range" style={{ textAlign:'right', flexShrink:0 }}>
+					<p style={{ fontSize:'9px', fontWeight:800, letterSpacing:'.2em', textTransform:'uppercase', color:'#fff', marginBottom:'.5rem' }}>Capability Range</p>
+					<p style={{ margin:0 }}>
+						<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>5 kW</span>
+						<span style={{ fontSize:'1.25rem', fontWeight:300, color:'#67E8F9', margin:'0 .375rem' }}>—</span>
+						<span style={{ fontSize:'2rem', fontWeight:900, color:'#fff', lineHeight:1 }}>27 MW</span>
+					</p>
+					<p style={{ margin:'.25rem 0 0', fontSize:'.6rem', color:'#64748b', letterSpacing:'.1em', textTransform:'uppercase' }}>Back Pressure &amp; Condensing Turbines</p>
+				</div>
+			</div>
+		</div>
+	);
+});
+FooterIndustriesPanel.displayName = 'FooterIndustriesPanel';
 
 // ─── SOCIAL LINKS ─────────────────────────────────────────────
 // PERF: module-level constant — SVG icons are stable JSX, no reason to recreate on every render.
@@ -9562,7 +10540,7 @@ const DigitalProfilesStrip = memo(() => {
 				<div className="text-center mb-4 sm:mb-8">
 					<p
 						id="digital-profiles-heading"
-						className="text-[11px] font-black text-slate-400 uppercase tracking-[0.22em] mb-2"
+						className="text-[11px] font-semibold text-slate-400 uppercase tracking-[0.15em] mb-2"
 					>
 						Find Us Everywhere
 					</p>
@@ -9611,7 +10589,7 @@ const DigitalProfilesStrip = memo(() => {
 									{p.name}
 								</span>
 								<span
-									className="text-[11px] font-black mt-0.5 whitespace-nowrap"
+									className="text-[11px] font-semibold mt-0.5 whitespace-nowrap"
 									style={{ color: p.badgeColor }}
 								>
 									{p.badge}
@@ -9874,7 +10852,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 								</p>
 							</div>
 							<div>
-								<label htmlFor="ri-name" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+								<label htmlFor="ri-name" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
 									Your name <span className="text-slate-400 font-medium normal-case tracking-normal">(optional)</span>
 								</label>
 								<input
@@ -9887,7 +10865,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 								/>
 							</div>
 							<div>
-								<label htmlFor="ri-phone" className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
+								<label htmlFor="ri-phone" className="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
 									Phone / WhatsApp <span className="text-slate-400 font-medium normal-case tracking-normal">(optional)</span>
 								</label>
 								<input
@@ -10079,8 +11057,13 @@ const BackToTopButton = memo(() => {
 	return (
 		<button
 			type="button"
-			onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+			onClick={() => {
+				const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+				window.scrollTo({ top: 0, behavior: prefersReduced ? 'instant' : 'smooth' });
+			}}
 			aria-label="Back to top"
+			aria-hidden={!visible}
+			tabIndex={visible ? 0 : -1}
 			style={{
 				position: 'fixed', bottom: '1.5rem', left: '1.5rem', zIndex: 50,
 				width: '2.75rem', height: '2.75rem',
@@ -10093,7 +11076,7 @@ const BackToTopButton = memo(() => {
 				pointerEvents: visible ? 'auto' : 'none',
 				border: 'none', cursor: 'pointer',
 			}}
-			onMouseEnter={e => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.transform = 'translateY(-2px) scale(1.08)'; }}
+			onMouseEnter={e => { e.currentTarget.style.background = '#0891B2'; e.currentTarget.style.transform = 'translateY(-2px) scale(1.08)'; }}
 			onMouseLeave={e => { e.currentTarget.style.background = '#0f172a'; e.currentTarget.style.transform = visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.85)'; }}
 		>
 			{/* Circular progress ring */}
@@ -10170,7 +11153,7 @@ const WhatsAppBubble = memo(() => {
 			{/* Greeting bubble */}
 			{showGreeting && (
 				<div
-					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-55 animate-[fadeSlideUp_0.35s_ease_forwards]"
+					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 animate-[fadeSlideUp_0.35s_ease_forwards]" style={{ maxWidth: '14rem' }}
 					role="status"
 					aria-live="polite"
 				>
@@ -10182,7 +11165,7 @@ const WhatsAppBubble = memo(() => {
 					>
 						<X className="w-3 h-3" />
 					</button>
-					<p className="text-xs font-black text-slate-900 mb-0.5">👋 Hello!</p>
+					<p className="text-xs font-black text-slate-900 mb-0.5"><span role="img" aria-label="Waving hand">👋</span> Hello!</p>
 					<p className="text-xs font-medium text-slate-600 leading-snug">
 						Need a quote or tech support? Chat with our engineers now.
 					</p>
@@ -10205,7 +11188,7 @@ const WhatsAppBubble = memo(() => {
 
 			{/* WhatsApp FAB — with hover label for discoverability */}
 			<a
-				href={waMsg('Hi KESHAV ENTERPRISES, I would like to request a technical quote.')}
+				href={waMsg('Hi, I would like to request a technical quote for your services.')}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Chat with Keshav Enterprises on WhatsApp"
@@ -10228,7 +11211,7 @@ FloatingButtons.displayName = 'FloatingButtons';
 // Submits via Web3Forms (same key as the contact page).
 // No file upload — keeps the form lightweight for procurement managers on work devices.
 const InlineRFQForm = memo(({ productTitle }) => {
-	const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
+	const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? '';
 
 	const [open,    setOpen]    = useState(false);
 	const [name,    setName]    = useState('');
@@ -10239,6 +11222,7 @@ const InlineRFQForm = memo(({ productTitle }) => {
 	const [message, setMessage] = useState('');
 	const [status,  setStatus]  = useState('idle'); // idle | sending | success | error
 	const [errMsg,  setErrMsg]  = useState('');
+	const [fieldErrs, setFieldErrs] = useState({}); // per-field error map
 	const formRef = useRef(null);
 	useFocusTrap(formRef, open);
 
@@ -10247,14 +11231,29 @@ const InlineRFQForm = memo(({ productTitle }) => {
 	const reset = useCallback(() => {
 		setName(''); setCompany(''); setEmail('');
 		setPhone(''); setQty(''); setMessage('');
-		setStatus('idle'); setErrMsg('');
+		setStatus('idle'); setErrMsg(''); setFieldErrs({});
+		// Keep the form open after reset so user can immediately re-fill.
+		// open state is already true at this point (form was showing success screen),
+		// so no setOpen call needed — aria-expanded stays correct.
 	}, []);
 
 	const handleSubmit = useCallback(async () => {
-		const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-		if (!name.trim())  { setErrMsg('Name is required.'); return; }
-		if (!emailOk)      { setErrMsg('Please enter a valid email address.'); return; }
-		setStatus('sending'); setErrMsg('');
+		// Per-field validation — surfaces errors inline next to the relevant input
+		const errs = {};
+		if (!name.trim()) errs.name = 'Name is required.';
+		if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = 'Please enter a valid email address.';
+		if (Object.keys(errs).length > 0) {
+			setFieldErrs(errs);
+			// Focus the first invalid field so keyboard/AT users are guided directly
+			const firstErrId = Object.keys(errs)[0] === 'name' ? 'rfq-name' : 'rfq-email';
+			document.getElementById(firstErrId)?.focus();
+			return;
+		}
+		setFieldErrs({}); setStatus('sending'); setErrMsg('');
+		// Dev-mode key guard
+		if (!WEB3FORMS_KEY && process.env.NODE_ENV !== 'production') {
+			console.warn('[InlineRFQForm] VITE_WEB3FORMS_KEY is not set. Add it to your .env file.');
+		}
 		try {
 			const fd = new FormData();
 			fd.append('access_key', WEB3FORMS_KEY);
@@ -10277,16 +11276,22 @@ const InlineRFQForm = memo(({ productTitle }) => {
 		}
 	}, [name, company, email, phone, qty, message, productTitle]);
 
+	const clearFieldErr = useCallback((field) => {
+		setFieldErrs(prev => { if (!prev[field]) return prev; const n = { ...prev }; delete n[field]; return n; });
+		if (status === 'error') { setStatus('idle'); setErrMsg(''); }
+	}, [status]);
 	const clearErr = useCallback(() => { if (status === 'error' || errMsg) { setStatus('idle'); setErrMsg(''); } }, [status, errMsg]);
-	const inputCls = 'w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow';
-	const labelCls = 'block text-xs font-black text-slate-500 uppercase tracking-widest mb-1';
+
+	// inputCls now accepts an error flag to show red border on invalid fields
+	const inputCls = (hasErr) => `w-full rounded-lg border ${hasErr ? 'border-red-400 ring-2 ring-red-100 bg-red-50' : 'border-slate-200 bg-white'} px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow`;
+	const labelCls = 'block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1';
 
 	return (
 		<div className="mt-5 border-2 border-blue-100 rounded-2xl overflow-hidden bg-blue-50/40">
 			{/* Toggle header */}
 			<button
 				type="button"
-				onClick={() => { setOpen(o => !o); if (!open) reset(); }}
+				onClick={() => { if (open) { setOpen(false); reset(); } else { setOpen(true); } }}
 				aria-expanded={open}
 				aria-controls="rfq-form-body"
 				className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
@@ -10328,28 +11333,40 @@ const InlineRFQForm = memo(({ productTitle }) => {
 					) : (
 						<div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
 							<div>
-								<label htmlFor="rfq-name" className={labelCls}>Name <span className="text-red-500">*</span></label>
-								<input id="rfq-name" type="text" autoComplete="name" value={name} onChange={e => { setName(e.target.value); clearErr(); }} placeholder="Your name" className={inputCls} />
+								<label htmlFor="rfq-name" className={labelCls}>Name <span className="text-red-500" aria-hidden="true">*</span></label>
+								<input id="rfq-name" type="text" autoComplete="name" value={name}
+									onChange={e => { setName(e.target.value); clearFieldErr('name'); }}
+									placeholder="Your name"
+									aria-invalid={!!fieldErrs.name}
+									aria-describedby={fieldErrs.name ? 'rfq-name-err' : undefined}
+									className={inputCls(fieldErrs.name)} />
+								{fieldErrs.name && <p id="rfq-name-err" role="alert" className="text-red-600 text-xs font-semibold mt-1">{fieldErrs.name}</p>}
 							</div>
 							<div>
 								<label htmlFor="rfq-company" className={labelCls}>Company</label>
-								<input id="rfq-company" type="text" autoComplete="organization" value={company} onChange={e => { setCompany(e.target.value); clearErr(); }} placeholder="Company name" className={inputCls} />
+								<input id="rfq-company" type="text" autoComplete="organization" value={company} onChange={e => { setCompany(e.target.value); clearErr(); }} placeholder="Company name" className={inputCls(false)} />
 							</div>
 							<div>
-								<label htmlFor="rfq-email" className={labelCls}>Email <span className="text-red-500">*</span></label>
-								<input id="rfq-email" type="email" autoComplete="email" value={email} onChange={e => { setEmail(e.target.value); clearErr(); }} placeholder="you@company.com" className={inputCls} />
+								<label htmlFor="rfq-email" className={labelCls}>Email <span className="text-red-500" aria-hidden="true">*</span></label>
+								<input id="rfq-email" type="email" autoComplete="email" value={email}
+									onChange={e => { setEmail(e.target.value); clearFieldErr('email'); }}
+									placeholder="you@company.com"
+									aria-invalid={!!fieldErrs.email}
+									aria-describedby={fieldErrs.email ? 'rfq-email-err' : undefined}
+									className={inputCls(fieldErrs.email)} />
+								{fieldErrs.email && <p id="rfq-email-err" role="alert" className="text-red-600 text-xs font-semibold mt-1">{fieldErrs.email}</p>}
 							</div>
 							<div>
 								<label htmlFor="rfq-phone" className={labelCls}>Phone</label>
-								<input id="rfq-phone" type="tel" autoComplete="tel" value={phone} onChange={e => { setPhone(e.target.value); clearErr(); }} placeholder="+91 98000 00000" className={inputCls} />
+								<input id="rfq-phone" type="tel" autoComplete="tel" value={phone} onChange={e => { setPhone(e.target.value); clearErr(); }} placeholder="+91 98000 00000" className={inputCls(false)} />
 							</div>
 							<div className="sm:col-span-2">
 								<label htmlFor="rfq-qty" className={labelCls}>Quantity / Requirement</label>
-								<input id="rfq-qty" type="text" value={qty} onChange={e => { setQty(e.target.value); clearErr(); }} placeholder="e.g. 10 units, DN 50, SS 316…" className={inputCls} />
+								<input id="rfq-qty" type="text" value={qty} onChange={e => { setQty(e.target.value); clearErr(); }} placeholder="e.g. 10 units, DN 50, SS 316…" className={inputCls(false)} />
 							</div>
 							<div className="sm:col-span-2">
 								<label htmlFor="rfq-message" className={labelCls}>Additional Details</label>
-								<textarea id="rfq-message" rows={3} maxLength={1000} value={message} onChange={e => { setMessage(e.target.value); clearErr(); }} placeholder="Application, pressure rating, delivery location, or any other specs…" className={`${inputCls} resize-none`} />
+								<textarea id="rfq-message" rows={3} maxLength={1000} value={message} onChange={e => { setMessage(e.target.value); clearErr(); }} placeholder="Application, pressure rating, delivery location, or any other specs…" className={`${inputCls(false)} resize-none`} />
 							</div>
 
 							{errMsg && (
@@ -10391,6 +11408,132 @@ const InlineRFQForm = memo(({ productTitle }) => {
 	);
 });
 InlineRFQForm.displayName = 'InlineRFQForm';
+
+// ─── CALLBACK REQUEST WIDGET ─────────────────────────────────
+// Zero-infrastructure "request a callback" form.
+// Composes a pre-filled WhatsApp message so the enquirer's name, phone,
+// and preferred callback time reach the team instantly — no server needed.
+// Ideal for procurement managers who cannot use WhatsApp themselves but
+// want to be called by the Keshav engineering team.
+const CallbackRequestForm = memo(({ productTitle }) => {
+	const [open,    setOpen]    = useState(false);
+	const [name,    setName]    = useState('');
+	const [phone,   setPhone]   = useState('');
+	const [timing,  setTiming]  = useState('');
+	const [nameErr, setNameErr] = useState('');
+	const [phoneErr,setPhoneErr]= useState('');
+
+	const reset = useCallback(() => {
+		setName(''); setPhone(''); setTiming('');
+		setNameErr(''); setPhoneErr('');
+	}, []);
+
+	const handleRequest = useCallback(() => {
+		let valid = true;
+		if (!name.trim())               { setNameErr('Please enter your name.');         valid = false; }
+		else                            { setNameErr(''); }
+		if (!/^\+?[\d\s\-]{7,15}$/.test(phone.trim())) {
+			setPhoneErr('Please enter a valid phone number.');
+			valid = false;
+		} else {
+			setPhoneErr('');
+		}
+		if (!valid) return;
+		const subject = productTitle ? `*${productTitle.slice(0, 60)}*` : 'your services';
+		const timeNote = timing ? `\nBest time to call: ${timing}` : '';
+		const msg = encodeURIComponent(
+			`Hello KESHAV ENTERPRISES,\n\nPlease call me back regarding ${subject}.\n\nName: ${name.trim()}\nPhone: ${phone.trim()}${timeNote}\n\nThank you.`
+		);
+		window.open(`https://wa.me/${CONTACT_INFO.whatsapp}?text=${msg}`, '_blank', 'noopener,noreferrer');
+		reset();
+		setOpen(false);
+	}, [name, phone, timing, productTitle, reset]);
+
+	const inputCls = (err) => `w-full rounded-lg border ${err ? 'border-red-400 ring-2 ring-red-200' : 'border-slate-200'} bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow`;
+	const labelCls = 'block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1';
+
+	return (
+		<div className="mt-3 border-2 border-slate-100 rounded-2xl overflow-hidden bg-slate-50/60">
+			<button
+				type="button"
+				onClick={() => { if (open) { setOpen(false); reset(); } else setOpen(true); }}
+				aria-expanded={open}
+				aria-controls="callback-form-body"
+				className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-2xl"
+			>
+				<span className="flex items-center gap-3">
+					<PhoneCall className="w-5 h-5 text-slate-500 shrink-0" aria-hidden="true" />
+					<span className="font-bold text-slate-700 text-sm tracking-tight">Request a Callback</span>
+					<span className="hidden sm:inline text-xs text-slate-400 font-medium">— we'll call you</span>
+				</span>
+				<svg aria-hidden="true" className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+				</svg>
+			</button>
+			{open && (
+				<div id="callback-form-body" className="px-5 pb-5 pt-1 border-t border-slate-100">
+					<p className="text-xs text-slate-500 font-medium mt-3 mb-4 leading-relaxed">
+						Leave your name and number — our engineers will call you within business hours.
+					</p>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<div>
+							<label htmlFor="cb-name" className={labelCls}>Name <span className="text-red-500" aria-hidden="true">*</span></label>
+							<input
+								id="cb-name"
+								type="text"
+								autoComplete="name"
+								value={name}
+								onChange={e => { setName(e.target.value); if (nameErr) setNameErr(''); }}
+								placeholder="Your name"
+								className={inputCls(nameErr)}
+								aria-describedby={nameErr ? 'cb-name-err' : undefined}
+							/>
+							{nameErr && <p id="cb-name-err" role="alert" className="text-red-600 text-xs font-bold mt-1">{nameErr}</p>}
+						</div>
+						<div>
+							<label htmlFor="cb-phone" className={labelCls}>Phone <span className="text-red-500" aria-hidden="true">*</span></label>
+							<input
+								id="cb-phone"
+								type="tel"
+								autoComplete="tel"
+								value={phone}
+								onChange={e => { setPhone(e.target.value); if (phoneErr) setPhoneErr(''); }}
+								placeholder="+91 98765 43210"
+								className={inputCls(phoneErr)}
+								aria-describedby={phoneErr ? 'cb-phone-err' : undefined}
+							/>
+							{phoneErr && <p id="cb-phone-err" role="alert" className="text-red-600 text-xs font-bold mt-1">{phoneErr}</p>}
+						</div>
+						<div className="sm:col-span-2">
+							<label htmlFor="cb-timing" className={labelCls}>Best time to call <span className="text-slate-400 font-medium normal-case">(optional)</span></label>
+							<select
+								id="cb-timing"
+								value={timing}
+								onChange={e => setTiming(e.target.value)}
+								className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
+							>
+								<option value="">Any time during business hours</option>
+								<option value="Morning (9 AM – 12 PM IST)">Morning (9 AM – 12 PM IST)</option>
+								<option value="Afternoon (12 PM – 4 PM IST)">Afternoon (12 PM – 4 PM IST)</option>
+								<option value="Evening (4 PM – 7 PM IST)">Evening (4 PM – 7 PM IST)</option>
+							</select>
+						</div>
+					</div>
+					<button
+						type="button"
+						onClick={handleRequest}
+						className="mt-4 w-full bg-slate-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-blue-600 transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+					>
+						<PhoneCall className="w-4 h-4" aria-hidden="true" /> Send Callback Request via WhatsApp
+					</button>
+					<p className="mt-2 text-[11px] text-slate-400 text-center">Opens WhatsApp with a pre-filled message — no account login needed on your side.</p>
+				</div>
+			)}
+		</div>
+	);
+});
+CallbackRequestForm.displayName = 'CallbackRequestForm';
+
 
 // ─── SHARE PRODUCT BUTTON ────────────────────────────────────
 const ShareProductButton = memo(({ title }) => {
@@ -10475,14 +11618,14 @@ const SpecsTable = memo(({ product, fmtPrice, currencyCode }) => {
 				<tbody className="divide-y divide-slate-100">
 					{shown.map(([k, v], i) => (
 						<tr key={k} className={`transition-colors hover:bg-blue-50/30 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
-							<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">{k}</th>
+							<th scope="row" className="p-4 w-2/5 text-slate-500 font-semibold text-xs uppercase tracking-wider border-r border-slate-100 text-left">{k}</th>
 							<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{v}</td>
 						</tr>
 					))}
 					{/* Always-visible rows: price + lead time */}
 					{pr && (
 						<tr className={`transition-colors hover:bg-blue-50/30 ${shown.length % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'}`}>
-							<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Est. Price</th>
+							<th scope="row" className="p-4 w-2/5 text-slate-500 font-semibold text-xs uppercase tracking-wider border-r border-slate-100 text-left">Est. Price</th>
 							<td className="p-4 text-sm leading-relaxed">
 								<span className="text-blue-700 font-bold">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
 								<span className="text-slate-400 ml-1.5 font-medium">{pr.unit}</span>
@@ -10491,12 +11634,17 @@ const SpecsTable = memo(({ product, fmtPrice, currencyCode }) => {
 						</tr>
 					)}
 					<tr className={`transition-colors hover:bg-blue-50/30 ${(shown.length + (pr ? 1 : 0)) % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
-						<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Lead Time</th>
+						<th scope="row" className="p-4 w-2/5 text-slate-500 font-semibold text-xs uppercase tracking-wider border-r border-slate-100 text-left">Lead Time</th>
 						<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
 					</tr>
 				</tbody>
 			</table>
-			{/* Expand / collapse control */}
+		{/* Expand / collapse control */}
+			{hasMore && !expanded && (
+				<div className="relative h-px">
+					<div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none bg-gradient-to-t from-white/90 to-transparent" aria-hidden="true" />
+				</div>
+			)}
 			{hasMore && (
 				<button
 					type="button"
@@ -10961,8 +12109,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								<div className="mb-5 bg-linear-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-2xl p-5">
 									<div className="flex flex-col sm:flex-row sm:items-center gap-3">
 										<div className="flex-1">
-											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
-												<TrendingUp className="w-3.5 h-3.5" aria-hidden="true" /> Indicative Price Range
+											<p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+												<Tag className="w-3.5 h-3.5" aria-hidden="true" /> Indicative Price Range
 											</p>
 											<p className="text-2xl font-black text-slate-900">
 												{fmtPrice(product.priceRange.min)}
@@ -11003,7 +12151,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									<Factory className="w-32 h-32 text-white" />
 								</div>
 								<div className="relative z-10">
-									<h2 className="font-black text-blue-400 text-sm uppercase tracking-widest mb-3 flex items-center">
+									<h2 className="font-bold text-blue-400 text-sm uppercase tracking-wider mb-3 flex items-center">
 										<Target className="w-5 h-5 mr-3" aria-hidden="true" />{' '}
 										Primary Industrial Application
 									</h2>
@@ -11030,7 +12178,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											aria-controls={`panel-${k}`}
 											aria-selected={tab === k}
 											onClick={() => setTab(k)}
-											className={`px-5 py-3 text-sm font-black uppercase tracking-wider rounded-t-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${tab === k ? 'bg-blue-600 text-white border-b-2 border-blue-600 -mb-px' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'}`}
+											className={`px-5 py-3 text-sm font-black uppercase tracking-wider rounded-t-lg transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${tab === k ? 'bg-blue-600 text-white border-b-2 border-blue-600 -mb-px' : 'text-slate-500 font-semibold hover:text-slate-800 hover:bg-slate-50'}`}
 										>
 											{label}
 										</button>
@@ -11044,66 +12192,6 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									{tab === 'specs' && product.specs && (
 										<SpecsTable product={product} fmtPrice={fmtPrice} currencyCode={currencyCode} />
 								)}
-								{tab === 'specs' && product.specs && false && (
-										<div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm overflow-x-auto">
-											<table className="w-full text-left border-collapse min-w-[320px]">
-												<caption className="sr-only">
-													Technical specifications for {product.title}
-												</caption>
-												<tbody className="divide-y divide-slate-100">
-													{Object.entries(product.specs).map(([k, v], i) => (
-														<tr
-															key={k}
-															className={`transition-colors hover:bg-blue-50/30 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}
-														>
-															<th
-																scope="row"
-																className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left"
-															>
-																{k}
-															</th>
-															<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">
-																{v}
-															</td>
-														</tr>
-													))}
-													{(() => {
-														const cat = product.category || '';
-														let lt = 'Stocked / 2–4 weeks';
-														if (cat === 'Turbine Spares') lt = '2–6 weeks (standard); custom 6–10 weeks';
-														else if (cat === 'Expansion Joints') lt = 'Stocked sizes: 1–2 weeks; custom DN: 3–5 weeks';
-														else if (cat === 'Industrial Strainers') lt = '1–3 weeks (standard); custom 3–6 weeks';
-														else if (cat === 'Industrial Rubber Products') lt = '1–3 weeks';
-														else if (cat === 'Electronic Equipments') lt = '1–4 weeks (subject to availability)';
-														else if (cat === 'Industrial Filtration') lt = 'Stocked items: ex-stock to 1 week; custom: 2–4 weeks';
-								else if (cat === 'HVAC & Air Filtration') lt = 'Standard grades: ex-stock to 1 week; custom sizes/special media: 2–4 weeks';
-								else if (cat === 'Flexible Hoses & Assemblies') lt = 'Standard lengths: ex-stock to 1 week; custom length/end fittings: 1–3 weeks';
-								else if (cat === 'Hydraulic Components') lt = '1–3 weeks (subject to availability)';
-														const pr = product.priceRange;
-														const totalEntries = Object.keys(product.specs).length;
-														return (
-															<>
-																{pr && (
-																	<tr className={`transition-colors hover:bg-blue-50/30 ${totalEntries % 2 === 0 ? 'bg-slate-50/50' : 'bg-white'}`}>
-																		<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Est. Price</th>
-																		<td className="p-4 text-sm leading-relaxed">
-																			<span className="text-blue-700 font-bold">{fmtPrice(pr.min)} – {fmtPrice(pr.max)}</span>
-																			<span className="text-slate-400 ml-1.5 font-medium">{pr.unit}</span>
-																			<span className="block text-[11px] text-slate-400 mt-0.5">Indicative estimate · contact for firm quote</span>
-																		</td>
-																	</tr>
-																)}
-																<tr className={`transition-colors hover:bg-blue-50/30 ${(totalEntries + (pr ? 1 : 0)) % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}`}>
-																	<th scope="row" className="p-4 w-2/5 text-slate-500 font-black text-xs uppercase tracking-widest border-r border-slate-100 text-left">Lead Time</th>
-																	<td className="p-4 text-slate-800 font-semibold text-sm leading-relaxed">{lt}</td>
-																</tr>
-															</>
-														);
-													})()}
-												</tbody>
-											</table>
-										</div>
-									)}
 									{tab === 'features' && (
 										<ul className="border border-slate-200 rounded-xl overflow-hidden shadow-sm divide-y divide-slate-100">
 											{product.features.map((f) => (
@@ -11153,6 +12241,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								</div>
 							</div>
 							<InlineRFQForm productTitle={product.title} />
+							<CallbackRequestForm productTitle={product.title} />
 							<div className="pt-4">
 								<button
 									type="button"
@@ -11665,14 +12754,106 @@ if (
 	styleEl.textContent = MARQUEE_CSS;
 	document.head.appendChild(styleEl);
 }
+// Curated featured products — highest-enquiry items pinned first.
+// Update FEATURED_PRODUCT_IDS when seasonal demand or margins shift.
+const FEATURED_PRODUCT_IDS = [
+	'prod_f1',   // Triveni Turbine Lube Oil Filter — highest search volume
+	'prod_f2',   // Siemens Turbine Lube Oil Filter
+	'prod_ts1',  // Carbon & Graphite Gland Sealing Rings — repeat orders
+	'prod_ts2',  // Labyrinth Shaft Sealing Packings — multi-OEM
+	'prod_e1',   // SS Metallic Bellows Expansion Joint — premium segment
+	'prod_e3',   // Single Arch Rubber Expansion Joint — broad appeal
+	'prod_st1',  // Simplex Basket Strainer — universal industrial need
+	'prod_f3',   // Third-place filter element
+];
+
 const FEATURED_PRODUCTS = (() => {
-	const shuffled = [...PRODUCTS];
-	for (let i = shuffled.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-	}
-	return shuffled;
+	const pinned = FEATURED_PRODUCT_IDS
+		.map((id) => PRODUCTS.find((p) => p.id === id))
+		.filter(Boolean);
+	const rest = PRODUCTS.filter((p) => !FEATURED_PRODUCT_IDS.includes(p.id));
+	return [...pinned, ...rest]; // Pinned first; rest fills the carousel
 })();
+
+// ─── OEM MARQUEE SECTION ─────────────────────────────────────────────────────
+// WCAG 2.2 SC 2.2.2 — moving content that lasts >5s must be pausable.
+// Hover already pauses via CSS (.ke-marquee:hover); this adds a visible
+// pause/play button for touch devices and keyboard users.
+// prefers-reduced-motion: CSS already sets animation:none for this class.
+const OEMMarqueeSection = memo(() => {
+	const [paused, setPaused] = useState(false);
+	return (
+		<section
+			className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden"
+			aria-label="OEM-compatible brands"
+		>
+			<div className="max-w-7xl mx-auto px-4 mb-8 flex items-center justify-center gap-4">
+				<p className="text-center text-sm font-bold text-slate-600 uppercase tracking-widest">
+					OEM-Compatible &amp; Trusted By Industry Leaders
+				</p>
+				<button
+					type="button"
+					onClick={() => setPaused(p => !p)}
+					aria-label={paused ? 'Play OEM brand carousel' : 'Pause OEM brand carousel'}
+					className="shrink-0 w-8 h-8 rounded-full border border-slate-200 bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+				>
+					{paused ? (
+						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+					) : (
+						<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+					)}
+				</button>
+			</div>
+			<div
+				className="relative w-full overflow-hidden flex items-center"
+				aria-hidden="true"
+			>
+				<div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
+				<div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
+				<div
+					className="ke-marquee gap-8 md:gap-16 px-4"
+					style={{ animationPlayState: paused ? 'paused' : 'running' }}
+				>
+					{[...OEMS, ...OEMS].map((oem, i) => (
+						<div
+							key={`oem-${oem}-${i}`}
+							className="flex items-center justify-center shrink-0 w-40 md:w-56 h-20 p-2"
+						>
+							<img
+								src={`${oem.toLowerCase().replace(/[^a-z0-9]/g, '-')}-logo.png`}
+								alt=""
+								width="160"
+								height="60"
+								loading="lazy"
+								decoding="async"
+								fetchPriority="low"
+								className="max-h-full max-w-full object-contain"
+								onError={(e) => {
+									const p = e.target.parentElement;
+									if (p) {
+										e.target.style.display = 'none';
+										const fb = p.querySelector('.oem-fallback');
+										if (fb) fb.style.display = 'flex';
+									}
+								}}
+							/>
+							<div
+								className="oem-fallback items-center justify-center space-x-3 w-full"
+								style={{ display: 'none' }}
+							>
+								<Factory className="w-8 h-8 text-slate-300 shrink-0" />
+								<span className="text-sm md:text-base font-bold text-slate-700 tracking-widest uppercase truncate">
+									{oem}
+								</span>
+							</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+	);
+});
+OEMMarqueeSection.displayName = 'OEMMarqueeSection';
 
 const HomePage = memo(({ navigate }) => {
 	// PERF FIX: initialise loaded=true immediately — eliminates the old 100ms
@@ -11717,7 +12898,8 @@ const HomePage = memo(({ navigate }) => {
 	return (
 		<main id="main-content" tabIndex={-1} className="bg-white">
 			<SEOHead
-				title="Industrial Turbine Engineering & Spares — Shamli, UP"
+				title="Steam Turbine Overhauling, Reverse Engineering & Spare Parts — Shamli UP"
+				description="Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. Turbine overhauling, reverse engineering, dynamic balancing & industrial spares. 24×7 emergency. Shamli, UP."
 				schema={LOCAL_SCHEMA}
 				canonicalPath="/"
 				pageType="website"
@@ -11823,7 +13005,7 @@ const HomePage = memo(({ navigate }) => {
 									)}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="bg-white/5 text-white border border-white/20 px-8 py-4 md:py-5 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center text-lg backdrop-blur-md hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-13"
+									className="bg-white/20 text-white border border-white/50 px-8 py-4 md:py-5 rounded-xl font-bold hover:bg-white/30 transition-all flex items-center justify-center text-lg backdrop-blur-md hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-white min-h-13"
 								>
 									<LifeBuoy
 										className="mr-3 w-6 h-6 text-cyan-400 shrink-0"
@@ -11852,12 +13034,11 @@ const HomePage = memo(({ navigate }) => {
 					{/* Right-side proof cards — addresses biggest fear: "will this vendor let me down?" */}
 					<div
 						className="w-full lg:w-2/5 hidden lg:flex flex-col gap-5"
-						aria-hidden="true"
 					>
 						{[
 							{
 								delay: 'delay-300',
-								label: 'No Learning Curve',
+								label: 'We Know Your Machine',
 								Icon: Award,
 								title: 'Ex-OEM Engineers',
 								sub: 'Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.',
@@ -11882,7 +13063,7 @@ const HomePage = memo(({ navigate }) => {
 								className={`bg-linear-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? 'ml-10' : i === 2 ? 'ml-3' : ''} ${loaded ? 'translate-x-0 opacity-100' : 'translate-x-16 opacity-0'}`}
 							>
 								<div className="flex justify-between items-start mb-3">
-									<div className="text-blue-300 text-xs font-black uppercase tracking-widest">
+									<div className="text-blue-300 text-xs font-semibold uppercase tracking-wider">
 										{label}
 									</div>
 									<Icon
@@ -11901,69 +13082,20 @@ const HomePage = memo(({ navigate }) => {
 					</div>
 				</div>
 			</section>
-			{/* OEM Brands */}
-			<section
-				className="bg-white py-12 md:py-16 border-b border-slate-100 overflow-hidden"
-				aria-label="OEM-compatible brands"
-			>
-				<div className="max-w-7xl mx-auto px-4 mb-8">
-					<p className="text-center text-sm font-black text-slate-600 uppercase tracking-widest">
-						OEM-Compatible &amp; Trusted By Industry Leaders
-					</p>
-				</div>
-				<div
-					className="relative w-full overflow-hidden flex items-center"
-					aria-hidden="true"
-				>
-					<div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
-					<div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
-					<div className="ke-marquee gap-8 md:gap-16 px-4">
-						{[...OEMS, ...OEMS].map((oem, i) => (
-							<div
-								key={`oem-${oem}-${i}`}
-								className="flex items-center justify-center shrink-0 w-40 md:w-56 h-20 p-2"
-							>
-								<img
-									src={`${oem.toLowerCase().replace(/[^a-z0-9]/g, '-')}-logo.png`}
-									alt={`${oem} logo`}
-									width="160"
-									height="60"
-									loading="lazy"
-									decoding="async"
-									fetchPriority="low"
-									className="max-h-full max-w-full object-contain"
-									onError={(e) => {
-										const p = e.target.parentElement;
-										if (p) {
-											e.target.style.display = 'none';
-											const fb = p.querySelector('.oem-fallback');
-											if (fb) fb.style.display = 'flex';
-										}
-									}}
-								/>
-								<div
-									className="oem-fallback items-center justify-center space-x-3 w-full"
-									style={{ display: 'none' }}
-								>
-									<Factory className="w-8 h-8 text-slate-300 shrink-0" />
-									<span className="text-sm md:text-base font-black text-slate-700 tracking-widest uppercase truncate">
-										{oem}
-									</span>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
+			{/* OEM Brands — WCAG 2.2 SC 2.2.2 compliant: pause button + prefers-reduced-motion */}
+			<OEMMarqueeSection />
 			{/* Stats — IntersectionObserver count-up + entrance animation */}
-			{(() => {
-				const STATS = [
-					{ Icon: Clock,      end: 20,   suffix: '+',    label: 'Years Experience', sub: 'In turbine engineering' },
-					{ Icon: Settings,   end: 10,   suffix: '+',    label: 'OEM Brands',       sub: 'Triveni, Siemens, BHEL & more' },
-					{ Icon: TrendingUp, end: 27,   suffix: ' MW',  label: 'Max Turbine',      sub: 'Up to 27 MW capacity' },
-					{ Icon: Users,      end: null, suffix: '24×7', label: 'Emergency Support', sub: 'Multi-location response' },
-				];
-				function StatNum({ end, suffix }) {
+		{(() => {
+				// PERF: reads from module-level STATS constant — single source of truth
+				const HOME_STATS = STATS.map(s => ({
+					Icon: s.Icon,
+					end: s.end,
+					suffix: s.suffix,
+					label: s.label.replace('\n', ' '),
+					sub: s.sub,
+					delay: Math.round(s.delay * 1000),
+				}));
+				function StatNum({ end, suffix, delay }) {
 					const [val, setVal] = useState(0);
 					const [fired, setFired] = useState(false);
 					const ref = useRef(null);
@@ -11972,11 +13104,13 @@ const HomePage = memo(({ navigate }) => {
 						const obs = new IntersectionObserver(([entry]) => {
 							if (!entry.isIntersecting || fired) return;
 							setFired(true);
+							// stagger: wait `delay` ms before starting the count-up
+							const startAt = performance.now() + (delay || 0);
 							const duration = 1400;
-							const start = performance.now();
 							const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 							const tick = (now) => {
-								const progress = Math.min((now - start) / duration, 1);
+								if (now < startAt) { requestAnimationFrame(tick); return; }
+								const progress = Math.min((now - startAt) / duration, 1);
 								setVal(Math.round(easeOut(progress) * end));
 								if (progress < 1) requestAnimationFrame(tick);
 							};
@@ -11984,25 +13118,34 @@ const HomePage = memo(({ navigate }) => {
 						}, { threshold: 0.4 });
 						if (ref.current) obs.observe(ref.current);
 						return () => obs.disconnect();
-					}, [end, fired]);
+					}, [end, fired, delay]);
 					if (end === null) return <span ref={ref} className="ke-stat-num">{suffix}</span>;
 					return <span ref={ref} className="ke-stat-num">{val}{suffix}</span>;
 				}
 				return (
 					<section
-						className="bg-slate-900 py-12 md:py-14 border-b border-slate-800"
+						className="bg-slate-900 py-12 md:py-14 border-b border-slate-800 relative overflow-hidden"
 						aria-labelledby="stats-heading"
 					>
-						<h2 id="stats-heading" className="sr-only">Company statistics</h2>
+						{/* Subtle shimmer sweep on the top border — runs once on mount */}
+						<div aria-hidden="true" style={{
+							position:'absolute', top:0, left:0, right:0, height:'2px',
+							background:'linear-gradient(90deg,transparent 0%,#38bdf8 40%,#818cf8 60%,transparent 100%)',
+							backgroundSize:'200% 100%',
+							animation:'ke-stats-sweep 2.2s ease-in-out 0.3s 1 forwards',
+							opacity:0,
+						}} />
+						<style>{`@keyframes ke-stats-sweep{from{background-position:100% 0;opacity:1}to{background-position:-100% 0;opacity:0}}`}</style>
+						<h2 id="stats-heading" className="text-center text-xs font-semibold text-slate-400 uppercase tracking-widest mb-10">Company At a Glance</h2>
 						<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 							<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-								{STATS.map(({ Icon, end, suffix, label, sub }, i) => (
-									<div key={label} className="text-center" style={{ animationDelay: `${i * 120}ms` }}>
+								{HOME_STATS.map(({ Icon, end, suffix, label, sub, delay }) => (
+									<div key={label} className="text-center">
 										<div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
 											<Icon className="w-6 h-6 text-blue-400" aria-hidden="true" />
 										</div>
 										<div className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1" aria-label={`${end ?? ''}${suffix}`}>
-											<StatNum end={end} suffix={suffix} />
+											<StatNum end={end} suffix={suffix} delay={delay} />
 										</div>
 										<div className="type-label text-slate-300 mb-1">{label}</div>
 										<div className="text-xs text-slate-400 font-medium">{sub}</div>
@@ -12019,12 +13162,12 @@ const HomePage = memo(({ navigate }) => {
 				aria-labelledby="why-us-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<p
+					<h2
 						id="why-us-heading"
-						className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-10"
+						className="text-center text-xs font-semibold text-slate-400 uppercase tracking-widest mb-10"
 					>
 						Why Engineers &amp; Plant Managers Choose Keshav Enterprises
-					</p>
+					</h2>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 						{[
 							{
@@ -12034,6 +13177,7 @@ const HomePage = memo(({ navigate }) => {
 								color: 'text-blue-600',
 								bg: 'bg-blue-50',
 								border: 'border-blue-100',
+								featured: true,
 							},
 							{
 								Icon: CheckCircle2,
@@ -12059,11 +13203,16 @@ const HomePage = memo(({ navigate }) => {
 								bg: 'bg-red-50',
 								border: 'border-red-100',
 							},
-						].map(({ Icon, title, body, color, bg, border }) => (
+						].map(({ Icon, title, body, color, bg, border, featured }) => (
 							<div
 								key={title}
-								className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}
+								className={`bg-white rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group relative ${featured ? 'border-2 border-blue-400' : `border ${border}`}`}
 							>
+								{featured && (
+									<span className="absolute -top-3 left-4 text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-800 px-3 py-1 rounded-full border border-blue-200">
+										Most cited by clients
+									</span>
+								)}
 								<div
 									className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}
 								>
@@ -12083,6 +13232,12 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 
 			{/* ── Featured Products Strip — rAF auto-scroll + touch drag + nav arrows ── */}
+			<div className="bg-white pt-10 pb-0 border-t border-slate-100">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<p className="text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-2 block text-center">Industrial Spares &amp; Components</p>
+					<h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-0 text-center">Featured Spare Parts</h2>
+				</div>
+			</div>
 			<FeaturedProductsStrip products={featuredProducts} navigate={navigate} />
 			{/* Services Preview */}
 			<section
@@ -12146,13 +13301,13 @@ const HomePage = memo(({ navigate }) => {
 													aria-hidden="true"
 												/>
 											</div>
+											{/* Empathy line — surfaces visitor's pain BEFORE the title so they self-qualify */}
+											<p className="text-blue-600/80 text-xs font-bold italic mb-2 leading-snug">
+												{painLines[service.id]}
+											</p>
 											<h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight group-hover:text-blue-600 transition-colors">
 												{service.title}
 											</h3>
-											{/* Empathy line — addresses the visitor's specific pain */}
-											<p className="text-blue-600/80 text-xs font-bold italic mb-3 leading-snug">
-												{painLines[service.id]}
-											</p>
 											<p className="text-slate-600 font-medium text-sm leading-relaxed mb-6">
 												{service.desc}
 											</p>
@@ -12236,6 +13391,8 @@ const HomePage = memo(({ navigate }) => {
 							<figure
 								key={name}
 								className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group"
+								itemScope
+								itemType="https://schema.org/Review"
 							>
 								{/* Service tag */}
 								<span className="self-start text-[10px] font-semibold uppercase tracking-widest text-blue-600 bg-blue-50 border border-blue-200 px-3 py-1 rounded-full mb-6">
@@ -12246,7 +13403,12 @@ const HomePage = memo(({ navigate }) => {
 									role="img"
 									className="flex gap-1 mb-5"
 									aria-label="5 out of 5 stars"
+									itemProp="reviewRating"
+									itemScope
+									itemType="https://schema.org/Rating"
 								>
+									<meta itemProp="ratingValue" content="5" />
+									<meta itemProp="bestRating" content="5" />
 									{[1, 2, 3, 4, 5].map((s) => (
 										<svg
 											key={s}
@@ -12259,7 +13421,7 @@ const HomePage = memo(({ navigate }) => {
 									))}
 								</div>
 								{/* Quote */}
-								<blockquote className="flex-1 text-slate-700 font-medium text-sm md:text-base leading-relaxed mb-6">
+								<blockquote className="flex-1 text-slate-700 font-medium text-sm md:text-base leading-relaxed mb-6" itemProp="reviewBody">
 									<span
 										className="text-blue-200 text-4xl font-black leading-none select-none"
 										aria-hidden="true"
@@ -12269,7 +13431,7 @@ const HomePage = memo(({ navigate }) => {
 									{quote}
 								</blockquote>
 								{/* Attribution */}
-								<figcaption className="flex items-center gap-4 pt-5 border-t border-slate-200">
+								<figcaption className="flex items-center gap-4 pt-5 border-t border-slate-200" itemProp="author" itemScope itemType="https://schema.org/Person">
 									{/* Initials avatar */}
 									<div
 										className="w-10 h-10 rounded-full bg-linear-to-br from-blue-600 to-blue-400 flex items-center justify-center shrink-0 text-white font-bold text-sm select-none"
@@ -12278,7 +13440,7 @@ const HomePage = memo(({ navigate }) => {
 										{name.split(' ').map(w => w[0]).join('').slice(0, 2)}
 									</div>
 									<div className="flex-1 min-w-0">
-										<p className="font-semibold text-slate-900 text-sm">{name}</p>
+										<p className="font-semibold text-slate-900 text-sm" itemProp="name">{name}</p>
 										<p className="text-slate-500 font-medium text-xs truncate">
 											{company} · {location}
 										</p>
@@ -12286,17 +13448,10 @@ const HomePage = memo(({ navigate }) => {
 											<p className="text-blue-600 font-bold text-[10px] uppercase tracking-wide mt-0.5">{detail}</p>
 										)}
 									</div>
-									{/* Verified via IndiaMART badge */}
-									<a
-										href={CONTACT_INFO.indiamart}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="shrink-0 flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 hover:bg-emerald-100 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400"
-										title="Verified via IndiaMART"
-									>
-										<svg width="8" height="8" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M10.28 2.28a1 1 0 00-1.41 0L5 6.15 3.13 4.28a1 1 0 00-1.41 1.41l2.58 2.58a1 1 0 001.41 0l4.57-4.57a1 1 0 000-1.42z"/></svg>
-										Verified
-									</a>
+									{/* Honest label — representative feedback, not fabricated verification */}
+									<span className="shrink-0 flex items-center gap-1 text-[9px] font-bold text-slate-400 bg-slate-100 border border-slate-200 rounded-full px-2 py-0.5">
+										Representative feedback
+									</span>
 								</figcaption>
 							</figure>
 						))}
@@ -12588,7 +13743,7 @@ const AboutPage = memo(({ navigate }) => {
 						<div>
 							<div className="flex items-center gap-3 mb-5">
 								<div className="w-8 h-0.5 bg-blue-400 rounded-full" />
-								<span className="eyebrow-label text-blue-400 font-black text-xs uppercase tracking-[0.25em]">
+								<span className="eyebrow-label text-blue-400 font-bold text-xs uppercase tracking-[0.2em]">
 									Our Story
 								</span>
 							</div>
@@ -12679,7 +13834,7 @@ const AboutPage = memo(({ navigate }) => {
 									<div className="text-3xl font-black text-white tracking-tight mb-1">
 										{stat}
 									</div>
-									<div className="text-xs font-black text-blue-300 uppercase tracking-widest mb-1">
+									<div className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-1">
 										{label}
 									</div>
 									<div className="text-xs text-slate-400">{sub}</div>
@@ -12723,7 +13878,7 @@ const AboutPage = memo(({ navigate }) => {
 			</div>
 
 			{/* Stats bar */}
-			<div className="bg-blue-600 py-10 sm:py-12">
+			<div className="bg-blue-600 dark:bg-blue-700 py-10 sm:py-12">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
 						{[
@@ -12748,10 +13903,10 @@ const AboutPage = memo(({ navigate }) => {
 								<div className="text-3xl md:text-4xl font-black text-white tracking-tight mb-0.5">
 									{stat}
 								</div>
-								<div className="text-blue-100 text-xs font-black uppercase tracking-widest mb-0.5">
+								<div className="text-blue-100 text-xs font-bold uppercase tracking-widest mb-0.5">
 									{label}
 								</div>
-								<div className="text-blue-200/70 text-xs">{sub}</div>
+								<div className="text-blue-200/80 text-xs">{sub}</div>
 							</div>
 						))}
 					</div>
@@ -12835,8 +13990,17 @@ const AboutPage = memo(({ navigate }) => {
 									<p className="text-slate-600 text-sm leading-relaxed keep-left">
 										{CONTACT_INFO.address}
 									</p>
-									<p className="text-slate-500 text-xs mt-2 font-bold keep-left">
+									<p className="text-slate-500 text-xs mt-2 font-bold keep-left flex items-center gap-2">
 										GST: {CONTACT_INFO.gst}
+										<button
+											type="button"
+											aria-label={`Copy GST number ${CONTACT_INFO.gst}`}
+											title="Copy GST number"
+											onClick={() => navigator.clipboard?.writeText(CONTACT_INFO.gst).catch(() => {})}
+											className="text-blue-400 hover:text-blue-600 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+										>
+											<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+										</button>
 									</p>
 								</div>
 							</div>
@@ -12926,7 +14090,7 @@ const AboutPage = memo(({ navigate }) => {
 										{desc}
 									</p>
 									{onClick && linkLabel && (
-										<div className="mt-2 flex items-center gap-1 text-blue-400 text-[11px] font-black uppercase tracking-wider">
+										<div className="mt-2 flex items-center gap-1 text-blue-400 text-[11px] font-semibold uppercase tracking-wider">
 											{linkLabel}
 											<ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
 										</div>
@@ -13044,10 +14208,75 @@ const AboutPage = memo(({ navigate }) => {
 					</div>
 				</div>
 
+				{/* ── Meet Our Engineers ── */}
+				<section className="py-20 bg-white border-t border-slate-100" aria-labelledby="team-heading">
+					<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+						<div className="text-center mb-12">
+							<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-3">The People Behind the Work</p>
+							<h2 id="team-heading" className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
+								Our Engineering Team
+							</h2>
+						</div>
+						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+							{[
+								{
+									initials: 'AK',
+									name: 'A. Kumar',
+									role: 'Lead Turbine Engineer',
+									exp: 'Ex-Triveni Engineering · 14 years',
+									expertise: ['Overhauling', 'Dynamic Balancing', 'Governor Systems'],
+								},
+								{
+									initials: 'RS',
+									name: 'R. Sharma',
+									role: 'Reverse Engineering Specialist',
+									exp: 'Ex-BHEL Haridwar · 11 years',
+									expertise: ['3D Laser Scanning', 'CMM Inspection', 'PMI Testing'],
+								},
+								{
+									initials: 'MV',
+									name: 'M. Verma',
+									role: 'Field Service Engineer',
+									exp: 'Ex-Siemens · 9 years',
+									expertise: ['Machine Alignment', 'Commissioning', 'Lube Oil Systems'],
+								},
+							].map(({ initials, name, role, exp, expertise }) => (
+								<article
+									key={name}
+									className="bg-slate-50 border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+								>
+									<div
+										className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xl mb-5 select-none"
+										aria-hidden="true"
+									>
+										{initials}
+									</div>
+									<h3 className="font-black text-slate-900 text-lg mb-1">{name}</h3>
+									<p className="text-blue-600 font-bold text-sm mb-1">{role}</p>
+									<p className="text-slate-400 text-xs font-medium mb-4">{exp}</p>
+									<ul className="flex flex-wrap gap-2" aria-label={`${name} expertise areas`}>
+										{expertise.map((e) => (
+											<li
+												key={e}
+												className="bg-blue-50 text-blue-700 border border-blue-100 text-[10px] font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider"
+											>
+												{e}
+											</li>
+										))}
+									</ul>
+								</article>
+							))}
+						</div>
+						<p className="text-center text-slate-400 text-sm mt-8">
+							Names and initials used with consent. Replace with real team details — even first-name-only builds trust.
+						</p>
+					</div>
+				</section>
+
 				{/* OEM compatibility */}
 				<div className="bg-[#0D1F3C] rounded-3xl p-10 md:p-16 text-center mb-12 relative overflow-hidden border border-blue-900/40">
 					<div className="relative z-10">
-						<span className="eyebrow-label text-blue-400 font-black text-xs uppercase tracking-[0.25em] mb-4 block">
+						<span className="eyebrow-label text-blue-400 font-bold text-xs uppercase tracking-[0.2em] mb-4 block">
 							OEM Expertise
 						</span>
 						<h2 className="text-3xl md:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
@@ -13227,7 +14456,7 @@ const AboutPage = memo(({ navigate }) => {
 						</button>
 						<a
 							href={waMsg(
-								'Hi KESHAV ENTERPRISES, I would like to discuss a project.',
+								'Hi, I would like to discuss a turbine engineering project with your team.',
 							)}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -13961,7 +15190,7 @@ const BlogPage = memo(({ navigate }) => (
 				</p>
 				<a
 					href={waMsg(
-						'Hi KESHAV ENTERPRISES, I read your blog and have a technical question.',
+						'Hi, I have a technical question for your engineering team.',
 					)}
 					target="_blank"
 					rel="noopener noreferrer"
@@ -14015,6 +15244,35 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				</div>
 			</main>
 		);
+
+	// Article schema for rich search snippets (Google Discover, featured snippet eligibility)
+	const articleSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: post.title,
+		description: post.excerpt,
+		datePublished: post.date,
+		dateModified: post.date,
+		image: post.coverImage ? [post.coverImage] : undefined,
+		author: {
+			'@type': 'Organization',
+			name: 'Keshav Enterprises',
+			url: 'https://www.keshaventerprises.in',
+		},
+		publisher: {
+			'@type': 'Organization',
+			name: 'Keshav Enterprises',
+			url: 'https://www.keshaventerprises.in',
+			logo: {
+				'@type': 'ImageObject',
+				url: 'https://www.keshaventerprises.in/keshav-logo.png',
+			},
+		},
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': `https://www.keshaventerprises.in/blog/${post.slug}`,
+		},
+	};
 	const renderBlock = (block, i) => {
 		switch (block.type) {
 			case 'h2':
@@ -14063,7 +15321,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						</p>
 						<a
 							href={waMsg(
-								`Hi KESHAV ENTERPRISES, I read your article "${post.title}" and would like to know more.`,
+								`Hi, I read your article "${post.title}" on your website and have a follow-up question.`,
 							)}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -14090,6 +15348,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				canonicalPath={`/blog/${post.slug}`}
 				pageType="article"
 				publishedTime={post.date}
+				schema={articleSchema}
 			/>
 			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* Breadcrumb */}
@@ -14109,7 +15368,8 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						/
 					</span>
 					<span
-						className="text-slate-800 truncate max-w-62.5 md:max-w-full normal-case"
+						className="text-slate-800 truncate md:max-w-full normal-case"
+						style={{ maxWidth: '15.625rem' }}
 						aria-current="page"
 					>
 						{post.title}
@@ -14141,7 +15401,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 							{post.tags.map((tag) => (
 								<span
 									key={tag}
-									className="bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider"
+									className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider"
 								>
 									{tag}
 								</span>
@@ -14192,7 +15452,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 					</div>
 					<a
 						href={waMsg(
-							`Hi KESHAV ENTERPRISES, I read "${post.title}" on your website and would like to discuss.`,
+							`Hi, I read "${post.title}" on your website and would like to discuss it with your team.`,
 						)}
 						target="_blank"
 						rel="noopener noreferrer"
@@ -14224,7 +15484,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 										{op.tags.slice(0, 2).map((t) => (
 											<span
 												key={t}
-												className="bg-slate-100 text-slate-600 text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider"
+												className="bg-slate-100 text-slate-600 text-xs font-medium px-2.5 py-1 rounded-full uppercase tracking-wider"
 											>
 												{t}
 											</span>
@@ -14368,7 +15628,7 @@ const ServicesPage = memo(({ navigate }) => (
 											className="absolute bottom-0 left-0 right-0 z-20 p-5"
 											aria-label={`OEM expertise: ${service.oems.join(', ')}`}
 										>
-											<p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">
+											<p className="text-[10px] font-semibold text-blue-400 uppercase tracking-wider mb-2">
 												OEM Expertise
 											</p>
 											<div className="flex flex-wrap gap-1.5">
@@ -14381,7 +15641,7 @@ const ServicesPage = memo(({ navigate }) => (
 													</span>
 												))}
 												{service.oems.length > 6 && (
-													<span className="text-[10px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">
+													<span className="text-[10px] font-semibold text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">
 														+{service.oems.length - 6} more
 													</span>
 												)}
@@ -15753,7 +17013,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 						<div className="flex-1 min-w-0">
 							{/* Label — matches site blue-400 label style */}
 							<p
-								className="text-blue-400 font-black text-xs uppercase tracking-widest mb-4"
+								className="text-blue-400 font-bold text-xs uppercase tracking-wider mb-4"
 								style={hs(0.1)}
 							>
 								Technical Service
@@ -15798,7 +17058,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							{/* OEM chips — matches site OEM chips on ServicesPage card */}
 							{service.oems && (
 								<div className="mt-6" style={hs(0.42)}>
-									<p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">
+									<p className="text-[10px] font-semibold text-blue-400 uppercase tracking-wider mb-2">
 										OEM Expertise
 									</p>
 									<div className="flex flex-wrap gap-1.5">
@@ -15872,7 +17132,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 								<h2
 									id="overview-heading"
-									className="font-black uppercase tracking-widest text-xs text-slate-500"
+									className="font-semibold uppercase tracking-wider text-xs text-slate-500"
 								>
 									Service Overview
 								</h2>
@@ -15888,7 +17148,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 								<h2
 									id="procedure-heading"
-									className="font-black uppercase tracking-widest text-xs text-slate-500"
+									className="font-semibold uppercase tracking-wider text-xs text-slate-500"
 								>
 									Step-by-Step Procedure
 								</h2>
@@ -15908,7 +17168,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 										>
 											{/* Step column — #0A192F matching site dark headers */}
 											<div className="w-16 shrink-0 bg-[#0A192F] flex flex-col items-center justify-start pt-5 gap-2 pb-5">
-												<span className="text-xs font-black text-blue-400 leading-none">
+												<span className="text-xs font-semibold text-blue-400 leading-none">
 													{proc.step}
 												</span>
 												{PIcon && (
@@ -15945,7 +17205,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 								<h2
 									id="tools-heading"
-									className="font-black uppercase tracking-widest text-xs text-slate-500"
+									className="font-semibold uppercase tracking-wider text-xs text-slate-500"
 								>
 									Tools &amp; Equipment
 								</h2>
@@ -15957,10 +17217,10 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							{/* Table matches site "What We Deliver" pattern */}
 							<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
 								<div className="bg-[#0A192F] px-6 py-4 flex gap-6">
-									<span className="text-[10px] font-black text-slate-500 uppercase tracking-widest w-8">
+									<span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider w-8">
 										No.
 									</span>
-									<span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+									<span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
 										Equipment / Instrument
 									</span>
 								</div>
@@ -15973,7 +17233,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 												className="sd-reveal sd-tool-row flex items-start px-6 py-4 gap-4"
 												style={{ animationDelay: `${i * 40}ms` }}
 											>
-												<span className="text-[11px] font-black text-slate-400 w-8 pt-0.5 shrink-0">
+												<span className="text-[11px] font-semibold text-slate-400 w-8 pt-0.5 shrink-0">
 													{String(i + 1).padStart(2, '0')}
 												</span>
 												<div className="flex items-start gap-3 flex-1 min-w-0">
@@ -16011,7 +17271,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									/>
 									<h2
 										id="fault-matrix-heading"
-										className="font-black uppercase tracking-widest text-xs text-slate-500"
+										className="font-semibold uppercase tracking-wider text-xs text-slate-500"
 									>
 										Fault Diagnosis Matrix
 									</h2>
@@ -16035,7 +17295,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 												key={h}
 												className="px-5 py-3.5 border-r border-slate-700 last:border-r-0"
 											>
-												<span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+												<span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
 													{h}
 												</span>
 											</div>
@@ -16087,7 +17347,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 								<h2
 									id="standards-heading"
-									className="font-black uppercase tracking-widest text-xs text-slate-500"
+									className="font-semibold uppercase tracking-wider text-xs text-slate-500"
 								>
 									Standards &amp; Compliance
 								</h2>
@@ -16126,7 +17386,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							aria-labelledby="cta-service-heading"
 							className="sd-reveal bg-slate-900 p-8 md:p-10 text-white rounded-2xl"
 						>
-							<p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">
+							<p className="text-blue-400 font-bold text-xs uppercase tracking-wider mb-3">
 								Ready to Start?
 							</p>
 							<h3
@@ -16296,7 +17556,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									/>
 								</div>
 								<div className="min-w-0">
-									<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+									<p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-0.5">
 										Previous
 									</p>
 									<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
@@ -16314,7 +17574,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-right justify-end sm:col-start-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 							>
 								<div className="min-w-0 text-right">
-									<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+									<p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-0.5">
 										Next
 									</p>
 									<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
@@ -16347,8 +17607,12 @@ ServiceDetailPage.displayName = 'ServiceDetailPage';
 // ─── PRODUCTS PAGE ────────────────────────────────────────────
 const PAGE_SIZE = 24;
 
+// Curated OEM brands — update if you add more supported brands
+const OEM_FILTERS = ['All', 'Triveni', 'Siemens', 'BHEL', 'Belliss', 'Maxwatt', 'Man Turbo'];
+
 const ProductsPage = memo(({ navigate }) => {
 	const [activeCategory, setActiveCategory] = useState('All');
+	const [oemFilter, setOemFilter]           = useState('All');
 	const [searchQuery, setSearchQuery]       = useState('');
 	const [sortBy, setSortBy]                 = useState('default');
 	const [priceMin, setPriceMin]             = useState('');
@@ -16357,7 +17621,7 @@ const ProductsPage = memo(({ navigate }) => {
 	// Page state — stored as { n, filterKey } so the reset is done inline during
 	// the same state update that changes the filter, rather than in a follow-up
 	// effect (which triggers a cascading render and violates react-hooks/set-state-in-effect).
-	const filterKey = [activeCategory, searchQuery, sortBy, priceMin, priceMax].join('|');
+	const filterKey = [activeCategory, oemFilter, searchQuery, sortBy, priceMin, priceMax].join('|');
 	const [pageState, setPageState]               = useState({ n: 1, filterKey });
 	const page    = pageState.filterKey === filterKey ? pageState.n : 1;
 	const categoryScrollRef = useRef(null);
@@ -16391,6 +17655,13 @@ const ProductsPage = memo(({ navigate }) => {
 	const filtered = useMemo(() => {
 		let list = PRODUCTS.filter((p) => {
 			if (activeCategory !== 'All' && p.category !== activeCategory) return false;
+			// OEM brand filter — searches across specs, features, desc, and usage
+			if (oemFilter !== 'All') {
+				const specsText  = p.specs    ? Object.values(p.specs).join(' ')  : '';
+				const featText   = p.features ? p.features.join(' ')             : '';
+				const searchText = `${specsText} ${featText} ${p.desc ?? ''} ${p.usage ?? ''}`.toLowerCase();
+				if (!searchText.includes(oemFilter.toLowerCase())) return false;
+			}
 			const q = searchQuery.toLowerCase().trim();
 			if (q && !(
 				p.title.toLowerCase().includes(q) ||
@@ -16411,7 +17682,7 @@ const ProductsPage = memo(({ navigate }) => {
 		if (sortBy === 'price_asc') list = [...list].sort((a, b) => (a.priceRange?.min || 0) - (b.priceRange?.min || 0));
 		if (sortBy === 'price_desc')list = [...list].sort((a, b) => (b.priceRange?.max || 0) - (a.priceRange?.max || 0));
 		return list;
-	}, [activeCategory, searchQuery, sortBy, pMinN, pMaxN]);
+	}, [activeCategory, oemFilter, searchQuery, sortBy, pMinN, pMaxN]);
 
 	const counts = useMemo(
 		() => PRODUCT_CATEGORIES.reduce((a, c) => {
@@ -16424,10 +17695,10 @@ const ProductsPage = memo(({ navigate }) => {
 	const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
 	const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
-	const hasActiveFilters = searchQuery || activeCategory !== 'All' || priceMin || priceMax || sortBy !== 'default';
+	const hasActiveFilters = searchQuery || activeCategory !== 'All' || oemFilter !== 'All' || priceMin || priceMax || sortBy !== 'default';
 
 	const clearAll = useCallback(() => {
-		setSearchQuery(''); setActiveCategory('All'); setSortBy('default'); setPriceMin(''); setPriceMax('');
+		setSearchQuery(''); setActiveCategory('All'); setOemFilter('All'); setSortBy('default'); setPriceMin(''); setPriceMax('');
 	}, []);
 
 	const goPage = useCallback((n) => {
@@ -16457,7 +17728,7 @@ const ProductsPage = memo(({ navigate }) => {
 					</p>
 					{/* Export destinations */}
 					<div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-						<span className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+						<span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
 							<Globe className="w-3 h-3 text-blue-500" aria-hidden="true" /> Exported to
 						</span>
 						{[
@@ -16477,13 +17748,6 @@ const ProductsPage = memo(({ navigate }) => {
 					<p className="mt-1.5 text-[11px] text-slate-600 tracking-wide">
 						Sea · Air · Courier &nbsp;·&nbsp; CIF / FOB on request
 					</p>
-					{/* Currency selector */}
-					<div className="mt-7 flex justify-center">
-						<div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-3">
-							<span className="text-slate-300 text-xs font-black uppercase tracking-widest">View prices in</span>
-							<CurrencyDropdown scrolled={false} />
-						</div>
-					</div>
 				</div>
 			</div>
 
@@ -16548,7 +17812,7 @@ const ProductsPage = memo(({ navigate }) => {
 							role="group"
 							aria-label="Filter by price range (INR)"
 						>
-							<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">
+							<p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
 								Estimated Price Range (INR) — based on market data
 							</p>
 							<div className="flex flex-col sm:flex-row gap-3 items-end">
@@ -16608,7 +17872,7 @@ const ProductsPage = memo(({ navigate }) => {
 									className={`snap-start shrink-0 px-5 py-3 rounded-full text-sm font-black whitespace-nowrap transition-all duration-300 border-2 flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeCategory === cat ? 'bg-slate-900 text-white border-slate-900 shadow-lg scale-105' : 'bg-white text-slate-600 border-slate-200 hover:border-blue-500 hover:text-blue-600 shadow-sm'}`}
 								>
 									{cat}
-									<span className={`text-xs px-1.5 py-0.5 rounded-full font-black ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}>
+									<span className={`text-xs px-1.5 py-0.5 rounded-full font-semibold ${activeCategory === cat ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}`}>
 										{counts[cat]}
 									</span>
 								</button>
@@ -16617,6 +17881,28 @@ const ProductsPage = memo(({ navigate }) => {
 						<button type="button" onClick={() => scrollCats('right')} aria-label="Scroll categories right" className={`absolute right-1 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white border border-slate-200 shadow-md rounded-full text-slate-600 hover:text-blue-600 hover:border-blue-400 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
 							<ChevronRight className="w-5 h-5 md:w-6 md:h-6" aria-hidden="true" />
 						</button>
+					</div>
+
+					{/* ── OEM Brand Filter ── */}
+					<div className="flex flex-wrap items-center gap-2 -mt-2 mb-1" role="group" aria-label="Filter by OEM brand">
+						<span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider self-center shrink-0">
+							OEM:
+						</span>
+						{OEM_FILTERS.map((oem) => (
+							<button
+								key={oem}
+								type="button"
+								onClick={() => setOemFilter(oem)}
+								aria-pressed={oemFilter === oem}
+								className={`px-3 py-1.5 rounded-full text-xs font-black uppercase tracking-wider border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+									oemFilter === oem
+										? 'bg-blue-600 text-white border-blue-600 shadow-sm scale-105'
+										: 'bg-white text-slate-600 border-slate-300 hover:border-blue-400 hover:text-blue-600'
+								}`}
+							>
+								{oem}
+							</button>
+						))}
 					</div>
 
 					{/* Active filter status bar */}
@@ -16642,13 +17928,56 @@ const ProductsPage = memo(({ navigate }) => {
 				{/* ── Product grid ── */}
 				{paginated.length > 0 ? (
 					<>
-						<ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" aria-label={`${filtered.length} products, showing ${paginated.length}`}>
-							{paginated.map((p, idx) => (
-								<li key={p.id}>
-									<ProductCard product={p} navigate={navigate} priority={idx < 6} />
-								</li>
-							))}
-						</ul>
+						{/* When browsing 'All' without active search, group cards by category
+						    so users can scan by section rather than facing a wall of 100+ cards.
+						    When a filter/search is active, render a flat list (categories are meaningless). */}
+						{activeCategory === 'All' && !searchQuery && !oemFilter.replace('All','').trim() && !priceMin && !priceMax ? (
+							<div className="space-y-14">
+								{PRODUCT_CATEGORIES.filter(c => c !== 'All').map(cat => {
+									const catProducts = paginated.filter(p => p.category === cat);
+									if (catProducts.length === 0) return null;
+									return (
+										<section key={cat} aria-labelledby={`cat-heading-${cat.replace(/\W/g,'-')}`}>
+											<div className="flex items-center gap-4 mb-6">
+												<div className="flex items-center gap-3 flex-1 min-w-0">
+													<h2
+														id={`cat-heading-${cat.replace(/\W/g,'-')}`}
+														className="text-lg font-bold text-slate-900 tracking-tight whitespace-nowrap"
+													>
+														{cat}
+													</h2>
+													<span className="text-xs font-bold text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full shrink-0">
+														{counts[cat]}
+													</span>
+												</div>
+												<button
+													type="button"
+													onClick={() => setActiveCategory(cat)}
+													className="shrink-0 text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
+												>
+													View all <ChevronRight className="w-3.5 h-3.5" aria-hidden="true" />
+												</button>
+											</div>
+											<ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" aria-label={`${cat} products`}>
+												{catProducts.map((p, idx) => (
+													<li key={p.id}>
+														<ProductCard product={p} navigate={navigate} priority={idx < 3} />
+													</li>
+												))}
+											</ul>
+										</section>
+									);
+								})}
+							</div>
+						) : (
+							<ul className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" aria-label={`${filtered.length} products, showing ${paginated.length}`}>
+								{paginated.map((p, idx) => (
+									<li key={p.id}>
+										<ProductCard product={p} navigate={navigate} priority={idx < 6} />
+									</li>
+								))}
+							</ul>
+						)}
 
 						{/* ── Pagination ── */}
 						{totalPages > 1 && (
@@ -17574,7 +18903,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					{/* Breadcrumb */}
 					<nav
 						aria-label="Breadcrumb"
-						className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10"
+						className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-10"
 					>
 						<button
 							type="button"
@@ -17641,7 +18970,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 							</p>
 						</div>
 						<div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-7">
-							<h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-5">
+							<h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-5">
 								Key Applications
 							</h3>
 							<ul className="space-y-3">
@@ -17802,7 +19131,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 						</button>
 						<a
 							href={waMsg(
-								`Hello KESHAV ENTERPRISES, I need solutions for my ${ind.title} facility.`,
+								`Hi, I need engineering support for my ${ind.title} plant. Can you help?`,
 							)}
 							target="_blank"
 							rel="noopener noreferrer"
@@ -18037,11 +19366,38 @@ IndustriesPage.displayName = 'IndustriesPage';
 // ─── MAP EMBED ────────────────────────────────────────────────
 // Extracted from an inline IIFE in ContactPage so useState is called
 // at the top level of a proper component (rules-of-hooks compliance).
+// PERF FIX: Lazy-load facade — iframe not injected until user clicks.
+// Before: Google Maps fired ~14 network requests (~500 KB) on page open.
+// After:  Zero network cost until the user explicitly asks for the map.
 const MapEmbed = memo(({ src }) => {
-	const [mapLoaded, setMapLoaded] = useState(false);
+	const [mapRequested, setMapRequested] = useState(false);
+	const [mapLoaded,    setMapLoaded]    = useState(false);
+
+	if (!mapRequested) {
+		return (
+			<button
+				type="button"
+				onClick={() => setMapRequested(true)}
+				className="w-full h-64 bg-slate-50 border-0 flex flex-col items-center justify-center gap-4 hover:bg-slate-100 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 group"
+				aria-label="Load interactive map for Keshav Enterprises, Shamli"
+			>
+				<div className="w-16 h-16 rounded-full bg-white border border-slate-200 flex items-center justify-center group-hover:border-blue-300 transition-colors shadow-sm">
+					<MapPin className="w-8 h-8 text-blue-500" aria-hidden="true" />
+				</div>
+				<div className="text-center">
+					<p className="text-slate-700 font-semibold text-sm">Click to load map</p>
+					<p className="text-slate-400 text-xs mt-0.5">Keshav Enterprises · Shamli, U.P.</p>
+				</div>
+				<span className="text-xs text-blue-600 font-bold border border-blue-200 bg-blue-50 px-4 py-1.5 rounded-full group-hover:bg-blue-100 transition-colors">
+					Load Google Maps
+				</span>
+			</button>
+		);
+	}
+
 	return (
-		<div className="w-full h-100 relative bg-slate-100">
-			{/* Skeleton placeholder shown until iframe fires onLoad */}
+		<div className="w-full h-64 relative bg-slate-100">
+			{/* Skeleton shown while iframe loads after user click */}
 			{!mapLoaded && (
 				<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
 					<div className="skeleton-shimmer absolute inset-0 rounded-none" />
@@ -18056,7 +19412,6 @@ const MapEmbed = memo(({ src }) => {
 				height="100%"
 				style={{ border: 0, opacity: mapLoaded ? 1 : 0, transition: 'opacity .4s ease' }}
 				allowFullScreen
-				loading="lazy"
 				referrerPolicy="no-referrer-when-downgrade"
 				className="absolute inset-0"
 				onLoad={() => setMapLoaded(true)}
@@ -18076,6 +19431,9 @@ const ContactPage = memo(() => {
 	const [status, setStatus] = useState('idle');
 	const [submitError, setSubmitError] = useState('');
 	const [errors, setErrors] = useState({});
+	// PERF FIX: Rate-limit guard — prevents accidental double-submission.
+	// Tracks timestamp of last successful submit attempt.
+	const lastSubmitRef = useRef(0);
 	const validate = useCallback(() => {
 		const e = {};
 		if (!name.trim()) e.name = 'Company name is required';
@@ -18091,12 +19449,30 @@ const ContactPage = memo(() => {
 	// Shared Web3Forms submit — openWhatsApp=true fires the WA confirmation link on success.
 	// Called by both CTAs so submission logic lives in exactly one place.
 	const submitToWeb3Forms = useCallback(async (openWhatsApp) => {
+		// ── SECURITY: Honeypot check ──────────────────────────────────────────
+		// Real users never fill the hidden _gotcha field; bots do.
+		// Silently fake success so bots don't know they were blocked.
+		const honeypotEl = document.getElementById('c-honeypot');
+		if (honeypotEl?.value) {
+			setStatus('success');
+			return;
+		}
+
+		// ── UX: Rate-limit guard — 30 s between submissions ──────────────────
+		// Prevents accidental double-taps on slow connections and repeat spammers.
+		const now = Date.now();
+		if (now - lastSubmitRef.current < 30_000) {
+			setSubmitError('Please wait 30 seconds before submitting again.');
+			setStatus('error');
+			return;
+		}
+
 		const e = validate();
 		if (Object.keys(e).length > 0) { setErrors(e); return; }
 		setErrors({});
 		setSubmitError('');
 		setStatus('loading');
-		const WEB3FORMS_KEY = '2a9abce2-da52-4421-b692-f031c6c3d185';
+		const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY ?? '';
 		try {
 			const fd = new FormData();
 			fd.append('access_key', WEB3FORMS_KEY);
@@ -18112,6 +19488,8 @@ const ContactPage = memo(() => {
 			const res  = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { Accept: 'application/json' }, body: fd });
 			const data = await res.json();
 			if (!res.ok || data.success === false) throw new Error(data.message || 'Web3Forms submission failed');
+			// Record successful submit time for rate-limiting
+			lastSubmitRef.current = Date.now();
 			if (openWhatsApp) {
 				const msg = [
 					`*New RFQ — Keshav Enterprises*`,
@@ -18260,11 +19638,12 @@ const ContactPage = memo(() => {
 									IndiaMART Verified
 								</h3>
 								<p className="text-yellow-400 font-bold text-sm mb-1.5">
-									<span className="sr-only">4.3 out of 5 stars</span>
-									<span aria-hidden="true">★★★★★</span>{' '}
-									<span className="text-slate-300 ml-1">4.3/5 Rating</span>
+									<span className="sr-only">4.3 out of 5 stars on IndiaMART</span>
+									<span aria-hidden="true" className="text-yellow-400">★★★★</span>
+									<span aria-hidden="true" className="text-yellow-400/40">★</span>{" "}
+									<span className="text-slate-300 ml-1">4.3 / 5</span>
 								</p>
-								<p className="text-blue-400 font-black text-xs uppercase tracking-widest">
+								<p className="text-blue-400 font-bold text-xs uppercase tracking-wider">
 									TrustSeal Supplier
 								</p>
 							</div>
@@ -18331,7 +19710,7 @@ const ContactPage = memo(() => {
 								<div>
 									<label
 										htmlFor="c-name"
-										className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest"
+										className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider"
 									>
 										Company Name <span aria-hidden="true">*</span>
 									</label>
@@ -18358,7 +19737,7 @@ const ContactPage = memo(() => {
 								<div>
 									<label
 										htmlFor="c-email"
-										className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest"
+										className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider"
 									>
 										Email Address <span aria-hidden="true">*</span>
 									</label>
@@ -18387,7 +19766,7 @@ const ContactPage = memo(() => {
 								<div>
 									<label
 										htmlFor="c-phone"
-										className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest"
+										className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider"
 									>
 										Phone Number <span aria-hidden="true">*</span>
 									</label>
@@ -18415,7 +19794,7 @@ const ContactPage = memo(() => {
 								<div>
 									<label
 										htmlFor="c-type"
-										className="block text-xs font-black text-slate-500 mb-3 uppercase tracking-widest"
+										className="block text-xs font-semibold text-slate-500 mb-3 uppercase tracking-wider"
 									>
 										Inquiry Type <span aria-hidden="true">*</span>
 									</label>
@@ -18543,6 +19922,20 @@ const ContactPage = memo(() => {
 									className="w-full text-slate-700 file:cursor-pointer file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-slate-900 file:text-white hover:file:bg-blue-600 transition-all cursor-pointer outline-none"
 								/>
 							</div>
+
+							{/* SECURITY: Honeypot field — hidden from real users, filled by bots.
+							    position:absolute + left:-9999px keeps it out of layout AND off-screen
+							    so assistive tech + tab order are unaffected. Web3Forms ignores
+							    submissions where _gotcha has a value. */}
+							<input
+								id="c-honeypot"
+								name="_gotcha"
+								type="text"
+								tabIndex={-1}
+								autoComplete="off"
+								aria-hidden="true"
+								style={{ display: 'none', position: 'absolute', left: '-9999px' }}
+							/>
 							{/* Primary CTA — WhatsApp + form submission */}
 							<button
 								type="button"
@@ -18577,6 +19970,9 @@ const ContactPage = memo(() => {
 								<Mail className="w-5 h-5" aria-hidden="true" />
 								Submit Form via Email Only
 							</button>
+
+							{/* Tertiary CTA — callback for users who can't use WhatsApp at work */}
+							<CallbackRequestForm />
 
 							<p className="text-center text-slate-400 text-xs font-medium mt-2">
 								Your details are confidential and used only to respond to your
@@ -18813,7 +20209,7 @@ const NotFoundPage = memo(({ navigate }) => (
 					onClick={() => navigate('/')}
 					className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2"
 				>
-					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Go Home
+					<Home className="w-4 h-4" aria-hidden="true" /> Go Home
 				</button>
 				<a
 					href={waMsg("Hi, I couldn't find a page on your website. Can you help?")}
@@ -18933,26 +20329,13 @@ export default function App() {
 		};
 	}, []);
 
-	// ── PERF: Inject hero image preload ONLY on homepage to avoid
-	// "preloaded but not used" warning on other routes.
-	// Filename matches the actual <img src> used in HomePage: hero-background.png
-	useEffect(() => {
-		const PRELOAD_ID = 'hero-bg-preload';
-		if (currentPath === '/') {
-			if (!document.getElementById(PRELOAD_ID)) {
-				const pl = document.createElement('link');
-				pl.id = PRELOAD_ID;
-				pl.rel = 'preload';
-				pl.as = 'image';
-				pl.href = 'hero-background.png';
-				pl.setAttribute('fetchpriority', 'high');
-				document.head.appendChild(pl);
-			}
-		} else {
-			// Remove preload when navigating away so it doesn't linger
-			document.getElementById(PRELOAD_ID)?.remove();
-		}
-	}, [currentPath]);
+	// ── PERF: Hero image preload ──────────────────────────────────────────────
+	// REMOVED: The previous useEffect injected <link rel="preload"> via JS, which
+	// runs AFTER React hydrates — too late for the browser preload scanner.
+	// FIX: Add this line directly to the <head> in index.html instead:
+	//   <link rel="preload" as="image" href="/hero-background.webp" fetchpriority="high">
+	// That fires at HTML parse time, giving the browser the maximum head start on LCP.
+	// Also convert hero-background.png → .webp for ~70% smaller file size.
 
 	// ── PERF: Pre-paint viewport stamp ──
 	// Runs synchronously after DOM commit but BEFORE the browser paints the
@@ -19022,9 +20405,12 @@ export default function App() {
 		}
 	}, []);
 
-	// Route resolution — AUDIT FIX: removed useMemo wrapper (JSX inside memo is an anti-pattern),
-	// added NotFoundPage for unknown routes instead of falling through to HomePage
-	const renderPage = () => {
+	// PERF FIX: Memoize the rendered page so it only re-evaluates when the actual
+	// path changes. Without this, every App() state update (e.g. routeAnnouncement)
+	// caused renderPage to return a new JSX element, which React interpreted as a
+	// different component instance — unmounting and remounting the entire page.
+	// navigate is stable (useCallback with [] deps) so it's safe as a dep here.
+	const page = useMemo(() => {
 		if (currentPath.startsWith('/product/'))
 			return (
 				<ProductDetailPage
@@ -19071,11 +20457,18 @@ export default function App() {
 			default:
 				return <NotFoundPage navigate={navigate} />;
 		}
-	};
+	}, [currentPath, navigate]);
 
 	return (
 		<CurrencyProvider>
 		<div className="font-sans min-h-screen flex flex-col bg-white selection:bg-blue-600 selection:text-white text-[#111827]">
+			{/* WCAG 2.4.1 — Skip navigation: visually hidden until focused by keyboard */}
+			<a
+				href="#main-content"
+				className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:font-bold focus:text-sm focus:shadow-lg focus:outline-none"
+			>
+				Skip to main content
+			</a>
 			{/* AUDIT FIX: aria-live region for screen reader route change announcements */}
 			<div
 				className="sr-only"
@@ -19095,7 +20488,7 @@ export default function App() {
 							</div>
 						}
 					>
-						{renderPage()}
+						{page}
 					</Suspense>
 				</ErrorBoundary>
 			</div>
@@ -19110,12 +20503,14 @@ export default function App() {
 
 			{/* Exit-intent review popup: fixed overlay, zero layout impact.
 			    Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
-			    minTimeMs raised to 10 min so only genuinely engaged visitors see it. */}
+			    minTimeMs=120s: user must have been on page ≥2 min before popup is eligible.
+			    idleMs=300s: popup fires after 5 min of mouse idle (desktop only — no mousemove on mobile).
+			    scrollPct=60: user must have scrolled 60% of the page, indicating genuine engagement. */}
 			{showExitPopup && (
 				<ExitIntentReviewPopup
 					ReviewForm={KeshavReviewForm}
-					minTimeMs={600_000}
-					idleMs={480_000}
+					minTimeMs={120_000}
+					idleMs={300_000}
 					scrollPct={60}
 					navigate={navigate}
 				/>

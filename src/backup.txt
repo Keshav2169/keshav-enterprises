@@ -101,10 +101,10 @@ const CONTACT_INFO = {
 const NAV_LINKS = [
 	{ name: 'Home', path: '/' },
 	{ name: 'About', path: '/about' },
-	{ name: 'Blog', path: '/blog' },
 	{ name: 'Services', path: '/services' },
 	{ name: 'Products', path: '/products' },
 	{ name: 'Industries', path: '/industries' },
+	{ name: 'Blog', path: '/blog' },
 	{ name: 'Contact', path: '/contact' },
 ];
 
@@ -7809,35 +7809,35 @@ const BrandLogo = memo(({ scrolled, forceWhite, navigate }) => {
 			type="button"
 			onClick={() => navigate('/')}
 			aria-label="Keshav Enterprises — Home"
-			className="flex items-center gap-3.5 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
+			className="flex items-center gap-3 shrink-0 group outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded-sm"
 		>
-			{/* Logo — larger, bare, no box */}
+			{/* Logo — sized to fit inside the navbar bar (44px) */}
 			{!imgErr ? (
 				<img
 					src="keshav-logo.png"
 					alt=""
 					aria-hidden="true"
-					width="56"
-					height="56"
+					width="44"
+					height="44"
 					loading="eager"
 					decoding="async"
 					fetchPriority="high"
-					className="w-14 h-14 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
+					className="w-11 h-11 shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
 					onError={() => setImgErr(true)}
 				/>
 			) : (
-				<Settings className="w-14 h-14 shrink-0 text-white" aria-hidden="true" />
+				<Settings className={`w-11 h-11 shrink-0 ${forceWhite ? 'text-white' : scrolled ? 'text-[#0A192F]' : 'text-white'}`} aria-hidden="true" />
 			)}
 
-			{/* Brand name — two lines, left-aligned, white */}
-			<div className="flex flex-col text-left" style={{ lineHeight: 1 }}>
-				<span className={`font-black uppercase tracking-[0.06em] text-[21px] lg:text-[23px] ${nameCls} transition-colors duration-200`}>
+			{/* Brand name — two lines, left-aligned. Scaled to match 44px logo. */}
+			<div className="flex flex-col text-left leading-none">
+				<span className={`font-black uppercase tracking-[0.06em] text-[19px] lg:text-[21px] ${nameCls} transition-colors duration-200`}>
 					KESHAV
 				</span>
-				<span className={`font-bold uppercase tracking-[0.14em] text-[14px] lg:text-[15px] mt-0.75 ${tagCls} transition-colors duration-200`}>
+				<span className={`font-bold uppercase tracking-[0.14em] text-[12px] lg:text-[13px] mt-0.5 ${tagCls} transition-colors duration-200`}>
 					ENTERPRISES
 				</span>
-				<span className={`font-semibold tracking-[0.08em] text-[9px] lg:text-[10px] mt-1 uppercase italic ${forceWhite ? 'text-white/60' : scrolled ? 'text-slate-400' : 'text-white/60'} transition-colors duration-200`}>
+				<span className={`font-semibold tracking-[0.08em] text-[8px] lg:text-[9px] mt-0.5 uppercase italic ${forceWhite ? 'text-white/60' : scrolled ? 'text-slate-400' : 'text-white/60'} transition-colors duration-200`}>
 					Quality &amp; Assurance
 				</span>
 			</div>
@@ -8492,6 +8492,120 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 });
 LanguageSwitcher.displayName = 'LanguageSwitcher';
 
+// ─── STATIC NAVBAR KEYFRAMES ─────────────────────────────────
+// Defined once at module level — never re-injected on re-render.
+// Fix C+D: removes the <style> tags that were injected inside conditional
+// render blocks (mobile drawer and search popover) causing duplicated
+// @keyframe declarations on every open/close cycle.
+const NAVBAR_STYLES = `
+@keyframes mobileDrawerIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes searchPopoverIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+`;
+let _navbarStylesInjected = false;
+function injectNavbarStyles() {
+  if (_navbarStylesInjected || typeof document === 'undefined') return;
+  const el = document.createElement('style');
+  el.dataset.id = 'ke-navbar-keyframes';
+  el.textContent = NAVBAR_STYLES;
+  document.head.appendChild(el);
+  _navbarStylesInjected = true;
+}
+injectNavbarStyles(); // runs once at module evaluation time
+
+// ─── MORE DROPDOWN ──────────────────────────────────────────────
+// Fix 3: Houses nav links that overflow at the lg breakpoint (Blog, etc.)
+// Uses same click-outside + Escape key pattern as LanguageSwitcher.
+const MoreDropdown = memo(({ links, scrolled, isActive, handleNav }) => {
+	const [open, setOpen] = useState(false);
+	const ref = useRef(null);
+
+	useEffect(() => {
+		const handleClickOutside = (e) => {
+			if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+		};
+		const handleKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+		document.addEventListener('mousedown', handleClickOutside);
+		document.addEventListener('keydown', handleKey);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+			document.removeEventListener('keydown', handleKey);
+		};
+	}, []);
+
+	const anyActive = links.some((l) => isActive(l.path));
+
+	return (
+		<div className="relative" ref={ref}>
+			<button
+				type="button"
+				onClick={() => setOpen((p) => !p)}
+				aria-haspopup="menu"
+				aria-expanded={open}
+				className={`relative flex items-center gap-1 px-2 py-1.5 text-[11.5px] xl:text-[12.5px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group whitespace-nowrap
+				${anyActive
+					? scrolled ? 'text-blue-600' : 'text-white'
+					: scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-300 hover:text-white'
+				}`}
+			>
+				More
+				<svg
+					aria-hidden="true"
+					className={`w-3 h-3 opacity-70 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+					fill="none" stroke="currentColor" viewBox="0 0 24 24"
+				>
+					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+				</svg>
+				{/* Underline indicator */}
+				<span
+					className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
+					${anyActive ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+					aria-hidden="true"
+				/>
+			</button>
+
+			{open && (
+				<div
+					role="menu"
+					aria-label="More navigation links"
+					className="absolute top-[calc(100%+10px)] left-0 min-w-[160px] bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-[200]"
+					style={{ animation: 'searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both' }}
+				>
+					{links.map((link) => (
+						<a
+							key={link.name}
+							href={`#${link.path}`}
+							role="menuitem"
+							onClick={(e) => {
+								e.preventDefault();
+								handleNav(link.path);
+								setOpen(false);
+							}}
+							aria-current={isActive(link.path) ? 'page' : undefined}
+							className={`flex items-center justify-between px-4 py-2.5 text-sm font-bold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
+							${isActive(link.path)
+								? 'text-blue-600 bg-blue-50'
+								: 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+							}`}
+						>
+							{link.name}
+							{isActive(link.path) && (
+								<span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 ml-3" aria-hidden="true" />
+							)}
+						</a>
+					))}
+				</div>
+			)}
+		</div>
+	);
+});
+MoreDropdown.displayName = 'MoreDropdown';
+
 // ─── NAVBAR ───────────────────────────────────────────────────
 const Navbar = memo(({ currentPath, navigate }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -8558,17 +8672,13 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		};
 	}, []);
 
-	const prevSearchOpenRef = useRef(isSearchOpen);
+	// Auto-focus desktop search input when popover opens
 	useEffect(() => {
 		if (isSearchOpen && window.innerWidth >= 1024) {
-			setTimeout(() => searchInputRef.current?.focus(), 100);
-		}
-		if (prevSearchOpenRef.current && !isSearchOpen) {
-			// Clear query after close — deferred to avoid setState cascade
-			const t = setTimeout(() => setQuery(''), 0);
+			// Small delay lets the popover mount fully before focusing
+			const t = setTimeout(() => searchInputRef.current?.focus(), 50);
 			return () => clearTimeout(t);
 		}
-		prevSearchOpenRef.current = isSearchOpen;
 	}, [isSearchOpen]);
 
 	// AUDIT FIX: Body scroll lock when mobile menu/search is open
@@ -8668,6 +8778,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		(path) => {
 			navigate(path);
 			setIsOpen(false);
+			setIsSearchOpen(false);
+			setQuery('');
 		},
 		[navigate],
 	);
@@ -8675,19 +8787,33 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		<nav
 			ref={menuRef}
 			aria-label="Main navigation"
-			className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg py-2' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10 py-3'}`}
+			className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${scrolled ? 'bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg' : 'bg-[#0A192F]/95 backdrop-blur-sm border-white/10'}`}
 		>
 			<a
 				href="#main-content"
-				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-100 font-bold"
+				className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-[100] font-bold"
 			>
 				Skip to main content
 			</a>
+			{/* ── INNER ROW: fixed height 64px so scroll-state transition never jitters ── */}
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="flex justify-between items-center">
+				<div className="flex justify-between items-center h-16">
 					<BrandLogo scrolled={scrolled} navigate={navigate} />
-					<div className="hidden lg:flex items-center gap-1 xl:gap-2">
-						{NAV_LINKS.map((link) => (
+					{/*
+					 * ── DESKTOP RIGHT SECTION ────────────────────────────────────────────
+					 * Fix 3 – Nav-link count: 6 primary links + "More ▾" dropdown for Blog.
+					 *          Prevents crowding at lg (1024px) breakpoint.
+					 * Fix 5 – LanguageSwitcher now lives AFTER nav links, before search
+					 *          (correct semantic order: nav | utility | action).
+					 * Fix 4 – Search is now an icon-only toggle that opens a position:absolute
+					 *          popover — zero layout shift on expand.
+					 * Fix 7 – Removed py-2/py-3 from <nav>; row height locked to h-16 (64px)
+					 *          so scroll-state colour transition never jitters bar height.
+					 * ────────────────────────────────────────────────────────────────────
+					 */}
+					<div className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+						{/* Primary nav links (first 6) */}
+						{NAV_LINKS.slice(0, 6).map((link) => (
 							<a
 								key={link.name}
 								href={`#${link.path}`}
@@ -8696,173 +8822,192 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									handleNav(link.path);
 								}}
 								aria-current={isActive(link.path) ? 'page' : undefined}
-								className={`relative px-2.5 py-1.5 text-[12px] xl:text-[13px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group
-				  ${
-										isActive(link.path)
-											? scrolled
-												? 'text-blue-600'
-												: 'text-white'
-											: scrolled
-												? 'text-slate-600 hover:text-slate-900'
-												: 'text-slate-300 hover:text-white'
-									}`}
+								className={`relative px-2 py-1.5 text-[11.5px] xl:text-[12.5px] font-bold uppercase tracking-wider transition-all duration-200 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 group whitespace-nowrap ${
+									isActive(link.path)
+										? scrolled ? 'text-blue-600' : 'text-white'
+										: scrolled ? 'text-slate-600 hover:text-slate-900' : 'text-slate-300 hover:text-white'
+								}`}
 							>
 								{link.name}
 								<span
-									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300
-				  ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
+									className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full origin-center transition-transform duration-300 ${isActive(link.path) ? 'scale-x-75 bg-blue-500' : 'scale-x-0 group-hover:scale-x-50 bg-blue-400/60'}`}
 									aria-hidden="true"
 								/>
 							</a>
 						))}
-						{/* search + language switcher */}
-						<div className="flex items-center gap-2 ml-2 pl-2 border-l border-slate-200/20">
-							<LanguageSwitcher scrolled={scrolled} />
-							<search
-								className="relative flex items-center"
+
+						{/* "More ▾" dropdown for overflow links (Blog, etc.) — Fix 3 */}
+						{NAV_LINKS.length > 6 && (
+							<MoreDropdown
+								links={NAV_LINKS.slice(6)}
+								scrolled={scrolled}
+								isActive={isActive}
+								handleNav={handleNav}
+							/>
+						)}
+
+						{/* Divider */}
+						<div className={`w-px h-5 mx-1.5 shrink-0 ${scrolled ? 'bg-slate-200' : 'bg-white/20'}`} aria-hidden="true" />
+
+						{/* Language switcher — Fix 5: now correctly after nav links */}
+						<LanguageSwitcher scrolled={scrolled} />
+
+						{/* Search icon toggle — Fix 4: popover pattern, no layout shift */}
+						<search className="relative">
+							<button
+								type="button"
+								onClick={() => {
+									setIsSearchOpen((prev) => {
+										if (prev) { setQuery(''); return false; }
+										return true;
+									});
+								}}
+								aria-label={isSearchOpen ? 'Close search' : 'Search products and services'}
+								aria-expanded={isSearchOpen}
+								aria-controls="desktop-search-popover"
+								className={`p-2 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+									isSearchOpen
+										? scrolled ? 'bg-blue-600 text-white' : 'bg-blue-500/80 text-white'
+										: scrolled ? 'text-slate-600 hover:bg-slate-100' : 'text-slate-300 hover:bg-white/10 hover:text-white'
+								}`}
 							>
-								{/* Desktop: always-visible compact search bar */}
-								<div className="hidden lg:flex items-center relative mr-1">
-									<label htmlFor="nav-search-desktop" className="sr-only">Search products and services</label>
-									<Search className={`absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none ${scrolled ? 'text-slate-400' : 'text-slate-400'}`} aria-hidden="true" />
-									<input
-										id="nav-search-desktop"
-										ref={searchInputRef}
-										type="text"
-										placeholder="Search products & services..."
-										value={query}
-										onChange={(e) => { setQuery(e.target.value); setIsSearchOpen(!!e.target.value); }}
-										onFocus={() => { if (query) setIsSearchOpen(true); }}
-										className={`w-48 xl:w-60 border rounded-full py-2 px-4 pl-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:w-64 xl:focus:w-72 transition-all duration-300 ${scrolled ? 'bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400' : 'bg-white/10 backdrop-blur border-white/25 text-white placeholder:text-slate-400'}`}
-									/>
-									{query && (
-										<button type="button" onClick={() => { setQuery(''); setIsSearchOpen(false); }} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
-											<X className="w-3 h-3" aria-hidden="true" />
-										</button>
-									)}
-								</div>
-								{/* Mobile: slide-out search (unchanged) */}
+								{isSearchOpen
+									? <X className="w-4 h-4" aria-hidden="true" />
+									: <Search className="w-4 h-4" aria-hidden="true" />
+								}
+							</button>
+
+							{/* Search popover — absolutely positioned, never shifts siblings */}
+							{isSearchOpen && (
 								<div
-									className={`lg:hidden absolute right-full mr-2 flex items-center overflow-hidden transition-all duration-500 ease-in-out z-50 ${isSearchOpen ? 'w-64 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'}`}
+									id="desktop-search-popover"
+									role="search"
+									className="absolute top-[calc(100%+14px)] right-0 w-[480px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-[200]"
+									style={{ animation: 'searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both' }}
 								>
-									<input
-										type="text"
-										placeholder="Search products & services..."
-										value={query}
-										onChange={(e) => setQuery(e.target.value)}
-										className={`w-64 border rounded-full py-2.5 px-5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors shadow-lg ${scrolled ? 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-500' : 'bg-slate-800/95 backdrop-blur border-slate-700 text-white placeholder:text-slate-400'}`}
-									/>
-								</div>
-								<button
-									type="button"
-									onClick={() => {
-										if (isSearchOpen) {
-											setIsSearchOpen(false);
-											setQuery('');
-										} else {
-											setIsSearchOpen(true);
-										}
-									}}
-									aria-label="Search"
-									className={`lg:hidden p-2.5 rounded-xl transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 relative z-60
-					${scrolled ? 'bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700' : 'bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md'}
-					${isSearchOpen ? 'ml-1' : ''}`}
-								>
-									<Search
-										className="w-4.5 h-4.5"
-										aria-hidden="true"
-										style={{ width: '18px', height: '18px' }}
-									/>
-								</button>
-								{(isSearchOpen || query) && query && (
-									<div className="absolute top-full right-0 mt-2 w-[500px] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200">
-										<div className="max-h-[60vh] overflow-y-auto p-2">
-											{searchResults.length === 0 ? (
-												<div className="p-8 text-center" role="status" aria-live="polite">
-													<Search className="w-9 h-9 text-slate-300 mx-auto mb-3" aria-hidden="true" />
-													<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
-													<p className="text-xs text-slate-400 leading-relaxed">Try: <span className="font-medium text-blue-600">Turbine Overhauling</span>, <span className="font-medium text-blue-600">Dynamic Balancing</span>, <span className="font-medium text-blue-600">Lube Oil</span></p>
-												</div>
-											) : (
-												<ul className="space-y-1">
-													{searchResults.map((r) => (
-														<li key={r.id}>
-															<button
-																type="button"
-																onClick={() => {
-																	setIsSearchOpen(false);
-																	setQuery('');
-																	navigate(r.path);
-																	setIsOpen(false);
-																}}
-																className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-															>
-																<div className="flex gap-3 w-full items-center">
-																	<div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
-																		<span className="text-slate-400 font-black text-xs uppercase tracking-widest">
-																			{r.title.substring(0, 2)}
-																		</span>
-																		{r.image && (
-																			<img
-																				src={r.image}
-																				alt=""
-																				className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
-																				onError={(e) => {
-																					e.target.style.display = 'none';
-																				}}
-																			/>
-																		)}
-																	</div>
-																	<div className="flex-1 min-w-0 flex flex-col justify-center">
-																		<div className="flex justify-between items-start">
-																			<span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">
-																				{r.title}
-																			</span>
-																			<div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
-																				{r.type === 'Product' && (
-																					<span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
-																						{r.category}
-																					</span>
-																				)}
-																				<span
-																					className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}
-																				>
-																					{r.type}
-																				</span>
-																			</div>
-																		</div>
-																		<span className="text-xs text-slate-500 line-clamp-1 mt-0.5">
-																			{r.desc}
-																		</span>
-																		{r.priceRange && (
-																			<span className="text-[10px] font-black text-blue-600 mt-0.5">
-																				{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)} {r.priceRange.unit}
-																			</span>
-																		)}
-																	</div>
-																</div>
-															</button>
-														</li>
-													))}
-												</ul>
-											)}
-										</div>
+									<div className="flex items-center gap-2 px-4 py-3 border-b border-slate-100">
+										<Search className="w-4 h-4 text-slate-400 shrink-0" aria-hidden="true" />
+										<label htmlFor="nav-search-desktop" className="sr-only">Search products and services</label>
+										<input
+											id="nav-search-desktop"
+											ref={searchInputRef}
+											type="text"
+											placeholder="Search products & services…"
+											value={query}
+											// biome-ignore lint/jsx-a11y/no-autofocus: intentional — user clicked search
+											autoFocus
+											onChange={(e) => setQuery(e.target.value)}
+											className="flex-1 bg-transparent text-sm text-slate-900 placeholder:text-slate-400 outline-none"
+										/>
+										{query && (
+											<button
+												type="button"
+												onClick={() => setQuery('')}
+												aria-label="Clear search"
+												className="text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded p-0.5"
+											>
+												<X className="w-3.5 h-3.5" aria-hidden="true" />
+											</button>
+										)}
 									</div>
-								)}
-							</search>
-						</div>
+									<div className="max-h-[60vh] overflow-y-auto p-2">
+										{!query ? (
+											<p className="text-center text-xs text-slate-400 py-6">Start typing to search products &amp; services</p>
+										) : searchResults.length === 0 ? (
+											<div className="p-8 text-center" role="status" aria-live="polite">
+												<Search className="w-9 h-9 text-slate-300 mx-auto mb-3" aria-hidden="true" />
+												<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
+												<p className="text-xs text-slate-400 leading-relaxed">Try: <span className="font-medium text-blue-600">Turbine Overhauling</span>, <span className="font-medium text-blue-600">Dynamic Balancing</span>, <span className="font-medium text-blue-600">Lube Oil</span></p>
+											</div>
+										) : (
+											<ul className="space-y-1" role="listbox" aria-label="Search results">
+												{searchResults.map((r) => (
+													<li key={r.id} role="option" aria-selected="false">
+														<button
+															type="button"
+															onClick={() => {
+																setIsSearchOpen(false);
+																setQuery('');
+																navigate(r.path);
+																setIsOpen(false);
+															}}
+															className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+														>
+															<div className="flex gap-3 w-full items-center">
+																<div className="w-12 h-12 shrink-0 rounded bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative shadow-sm">
+																	<div className="w-6 h-6 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
+																		{getCategoryIcon(r.category)}
+																	</div>
+																	{r.image && (
+																		<img
+																			src={r.image}
+																			alt=""
+																			className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
+																			onError={(e) => { e.target.style.display = 'none'; }}
+																		/>
+																	)}
+																</div>
+																<div className="flex-1 min-w-0 flex flex-col justify-center">
+																	<div className="flex justify-between items-start">
+																		<span className="font-bold text-slate-900 text-sm line-clamp-2 pr-2">{r.title}</span>
+																		<div className="flex items-center gap-1 shrink-0 ml-2 mt-0.5">
+																			{r.type === 'Product' && (
+																				<span className="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">{r.category}</span>
+																			)}
+																			<span className={`text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>
+																				{r.type}
+																			</span>
+																		</div>
+																	</div>
+																	<span className="text-xs text-slate-500 line-clamp-1 mt-0.5">{r.desc}</span>
+																	{r.priceRange && (
+																		<span className="text-[10px] font-black text-blue-600 mt-0.5">
+																			{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)} {r.priceRange.unit}
+																		</span>
+																	)}
+																</div>
+															</div>
+														</button>
+													</li>
+												))}
+											</ul>
+										)}
+									</div>
+								</div>
+							)}
+						</search>
+
+						{/* Get Quote CTA */}
 						<button
 							type="button"
 							onClick={() => handleNav('/contact')}
-							className={`ml-2 px-5 py-2.5 rounded-lg font-bold text-sm tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-2
-				${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
+							className={`ml-1 px-4 py-2 rounded-lg font-bold text-[12.5px] tracking-wide whitespace-nowrap transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center gap-1.5 ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-400 ring-1 ring-white/20'}`}
 						>
 							<PhoneCall className="w-3.5 h-3.5" aria-hidden="true" />
 							Get Quote
 						</button>
 					</div>
-					{/* Mobile controls */}
+
+					{/*
+					 * ── MOBILE CONTROLS ─────────────────────────────────────────────────
+					 * Fix 5 – Added "Call Us" compact pill on sm+ screens to fill the wide
+					 *          dead zone between logo and icon cluster on wider phones.
+					 * ──────────────────────────────────────────────────────────────────
+					 */}
 					<div className="lg:hidden flex items-center gap-1.5">
+						{/* Compact "Call Us" pill — fills dead zone on wider phones */}
+						<a
+							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+							aria-label={`Call us: ${CONTACT_INFO.phones[0]}`}
+							className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-black tracking-wide transition-all duration-200 border mr-1 ${
+								scrolled
+									? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-600 hover:text-white hover:border-blue-600'
+									: 'bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm'
+							}`}
+						>
+							<Phone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+							<span>Call Us</span>
+						</a>
 						<LanguageSwitcher scrolled={scrolled} />
 						<button
 							type="button"
@@ -8871,25 +9016,29 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									setIsSearchOpen(false);
 									setQuery('');
 								} else {
+									// Open unified drawer with search focused
 									setIsSearchOpen(true);
+									setIsOpen(true);
 								}
 							}}
-							aria-label="Search products and services"
-							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-				${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+							aria-label={isSearchOpen ? 'Close search' : 'Open search'}
+							aria-expanded={isSearchOpen}
+							aria-controls="mobile-nav"
+							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-slate-100 text-slate-600 hover:bg-blue-600 hover:text-white' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							<Search className="h-5 w-5" aria-hidden="true" />
 						</button>
 						<button
 							type="button"
-							onClick={() => setIsOpen(!isOpen)}
-							aria-label={
-								isOpen ? 'Close navigation menu' : 'Open navigation menu'
-							}
+							onClick={() => {
+								const next = !isOpen;
+								setIsOpen(next);
+								if (!next) { setIsSearchOpen(false); setQuery(''); }
+							}}
+							aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
 							aria-expanded={isOpen}
 							aria-controls="mobile-nav"
-							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-				${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
+							className={`p-2.5 rounded-lg transition-all duration-200 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${scrolled ? 'bg-slate-100 text-slate-700 hover:bg-slate-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'}`}
 						>
 							{isOpen ? (
 								<X className="h-5 w-5" aria-hidden="true" />
@@ -8900,7 +9049,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					</div>
 				</div>
 			</div>
-			{/* Mobile drawer */}
+			{/* Mobile drawer — unified: search + nav in one panel (Fix 8) */}
 			{(isOpen || isSearchOpen) && (
 				<div
 					id="mobile-nav"
@@ -8908,131 +9057,145 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					role="menu"
 					style={{ animation: 'mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
 				>
-				<style>{`@keyframes mobileDrawerIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }`}</style>
-					{isSearchOpen && (
-						<div className="px-4 pt-4 pb-3 border-b border-slate-100">
-							<div className="relative">
-								<Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-								<input
-									type="text"
-									placeholder="Search products & services..."
-									value={query}
-									onChange={(e) => setQuery(e.target.value)}
-									className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-4 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500 text-sm"
-								/>
-							</div>
-							{query && (
-								<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
-									{searchResults.length === 0 ? (
-										<div className="p-6 text-center" role="status" aria-live="polite">
-											<Search className="w-8 h-8 text-slate-300 mx-auto mb-2" aria-hidden="true" />
-											<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
-											<p className="text-xs text-slate-400">Try: Turbine Overhauling, Dynamic Balancing, Lube Oil</p>
-										</div>
-									) : (
-										<ul className="divide-y divide-slate-100">
-											{searchResults.map((r) => (
-												<li key={r.id}>
-													<button
-														type="button"
-														onClick={() => {
-															setIsSearchOpen(false);
-															setQuery('');
-															navigate(r.path);
-															setIsOpen(false);
-														}}
-														className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none"
-													>
-														<div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
-															<span className="text-slate-400 font-black text-xs">
-																{r.title.substring(0, 2)}
-															</span>
-															{r.image && (
-																<img
-																	src={r.image}
-																	alt=""
-																	className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
-																	onError={(e) => {
-																		e.target.style.display = 'none';
-																	}}
-																/>
-															)}
-														</div>
-														<div className="flex-1 min-w-0">
-															<span className="font-bold text-slate-900 text-sm line-clamp-1 block">
-																{r.title}
-															</span>
-															<span
-																className={`text-[10px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}
-															>
-																{r.type}
-															</span>
-															{r.priceRange && (
-																<span className="block text-[10px] font-black text-blue-600 mt-0.5">
-																	{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)}
-																</span>
-															)}
-														</div>
-													</button>
-												</li>
-											))}
-										</ul>
-									)}
+				{/*
+				 * Fix 8 — Unified mobile drawer:
+				 * Search field is always shown at the top of the drawer (regardless of
+				 * whether the user tapped the 🔍 or ☰ button), with nav links below.
+				 * This eliminates the confusing "search-only vs nav-only" visual split.
+				 */}
+
+				{/* ── Search always at the top of the unified drawer ── */}
+				<div className="px-4 pt-4 pb-3 border-b border-slate-100">
+					<div className="relative">
+						<Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+						<label htmlFor="mobile-drawer-search" className="sr-only">Search products and services</label>
+						<input
+							id="mobile-drawer-search"
+							type="text"
+							placeholder="Search products & services…"
+							value={query}
+							onChange={(e) => setQuery(e.target.value)}
+							className="w-full bg-slate-100 border-none rounded-xl py-3 pl-10 pr-10 focus:ring-2 focus:ring-blue-500 text-slate-900 placeholder:text-slate-500 text-sm outline-none"
+						/>
+						{query && (
+							<button
+								type="button"
+								onClick={() => setQuery('')}
+								aria-label="Clear search"
+								className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+							>
+								<X className="w-4 h-4" aria-hidden="true" />
+							</button>
+						)}
+					</div>
+					{query && (
+						<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
+							{searchResults.length === 0 ? (
+								<div className="p-6 text-center" role="status" aria-live="polite">
+									<Search className="w-8 h-8 text-slate-300 mx-auto mb-2" aria-hidden="true" />
+									<p className="text-sm font-semibold text-slate-600 mb-1">No results for &ldquo;{query}&rdquo;</p>
+									<p className="text-xs text-slate-400">Try: Turbine Overhauling, Dynamic Balancing, Lube Oil</p>
 								</div>
+							) : (
+								<ul className="divide-y divide-slate-100">
+									{searchResults.map((r) => (
+										<li key={r.id}>
+											<button
+												type="button"
+												onClick={() => {
+													setIsSearchOpen(false);
+													setQuery('');
+													navigate(r.path);
+													setIsOpen(false);
+												}}
+												className="w-full text-left p-3 hover:bg-slate-50 transition-colors flex gap-3 items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+											>
+												<div className="w-10 h-10 shrink-0 rounded-lg bg-slate-100 border border-slate-200/50 overflow-hidden flex items-center justify-center relative">
+													<div className="w-5 h-5 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:text-slate-300 [&>svg]:transition-none pointer-events-none" aria-hidden="true">
+														{getCategoryIcon(r.category)}
+													</div>
+													{r.image && (
+														<img
+															src={r.image}
+															alt=""
+															className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
+															onError={(e) => { e.target.style.display = 'none'; }}
+														/>
+													)}
+												</div>
+												<div className="flex-1 min-w-0">
+													<span className="font-bold text-slate-900 text-sm line-clamp-1 block">{r.title}</span>
+													<span className={`text-[10px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ${r.type === 'Product' ? 'bg-blue-100 text-blue-700' : 'bg-emerald-100 text-emerald-700'}`}>
+														{r.type}
+													</span>
+													{r.priceRange && (
+														<span className="block text-[10px] font-black text-blue-600 mt-0.5">
+															{fmtPrice(r.priceRange.min)}–{fmtPrice(r.priceRange.max)}
+														</span>
+													)}
+												</div>
+											</button>
+										</li>
+									))}
+								</ul>
 							)}
 						</div>
 					)}
-					{isOpen && !query && (
-						<div className="px-4 py-5">
-							<ul className="space-y-1 mb-5">
-								{NAV_LINKS.map((link) => (
-									<li key={link.name}>
-										<a
-											href={`#${link.path}`}
-											role="menuitem"
-											onClick={(e) => {
-												e.preventDefault();
-												handleNav(link.path);
-											}}
-											aria-current={isActive(link.path) ? 'page' : undefined}
-											className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500
-						${isActive(link.path) ? 'text-blue-600 bg-blue-50 border border-blue-100' : 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'}`}
-										>
-											{link.name}
-											{isActive(link.path) && <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-600 mr-2 shrink-0" aria-hidden="true" />}
-											{isActive(link.path) && (
-												<span
-													className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"
-													aria-hidden="true"
-												/>
-											)}
-										</a>
-									</li>
-								))}
-							</ul>
-							<div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
-								<a
-									href={waMsg(
-										'Hi KESHAV ENTERPRISES, I would like to get a technical quote.',
-									)}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-5 py-3.5 rounded-xl text-sm font-black tracking-wide shadow-md"
-								>
-									<MessageCircle className="w-5 h-5" aria-hidden="true" />{' '}
-									WhatsApp Us
-								</a>
-								<a
-									href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
-									className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all
-					${scrolled ? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700' : 'bg-slate-900 text-white border-slate-700'}`}
-								>
-									<Phone className="w-4 h-4" aria-hidden="true" />{' '}
-									{CONTACT_INFO.phones[0]}
-								</a>
-							</div>
+				</div>
+
+				{/* ── Nav links — shown when drawer is open with no active search query ── */}
+				{(isOpen || isSearchOpen) && !query && (
+					<div className="px-4 py-5">
+						<ul className="space-y-1 mb-5">
+							{NAV_LINKS.map((link) => (
+								<li key={link.name}>
+									<a
+										href={`#${link.path}`}
+										role="menuitem"
+										onClick={(e) => {
+											e.preventDefault();
+											handleNav(link.path);
+										}}
+										aria-current={isActive(link.path) ? 'page' : undefined}
+										className={`flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+											isActive(link.path)
+												? 'text-blue-600 bg-blue-50 border border-blue-100'
+												: 'text-slate-700 hover:text-blue-600 hover:bg-slate-50'
+										}`}
+									>
+										{link.name}
+										{/* Single active dot — Fix 2: duplicate removed */}
+										{isActive(link.path) && (
+											<span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 ml-auto" aria-hidden="true" />
+										)}
+									</a>
+								</li>
+							))}
+						</ul>
+						<div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
+							<a
+								href={waMsg('Hi KESHAV ENTERPRISES, I would like to get a technical quote.')}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="flex items-center justify-center gap-2 bg-[#25D366] text-white px-5 py-3.5 rounded-xl text-sm font-black tracking-wide shadow-md"
+							>
+								<MessageCircle className="w-5 h-5" aria-hidden="true" />{' '}
+								WhatsApp Us
+							</a>
+							<a
+								href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, '')}`}
+								className={`flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-black tracking-wide border transition-all ${
+									scrolled
+										? 'bg-slate-900 text-white border-slate-800 hover:bg-blue-700'
+										: 'bg-slate-900 text-white border-slate-700'
+								}`}
+							>
+								<Phone className="w-4 h-4" aria-hidden="true" />{' '}
+								{CONTACT_INFO.phones[0]}
+							</a>
 						</div>
-					)}
+					</div>
+				)}
 				</div>
 			)}
 		</nav>
@@ -9555,21 +9718,21 @@ const DigitalProfilesStrip = memo(() => {
 	return (
 		<section
 			aria-labelledby="digital-profiles-heading"
-			className="bg-[#f0f4f8] py-10 border-t border-slate-200"
+			className="bg-[#f0f4f8] py-6 sm:py-10 border-t border-slate-200"
 		>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				{/* Heading block — matches Image 2 */}
-				<div className="text-center mb-8">
+				{/* Heading block */}
+				<div className="text-center mb-4 sm:mb-8">
 					<p
 						id="digital-profiles-heading"
 						className="text-[11px] font-black text-slate-400 uppercase tracking-[0.22em] mb-2"
 					>
 						Find Us Everywhere
 					</p>
-					<h2 className="text-2xl sm:text-3xl font-black text-slate-800 mb-3 tracking-tight">
+					<h2 className="hidden sm:block text-2xl sm:text-3xl font-black text-slate-800 mb-3 tracking-tight">
 						Verified Across India's Top Business Directories
 					</h2>
-					<p className="text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
+					<p className="hidden sm:block text-slate-500 text-sm max-w-md mx-auto leading-relaxed">
 						Our business profile is verified and active on every major B2B and local search platform in India.
 					</p>
 				</div>
@@ -11561,6 +11724,10 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 							<ChevronRight className="w-5 h-5" aria-hidden="true" />
 						</button>
 					</div>
+					<span className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-400 font-medium select-none" aria-hidden="true">
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M18 11a2 2 0 0 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+						drag to explore
+					</span>
 					<button
 						type="button"
 						onClick={() => navigate('/products')}
@@ -13749,7 +13916,6 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Featured post */}
 			{BLOG_POSTS.length > 0 && (
 				<div
-					role="article"
 					className="mb-16 group cursor-pointer w-full text-left"
 					onClick={() => navigate(`/blog/${BLOG_POSTS[0].slug}`)}
 				>
@@ -13769,18 +13935,20 @@ const BlogPage = memo(({ navigate }) => (
 									className="media-img w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
 									onLoad={(e) => {
 										e.currentTarget.classList.add('is-loaded');
+										const fb = e.currentTarget.parentElement?.querySelector('.blog-img-fallback');
+										if (fb) fb.style.display = 'none';
 									}}
 									onError={(e) => {
 										e.target.style.display = 'none';
 									}}
 								/>
-								<div className="absolute inset-0 bg-linear-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
+								<div className="blog-img-fallback absolute inset-0 bg-linear-to-br from-[#0A192F]/80 to-blue-900/40 flex items-center justify-center">
 									<BookOpen
 										className="w-24 h-24 text-white/20"
 										aria-hidden="true"
 									/>
 								</div>
-								<span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-black px-3 py-1.5 uppercase tracking-widest rounded-full shadow-lg">
+								<span className="absolute top-6 left-6 bg-blue-600 text-white text-xs font-black px-3 py-1.5 uppercase tracking-widest rounded-full shadow-lg z-10">
 									Featured
 								</span>
 							</div>
@@ -13847,18 +14015,24 @@ const BlogPage = memo(({ navigate }) => (
 			{/* Remaining posts grid */}
 			{BLOG_POSTS.length > 1 && (
 				<div>
-					<h2 className="text-2xl font-bold text-slate-900 mb-8 tracking-tight">
+					<h2 className="text-2xl font-black text-slate-900 mb-8 tracking-tight">
 						More Articles
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{BLOG_POSTS.slice(1).map((post) => (
-							<button
-								type="button"
+							<article
 								key={post.id}
-								onClick={() => navigate(`/blog/${post.slug}`)}
-								aria-label={`Read post: ${post.title}`}
-								className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group cursor-pointer flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 text-left w-full"
+								className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col"
 							>
+								<a
+									href={`#/blog/${post.slug}`}
+									onClick={(e) => {
+										e.preventDefault();
+										navigate(`/blog/${post.slug}`);
+									}}
+									aria-label={`Read post: ${post.title}`}
+									className="flex flex-col flex-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset rounded-2xl"
+								>
 								<div className="h-52 bg-slate-100 flex items-center justify-center relative overflow-hidden shrink-0">
 									<div className="skeleton-shimmer" aria-hidden="true" />
 									<img
@@ -13873,12 +14047,14 @@ const BlogPage = memo(({ navigate }) => (
 										className="media-img w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
 										onLoad={(e) => {
 											e.currentTarget.classList.add('is-loaded');
+											const fb = e.currentTarget.parentElement?.querySelector('.blog-img-fallback');
+											if (fb) fb.style.display = 'none';
 										}}
 										onError={(e) => {
 											e.target.style.display = 'none';
 										}}
 									/>
-									<div className="absolute inset-0 bg-linear-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
+									<div className="blog-img-fallback absolute inset-0 bg-linear-to-br from-[#0A192F]/70 to-blue-900/30 flex items-center justify-center">
 										<BookOpen
 											className="w-16 h-16 text-white/20"
 											aria-hidden="true"
@@ -13897,17 +14073,7 @@ const BlogPage = memo(({ navigate }) => (
 										))}
 									</div>
 									<h3 className="text-xl font-bold text-slate-900 mb-3 leading-tight tracking-tight group-hover:text-blue-600 transition-colors">
-										<a
-											href={`#/blog/${post.slug}`}
-											onClick={(e) => {
-												e.stopPropagation();
-												e.preventDefault();
-												navigate(`/blog/${post.slug}`);
-											}}
-											className="focus:outline-none focus-visible:underline"
-										>
-											{post.title}
-										</a>
+										{post.title}
 									</h3>
 									<p className="text-slate-600 font-medium text-sm leading-relaxed mb-5 line-clamp-3">
 										{post.excerpt}
@@ -13941,7 +14107,8 @@ const BlogPage = memo(({ navigate }) => (
 										</div>
 									</div>
 								</div>
-							</button>
+								</a>
+							</article>
 						))}
 					</div>
 				</div>
@@ -14371,7 +14538,7 @@ const ServicesPage = memo(({ navigate }) => (
 												{service.oems.slice(0, 6).map((oem) => (
 													<span
 														key={oem}
-														className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip"
+														className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip pointer-events-none select-none"
 													>
 														{oem}
 													</span>
@@ -14437,11 +14604,11 @@ const ServicesPage = memo(({ navigate }) => (
 								<div className="flex flex-wrap gap-4">
 									<button
 										type="button"
-										onClick={() => navigate(`/service/${service.id}`)}
-										aria-label={`View full details for ${service.title}`}
+										onClick={() => navigate('/contact')}
+										aria-label={`Inquire about ${service.title}`}
 										className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-md hover:shadow-xl flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 									>
-										View Full Details{' '}
+										Inquire About This Service{' '}
 										<ArrowRight
 											className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform"
 											aria-hidden="true"
@@ -14449,11 +14616,11 @@ const ServicesPage = memo(({ navigate }) => (
 									</button>
 									<button
 										type="button"
-										onClick={() => navigate('/contact')}
-										aria-label={`Inquire about ${service.title}`}
-										className="border-2 border-slate-900 text-slate-900 px-8 py-4 rounded-xl font-black text-lg hover:bg-slate-900 hover:text-white transition-colors shadow-sm hover:shadow-lg flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
+										onClick={() => navigate(`/service/${service.id}`)}
+										aria-label={`View full details for ${service.title}`}
+										className="border-2 border-slate-300 text-slate-600 px-8 py-4 rounded-xl font-black text-lg hover:border-slate-500 hover:text-slate-900 transition-colors shadow-sm flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 									>
-										Inquire About This Service{' '}
+										View Full Details{' '}
 										<ArrowRight
 											className="ml-3 w-5 h-5 group-hover/btn:translate-x-1 transition-transform"
 											aria-hidden="true"
@@ -18868,7 +19035,7 @@ export default function App() {
 	// ── Exit-intent popup route guard ──────────────────────────────
 	// Suppresses the popup on pages where the review form already lives
 	// or where it would feel intrusive (contact page).
-	const POPUP_EXCLUDED_PATHS = ['/contact'];
+	const POPUP_EXCLUDED_PATHS = ['/contact', '/product/', '/service/'];
 	const showExitPopup = !POPUP_EXCLUDED_PATHS.some(p => currentPath.startsWith(p));
 
 	// ── Scroll restoration ──────────────────────────────────────
@@ -19104,11 +19271,13 @@ export default function App() {
 			</div>
 			<BackToTopButton />
 
-			{/* Exit-intent review popup: fixed overlay, zero layout impact. */}
+			{/* Exit-intent review popup: fixed overlay, zero layout impact.
+			    Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
+			    minTimeMs raised to 10 min so only genuinely engaged visitors see it. */}
 			{showExitPopup && (
 				<ExitIntentReviewPopup
 					ReviewForm={KeshavReviewForm}
-					minTimeMs={240_000}
+					minTimeMs={600_000}
 					idleMs={480_000}
 					scrollPct={60}
 					navigate={navigate}
