@@ -58,12 +58,116 @@
     <link rel="help" href="/keshav-enterprises/llms.txt" />
     <link rel="help" href="/keshav-enterprises/llms-full.txt" />
 
-    <!-- ══ PERFORMANCE — PRECONNECT ════════════════════════════════════ -->
+    <!-- ══ PERFORMANCE — CRITICAL IMAGE PRELOAD ════════════════════════
+         Placed BEFORE preconnects so the browser preload scanner fetches
+         the hero image at the very first moment it parses the document.
+         This is the single highest-impact LCP optimisation available.
+         If you convert hero-background to .webp (recommended, ~70% smaller),
+         update the href here to match the filename used in HomePage. -->
+    <link
+      rel="preload"
+      as="image"
+      href="/keshav-enterprises/hero-background.webp"
+      fetchpriority="high"
+    />
+
+    <!-- ══ PERFORMANCE — PRECONNECT ════════════════════════════════════
+         preconnect: opens the TCP+TLS handshake early for origins that
+         will serve render-blocking or above-fold resources.
+         dns-prefetch: DNS-only resolution for origins used later in the
+         page (WhatsApp links, IndiaMART, Google Maps on contact page). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Web3Forms — used by the contact form; preconnect saves ~150 ms
+         on first form submission (TLS handshake done before user clicks). -->
+    <link rel="preconnect" href="https://api.web3forms.com" />
+
     <link rel="dns-prefetch" href="https://api.whatsapp.com" />
     <link rel="dns-prefetch" href="https://www.indiamart.com" />
     <link rel="dns-prefetch" href="https://translate.google.com" />
+    <!-- Google Maps is now lazy-loaded (user click) — dns-prefetch
+         still fires early so the iframe resolves DNS faster on click. -->
+    <link rel="dns-prefetch" href="https://maps.google.com" />
+    <link rel="dns-prefetch" href="https://maps.gstatic.com" />
+
+    <!-- ══ STRUCTURED DATA — LocalBusiness (JSON-LD) ═══════════════════
+         Enables Google rich results: Knowledge Panel, Maps ratings,
+         "Get directions" and click-to-call on mobile SERPs.
+         Update aggregateRating values as reviews accumulate. -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://www.keshavturboservices.com/#business",
+      "name": "Keshav Turbo Services",
+      "alternateName": "Keshav Enterprises",
+      "description": "Ex-OEM steam turbine engineers providing overhauling, reverse engineering, dynamic balancing, lube oil flushing, machine alignment, and OEM-compatible spares for 5 kW–27 MW turbines.",
+      "url": "https://www.keshavturboservices.com/",
+      "logo": "https://www.keshavturboservices.com/keshav-logo.png",
+      "image": "https://www.keshavturboservices.com/og-image.webp",
+      "telephone": ["+919149229448", "+916397363268"],
+      "email": "ksengg007@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Dayanand Nagar Gali No.2, Near Subash Ki Chakki",
+        "addressLocality": "Shamli",
+        "addressRegion": "Uttar Pradesh",
+        "postalCode": "247776",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 29.4476,
+        "longitude": 77.3003
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+          "opens": "09:00",
+          "closes": "19:00"
+        }
+      ],
+      "hasMap": "https://share.google/uLc4GwsGec5eM62Ep",
+      "sameAs": [
+        "https://www.indiamart.com/keshav-enterprises-shamli/",
+        "https://www.linkedin.com/in/keshav-enterprises-825a473b8",
+        "https://www.instagram.com/ksengg007",
+        "https://x.com/ksengg007",
+        "https://www.facebook.com/ksengg007",
+        "https://www.youtube.com/@ksengg007"
+      ],
+      "identifier": [
+        {
+          "@type": "PropertyValue",
+          "name": "GST",
+          "value": "09BOSPS3115K1ZC"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "MSME / Udyam",
+          "value": "UDYAM-UP-47-0071234"
+        }
+      ],
+      "serviceArea": {
+        "@type": "Country",
+        "name": "India"
+      },
+      "knowsAbout": [
+        "Steam turbine overhauling",
+        "Turbine reverse engineering",
+        "Dynamic balancing",
+        "Lube oil flushing",
+        "Turbine erection and commissioning",
+        "Machine alignment",
+        "Industrial filtration",
+        "Triveni turbines",
+        "Siemens turbines",
+        "BHEL turbines"
+      ]
+    }
+    </script>
 
     <!-- ══ GOOGLE TRANSLATE ══════════════════════════════════════════════ -->
     <style>
@@ -101,8 +205,8 @@
       defer
       onerror="console.warn('Google Translate unavailable')"
     ></script>
-    <script type="module" crossorigin src="/keshav-enterprises/assets/index-D-EwFPqC.js"></script>
-    <link rel="stylesheet" crossorigin href="/keshav-enterprises/assets/index-Dw2j6xI3.css">
+    <script type="module" crossorigin src="/keshav-enterprises/assets/index-DtKHrOGQ.js"></script>
+    <link rel="stylesheet" crossorigin href="/keshav-enterprises/assets/index-BuIikhey.css">
   </head>
   <body>
     <!-- No-JS fallback — hidden once React mounts -->
