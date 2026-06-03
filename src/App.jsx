@@ -5,6 +5,7 @@ import {
 	ArrowRight,
 	Award,
 	BookOpen,
+	Briefcase,
 	Building2,
 	Calendar,
 	CheckCircle2,
@@ -100,9 +101,11 @@ const NAV_LINKS = [
 	{ name: "Services", path: "/services" },
 	{ name: "Products", path: "/products" },
 	{ name: "Industries", path: "/industries" },
+	{ name: "Projects", path: "/projects" },
+	// Contact + Blog demoted to "More ▾" overflow (index 6+).
+	// Projects replaces Contact in the primary 6 — it builds trust at the
+	// mid-funnel stage; visitors reach Contact via the persistent CTA button.
 	{ name: "Contact", path: "/contact" },
-	// Blog demoted to "More ▾" overflow (index 6+) — it's top-of-funnel content,
-	// not a high-intent destination. Contact replaces it in the primary 6.
 	{ name: "Blog", path: "/blog" },
 ];
 
@@ -15834,6 +15837,123 @@ const HomePage = memo(({ navigate }) => {
 					</div>
 				</div>
 			</section>
+			{/* ── Featured Projects teaser ────────────────────────── */}
+			<section
+				className="py-24 md:py-32 bg-white border-t border-slate-100 lazy-section"
+				aria-labelledby="projects-teaser-heading"
+			>
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					{/* Heading */}
+					<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+						<div>
+							<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-2">
+								Field-Proven Work
+							</p>
+							<h2
+								id="projects-teaser-heading"
+								className="text-slate-900 text-4xl md:text-5xl font-black tracking-tight"
+							>
+								Projects &amp; Case Studies
+							</h2>
+							<div
+								className="w-20 h-1.5 bg-blue-600 mt-4 rounded-full"
+								aria-hidden="true"
+							/>
+						</div>
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="shrink-0 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-xl font-black text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							View All Projects
+							<ArrowRight className="w-4 h-4" aria-hidden="true" />
+						</button>
+					</div>
+					{/* Three featured cards */}
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+						{CASE_STUDIES.slice(0, 3).map((cs) => (
+							<article
+								key={cs.id}
+								className="group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 flex flex-col cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50"
+							>
+								{/* Image / hero */}
+								<div className="h-44 bg-[#0A192F] relative overflow-hidden shrink-0">
+									<div
+										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
+										aria-hidden="true"
+									/>
+									{cs.image && (
+										<img
+											src={cs.image}
+											alt=""
+											aria-hidden="true"
+											loading="lazy"
+											decoding="async"
+											className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300"
+											onError={(e) => {
+												e.target.style.display = "none";
+											}}
+										/>
+									)}
+									<div className="absolute inset-0 bg-linear-to-t from-[#0A192F]/80 to-transparent" />
+									<div className="absolute top-3 left-3 flex gap-2 flex-wrap">
+										<span className="bg-blue-600 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+											{cs.category}
+										</span>
+										<span className="bg-white/10 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider border border-white/20">
+											{cs.industry}
+										</span>
+									</div>
+									<div className="absolute bottom-3 left-3 right-3">
+										<p className="text-white font-black text-sm leading-snug line-clamp-2">
+											{cs.title}
+										</p>
+									</div>
+								</div>
+								{/* Body */}
+								<div className="flex flex-col flex-1 p-5">
+									<p className="text-slate-600 text-sm leading-relaxed line-clamp-3 flex-1 mb-4">
+										{cs.summary}
+									</p>
+									{/* Outcome chips */}
+									{cs.outcomes?.length > 0 && (
+										<ul className="flex flex-wrap gap-1.5 mb-4">
+											{cs.outcomes.slice(0, 2).map((o) => (
+												<li
+													key={o}
+													className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5"
+												>
+													{o}
+												</li>
+											))}
+										</ul>
+									)}
+									<button
+										type="button"
+										onClick={() => navigate(`/project/${cs.id}`)}
+										className="mt-auto inline-flex items-center gap-1.5 text-blue-600 font-black text-xs hover:text-blue-500 focus:outline-none focus-visible:underline group-hover:gap-2.5 transition-all"
+									>
+										Read Case Study
+										<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+									</button>
+								</div>
+							</article>
+						))}
+					</div>
+					{/* Mobile "view all" nudge */}
+					<div className="mt-8 text-center md:hidden">
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="inline-flex items-center gap-2 text-blue-600 font-black text-sm hover:text-blue-500 focus:outline-none focus-visible:underline"
+						>
+							See all {CASE_STUDIES.length} projects
+							<ArrowRight className="w-4 h-4" aria-hidden="true" />
+						</button>
+					</div>
+				</div>
+			</section>
+
 			{/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
 			<section
 				className="bg-[#0A192F] py-20 lazy-section cv-auto"
@@ -16730,6 +16850,17 @@ const AboutPage = memo(({ navigate }) => {
 						>
 							<MessageCircle className="w-5 h-5" aria-hidden="true" /> WhatsApp
 						</a>
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="border-2 border-slate-300 text-slate-700 px-10 py-4 rounded-xl font-black text-base hover:border-blue-500 hover:text-blue-700 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						>
+							View Our Projects
+							<ArrowRight
+								className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+								aria-hidden="true"
+							/>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -18182,6 +18313,47 @@ const ServicesPage = memo(({ navigate }) => (
 						</div>
 					);
 				})}
+			</div>
+		</div>
+
+		{/* ── See Our Work banner ── */}
+		<div className="bg-[#0A192F] border-t-4 border-blue-600 mt-0">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+				<div className="flex flex-col md:flex-row items-center justify-between gap-8">
+					<div className="text-center md:text-left">
+						<p className="text-xs font-black text-blue-400 uppercase tracking-[0.25em] mb-2">
+							Proven in the Field
+						</p>
+						<h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
+							See These Services in Action
+						</h2>
+						<p className="text-slate-400 text-sm mt-2 max-w-md">
+							Real case studies — actual outcomes, actual numbers. From a Triveni
+							overhaul that cut vibration by 72% to a reverse-engineered Siemens
+							disc delivered in 21 days at ₹12 lakh below OEM price.
+						</p>
+					</div>
+					<div className="flex flex-col sm:flex-row gap-3 shrink-0">
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-base hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Projects &amp; Case Studies
+							<ArrowRight
+								className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+								aria-hidden="true"
+							/>
+						</button>
+						<button
+							type="button"
+							onClick={() => navigate("/contact")}
+							className="border-2 border-slate-600 text-slate-300 px-8 py-4 rounded-xl font-black text-base hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						>
+							Discuss Your Project
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -19994,6 +20166,63 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									</ul>
 								</nav>
 							</div>
+
+							{/* Related Projects — filtered by this service's category */}
+							{(() => {
+								const SVC_CATEGORY_MAP = {
+									srv_1: "Erection & Commissioning",
+									srv_2: "Overhauling",
+									srv_3: "Reverse Engineering",
+									srv_4: "Dynamic Balancing",
+									srv_5: "Lube Oil Flushing",
+									srv_6: "Machine Alignment",
+									srv_7: null,
+								};
+								const matchCat = SVC_CATEGORY_MAP[serviceId];
+								const related = matchCat
+									? CASE_STUDIES.filter((c) => c.category === matchCat).slice(0, 2)
+									: CASE_STUDIES.slice(0, 2);
+								if (related.length === 0) return null;
+								return (
+									<div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+										<div className="bg-[#0A192F] px-5 py-4 flex items-center justify-between gap-2">
+											<h4 className="font-black text-white text-sm uppercase tracking-widest">
+												Related Projects
+											</h4>
+											<button
+												type="button"
+												onClick={() => navigate("/projects")}
+												className="text-blue-400 hover:text-blue-200 text-[10px] font-bold uppercase tracking-wider transition-colors focus:outline-none focus-visible:underline shrink-0"
+											>
+												View All →
+											</button>
+										</div>
+										<ul className="divide-y divide-slate-100">
+											{related.map((cs) => (
+												<li key={cs.id}>
+													<button
+														type="button"
+														onClick={() => navigate(`/project/${cs.id}`)}
+														className="w-full text-left px-5 py-4 hover:bg-blue-50/40 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+													>
+														<p className="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">
+															{cs.industry}
+														</p>
+														<p className="text-slate-800 font-bold text-xs leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
+															{cs.title}
+														</p>
+														{cs.outcomes?.[0] && (
+															<p className="mt-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 inline-block">
+																{cs.outcomes[0]}
+															</p>
+														)}
+													</button>
+												</li>
+											))}
+										</ul>
+									</div>
+								);
+							})()}
 						</aside>
 					</div>
 
@@ -21793,6 +22022,14 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 						>
 							<MessageCircle className="w-5 h-5" /> WhatsApp Us
 						</a>
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="border-2 border-slate-600 text-slate-300 px-8 py-4 rounded-xl font-black hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						>
+							<Briefcase className="w-4 h-4 shrink-0" aria-hidden="true" />
+							View Related Projects
+						</button>
 					</div>
 				</section>
 			</div>
@@ -23034,6 +23271,759 @@ class ErrorBoundary extends React.Component {
 	}
 }
 
+// ─── CASE STUDIES / PROJECTS ─────────────────────────────────
+// Add project images to /public with the filenames listed below.
+// If an image is missing, the hero gradient placeholder renders automatically.
+const CASE_STUDIES = [
+	{
+		id: "cs_01",
+		image: "project-triveni-overhaul.webp",
+		category: "Overhauling",
+		industry: "Sugar Mill",
+		title: "Triveni 5 MW Back-Pressure Turbine — Full Overhaul & Rotor Balance",
+		client: "Confidential — Sugar Mill, Western UP",
+		year: "2023",
+		duration: "12 days",
+		scope: "Complete turnkey overhaul: rotor removal, bearing replacement, labyrinth seal machining, rotor dynamic balancing (ISO 1940 G2.5), lube oil flushing, and commissioning.",
+		challenge:
+			"The turbine had been running with elevated vibration (>6 mm/s) for two seasons. Bearing housings showed fretting wear and the rotor had a persistent 1× runout that previous maintenance had not resolved.",
+		solution:
+			"Ex-Triveni OEM engineers disassembled the unit and found a cracked journal on the drive end. The journal was machined undersized, new Babbitt poured and scraped, labyrinths machined in our workshop, and the rotor dynamically balanced to <0.5 g·mm residual imbalance. Post-commissioning vibration: 1.8 mm/s.",
+		outcomes: [
+			"Vibration reduced from 6.4 mm/s to 1.8 mm/s",
+			"Bearing metal temperature dropped by 14 °C",
+			"Turbine returned to service within the planned 12-day window",
+			"No unplanned trips in the subsequent 12-month operating season",
+		],
+		tags: ["Triveni", "Rotor Balancing", "Babbitt Bearings", "Overhaul"],
+	},
+	{
+		id: "cs_02",
+		image: "project-reverse-engineering.webp",
+		category: "Reverse Engineering",
+		industry: "Paper Mill",
+		title: "Siemens SST-200 Impulse Stage Disc — Reverse Engineering & Manufacture",
+		client: "Confidential — Paper Mill, Uttarakhand",
+		year: "2023",
+		duration: "21 days",
+		scope: "3D laser scan of damaged impulse disc, PMI material verification, full manufacturing drawing set, and supply of replacement disc machined to drawing.",
+		challenge:
+			"The OEM quoted a 14-week lead time and €18,000 for a replacement impulse disc. The mill could not afford a 14-week outage with the season approaching.",
+		solution:
+			"Our team 3D scanned the damaged disc on-site, performed PMI to confirm the alloy (AISI 422 stainless), generated complete manufacturing drawings with all tolerances and heat treatment specs, and had the disc rough-machined, heat-treated, finish-machined, and dynamically balanced in 19 working days.",
+		outcomes: [
+			"Lead time cut from 14 weeks (OEM) to 21 days",
+			"Cost saving of approximately ₹12 lakh vs. OEM price",
+			"Disc installed without dimensional issues; turbine returned to rated output",
+			"Full drawing package retained for future reorder",
+		],
+		tags: ["Siemens", "Reverse Engineering", "3D Scan", "PMI"],
+	},
+	{
+		id: "cs_03",
+		image: "project-erection-commissioning.webp",
+		category: "Erection & Commissioning",
+		industry: "Distillery",
+		title: "Maxwatt 3.5 MW Co-Gen Turbine — Greenfield Erection & Commissioning",
+		client: "Confidential — Distillery, Central UP",
+		year: "2022",
+		duration: "28 days",
+		scope: "Complete erection of steam turbine, gearbox, alternator, condenser, lube oil system, and all associated piping and cable work. OEM witness commissioning.",
+		challenge:
+			"The turbine arrived on-site with incorrect baseframe grouting drawings. Civil work had to be re-assessed and corrected before erection could begin, compressing the available commissioning window.",
+		solution:
+			"Our site engineers coordinated with the civil contractor to correct the grouting pockets within 48 hours. Turbine, gearbox, and alternator were erected, aligned (shaft alignment to <0.02 mm TIR), and all pre-commissioning checks completed. Synchronisation achieved on the first attempt during OEM witness run.",
+		outcomes: [
+			"First synchronisation achieved on commissioning day — no punch-list delays",
+			"Shaft alignment achieved at 0.016 mm TIR — within OEM tolerance",
+			"Lube oil flushed to ISO 4406 cleanliness 16/14/11 before first run",
+			"Plant accepted turbine with zero snag items on OEM punch-list",
+		],
+		tags: ["Maxwatt", "Erection", "Commissioning", "Alignment"],
+	},
+	{
+		id: "cs_04",
+		image: "project-lube-oil-flushing.webp",
+		category: "Lube Oil Flushing",
+		industry: "Power Generation",
+		title: "BHEL 15 MW Extraction-Condensing Turbine — Post-Overhaul Lube Oil Flush",
+		client: "Confidential — Independent Power Producer, Rajasthan",
+		year: "2024",
+		duration: "5 days",
+		scope: "Post-overhaul lube oil system flushing using mobile centrifuge filter unit. Target cleanliness: ISO 4406 ≤16/14/11 for main lube oil circuit and ≤15/13/10 for control oil circuit.",
+		challenge:
+			"The lube oil system had significant metallic contamination from the overhaul. Three previous flush attempts by another contractor failed to achieve target cleanliness on the control oil circuit.",
+		solution:
+			"We deployed our purpose-built mobile centrifuge flush unit with a dedicated low-volume high-velocity sub-circuit for the control oil ring. By day 3 the main circuit was at 15/13/10 and by day 5 both circuits met their cleanliness targets, confirmed by third-party particle count reports.",
+		outcomes: [
+			"Main lube oil circuit: ISO 4406 15/13/10 ✓",
+			"Control oil circuit: ISO 4406 14/12/9 ✓ (better than target)",
+			"Both circuits cleared in 5 days vs. the 10-day contingency window",
+			"Turbine cleared for first fire without further delay",
+		],
+		tags: ["BHEL", "Lube Oil Flushing", "ISO 4406", "Power Generation"],
+	},
+	{
+		id: "cs_05",
+		image: "project-alignment.webp",
+		category: "Machine Alignment",
+		industry: "Steel Plant",
+		title: "KKK Compressor-Gearbox-Motor Train — Precision Laser Alignment",
+		client: "Confidential — Steel Plant, Jharkhand",
+		year: "2024",
+		duration: "2 days",
+		scope: "Precision laser alignment of a three-element compressor train (motor–gearbox–compressor) following gearbox replacement. Pipe strain measurement and correction.",
+		challenge:
+			"The motor was a fixed-speed induction motor with limited shimming access. Pipe strain on the compressor discharge was pulling the casing by 0.04 mm — enough to invalidate the alignment once connected.",
+		solution:
+			"We performed an uncoupled cold alignment, then measured and documented pipe strain with the discharge line connected. The piping contractor re-supported the discharge spool and the pipe strain dropped to <0.005 mm. Final coupled alignment: angular 0.008 mm/100 mm, offset 0.012 mm — within OEM tolerances.",
+		outcomes: [
+			"Angular misalignment: 0.008 mm/100 mm (OEM limit 0.02 mm/100 mm)",
+			"Parallel offset: 0.012 mm (OEM limit 0.025 mm)",
+			"Pipe strain corrected — no residual nozzle load on compressor",
+			"Vibration at first start: 1.2 mm/s — well within alarm level",
+		],
+		tags: ["KKK", "Laser Alignment", "Compressor", "Steel Plant"],
+	},
+	{
+		id: "cs_06",
+		image: "project-dynamic-balancing.webp",
+		category: "Dynamic Balancing",
+		industry: "Cement Plant",
+		title: "Cement Mill Fan Rotor — Dynamic Balancing & Journal Machining",
+		client: "Confidential — Cement Plant, Rajasthan",
+		year: "2023",
+		duration: "4 days",
+		scope: "Workshop dynamic balancing of a 680 kg ID fan rotor to ISO 21940-11 G2.5 quality grade, plus journal grinding and polishing on both drive-end and non-drive-end journals.",
+		challenge:
+			"Rotor arrived with severe cement build-up, journal scoring from collapsed bearing, and a residual imbalance of ~420 g·mm from the field — well outside ISO G2.5 limits for operating speed.",
+		solution:
+			"Cement deposits cleaned by grit blasting. Both journals ground undersized by 0.10 mm and polished to Ra 0.4 µm. Rotor then balanced in our two-plane dynamic balancing machine (capacity 2000 kg, speed to 1500 RPM). Final residual imbalance: 6 g·mm per plane (ISO G1.0 achieved).",
+		outcomes: [
+			"Residual imbalance: 6 g·mm/plane — better than G1.0",
+			"Journal surface finish: Ra 0.38 µm both ends",
+			"Vibration at full speed (980 RPM) post-installation: 0.9 mm/s",
+			"Bearing temperatures normalised within 2 hours of first run",
+		],
+		tags: ["Dynamic Balancing", "Fan Rotor", "Journal Machining", "Cement"],
+	},
+];
+
+// ─── PROJECT GALLERY PAGE ─────────────────────────────────────
+const ProjectGalleryPage = memo(({ navigate }) => {
+	const [activeCategory, setActiveCategory] = useState("All");
+	const [activeIndustry, setActiveIndustry] = useState("All");
+
+	const categories = useMemo(
+		() => ["All", ...new Set(CASE_STUDIES.map((c) => c.category))],
+		[],
+	);
+	const industries = useMemo(
+		() => ["All", ...new Set(CASE_STUDIES.map((c) => c.industry))],
+		[],
+	);
+	const filtered = useMemo(
+		() =>
+			CASE_STUDIES.filter(
+				(c) =>
+					(activeCategory === "All" || c.category === activeCategory) &&
+					(activeIndustry === "All" || c.industry === activeIndustry),
+			),
+		[activeCategory, activeIndustry],
+	);
+
+	return (
+		<main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
+			<SEOHead
+				title="Projects & Case Studies — Field-Proven Turbine Solutions"
+				description="Real-world case studies: turbine overhauls, reverse engineering, erection & commissioning, lube oil flushing, and precision alignment by Keshav Enterprises."
+				canonicalPath="/projects"
+				pageType="website"
+			/>
+
+			{/* ── Hero ── */}
+			<div className="bg-[#0A192F] text-white pt-24 pb-16 relative overflow-hidden border-b-8 border-blue-600">
+				<div
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
+					aria-hidden="true"
+				/>
+				<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="flex items-center gap-4 mb-6">
+						<div className="w-16 h-16 rounded-2xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
+							<Briefcase className="w-8 h-8 text-blue-400" aria-hidden="true" />
+						</div>
+						<div>
+							<p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-1">
+								Field-Proven Work
+							</p>
+							<h1 className="text-4xl md:text-5xl font-black tracking-tight">
+								Projects &amp; Case Studies
+							</h1>
+						</div>
+					</div>
+					<p className="text-slate-300 font-medium text-lg max-w-2xl leading-relaxed">
+						Documented outcomes from turbine overhauls, precision reverse
+						engineering, greenfield commissioning, and diagnostic jobs — across
+						sugar mills, power plants, paper mills, steel plants, and cement
+						factories.
+					</p>
+					{/* Stats strip */}
+					<div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
+						{[
+							{ val: "25+", label: "Years Experience" },
+							{ val: "500+", label: "Turbines Serviced" },
+							{ val: "10+", label: "OEM Trained Engineers" },
+							{ val: "24/7", label: "Emergency Response" },
+						].map(({ val, label }) => (
+							<div
+								key={label}
+								className="bg-white/[0.07] border border-white/[0.14] rounded-xl px-5 py-4"
+							>
+								<p className="text-2xl font-black text-blue-400">{val}</p>
+								<p className="text-white/80 font-semibold text-sm mt-0.5">
+									{label}
+								</p>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+
+			{/* ── Filters ── */}
+			<div className="sticky top-16 z-30 bg-white border-b border-slate-200 shadow-sm">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+					<div className="flex flex-wrap gap-2 items-center">
+						<span className="text-xs font-black text-slate-400 uppercase tracking-widest mr-1 shrink-0">
+							Service:
+						</span>
+						{categories.map((cat) => (
+							<button
+								key={cat}
+								type="button"
+								onClick={() => setActiveCategory(cat)}
+								className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+									activeCategory === cat
+										? "bg-blue-600 text-white shadow-md"
+										: "bg-slate-100 text-slate-600 hover:bg-slate-200"
+								}`}
+							>
+								{cat}
+							</button>
+						))}
+						<span className="text-xs font-black text-slate-400 uppercase tracking-widest mr-1 ml-3 shrink-0">
+							Industry:
+						</span>
+						{industries.map((ind) => (
+							<button
+								key={ind}
+								type="button"
+								onClick={() => setActiveIndustry(ind)}
+								className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+									activeIndustry === ind
+										? "bg-slate-800 text-white shadow-md"
+										: "bg-slate-100 text-slate-600 hover:bg-slate-200"
+								}`}
+							>
+								{ind}
+							</button>
+						))}
+					</div>
+				</div>
+			</div>
+
+			{/* ── Cards grid ── */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+				{filtered.length === 0 ? (
+					<div className="text-center py-20 text-slate-400">
+						<Briefcase className="w-12 h-12 mx-auto mb-4 opacity-30" />
+						<p className="font-semibold">No projects match these filters.</p>
+					</div>
+				) : (
+					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{filtered.map((cs, i) => (
+							<article
+								key={cs.id}
+								className="lazy-section bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 flex flex-col group cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50"
+								style={{ animationDelay: `${i * 50}ms` }}
+							>
+								{/* Image */}
+								<div className="h-44 bg-[#0A192F] relative overflow-hidden shrink-0">
+									<div
+										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
+										aria-hidden="true"
+									/>
+									{cs.image && (
+										<img
+											src={cs.image}
+											alt=""
+											aria-hidden="true"
+											loading="lazy"
+											decoding="async"
+											className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300"
+											onError={(e) => {
+												e.target.style.display = "none";
+											}}
+										/>
+									)}
+									<div className="absolute inset-0 bg-linear-to-t from-[#0A192F]/80 to-transparent" />
+									<div className="absolute top-3 left-3 flex gap-2 flex-wrap">
+										<span className="bg-blue-600 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+											{cs.category}
+										</span>
+										<span className="bg-white/10 text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider border border-white/20">
+											{cs.industry}
+										</span>
+									</div>
+									<div className="absolute bottom-3 left-3 right-3">
+										<p className="text-white font-black text-sm leading-snug line-clamp-2">
+											{cs.title}
+										</p>
+									</div>
+								</div>
+
+								{/* Body */}
+								<div className="p-5 flex flex-col flex-1">
+									<div className="flex gap-4 mb-3 text-xs font-bold text-slate-500">
+										<span className="flex items-center gap-1">
+											<Calendar className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+											{cs.year}
+										</span>
+										<span className="flex items-center gap-1">
+											<Clock className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+											{cs.duration}
+										</span>
+									</div>
+									<p className="text-slate-600 text-sm font-medium leading-relaxed line-clamp-3 flex-1">
+										{cs.scope}
+									</p>
+									{/* Key outcome */}
+									{cs.outcomes[0] && (
+										<div className="mt-3 flex items-start gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2.5">
+											<CheckCircle2
+												className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5"
+												aria-hidden="true"
+											/>
+											<p className="text-emerald-800 text-xs font-semibold leading-snug">
+												{cs.outcomes[0]}
+											</p>
+										</div>
+									)}
+									{/* Tags */}
+									<div className="mt-3 flex flex-wrap gap-1.5">
+										{cs.tags.map((tag) => (
+											<span
+												key={tag}
+												className="bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider"
+											>
+												{tag}
+											</span>
+										))}
+									</div>
+									{/* CTA */}
+									<button
+										type="button"
+										onClick={() => navigate(`/project/${cs.id}`)}
+										className="mt-4 w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+									>
+										Read Case Study
+										<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+									</button>
+								</div>
+							</article>
+						))}
+					</div>
+				)}
+
+				{/* Bottom CTA */}
+				<div className="mt-16 bg-slate-900 rounded-2xl p-8 md:p-10 text-white text-center">
+					<p className="text-blue-400 font-black text-xs uppercase tracking-widest mb-3">
+						Have a similar challenge?
+					</p>
+					<h2 className="text-2xl font-black tracking-tight mb-3">
+						Talk to Our Engineers Directly
+					</h2>
+					<p className="text-slate-400 font-medium mb-8 max-w-lg mx-auto text-sm leading-relaxed">
+						Describe your turbine make, site conditions, and shutdown window —
+						our ex-OEM engineers will give you a straight answer on scope and
+						timeline.
+					</p>
+					<div className="flex flex-col sm:flex-row gap-3 justify-center">
+						<a
+							href={waMsg(
+								"Hello KESHAV ENTERPRISES, I reviewed your case studies and would like to discuss a similar requirement.",
+							)}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						>
+							<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+							WhatsApp Us Now
+						</a>
+						<button
+							type="button"
+							onClick={() => navigate("/contact")}
+							className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Get a Free Quote
+							<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+						</button>
+					</div>
+				</div>
+			</div>
+		</main>
+	);
+});
+ProjectGalleryPage.displayName = "ProjectGalleryPage";
+
+// ─── PROJECT DETAIL PAGE ──────────────────────────────────────
+const ProjectDetailPage = memo(({ projectId, navigate }) => {
+	const cs = CASE_STUDIES.find((c) => c.id === projectId);
+	const csIdx = CASE_STUDIES.findIndex((c) => c.id === projectId);
+	const prevCs = csIdx > 0 ? CASE_STUDIES[csIdx - 1] : null;
+	const nextCs =
+		csIdx < CASE_STUDIES.length - 1 ? CASE_STUDIES[csIdx + 1] : null;
+
+	if (!cs)
+		return (
+			<main
+				id="main-content"
+				tabIndex={-1}
+				className="pt-32 pb-20 min-h-screen flex items-center justify-center bg-slate-50"
+			>
+				<div className="text-center">
+					<Briefcase className="w-20 h-20 text-slate-300 mx-auto mb-6" />
+					<h1 className="text-3xl font-black text-slate-900 mb-4">
+						Project Not Found
+					</h1>
+					<button
+						type="button"
+						onClick={() => navigate("/projects")}
+						className="text-blue-600 font-bold hover:underline flex items-center gap-1 mx-auto"
+					>
+						<ArrowLeft className="w-4 h-4" /> Back to Projects
+					</button>
+				</div>
+			</main>
+		);
+
+	return (
+		<main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
+			<SEOHead
+				title={`${cs.title} — Case Study`}
+				description={cs.scope}
+				canonicalPath={`/project/${cs.id}`}
+				pageType="article"
+			/>
+
+			{/* ── Hero ── */}
+			<div className="bg-[#0A192F] text-white pt-24 pb-16 relative overflow-hidden border-b-8 border-blue-600">
+				<div
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
+					aria-hidden="true"
+				/>
+				{cs.image && (
+					<img
+						src={cs.image}
+						alt=""
+						aria-hidden="true"
+						loading="eager"
+						decoding="async"
+						fetchPriority="high"
+						className="absolute inset-0 w-full h-full object-cover opacity-25"
+						onError={(e) => {
+							e.target.style.display = "none";
+						}}
+					/>
+				)}
+				<div
+					className="absolute inset-0 bg-linear-to-r from-[#0A192F]/90 via-[#0A192F]/70 to-[#0A192F]/40"
+					aria-hidden="true"
+				/>
+				<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					{/* Breadcrumb */}
+					<nav
+						aria-label="Breadcrumb"
+						className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10"
+					>
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="hover:text-blue-400 transition-colors flex items-center gap-1 focus:outline-none focus-visible:underline"
+						>
+							<ArrowLeft className="w-3.5 h-3.5" /> Projects
+						</button>
+						<ChevronRight className="w-3.5 h-3.5 opacity-40" />
+						<span className="text-blue-400 truncate max-w-xs">{cs.category}</span>
+					</nav>
+					<div className="flex flex-wrap gap-2 mb-4">
+						<span className="bg-blue-600 text-white text-[10px] font-black px-3 py-1.5 rounded-md uppercase tracking-wider">
+							{cs.category}
+						</span>
+						<span className="bg-white/10 text-white text-[10px] font-black px-3 py-1.5 rounded-md uppercase tracking-wider border border-white/20">
+							{cs.industry}
+						</span>
+					</div>
+					<h1 className="text-3xl md:text-4xl font-black tracking-tight mb-4 max-w-3xl">
+						{cs.title}
+					</h1>
+					<div className="flex flex-wrap gap-6 text-sm font-bold text-slate-300">
+						<span className="flex items-center gap-2">
+							<Calendar className="w-4 h-4 text-blue-400" aria-hidden="true" />
+							Year: {cs.year}
+						</span>
+						<span className="flex items-center gap-2">
+							<Clock className="w-4 h-4 text-blue-400" aria-hidden="true" />
+							Duration: {cs.duration}
+						</span>
+						<span className="flex items-center gap-2">
+							<Building2 className="w-4 h-4 text-blue-400" aria-hidden="true" />
+							{cs.client}
+						</span>
+					</div>
+				</div>
+			</div>
+
+			{/* ── Body ── */}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+				<div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+					{/* Main column */}
+					<div className="lg:col-span-2 space-y-8">
+						{/* Scope */}
+						<section aria-labelledby="scope-heading" className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+							<h2
+								id="scope-heading"
+								className="text-xs font-black text-blue-600 uppercase tracking-widest mb-3"
+							>
+								Scope of Work
+							</h2>
+							<p className="text-slate-700 font-medium leading-relaxed">
+								{cs.scope}
+							</p>
+						</section>
+
+						{/* Challenge */}
+						<section aria-labelledby="challenge-heading" className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+							<h2
+								id="challenge-heading"
+								className="text-xs font-black text-amber-600 uppercase tracking-widest mb-3"
+							>
+								The Challenge
+							</h2>
+							<p className="text-slate-700 font-medium leading-relaxed">
+								{cs.challenge}
+							</p>
+						</section>
+
+						{/* Solution */}
+						<section aria-labelledby="solution-heading" className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm">
+							<h2
+								id="solution-heading"
+								className="text-xs font-black text-blue-600 uppercase tracking-widest mb-3"
+							>
+								Our Solution
+							</h2>
+							<p className="text-slate-700 font-medium leading-relaxed">
+								{cs.solution}
+							</p>
+						</section>
+
+						{/* Outcomes */}
+						<section aria-labelledby="outcomes-heading" className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 md:p-8 shadow-sm">
+							<h2
+								id="outcomes-heading"
+								className="text-xs font-black text-emerald-700 uppercase tracking-widest mb-4"
+							>
+								Measured Outcomes
+							</h2>
+							<ul className="space-y-3">
+								{cs.outcomes.map((o, i) => (
+									<li key={i} className="flex items-start gap-3">
+										<CheckCircle2
+											className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"
+											aria-hidden="true"
+										/>
+										<span className="text-emerald-900 font-semibold text-sm leading-relaxed">
+											{o}
+										</span>
+									</li>
+								))}
+							</ul>
+						</section>
+
+						{/* Prev/Next */}
+						{(prevCs || nextCs) && (
+							<nav
+								aria-label="Adjacent case study navigation"
+								className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-4"
+							>
+								{prevCs ? (
+									<button
+										type="button"
+										onClick={() => navigate(`/project/${prevCs.id}`)}
+										className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+									>
+										<div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shrink-0">
+											<ChevronLeft
+												className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors"
+												aria-hidden="true"
+											/>
+										</div>
+										<div className="min-w-0">
+											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+												Previous
+											</p>
+											<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
+												{prevCs.title}
+											</p>
+										</div>
+									</button>
+								) : (
+									<div />
+								)}
+								{nextCs && (
+									<button
+										type="button"
+										onClick={() => navigate(`/project/${nextCs.id}`)}
+										className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-right justify-end sm:col-start-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+									>
+										<div className="min-w-0 text-right">
+											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+												Next
+											</p>
+											<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
+												{nextCs.title}
+											</p>
+										</div>
+										<div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shrink-0">
+											<ChevronRight
+												className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors"
+												aria-hidden="true"
+											/>
+										</div>
+									</button>
+								)}
+							</nav>
+						)}
+					</div>
+
+					{/* Sidebar */}
+					<aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
+						{/* Tags */}
+						<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+							<div className="bg-[#0A192F] px-5 py-4">
+								<h3 className="font-black text-white text-sm uppercase tracking-widest">
+									Technologies &amp; Tags
+								</h3>
+							</div>
+							<div className="p-5 flex flex-wrap gap-2">
+								{cs.tags.map((tag) => (
+									<span
+										key={tag}
+										className="bg-blue-50 text-blue-700 border border-blue-100 text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wider"
+									>
+										{tag}
+									</span>
+								))}
+							</div>
+						</div>
+
+						{/* WhatsApp CTA */}
+						<a
+							href={waMsg(
+								`Hello KESHAV ENTERPRISES, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
+							)}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						>
+							<MessageCircle
+								className="w-4 h-4 shrink-0"
+								aria-hidden="true"
+							/>
+							Discuss a Similar Project
+						</a>
+
+						{/* Get Quote */}
+						<button
+							type="button"
+							onClick={() => navigate("/contact")}
+							className="w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
+						>
+							Get a Free Quote
+							<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+						</button>
+
+						{/* Back to all projects */}
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3.5 rounded-xl font-bold text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						>
+							<ArrowLeft className="w-4 h-4 shrink-0" aria-hidden="true" />
+							All Projects
+						</button>
+
+						{/* Related services — matched service first, then fill to 4 */}
+						{(() => {
+							const CS_SVC_MAP = {
+								"Overhauling":           "srv_2",
+								"Reverse Engineering":   "srv_3",
+								"Erection & Commissioning": "srv_1",
+								"Lube Oil Flushing":     "srv_5",
+								"Machine Alignment":     "srv_6",
+								"Dynamic Balancing":     "srv_4",
+							};
+							const matchedId = CS_SVC_MAP[cs.category];
+							const ordered = [
+								...SERVICES.filter((s) => s.id === matchedId),
+								...SERVICES.filter((s) => s.id !== matchedId),
+							].slice(0, 4);
+							return (
+								<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+									<div className="bg-[#0A192F] px-5 py-4">
+										<h3 className="font-black text-white text-sm uppercase tracking-widest">
+											Related Services
+										</h3>
+									</div>
+									<ul className="divide-y divide-slate-100">
+										{ordered.map((s) => {
+											const SIcon = SERVICE_ICONS[s.id];
+											const isMatch = s.id === matchedId;
+											return (
+												<li key={s.id}>
+													<button
+														type="button"
+														onClick={() => navigate(`/service/${s.id}`)}
+														className={`w-full flex items-center gap-3 px-5 py-3.5 text-sm font-bold transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 ${isMatch ? "bg-blue-50 text-blue-700 hover:bg-blue-100" : "text-slate-700 hover:text-blue-600 hover:bg-blue-50"}`}
+													>
+														{SIcon && (
+															<SIcon
+																className={`w-4 h-4 shrink-0 ${isMatch ? "text-blue-600" : "text-blue-400"}`}
+																aria-hidden="true"
+															/>
+														)}
+														<span className="leading-tight flex-1">{s.title}</span>
+														{isMatch && (
+															<span className="text-[9px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">
+																This Job
+															</span>
+														)}
+													</button>
+												</li>
+											);
+										})}
+									</ul>
+								</div>
+							);
+						})()}
+					</aside>
+				</div>
+			</div>
+		</main>
+	);
+});
+ProjectDetailPage.displayName = "ProjectDetailPage";
+
 // ─── 404 NOT FOUND PAGE (Audit Fix: unknown routes) ──────────
 const NotFoundPage = memo(({ navigate }) => (
 	<main
@@ -23083,11 +24073,12 @@ const NotFoundPage = memo(({ navigate }) => (
 			<p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
 				Or jump to
 			</p>
-			<div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+			<div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
 				{[
 					{ label: "Services", path: "/services", Icon: Settings },
 					{ label: "Products", path: "/products", Icon: Layers },
 					{ label: "Industries", path: "/industries", Icon: Factory },
+					{ label: "Projects", path: "/projects", Icon: Briefcase },
 					{ label: "Contact", path: "/contact", Icon: Phone },
 				].map(({ label, path, Icon }) => (
 					<button
@@ -23319,6 +24310,13 @@ export default function App() {
 					navigate={navigate}
 				/>
 			);
+		if (currentPath.startsWith("/project/"))
+			return (
+				<ProjectDetailPage
+					projectId={currentPath.split("/")[2]}
+					navigate={navigate}
+				/>
+			);
 		switch (currentPath) {
 			case "/":
 				return <HomePage navigate={navigate} />;
@@ -23332,6 +24330,8 @@ export default function App() {
 				return <ProductsPage navigate={navigate} />;
 			case "/industries":
 				return <IndustriesPage navigate={navigate} />;
+			case "/projects":
+				return <ProjectGalleryPage navigate={navigate} />;
 			case "/contact":
 				return <ContactPage />;
 			default:
