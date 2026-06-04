@@ -44,6 +44,7 @@ import {
 	Zap,
 } from "lucide-react";
 import React, {
+	lazy,
 	memo,
 	Suspense,
 	useCallback,
@@ -54,9 +55,10 @@ import React, {
 	useState,
 } from "react";
 
-// Exit-intent review popup
-import ExitIntentReviewPopup from "./ExitIntentReviewPopup";
-import KeshavReviewForm from "./KeshavEnterprises_ReviewForm_v3";
+// Exit-intent review popup — lazy-loaded because it is only shown on exit intent,
+// so deferring it reduces the initial JS payload.
+const ExitIntentReviewPopup = lazy(() => import("./ExitIntentReviewPopup"));
+const KeshawReviewForm = lazy(() => import("./KeshavEnterprises_ReviewForm_v3"));
 
 const CONTACT_INFO = {
 	phones: ["+91 9149229448", "+91 6397363268"],
@@ -651,12 +653,12 @@ const RAW_PRODUCTS = [
 			"Moisture-repellent — water droplets cannot pass through media",
 			"High chemical resistance — compatible with aggressive gases",
 			"High flow rates at low differential pressure",
-			"Temperature range: -20 to +260 deg C",
+			"Temperature range: -20 to +260°C",
 			"Cleanable and regenerable in most applications",
 		],
 		specs: {
 			"Filter Media": "Hydrophobic PTFE",
-			"Temperature Range": "-20 to +260 deg C",
+			"Temperature Range": "-20 to +260°C",
 			Function: "Fine particulate + moisture separation",
 			"Chemical Resistance": "Excellent — wide pH range",
 			Application: "Compressed air, process gas, instrument air",
@@ -1451,12 +1453,12 @@ const RAW_PRODUCTS = [
 		id: "prod_e5",
 		category: "Expansion Joints",
 		title: "Non-Metallic Fabric Expansion Joint",
-		desc: "Multi-layer fabric/PTFE/rubber composite joints with 5-layer construction. Internal abrasion liner, insulation, PTFE foil, outer cover, reinforcement. Handles up to 1200 deg C.",
+		desc: "Multi-layer fabric/PTFE/rubber composite joints with 5-layer construction. Internal abrasion liner, insulation, PTFE foil, outer cover, reinforcement. Handles up to 1200°C.",
 		usage:
 			"Boilers, bag filters, ESPs, gas turbine installations, cement plants, incineration, power station flue gas ductwork.",
 		features: [
 			"5-layer construction: abrasion liner + insulation + PTFE foil + cover + reinforcement",
-			"Temperature capability: up to 1200 deg C (refractory-lined duct)",
+			"Temperature capability: up to 1200°C (refractory-lined duct)",
 			"Styles: Belt, convoluted, vertical flange, floating sleeve, insulation bolster",
 			"Materials: PTFE, rubber, ceramic fiber, fiberglass, Nomex",
 			"Large axial, lateral, and angular movement capacity",
@@ -1464,7 +1466,7 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			Construction: "5-layer multi-material composite",
-			"Max Temperature": "Up to 1200 deg C (refractory-lined)",
+			"Max Temperature": "Up to 1200°C (refractory-lined)",
 			Materials: "PTFE, rubber, ceramic fiber, fiberglass, Nomex",
 			"Available Styles":
 				"Belt, convoluted, vertical flange, floating sleeve, bolster",
@@ -2546,7 +2548,7 @@ const RAW_PRODUCTS = [
 			"Split ring designs available — allows in-situ installation without rotor removal, reducing outage time",
 			"Self-lubricating carbon/graphite — no additional lubrication required",
 			"Precision CNC machined to OEM dimensional specifications",
-			"High temperature resistance: up to 600 deg C continuous",
+			"High temperature resistance: up to 600°C continuous",
 			"Low coefficient of friction — minimal shaft wear",
 			"Chemical inertness with steam, gases, most process media",
 			"Grades: Carbon graphite, electrographite, silicon carbide",
@@ -2556,7 +2558,7 @@ const RAW_PRODUCTS = [
 			"Bore Size Range": "25–600 mm (per OEM drawing)",
 			"OEM Compatibility": "Triveni, BHEL, Siemens, Belliss & Morcom, Maxwatt",
 			"Material Grades": "Carbon graphite / Electrographite / Silicon Carbide",
-			"Max Temperature": "Up to 600 deg C continuous",
+			"Max Temperature": "Up to 600°C continuous",
 			"Diametral Clearance": "0.15–0.50 mm per OEM specification",
 			Lubrication: "Self-lubricating (no oil required)",
 			"Split Ring": "Available — in-situ fitting without rotor removal",
@@ -2766,7 +2768,7 @@ const RAW_PRODUCTS = [
 		features: [
 			"High-purity electrographite material grade",
 			"Excellent thermal conductivity for efficient gland heat dissipation",
-			"Extreme temperature resistance: up to 700 deg C and above",
+			"Extreme temperature resistance: up to 700°C and above",
 			"Chemical inertness with superheated steam and all process gases",
 			"Superior oxidation resistance versus standard carbon grades",
 			"Low friction coefficient — extends seal and shaft service life",
@@ -2775,7 +2777,7 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			Material: "High-purity electrographite",
-			"Max Temperature": "Up to 700 deg C+ (superheated steam service)",
+			"Max Temperature": "Up to 700°C+ (superheated steam service)",
 			"Thermal Conductivity": "High — effective gland heat dissipation",
 			"Chemical Resistance": "Steam, all process gases, chemicals",
 			Lubrication: "Self-lubricating",
@@ -3022,13 +3024,13 @@ const RAW_PRODUCTS = [
 			"Neoprene: Oil and flame resistant properties",
 			"Nitrile: Superior oil and fuel resistance",
 			"Hardness range: 40-80 Shore A per application",
-			"Operating temperature: -40 to +150 deg C (EPDM grade)",
+			"Operating temperature: -40 to +150°C (EPDM grade)",
 			"Available with pressure-sensitive adhesive backing",
 		],
 		specs: {
 			"Material Options": "EPDM, Neoprene (CR), Nitrile (NBR), Natural Rubber",
 			"Hardness Range": "40-80 Shore A (customizable)",
-			"Operating Temperature": "-40 to +150 deg C (EPDM grade)",
+			"Operating Temperature": "-40 to +150°C (EPDM grade)",
 			Profile: "Custom cross-section per drawing or sample",
 			"Backing Option": "Pressure-sensitive adhesive backing available",
 			"Supply Format": "Standard rolls or cut-to-length",
@@ -3106,7 +3108,7 @@ const RAW_PRODUCTS = [
 			"SS 304 / SS 316L corrugated inner hose",
 			"Single or double SS braided outer sheath",
 			"OD range: 1/2 to 14 inch (DN 15 to DN 350)",
-			"Temperature: -20 to +350 deg C",
+			"Temperature: -20 to +350°C",
 			"Working pressure: 0.6 to 1.6 MPa (standard)",
 			"Ends: SS 304/316 BSP, NPT, BSPP threaded or flanged",
 			"Tested per ISO 10380 and SAE J1610",
@@ -3115,7 +3117,7 @@ const RAW_PRODUCTS = [
 		specs: {
 			"Hose Material": "SS 304 / SS 316L corrugated + SS wire braid",
 			"Size Range": "1/2 to 14 inch (DN 15 to DN 350)",
-			"Temperature Range": "-20 to +350 deg C",
+			"Temperature Range": "-20 to +350°C",
 			"Working Pressure":
 				"0.6-1.6 MPa (single braid); higher with double braid",
 			"End Fittings": "BSP, NPT, Flanged — SS 304/316",
@@ -3237,7 +3239,7 @@ const RAW_PRODUCTS = [
 			"SS 304 / SS 316 outer braided sheath",
 			"Chemically inert to virtually all industrial chemicals",
 			"FDA-compliant PTFE grade available for food and pharma",
-			"Operating temperature: -60 to +260 deg C",
+			"Operating temperature: -60 to +260°C",
 			"Working pressure: Up to 40 bar (size-dependent)",
 			"Anti-static conductive PTFE available",
 			"End fittings: NPT, BSP, flanged, tri-clamp",
@@ -3245,7 +3247,7 @@ const RAW_PRODUCTS = [
 		specs: {
 			"Inner Tube": "Smooth bore PTFE (FDA grade available)",
 			"Outer Braid": "SS 304 / SS 316",
-			"Temperature Range": "-60 to +260 deg C",
+			"Temperature Range": "-60 to +260°C",
 			"Max Working Pressure": "Up to 40 bar (size-dependent)",
 			"Chemical Resistance": "Virtually all industrial chemicals",
 			"End Fittings": "Swaged SS — NPT, BSP, flanged, tri-clamp",
@@ -3280,7 +3282,7 @@ const RAW_PRODUCTS = [
 			"Working pressure: Up to 420 bar (4-spiral wrap, size-dependent)",
 			"MSHA approval for mining and hazardous location applications",
 			"Standards: EN 853, EN 856, SAE 100R1/R2/R12/R13",
-			"Operating temperature: -40 to +120 deg C",
+			"Operating temperature: -40 to +120°C",
 			"End fittings: Crimped CS/SS — JIC, BSP, NPT, SAE flange",
 		],
 		specs: {
@@ -3288,7 +3290,7 @@ const RAW_PRODUCTS = [
 			Reinforcement: "Steel wire braid / 4-wire spiral wrap",
 			"Outer Cover": "Oil/weather/abrasion-resistant rubber",
 			"Max Working Pressure": "Up to 420 bar (4-spiral, size-dependent)",
-			"Temperature Range": "-40 to +120 deg C",
+			"Temperature Range": "-40 to +120°C",
 			Standards: "EN 853, EN 856, SAE 100R1/R2/R12/R13, MSHA",
 			"HSN Code": "8307",
 		},
@@ -3319,7 +3321,7 @@ const RAW_PRODUCTS = [
 			"PTFE corrugated inner core — inert to virtually all industrial chemicals",
 			"SS304 or SS316 single/double wire braid outer reinforcement",
 			"Working pressure: up to 100 bar (single braid); higher with double braid",
-			"Temperature range: -60 deg C to +260 deg C continuous service",
+			"Temperature range: -60°C to +260°C continuous service",
 			"FDA-compliant PTFE grade available for food and pharmaceutical applications",
 			"Anti-static conductive PTFE option for flammable media",
 			"End fittings: NPT, BSP, flanged, tri-clamp, camlock per application",
@@ -3331,7 +3333,7 @@ const RAW_PRODUCTS = [
 			"Inner Tube": "PTFE corrugated (FDA grade available)",
 			Braid: "SS 304 / SS 316 single or double wire braid",
 			"Working Pressure": "Up to 100 bar (single braid, size-dependent)",
-			"Temperature Range": "-60 deg C to +260 deg C",
+			"Temperature Range": "-60°C to +260°C",
 			"Size Range": "1/4 inch to 4 inch (DN 6 to DN 100)",
 			"Chemical Resistance": "Virtually all industrial chemicals — PTFE inert",
 			Standards: "ISO 10380, FDA 21 CFR 177.1550 (food grade)",
@@ -3366,7 +3368,7 @@ const RAW_PRODUCTS = [
 			"Size range: 1/2 inch to 6 inch nominal bore (DN 12 to DN 150)",
 			"Pressure rating: 25 to 63 bar depending on bore and braid configuration",
 			"Single SS wire braid standard — double braid for higher pressure",
-			"Temperature range: -40 deg C to +400 deg C (SS316L grade)",
+			"Temperature range: -40°C to +400°C (SS316L grade)",
 			"End connections: flanged, threaded (BSP/NPT), nipple, or plain end",
 			"Unit lengths: 300 mm, 500 mm, 1 m, 1.5 m, 2 m, 3 m, 6 m, custom",
 			"ISO 10380 compliant with pressure and leak test before dispatch",
@@ -3377,7 +3379,7 @@ const RAW_PRODUCTS = [
 			"Corrugation Type": "Helical (standard) or Annular (high-pressure)",
 			"Nominal Bore": "1/2 inch to 6 inch (DN 12 to DN 150)",
 			"Pressure Rating": "25–63 bar (size and braid dependent)",
-			"Temperature Range": "-40 deg C to +400 deg C (SS316L)",
+			"Temperature Range": "-40°C to +400°C (SS316L)",
 			Braid: "Single or Double SS wire braid",
 			"End Connections": "Flanged / Threaded BSP/NPT / Nipple / Plain",
 			Standard: "ISO 10380",
@@ -3408,7 +3410,7 @@ const RAW_PRODUCTS = [
 		features: [
 			"Dedicated steam service design — rated for saturated and superheated steam",
 			"Inner core: SS316L corrugated — resists chloride stress corrosion cracking",
-			"Operating temperature: continuous service up to 350 deg C steam",
+			"Operating temperature: continuous service up to 350°C steam",
 			"Working pressure: up to 100 bar (size-dependent; high-pressure steam duty)",
 			"Single or double SS wire braid reinforcement for pressure retention",
 			"End fittings: heavy-duty flanged or screwed for secure steam connections",
@@ -3420,7 +3422,7 @@ const RAW_PRODUCTS = [
 		specs: {
 			Service: "Saturated and superheated steam — dedicated duty",
 			"Core Material": "SS 316L corrugated",
-			"Max Temperature": "Up to 350 deg C (superheated steam service)",
+			"Max Temperature": "Up to 350°C (superheated steam service)",
 			"Working Pressure": "Up to 100 bar (size-dependent)",
 			"Bore Range": "1/2 inch to 4 inch (DN 12 to DN 100)",
 			Braid: "Single or Double SS wire braid",
@@ -3455,7 +3457,7 @@ const RAW_PRODUCTS = [
 			"Smooth polished bore — minimises retention and microbial growth risk",
 			"CIP (Clean-In-Place) and SIP (Sterilize-In-Place) compatible construction",
 			"Inner tube: food-grade PTFE, silicone, or polished SS316L per service",
-			"Operating temperature: -40 deg C to +150 deg C (EPDM/SS grades)",
+			"Operating temperature: -40°C to +150°C (EPDM/SS grades)",
 			"Working pressure: up to 16 bar (food-grade service)",
 			"Sanitary end fittings: tri-clamp (DIN/SMS/ISO), plain end, or flanged",
 			"Electro-polished internal surface available for highest hygiene rating",
@@ -3465,7 +3467,7 @@ const RAW_PRODUCTS = [
 		specs: {
 			"Inner Tube": "Food-grade PTFE / Silicone / Polished SS316L",
 			Compliance: "FDA 21 CFR — food and pharmaceutical grade",
-			"Temperature Range": "-40 deg C to +150 deg C",
+			"Temperature Range": "-40°C to +150°C",
 			"Working Pressure": "Up to 16 bar",
 			Surface: "Electro-polished internal bore (Ra ≤ 0.8 µm)",
 			"End Fittings": "Tri-clamp DIN/SMS/ISO / Flanged / Plain end",
@@ -3498,7 +3500,7 @@ const RAW_PRODUCTS = [
 		features: [
 			"Oxygen-service cleaned and degreased — no hydrocarbon contamination",
 			"Inner core: SS316L corrugated — compatible with all industrial gases",
-			"Cryogenic-rated to -200 deg C for liquid oxygen and nitrogen service",
+			"Cryogenic-rated to -200°C for liquid oxygen and nitrogen service",
 			"Working pressure: up to 100 bar (gas cylinder duty)",
 			"Single SS braid — meets gas industry hose safety requirements",
 			"End fittings: CGA, DIN 477, BS341, NPT, BSP or flanged per gas type",
@@ -3511,7 +3513,7 @@ const RAW_PRODUCTS = [
 			Service: "Oxygen, nitrogen, LPG, specialty industrial gases",
 			"Core Material": "SS 316L corrugated — gas-cleaned and degreased",
 			"Cryogenic Rating":
-				"Down to -200 deg C (liquid oxygen / nitrogen service)",
+				"Down to -200°C (liquid oxygen / nitrogen service)",
 			"Working Pressure": "Up to 100 bar (size-dependent)",
 			"Bore Range": "1/4 inch to 2 inch",
 			"End Connections": "CGA / DIN 477 / BS341 / NPT / BSP / Flanged",
@@ -3545,7 +3547,7 @@ const RAW_PRODUCTS = [
 		features: [
 			"Filter Bag — fabric media options: polyester, polypropylene, PTFE, PPS, fibreglass, aramid (Nomex) per process temperature and chemistry",
 			"Filtration efficiency: ≥99.9% at 1–10 µm particle size (media-dependent)",
-			"Temperature range: up to 150 deg C (polyester/polypropylene); up to 260 deg C (PTFE membrane/PPS); up to 300 deg C+ (fibreglass, aramid)",
+			"Temperature range: up to 150°C (polyester/polypropylene); up to 260°C (PTFE membrane/PPS); up to 300°C+ (fibreglass, aramid)",
 			"PTFE membrane-coated bags available for sub-micron and sticky dust applications",
 			"Support Cage — rigid wire construction in low-carbon steel, galvanised steel, SS304, or SS316L",
 			"Cage wire: 10, 12, or 20 vertical stringer wires welded to horizontal support rings (4, 6, or 8 inch spacing)",
@@ -3562,7 +3564,7 @@ const RAW_PRODUCTS = [
 			"Bag Fabrics":
 				"Polyester / PP / PTFE Membrane / PPS / Fibreglass / Aramid (Nomex)",
 			"Temperature (bag)":
-				"Up to 150 deg C (polyester); 260 deg C (PTFE/PPS); 300 deg C+ (fibreglass)",
+				"Up to 150°C (polyester); 260°C (PTFE/PPS); 300°C+ (fibreglass)",
 			"Filtration Efficiency": "≥99.9% at 1–10 µm (PTFE membrane grade)",
 			"Cage Material": "Galvanised CS / Epoxy-coated CS / SS 304 / SS 316L",
 			"Cage Diameter": "4 inch to 8 inch (100 mm to 200 mm)",
@@ -3604,7 +3606,7 @@ const RAW_PRODUCTS = [
 			"Frequency response: DC to 10 kHz measurement bandwidth",
 			"Signal output: 4-20 mA (4-wire) or -24V DC voltage per driver",
 			"Probe measurement range: 0.25-2.5 mm (calibrated at 1.0 mm nominally)",
-			"Temperature: Probe -50 to +175 deg C; driver electronics -40 to +85 deg C",
+			"Temperature: Probe -50 to +175°C; driver electronics -40 to +85°C",
 			"Sensitivity: 8 mV per µm standard calibration",
 			"Integral cable: Armoured stainless steel for harsh industrial environments",
 		],
@@ -3615,7 +3617,7 @@ const RAW_PRODUCTS = [
 			"Signal Output": "4-20 mA or -24V DC (driver-dependent)",
 			Sensitivity: "8 mV/µm (standard calibration)",
 			"Probe Gap Range": "0.25-2.5 mm (calibrated at 1.0 mm nominal)",
-			"Probe Temperature Rating": "-50 to +175 deg C",
+			"Probe Temperature Rating": "-50 to +175°C",
 			"Cable Type": "Armoured stainless steel",
 			"HSN Code": "9026",
 		},
@@ -3644,7 +3646,7 @@ const RAW_PRODUCTS = [
 		features: [
 			"Variable reluctance (passive) sensor — generates its own AC voltage signal from gear tooth motion; no external power supply required",
 			"Compatible with Woodward 505, 505D, 505E, 2301, 7206, and MicroNet governor systems — drop-in replacement for OEM speed sensors",
-			"Stainless steel housing — resists turbine lube oil, steam condensate, high ambient temperatures up to +100 deg C, and mechanical vibration",
+			"Stainless steel housing — resists turbine lube oil, steam condensate, high ambient temperatures up to +100°C, and mechanical vibration",
 			"Air gap setting: 0.25–1.02 mm (0.010–0.040 inch) from gear tooth OD; output ≥ 1.5 V ac rms at minimum governing speed",
 			"Thread options: 5/8–18 UNF (standard short/long), 3/4–20 UNF (heavy duty), and M18×1.5 metric models for Indian OEM turbine housings",
 			"DC coil resistance: 114–250 Ω depending on model (short standard 220 Ω max; long standard / metric 250 Ω max)",
@@ -3665,7 +3667,7 @@ const RAW_PRODUCTS = [
 				"0.25–1.02 mm (0.010–0.040 inch) radial to gear OD",
 			"Gear Tooth Pitch": "Diametral pitch 8–20 / Gear module 1.27–3.2",
 			"Ambient Temperature":
-				"-40 deg C to +100 deg C (standard); up to +120 deg C conduit seal compound",
+				"-40°C to +100°C (standard); up to +120°C conduit seal compound",
 			"Coil Resistance": "114–250 Ω DC (model-dependent; short std 220 Ω max)",
 			"Operating Pressure (tip)": "3 bar max (CSA/ATEX); 10 bar at NPT fitting",
 			"Thread Standard": "5/8-18 UNF / 3/4-20 UNF / M18×1.5 metric",
@@ -3836,7 +3838,7 @@ const RAW_PRODUCTS = [
 			"Reverse-engineered to OEM dimensions using 3D scanning and CMM measurement",
 			"PMI material verification: Alloy steel (40CrMo4, 42CrMo4) with heat treatment certificates",
 			"Dynamic balancing of assembled coupling to ISO 1940 Grade G2.5",
-			"High-speed coupling: Precision crowned gear teeth — allows up to 1.5 deg angular misalignment",
+			"High-speed coupling: Precision crowned gear teeth — allows up to 1.5° angular misalignment",
 			"Low-speed coupling: Rubber or polyurethane flexible element for vibration damping",
 			"Torque ratings from 500 Nm to 500 kNm available on request",
 			"Interference-fit hub bores with keyway to DIN 6885 or OEM specification",
@@ -3850,7 +3852,7 @@ const RAW_PRODUCTS = [
 			"Torque Range": "500 Nm to 500 kNm (application specific)",
 			"Balance Grade": "ISO 1940 Grade G2.5",
 			"Bore Type": "Interference fit + keyway (DIN 6885 / OEM spec)",
-			"Angular Misalignment": "Up to 1.5 deg (gear coupling)",
+			"Angular Misalignment": "Up to 1.5° (gear coupling)",
 			Documentation: "Material cert + PMI + balancing report + dim inspection",
 			"HSN Code": "8483",
 		},
@@ -3879,11 +3881,11 @@ const RAW_PRODUCTS = [
 		features: [
 			"Laminated stainless steel disc construction — no lubrication required",
 			"Zero backlash — suitable for precision speed control and torsional sensitive drives",
-			"Accommodates angular misalignment up to 1 deg, axial ±2 mm, radial 0.1 mm",
+			"Accommodates angular misalignment up to 1°, axial ±2 mm, radial 0.1 mm",
 			"Torque capacity: 200 Nm to 200 kNm (disc pack size dependent)",
 			"Material: SS 301 or SS 17-7PH spring-hardened stainless steel discs",
 			"Fatigue-rated for 10^7 cycles — suitable for continuous turbine operation",
-			"Temperature rated: -40 deg C to +200 deg C without performance degradation",
+			"Temperature rated: -40°C to +200°C without performance degradation",
 			"Replaces OEM MetaFlex, Bibby, Lovejoy, Rexnord disc pack designs",
 			"Bolt pattern and disc OD matched to OEM coupling hub dimensions",
 			"Inspection report and material traceability certificate supplied",
@@ -3892,10 +3894,10 @@ const RAW_PRODUCTS = [
 			Type: "Laminated stainless steel flexible disc pack",
 			"Disc Material": "SS 301 / SS 17-7PH spring hardened",
 			"Torque Range": "200 Nm – 200 kNm (size dependent)",
-			"Angular Misalignment": "Up to 1 deg",
+			"Angular Misalignment": "Up to 1°",
 			"Axial Displacement": "±2 mm",
 			"Fatigue Life": "10^7 cycles (continuous turbine duty)",
-			"Operating Temperature": "-40 deg C to +200 deg C",
+			"Operating Temperature": "-40°C to +200°C",
 			"OEM Equivalents": "MetaFlex, Bibby, Lovejoy, Rexnord disc pack designs",
 			Lubrication: "None required — maintenance-free",
 			"HSN Code": "8483",
@@ -3923,11 +3925,11 @@ const RAW_PRODUCTS = [
 		usage:
 			"Steam boiler water level gauges, pressure vessel liquid level indication, condensate drum observation, and deaerator level monitoring.",
 		features: [
-			"Round sight glass: 360 deg viewing, ideal for pressure vessel and tank applications",
+			"Round sight glass: 360° viewing, ideal for pressure vessel and tank applications",
 			"Reflex sight glass: Utilizes prism optics — steam appears dark, water appears bright for clear level reading",
 			"Borosilicate glass (Type I) — rated for continuous high-temperature and thermal shock service",
 			"Pressure rating: Up to 64 bar (PN64) depending on size and design",
-			"Temperature rating: Up to 400 deg C (steam service)",
+			"Temperature rating: Up to 400°C (steam service)",
 			"Body materials: Carbon steel, SS 304, SS 316 per process conditions",
 			"Connections: Flanged (ANSI / DIN) or screwed BSP / NPT",
 			"Mica shields available for chemical protection of glass in corrosive condensates",
@@ -3936,9 +3938,9 @@ const RAW_PRODUCTS = [
 		],
 		specs: {
 			"Glass Type": "Borosilicate (Type I) — thermal shock resistant",
-			Style: "Round (360 deg) / Reflex (prism optic)",
+			Style: "Round (360°) / Reflex (prism optic)",
 			"Pressure Rating": "Up to PN64 (64 bar)",
-			"Temperature Rating": "Up to 400 deg C (steam)",
+			"Temperature Rating": "Up to 400°C (steam)",
 			"Body Material": "CS / SS 304 / SS 316",
 			"Connection Types": "Flanged ANSI/DIN / Screwed BSP-NPT",
 			"Mica Shield": "Available for corrosive condensate protection",
@@ -3973,7 +3975,7 @@ const RAW_PRODUCTS = [
 			"Coil ratings: 24V DC, 110V AC, 220V AC (50/60 Hz) — specify at order",
 			"Orifice sizes: 1/4 to 2 inch (DN6 to DN50) per pilot or direct-acting design",
 			"Body materials: Brass, SS 316, or NBR/Viton seals per process media",
-			"Ambient temperature: -20 to +50 deg C standard; -40 deg C low-temp option",
+			"Ambient temperature: -20 to +50°C standard; -40°C low-temp option",
 			"Response time: 10–60 ms (direct acting) for fast turbine trip applications",
 			"IP65 / IP66 minimum enclosure protection",
 			"SIL 2 certified versions available for SIS loop integrity",
@@ -3988,7 +3990,7 @@ const RAW_PRODUCTS = [
 			"Seal Material": "NBR / Viton (per process media)",
 			"Explosion Proof": "ATEX Ex d IIC T4/T5, IECEx, NEMA 7/9",
 			"IP Rating": "IP65 / IP66",
-			"Ambient Temp": "-20 to +50 deg C (std); -40 deg C option",
+			"Ambient Temp": "-20 to +50°C (std); -40°C option",
 			"SIL Rating": "SIL 2 available",
 			"Response Time": "10–60 ms (direct acting)",
 			"HSN Code": "8481",
@@ -4067,7 +4069,7 @@ const RAW_PRODUCTS = [
 			"Accuracy: ±1% full scale deflection",
 			"IP54 front bezel protection — suitable for turbine house environments",
 			"Alarm contacts: Optional 1 or 2 set-point SPDT relay outputs for overspeed alarm",
-			"Operating temperature: 0 to +55 deg C",
+			"Operating temperature: 0 to +55°C",
 			"Panel cutout: 92x92 mm (96mm case) or 138x138 mm (144mm case)",
 			"Compatible makes: Beacon, Yokins, Elmeasure, Automatic Systems",
 		],
@@ -4079,7 +4081,7 @@ const RAW_PRODUCTS = [
 			Accuracy: "±1% FSD",
 			"IP Rating": "IP54 (front)",
 			"Alarm Output": "Optional 1–2 SPDT relay contacts",
-			"Operating Temp": "0 to +55 deg C",
+			"Operating Temp": "0 to +55°C",
 			"Compatible Brands": "Beacon, Yokins, Elmeasure, Automatic Systems",
 			"HSN Code": "9026",
 		},
@@ -4111,7 +4113,7 @@ const RAW_PRODUCTS = [
 			"Custom profile: straight, tapered, and multi-leaf pack configurations available",
 			"Shot peened surface for improved fatigue resistance and longer service life",
 			"Spring rate (stiffness) verified against OEM specification or measured from original",
-			"Operating temperature: -20 to +120 deg C (spring steel grade)",
+			"Operating temperature: -20 to +120°C (spring steel grade)",
 			"Surface treatment: Cadmium plate, phosphate, or oil-quench per OEM",
 			"Batch material certification: EN 10204 Type 3.1 mill certificate",
 			"Used in: Speeder spring packs, trip spring assemblies, valve return springs",
@@ -4122,7 +4124,7 @@ const RAW_PRODUCTS = [
 			"Thickness Tolerance": "±0.01 mm to OEM specification",
 			"Profile Options": "Straight, tapered, multi-leaf pack",
 			"Surface Treatment": "Shot peened + cadmium / phosphate / oil coat",
-			"Operating Temperature": "-20 to +120 deg C",
+			"Operating Temperature": "-20 to +120°C",
 			"Material Certificate": "EN 10204 Type 3.1 mill certificate",
 			Applications:
 				"Governor speeder springs, trip springs, valve return springs",
@@ -4208,7 +4210,7 @@ const RAW_PRODUCTS = [
 			"Simplex and duplex element configurations for SIS redundancy requirements",
 			"Thermowell designs: Tapered, straight, flanged per ASME B16.20 / IEC 61010",
 			"Connection heads: IP65 die-cast aluminium or SS — with HART or MODBUS transmitters",
-			"Temperature range: -50 to +600 deg C (RTD); up to +1200 deg C (thermocouple)",
+			"Temperature range: -50 to +600°C (RTD); up to +1200°C (thermocouple)",
 			"ATEX Ex d / Ex ia rated versions for hazardous area steam turbine house",
 			"Response time: 5–30 seconds (insertion probe); 1–5 seconds (surface mount)",
 			"Compatible DCS/PLC: Yokogawa, ABB, Siemens, Honeywell, Emerson systems",
@@ -4216,8 +4218,8 @@ const RAW_PRODUCTS = [
 		specs: {
 			"RTD Type": "PT100 — IEC 60751 Class A / Class B (3-wire/4-wire)",
 			"Thermocouple Types": "K, J, T, E (IEC 60584)",
-			"Temperature Range": "RTD: -50 to +600 deg C; TC: up to +1200 deg C",
-			"Accuracy (PT100)": "Class A: ±(0.15 + 0.002|T|) deg C",
+			"Temperature Range": "RTD: -50 to +600°C; TC: up to +1200°C",
+			"Accuracy (PT100)": "Class A: ±(0.15 + 0.002|T|)°C",
 			"Element Config": "Simplex / Duplex (for SIS redundancy)",
 			"Connection Head": "IP65 die-cast Al / SS with optional HART transmitter",
 			"ATEX Rating": "Ex d / Ex ia (hazardous area versions)",
@@ -4253,7 +4255,7 @@ const RAW_PRODUCTS = [
 			"Forward voltage VF: 1.4 V at rated current",
 			"ISO M16 threaded stud mount — anode to stud (SKN designation)",
 			"Hermetic metal case with glass insulator — vibration and humidity resistant",
-			"Max junction temperature Tj: 180 deg C; case temperature Tc: 130 deg C",
+			"Max junction temperature Tj: 180°C; case temperature Tc: 130°C",
 			"Suitable for cooling via air or water-cooled heatsinks",
 			"Direct replacement for legacy Westcode, International Rectifier stud diodes",
 			"Supplied singly or in matched sets for 3-phase bridge configurations",
@@ -4267,8 +4269,8 @@ const RAW_PRODUCTS = [
 			"Surge Current (IFSM)": "6000 A (10 ms)",
 			"Forward Voltage (VF)": "1.4 V at rated If",
 			"Mount Type": "ISO M16 threaded stud — anode to stud",
-			"Max Junction Temp (Tj)": "180 deg C",
-			"Max Case Temp (Tc)": "130 deg C",
+			"Max Junction Temp (Tj)": "180°C",
+			"Max Case Temp (Tc)": "130°C",
 			"Case Style": "Hermetic metal / glass insulator",
 			Application: "Alternator AVR excitation, generator rectifier bridges",
 			"HSN Code": "8541",
@@ -4391,7 +4393,7 @@ const RAW_PRODUCTS = [
 			"Material: Nylon 6 / Nylon 66 (PA6/PA66) or Polyurethane per application",
 			"Precision machined internal gear profile — exact tooth count, module, and pressure angle to OEM",
 			"Hardness: 90–100 Shore D (Nylon 66); 40–80 Shore A (PU flexible grade)",
-			"Operating temperature: -20 to +100 deg C (PA66); -40 to +80 deg C (PU)",
+			"Operating temperature: -20 to +100°C (PA66); -40 to +80°C (PU)",
 			"High torsional flexibility — absorbs shock loads and angular misalignment",
 			"Self-lubricating polyamide — no external lubrication required for normal service",
 			"Replaces OEM sleeves for Fenner, Lovejoy, KTR, Bibby, and local make couplings",
@@ -4404,7 +4406,7 @@ const RAW_PRODUCTS = [
 			"Gear Profile":
 				"Internal gear — exact OEM tooth count, module, pressure angle",
 			Hardness: "90–100 Shore D (Nylon) / 40–80 Shore A (PU)",
-			"Operating Temperature": "-20 to +100 deg C (PA66)",
+			"Operating Temperature": "-20 to +100°C (PA66)",
 			Design: "Split (2-piece) or solid — OEM profile match",
 			Lubrication: "Self-lubricating (no grease required)",
 			"OEM Equivalents": "Fenner, Lovejoy, KTR, Bibby, local make sleeves",
@@ -4438,7 +4440,7 @@ const RAW_PRODUCTS = [
 			"KTR BoWex® double-cardanic curved-tooth gear principle — no restoring forces from angular/radial displacement",
 			"Polyamide (PA66) sleeve with crowned curved-tooth internal gear profile — maintenance-free (no lubrication)",
 			"Zero periodic fluctuation of angular velocity — suitable for speed-sensitive applications",
-			"Accommodates angular misalignment: up to 1.5 deg; radial: up to 0.35 mm; axial: ±1.5 mm",
+			"Accommodates angular misalignment: up to 1.5°; radial: up to 0.35 mm; axial: ±1.5 mm",
 			"Torque range: 8 Nm (BoWex junior 14) to 9,200 Nm (BoWex 160) — specify size",
 			"Speed range: up to 12,000 RPM (size dependent)",
 			"Hub material: Cast iron (EN-GJL-250) or steel (C45) per application",
@@ -4453,7 +4455,7 @@ const RAW_PRODUCTS = [
 			"Hub Material": "Cast iron EN-GJL-250 or C45 steel",
 			"Torque Range": "8 Nm to 9,200 Nm (size dependent)",
 			"Max Speed": "Up to 12,000 RPM (size dependent)",
-			"Angular Misalignment": "Up to 1.5 deg",
+			"Angular Misalignment": "Up to 1.5°",
 			"Radial Displacement": "Up to 0.35 mm",
 			"Bore Type": "Cylindrical or taper bore (DIN 6885 Sheet 1)",
 			Lubrication: "None — maintenance-free (PA66 sleeve)",
@@ -4488,7 +4490,7 @@ const RAW_PRODUCTS = [
 			"Filtration slot size: 20 µm to 3000 µm (custom slot widths available on request)",
 			"Materials: SS 304, SS 316, SS 316L; Duplex 2205/2507, Hastelloy, Titanium for aggressive media",
 			"Max differential pressure: 300 psi (20.7 bar) — higher with external support cage design",
-			"Temperature range: up to 260 deg C (synthetic seals); up to 815 deg C (metallic NPT connections)",
+			"Temperature range: up to 260°C (synthetic seals); up to 815°C (metallic NPT connections)",
 			"Flow direction: inside-to-outside or outside-to-inside per application requirement",
 			"Continuous slot geometry maximises open area vs. perforated plate or wire mesh alternatives",
 			"Cleanable and reusable — backwash, backflush, or air/gas blow cleaning compatible",
@@ -4503,7 +4505,7 @@ const RAW_PRODUCTS = [
 			"Max Differential Pressure":
 				"300 psi (20.7 bar); higher with support cage",
 			"Temperature Range":
-				"Up to 260 deg C (synthetic seals); up to 815 deg C (metallic connections)",
+				"Up to 260°C (synthetic seals); up to 815°C (metallic connections)",
 			"Flow Direction": "Inside-to-outside or outside-to-inside",
 			"Diameter Range": "19 mm to 2000 mm",
 			Length: "Up to 6000 mm (custom)",
@@ -4590,7 +4592,7 @@ const RAW_PRODUCTS = [
 			"PTFE membrane coating available for sub-micron dust, sticky particles, and high-humidity applications",
 			"Flame retardant (FR) and antistatic/conductive media available for spark and explosive dust environments",
 			"Efficiency: MERV 10–16; PTFE membrane grade achieves 99.9%+ at 0.5 µm particle size",
-			"Standard operating temperature: up to 82 deg C (cellulose/polyester); specialty media to 200 deg C+",
+			"Standard operating temperature: up to 82°C (cellulose/polyester); specialty media to 200°C+",
 			"End cap options: galvanised metal, stainless steel, or polyurethane — open/closed, bolt-hole, or flange",
 			"Inner and outer expanded metal retainer for structural support under pulse-jet cleaning loads",
 			"Compatible with all major dust collector brands: Donaldson Torit, Camfil, Farr, AAF, Nordic, and local makes",
@@ -4603,7 +4605,7 @@ const RAW_PRODUCTS = [
 				"Cellulose/Polyester (80/20) / Spunbond Polyester / PTFE Membrane",
 			"Efficiency Rating": "MERV 10–16; 99.9%+ at 0.5 µm (PTFE grade)",
 			"Operating Temperature":
-				"Up to 82 deg C (standard); 200 deg C+ (specialty media)",
+				"Up to 82°C (standard); 200°C+ (specialty media)",
 			"End Cap Material": "Galvanised steel / Stainless steel / Polyurethane",
 			Retainer: "Inner/outer expanded metal (pulse-jet compatible)",
 			"Cleaning System": "Pulse-jet / shaker / reverse-air compatible",
@@ -4645,7 +4647,7 @@ const RAW_PRODUCTS = [
 			"Flange OD: 12.75 inch, 13.8 inch, 13.9 inch, or custom to OEM specification",
 			"End cap: galvanised steel, SS 304, or polyurethane — closed bottom with gasket for housing seal",
 			"Inner metal retainer (expanded steel or perforated) — resists pulse-jet cleaning collapse",
-			"Operating temperature: up to 93 deg C standard; PTFE and PPS grades for higher temperatures",
+			"Operating temperature: up to 93°C standard; PTFE and PPS grades for higher temperatures",
 			"Antistatic and flame-retardant media options for ATEX-classified dust environments",
 			"Cross-reference by OEM part number — Donaldson, Camfil, Nordic, and local collector makes",
 			"HSN Code: 8421",
@@ -4659,7 +4661,7 @@ const RAW_PRODUCTS = [
 				"Spunbond polyester / Cellulose-polyester blend / PTFE membrane",
 			"Filtration Efficiency": "MERV 14–16; 99.99% at 0.3 µm (PTFE membrane)",
 			"Operating Temperature":
-				"Up to 93 deg C (standard); higher with specialty media",
+				"Up to 93°C (standard); higher with specialty media",
 			"End Cap Material": "Galvanised steel / SS 304 / Polyurethane",
 			"Core/Retainer": "Expanded steel inner retainer — pulse-jet rated",
 			"Special Options": "Antistatic / Flame retardant (ATEX)",
@@ -4746,7 +4748,7 @@ const RAW_PRODUCTS = [
 			"Filtration efficiency: 99.97–99.98% removal of submicron oil mist and vapour",
 			"Residual oil carryover: 1–3 mg/m³ at rated flow — protects downstream equipment and environment",
 			"Initial pressure drop: less than 0.5–1.0 psi (0.035–0.07 bar) — low energy impact on compressor",
-			"Operating temperature: up to 105 deg C continuous; short-term to 120 deg C",
+			"Operating temperature: up to 105°C continuous; short-term to 120°C",
 			"Operating pressure: up to 200 psi (13.8 bar) ASME-rated pressure vessel housings",
 			"Service life: 2000–4000 hours (environment and oil quality dependent)",
 			"Collapse pressure resistance: 5 bar (70 psi) minimum differential — structural integrity maintained",
@@ -4762,7 +4764,7 @@ const RAW_PRODUCTS = [
 			"Residual Oil Carryover": "1–3 mg/m³ at rated flow",
 			"Initial Pressure Drop": "< 0.5–1.0 psi (0.035–0.07 bar)",
 			"Max Operating Temperature":
-				"Up to 105 deg C continuous; 120 deg C short-term",
+				"Up to 105°C continuous; 120°C short-term",
 			"Max Operating Pressure": "Up to 200 psi (13.8 bar)",
 			"Collapse Resistance": "5 bar (70 psi) minimum differential",
 			"Service Life": "2000–4000 operating hours",
@@ -4802,7 +4804,7 @@ const RAW_PRODUCTS = [
 			"Micron ratings available: 3, 6, 10, 16, 25 µm per HYDAC model code requirement",
 			"Collapse/burst pressure: 10, 20, or 30 bar depending on series — per OEM specification",
 			"Flow direction: outside-in (standard HYDAC configuration)",
-			"Operating temperature: -30 deg C to +100 deg C (NBR seals); -20 to +120 deg C (Viton seals)",
+			"Operating temperature: -30°C to +100°C (NBR seals); -20 to +120°C (Viton seals)",
 			"Seal materials: NBR (standard) or FKM/Viton for high-temperature and synthetic fluid service",
 			"HYDAC model code decoded and cross-referenced for exact drop-in fit",
 			"ISO 16889, ISO 2941, ISO 2943, ISO 3968 tested and certified",
@@ -4815,7 +4817,7 @@ const RAW_PRODUCTS = [
 			"Micron Ratings": "3, 6, 10, 16, 25 µm",
 			"Collapse Pressure": "10, 20, or 30 bar (series dependent)",
 			"Flow Direction": "Outside-in (standard HYDAC configuration)",
-			"Temperature Range": "-30 to +100 deg C (NBR); -20 to +120 deg C (Viton)",
+			"Temperature Range": "-30 to +100°C (NBR); -20 to +120°C (Viton)",
 			"Seal Options": "NBR (standard) / FKM-Viton (high temperature/synthetic)",
 			Standards: "ISO 16889, ISO 2941, ISO 2943, ISO 3968",
 			"HSN Code": "8421",
@@ -4951,7 +4953,7 @@ const RAW_PRODUCTS = [
 			"Residual oil carryover: 1–3 mg/m³ at rated flow and pressure",
 			"Initial pressure drop: 0.15–0.3 bar (2–4 psi) on new element",
 			"Service life: 2000–4000 operating hours (dependent on oil quality and air inlet filtration)",
-			"Operating temperature: up to 110 deg C continuous; 120 deg C short-term peak",
+			"Operating temperature: up to 110°C continuous; 120°C short-term peak",
 			"Collapse pressure resistance: minimum 5 bar (70 psi) differential structural integrity",
 			"Compatible with mineral, semi-synthetic, and synthetic compressor lubricants",
 			"OEM cross-reference for Atlas Copco, Kaeser, Ingersoll Rand, Elgi, Kirloskar, Chicago Pneumatic",
@@ -4964,7 +4966,7 @@ const RAW_PRODUCTS = [
 			"Residual Oil Carryover": "1–3 mg/m³ at rated flow",
 			"Initial Pressure Drop": "0.15–0.3 bar (2–4 psi)",
 			"Max Operating Temperature":
-				"Up to 110 deg C (continuous); 120 deg C (peak)",
+				"Up to 110°C (continuous); 120°C (peak)",
 			"Collapse Resistance": "Minimum 5 bar (70 psi) differential",
 			"Service Life": "2000–4000 operating hours",
 			"Compatible Brands":
@@ -8037,16 +8039,19 @@ const MARQUEE_CSS = `
   /* PERF: content-visibility on below-fold sections */
   .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
 
-  /* Prevent flow images from overflowing; exclude absolute/fixed cover images so h-full is preserved */
-  img:not([class*="absolute"]):not([class*="fixed"]){max-width:100%;height:auto;display:block}
+  /* Prevent flow images from overflowing; use an explicit class allowlist instead of
+     substring matching "absolute" which would incorrectly match classes like "text-absolute-size" */
+  img:not(.absolute):not(.fixed):not(.relative):not(.sticky){max-width:100%;height:auto;display:block}
   /* Absolute/fixed cover images: ensure object-cover fills parent correctly */
   img.absolute,img.fixed{display:block;}
 
   /* GPU compositing for marquees */
   .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
 
-  /* Paint containment */
-  section:not(.hero-section){contain:paint}
+  /* Paint containment replaced with layout+style: avoids clipping absolutely-positioned
+     children (dropdowns, tooltips, sticky overlays) that need to escape section bounds.
+     contain:paint would silently clip any overflow — contain:layout style is safe. */
+  section:not(.hero-section){contain:layout style}
 
   /* ─── HERO MOBILE ─── */
   .hero-mobile-vignette{display:none}
@@ -8315,7 +8320,8 @@ const LOCAL_SCHEMA = {
 		"https://www.linkedin.com/in/keshav-enterprises-825a473b8",
 		"https://www.instagram.com/ksengg007",
 		"https://x.com/ksengg007",
-		"https://www.reddit.com/user/NoDragonfly4979/",
+		// Reddit personal user profile removed — not an authoritative LocalBusiness profile
+		// and can confuse Google's structured-data crawler (guidelines expect official directories).
 		"https://www.youtube.com/@ksengg007",
 		"https://www.facebook.com/ksengg007",
 	],
@@ -14101,7 +14107,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												<img
 													key={activeImage}
 													src={activeImage}
-													alt={`${product.title} — view ${safeActive + 1} of ${total}`}
+													alt=""
+													aria-hidden="true"
 													loading="eager"
 													decoding="async"
 													fetchPriority="high"
@@ -14476,7 +14483,32 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									</div>
 								</div>
 								<InlineRFQForm productTitle={product.title} />
-								<div className="pt-4">
+								{/* ── Need installation help? ── */}
+								<div className="pt-2 pb-1">
+									<div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 flex items-start gap-3">
+										<Wrench
+											className="w-5 h-5 text-blue-500 shrink-0 mt-0.5"
+											aria-hidden="true"
+										/>
+										<div className="flex-1 min-w-0">
+											<p className="text-xs font-black text-slate-700 leading-snug mb-1">
+												Need installation or maintenance?
+											</p>
+											<p className="text-xs text-slate-500 leading-relaxed mb-2">
+												Our field engineers supply, install, and commission everything we sell.
+											</p>
+											<button
+												type="button"
+												onClick={() => navigate("/services")}
+												className="text-xs font-black text-blue-600 hover:text-blue-500 flex items-center gap-1 transition-colors focus:outline-none focus-visible:underline"
+											>
+												View engineering services
+												<ArrowRight className="w-3 h-3" aria-hidden="true" />
+											</button>
+										</div>
+									</div>
+								</div>
+								<div className="pt-2">
 									<button
 										type="button"
 										onClick={() => setShowReport(true)}
@@ -15168,7 +15200,14 @@ const HomePage = memo(({ navigate }) => {
 								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-1 lg:order-3">
 									<button
 										type="button"
-										onClick={() => navigate("/contact")}
+										onClick={() => {
+											window.dispatchEvent(
+												new CustomEvent("ke:prefillContact", {
+													detail: { iType: "General Inquiry" },
+												}),
+											);
+											navigate("/contact");
+										}}
 										className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13"
 									>
 										{h.cta1}{" "}
@@ -15954,6 +15993,75 @@ const HomePage = memo(({ navigate }) => {
 				</div>
 			</section>
 
+			{/* ── Blog preview strip ── */}
+			<section
+				className="py-16 md:py-20 bg-slate-50 border-t border-slate-100"
+				aria-labelledby="blog-strip-heading"
+			>
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+						<div>
+							<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-2">
+								Technical Insights
+							</p>
+							<h2
+								id="blog-strip-heading"
+								className="text-slate-900 text-3xl md:text-4xl font-black tracking-tight"
+							>
+								From Our Engineering Team
+							</h2>
+							<div className="w-16 h-1.5 bg-blue-600 mt-3 rounded-full" aria-hidden="true" />
+						</div>
+						<button
+							type="button"
+							onClick={() => navigate("/blog")}
+							className="shrink-0 inline-flex items-center gap-2 text-blue-600 font-black text-sm hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group"
+						>
+							All articles
+							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+						</button>
+					</div>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						{BLOG_POSTS.slice(0, 2).map((post) => (
+							<article
+								key={post.id}
+								className="group bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50"
+								onClick={() => navigate(`/blog/${post.slug}`)}
+							>
+								<div className="flex flex-wrap gap-2 mb-4">
+									{post.tags.slice(0, 2).map((tag) => (
+										<span
+											key={tag}
+											className="bg-blue-50 text-blue-700 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-100"
+										>
+											{tag}
+										</span>
+									))}
+									<span className="text-slate-400 text-[10px] font-bold ml-auto flex items-center gap-1">
+										<Clock className="w-3 h-3" aria-hidden="true" />
+										{post.readTime}
+									</span>
+								</div>
+								<h3 className="text-base font-black text-slate-900 leading-snug mb-3 group-hover:text-blue-700 transition-colors line-clamp-2">
+									{post.title}
+								</h3>
+								<p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">
+									{post.excerpt}
+								</p>
+								<button
+									type="button"
+									onClick={(e) => { e.stopPropagation(); navigate(`/blog/${post.slug}`); }}
+									className="inline-flex items-center gap-1.5 text-blue-600 font-black text-xs hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group-hover:gap-2.5"
+								>
+									Read Article
+									<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+								</button>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
 			{/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
 			<section
 				className="bg-[#0A192F] py-20 lazy-section cv-auto"
@@ -15992,7 +16100,14 @@ const HomePage = memo(({ navigate }) => {
 							<div className="flex flex-col gap-3">
 								<button
 									type="button"
-									onClick={() => navigate("/contact")}
+									onClick={() => {
+										window.dispatchEvent(
+											new CustomEvent("ke:prefillContact", {
+												detail: { iType: "General Inquiry" },
+											}),
+										);
+										navigate("/contact");
+									}}
 									className="w-full bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								>
 									Request a Technical Quote{" "}
@@ -16100,7 +16215,7 @@ const AboutPage = memo(({ navigate }) => {
 			desc: "Commissioned dynamic balancing machines to ISO 1940 / API 670 standards — handling rotors from 50 to 2,000 kg.",
 		},
 		{
-			year: "2026",
+			year: "Today",
 			title: "Pan-India Reach",
 			desc: "Today serving power, sugar, paper, oil & gas, petrochemical, and agro industries across India with 24×7 emergency engineering support.",
 		},
@@ -17794,25 +17909,47 @@ const BlogPage = memo(({ navigate }) => {
 
 				{/* ── CTA ── */}
 				{filtered.length > 0 && (
-					<div className="mt-20 bg-slate-900 rounded-3xl p-12 text-center">
-						<h2 className="text-3xl font-black text-white tracking-tight mb-4">
-							Have a Technical Question?
-						</h2>
-						<p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto mb-8">
-							Our engineering team is available 24×7. Reach us on WhatsApp for
-							immediate technical assistance or project quotes.
-						</p>
-						<a
-							href={waMsg(
-								"Hi KESHAV ENTERPRISES, I read your blog and have a technical question.",
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-[#1ebe5d] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
-						>
-							<MessageCircle className="w-6 h-6" aria-hidden="true" /> Ask Our
-							Engineers
-						</a>
+					<div className="mt-20 bg-[#0A192F] rounded-3xl overflow-hidden border border-slate-700">
+						<div className="border-t-4 border-blue-600" />
+						<div className="p-12 text-center">
+							<h2 className="text-3xl font-black text-white tracking-tight mb-4">
+								From the Blog to the Workshop
+							</h2>
+							<p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto mb-10">
+								Every article here comes from real field experience. Ask our engineers
+								a question, browse the services we write about, or see the documented
+								results from actual jobs.
+							</p>
+							<div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+								<a
+									href={waMsg(
+										"Hi KESHAV ENTERPRISES, I read your blog and have a technical question.",
+									)}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black text-base hover:bg-[#1ebe5d] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+								>
+									<MessageCircle className="w-5 h-5" aria-hidden="true" /> Ask Our Engineers
+								</a>
+								<button
+									type="button"
+									onClick={() => navigate("/services")}
+									className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-base hover:bg-blue-500 transition-all shadow-lg group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+								>
+									<Wrench className="w-5 h-5" aria-hidden="true" />
+									Our Services
+									<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+								</button>
+								<button
+									type="button"
+									onClick={() => navigate("/projects")}
+									className="inline-flex items-center gap-2 border-2 border-slate-600 text-slate-300 px-8 py-4 rounded-xl font-black text-base hover:border-blue-400 hover:text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+								>
+									<Briefcase className="w-5 h-5" aria-hidden="true" />
+									Case Studies
+								</button>
+							</div>
+						</div>
 					</div>
 				)}
 			</div>
@@ -17935,6 +18072,33 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				canonicalPath={`/blog/${post.slug}`}
 				pageType="article"
 				publishedTime={post.date}
+				schema={{
+					"@context": "https://schema.org",
+					"@type": "Article",
+					headline: post.title,
+					description: post.excerpt,
+					datePublished: post.date,
+					author: {
+						"@type": "Organization",
+						name: post.author || "Keshav Enterprises Engineering Team",
+					},
+					publisher: {
+						"@type": "Organization",
+						name: "Keshav Turbo Services",
+						url: SITE_URL,
+						logo: {
+							"@type": "ImageObject",
+							url: `${SITE_URL}/logo.png`,
+						},
+					},
+					mainEntityOfPage: {
+						"@type": "WebPage",
+						"@id": `${SITE_URL}/#/blog/${post.slug}`,
+					},
+					image: post.coverImage
+						? `${SITE_URL}/${post.coverImage}`
+						: OG_IMAGE,
+				}}
 			/>
 			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* Breadcrumb */}
@@ -18048,7 +18212,44 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 					</a>
 				</div>
 				{/* Related posts */}
-				{others.length > 0 && (
+				{/* ── Explore Our Work strip ── */}
+			<section className="bg-[#0A192F] border-t-4 border-blue-600 rounded-2xl overflow-hidden mb-16">
+				<div className="px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
+					<div>
+						<p className="text-xs font-black text-blue-400 uppercase tracking-[0.25em] mb-1">
+							From Our Workshop
+						</p>
+						<h2 className="text-xl md:text-2xl font-black text-white leading-tight">
+							See This Work in Action
+						</h2>
+						<p className="text-slate-400 text-sm mt-1.5 max-w-sm">
+							Real case studies, documented results, and the services behind every job.
+						</p>
+					</div>
+					<div className="flex flex-col sm:flex-row gap-3 shrink-0">
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all shadow-md flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Projects &amp; Case Studies
+							<ArrowRight
+								className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+								aria-hidden="true"
+							/>
+						</button>
+						<button
+							type="button"
+							onClick={() => navigate("/services")}
+							className="border-2 border-slate-600 text-slate-300 px-6 py-3.5 rounded-xl font-black text-sm hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						>
+							Our Services
+						</button>
+					</div>
+				</div>
+			</section>
+
+			{others.length > 0 && (
 					<section aria-labelledby="related-posts-heading">
 						<h2
 							id="related-posts-heading"
@@ -18286,7 +18487,26 @@ const ServicesPage = memo(({ navigate }) => (
 								<div className="flex flex-wrap gap-4">
 									<button
 										type="button"
-										onClick={() => navigate("/contact")}
+										onClick={() => {
+											const SVC_INQUIRY_MAP = {
+												srv_1: "Turbine Erection & Commissioning",
+												srv_2: "Turbine Overhauling Service",
+												srv_3: "Reverse Engineering",
+												srv_4: "Dynamic Balancing",
+												srv_5: "Lube Oil Flushing",
+												srv_6: "Machine Alignment",
+												srv_7: "Troubleshooting",
+											};
+											const iType = SVC_INQUIRY_MAP[service.id];
+											if (iType) {
+												window.dispatchEvent(
+													new CustomEvent("ke:prefillContact", {
+														detail: { iType },
+													}),
+												);
+											}
+											navigate("/contact");
+										}}
 										aria-label={`Inquire about ${service.title}`}
 										className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-md hover:shadow-xl flex items-center group/btn focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 									>
@@ -19542,6 +19762,23 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
 					canonicalPath={`/service/${serviceId}`}
 					pageType="website"
+					schema={{
+						"@context": "https://schema.org",
+						"@type": "Service",
+						name: service.title,
+						description: service.desc,
+						provider: {
+							"@type": "LocalBusiness",
+							name: "Keshav Turbo Services",
+							url: SITE_URL,
+						},
+						areaServed: {
+							"@type": "Country",
+							name: "India",
+						},
+						serviceType: service.title,
+						url: `${SITE_URL}/#/service/${serviceId}`,
+					}}
 				/>
 
 				{/* Reading progress bar — blue-600 matching site CTA */}
@@ -19699,6 +19936,33 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 										</div>
 									</div>
 								)}
+
+								{/* Scope & Turnaround badge */}
+								{(() => {
+									const SCOPE_MAP = {
+										srv_1: { scope: "Turnkey", turnaround: "Project-based timeline" },
+										srv_2: { scope: "Turnkey on-site", turnaround: "3–21 days typical" },
+										srv_3: { scope: "Workshop & on-site", turnaround: "7–30 days" },
+										srv_4: { scope: "Workshop", turnaround: "48–72 hrs standard" },
+										srv_5: { scope: "On-site flushing", turnaround: "2–7 days" },
+										srv_6: { scope: "On-site precision", turnaround: "1–3 days" },
+										srv_7: { scope: "On-site diagnostic", turnaround: "Same day report" },
+									};
+									const info = SCOPE_MAP[service.id];
+									if (!info) return null;
+									return (
+										<div className="mt-5 flex flex-wrap gap-2" style={hs(0.5)}>
+											<span className="inline-flex items-center gap-1.5 bg-blue-600/20 border border-blue-500/30 text-blue-200 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
+												<Briefcase className="w-3 h-3 shrink-0" aria-hidden="true" />
+												{info.scope}
+											</span>
+											<span className="inline-flex items-center gap-1.5 bg-emerald-600/20 border border-emerald-500/30 text-emerald-200 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
+												<Clock className="w-3 h-3 shrink-0" aria-hidden="true" />
+												{info.turnaround}
+											</span>
+										</div>
+									);
+								})()}
 							</div>
 						</div>
 					</div>
@@ -19721,7 +19985,26 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 						</a>
 						<button
 							type="button"
-							onClick={() => navigate("/contact")}
+							onClick={() => {
+								const SVC_INQUIRY_MAP = {
+									srv_1: "Turbine Erection & Commissioning",
+									srv_2: "Turbine Overhauling Service",
+									srv_3: "Reverse Engineering",
+									srv_4: "Dynamic Balancing",
+									srv_5: "Lube Oil Flushing",
+									srv_6: "Machine Alignment",
+									srv_7: "Troubleshooting",
+								};
+								const iType = SVC_INQUIRY_MAP[service.id];
+								if (iType) {
+									window.dispatchEvent(
+										new CustomEvent("ke:prefillContact", {
+											detail: { iType },
+										}),
+									);
+								}
+								navigate("/contact");
+							}}
 							className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13"
 						>
 							Get a Free Quote{" "}
@@ -20042,7 +20325,26 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									</a>
 									<button
 										type="button"
-										onClick={() => navigate("/contact")}
+										onClick={() => {
+											const SVC_INQUIRY_MAP = {
+												srv_1: "Turbine Erection & Commissioning",
+												srv_2: "Turbine Overhauling Service",
+												srv_3: "Reverse Engineering",
+												srv_4: "Dynamic Balancing",
+												srv_5: "Lube Oil Flushing",
+												srv_6: "Machine Alignment",
+												srv_7: "Troubleshooting",
+											};
+											const iType = SVC_INQUIRY_MAP[service.id];
+											if (iType) {
+												window.dispatchEvent(
+													new CustomEvent("ke:prefillContact", {
+														detail: { iType },
+													}),
+												);
+											}
+											navigate("/contact");
+										}}
 										className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 shadow-lg"
 									>
 										Get a Free Quote{" "}
@@ -20117,7 +20419,26 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							{/* RFQ button — matches site btn-primary */}
 							<button
 								type="button"
-								onClick={() => navigate("/contact")}
+								onClick={() => {
+									const SVC_INQUIRY_MAP = {
+										srv_1: "Turbine Erection & Commissioning",
+										srv_2: "Turbine Overhauling Service",
+										srv_3: "Reverse Engineering",
+										srv_4: "Dynamic Balancing",
+										srv_5: "Lube Oil Flushing",
+										srv_6: "Machine Alignment",
+										srv_7: "Troubleshooting",
+									};
+									const iType = SVC_INQUIRY_MAP[service.id];
+									if (iType) {
+										window.dispatchEvent(
+											new CustomEvent("ke:prefillContact", {
+												detail: { iType },
+											}),
+										);
+									}
+									navigate("/contact");
+								}}
 								className="sd-reveal w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
 							>
 								Get a Free Quote{" "}
@@ -20931,6 +21252,49 @@ const ProductsPage = memo(({ navigate }) => {
 						</button>
 					</div>
 				)}
+			</div>
+
+			{/* ── Cross-link CTA strip ── */}
+			<div className="bg-[#0A192F] border-t-4 border-blue-600">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+					<div className="flex flex-col md:flex-row items-center justify-between gap-8">
+						<div className="text-center md:text-left">
+							<p className="text-xs font-black text-blue-400 uppercase tracking-[0.25em] mb-2">
+								Products Are Only Part of the Picture
+							</p>
+							<h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
+								Need Installation, Overhauling, or a Custom Solution?
+							</h2>
+							<p className="text-slate-400 text-sm mt-2 max-w-md">
+								Our field engineers install, commission, and maintain everything we
+								supply — plus handle turbine work, alignment, and balancing that no
+								product alone can fix.
+							</p>
+						</div>
+						<div className="flex flex-col sm:flex-row gap-3 shrink-0">
+							<button
+								type="button"
+								onClick={() => navigate("/services")}
+								className="bg-blue-600 text-white px-7 py-4 rounded-xl font-black text-sm hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+							>
+								<Wrench className="w-4 h-4 shrink-0" aria-hidden="true" />
+								Our Engineering Services
+								<ArrowRight
+									className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+									aria-hidden="true"
+								/>
+							</button>
+							<button
+								type="button"
+								onClick={() => navigate("/projects")}
+								className="border-2 border-slate-600 text-slate-300 px-7 py-4 rounded-xl font-black text-sm hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+							>
+								<Briefcase className="w-4 h-4 shrink-0" aria-hidden="true" />
+								Field Case Studies
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</main>
 	);
@@ -21755,6 +22119,23 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 				description={`${ind.desc} — Keshav Enterprises, Shamli, UP.`}
 				canonicalPath={`/industry/${ind.id}`}
 				pageType="website"
+				schema={{
+					"@context": "https://schema.org",
+					"@type": "Service",
+					name: `${ind.title} — Turbine Engineering Solutions`,
+					description: ind.desc,
+					provider: {
+						"@type": "LocalBusiness",
+						name: "Keshav Turbo Services",
+						url: SITE_URL,
+					},
+					areaServed: {
+						"@type": "Country",
+						name: "India",
+					},
+					serviceType: ind.title,
+					url: `${SITE_URL}/#/industry/${ind.id}`,
+				}}
 			/>
 
 			{/* ── Hero ── */}
@@ -22007,7 +22388,17 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					<div className="flex flex-col sm:flex-row md:flex-col gap-4 shrink-0">
 						<button
 							type="button"
-							onClick={() => navigate("/contact")}
+							onClick={() => {
+								window.dispatchEvent(
+									new CustomEvent("ke:prefillContact", {
+										detail: {
+											iType: "General Inquiry",
+											details: `Hi, I need engineering support for my ${ind.title} facility. Please contact me.`,
+										},
+									}),
+								);
+								navigate("/contact");
+							}}
 							className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
 						>
 							Get a Quote <ArrowRight className="w-5 h-5" />
@@ -22207,6 +22598,14 @@ const IndustriesPage = memo(({ navigate }) => (
 											type="button"
 											onClick={(e) => {
 												e.stopPropagation();
+												window.dispatchEvent(
+													new CustomEvent("ke:prefillContact", {
+														detail: {
+															iType: "General Inquiry",
+															details: `Hi, I need engineering services for my ${ind.title} facility. Please contact me.`,
+														},
+													}),
+												);
 												navigate("/contact");
 											}}
 											aria-label={`Get a quote for ${ind.title} services`}
@@ -22255,6 +22654,46 @@ const IndustriesPage = memo(({ navigate }) => (
 				})}
 			</div>
 		</div>
+
+		{/* ── Bottom CTA banner ── */}
+		<div className="bg-[#0A192F] border-t-4 border-blue-600">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+				<div className="flex flex-col md:flex-row items-center justify-between gap-8">
+					<div className="text-center md:text-left">
+						<p className="text-xs font-black text-blue-400 uppercase tracking-[0.25em] mb-2">
+							Sector-Proven Engineering
+						</p>
+						<h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
+							See Our Work Across Every Industry
+						</h2>
+						<p className="text-slate-400 text-sm mt-2 max-w-md">
+							From sugar mills and power plants to cement factories and petrochemical
+							facilities — real jobs, documented outcomes, and verified field results.
+						</p>
+					</div>
+					<div className="flex flex-col sm:flex-row gap-3 shrink-0">
+						<button
+							type="button"
+							onClick={() => navigate("/projects")}
+							className="bg-blue-600 text-white px-8 py-4 rounded-xl font-black text-base hover:bg-blue-500 transition-all shadow-lg flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Projects &amp; Case Studies
+							<ArrowRight
+								className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+								aria-hidden="true"
+							/>
+						</button>
+						<button
+							type="button"
+							onClick={() => navigate("/contact")}
+							className="border-2 border-slate-600 text-slate-300 px-8 py-4 rounded-xl font-black text-base hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+						>
+							Discuss Your Requirements
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
 ));
 IndustriesPage.displayName = "IndustriesPage";
@@ -22301,7 +22740,17 @@ const MapEmbed = memo(({ src }) => {
 MapEmbed.displayName = "MapEmbed";
 
 // ─── CONTACT PAGE ─────────────────────────────────────────────
-const ContactPage = memo(() => {
+// Module-level one-shot buffer for prefill data.
+// Problem: ke:prefillContact is dispatched synchronously BEFORE navigate() triggers
+// React's re-render, so ContactPage hasn't mounted yet and its useEffect listener
+// hasn't registered. The event fires into a void.
+// Fix: capture it here unconditionally; consume and clear on ContactPage mount.
+let _pendingPrefill = null;
+window.addEventListener("ke:prefillContact", (e) => {
+	if (e.detail) _pendingPrefill = e.detail;
+});
+
+const ContactPage = memo(({ navigate }) => {
 	// contactName = person's name; name = company name (kept as 'name' for back-compat)
 	const [contactName, setContactName] = useState("");
 	const [name, setName] = useState("");
@@ -22313,6 +22762,31 @@ const ContactPage = memo(() => {
 	const [status, setStatus] = useState("idle");
 	const [submitError, setSubmitError] = useState("");
 	const [errors, setErrors] = useState({});
+
+	// Pre-fill from other pages via ke:prefillContact event.
+	// ServiceDetailPage, IndustryDetailPage, etc. dispatch this BEFORE calling navigate().
+	// Because the event fires before ContactPage mounts, a module-level _pendingPrefill
+	// buffer (above) captures it. On mount we drain that buffer, then keep a live listener
+	// for any re-dispatch that happens while the page is already open.
+	// e.detail = { iType?: string, turbineMake?: string, details?: string }
+	useEffect(() => {
+		// Drain pending prefill captured before this component mounted
+		if (_pendingPrefill) {
+			const p = _pendingPrefill;
+			_pendingPrefill = null;
+			if (p.iType) setIType(p.iType);
+			if (p.turbineMake) setTurbineMake(p.turbineMake);
+			if (p.details) setDetails(p.details);
+		}
+		const handler = (e) => {
+			if (!e.detail) return;
+			if (e.detail.iType) setIType(e.detail.iType);
+			if (e.detail.turbineMake) setTurbineMake(e.detail.turbineMake);
+			if (e.detail.details) setDetails(e.detail.details);
+		};
+		window.addEventListener("ke:prefillContact", handler);
+		return () => window.removeEventListener("ke:prefillContact", handler);
+	}, []);
 
 	// Helper: clear a specific field error and reset submission error state on edit
 	const clearFieldErr = useCallback(
@@ -22664,25 +23138,45 @@ const ContactPage = memo(() => {
 								<div
 									role="status"
 									aria-live="polite"
-									className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 rounded-xl shadow-sm"
+									className="mb-8 rounded-xl shadow-sm overflow-hidden border border-green-200"
 								>
-									<div className="flex items-center mb-4">
-										<CheckCircle2
-											className="w-8 h-8 mr-4 text-green-500 shrink-0"
-											aria-hidden="true"
-										/>
-										<p className="font-black text-lg">
-											Your inquiry has been sent to our engineers. We will
-											respond within 24 hours.
-										</p>
+									<div className="p-6 bg-green-50 text-green-800">
+										<div className="flex items-center mb-4">
+											<CheckCircle2
+												className="w-8 h-8 mr-4 text-green-500 shrink-0"
+												aria-hidden="true"
+											/>
+											<p className="font-black text-lg">
+												Your inquiry has been sent to our engineers. We will
+												respond within 24 hours.
+											</p>
+										</div>
+										<button
+											type="button"
+											onClick={resetForm}
+											className="text-green-700 underline text-sm font-bold hover:text-green-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
+										>
+											Send another inquiry
+										</button>
 									</div>
-									<button
-										type="button"
-										onClick={resetForm}
-										className="text-green-700 underline text-sm font-bold hover:text-green-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded"
-									>
-										Send another inquiry
-									</button>
+									{/* While-you-wait nudge */}
+									<div className="bg-[#0A192F] px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+										<p className="text-slate-300 text-sm font-semibold leading-snug">
+											<span className="text-blue-400 font-black">While you wait —</span>{" "}
+											browse our documented case studies and field results.
+										</p>
+										<button
+											type="button"
+											onClick={() => navigate("/projects")}
+											className="shrink-0 bg-blue-600 text-white px-5 py-2.5 rounded-lg font-black text-sm hover:bg-blue-500 transition-all flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+										>
+											View Case Studies
+											<ArrowRight
+												className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+												aria-hidden="true"
+											/>
+										</button>
+									</div>
 								</div>
 							)}
 							{status === "error" && (
@@ -23470,9 +23964,9 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 					{/* Stats strip */}
 					<div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4">
 						{[
-							{ val: "25+", label: "Years Experience" },
+							{ val: `${CASE_STUDIES.length}`, label: "Documented Case Studies" },
 							{ val: "500+", label: "Turbines Serviced" },
-							{ val: "10+", label: "OEM Trained Engineers" },
+							{ val: "25+", label: "Years Experience" },
 							{ val: "24/7", label: "Emergency Response" },
 						].map(({ val, label }) => (
 							<div
@@ -23534,9 +24028,31 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 			{/* ── Cards grid ── */}
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 				{filtered.length === 0 ? (
-					<div className="text-center py-20 text-slate-400">
-						<Briefcase className="w-12 h-12 mx-auto mb-4 opacity-30" />
-						<p className="font-semibold">No projects match these filters.</p>
+					<div className="text-center py-20 max-w-md mx-auto">
+						<div className="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-5">
+							<Briefcase className="w-8 h-8 text-slate-300" aria-hidden="true" />
+						</div>
+						<h3 className="font-black text-slate-800 text-lg mb-2">No projects match these filters</h3>
+						<p className="text-slate-500 text-sm mb-6 leading-relaxed">
+							Try clearing the filters below, or contact us — we have completed jobs across many more industries and service types.
+						</p>
+						<div className="flex flex-col sm:flex-row gap-3 justify-center">
+							<button
+								type="button"
+								onClick={() => { setActiveCategory("All"); setActiveIndustry("All"); }}
+								className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-500 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+							>
+								Clear Filters
+							</button>
+							<button
+								type="button"
+								onClick={() => navigate("/contact")}
+								className="inline-flex items-center gap-2 border-2 border-slate-200 text-slate-700 px-6 py-3 rounded-xl font-black text-sm hover:border-blue-400 hover:text-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+							>
+								<MessageCircle className="w-4 h-4" aria-hidden="true" />
+								Ask About a Job
+							</button>
+						</div>
 					</div>
 				) : (
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -23676,12 +24192,37 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 ProjectGalleryPage.displayName = "ProjectGalleryPage";
 
 // ─── PROJECT DETAIL PAGE ──────────────────────────────────────
+// Map from case-study category → primary service ID.
+// Defined at module level — stable reference, never recreated.
+const CS_SVC_MAP = {
+	"Overhauling":               "srv_2",
+	"Reverse Engineering":       "srv_3",
+	"Erection & Commissioning":  "srv_1",
+	"Lube Oil Flushing":         "srv_5",
+	"Machine Alignment":         "srv_6",
+	"Dynamic Balancing":         "srv_4",
+};
+
 const ProjectDetailPage = memo(({ projectId, navigate }) => {
 	const cs = CASE_STUDIES.find((c) => c.id === projectId);
 	const csIdx = CASE_STUDIES.findIndex((c) => c.id === projectId);
 	const prevCs = csIdx > 0 ? CASE_STUDIES[csIdx - 1] : null;
 	const nextCs =
 		csIdx < CASE_STUDIES.length - 1 ? CASE_STUDIES[csIdx + 1] : null;
+
+	// Sidebar: match the case-study's service category first, then fill to 4.
+	// useMemo — recomputes only when the project changes.
+	const { relatedServices, relatedMatchedId } = useMemo(() => {
+		if (!cs) return { relatedServices: [], relatedMatchedId: null };
+		const matchedId = CS_SVC_MAP[cs.category] ?? null;
+		return {
+			relatedMatchedId: matchedId,
+			relatedServices: [
+				...SERVICES.filter((s) => s.id === matchedId),
+				...SERVICES.filter((s) => s.id !== matchedId),
+			].slice(0, 4),
+		};
+	}, [cs]);
 
 	if (!cs)
 		return (
@@ -23713,6 +24254,33 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 				description={cs.scope}
 				canonicalPath={`/project/${cs.id}`}
 				pageType="article"
+				schema={{
+					"@context": "https://schema.org",
+					"@type": "Article",
+					headline: `${cs.title} — Case Study`,
+					description: cs.scope,
+					datePublished: cs.year ? `${cs.year}-01-01` : undefined,
+					author: {
+						"@type": "Organization",
+						name: "Keshav Enterprises Engineering Team",
+					},
+					publisher: {
+						"@type": "Organization",
+						name: "Keshav Turbo Services",
+						url: SITE_URL,
+						logo: {
+							"@type": "ImageObject",
+							url: `${SITE_URL}/logo.png`,
+						},
+					},
+					mainEntityOfPage: {
+						"@type": "WebPage",
+						"@id": `${SITE_URL}/#/project/${cs.id}`,
+					},
+					image: cs.image ? `${SITE_URL}/${cs.image}` : OG_IMAGE,
+					articleSection: cs.category || "Industrial Engineering",
+					keywords: (cs.tags || []).join(", "),
+				}}
 			/>
 
 			{/* ── Hero ── */}
@@ -23766,17 +24334,17 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 					<h1 className="text-3xl md:text-4xl font-black tracking-tight mb-4 max-w-3xl">
 						{cs.title}
 					</h1>
-					<div className="flex flex-wrap gap-6 text-sm font-bold text-slate-300">
-						<span className="flex items-center gap-2">
-							<Calendar className="w-4 h-4 text-blue-400" aria-hidden="true" />
-							Year: {cs.year}
+					<div className="flex flex-wrap gap-3 text-xs font-black text-slate-300 mt-6">
+						<span className="inline-flex items-center gap-1.5 bg-white/8 border border-white/15 px-3 py-1.5 rounded-full">
+							<Calendar className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+							{cs.year}
 						</span>
-						<span className="flex items-center gap-2">
-							<Clock className="w-4 h-4 text-blue-400" aria-hidden="true" />
-							Duration: {cs.duration}
+						<span className="inline-flex items-center gap-1.5 bg-white/8 border border-white/15 px-3 py-1.5 rounded-full">
+							<Clock className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+							{cs.duration}
 						</span>
-						<span className="flex items-center gap-2">
-							<Building2 className="w-4 h-4 text-blue-400" aria-hidden="true" />
+						<span className="inline-flex items-center gap-1.5 bg-white/8 border border-white/15 px-3 py-1.5 rounded-full">
+							<Building2 className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
 							{cs.client}
 						</span>
 					</div>
@@ -23849,6 +24417,55 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 								))}
 							</ul>
 						</section>
+
+						{/* ── Similar work CTA ── */}
+						<div className="bg-[#0A192F] rounded-2xl overflow-hidden border border-slate-700">
+							<div className="border-t-4 border-blue-600" />
+							<div className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+								<div>
+									<p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">
+										Have a Similar Requirement?
+									</p>
+									<p className="text-white font-black text-base leading-snug">
+										We handle {cs.category} jobs across all major OEM brands and industries.
+									</p>
+									<p className="text-slate-400 text-xs mt-1">
+										Tell us your turbine make, capacity, and symptoms — we respond with a technical answer, not a brochure.
+									</p>
+								</div>
+								<div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
+									<a
+										href={waMsg(
+											`Hello KESHAV ENTERPRISES, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
+										)}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+									>
+										<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+										WhatsApp Us Now
+									</a>
+									<button
+										type="button"
+										onClick={() => {
+											window.dispatchEvent(
+												new CustomEvent("ke:prefillContact", {
+													detail: {
+														iType: "General Inquiry",
+														details: `Hi, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
+													},
+												}),
+											);
+											navigate("/contact");
+										}}
+										className="border border-slate-600 text-slate-300 px-6 py-3 rounded-xl font-black text-sm hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+									>
+										Send a Detailed RFQ
+										<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+									</button>
+								</div>
+							</div>
+						</div>
 
 						{/* Prev/Next */}
 						{(prevCs || nextCs) && (
@@ -23946,7 +24563,17 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 						{/* Get Quote */}
 						<button
 							type="button"
-							onClick={() => navigate("/contact")}
+							onClick={() => {
+								window.dispatchEvent(
+									new CustomEvent("ke:prefillContact", {
+										detail: {
+											iType: "General Inquiry",
+											details: `Hi, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
+										},
+									}),
+								);
+								navigate("/contact");
+							}}
 							className="w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
 						>
 							Get a Free Quote
@@ -23963,59 +24590,45 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 							All Projects
 						</button>
 
-						{/* Related services — matched service first, then fill to 4 */}
-						{(() => {
-							const CS_SVC_MAP = {
-								"Overhauling":           "srv_2",
-								"Reverse Engineering":   "srv_3",
-								"Erection & Commissioning": "srv_1",
-								"Lube Oil Flushing":     "srv_5",
-								"Machine Alignment":     "srv_6",
-								"Dynamic Balancing":     "srv_4",
-							};
-							const matchedId = CS_SVC_MAP[cs.category];
-							const ordered = [
-								...SERVICES.filter((s) => s.id === matchedId),
-								...SERVICES.filter((s) => s.id !== matchedId),
-							].slice(0, 4);
-							return (
-								<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-									<div className="bg-[#0A192F] px-5 py-4">
-										<h3 className="font-black text-white text-sm uppercase tracking-widest">
-											Related Services
-										</h3>
-									</div>
-									<ul className="divide-y divide-slate-100">
-										{ordered.map((s) => {
-											const SIcon = SERVICE_ICONS[s.id];
-											const isMatch = s.id === matchedId;
-											return (
-												<li key={s.id}>
-													<button
-														type="button"
-														onClick={() => navigate(`/service/${s.id}`)}
-														className={`w-full flex items-center gap-3 px-5 py-3.5 text-sm font-bold transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 ${isMatch ? "bg-blue-50 text-blue-700 hover:bg-blue-100" : "text-slate-700 hover:text-blue-600 hover:bg-blue-50"}`}
-													>
-														{SIcon && (
-															<SIcon
-																className={`w-4 h-4 shrink-0 ${isMatch ? "text-blue-600" : "text-blue-400"}`}
-																aria-hidden="true"
-															/>
-														)}
-														<span className="leading-tight flex-1">{s.title}</span>
-														{isMatch && (
-															<span className="text-[9px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">
-																This Job
-															</span>
-														)}
-													</button>
-												</li>
-											);
-										})}
-									</ul>
+						{/* Related services — matched service first, then fill to 4.
+						    Computed via useMemo above as `relatedServices` + `relatedMatchedId`. */}
+						{relatedServices.length > 0 && (
+							<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+								<div className="bg-[#0A192F] px-5 py-4">
+									<h3 className="font-black text-white text-sm uppercase tracking-widest">
+										Related Services
+									</h3>
 								</div>
-							);
-						})()}
+								<ul className="divide-y divide-slate-100">
+									{relatedServices.map((s) => {
+										const SIcon = SERVICE_ICONS[s.id];
+										const isMatch = s.id === relatedMatchedId;
+										return (
+											<li key={s.id}>
+												<button
+													type="button"
+													onClick={() => navigate(`/service/${s.id}`)}
+													className={`w-full flex items-center gap-3 px-5 py-3.5 text-sm font-bold transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 ${isMatch ? "bg-blue-50 text-blue-700 hover:bg-blue-100" : "text-slate-700 hover:text-blue-600 hover:bg-blue-50"}`}
+												>
+													{SIcon && (
+														<SIcon
+															className={`w-4 h-4 shrink-0 ${isMatch ? "text-blue-600" : "text-blue-400"}`}
+															aria-hidden="true"
+														/>
+													)}
+													<span className="leading-tight flex-1">{s.title}</span>
+													{isMatch && (
+														<span className="text-[9px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">
+															This Job
+														</span>
+													)}
+												</button>
+											</li>
+										);
+									})}
+								</ul>
+							</div>
+						)}
 					</aside>
 				</div>
 			</div>
@@ -24029,7 +24642,7 @@ const NotFoundPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
 		tabIndex={-1}
-		className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-slate-50 px-4"
+		className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-[#0A192F] px-4"
 	>
 		<SEOHead
 			title="Page Not Found — 404"
@@ -24038,24 +24651,30 @@ const NotFoundPage = memo(({ navigate }) => (
 			noIndex={true}
 		/>
 		<div className="text-center max-w-2xl w-full">
-			<p className="text-8xl font-black text-blue-600 mb-4" aria-hidden="true">
+			{/* Big 404 */}
+			<p
+				className="text-[7rem] md:text-[9rem] font-black leading-none mb-2 text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500"
+				aria-hidden="true"
+			>
 				404
 			</p>
-			<h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
-				Page not found
+			<div className="w-16 h-1 bg-blue-600 rounded-full mx-auto mb-6" aria-hidden="true" />
+			<h1 className="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">
+				This page has gone offline
 			</h1>
-			<p className="text-slate-500 font-medium mb-8 max-w-md mx-auto">
+			<p className="text-slate-400 font-medium mb-10 max-w-md mx-auto leading-relaxed">
 				The page you&apos;re looking for doesn&apos;t exist or has been moved.
-				Here are some helpful links to get you back on track.
+				Use the links below to get back on track — our engineering team is still
+				available 24×7.
 			</p>
 			{/* Primary actions */}
 			<div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
 				<button
 					type="button"
 					onClick={() => navigate("/")}
-					className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2"
+					className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black hover:bg-blue-500 transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 				>
-					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Go Home
+					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Back to Home
 				</button>
 				<a
 					href={waMsg(
@@ -24063,14 +24682,13 @@ const NotFoundPage = memo(({ navigate }) => (
 					)}
 					target="_blank"
 					rel="noopener noreferrer"
-					className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-semibold hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2"
+					className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-black hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
 				>
-					<MessageCircle className="w-4 h-4" aria-hidden="true" /> Ask on
-					WhatsApp
+					<MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
 				</a>
 			</div>
 			{/* Quick-links grid */}
-			<p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
+			<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">
 				Or jump to
 			</p>
 			<div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -24085,12 +24703,12 @@ const NotFoundPage = memo(({ navigate }) => (
 						key={path}
 						type="button"
 						onClick={() => navigate(path)}
-						className="flex flex-col items-center gap-2 bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all text-slate-700 hover:text-blue-600 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						className="flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-400/60 hover:bg-white/10 hover:-translate-y-0.5 transition-all text-slate-400 hover:text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
 					>
-						<div className="w-10 h-10 bg-slate-50 rounded-lg flex items-center justify-center group-hover:bg-blue-50 transition-colors border border-slate-100">
+						<div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition-colors border border-white/10">
 							<Icon className="w-5 h-5" aria-hidden="true" />
 						</div>
-						<span className="text-sm font-semibold">{label}</span>
+						<span className="text-sm font-black">{label}</span>
 					</button>
 				))}
 			</div>
@@ -24100,12 +24718,19 @@ const NotFoundPage = memo(({ navigate }) => (
 NotFoundPage.displayName = "NotFoundPage";
 
 // ─── APP ROOT ─────────────────────────────────────────────────
+// Paths where the exit-intent popup is suppressed (review form already present,
+// or the page would feel intrusive). Defined at module level — stable reference.
+const POPUP_EXCLUDED_PATHS = ["/contact", "/product/", "/service/"];
+
 export default function App() {
 	// Seed the initial history entry with idx:0 if it has none yet.
 	// This ensures popstate always finds a numeric idx in event.state.
-	if (window.history.state?.idx === undefined) {
-		window.history.replaceState({ idx: 0 }, "", window.location.href);
-	}
+	// FIXED: moved into useEffect so it runs once on mount, not on every render.
+	useEffect(() => {
+		if (window.history.state?.idx === undefined) {
+			window.history.replaceState({ idx: 0 }, "", window.location.href);
+		}
+	}, []);
 
 	const [currentPath, setCurrentPath] = useState(() => {
 		const p = window.location.hash.replace("#", "") || "/";
@@ -24123,7 +24748,7 @@ export default function App() {
 	// ── Exit-intent popup route guard ──────────────────────────────
 	// Suppresses the popup on pages where the review form already lives
 	// or where it would feel intrusive (contact page).
-	const POPUP_EXCLUDED_PATHS = ["/contact", "/product/", "/service/"];
+	// (POPUP_EXCLUDED_PATHS is defined at module level above App.)
 	const showExitPopup = !POPUP_EXCLUDED_PATHS.some((p) =>
 		currentPath.startsWith(p),
 	);
@@ -24213,12 +24838,17 @@ export default function App() {
 	// sub-sections on fast connections) gets .visible stamped immediately so
 	// it never flashes invisible for even one frame.
 	useLayoutEffect(() => {
-		for (const el of document.querySelectorAll(".lazy-section")) {
-			const r = el.getBoundingClientRect();
-			if (r.top < window.innerHeight + 200) {
-				el.classList.add("visible");
+		// FIXED: wrapped in rAF so the above-fold visibility check runs after the
+		// browser has painted the new route, preventing jank on pages with many sections.
+		const raf = requestAnimationFrame(() => {
+			for (const el of document.querySelectorAll(".lazy-section")) {
+				const r = el.getBoundingClientRect();
+				if (r.top < window.innerHeight + 200) {
+					el.classList.add("visible");
+				}
 			}
-		}
+		});
+		return () => cancelAnimationFrame(raf);
 	}, [currentPath]);
 
 	// ── PERF: Intersection Observer — re-observe after each route change ──
@@ -24276,6 +24906,9 @@ export default function App() {
 							.replace(/\//g, " — ")
 							.replace(/-/g, " ");
 			setRouteAnnouncement(`Navigated to ${pageName} page`);
+			// FIXED: clear after 1.5s so a subsequent navigation to the same path
+			// triggers a fresh DOM mutation and screen readers re-announce it.
+			setTimeout(() => setRouteAnnouncement(""), 1500);
 		}
 	}, []);
 
@@ -24333,7 +24966,7 @@ export default function App() {
 			case "/projects":
 				return <ProjectGalleryPage navigate={navigate} />;
 			case "/contact":
-				return <ContactPage />;
+				return <ContactPage navigate={navigate} />;
 			default:
 				return <NotFoundPage navigate={navigate} />;
 		}
@@ -24380,15 +25013,18 @@ export default function App() {
 
 				{/* Exit-intent review popup: fixed overlay, zero layout impact.
 			    Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
-			    minTimeMs lowered to 2 min and scrollPct to 40% to catch engaged visitors. */}
+			    minTimeMs lowered to 2 min and scrollPct to 40% to catch engaged visitors.
+			    Both popup and form are lazy-loaded — only fetched when exit intent fires. */}
 				{showExitPopup && (
-					<ExitIntentReviewPopup
-						ReviewForm={KeshavReviewForm}
-						minTimeMs={120_000}
-						idleMs={90_000}
-						scrollPct={40}
-						navigate={navigate}
-					/>
+					<Suspense fallback={null}>
+						<ExitIntentReviewPopup
+							ReviewForm={KeshawReviewForm}
+							minTimeMs={120_000}
+							idleMs={90_000}
+							scrollPct={40}
+							navigate={navigate}
+						/>
+					</Suspense>
 				)}
 			</div>
 		</CurrencyProvider>
