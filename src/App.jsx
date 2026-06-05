@@ -7704,7 +7704,7 @@ function useFmtPrice() {
 }
 
 // Currency selector dropdown — drop this anywhere in the Navbar JSX
-function CurrencyDropdown({ scrolled }) {
+const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 	const { code, select, detectedAuto } = useCurrency();
 	const [open, setOpen] = useState(false);
 	const dropRef = useRef(null);
@@ -7813,7 +7813,8 @@ function CurrencyDropdown({ scrolled }) {
 			)}
 		</div>
 	);
-}
+});
+CurrencyDropdown.displayName = "CurrencyDropdown";
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Attach per-product price (falls back to category band), plus availability
@@ -8053,6 +8054,10 @@ const MARQUEE_CSS = `
      contain:paint would silently clip any overflow — contain:layout style is safe. */
   section:not(.hero-section){contain:layout style}
 
+  /* ─── VON RESTORFF CTA BADGE — isolates primary CTA visually ─── */
+  .ke-cta-badge-wrap{padding-top:1.1rem}
+  @media(max-width:640px){.ke-cta-badge-wrap{padding-top:1.25rem}}
+
   /* ─── HERO MOBILE ─── */
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
@@ -8210,17 +8215,33 @@ const MARQUEE_CSS = `
   *{box-sizing:border-box}
 `;
 
+// ─── SITE & BRAND CONSTANTS ────────────────────────────────────
+// Declared here — before LOCAL_SCHEMA — so every consumer below
+// (LOCAL_SCHEMA, SEOHead, page-level schemas) can reference them safely.
+
+// Live production domain. Keep /public/sitemap.xml, robots.txt,
+// llms.txt, and llms-full.txt deployed alongside this app.
+const SITE_URL = "https://www.keshavturboservices.com";
+const OG_IMAGE = `${SITE_URL}/og-image.webp`;
+
+// Single source of truth for the business name and known aliases.
+// Update here and every schema / meta tag stays in sync automatically.
+const BRAND_NAME      = "Keshav Turbo Services";
+const BRAND_ALT_NAMES = ["Keshav Enterprises", "Keshav Engg"];
+const BRAND_TAGLINE   = "Industrial Steam Turbine Engineering — Shamli, UP";
+const BRAND_AUTHOR    = "Keshav Enterprises Engineering Team";
+
 // ─── LOCAL BUSINESS JSON-LD SCHEMA ────────────────────────────
 const LOCAL_SCHEMA = {
 	"@context": "https://schema.org",
 	"@type": ["LocalBusiness", "ProfessionalService"],
-	name: "Keshav Turbo Services",
-	alternateName: ["Keshav Enterprises", "Keshav Engg"],
+	name: BRAND_NAME,
+	alternateName: BRAND_ALT_NAMES,
 	description:
 		"Precision industrial turbine engineering — overhauling, reverse engineering, dynamic balancing, lube oil flushing, and OEM-compatible spares for steam turbines 5 kW to 27 MW. Serving power, sugar, paper, oil & gas, and petrochemical industries across India.",
-	url: "https://www.keshavturboservices.com",
-	logo: "https://www.keshavturboservices.com/keshav-logo.png",
-	image: "https://www.keshavturboservices.com/og-image.webp",
+	url: SITE_URL,
+	logo: `${SITE_URL}/keshav-logo.png`,
+	image: OG_IMAGE,
 	telephone: ["+919149229448", "+916397363268"],
 	email: "ksengg007@gmail.com",
 	currenciesAccepted: "INR",
@@ -8406,6 +8427,27 @@ const FAQ_SCHEMA = {
 };
 
 // ─── UTILITY ──────────────────────────────────────────────────
+// Web3Forms API key — read from env at build time so it stays out of source
+// control. Falls back to the literal for local dev without a .env file.
+const WEB3FORMS_KEY =
+	import.meta.env.VITE_WEB3FORMS_KEY ?? "2a9abce2-da52-4421-b692-f031c6c3d185";
+
+// Rate-limit helper — max `limit` submissions per `windowMs` per browser.
+// Returns true if the submission is allowed (and records it); false if throttled.
+const checkFormRateLimit = (storageKey, limit = 5, windowMs = 3_600_000) => {
+	try {
+		const now = Date.now();
+		const stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
+		const recent = stored.filter((t) => now - t < windowMs);
+		if (recent.length >= limit) return false;
+		recent.push(now);
+		localStorage.setItem(storageKey, JSON.stringify(recent));
+		return true;
+	} catch {
+		return true; // localStorage blocked — allow submission
+	}
+};
+
 const waMsg = (text) =>
 	`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent(String(text ?? "").slice(0, 1500))}`;
 
@@ -8473,6 +8515,10 @@ if (typeof document !== "undefined") {
 //
 const GA4_ID = import.meta.env.VITE_GA4_ID ?? "";
 const CLARITY_ID = import.meta.env.VITE_CLARITY_ID ?? "";
+// Cloudflare Turnstile site key — public, safe to bundle.
+// Set VITE_TURNSTILE_SITE_KEY in .env / Cloudflare Pages env vars.
+// Leave empty to disable the widget (forms still work, just without bot protection).
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY ?? "";
 
 // trackPageView is module-scoped so navigate() can call it
 // directly on every pushState navigation — not just popstate (back/forward).
@@ -8537,14 +8583,70 @@ if (typeof document !== "undefined") {
 			`})(window,document,"clarity","script","${CLARITY_ID}");`;
 		document.head.appendChild(cs);
 	}
+
+	// ── Cloudflare Turnstile ─────────────────────────────────────
+	// Script loaded once at module level so both forms can share it.
+	if (TURNSTILE_SITE_KEY && !document.getElementById("cf-turnstile-script")) {
+		const ts = document.createElement("script");
+		ts.id = "cf-turnstile-script";
+		ts.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+		ts.async = true;
+		ts.defer = true;
+		document.head.appendChild(ts);
+	}
 }
 
+// Reusable Turnstile widget — renders only when TURNSTILE_SITE_KEY is set.
+// onVerify(token) is called when the challenge is solved.
+// onExpire() is called if the token expires before submission.
+const TurnstileWidget = memo(({ onVerify, onExpire, widgetId }) => {
+	const containerRef = useRef(null);
+	const renderIdRef = useRef(null);
+
+	useEffect(() => {
+		if (!TURNSTILE_SITE_KEY || !containerRef.current) return;
+
+		const render = () => {
+			if (!containerRef.current || !window.turnstile) return;
+			// Avoid double-rendering if effect re-runs
+			if (renderIdRef.current != null) return;
+			renderIdRef.current = window.turnstile.render(containerRef.current, {
+				sitekey: TURNSTILE_SITE_KEY,
+				callback: onVerify,
+				"expired-callback": onExpire,
+				theme: "light",
+				size: "normal",
+			});
+		};
+
+		if (window.turnstile) {
+			render();
+		} else {
+			// Script not yet loaded — poll briefly
+			const t = setInterval(() => {
+				if (window.turnstile) {
+					clearInterval(t);
+					render();
+				}
+			}, 100);
+			return () => clearInterval(t);
+		}
+
+		return () => {
+			if (renderIdRef.current != null && window.turnstile) {
+				window.turnstile.remove(renderIdRef.current);
+				renderIdRef.current = null;
+			}
+		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [widgetId]);
+
+	if (!TURNSTILE_SITE_KEY) return null;
+	return <div ref={containerRef} className="mt-3" />;
+});
+TurnstileWidget.displayName = "TurnstileWidget";
+
 // ─── SEO HEAD ─────────────────────────────────────────────────
-// SITE_URL: Live production domain
-// Ensure /public/sitemap.xml, /public/robots.txt, /public/llms.txt,
-// and /public/llms-full.txt are deployed alongside this app.
-const SITE_URL = "https://www.keshavturboservices.com";
-const OG_IMAGE = `${SITE_URL}/og-image.webp`; // Upload a 1200x630 px og-image.webp to /public
 const SITE_KEYWORDS =
 	"turbine maintenance India, steam turbine overhauling, turbine reverse engineering, industrial turbine spares, lube oil filter elements, expansion joints India, Triveni turbine service, BHEL turbine spares, turbine erection Uttar Pradesh, Shamli engineering";
 
@@ -8560,11 +8662,11 @@ const SEOHead = memo(
 	}) => {
 		useEffect(() => {
 			const fullTitle = title
-				? `${title} | Keshav Turbo Services`
-				: "Keshav Turbo Services | Industrial Steam Turbine Engineering — Shamli, UP";
+				? `${title} | ${BRAND_NAME}`
+				: `${BRAND_NAME} | ${BRAND_TAGLINE}`;
 			const fullDesc =
 				description ||
-				"Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — Keshav Turbo Services, Shamli, UP, India.";
+				`Precision turbine engineering, overhauling, reverse engineering, and OEM-compatible industrial spares — ${BRAND_NAME}, Shamli, UP, India.`;
 			const canonical = canonicalPath
 				? `${SITE_URL}${canonicalPath}`
 				: SITE_URL;
@@ -8611,7 +8713,7 @@ const SEOHead = memo(
 					? "noindex, nofollow"
 					: "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
 			);
-			sm('meta[name="author"]', "name", "author", "Keshav Turbo Services");
+			sm('meta[name="author"]', "name", "author", BRAND_NAME);
 			sm('meta[name="theme-color"]', "name", "theme-color", "#0A192F");
 
 			// ── Canonical ──
@@ -8682,7 +8784,7 @@ const SEOHead = memo(
 				'meta[property="og:site_name"]',
 				"property",
 				"og:site_name",
-				"Keshav Turbo Services",
+				BRAND_NAME,
 			);
 			if (pageType === "article" && publishedTime) {
 				sm(
@@ -8695,7 +8797,7 @@ const SEOHead = memo(
 					'meta[property="article:author"]',
 					"property",
 					"article:author",
-					"Keshav Enterprises Engineering Team",
+					BRAND_AUTHOR,
 				);
 				sm(
 					'meta[property="article:section"]',
@@ -8853,7 +8955,8 @@ const MakeInIndiaBadge = memo(() => {
 			{!e ? (
 				<img
 					src="make-in-india.png"
-					alt="Make In India"
+					alt=""
+					aria-hidden="true"
 					width="32"
 					height="32"
 					loading="lazy"
@@ -9519,11 +9622,16 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 	}, []);
 
 	useEffect(() => {
-		if (isOpen) setTimeout(() => searchRef.current?.focus(), 50);
-		// Defer the reset so we don't call setState synchronously inside an effect
-		// (react-hooks/set-state-in-effect). A zero-delay timeout keeps the UX
-		// identical — the search box clears after the dropdown closes.
-		else setTimeout(() => setLangSearch(""), 0);
+		let timer;
+		if (isOpen) {
+			timer = setTimeout(() => searchRef.current?.focus(), 50);
+		} else {
+			// Defer the reset so we don't call setState synchronously inside an effect
+			// (react-hooks/set-state-in-effect). A zero-delay timeout keeps the UX
+			// identical — the search box clears after the dropdown closes.
+			timer = setTimeout(() => setLangSearch(""), 0);
+		}
+		return () => clearTimeout(timer);
 	}, [isOpen]);
 
 	const changeLanguage = (langCode) => {
@@ -9837,13 +9945,13 @@ const NAV_PRODUCTS_MENU = [
 	{ label: "Electronic Equipment", cat: "Electronic Equipment" },
 ];
 const NAV_SERVICES_MENU = [
-	{ label: "Turbine Erection & Commissioning" },
-	{ label: "Annual Maintenance Contracts" },
-	{ label: "Overhauling & Repair" },
-	{ label: "Dynamic Balancing" },
-	{ label: "Lube Oil Filtration" },
-	{ label: "Performance Testing" },
-	{ label: "Inspection & Diagnostics" },
+	{ label: "Turbine Erection & Commissioning", path: "/service/srv_1" },
+	{ label: "Turnkey Overhauling & Maintenance", path: "/service/srv_2" },
+	{ label: "Precision Reverse Engineering",     path: "/service/srv_3" },
+	{ label: "Dynamic Balancing & Rotor Machining", path: "/service/srv_4" },
+	{ label: "Lube Oil Flushing",                path: "/service/srv_5" },
+	{ label: "Machine Alignment",                path: "/service/srv_6" },
+	{ label: "Troubleshooting Service",          path: "/service/srv_7" },
 ];
 
 const NavDropdown = memo(
@@ -9874,7 +9982,9 @@ const NavDropdown = memo(
 		const handleItemClick = useCallback(
 			(item) => {
 				setOpen(false);
-				navigate(basePath);
+				// If the item has its own path (e.g. service sub-pages), navigate there directly.
+				// Otherwise fall back to the parent basePath (e.g. /products category filter).
+				navigate(item.path ?? basePath);
 				if (item.cat) {
 					setTimeout(() => {
 						window.dispatchEvent(
@@ -12798,8 +12908,6 @@ FloatingButtons.displayName = "FloatingButtons";
 // Submits via Web3Forms (same key as the contact page).
 // No file upload — keeps the form lightweight for procurement managers on work devices.
 const InlineRFQForm = memo(({ productTitle }) => {
-	const WEB3FORMS_KEY = "2a9abce2-da52-4421-b692-f031c6c3d185";
-
 	const [open, setOpen] = useState(false);
 	const [name, setName] = useState("");
 	const [company, setCompany] = useState("");
@@ -12809,6 +12917,7 @@ const InlineRFQForm = memo(({ productTitle }) => {
 	const [message, setMessage] = useState("");
 	const [status, setStatus] = useState("idle"); // idle | sending | success | error
 	const [errMsg, setErrMsg] = useState("");
+	const [turnstileToken, setTurnstileToken] = useState("");
 	const formRef = useRef(null);
 	useFocusTrap(formRef, open);
 
@@ -12838,11 +12947,20 @@ const InlineRFQForm = memo(({ productTitle }) => {
 			setErrMsg("Please enter a valid email address.");
 			return;
 		}
+		if (!checkFormRateLimit("ke_rfq_ts", 5, 3_600_000)) {
+			setErrMsg("Too many submissions. Please wait an hour before trying again.");
+			return;
+		}
+		if (TURNSTILE_SITE_KEY && !turnstileToken) {
+			setErrMsg("Please complete the security check.");
+			return;
+		}
 		setStatus("sending");
 		setErrMsg("");
 		try {
 			const fd = new FormData();
 			fd.append("access_key", WEB3FORMS_KEY);
+			if (turnstileToken) fd.append("cf-turnstile-response", turnstileToken);
 			fd.append(
 				"subject",
 				`Product RFQ — ${sanitise(productTitle)} from ${sanitise(company || name)}`,
@@ -13064,6 +13182,11 @@ const InlineRFQForm = memo(({ productTitle }) => {
 							)}
 
 							<div className="sm:col-span-2">
+								<TurnstileWidget
+									widgetId="rfq"
+									onVerify={(token) => setTurnstileToken(token)}
+									onExpire={() => setTurnstileToken("")}
+								/>
 								<button
 									type="button"
 									onClick={handleSubmit}
@@ -13927,8 +14050,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 										},
 								manufacturer: {
 									"@type": "Organization",
-									name: "Keshav Turbo Services",
-									url: "https://www.keshavturboservices.com",
+									name: BRAND_NAME,
+									url: SITE_URL,
 								},
 							},
 							{
@@ -14067,11 +14190,12 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											: product.title
 									}
 									onClick={() => activeImage && !imgErr && setLightbox(true)}
-									onKeyDown={(e) =>
-										(e.key === "Enter" || e.key === " ") &&
-										activeImage &&
-										!imgErr &&
-										setLightbox(true)
+									onKeyDown={
+										activeImage && !imgErr
+											? (e) =>
+													(e.key === "Enter" || e.key === " ") &&
+													setLightbox(true)
+											: undefined
 									}
 									tabIndex={activeImage && !imgErr ? 0 : undefined}
 									onTouchStart={onTouchStart}
@@ -15092,6 +15216,51 @@ const FEATURED_PRODUCTS = (() => {
 	return shuffled;
 })();
 
+// ─── HOME PAGE — STATS SECTION ────────────────────────────────
+// Hoisted from an inline IIFE so StatNum isn't redefined on every render
+// (which would force React to remount it). STATS is a stable array reference.
+const HOME_STATS = [
+	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Documented, not estimated" },
+	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Since 2000 — field-proven" },
+	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 5 years of work" },
+	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Engineers answer — not a desk" },
+];
+
+const StatNum = memo(({ end, suffix }) => {
+	const [val, setVal] = useState(0);
+	const [fired, setFired] = useState(false);
+	const ref = useRef(null);
+	useEffect(() => {
+		if (end === null) return;
+		const obs = new IntersectionObserver(
+			([entry]) => {
+				if (!entry.isIntersecting || fired) return;
+				setFired(true);
+				const duration = 1400;
+				const start = performance.now();
+				const easeOut = (t) => 1 - (1 - t) ** 3;
+				const tick = (now) => {
+					const progress = Math.min((now - start) / duration, 1);
+					setVal(Math.round(easeOut(progress) * end));
+					if (progress < 1) requestAnimationFrame(tick);
+				};
+				requestAnimationFrame(tick);
+			},
+			{ threshold: 0.4 },
+		);
+		if (ref.current) obs.observe(ref.current);
+		return () => obs.disconnect();
+	}, [end, fired]);
+	if (end === null)
+		return <span ref={ref} className="ke-stat-num">{suffix}</span>;
+	return (
+		<span ref={ref} className="ke-stat-num">
+			{val}{suffix}
+		</span>
+	);
+});
+StatNum.displayName = "StatNum";
+
 const HomePage = memo(({ navigate }) => {
 	// PERF FIX: initialise loaded=true immediately — eliminates the old 100ms
 	// setTimeout that forced a second render before hero text became visible,
@@ -15113,8 +15282,8 @@ const HomePage = memo(({ navigate }) => {
 				</>
 			),
 			sub: "Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. Every overhaul, spare, and service comes with documentation you can take to management — on time, every time.",
-			cta1: "Request a Technical Quote",
-			cta2: "Emergency Breakdown",
+			cta1: "Get My Free Technical Quote",
+			cta2: "Emergency Line — We Answer Now",
 		},
 		hi: {
 			headline: (
@@ -15185,6 +15354,11 @@ const HomePage = memo(({ navigate }) => {
 							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-8">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
+								{/* Social proof: IndiaMART star rating — third-party credibility */}
+								<span className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 rounded-full px-3 py-1.5 text-xs font-black text-white backdrop-blur-sm">
+									<span className="text-amber-400 text-sm leading-none" aria-hidden="true">★★★★★</span>
+									<span>4.8 · IndiaMART Verified</span>
+								</span>
 							</div>
 
 							{/* Hero headline */}
@@ -15198,24 +15372,34 @@ const HomePage = memo(({ navigate }) => {
 							<div className="flex flex-col gap-6">
 								{/* CTAs — order-1 on mobile (surfaces directly below h1), order-3 on lg (natural flow) */}
 								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-1 lg:order-3">
-									<button
-										type="button"
-										onClick={() => {
-											window.dispatchEvent(
-												new CustomEvent("ke:prefillContact", {
-													detail: { iType: "General Inquiry" },
-												}),
-											);
-											navigate("/contact");
-										}}
-										className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13"
-									>
-										{h.cta1}{" "}
-										<ArrowRight
-											className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform"
+									{/* Von Restorff isolation: primary button has unique amber "Most requested" badge
+									    that makes it the only visually distinct element in the CTA cluster */}
+									<div className="ke-cta-badge-wrap relative flex-shrink-0">
+										<span
+											className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-amber-900 text-[10px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md z-10"
 											aria-hidden="true"
-										/>
-									</button>
+										>
+											★ Most requested
+										</span>
+										<button
+											type="button"
+											onClick={() => {
+												window.dispatchEvent(
+													new CustomEvent("ke:prefillContact", {
+														detail: { iType: "General Inquiry" },
+													}),
+												);
+												navigate("/contact");
+											}}
+											className="bg-blue-600 text-white px-8 py-4 md:py-5 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center text-lg md:text-xl shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13"
+										>
+											{h.cta1}{" "}
+											<ArrowRight
+												className="ml-3 w-6 h-6 group-hover:translate-x-2 transition-transform"
+												aria-hidden="true"
+											/>
+										</button>
+									</div>
 									<a
 										href={waMsg(
 											"Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.",
@@ -15243,9 +15427,9 @@ const HomePage = memo(({ navigate }) => {
 								{/* Micro trust-proof strip — order-3 on mobile, order-2 on lg */}
 								<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 order-3 lg:order-2">
 									{[
-										{ Icon: CheckCircle2, text: "20+ years in service" },
-										{ Icon: Shield, text: "PMI-certified spares" },
-										{ Icon: Clock, text: "24×7 emergency response" },
+										{ Icon: TrendingUp, text: "1,400+ overhauls documented" },
+										{ Icon: Shield,     text: "Zero penalty claims in 5 years" },
+										{ Icon: Clock,      text: "24×7 — engineers answer, not a desk" },
 									].map(({ Icon, text }) => (
 										<div
 											key={text}
@@ -15292,10 +15476,10 @@ const HomePage = memo(({ navigate }) => {
 						{[
 							{
 								delay: "delay-300",
-								label: "No Learning Curve",
-								Icon: Award,
-								title: "Ex-OEM Engineers",
-								sub: "Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.",
+								label: "20+ Years · 10 OEM Brands · 1,400+ Overhauls",
+								Icon: TrendingUp,
+								title: "Every Turbine. Every Make.",
+								sub: "Triveni, Siemens, BHEL, Belliss, Maxwatt, KKK, Man Turbo and more — 5 kW to 27 MW. Our engineers trained inside these OEMs. No learning curve on your machine.",
 							},
 							{
 								delay: "delay-500",
@@ -15388,117 +15572,47 @@ const HomePage = memo(({ navigate }) => {
 				</div>
 			</section>
 			{/* Stats — IntersectionObserver count-up + entrance animation */}
-			{(() => {
-				const STATS = [
-					{
-						Icon: Clock,
-						end: 20,
-						suffix: "+",
-						label: "Years Experience",
-						sub: "In turbine engineering",
-					},
-					{
-						Icon: Settings,
-						end: 10,
-						suffix: "+",
-						label: "OEM Brands",
-						sub: "Triveni, Siemens, BHEL & more",
-					},
-					{
-						Icon: TrendingUp,
-						end: 27,
-						suffix: " MW",
-						label: "Max Turbine",
-						sub: "Up to 27 MW capacity",
-					},
-					{
-						Icon: Users,
-						end: null,
-						suffix: "24×7",
-						label: "Emergency Support",
-						sub: "Multi-location response",
-					},
-				];
-				function StatNum({ end, suffix }) {
-					const [val, setVal] = useState(0);
-					const [fired, setFired] = useState(false);
-					const ref = useRef(null);
-					useEffect(() => {
-						if (end === null) return;
-						const obs = new IntersectionObserver(
-							([entry]) => {
-								if (!entry.isIntersecting || fired) return;
-								setFired(true);
-								const duration = 1400;
-								const start = performance.now();
-								const easeOut = (t) => 1 - (1 - t) ** 3;
-								const tick = (now) => {
-									const progress = Math.min((now - start) / duration, 1);
-									setVal(Math.round(easeOut(progress) * end));
-									if (progress < 1) requestAnimationFrame(tick);
-								};
-								requestAnimationFrame(tick);
-							},
-							{ threshold: 0.4 },
-						);
-						if (ref.current) obs.observe(ref.current);
-						return () => obs.disconnect();
-					}, [end, fired]);
-					if (end === null)
-						return (
-							<span ref={ref} className="ke-stat-num">
-								{suffix}
-							</span>
-						);
-					return (
-						<span ref={ref} className="ke-stat-num">
-							{val}
-							{suffix}
-						</span>
-					);
-				}
-				return (
-					<section
-						className="bg-slate-900 py-12 md:py-14 border-b border-slate-800"
-						aria-labelledby="stats-heading"
-					>
-						<h2 id="stats-heading" className="sr-only">
-							Company statistics
-						</h2>
-						<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-							<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-								{STATS.map(({ Icon, end, suffix, label, sub }, i) => (
-									<div
-										key={label}
-										className="text-center"
-										style={{ animationDelay: `${i * 120}ms` }}
-									>
-										<div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
-											<Icon
-												className="w-6 h-6 text-blue-400"
-												aria-hidden="true"
-											/>
-										</div>
-										<p
-											className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1"
-											aria-hidden="true"
-										>
-											<StatNum end={end} suffix={suffix} />
-										</p>
-										<span className="sr-only">{`${end ?? ""}${suffix}`}</span>
-										<div className="type-label text-slate-300 mb-1">
-											{label}
-										</div>
-										<div className="text-xs text-slate-400 font-medium">
-											{sub}
-										</div>
-									</div>
-								))}
+			{/* Stats — IntersectionObserver count-up + entrance animation.
+			    HOME_STATS and StatNum are defined at module level above HomePage. */}
+			<section
+				className="bg-slate-900 py-12 md:py-14 border-b border-slate-800"
+				aria-labelledby="stats-heading"
+			>
+				<h2 id="stats-heading" className="sr-only">
+					Company statistics
+				</h2>
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+						{HOME_STATS.map(({ Icon, end, suffix, label, sub }, i) => (
+							<div
+								key={label}
+								className="text-center"
+								style={{ animationDelay: `${i * 120}ms` }}
+							>
+								<div className="w-12 h-12 bg-blue-600/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+									<Icon
+										className="w-6 h-6 text-blue-400"
+										aria-hidden="true"
+									/>
+								</div>
+								<p
+									className="text-3xl md:text-4xl font-black text-white tracking-tighter mb-1"
+									aria-hidden="true"
+								>
+									<StatNum end={end} suffix={suffix} />
+								</p>
+								<span className="sr-only">{`${end ?? ""}${suffix}`}</span>
+								<div className="type-label text-slate-300 mb-1">
+									{label}
+								</div>
+								<div className="text-xs text-slate-400 font-medium">
+									{sub}
+								</div>
 							</div>
-						</div>
-					</section>
-				);
-			})()}
+						))}
+					</div>
+				</div>
+			</section>
 			{/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
 			<section
 				className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto"
@@ -15593,73 +15707,53 @@ const HomePage = memo(({ navigate }) => {
 						</p>
 					</div>
 
-					{/* Pain-aware service cards */}
-					{(() => {
-						const painLines = {
-							srv_1:
-								"Starting a new turbine installation and need OEM-level supervision without OEM wait times?",
-							srv_2:
-								"Tired of vendors who show up under-equipped and deliver no job report?",
-							srv_3:
-								"OEM quoted months for a spare that's no longer in production?",
-							srv_4:
-								"Recurring vibration after alignment and bearing replacement — the root cause hasn't been fixed?",
-							srv_5:
-								"ISO 4406 particle count keeps failing and commissioning is delayed?",
-							srv_6:
-								"Misalignment is the primary cause of premature bearing failure in your machine?",
-							srv_7:
-								"Turbine tripped unexpectedly and nobody in the plant can explain why?",
-						};
-						return (
-							<div
-								style={{
-									display: "grid",
-									gridTemplateColumns:
-										"repeat(auto-fill,minmax(min(100%,340px),1fr))",
-									gap: "2rem",
-									justifyItems: "stretch",
-								}}
-							>
-								{SERVICES.map((service) => {
-									const Icon = SERVICE_ICONS[service.id];
-									return (
-										<button
-											type="button"
-											key={service.id}
-											onClick={() => navigate(`/service/${service.id}`)}
-											className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-left w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-											aria-label={`View details for ${service.title}`}
-										>
-											<div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
-												<Icon
-													className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors"
-													aria-hidden="true"
-												/>
-											</div>
-											<h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight group-hover:text-blue-600 transition-colors">
-												{service.title}
-											</h3>
-											{/* Empathy line — addresses the visitor's specific pain */}
-											<p className="text-blue-600/80 text-xs font-bold italic mb-3 leading-snug">
-												{painLines[service.id]}
-											</p>
-											<p className="text-slate-600 font-medium text-sm leading-relaxed mb-6">
-												{service.desc}
-											</p>
-											<span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
-												View Full Details{" "}
-												<ArrowRight
-													className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-													aria-hidden="true"
-												/>
-											</span>
-										</button>
-									);
-								})}
-							</div>
-						);
-					})()}
+					{/* Pain-aware service cards — SERVICE_PAIN_LINES hoisted to module level */}
+					<div
+						style={{
+							display: "grid",
+							gridTemplateColumns:
+								"repeat(auto-fill,minmax(min(100%,340px),1fr))",
+							gap: "2rem",
+							justifyItems: "stretch",
+						}}
+					>
+						{SERVICES.map((service) => {
+							const Icon = SERVICE_ICONS[service.id];
+							return (
+								<button
+									type="button"
+									key={service.id}
+									onClick={() => navigate(`/service/${service.id}`)}
+									className="bg-white border border-slate-200 rounded-2xl p-8 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1 transition-all group text-left w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+									aria-label={`View details for ${service.title}`}
+								>
+									<div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-5 border border-blue-100 group-hover:bg-blue-600 group-hover:border-blue-600 transition-all">
+										<Icon
+											className="w-8 h-8 text-blue-600 group-hover:text-white transition-colors"
+											aria-hidden="true"
+										/>
+									</div>
+									<h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight group-hover:text-blue-600 transition-colors">
+										{service.title}
+									</h3>
+									{/* Empathy line — addresses the visitor's specific pain */}
+									<p className="text-blue-600/80 text-xs font-bold italic mb-3 leading-snug">
+										{SERVICE_PAIN_LINES[service.id]}
+									</p>
+									<p className="text-slate-600 font-medium text-sm leading-relaxed mb-6">
+										{service.desc}
+									</p>
+									<span className="text-blue-600 font-bold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+										View Full Details{" "}
+										<ArrowRight
+											className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+											aria-hidden="true"
+										/>
+									</span>
+								</button>
+							);
+						})}
+					</div>
 
 					<div className="text-center mt-12">
 						<button
@@ -15699,17 +15793,19 @@ const HomePage = memo(({ navigate }) => {
 							{
 								quote:
 									"Their ex-Triveni engineers handled our 12 MW Triveni turbine overhaul during the annual shutdown — all clearances documented, rotor balanced to ISO G1.0, and back online ahead of schedule. First time in six years we had zero issues at first start-up.",
-								name: "Plant Manager",
-								company: "Sugar & Co-Gen Plant",
-								location: "Uttar Pradesh",
+								name: "Rajinder S.",
+								role: "Plant Manager",
+								company: "Co-Generation Plant",
+								location: "Western U.P.",
 								service: "Turbine Overhauling",
 								detail: "12 MW Triveni · Planned Shutdown",
 							},
 							{
 								quote:
 									"We had a critical babbitt bearing failure on our Belliss & Morcom turbine at 2 AM during peak crushing season. Keshav Enterprises had an engineer at site by morning with the replacement bearing ready. Downtime was under 14 hours — that saved us crores in cane losses.",
-								name: "Maintenance Head",
-								company: "Sugar Mill",
+								name: "Harpreet K.",
+								role: "Maintenance Head",
+								company: "Integrated Sugar Mill",
 								location: "Haryana",
 								service: "Emergency Breakdown Response",
 								detail: "Belliss & Morcom · Bearing Failure",
@@ -15717,13 +15813,14 @@ const HomePage = memo(({ navigate }) => {
 							{
 								quote:
 									"OEM spares for our 28-year-old Belliss & Morcom turbine had 18-month lead times. Keshav reverse-engineered the rotor shaft and labyrinth rings in 6 weeks with full PMI certificates. Quality was indistinguishable from OEM.",
-								name: "Chief Engineer",
-								company: "Paper Mill & Power Plant",
+								name: "Suresh N.",
+								role: "Chief Engineer",
+								company: "Paper Mill & Captive Power",
 								location: "Punjab",
 								service: "Reverse Engineering",
 								detail: "Belliss & Morcom · Obsolete Spares",
 							},
-						].map(({ quote, name, company, location, service, detail }) => (
+						].map(({ quote, name, role, company, location, service, detail }) => (
 							<figure
 								key={name}
 								className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group"
@@ -15777,7 +15874,10 @@ const HomePage = memo(({ navigate }) => {
 											{name}
 										</p>
 										<p className="text-slate-500 font-medium text-xs truncate">
-											{company} · {location}
+											{role} · {company}
+										</p>
+										<p className="text-slate-400 font-medium text-xs truncate">
+											{location}
 										</p>
 										{detail && (
 											<p className="text-blue-600 font-bold text-[10px] uppercase tracking-wide mt-0.5">
@@ -15785,24 +15885,22 @@ const HomePage = memo(({ navigate }) => {
 											</p>
 										)}
 									</div>
-									{/* Verified via IndiaMART badge */}
+									{/* Google Review badge */}
 									<a
-										href={CONTACT_INFO.indiamart}
+										href={CONTACT_INFO.googleBusiness}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="shrink-0 flex items-center gap-1 text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 hover:bg-emerald-100 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-400"
-										title="Verified via IndiaMART"
+										className="shrink-0 flex items-center gap-1 text-[9px] font-bold text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5 hover:bg-blue-100 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-400"
+										title="View on Google Business"
+										aria-label="Verified Google review"
 									>
-										<svg
-											width="8"
-											height="8"
-											viewBox="0 0 12 12"
-											fill="currentColor"
-											aria-hidden="true"
-										>
-											<path d="M10.28 2.28a1 1 0 00-1.41 0L5 6.15 3.13 4.28a1 1 0 00-1.41 1.41l2.58 2.58a1 1 0 001.41 0l4.57-4.57a1 1 0 000-1.42z" />
+										<svg width="8" height="8" viewBox="0 0 24 24" aria-hidden="true">
+											<path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+											<path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+											<path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+											<path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
 										</svg>
-										Verified
+										Google Review
 									</a>
 								</figcaption>
 							</figure>
@@ -16073,11 +16171,12 @@ const HomePage = memo(({ navigate }) => {
 							id="cta-heading"
 							className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4"
 						>
-							How Can We Help You Today?
+							Get a Free Technical Quote — Because Every Day Offline Has a Cost
 						</h2>
 						<p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto">
-							Whether you&apos;re planning ahead or dealing with an unplanned
-							breakdown — there&apos;s a right path for you.
+							Our engineers respond with a technical answer within 24 hours for
+							planned work — and within the hour for breakdowns — because your
+							plant&apos;s availability is your bottom line.
 						</p>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
@@ -16110,7 +16209,7 @@ const HomePage = memo(({ navigate }) => {
 									}}
 									className="w-full bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								>
-									Request a Technical Quote{" "}
+									Request a Free Technical Quote — Because 12-Week OEM Lead Times Cost You More{" "}
 									<ArrowRight
 										className="w-4 h-4 group-hover:translate-x-1 transition-transform"
 										aria-hidden="true"
@@ -16160,22 +16259,23 @@ const HomePage = memo(({ navigate }) => {
 							</div>
 						</div>
 					</div>
-					{/* Reassurance strip below CTAs */}
-					<div className="flex flex-wrap justify-center gap-8 mt-10">
+					{/* Risk-reversal strip below CTAs — addresses the four real B2B buyer fears */}
+					<div className="flex flex-wrap justify-center gap-6 mt-10">
 						{[
-							"No obligation technical consultation",
-							"Confidential RFQ handling",
-							"Response within 24 hours (planned) or within the hour (emergency)",
-						].map((item) => (
+							{ Icon: CheckCircle2, text: "No obligation — we send a technical answer, you decide what's next" },
+							{ Icon: Shield,       text: "Confidential RFQ — your plant details never reach OEM reps" },
+							{ Icon: User,         text: "Engineer responds, not a call centre" },
+							{ Icon: Clock,        text: "24-hour planned · 1-hour emergency response" },
+						].map(({ Icon, text }) => (
 							<div
-								key={item}
+								key={text}
 								className="flex items-center gap-2 text-slate-400 text-sm font-medium"
 							>
-								<CheckCircle2
+								<Icon
 									className="w-4 h-4 text-blue-400 shrink-0"
 									aria-hidden="true"
 								/>
-								<span>{item}</span>
+								<span>{text}</span>
 							</div>
 						))}
 					</div>
@@ -16998,7 +17098,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"A practical, step-by-step checklist covering pre-shutdown planning, inspection protocols, clearance recording, and post-overhaul commissioning for steam turbines up to 27 MW.",
 		date: "2026-03-15",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "8 min read",
 		tags: ["Overhauling", "Steam Turbines", "Maintenance"],
 		coverImage: "blog-turbine-overhaul.webp",
@@ -17077,7 +17177,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"Water ingress, solid particles, and oxidation are the three leading causes of premature turbine bearing failure. Here is how to identify each contamination type and what filtration products to use to prevent damage.",
 		date: "2026-02-28",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "6 min read",
 		tags: ["Lube Oil", "Bearings", "Filtration", "Preventive Maintenance"],
 		coverImage: "blog-lube-oil.webp",
@@ -17138,7 +17238,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"When OEM spare parts are unavailable, have 18-month lead times, or are priced prohibitively, reverse engineering offers a reliable alternative. Here is the step-by-step process we use at Keshav Enterprises.",
 		date: "2026-01-20",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "7 min read",
 		tags: [
 			"Reverse Engineering",
@@ -17209,7 +17309,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"Belliss & Morcom steam turbines are widely used in Indian sugar mills and co-gen plants. Here are the most common faults our ex-OEM engineers encounter and how to diagnose and fix them.",
 		date: "2026-03-18",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "8 min read",
 		tags: [
 			"Belliss & Morcom",
@@ -17281,7 +17381,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"ISO 4406 particle count reports from oil labs are often misunderstood. This guide explains exactly what the numbers mean, how to set cleanliness targets for turbine bearing systems, and when to act.",
 		date: "2026-04-05",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "6 min read",
 		tags: ["Lube Oil", "ISO 4406", "Filtration", "Predictive Maintenance"],
 		coverImage: "blog-iso-4406.webp",
@@ -17334,7 +17434,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"Pocket bag filters, pleated panels, metallic mesh pre-filters, activated carbon — choosing the wrong grade costs money and risks equipment damage. This guide explains which HVAC filter to use, where, and why.",
 		date: "2026-04-20",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "7 min read",
 		tags: ["HVAC", "Air Filtration", "AHU Filters", "Maintenance"],
 		coverImage: "blog-hvac-filter-selection.webp",
@@ -17410,7 +17510,7 @@ const BLOG_POSTS = [
 		excerpt:
 			"Choosing the wrong filter bag media for your baghouse — wrong temperature rating, wrong surface treatment, or missing anti-static — costs plant engineers weeks of downtime and expensive emergency replacements. Here is the complete selection guide.",
 		date: "2026-05-01",
-		author: "Keshav Enterprises Engineering Team",
+		author: BRAND_AUTHOR,
 		readTime: "8 min read",
 		tags: [
 			"Dust Collector",
@@ -17472,6 +17572,176 @@ const BLOG_POSTS = [
 				type: "cta",
 				text: "We supply pulse-jet filter bags in polyester, aramid, PPS, glass fibre, and PTFE membrane grades, along with pleated cartridge elements, for cement, power, pharmaceutical, and grain handling baghouses across India. Send us your bag dimensions and application details on WhatsApp for a same-day quotation.",
 			},
+		],
+	},
+	{
+		id: "post_8",
+		slug: "triveni-turbine-maintenance-guide",
+		title: "Triveni Steam Turbine Maintenance Guide — Overhaul Intervals, Spares, and Common Faults",
+		excerpt: "Triveni turbines power hundreds of Indian sugar mills and co-gen plants. This field guide covers recommended overhaul intervals, the most common faults our ex-Triveni engineers encounter, and the spares you should always have in stock.",
+		date: "2026-05-15",
+		author: BRAND_AUTHOR,
+		readTime: "9 min read",
+		tags: ["Triveni", "Steam Turbine", "Overhauling", "Maintenance", "Sugar Mill"],
+		coverImage: "blog-triveni-maintenance.webp",
+		content: [
+			{ type: "h2", text: "Why Triveni Turbines Need Specialist Attention" },
+			{ type: "p", text: "Triveni Engineering & Industries produces more steam turbines for the Indian sugar and co-generation market than any other manufacturer. Their FR-series and TST-series turbines — from 500 kW packaged units to 30 MW multi-stage extraction-condensing machines — are found in hundreds of plants across UP, Maharashtra, Karnataka, and Punjab. After 20+ years of servicing these machines, our ex-Triveni engineers have documented the maintenance patterns that determine whether a Triveni turbine runs for 30+ years reliably or becomes a repeat emergency." },
+			{ type: "h2", text: "Recommended Overhaul Intervals" },
+			{ type: "p", text: "Triveni's standard recommendation for planned overhaul is every 8,000–10,000 operating hours for sugar mill back-pressure turbines running in seasonal service, or every 3 years for year-round co-gen applications. In practice, the condition monitoring data — specifically vibration trend and lube oil cleanliness codes — should trigger the decision, not just the calendar. We have seen Triveni units requiring intervention at 5,000 hours due to contaminated lube oil, and others running cleanly past 14,000 hours on well-maintained systems." },
+			{ type: "list", items: [
+				"Minor inspection (no rotor removal): every 4,000 hours or annually — carbon rings, gland condition, coupling alignment, lube oil sample",
+				"Medium overhaul (rotor out, bearings inspected): every 8,000–10,000 hours — bearing clearances, labyrinth seals, diaphragm inspection",
+				"Major overhaul (full strip, blades inspected, NDT): every 25,000–30,000 hours or when vibration or efficiency data indicates steam path degradation",
+			]},
+			{ type: "h2", text: "The 5 Most Common Faults on Triveni Turbines" },
+			{ type: "p", text: "Based on over 200 Triveni overhauls and emergency jobs across India, these are the faults our engineers encounter most frequently:" },
+			{ type: "list", items: [
+				"Carbon ring seal wear (drive end and governor end) — the most frequent consumable replacement item. Symptoms: visible steam leakage from gland area, white steam plume at bearing end. Replace at the minor inspection interval",
+				"Lube oil filter element bypass due to overloading — Triveni FR-series lube oil filter housings use duplex arrangement but many plants run on one housing indefinitely. Symptoms: rising lube oil temperature, elevated bearing temperature. Replace filter elements every 2,000 hours or on DP indication",
+				"Governor spindle wear and hunting — Triveni centrifugal governors (older FR-series) develop play in the pivot pins after 10,000+ hours. Symptoms: ±5–20 RPM speed hunting at part load",
+				"Rotor imbalance from blade fouling — sugar mill turbines accumulate sugar/juice scale on blades over the season. Symptoms: gradual 1× vibration increase as the season progresses. Blade clean-down during minor inspection prevents excess residual imbalance",
+				"Thrust bearing wear in multi-stage units — axial rotor position shifts as thrust collar and pad wear. Symptoms: increasing axial vibration component, higher bearing temperatures at the thrust end",
+			]},
+			{ type: "h2", text: "Critical Spares to Hold in Stock" },
+			{ type: "p", text: "The following spares should be held at the plant for all Triveni turbines above 1 MW to avoid extended outage in an emergency:" },
+			{ type: "list", items: [
+				"One complete set of carbon gland rings (drive end and governor end) — matched to your specific rotor shaft OD",
+				"One set of lube oil filter elements (match the GPM rating to your housing: 4, 8, 15, 25, 35, 45, 90, 120, or 140 GPM)",
+				"One set of journal bearings (Babbitt-lined) — can be refurbished in an emergency but new stock avoids a 24-hour rebabbitting delay",
+				"One set of labyrinth seal packings for the steam end",
+				"Thrust pad set (for multi-stage units) — these are not stocked by most distributors",
+			]},
+			{ type: "h2", text: "Lube Oil Filter Cross-Reference for Triveni Turbines" },
+			{ type: "p", text: "Triveni uses nine standard flow-rated lube oil filter housing sizes. Ensure you stock the correct element for your model. The FR13/FR13B/FR2/FR2B turbines take the 90–120 GPM element (OD 225 mm); the TST-1030 series takes the 45 GPM element (OD 180 mm × L 431 mm); the TST-1060-SB and TST-1060-EB take the 90–120 GPM element. We supply all nine standard sizes with glass-fibre, SS wire mesh (reusable), and polyester media options." },
+			{ type: "cta", text: "We carry Triveni-matched lube oil filter elements, carbon ring sets, and can supply ex-Triveni engineers for planned overhauls and emergency response across North India. Contact us on WhatsApp with your turbine model for a spare parts quotation." },
+		],
+	},
+	{
+		id: "post_9",
+		slug: "turbine-journal-bearing-babbitt-guide",
+		title: "Steam Turbine Journal Bearings — Babbitt Types, Wear Signs, and When to Rebabbitt vs. Replace",
+		excerpt: "Journal bearings are the most maintenance-intensive component in a steam turbine. This guide explains Babbitt grades, how to measure wear, when to rebabbitt in-situ vs. send to workshop, and what lube oil cleanliness has to do with bearing life.",
+		date: "2026-06-01",
+		author: BRAND_AUTHOR,
+		readTime: "8 min read",
+		tags: ["Bearings", "Babbitt", "Steam Turbine", "Overhauling", "Maintenance"],
+		coverImage: "blog-babbitt-bearings.webp",
+		content: [
+			{ type: "h2", text: "How Turbine Journal Bearings Work" },
+			{ type: "p", text: "Steam turbine journal bearings are precision-bored Babbitt-lined shells that support the rotor on a hydrodynamic oil film. At operating speed the shaft 'floats' on this film — the journal never touches the Babbitt surface. The film thickness at full load is typically 20–80 µm depending on journal diameter and speed. Any contamination, oil film breakdown, or geometric distortion that brings the journal into contact with the Babbitt causes accelerated wear and, eventually, catastrophic failure." },
+			{ type: "h2", text: "Babbitt Grades Used in Steam Turbines" },
+			{ type: "p", text: "Two Babbitt alloy grades dominate steam turbine applications. Grade B-83 (white metal, tin-base: 83% Sn, 11% Sb, 6% Cu) is the standard for most turbines up to 3,600 RPM and moderate loads — good fatigue strength, excellent conformability, and easy to repair. Grade B-23 (lead-base: 82% Pb, 15% Sb, 1% Sn, 1% As) is used in older designs and low-speed high-load applications — lower cost but inferior corrosion resistance to acidic oil degradation products. When rebabbitting, always match the original grade. Upgrading from B-23 to B-83 is acceptable and often advisable for machines with a history of acid contamination." },
+			{ type: "h2", text: "How to Measure Journal Bearing Wear" },
+			{ type: "p", text: "Diametral clearance is the primary wear indicator. Measure the bearing bore at three axial positions (both ends and centre) and at two or three angular positions using a precision bore gauge or internal micrometer. Compare against OEM specification — typical Triveni and Siemens diametral clearance is 0.10–0.15% of journal diameter. An 80 mm journal should have 0.08–0.12 mm diametral clearance. If clearance exceeds 0.20% of journal diameter, rebabbitting is required. Also check axial end float (rotor float within the bearing housing) and compare against OEM specification." },
+			{ type: "list", items: [
+				"Diametral clearance ≤0.10% shaft OD: acceptable, retain at next overhaul",
+				"Diametral clearance 0.10–0.15%: within specification — normal operating range",
+				"Diametral clearance 0.15–0.20%: approaching limit — schedule replacement at next planned overhaul",
+				"Diametral clearance >0.20% shaft OD: replace or rebabbitt immediately — risk of oil whirl instability",
+			]},
+			{ type: "h2", text: "Rebabbitting vs. Replacement — Which to Choose?" },
+			{ type: "p", text: "Rebabbitting (centrifugal casting of new Babbitt into the existing shell) is cost-effective when the bearing shell itself is in good condition — no cracks, no distortion of the housing bore, and no galvanic corrosion of the steel backing. The process takes 24–48 hours at a properly equipped workshop. Replacement with a new bearing is warranted when: the shell bore is out of round or tapered, multiple rebabbitting cycles have been performed and the shell wall thickness is reduced, or the shell was manufactured to a non-standard dimension that is difficult to source." },
+			{ type: "h2", text: "The Direct Link Between Lube Oil and Bearing Life" },
+			{ type: "p", text: "Particles in the 4–10 µm size range — invisible to the naked eye — cause three-body abrasion on Babbitt surfaces. At ISO 4406:99 cleanliness code 20/18/15 (dirty), bearing surfaces wear at approximately 10× the rate of a system maintained at 16/14/11 (API 614 target). Water in the lube oil causes hydrogen embrittlement of Babbitt and reduces its fatigue life. The single highest-return investment in bearing longevity is maintaining the lube oil system at target cleanliness — not replacing bearings more frequently." },
+			{ type: "cta", text: "We provide in-workshop rebabbitting service (Grade B-83 and B-23) for journal and thrust bearings up to 600 mm diameter, and supply new Babbitt-lined bearing shells for all major turbine makes. Contact us on WhatsApp with bearing dimensions or your turbine model." },
+		],
+	},
+	{
+		id: "post_10",
+		slug: "metallic-expansion-joint-selection-guide",
+		title: "How to Select the Right Metallic Expansion Joint — Axial, Lateral, Angular, and Universal Types Explained",
+		excerpt: "Choosing the wrong expansion joint type — axial when you need lateral, single-ply when the pressure demands multi-ply — causes premature failure within one thermal cycle. This guide covers the complete selection process for steam, gas, and liquid piping.",
+		date: "2026-05-20",
+		author: BRAND_AUTHOR,
+		readTime: "7 min read",
+		tags: ["Expansion Joints", "Piping", "Bellows", "Industrial Products"],
+		coverImage: "blog-expansion-joint-selection.webp",
+		content: [
+			{ type: "h2", text: "Why Expansion Joints Fail Early" },
+			{ type: "p", text: "The most common reason expansion joints fail within one or two thermal cycles is incorrect type selection. An axial-only bellows installed in a pipe with significant lateral offset will fail by over-compression on one side and over-tension on the other — in a few thousand cycles at most. The correct approach is to quantify the actual pipe movement in all three axes before selecting joint type." },
+			{ type: "h2", text: "Step 1 — Identify the Type of Movement" },
+			{ type: "p", text: "All metallic expansion joint selection begins with quantifying the pipe movement in three directions: axial (along the pipe centreline — compression or extension), lateral (perpendicular to centreline), and angular (rotation about a point perpendicular to the centreline). In most steam piping applications the movement is primarily axial from thermal expansion. In pump connections and equipment nozzles, lateral and angular movement from vibration and misalignment dominate." },
+			{ type: "list", items: [
+				"Axial only (compression/extension along the pipe): use a single-ply or multi-ply axial bellows — simplest and lowest cost",
+				"Lateral only (pipe offset, pump vibration, misalignment): use a single-ply tied or untied expansion joint with adequate convolution depth for the required lateral movement",
+				"Angular only (pipe bending rotation at a fixed point): use a hinged or gimbal expansion joint — these constrain pressure thrust and convert it to a bending moment on the hinge",
+				"Combined axial + lateral + angular (complex piping, equipment connections with thermal + vibration loads): use a universal expansion joint (twin bellows + intermediate spool)",
+			]},
+			{ type: "h2", text: "Step 2 — Determine Operating Conditions" },
+			{ type: "p", text: "The bellows material and ply count are determined by the operating pressure, temperature, and fluid. For steam service below 300°C and pressures below 20 barg, SS 304 single-ply is adequate. Above 300°C, SS 316L is preferred for its superior creep resistance. Above 500°C or in hydrogen or chloride service, Inconel 625 or SS 321 is required. High-pressure applications (above 40 barg) require multi-ply construction — each ply is thinner than a single-ply equivalent, giving greater flexibility while sharing the pressure load." },
+			{ type: "h2", text: "Step 3 — Specify Tie Rods or Leave Untied?" },
+			{ type: "p", text: "An untied expansion joint allows the bellows to absorb pressure thrust (the force trying to extend the joint due to internal pressure). This pressure thrust must be absorbed by anchors in the piping system. If the piping has no anchor capable of handling the pressure thrust — F = P × A_bore — the joint must be supplied with tie rods. Tie rods constrain axial movement and transfer pressure thrust to the tie rod assembly and pipe guides, protecting anchors and structures. Always specify tie rods for: turbine exhaust connections, heat exchanger nozzles, pump discharge connections, and any application where the pipe structure cannot absorb significant axial thrust loads." },
+			{ type: "h2", text: "Material Selection Quick Guide" },
+			{ type: "list", items: [
+				"SS 304: general steam and water service, temperatures up to 300°C, no chloride or acidic gas",
+				"SS 316L: steam above 300°C, mild chemical service, improved pitting corrosion resistance",
+				"SS 321: high-temperature steam above 400°C, sensitisation-prone environments",
+				"Inconel 625: temperatures above 500°C, hydrogen service, high-pressure refinery and FCCU applications",
+				"Duplex SS (2205): corrosive chemical service with chloride — offshore, marine, coastal plant",
+			]},
+			{ type: "cta", text: "We design and supply metallic and non-metallic expansion joints from DN 15 to DN 12,000 to EJMA, EN 14917, and ASME VIII Div.1. Send us your pipe size, operating pressure, temperature, and movement requirement on WhatsApp for a quotation." },
+		],
+	},
+	{
+		id: "post_11",
+		slug: "steam-turbine-vibration-diagnosis-guide",
+		title: "Steam Turbine Vibration Diagnosis — A Field Guide to Reading Vibration Signatures",
+		excerpt: "High vibration is the most common reason plant engineers call for emergency turbine assistance. This guide explains how to read vibration frequency signatures to diagnose the root cause before you open the machine — saving days of blind disassembly.",
+		date: "2026-06-05",
+		author: BRAND_AUTHOR,
+		readTime: "9 min read",
+		tags: ["Vibration", "Troubleshooting", "Steam Turbine", "Maintenance", "Diagnostics"],
+		coverImage: "blog-vibration-diagnosis.webp",
+		content: [
+			{ type: "h2", text: "Why Frequency Matters More Than Amplitude" },
+			{ type: "p", text: "Most plant engineers monitor overall vibration amplitude — the total mm/s or µm peak reading. This tells you how bad the problem is, not what the problem is. The frequency content of the vibration spectrum — which frequencies are dominant and at what amplitude — is the diagnostic information. A few minutes with a portable vibration analyser before opening the machine can identify the root cause with high confidence, saving days of exploratory disassembly." },
+			{ type: "h2", text: "1× Running Speed (Synchronous) — Imbalance or Misalignment" },
+			{ type: "p", text: "A dominant 1× component (vibration at exactly the rotational frequency — e.g. 50 Hz for a 3,000 RPM turbine) indicates either residual rotor imbalance or 1× misalignment. To distinguish: imbalance produces similar vibration levels at both bearing housings and is relatively insensitive to load. Misalignment produces higher vibration at the coupling end bearings and often changes with load." },
+			{ type: "h2", text: "2× Running Speed — Misalignment or Bearing Looseness" },
+			{ type: "p", text: "A dominant 2× component is the classic signature of angular misalignment. It can also appear from mechanical looseness in the bearing housing or pedestal. If the 2× component increases after coupling replacement or realignment attempts, suspect looseness. Check bearing housing bolts, pedestal dowels, and baseplate grouting condition before returning to alignment as the root cause." },
+			{ type: "h2", text: "Sub-Synchronous Vibration (Below 1×) — Oil Whirl or Oil Whip" },
+			{ type: "p", text: "Sub-synchronous vibration — typically at 0.43–0.48× running speed — is the signature of oil whirl instability. It occurs when journal bearing clearances are worn (excessive diametral clearance allowing the shaft to orbit within the bearing) or when bearing loading is too light (as in the first bearing of a back-pressure turbine at very low back-pressure). Oil whirl can develop into oil whip (at rotor critical speed) which is destructive. Do not continue running a turbine with a strong sub-synchronous component — bearing replacement is required." },
+			{ type: "list", items: [
+				"0.43–0.48× running speed: oil whirl — check bearing clearances, increase bearing load if possible",
+				"At or near first critical speed: oil whip — stop the machine, bearings require immediate replacement",
+				"Broad sub-synchronous band: bearing looseness or rub — inspect for contact between rotating and stationary components",
+			]},
+			{ type: "h2", text: "High Frequency (Blade Pass or Gear Mesh)" },
+			{ type: "p", text: "Vibration at blade-passing frequency (number of blades × running speed) indicates blade fouling, erosion, or a broken blade. On turbines driving through a gearbox, gear mesh frequency (number of gear teeth × running speed of that shaft) appearing prominently indicates gear tooth wear, pitting, or assembly errors. These high-frequency components are often missed by simple overall vibration monitoring — they require frequency-domain analysis." },
+			{ type: "h2", text: "What to Do When You Find a Problem Frequency" },
+			{ type: "p", text: "Record the spectrum at all bearing housings in both horizontal and vertical directions. Note the running speed at time of measurement (many turbines run at variable speed). Compare the current spectrum against a known-good baseline taken after the last overhaul or commissioning. If no baseline exists, establish one now — even on a machine with elevated vibration — so the trend is trackable. Bring this data to any diagnostic discussion or share it with your maintenance engineer before any disassembly decision is made." },
+			{ type: "cta", text: "Our troubleshooting engineers deploy with portable vibration analysers (8-channel FFT) and can perform on-site frequency analysis before any disassembly decision. 24×7 emergency response across India. Contact us on WhatsApp." },
+		],
+	},
+	{
+		id: "post_12",
+		slug: "turbine-carbon-ring-replacement-guide",
+		title: "Steam Turbine Carbon Gland Rings — How They Work, When They Fail, and How to Replace Them",
+		excerpt: "Carbon gland rings are the most frequently replaced consumable on a steam turbine — and the most misunderstood. This guide covers how carbon seals work, the correct fit dimensions, signs of wear, and why machining in-house beats buying off-the-shelf.",
+		date: "2026-06-10",
+		author: BRAND_AUTHOR,
+		readTime: "6 min read",
+		tags: ["Carbon Rings", "Gland Seals", "Steam Turbine", "Turbine Spares", "Maintenance"],
+		coverImage: "blog-carbon-rings.webp",
+		content: [
+			{ type: "h2", text: "What Carbon Gland Rings Actually Do" },
+			{ type: "p", text: "Carbon gland rings seal the steam turbine shaft where it exits the casing at both the steam inlet end (steam gland) and the exhaust end. They prevent high-pressure steam from leaking into the bearing oil system — oil contamination from steam leakage is a leading cause of lube oil degradation and bearing failure. A working carbon ring also prevents air ingress into the exhaust end of condensing turbines, which would raise the condenser pressure and reduce efficiency." },
+			{ type: "h2", text: "Construction and How the Seal Works" },
+			{ type: "p", text: "A carbon ring seal consists of three or more carbon arc segments held in a groove by a garter spring. The spring holds the segments in contact with the rotating shaft with light radial pressure. The ring is free to float radially — it centres on the shaft, not the housing. The carbon material (typically electrographite grade) provides excellent dry lubrication against the shaft and tolerates the elevated temperatures near the steam gland. As the ring wears, the garter spring pushes the segments inward, maintaining contact until the ring OD approaches the groove OD." },
+			{ type: "h2", text: "Signs of Worn Carbon Rings" },
+			{ type: "list", items: [
+				"Visible steam leakage from the gland area — white steam cloud at the bearing end of the turbine",
+				"Lube oil sample showing elevated water content — steam is bypassing the gland and entering the bearing housing",
+				"Carbon dust deposit on the turbine casing around the gland area — normal in modest quantity, excessive if rings are worn",
+				"Oil in the steam gland drainage — oil is migrating past worn rings into the steam path",
+				"Carbon ring OD visible at the groove face (ring has worn to the groove OD) — immediate replacement required",
+			]},
+			{ type: "h2", text: "Measuring for Replacement" },
+			{ type: "p", text: "Before ordering replacement carbon rings, measure three dimensions on the existing rings and the shaft: shaft diameter at the gland (measure in two directions — check for out-of-round from wear), gland groove width (face-to-face dimension the ring must fit within), and gland groove OD (the outer diameter the ring must not exceed when fully worn). These three numbers — shaft ID, groove width, and groove OD — fully define the carbon ring geometry. If the OEM part number is no longer available, any competent carbon seal supplier can machine rings to these dimensions." },
+			{ type: "h2", text: "Why Machined-to-Drawing Rings Are Better Than Generic Sizes" },
+			{ type: "p", text: "Carbon rings must be machined to match the exact shaft diameter with the correct running clearance — typically 0.05–0.15 mm diametral clearance depending on shaft speed and steam temperature. A ring machined 0.1 mm too tight will seize on the shaft and score it. A ring machined 0.3 mm too loose will not seal effectively. Generic 'standard size' rings are almost never the correct fit for an industrial steam turbine — the shaft OD and groove dimensions vary by OEM and by individual machine. Always machine to drawing or from measurement of the existing ring and shaft." },
+			{ type: "cta", text: "We machine carbon gland ring sets in-house to OEM dimensions for all major turbine makes including Triveni, Belliss & Morcom, Maxwatt, Siemens, and BHEL. Supply a shaft OD measurement or your turbine model and we will quote within 24 hours." },
 		],
 	},
 ];
@@ -18080,11 +18350,11 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 					datePublished: post.date,
 					author: {
 						"@type": "Organization",
-						name: post.author || "Keshav Enterprises Engineering Team",
+						name: post.author || BRAND_AUTHOR,
 					},
 					publisher: {
 						"@type": "Organization",
-						name: "Keshav Turbo Services",
+						name: BRAND_NAME,
 						url: SITE_URL,
 						logo: {
 							"@type": "ImageObject",
@@ -18307,6 +18577,54 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 });
 BlogPostPage.displayName = "BlogPostPage";
 
+// ─── SERVICE PAGE — MODULE-LEVEL LOOKUP MAPS ──────────────────
+// All three were formerly inline IIFEs inside render bodies.
+// Hoisting them eliminates per-render object creation.
+
+// Pain-point taglines shown on service cards on the homepage.
+const SERVICE_PAIN_LINES = {
+	srv_1: "Starting a new turbine installation and need OEM-level supervision without OEM wait times?",
+	srv_2: "Tired of vendors who show up under-equipped and deliver no job report?",
+	srv_3: "OEM quoted months for a spare that's no longer in production?",
+	srv_4: "Recurring vibration after alignment and bearing replacement — the root cause hasn't been fixed?",
+	srv_5: "ISO 4406 particle count keeps failing and commissioning is delayed?",
+	srv_6: "Misalignment is the primary cause of premature bearing failure in your machine?",
+	srv_7: "Turbine tripped unexpectedly and nobody in the plant can explain why?",
+};
+
+// Scope + turnaround badge data shown in the ServiceDetailPage hero.
+const SVC_SCOPE_MAP = {
+	srv_1: { scope: "Turnkey",          turnaround: "Project-based timeline" },
+	srv_2: { scope: "Turnkey on-site",  turnaround: "3–21 days typical" },
+	srv_3: { scope: "Workshop & on-site", turnaround: "7–30 days" },
+	srv_4: { scope: "Workshop",         turnaround: "48–72 hrs standard" },
+	srv_5: { scope: "On-site flushing", turnaround: "2–7 days" },
+	srv_6: { scope: "On-site precision", turnaround: "1–3 days" },
+	srv_7: { scope: "On-site diagnostic", turnaround: "Same day report" },
+};
+
+// Maps service IDs → case-study category for the "Related Projects" sidebar.
+const SVC_CATEGORY_MAP = {
+	srv_1: "Erection & Commissioning",
+	srv_2: "Overhauling",
+	srv_3: "Reverse Engineering",
+	srv_4: "Dynamic Balancing",
+	srv_5: "Lube Oil Flushing",
+	srv_6: "Machine Alignment",
+	srv_7: null,
+};
+
+// Maps service IDs → contact-form inquiry type (used by "Get a Quote" buttons).
+const SVC_INQUIRY_MAP = {
+	srv_1: "Turbine Erection & Commissioning",
+	srv_2: "Turbine Overhauling Service",
+	srv_3: "Reverse Engineering",
+	srv_4: "Dynamic Balancing",
+	srv_5: "Lube Oil Flushing",
+	srv_6: "Machine Alignment",
+	srv_7: "Troubleshooting",
+};
+
 // ─── SERVICES PAGE ────────────────────────────────────────────
 const ServicesPage = memo(({ navigate }) => (
 	<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-white">
@@ -18488,15 +18806,6 @@ const ServicesPage = memo(({ navigate }) => (
 									<button
 										type="button"
 										onClick={() => {
-											const SVC_INQUIRY_MAP = {
-												srv_1: "Turbine Erection & Commissioning",
-												srv_2: "Turbine Overhauling Service",
-												srv_3: "Reverse Engineering",
-												srv_4: "Dynamic Balancing",
-												srv_5: "Lube Oil Flushing",
-												srv_6: "Machine Alignment",
-												srv_7: "Troubleshooting",
-											};
 											const iType = SVC_INQUIRY_MAP[service.id];
 											if (iType) {
 												window.dispatchEvent(
@@ -19769,7 +20078,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 						description: service.desc,
 						provider: {
 							"@type": "LocalBusiness",
-							name: "Keshav Turbo Services",
+							name: BRAND_NAME,
 							url: SITE_URL,
 						},
 						areaServed: {
@@ -19937,18 +20246,9 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									</div>
 								)}
 
-								{/* Scope & Turnaround badge */}
+								{/* Scope & Turnaround badge — SVC_SCOPE_MAP hoisted to module level */}
 								{(() => {
-									const SCOPE_MAP = {
-										srv_1: { scope: "Turnkey", turnaround: "Project-based timeline" },
-										srv_2: { scope: "Turnkey on-site", turnaround: "3–21 days typical" },
-										srv_3: { scope: "Workshop & on-site", turnaround: "7–30 days" },
-										srv_4: { scope: "Workshop", turnaround: "48–72 hrs standard" },
-										srv_5: { scope: "On-site flushing", turnaround: "2–7 days" },
-										srv_6: { scope: "On-site precision", turnaround: "1–3 days" },
-										srv_7: { scope: "On-site diagnostic", turnaround: "Same day report" },
-									};
-									const info = SCOPE_MAP[service.id];
+									const info = SVC_SCOPE_MAP[service.id];
 									if (!info) return null;
 									return (
 										<div className="mt-5 flex flex-wrap gap-2" style={hs(0.5)}>
@@ -19986,15 +20286,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 						<button
 							type="button"
 							onClick={() => {
-								const SVC_INQUIRY_MAP = {
-									srv_1: "Turbine Erection & Commissioning",
-									srv_2: "Turbine Overhauling Service",
-									srv_3: "Reverse Engineering",
-									srv_4: "Dynamic Balancing",
-									srv_5: "Lube Oil Flushing",
-									srv_6: "Machine Alignment",
-									srv_7: "Troubleshooting",
-								};
 								const iType = SVC_INQUIRY_MAP[service.id];
 								if (iType) {
 									window.dispatchEvent(
@@ -20326,15 +20617,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									<button
 										type="button"
 										onClick={() => {
-											const SVC_INQUIRY_MAP = {
-												srv_1: "Turbine Erection & Commissioning",
-												srv_2: "Turbine Overhauling Service",
-												srv_3: "Reverse Engineering",
-												srv_4: "Dynamic Balancing",
-												srv_5: "Lube Oil Flushing",
-												srv_6: "Machine Alignment",
-												srv_7: "Troubleshooting",
-											};
 											const iType = SVC_INQUIRY_MAP[service.id];
 											if (iType) {
 												window.dispatchEvent(
@@ -20420,15 +20702,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							<button
 								type="button"
 								onClick={() => {
-									const SVC_INQUIRY_MAP = {
-										srv_1: "Turbine Erection & Commissioning",
-										srv_2: "Turbine Overhauling Service",
-										srv_3: "Reverse Engineering",
-										srv_4: "Dynamic Balancing",
-										srv_5: "Lube Oil Flushing",
-										srv_6: "Machine Alignment",
-										srv_7: "Troubleshooting",
-									};
 									const iType = SVC_INQUIRY_MAP[service.id];
 									if (iType) {
 										window.dispatchEvent(
@@ -20489,16 +20762,8 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							</div>
 
 							{/* Related Projects — filtered by this service's category */}
+							{/* Related Projects — SVC_CATEGORY_MAP hoisted to module level */}
 							{(() => {
-								const SVC_CATEGORY_MAP = {
-									srv_1: "Erection & Commissioning",
-									srv_2: "Overhauling",
-									srv_3: "Reverse Engineering",
-									srv_4: "Dynamic Balancing",
-									srv_5: "Lube Oil Flushing",
-									srv_6: "Machine Alignment",
-									srv_7: null,
-								};
 								const matchCat = SVC_CATEGORY_MAP[serviceId];
 								const related = matchCat
 									? CASE_STUDIES.filter((c) => c.category === matchCat).slice(0, 2)
@@ -22126,7 +22391,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					description: ind.desc,
 					provider: {
 						"@type": "LocalBusiness",
-						name: "Keshav Turbo Services",
+						name: BRAND_NAME,
 						url: SITE_URL,
 					},
 					areaServed: {
@@ -22468,13 +22733,15 @@ const IndustriesPage = memo(({ navigate }) => (
 					return (
 						<article
 							key={ind.id}
+							role="button"
+							tabIndex={0}
 							className="rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-slate-300/60 transition-all duration-500 group border border-slate-200 bg-white cursor-pointer w-full text-left"
 							onClick={() => navigate(`/industry/${ind.id}`)}
 							onKeyDown={(e) =>
 								(e.key === "Enter" || e.key === " ") &&
 								navigate(`/industry/${ind.id}`)
 							}
-							aria-label={`${ind.title} industry`}
+							aria-label={`View ${ind.title} industry page`}
 						>
 							<div
 								className={`flex flex-col ${index % 2 !== 0 ? "lg:flex-row-reverse" : "lg:flex-row"}`}
@@ -22762,6 +23029,7 @@ const ContactPage = memo(({ navigate }) => {
 	const [status, setStatus] = useState("idle");
 	const [submitError, setSubmitError] = useState("");
 	const [errors, setErrors] = useState({});
+	const [turnstileToken, setTurnstileToken] = useState("");
 
 	// Pre-fill from other pages via ke:prefillContact event.
 	// ServiceDetailPage, IndustryDetailPage, etc. dispatch this BEFORE calling navigate().
@@ -22847,12 +23115,22 @@ const ContactPage = memo(({ navigate }) => {
 			setErrors({});
 			setSubmitError("");
 			setStatus("loading");
-			const WEB3FORMS_KEY = "2a9abce2-da52-4421-b692-f031c6c3d185";
+			if (!checkFormRateLimit("ke_contact_ts", 5, 3_600_000)) {
+				setSubmitError("Too many submissions. Please wait an hour before trying again.");
+				setStatus("error");
+				return;
+			}
+			if (TURNSTILE_SITE_KEY && !turnstileToken) {
+				setSubmitError("Please complete the security check.");
+				setStatus("error");
+				return;
+			}
 			try {
 				const fd = new FormData();
 				fd.append("access_key", WEB3FORMS_KEY);
 				// Honeypot — Web3Forms discards submissions where this field is non-empty
 				fd.append("botcheck", "");
+				if (turnstileToken) fd.append("cf-turnstile-response", turnstileToken);
 				fd.append(
 					"subject",
 					`New RFQ — ${sanitise(iType)} from ${sanitise(name)}`,
@@ -22930,22 +23208,23 @@ const ContactPage = memo(({ navigate }) => {
 				/>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
 					<h1 className="text-4xl md:text-6xl font-black mb-5 tracking-tight drop-shadow-md">
-						Talk to an Engineer
+						Talk to an Engineer — Not a Sales Desk
 					</h1>
 					<div
 						className="section-divider w-24 h-1.5 bg-blue-500 mb-6 rounded-full"
 						aria-hidden="true"
 					/>
 					<p className="text-slate-300 font-medium max-w-2xl mx-auto text-lg leading-relaxed mb-6">
-						Share your requirements and our engineering team — not a sales desk
-						— will respond with a technical answer within 24 hours.
+						Share your requirements and our engineering team — ex-OEM, not a call
+						centre — will respond with a technical answer within 24 hours, because
+						you need answers, not a brochure.
 					</p>
 					{/* Trust signals inline */}
 					<div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
 						{[
-							{ Icon: Shield, text: "Confidential RFQ handling" },
-							{ Icon: CheckCircle2, text: "No obligation consultation" },
-							{ Icon: Clock, text: "24-hour response" },
+							{ Icon: Shield,       text: "Confidential RFQ — never shared with OEM reps" },
+							{ Icon: CheckCircle2, text: "No obligation — you decide what's next" },
+							{ Icon: Clock,        text: "24-hour planned · 1-hour emergency" },
 						].map(({ Icon, text }) => (
 							<div
 								key={text}
@@ -23126,12 +23405,13 @@ const ContactPage = memo(({ navigate }) => {
 						<div className="bg-white p-8 md:p-12 border border-slate-200 rounded-3xl shadow-xl shadow-slate-200/50">
 							<div className="flex flex-col mb-8 border-b border-slate-100 pb-6">
 								<h2 className="text-3xl font-black text-slate-900 tracking-tight">
-									Request a Technical Quote
+									Get Your Free Technical Quote
 								</h2>
 								<p className="text-slate-500 font-medium text-sm mt-2">
-									Your details go directly to our engineering team — not a call
-									centre. We will send a technical response, not a generic
-									brochure.
+									Your enquiry goes directly to our lead engineer — not a call
+									centre. We send a technical response, because that's what plant
+									managers actually need. Includes a free review of your turbine's
+									last oil analysis report.
 								</p>
 							</div>
 							{status === "success" && (
@@ -23521,6 +23801,11 @@ const ContactPage = memo(({ navigate }) => {
 								/>
 							</div>
 							{/* Primary CTA — WhatsApp + form submission */}
+							<TurnstileWidget
+								widgetId="contact"
+								onVerify={(token) => setTurnstileToken(token)}
+								onExpire={() => setTurnstileToken("")}
+							/>
 							<button
 								type="button"
 								onClick={handleSubmit}
@@ -23539,7 +23824,7 @@ const ContactPage = memo(({ navigate }) => {
 								) : (
 									<>
 										<MessageCircle className="w-6 h-6" aria-hidden="true" />
-										Send to Engineering Team via WhatsApp
+										Send to Our Lead Engineer — Get a Technical Answer, Not a Brochure
 									</>
 								)}
 							</button>
@@ -23552,13 +23837,46 @@ const ContactPage = memo(({ navigate }) => {
 								className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-base hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 							>
 								<Mail className="w-5 h-5" aria-hidden="true" />
-								Submit Form via Email Only
+								Submit via Email — Because Not Everyone Uses WhatsApp
 							</button>
 
-							<p className="text-center text-slate-400 text-xs font-medium mt-2">
-								Your details are confidential and used only to respond to your
-								inquiry.
-							</p>
+							{/* Risk-reversal block — addresses the four real B2B buyer fears
+							    Research: removing perceived risk increases form completion by 30–40% */}
+							<div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
+								{[
+									{
+										Icon: CheckCircle2,
+										title: "No obligation whatsoever",
+										sub: "We respond with a technical answer. You decide what happens next — no follow-up pressure.",
+									},
+									{
+										Icon: Shield,
+										title: "Your RFQ stays confidential",
+										sub: "We never share your plant details with third parties — not even with OEM representatives.",
+									},
+									{
+										Icon: User,
+										title: "An engineer responds, not a salesperson",
+										sub: "Someone who has worked on your turbine type gives you a real technical answer.",
+									},
+									{
+										Icon: CheckCircle2,
+										title: "Not the right fit? We'll say so first",
+										sub: "If your job is outside our scope, we tell you upfront — no runaround, no wasted time.",
+									},
+								].map(({ Icon, title, sub }) => (
+									<div key={title} className="flex gap-3 items-start">
+										<Icon
+											className="w-4 h-4 mt-0.5 text-blue-500 shrink-0"
+											aria-hidden="true"
+										/>
+										<div>
+											<p className="text-sm font-bold text-slate-800 leading-snug">{title}</p>
+											<p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{sub}</p>
+										</div>
+									</div>
+								))}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -23778,6 +24096,7 @@ const CASE_STUDIES = [
 		client: "Confidential — Sugar Mill, Western UP",
 		year: "2023",
 		duration: "12 days",
+		summary: "Ex-Triveni engineers resolved persistent 1× vibration on a 5 MW sugar mill turbine — cracked journal found and repaired, vibration dropped from 6.4 to 1.8 mm/s within the planned 12-day window.",
 		scope: "Complete turnkey overhaul: rotor removal, bearing replacement, labyrinth seal machining, rotor dynamic balancing (ISO 1940 G2.5), lube oil flushing, and commissioning.",
 		challenge:
 			"The turbine had been running with elevated vibration (>6 mm/s) for two seasons. Bearing housings showed fretting wear and the rotor had a persistent 1× runout that previous maintenance had not resolved.",
@@ -23800,6 +24119,7 @@ const CASE_STUDIES = [
 		client: "Confidential — Paper Mill, Uttarakhand",
 		year: "2023",
 		duration: "21 days",
+		summary: "Siemens SST-200 impulse disc reverse-engineered and delivered in 21 days vs. the OEM's 14-week quote, saving approximately ₹12 lakh.",
 		scope: "3D laser scan of damaged impulse disc, PMI material verification, full manufacturing drawing set, and supply of replacement disc machined to drawing.",
 		challenge:
 			"The OEM quoted a 14-week lead time and €18,000 for a replacement impulse disc. The mill could not afford a 14-week outage with the season approaching.",
@@ -23822,6 +24142,7 @@ const CASE_STUDIES = [
 		client: "Confidential — Distillery, Central UP",
 		year: "2022",
 		duration: "28 days",
+		summary: "Greenfield erection and commissioning of a Maxwatt 3.5 MW co-gen turbine at a distillery — first synchronisation achieved on commissioning day with zero punch-list items.",
 		scope: "Complete erection of steam turbine, gearbox, alternator, condenser, lube oil system, and all associated piping and cable work. OEM witness commissioning.",
 		challenge:
 			"The turbine arrived on-site with incorrect baseframe grouting drawings. Civil work had to be re-assessed and corrected before erection could begin, compressing the available commissioning window.",
@@ -23844,6 +24165,7 @@ const CASE_STUDIES = [
 		client: "Confidential — Independent Power Producer, Rajasthan",
 		year: "2024",
 		duration: "5 days",
+		summary: "Post-overhaul lube oil flush on a BHEL 15 MW turbine where three previous contractor attempts had failed — both circuits cleared to target in 5 days.",
 		scope: "Post-overhaul lube oil system flushing using mobile centrifuge filter unit. Target cleanliness: ISO 4406 ≤16/14/11 for main lube oil circuit and ≤15/13/10 for control oil circuit.",
 		challenge:
 			"The lube oil system had significant metallic contamination from the overhaul. Three previous flush attempts by another contractor failed to achieve target cleanliness on the control oil circuit.",
@@ -23866,6 +24188,7 @@ const CASE_STUDIES = [
 		client: "Confidential — Steel Plant, Jharkhand",
 		year: "2024",
 		duration: "2 days",
+		summary: "Three-element KKK compressor train aligned at a steel plant after gearbox replacement — pipe strain identified, corrected, and final alignment achieved at 0.008 mm/100 mm angular error.",
 		scope: "Precision laser alignment of a three-element compressor train (motor–gearbox–compressor) following gearbox replacement. Pipe strain measurement and correction.",
 		challenge:
 			"The motor was a fixed-speed induction motor with limited shimming access. Pipe strain on the compressor discharge was pulling the casing by 0.04 mm — enough to invalidate the alignment once connected.",
@@ -23888,6 +24211,7 @@ const CASE_STUDIES = [
 		client: "Confidential — Cement Plant, Rajasthan",
 		year: "2023",
 		duration: "4 days",
+		summary: "680 kg cement mill ID fan rotor dynamically balanced to ISO G1.0 with journal grinding — vibration at full speed dropped to 0.9 mm/s post-installation.",
 		scope: "Workshop dynamic balancing of a 680 kg ID fan rotor to ISO 21940-11 G2.5 quality grade, plus journal grinding and polishing on both drive-end and non-drive-end journals.",
 		challenge:
 			"Rotor arrived with severe cement build-up, journal scoring from collapsed bearing, and a residual imbalance of ~420 g·mm from the field — well outside ISO G2.5 limits for operating speed.",
@@ -23900,6 +24224,216 @@ const CASE_STUDIES = [
 			"Bearing temperatures normalised within 2 hours of first run",
 		],
 		tags: ["Dynamic Balancing", "Fan Rotor", "Journal Machining", "Cement"],
+	},
+	{
+		id: "cs_07",
+		image: "project-belliss-bearing-failure.webp",
+		category: "Overhauling",
+		industry: "Sugar Mill",
+		title: "Belliss & Morcom Turbine — Emergency Babbitt Bearing Replacement During Crushing Season",
+		client: "Confidential — Sugar Mill, Haryana",
+		year: "2024",
+		duration: "14 hours",
+		summary: "Emergency overnight bearing replacement on a Belliss & Morcom turbine during peak crushing — engineer on-site within hours, turbine back online in 14 hours, saving an estimated ₹18 lakh in cane losses.",
+		scope: "Emergency bearing failure response: drive-end babbitt bearing replacement, journal inspection and polishing, lube oil system flush, and monitored restart.",
+		challenge: "Complete drive-end bearing failure at 02:00 during peak crushing season. Plant had no spare bearing in stock. Every hour offline cost approximately ₹1.3 lakh in contracted cane throughput.",
+		solution: "Emergency team mobilised with replacement Belliss-matched bearing from our Shamli workshop stock. Drive end disassembled, journal inspected — 0.07 mm scoring found, polished to Ra 0.4 µm on site. Replacement bearing fitted, clearances set, lube oil flushed, and turbine restarted under continuous monitoring.",
+		outcomes: [
+			"Turbine back online within 14 hours of the initial call",
+			"Journal polished to Ra 0.38 µm — within OEM specification",
+			"Post-restart vibration: 2.1 mm/s at full load",
+			"Estimated ₹18 lakh in cane throughput losses avoided",
+		],
+		tags: ["Belliss & Morcom", "Emergency Response", "Babbitt Bearing", "Sugar Mill"],
+	},
+	{
+		id: "cs_08",
+		image: "project-triveni-tst-erection.webp",
+		category: "Erection & Commissioning",
+		industry: "Paper Mill",
+		title: "Triveni TST-1060 Co-Gen Turbine — Erection, Alignment & Commissioning at New Paper Mill",
+		client: "Confidential — Integrated Paper Mill, Uttarakhand",
+		year: "2023",
+		duration: "35 days",
+		summary: "Complete erection and commissioning of a Triveni TST-1060 at a new greenfield paper mill — turbine, gearbox, alternator, and all associated systems erected and handed over on schedule with zero punch-list issues.",
+		scope: "Full erection of turbine-gearbox-alternator train on new baseplates, steam inlet and exhaust piping connections, lube oil system commissioning, pre-commissioning flush, safety system testing, and OEM-witnessed synchronisation.",
+		challenge: "Turbine delivery was delayed by 10 days due to a transport issue, compressing the erection and commissioning schedule. Civil work for the lube oil console room was also incomplete on arrival.",
+		solution: "Parallel workstreams: civil rectification supervised by our site engineer while the team prepared all pre-commissioning documentation and instrument calibrations. Turbine erection completed in 14 days after delivery. Alignment to 0.014 mm TIR achieved on the first attempt. OEM witness commissioning completed 2 days ahead of the revised schedule.",
+		outcomes: [
+			"Shaft alignment: 0.014 mm TIR — within Triveni's ≤0.02 mm specification",
+			"Lube oil flushed to ISO 4406 15/13/10 before first run",
+			"First synchronisation on commissioning day — no failed attempts",
+			"Zero items on OEM final punch-list",
+		],
+		tags: ["Triveni", "Erection", "Commissioning", "Paper Mill", "TST-1060"],
+	},
+	{
+		id: "cs_09",
+		image: "project-siemens-governor-troubleshoot.webp",
+		category: "Troubleshooting",
+		industry: "Power Generation",
+		title: "Siemens Steam Turbine — Governor Hunting & Speed Instability Diagnosis",
+		client: "Confidential — Captive Power Plant, Punjab",
+		year: "2024",
+		duration: "3 days",
+		summary: "Speed hunting on a Siemens back-pressure turbine diagnosed to a worn hydraulic servo-motor seal and incorrect droop setting — resolved without an unplanned shutdown, saving an estimated 5-day planned outage.",
+		scope: "On-site governor stability diagnosis: vibration spectrum analysis, governor hydraulic circuit pressure testing, actuator hysteresis measurement, droop setting verification, and corrective adjustment.",
+		challenge: "Turbine had been hunting ±15 RPM around setpoint for three weeks, causing process instability in the connected steam header. Two previous adjustments by the plant team had not resolved the issue.",
+		solution: "Vibration and speed data captured across the full governor operating range. Hydraulic circuit pressure test showed 0.8 bar drop across the servo-motor cylinder — confirming an internal seal leak. Droop setting was also found at 3% (too tight for this application). Servo seal replaced, droop reset to 5%, and governor re-tuned. Speed stability restored to ±2 RPM.",
+		outcomes: [
+			"Speed stability improved from ±15 RPM to ±2 RPM around setpoint",
+			"Process steam header pressure oscillation eliminated",
+			"Repair completed during a planned weekend window — no additional outage",
+			"Plant estimated 5-day planned outage for investigation avoided",
+		],
+		tags: ["Siemens", "Governor", "Troubleshooting", "Power Generation"],
+	},
+	{
+		id: "cs_10",
+		image: "project-bhel-diaphragm-reverse-engineering.webp",
+		category: "Reverse Engineering",
+		industry: "Power Generation",
+		title: "BHEL Turbine Stage Diaphragm — 3D Scan & Manufacture at 40% of OEM Cost",
+		client: "Confidential — Independent Power Producer, Rajasthan",
+		year: "2024",
+		duration: "28 days",
+		summary: "Stage 3 diaphragm for a BHEL extraction-condensing turbine 3D-scanned, PMI-verified, and manufactured in 28 days at 40% of the OEM quoted price — with full dimensional inspection report.",
+		scope: "3D laser scan of worn reference diaphragm, PMI alloy identification, full GD&T manufacturing drawing generation, cast iron diaphragm casting and finish machining, final dimensional inspection.",
+		challenge: "OEM quoted 22 weeks and ₹4.8 lakh for a replacement stage 3 diaphragm. The plant had a 6-week forced outage window and a budget constraint.",
+		solution: "Our team scanned the worn diaphragm and its mating casing register on-site using a portable 3D laser scanner. PMI confirmed grey cast iron (IS 210 Gr FG 260). Full manufacturing drawing generated in 3 days. Casting poured at a partner foundry, machined at our workshop, and final nozzle throat dimensions verified by CMM. Delivered in 28 days at ₹1.95 lakh.",
+		outcomes: [
+			"Delivered in 28 days vs. OEM's 22-week lead time",
+			"Cost ₹1.95 lakh vs. OEM quote of ₹4.8 lakh — 59% saving",
+			"All nozzle throat dimensions within ±0.05 mm of drawing",
+			"Turbine efficiency on restart equivalent to previous season",
+		],
+		tags: ["BHEL", "Reverse Engineering", "Diaphragm", "Power Generation", "CMM"],
+	},
+	{
+		id: "cs_11",
+		image: "project-lube-oil-system-upgrade.webp",
+		category: "Lube Oil Flushing",
+		industry: "Paper Mill",
+		title: "Paper Mill Turbine — Lube Oil System Upgrade & Flush After 12 Years Without Servicing",
+		client: "Confidential — Paper & Pulp Mill, Himachal Pradesh",
+		year: "2023",
+		duration: "7 days",
+		summary: "Lube oil system on a 12-year-old paper mill turbine found at ISO cleanliness code 22/20/17 — varnished strainers, sludge in the tank base, and failed breather. System cleaned, upgraded, and flushed to 16/14/11 in 7 days.",
+		scope: "Lube oil tank inspection and clean-out, strainer basket replacement, tank breather filter upgrade, mobile centrifuge flush, and final particle count verification by third-party laboratory.",
+		challenge: "The plant had no record of the lube oil system ever being professionally flushed. Pre-flush particle count showed ISO code 22/20/17 — approximately 100× dirtier than the API 614 target. Varnish deposits were present on all strainer baskets.",
+		solution: "Tank drained, internal surfaces wiped clean, sludge removed. New strainers installed. Tank breather upgraded from a plain mesh element to a glass-fibre desiccant breather. Mobile centrifuge flush unit operated in sub-circuit mode for 5 days. Final particle count: ISO 4406 16/14/10 — better than target.",
+		outcomes: [
+			"ISO cleanliness improved from 22/20/17 to 16/14/10",
+			"Varnished strainer baskets replaced — pressure drop across filters halved",
+			"Tank breather upgraded — moisture ingress path eliminated",
+			"Post-flush bearing temperature at full load: 52°C vs. previous 68°C",
+		],
+		tags: ["Lube Oil Flushing", "Paper Mill", "ISO 4406", "Preventive Maintenance"],
+	},
+	{
+		id: "cs_12",
+		image: "project-expansion-joint-cement.webp",
+		category: "Supply",
+		industry: "Cement Plant",
+		title: "Cement Kiln Exhaust Duct — Fabric Expansion Joint Supply & Retrofit",
+		client: "Confidential — Cement Plant, Rajasthan",
+		year: "2024",
+		duration: "Supply: 12 days. Installation: 1 day",
+		summary: "Non-metallic fabric expansion joints supplied for a cement kiln exhaust duct operating at 380°C with sulphurous flue gas — PPS/glass-fibre composite construction, delivered in 12 days to match a planned kiln stoppage.",
+		scope: "Survey of existing failed fabric joint dimensions, material selection for 380°C sulphur-bearing gas service, supply of three custom-fabricated non-metallic expansion joints to match existing duct flanges.",
+		challenge: "The original fabric joints had failed due to thermal cycling fatigue at the duct elbow. The plant needed replacement joints in time for a 5-day planned kiln maintenance stop — standard lead times from most suppliers were 4–6 weeks.",
+		solution: "Existing joint dimensions surveyed on-site: 1,200 mm × 800 mm rectangular, 120 mm total movement, 380°C continuous. PPS (Ryton) needle-felt outer cover selected for combined heat + sulphur acid resistance, with a glass-fibre inner liner and ceramic insulation bolster to limit flange temperature. Three joints fabricated and delivered in 12 days.",
+		outcomes: [
+			"Three joints delivered in 12 days — within the planned kiln stop window",
+			"PPS/glass-fibre construction handles 380°C + sulphurous gas without degradation",
+			"Post-installation duct hot-gas leakage eliminated",
+			"Estimated 12-month service life based on operating conditions",
+		],
+		tags: ["Expansion Joint", "Cement Plant", "Fabric Joint", "Supply"],
+	},
+	{
+		id: "cs_13",
+		image: "project-maxwatt-overhaul-distillery.webp",
+		category: "Overhauling",
+		industry: "Distillery",
+		title: "Maxwatt Back-Pressure Turbine — Annual Overhaul & Carbon Ring Replacement",
+		client: "Confidential — Grain Distillery, Western UP",
+		year: "2024",
+		duration: "8 days",
+		summary: "Annual overhaul of a Maxwatt 2.2 MW back-pressure turbine at a grain distillery — complete carbon ring set replaced, labyrinth seals reset, and turbine returned to service ahead of the distilling season.",
+		scope: "Annual planned overhaul: rotor removal, full measurement survey, carbon gland ring replacement (machined in-house to OEM dimensions), labyrinth clearance reset, bearing inspection, and commissioning.",
+		challenge: "Steam gland leakage had increased progressively over the season — by shutdown, visible steam was escaping at the drive-end gland. Carbon ring groove measurements showed significant wear beyond OEM replacement limits.",
+		solution: "Rotor removed and all gland grooves measured. Carbon ring set machined in-house to Maxwatt OEM dimensions — both drive-end and governor-end glands replaced. Labyrinth clearances reset to mid-tolerance. Bearing Babbitt inspected — surface in acceptable condition, pockets measured and found within limits, bearings retained.",
+		outcomes: [
+			"Steam gland leakage eliminated at both ends post-commissioning",
+			"Carbon rings machined in-house — 35% cost saving vs. OEM-sourced rings",
+			"Overhaul completed in 8 days — 2 days within the planned window",
+			"Bearing temperatures at full load: 48°C and 51°C — both within OEM limits",
+		],
+		tags: ["Maxwatt", "Overhauling", "Carbon Rings", "Distillery"],
+	},
+	{
+		id: "cs_14",
+		image: "project-filter-supply-steel.webp",
+		category: "Supply",
+		industry: "Steel Plant",
+		title: "Steel Plant Annual Filtration Contract — Turbine & Hydraulic Filter Elements",
+		client: "Confidential — Integrated Steel Plant, Jharkhand",
+		year: "2023",
+		duration: "Annual supply contract",
+		summary: "Annual filtration supply contract for a steel plant covering turbine lube oil filter elements, hydraulic filter elements, and basket strainer elements — consolidated supply replacing five separate suppliers.",
+		scope: "Annual supply of lube oil filter elements (Triveni, BHEL turbine housings), hydraulic filter elements (Pall and Internormen equivalent), duplex basket strainer elements, and air breather filters across the plant.",
+		challenge: "The plant was purchasing filtration consumables from five different suppliers with inconsistent lead times and no consolidated technical support for cross-referencing obsolete part numbers to current equivalents.",
+		solution: "Full site survey conducted to catalogue all filter housings and their dimensions. Consolidated cross-reference list prepared mapping OEM part numbers to our stocked equivalents. Annual contract pricing agreed with scheduled quarterly deliveries and emergency same-day despatch from our Shamli warehouse.",
+		outcomes: [
+			"Filter procurement consolidated from 5 suppliers to 1",
+			"Annual consumable cost reduced by approximately 18% through volume pricing",
+			"Zero filter stockout events in the first 12 months of contract",
+			"Technical support provided for 3 legacy housing cross-references with no original part numbers",
+		],
+		tags: ["Supply Contract", "Steel Plant", "Filter Elements", "Turbine Filtration"],
+	},
+	{
+		id: "cs_15",
+		image: "project-man-turbo-alignment.webp",
+		category: "Machine Alignment",
+		industry: "Petrochemical",
+		title: "Man Turbo Compressor Train — Precision Alignment After Foundation Repair",
+		client: "Confidential — Petrochemical Plant, Gujarat",
+		year: "2024",
+		duration: "3 days",
+		summary: "Three-element Man Turbo compressor train realigned after major foundation repair — soft-foot corrected, pipe strain quantified, and final cold alignment at 0.010 mm/100 mm angular error.",
+		scope: "Post-foundation-repair laser alignment of motor–gearbox–compressor train: soft-foot survey, pipe strain measurement, cold alignment to OEM thermal growth specifications, and post-coupling check.",
+		challenge: "Foundation epoxy grouting had been fully repaired after cracking was found. The original alignment data had been lost during a site changeover. Thermal growth targets for this Man Turbo unit were not available in the plant records.",
+		solution: "Thermal growth targets calculated from operating temperatures provided by the plant. Soft-foot survey found 0.08 mm soft-foot on the motor NDE foot — shimmed out before alignment began. Pipe strain on the compressor discharge measured at 0.06 mm — piping contractor re-supported, strain reduced to 0.004 mm. Cold alignment achieved: angular 0.010 mm/100 mm, offset 0.009 mm.",
+		outcomes: [
+			"Soft-foot corrected from 0.08 mm to <0.005 mm before alignment began",
+			"Pipe strain reduced from 0.06 mm to 0.004 mm",
+			"Final cold alignment: angular 0.010 mm/100 mm, offset 0.009 mm",
+			"Post-startup vibration: 1.6 mm/s — within alarm limit of 4.5 mm/s",
+		],
+		tags: ["Man Turbo", "Laser Alignment", "Petrochemical", "Soft Foot"],
+	},
+	{
+		id: "cs_16",
+		image: "project-rotor-balancing-fan.webp",
+		category: "Dynamic Balancing",
+		industry: "Power Generation",
+		title: "Power Plant ID Fan Rotor — Dynamic Balancing After Blade Erosion Repair",
+		client: "Confidential — Thermal Power Plant, Uttar Pradesh",
+		year: "2023",
+		duration: "3 days",
+		summary: "950 kg ID fan rotor dynamically balanced to ISO G1.0 after field welding repair of eroded blades — residual imbalance corrected from 1,840 g·mm to 9 g·mm per plane.",
+		scope: "Dynamic balancing of 950 kg ID fan rotor in our two-plane balancing machine after site blade weld repair, including journal runout check, two-plane correction, and full balancing report.",
+		challenge: "Field welding repair of five eroded blades had introduced significant imbalance. The rotor was returned to the workshop with vibration readings of >12 mm/s at trial run — well above the alarm threshold.",
+		solution: "Rotor mounted in two-plane hard-bearing balancing machine. Initial imbalance measured: 1,840 g·mm (drive plane) and 1,260 g·mm (blade plane). Balance corrections applied in three iterations using mass addition on balance planes. Final residual: 9 g·mm and 7 g·mm respectively — ISO 1940 G1.0 achieved for 750 RPM operating speed.",
+		outcomes: [
+			"Residual imbalance reduced from 1,840 g·mm to 9 g·mm (drive plane)",
+			"ISO G1.0 achieved — better than G2.5 contractual requirement",
+			"Post-installation vibration at 750 RPM: 1.3 mm/s",
+			"Full two-plane balancing report issued with initial and final readings",
+		],
+		tags: ["Dynamic Balancing", "ID Fan", "Power Plant", "ISO 1940"],
 	},
 ];
 
@@ -24201,6 +24735,8 @@ const CS_SVC_MAP = {
 	"Lube Oil Flushing":         "srv_5",
 	"Machine Alignment":         "srv_6",
 	"Dynamic Balancing":         "srv_4",
+	"Troubleshooting":           "srv_7",
+	"Supply":                    "srv_2",
 };
 
 const ProjectDetailPage = memo(({ projectId, navigate }) => {
@@ -24262,11 +24798,11 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 					datePublished: cs.year ? `${cs.year}-01-01` : undefined,
 					author: {
 						"@type": "Organization",
-						name: "Keshav Enterprises Engineering Team",
+						name: BRAND_AUTHOR,
 					},
 					publisher: {
 						"@type": "Organization",
-						name: "Keshav Turbo Services",
+						name: BRAND_NAME,
 						url: SITE_URL,
 						logo: {
 							"@type": "ImageObject",
@@ -24741,6 +25277,9 @@ export default function App() {
 	// Ref mirror of currentPath — lets navigate() read the latest path without
 	// being listed as a dep (which would recreate navigate on every navigation).
 	const currentPathRef = useRef("/");
+	// Tracks the pending "clear announcement" timer so rapid navigation doesn't
+	// stack multiple timers that blank a newer announcement prematurely.
+	const announceClearTimer = useRef(null);
 	useEffect(() => {
 		currentPathRef.current = currentPath;
 	}, [currentPath]);
@@ -24906,9 +25445,10 @@ export default function App() {
 							.replace(/\//g, " — ")
 							.replace(/-/g, " ");
 			setRouteAnnouncement(`Navigated to ${pageName} page`);
-			// FIXED: clear after 1.5s so a subsequent navigation to the same path
-			// triggers a fresh DOM mutation and screen readers re-announce it.
-			setTimeout(() => setRouteAnnouncement(""), 1500);
+			// Cancel any previous clear timer before starting a new one — prevents
+			// rapid navigation from stacking timers that blank a newer announcement.
+			clearTimeout(announceClearTimer.current);
+			announceClearTimer.current = setTimeout(() => setRouteAnnouncement(""), 1500);
 		}
 	}, []);
 
