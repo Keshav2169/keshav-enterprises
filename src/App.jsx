@@ -8060,16 +8060,13 @@ const MARQUEE_CSS = `
      contain:paint would silently clip any overflow — contain:layout style is safe. */
   section:not(.hero-section){contain:layout style}
 
-  /* ─── VON RESTORFF CTA BADGE — isolates primary CTA visually ─── */
-  .ke-cta-badge-wrap{padding-top:1.1rem}
-  @media(max-width:640px){.ke-cta-badge-wrap{padding-top:1.25rem}}
 
   /* ─── HERO MOBILE ─── */
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
   @media(max-width:767px){
 	.hero-section{
-	  background-image:linear-gradient(to right,rgba(10,25,47,0.95),rgba(10,25,47,0.7),rgba(10,25,47,0.4)),url('hero-background.png');
+	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.70) 0%,rgba(10,25,47,0.48) 50%,rgba(10,25,47,0.80) 100%),url('hero-background.png');
 	  background-size:cover;
 	  background-position:center center;
 	  background-repeat:no-repeat;
@@ -8078,27 +8075,27 @@ const MARQUEE_CSS = `
 	.hero-desktop-grad{display:none!important}
 	.hero-mobile-vignette{display:none!important}
 	.hero-glow-orb{display:none!important}
-	.hero-bottom-overlay{background:linear-gradient(to top,rgba(10,25,47,0.9),transparent)!important}
+	.hero-bottom-overlay{display:none!important}
 	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
+
+  /* ─── HERO H1 — single source of truth for font-size ─── */
+  .hero-h1{font-size:clamp(2.75rem,7vw,5.6rem);line-height:1.05;letter-spacing:-0.03em;text-shadow:0 2px 16px rgba(0,0,0,0.6)}
 
   /* ─── MOBILE TYPOGRAPHY BOOST ─── */
   @media(max-width:640px){
 	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
 	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
 	p{font-size:max(15px,1em);line-height:1.65}
-	.hero-h1{font-size:clamp(3.2rem,13vw,3.8rem)!important;line-height:1.04!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-	.glass-hero p{color:#d0e4f5!important;font-size:1rem!important;line-height:1.7!important}
+	.hero-h1{font-size:clamp(2.75rem,10.5vw,3.4rem)!important}
+	.glass-hero{padding:1rem!important;border-radius:1rem!important}
+	.glass-hero p{color:#d0e4f5!important;font-size:0.938rem!important;line-height:1.7!important}
 	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
-	.hero-phone-link{font-size:0.95rem!important}
-	.hero-trust-bar span{font-size:0.8rem!important}
-	.hero-badges{display:flex!important;flex-direction:row!important;justify-content:center!important;gap:0.5rem!important;flex-wrap:nowrap!important}
-	.hero-badges>*{font-size:0.7rem!important;padding:0.4rem 0.6rem!important;white-space:nowrap}
-	.hero-badges>* span{font-size:0.7rem!important;letter-spacing:0.05em!important}
-	.hero-badges>* .text-sm{font-size:0.7rem!important}
-	.hero-badges>* .text-\\[11px\\]{font-size:0.62rem!important}
-	.hero-badges img{height:1.5rem!important}
-	.hero-badges .h-8{height:1.6rem!important;width:auto!important}
+	.hero-phone-link{font-size:0.938rem!important}
+	/* badges: stacked, full-width, centered */
+	.hero-badges{flex-direction:column!important;align-items:center!important;gap:0.5rem!important}
+	.hero-badges>*{width:100%!important;max-width:280px!important;justify-content:flex-start!important}
+	/* trust bar: flex-col on mobile handled in JSX */
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
@@ -15557,7 +15554,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-center pt-4 pb-10 sm:items-start sm:pt-12 sm:pb-20 overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-center pt-20 pb-12 sm:items-start sm:pt-14 sm:pb-20 overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15575,7 +15572,7 @@ const HomePage = memo(({ navigate }) => {
 					)}
 					<div
 						className="hero-mobile-vignette absolute inset-0"
-						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.65) 0%,rgba(10,25,47,0.15) 30%,rgba(10,25,47,0.15) 60%,rgba(10,25,47,0.85) 100%)" }}
+						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.45) 0%,rgba(10,25,47,0.08) 30%,rgba(10,25,47,0.08) 60%,rgba(10,25,47,0.75) 100%)" }}
 					/>
 					<div className="hero-desktop-grad absolute inset-0 bg-linear-to-r from-[#0A192F]/92 via-[#0A192F]/60 to-[#0A192F]/15" />
 					<div className="hero-bottom-overlay absolute inset-0 bg-linear-to-t from-[#0A192F]/80 via-transparent to-transparent z-10" />
@@ -15589,8 +15586,8 @@ const HomePage = memo(({ navigate }) => {
 					<div className="w-full lg:w-[55%]">
 						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
-							{/* Trust badges — side-by-side, centered */}
-							<div className="hero-badges flex flex-row items-center justify-center lg:justify-start gap-3 mb-6 flex-wrap">
+							{/* Trust badges */}
+							<div className="hero-badges flex items-center justify-center lg:justify-start gap-3 mb-7">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
@@ -15598,30 +15595,32 @@ const HomePage = memo(({ navigate }) => {
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 text-[3.4rem] leading-[1.04] sm:text-5xl md:text-7xl lg:text-[5.6rem] font-black text-white tracking-tighter mb-5 sm:mb-7 drop-shadow-2xl text-center lg:text-left"
+								className="hero-h1 font-black text-white leading-[1.05] tracking-tighter mb-5 sm:mb-7 drop-shadow-2xl text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
 
 							{/* Sub-text block */}
-							<div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-2xl p-4 sm:p-5 max-w-xl shadow-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
-								<p className="text-[0.95rem] sm:text-base md:text-lg text-slate-200 font-medium leading-relaxed">
+							<div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-2xl p-5 max-w-sm sm:max-w-xl shadow-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
+								<p className="text-[0.938rem] sm:text-base md:text-lg text-slate-200 font-medium leading-relaxed">
 									{h.sub}
 								</p>
 							</div>
 
 							{/* Phone numbers + live status */}
-							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-2 mb-5">
-								{CONTACT_INFO.phones.map((ph) => (
-									<a
-										key={ph}
-										href={`tel:${ph.replace(/\s/g, "")}`}
-										className="hero-phone-link inline-flex items-center gap-1.5 text-slate-300 text-base font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
-									>
-										<Phone className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
-										{ph}
-									</a>
-								))}
+							<div className="flex flex-col items-center lg:items-start gap-2 mb-5">
+								<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-1">
+									{CONTACT_INFO.phones.map((ph) => (
+										<a
+											key={ph}
+											href={`tel:${ph.replace(/\s/g, "")}`}
+											className="hero-phone-link inline-flex items-center gap-1.5 text-slate-300 text-base font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
+										>
+											<Phone className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+											{ph}
+										</a>
+									))}
+								</div>
 								<span
 									className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border whitespace-nowrap ${officeHours.isOfficeHours ? "bg-emerald-900/30 border-emerald-500/30 text-emerald-300" : "bg-amber-900/30 border-amber-500/30 text-amber-300"}`}
 									role="status"
@@ -15632,15 +15631,15 @@ const HomePage = memo(({ navigate }) => {
 								</span>
 							</div>
 
-							{/* Trust proof — wraps on mobile, pipe-divided on desktop */}
+							{/* Trust proof */}
 							<div className="hero-trust-bar mb-6 sm:mb-8">
-								<div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-start gap-y-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-600">
+								<div className="trust-items flex flex-col sm:flex-row sm:flex-nowrap items-start sm:items-center justify-center lg:justify-start gap-y-2 sm:gap-y-0 sm:divide-x divide-slate-600">
 									{[
 										{ Icon: TrendingUp, text: "20+ years in service" },
 										{ Icon: Shield,     text: "PMI-certified spares" },
 										{ Icon: Clock,      text: "24×7 emergency response" },
 									].map(({ Icon, text }, i) => (
-										<div key={text} className={`flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap w-full sm:w-auto justify-center sm:justify-start py-1 sm:py-0 ${i > 0 ? "sm:pl-4" : ""} ${i < 2 ? "sm:pr-4" : ""}`}>
+										<div key={text} className={`flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap ${i > 0 ? "sm:pl-4" : ""} ${i < 2 ? "sm:pr-4" : ""}`}>
 											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
 											<span>{text}</span>
 										</div>
@@ -15671,7 +15670,7 @@ const HomePage = memo(({ navigate }) => {
 									</button>
 								</div>
 								{/* Emergency CTA */}
-								<div className="relative pt-5 flex-1 sm:flex-none">
+								<div className="flex-1 sm:flex-none">
 									<a
 										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
 										target="_blank"
@@ -15791,7 +15790,7 @@ const HomePage = memo(({ navigate }) => {
 					Company statistics
 				</h2>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-16">
 						{HOME_STATS.map(({ Icon, end, suffix, label, sub }, i) => (
 							<div
 								key={label}
@@ -15896,7 +15895,7 @@ const HomePage = memo(({ navigate }) => {
 				aria-labelledby="services-preview-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="text-center mb-16">
+					<div className="text-center mb-10 md:mb-16">
 						<span className="text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">
 							End-to-End Turbine Lifecycle
 						</span>
@@ -16080,7 +16079,7 @@ const HomePage = memo(({ navigate }) => {
 								{/* Quote */}
 								<blockquote className="flex-1 text-slate-700 font-medium text-sm md:text-base leading-relaxed mb-6">
 									<span
-										className="text-blue-200 text-4xl font-black leading-none select-none"
+										className="block text-blue-300 text-5xl font-black leading-none select-none mb-1 -ml-1"
 										aria-hidden="true"
 									>
 										&ldquo;
@@ -16159,7 +16158,7 @@ const HomePage = memo(({ navigate }) => {
 				aria-labelledby="capabilities-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="max-w-4xl mx-auto text-center lg:text-left">
+					<div className="max-w-4xl mx-auto text-left">
 						<h2
 							id="capabilities-heading"
 							className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight"
@@ -16167,7 +16166,7 @@ const HomePage = memo(({ navigate }) => {
 							Precision Manufacturing.
 						</h2>
 						<div
-							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full mx-auto lg:mx-0"
+							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full"
 							aria-hidden="true"
 						/>
 						<p className="text-slate-600 font-medium text-xl mb-12 leading-relaxed">
@@ -16248,7 +16247,7 @@ const HomePage = memo(({ navigate }) => {
 								{/* Image / hero */}
 								<div className="h-44 bg-[#0A192F] relative overflow-hidden shrink-0">
 									<div
-										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
+										className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
 										aria-hidden="true"
 									/>
 									{cs.image && (
@@ -21265,9 +21264,9 @@ const ProductsPage = memo(({ navigate }) => {
 				<div className="mb-10 flex flex-col gap-4">
 
 					{/* Row 1: search + Sort + Price + OEM — all on one line */}
-					<div className="flex items-center gap-3">
+					<div className="flex items-center gap-2 sm:gap-3 min-w-0 overflow-visible">
 						{/* Search */}
-						<div className="relative flex-1 max-w-2xl">
+						<div className="relative flex-1 min-w-0">
 							<label htmlFor="product-search" className="sr-only">
 								Search products by name, specification, or application
 							</label>
@@ -21299,13 +21298,13 @@ const ProductsPage = memo(({ navigate }) => {
 						</div>
 
 						{/* Sort pill */}
-						<div className="bg-white border-2 border-slate-200 rounded-2xl shadow-md flex items-center gap-2 px-4 py-4 shrink-0">
+						<div className="bg-white border-2 border-slate-200 rounded-2xl shadow-md flex items-center gap-2 px-2 sm:px-4 py-4 shrink-0">
 							<label htmlFor="product-sort" className="sr-only">Sort products</label>
 							<select
 								id="product-sort"
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
-								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer pr-1"
+								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer max-w-[7rem] sm:max-w-none"
 							>
 								<option value="default">Default order</option>
 								<option value="az">Name A → Z</option>
@@ -21321,7 +21320,7 @@ const ProductsPage = memo(({ navigate }) => {
 							onClick={() => setShowFilters((v) => !v)}
 							aria-expanded={showFilters}
 							aria-controls="price-filter-panel"
-							className={`bg-white border-2 rounded-2xl shadow-md flex items-center gap-2 px-4 py-4 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${showFilters ? "border-blue-500 bg-blue-600 text-white" : "border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600"}`}
+							className={`bg-white border-2 rounded-2xl shadow-md flex items-center gap-1.5 px-2 sm:px-4 py-4 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${showFilters ? "border-blue-500 bg-blue-600 text-white" : "border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600"}`}
 						>
 							<Filter className="w-4 h-4" aria-hidden="true" />
 							Price
@@ -21335,7 +21334,7 @@ const ProductsPage = memo(({ navigate }) => {
 								onClick={() => setShowOEMMenu((v) => !v)}
 								aria-expanded={showOEMMenu}
 								aria-haspopup="listbox"
-								className={`bg-white border-2 rounded-2xl shadow-md flex items-center gap-2 px-4 py-3 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showOEMMenu || activeOEM !== "All" ? "border-blue-500 bg-blue-600 text-white" : "border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600"}`}
+								className={`bg-white border-2 rounded-2xl shadow-md flex items-center gap-1.5 px-2 sm:px-4 py-3 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showOEMMenu || activeOEM !== "All" ? "border-blue-500 bg-blue-600 text-white" : "border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600"}`}
 							>
 								<Building2 className="w-4 h-4" aria-hidden="true" />
 								{activeOEM === "All" ? "OEM" : activeOEM}
@@ -21351,7 +21350,7 @@ const ProductsPage = memo(({ navigate }) => {
 								<div
 									role="listbox"
 									aria-label="Filter by OEM"
-									className="absolute left-0 top-full mt-2 z-30 bg-white border-2 border-slate-200 rounded-2xl shadow-xl p-3 min-w-55 flex flex-col gap-1.5"
+									className="absolute right-0 top-full mt-2 z-30 bg-white border-2 border-slate-200 rounded-2xl shadow-xl p-3 min-w-55 max-w-[calc(100vw-2rem)] flex flex-col gap-1.5"
 								>
 									<button
 										type="button"
