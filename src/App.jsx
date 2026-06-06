@@ -8087,9 +8087,11 @@ const MARQUEE_CSS = `
 	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
 	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
 	p{font-size:max(15px,1em);line-height:1.65}
-	.hero-h1{font-size:clamp(2.6rem,7vw,5.6rem)!important;line-height:1.04!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
-	.glass-hero p{color:#d0e4f5!important}
+	.hero-h1{font-size:clamp(2.9rem,11vw,3.8rem)!important;line-height:1.06!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+	.glass-hero p{color:#d0e4f5!important;font-size:1rem!important;line-height:1.7!important}
 	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
+	.hero-phone-link{font-size:0.95rem!important}
+	.hero-trust-bar span{font-size:0.8rem!important}
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
@@ -15548,7 +15550,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-start pt-12 pb-20 overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-start pt-6 sm:pt-12 pb-16 sm:pb-20 overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15581,40 +15583,40 @@ const HomePage = memo(({ navigate }) => {
 						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges */}
-							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-5">
-								<MakeInIndiaBadge />
-								<IndiaMartBadge />
+							<div className="flex items-stretch justify-center lg:justify-start gap-2 mb-5 w-full sm:w-auto">
+								<div className="flex-1 sm:flex-none"><MakeInIndiaBadge /></div>
+								<div className="flex-1 sm:flex-none"><IndiaMartBadge /></div>
 							</div>
 
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 text-5xl md:text-7xl lg:text-[5.6rem] font-black text-white leading-[1.04] tracking-tighter mb-7 drop-shadow-2xl text-center lg:text-left"
+								className="hero-h1 text-[2.9rem] leading-[1.06] md:text-7xl lg:text-[5.6rem] font-black text-white tracking-tighter mb-5 sm:mb-7 drop-shadow-2xl text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
 
 							{/* Sub-text block */}
-							<div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-2xl p-5 max-w-xl shadow-xl mx-auto lg:mx-0 mb-8">
-								<p className="text-base md:text-lg text-slate-200 font-medium leading-relaxed">
+							<div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-2xl p-4 sm:p-5 max-w-xl shadow-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
+								<p className="text-[0.95rem] sm:text-base md:text-lg text-slate-200 font-medium leading-relaxed">
 									{h.sub}
 								</p>
 							</div>
 
 							{/* Phone numbers + live status */}
-							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 mb-5">
+							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-2 mb-5">
 								{CONTACT_INFO.phones.map((ph) => (
 									<a
 										key={ph}
 										href={`tel:${ph.replace(/\s/g, "")}`}
-										className="inline-flex items-center gap-1.5 text-slate-300 text-sm font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
+										className="hero-phone-link inline-flex items-center gap-1.5 text-slate-300 text-base font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
 									>
-										<Phone className="w-3.5 h-3.5 text-cyan-400 shrink-0" aria-hidden="true" />
+										<Phone className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
 										{ph}
 									</a>
 								))}
 								<span
-									className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full border whitespace-nowrap ${officeHours.isOfficeHours ? "bg-emerald-900/30 border-emerald-500/30 text-emerald-300" : "bg-amber-900/30 border-amber-500/30 text-amber-300"}`}
+									className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border whitespace-nowrap ${officeHours.isOfficeHours ? "bg-emerald-900/30 border-emerald-500/30 text-emerald-300" : "bg-amber-900/30 border-amber-500/30 text-amber-300"}`}
 									role="status"
 									aria-live="polite"
 								>
@@ -15623,23 +15625,23 @@ const HomePage = memo(({ navigate }) => {
 								</span>
 							</div>
 
-							{/* Trust proof — pipe-divided row, scrollable on very small screens */}
-							<div className="overflow-x-auto mb-8" style={{scrollbarWidth:"none"}}>
-								<div className="flex items-center justify-start gap-0 divide-x divide-slate-600 min-w-max lg:min-w-0">
+							{/* Trust proof — wraps on mobile, pipe-divided on desktop */}
+							<div className="hero-trust-bar mb-6 sm:mb-8">
+								<div className="flex flex-wrap sm:flex-nowrap items-center justify-center lg:justify-start gap-y-2 divide-y sm:divide-y-0 sm:divide-x divide-slate-600">
 									{[
 										{ Icon: TrendingUp, text: "20+ years in service" },
 										{ Icon: Shield,     text: "PMI-certified spares" },
 										{ Icon: Clock,      text: "24×7 emergency response" },
-									].map(({ Icon, text }) => (
-										<div key={text} className="flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap px-4 first:pl-0 last:pr-0">
-											<Icon className="w-3.5 h-3.5 text-cyan-400 shrink-0" aria-hidden="true" />
+									].map(({ Icon, text }, i) => (
+										<div key={text} className={`flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap w-full sm:w-auto justify-center sm:justify-start py-1 sm:py-0 ${i > 0 ? "sm:pl-4" : ""} ${i < 2 ? "sm:pr-4" : ""}`}>
+											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
 											<span>{text}</span>
 										</div>
 									))}
 								</div>
 							</div>
 
-							{/* CTAs — equal height on all breakpoints */}
+							{/* CTAs */}
 							<div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
 								{/* Primary CTA with badge */}
 								<div className="relative pt-5 flex-1 sm:flex-none">
@@ -15655,19 +15657,19 @@ const HomePage = memo(({ navigate }) => {
 											window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
 											navigate("/contact");
 										}}
-										className="w-full bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 text-base shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+										className="w-full bg-blue-600 text-white px-6 py-4 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 text-base sm:text-base shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
 									>
 										Request a Technical Quote
 										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
 									</button>
 								</div>
-								{/* Emergency CTA — pt-5 matches badge offset so tops align */}
+								{/* Emergency CTA */}
 								<div className="relative pt-5 flex-1 sm:flex-none">
 									<a
 										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="w-full bg-white/5 text-white border border-white/20 px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2.5 text-base backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
+										className="w-full bg-white/5 text-white border border-white/20 px-6 py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2.5 text-base backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
 									>
 										<LifeBuoy className="w-5 h-5 text-cyan-400 shrink-0" aria-hidden="true" />
 										Emergency Breakdown
