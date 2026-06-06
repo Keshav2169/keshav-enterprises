@@ -8087,11 +8087,18 @@ const MARQUEE_CSS = `
 	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
 	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
 	p{font-size:max(15px,1em);line-height:1.65}
-	.hero-h1{font-size:clamp(2.9rem,11vw,3.8rem)!important;line-height:1.06!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
+	.hero-h1{font-size:clamp(3.2rem,13vw,3.8rem)!important;line-height:1.04!important;text-shadow:0 2px 10px rgba(0,0,0,0.45)}
 	.glass-hero p{color:#d0e4f5!important;font-size:1rem!important;line-height:1.7!important}
 	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
 	.hero-phone-link{font-size:0.95rem!important}
 	.hero-trust-bar span{font-size:0.8rem!important}
+	.hero-badges{display:flex!important;flex-direction:row!important;justify-content:center!important;gap:0.5rem!important;flex-wrap:nowrap!important}
+	.hero-badges>*{font-size:0.7rem!important;padding:0.4rem 0.6rem!important;white-space:nowrap}
+	.hero-badges>* span{font-size:0.7rem!important;letter-spacing:0.05em!important}
+	.hero-badges>* .text-sm{font-size:0.7rem!important}
+	.hero-badges>* .text-\\[11px\\]{font-size:0.62rem!important}
+	.hero-badges img{height:1.5rem!important}
+	.hero-badges .h-8{height:1.6rem!important;width:auto!important}
   }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
@@ -15550,7 +15557,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-start pt-6 sm:pt-12 pb-16 sm:pb-20 overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-center pt-4 pb-10 sm:items-start sm:pt-12 sm:pb-20 overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15582,16 +15589,16 @@ const HomePage = memo(({ navigate }) => {
 					<div className="w-full lg:w-[55%]">
 						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
-							{/* Trust badges */}
-							<div className="flex items-stretch justify-center lg:justify-start gap-2 mb-5 w-full sm:w-auto">
-								<div className="flex-1 sm:flex-none"><MakeInIndiaBadge /></div>
-								<div className="flex-1 sm:flex-none"><IndiaMartBadge /></div>
+							{/* Trust badges — side-by-side, centered */}
+							<div className="hero-badges flex flex-row items-center justify-center lg:justify-start gap-3 mb-6 flex-wrap">
+								<MakeInIndiaBadge />
+								<IndiaMartBadge />
 							</div>
 
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 text-[2.9rem] leading-[1.06] md:text-7xl lg:text-[5.6rem] font-black text-white tracking-tighter mb-5 sm:mb-7 drop-shadow-2xl text-center lg:text-left"
+								className="hero-h1 text-[3.4rem] leading-[1.04] sm:text-5xl md:text-7xl lg:text-[5.6rem] font-black text-white tracking-tighter mb-5 sm:mb-7 drop-shadow-2xl text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
