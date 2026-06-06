@@ -15,15 +15,18 @@ import {
 	Clock,
 	Cog,
 	Cpu,
+	Download,
 	Droplets,
 	ExternalLink,
 	Factory,
+	FileText,
 	Filter,
 	Flag,
 	Globe,
 	Hexagon,
 	Layers,
 	LifeBuoy,
+	Lock,
 	Mail,
 	MapPin,
 	Menu,
@@ -34,6 +37,7 @@ import {
 	Search,
 	Settings,
 	Shield,
+	Star,
 	Target,
 	TrendingUp,
 	User,
@@ -106,12 +110,11 @@ const NAV_LINKS = [
 	{ name: "Services", path: "/services" },
 	{ name: "Products", path: "/products" },
 	{ name: "Industries", path: "/industries" },
-	{ name: "Projects", path: "/projects" },
-	// Contact + Blog demoted to "More ▾" overflow (index 6+).
-	// Projects replaces Contact in the primary 6 — it builds trust at the
-	// mid-funnel stage; visitors reach Contact via the persistent CTA button.
 	{ name: "Contact", path: "/contact" },
+	// Projects, Blog, Downloads in "More ▾" overflow (index 6+).
+	{ name: "Projects", path: "/projects" },
 	{ name: "Blog", path: "/blog" },
+	{ name: "Downloads", path: "/downloads" },
 ];
 
 const OEMS = [
@@ -7473,12 +7476,6 @@ const PRODUCT_PRICE_MAP = {
 };
 
 // Helper: format INR with Indian numbering system (legacy shim — kept for reference)
-const _fmtINR = (n) => {
-	if (n >= 100000) return `₹${(n / 100000).toFixed(n % 100000 === 0 ? 0 : 1)}L`;
-	if (n >= 1000) return `₹${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}K`;
-	return `₹${n.toLocaleString("en-IN")}`;
-};
-
 // ─── CURRENCY SYSTEM ──────────────────────────────────────────────────────────
 // Free stack — zero API keys, zero sign-up, zero cost:
 //   Exchange rates : open.er-api.com  (no key, updates daily, cache 1 hr)
@@ -8378,6 +8375,75 @@ const LOCAL_SCHEMA = {
 	],
 };
 
+// ─── ABOUT PAGE SCHEMA ────────────────────────────────────────
+// WebPage wrapping the full LocalBusiness/Organization entity.
+// Defined at module level — stable reference, no render cost.
+const ABOUT_PAGE_SCHEMA = {
+	"@context": "https://schema.org",
+	"@type": "WebPage",
+	name: "About Keshav Enterprises — 20+ Years of Turbine Engineering Excellence",
+	description:
+		"Keshav Enterprises is a precision industrial engineering company based in Shamli, Uttar Pradesh. For over two decades we have provided specialist turbine maintenance, reverse engineering, and OEM-compatible spare parts to India's industrial sectors.",
+	url: `${SITE_URL}/about`,
+	about: {
+		"@type": "Organization",
+		name: BRAND_NAME,
+		alternateName: BRAND_ALT_NAMES,
+		url: SITE_URL,
+		logo: `${SITE_URL}/keshav-logo.png`,
+		foundingDate: "2000",
+		description:
+			"Ex-OEM engineers from Triveni, Siemens, BHEL, Belliss & Morcom, Man Turbo, KKK, and ABB. Steam turbines 5 kW to 27 MW. MSME registered. IndiaMART TrustSeal verified.",
+		address: {
+			"@type": "PostalAddress",
+			streetAddress: "Dayanand Nagar Gali No.2, Near Subash Ki Chakki",
+			addressLocality: "Shamli",
+			addressRegion: "Uttar Pradesh",
+			postalCode: "247776",
+			addressCountry: "IN",
+		},
+		hasCredential: [
+			{
+				"@type": "EducationalOccupationalCredential",
+				name: "MSME Registration",
+				credentialCategory: "Government Registration",
+				recognizedBy: { "@type": "GovernmentOrganization", name: "Government of India" },
+				identifier: "UDYAM-UP-47-0071234",
+			},
+			{
+				"@type": "EducationalOccupationalCredential",
+				name: "IndiaMART TrustSeal",
+				credentialCategory: "Business Verification",
+				recognizedBy: { "@type": "Organization", name: "IndiaMART" },
+			},
+		],
+		knowsAbout: [
+			"Steam Turbine Maintenance",
+			"Turbine Reverse Engineering",
+			"Dynamic Balancing",
+			"Lube Oil Filtration",
+			"HVAC Air Filtration",
+			"Industrial Expansion Joints",
+			"Turbine Spares Manufacturing",
+		],
+	},
+};
+
+// ─── BLOG COLLECTION SCHEMA ───────────────────────────────────
+// Defined at module level so BlogPage can pass it as a stable
+// prop reference — prevents SEOHead's useEffect from re-injecting
+// JSON-LD on every search keystroke (schema is in the dep array).
+// NOTE: BLOG_POSTS is defined later in the file; this constant is
+// initialised lazily via a getter so the forward reference resolves
+// at runtime, not at parse time.
+// We use a plain object that is populated after BLOG_POSTS is defined;
+// see the assignment below BLOG_POSTS.
+let BLOG_COLLECTION_SCHEMA = null; // assigned after BLOG_POSTS is declared
+
+// ─── PROJECTS COLLECTION SCHEMA ───────────────────────────────
+// Same pattern — assigned after CASE_STUDIES is declared.
+let PROJECTS_LIST_SCHEMA = null;
+
 // ─── FAQ SCHEMA for Services/Contact pages ───────────────────
 const FAQ_SCHEMA = {
 	"@context": "https://schema.org",
@@ -8538,18 +8604,18 @@ if (typeof document !== "undefined") {
 		"Content-Security-Policy",
 		[
 			"default-src 'self'",
-			// Scripts: self + Cloudflare Turnstile + GA4 + Clarity + inline event handlers
-			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.clarity.ms https://cdn.clarity.ms",
-			// Styles: self + Google Fonts + inline (Tailwind/CSS-in-JS)
-			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+			// Scripts: self + Cloudflare Turnstile + GA4 + Clarity + Google Translate + inline event handlers
+			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.clarity.ms https://cdn.clarity.ms https://translate.googleapis.com https://translate.google.com",
+			// Styles: self + Google Fonts + Google Translate + inline (Tailwind/CSS-in-JS)
+			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com",
 			// Fonts
 			"font-src 'self' https://fonts.gstatic.com",
-			// Images: self + data URIs (base64 hero) + CDN sources used by product images
+			// Images: self + data URIs + Google Translate assets + CDN sources
 			"img-src 'self' data: https: blob:",
-			// Frames: Turnstile iframe + Google Maps embed
+			// Frames: Turnstile iframe + Google Maps embed + Google Translate
 			"frame-src https://challenges.cloudflare.com https://maps.google.com https://www.google.com",
-			// API fetches: Web3Forms, exchange rates, BigDataCloud geolocation, GA4
-			"connect-src 'self' https://api.web3forms.com https://open.er-api.com https://api.bigdatacloud.net https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms",
+			// API fetches: Web3Forms, exchange rates, BigDataCloud geolocation, GA4, Google Translate
+			"connect-src 'self' https://api.web3forms.com https://open.er-api.com https://api.bigdatacloud.net https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://translate.googleapis.com",
 			// Tighten mixed-content + object/base
 			"upgrade-insecure-requests",
 			"object-src 'none'",
@@ -9838,7 +9904,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 								<FLAG_IMG flagCode={lang.flagCode} size={28} />
 
 								{/* Name + code stacked */}
-								<div className="flex flex-col leading-none gap-[0.1875rem] min-w-0">
+								<div className="flex flex-col leading-none gap-0.75 min-w-0">
 									<span
 										className="text-[13px] font-bold truncate"
 										style={{ color: lang.color }}
@@ -9963,7 +10029,7 @@ const MoreDropdown = memo(({ links, scrolled, isActive, handleNav }) => {
 				<div
 					role="menu"
 					aria-label="More navigation links"
-					className="absolute top-[calc(100%+10px)] left-0 min-w-[10rem] bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200"
+					className="absolute top-[calc(100%+10px)] left-0 min-w-40 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200"
 					style={{
 						animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both",
 					}}
@@ -10004,6 +10070,15 @@ MoreDropdown.displayName = "MoreDropdown";
 
 // ─── NAV DROPDOWN — hover/tap mega-menu for Products & Services ───────────────
 // Fix 6 (audit): reduces clicks to any category from 2+ to 1.
+const NAV_INDUSTRIES_MENU = [
+	{ label: "Power Generation",        id: "ind_1" },
+	{ label: "Sugar Mills & Distilleries", id: "ind_2" },
+	{ label: "Paper & Pulp Mills",      id: "ind_3" },
+	{ label: "Oil & Gas Industries",    id: "ind_4" },
+	{ label: "Petrochemical & Refineries", id: "ind_5" },
+	{ label: "Agro & Food Processing",  id: "ind_6" },
+	{ label: "Cement & Construction",   id: "ind_7" },
+];
 const NAV_PRODUCTS_MENU = [
 	{ label: "Industrial Filtration", cat: "Industrial Filtration" },
 	{ label: "HVAC Air Filters", cat: "HVAC Air Filters" },
@@ -10052,19 +10127,22 @@ const NavDropdown = memo(
 		const handleItemClick = useCallback(
 			(item) => {
 				setOpen(false);
-				if (item.id) {
+				onClose?.();
+				if (item.cat) {
+					// Product category — navigate then dispatch immediately; ProductsPage
+					// listens for this event and the slight React render delay is enough
+					navigate(basePath);
+					requestAnimationFrame(() => {
+						window.dispatchEvent(
+							new CustomEvent("ke:setProductCategory", { detail: item.cat }),
+						);
+					});
+				} else if (item.id) {
+					// Industry or Service with a direct detail page
 					navigate(`${basePath}/${item.id}`);
 				} else {
 					navigate(basePath);
 				}
-				if (item.cat) {
-					setTimeout(() => {
-						window.dispatchEvent(
-							new CustomEvent("ke:setProductCategory", { detail: item.cat }),
-						);
-					}, 80);
-				}
-				onClose?.();
 			},
 			[navigate, basePath, onClose],
 		);
@@ -10129,7 +10207,7 @@ const NavDropdown = memo(
 					<div
 						role="menu"
 						aria-label={`${label} menu`}
-						className="absolute top-[calc(100%+10px)] left-0 min-w-[13.75rem] bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200 py-1"
+						className={`absolute top-[calc(100%+10px)] left-0 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200 py-1 ${label === "Industries" ? "min-w-[16rem]" : "min-w-55"}`}
 						style={{
 							animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both",
 						}}
@@ -10142,13 +10220,18 @@ const NavDropdown = memo(
 								type="button"
 								role="menuitem"
 								onClick={() => handleItemClick(item)}
-								className="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+								className="w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 group/item"
 							>
 								<span
-									className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"
+									className="w-1.5 h-1.5 rounded-full bg-blue-400 group-hover/item:bg-blue-600 shrink-0 transition-colors"
 									aria-hidden="true"
 								/>
 								{item.label}
+								{item.id && (
+									<svg className="w-3 h-3 ml-auto text-slate-300 group-hover/item:text-blue-400 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+										<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+									</svg>
+								)}
 							</button>
 						))}
 						<div className="border-t border-slate-100 mt-1 pt-1">
@@ -10160,9 +10243,12 @@ const NavDropdown = memo(
 									setOpen(false);
 									onClose?.();
 								}}
-								className="w-full text-left px-4 py-2 text-xs font-black text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 uppercase tracking-wider"
+								className="w-full text-left px-4 py-2 text-xs font-black text-blue-600 hover:bg-blue-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 uppercase tracking-wider flex items-center gap-1"
 							>
-								View all {label} →
+								View all {label}
+								<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+								</svg>
 							</button>
 						</div>
 					</div>
@@ -10417,6 +10503,19 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									/>
 								);
 							}
+							if (link.name === "Industries") {
+								return (
+									<NavDropdown
+										key="Industries"
+										label="Industries"
+										items={NAV_INDUSTRIES_MENU}
+										basePath="/industries"
+										scrolled={scrolled}
+										isActive={isActive}
+										navigate={handleNav}
+									/>
+								);
+							}
 							return (
 								<a
 									key={link.name}
@@ -10505,7 +10604,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 								<div
 									id="desktop-search-popover"
 									role="search"
-									className="absolute top-[calc(100%+14px)] right-0 w-[30rem] max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
+									className="absolute top-[calc(100%+14px)] right-0 w-120 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
 									style={{
 										animation:
 											"searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both",
@@ -10852,136 +10951,126 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					{(isOpen || isSearchOpen) && !query && (
 						<div className="px-4 py-5">
 							<ul className="space-y-1 mb-5">
-								{NAV_LINKS.filter((l) => l.name !== "Blog").map((link) => {
-									// Services and Products get an expand/collapse sub-menu
+								{NAV_LINKS.map((link) => {
+									// Services, Products and Industries get an expand/collapse sub-menu
 									const subItems =
 										link.name === "Services"
 											? NAV_SERVICES_MENU
 											: link.name === "Products"
 												? NAV_PRODUCTS_MENU
-												: null;
+												: link.name === "Industries"
+													? NAV_INDUSTRIES_MENU
+													: null;
 									const expanded = mobileExpanded === link.name;
+									const active = isActive(link.path);
 
 									return (
 										<li key={link.name}>
-											<div className="flex items-center">
-												<a
-													href={`#${link.path}`}
-													role="menuitem"
-													onClick={(e) => {
-														e.preventDefault();
-														if (subItems) {
-															setMobileExpanded(expanded ? null : link.name);
-														} else {
-															handleNav(link.path);
-														}
-													}}
-													aria-current={
-														isActive(link.path) ? "page" : undefined
-													}
-													aria-expanded={subItems ? expanded : undefined}
-													className={`flex-1 flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-														isActive(link.path)
-															? "text-blue-600 bg-blue-50 border border-blue-100"
-															: "text-slate-700 hover:text-blue-600 hover:bg-slate-50"
+											{subItems ? (
+												/* ── Split row: label navigates, chevron toggles sub-menu ── */
+												<div
+													className={`flex items-center rounded-xl overflow-hidden border transition-all ${
+														active
+															? "border-blue-200 bg-blue-50"
+															: expanded
+																? "border-slate-200 bg-slate-50"
+																: "border-transparent"
 													}`}
 												>
-													{link.name}
-													{subItems ? (
+													{/* Label — navigates to the section page */}
+													<button
+														type="button"
+														onClick={() => handleNav(link.path)}
+														aria-current={active ? "page" : undefined}
+														className={`flex-1 text-left px-4 py-3.5 text-base font-bold tracking-tight transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 ${
+															active ? "text-blue-600" : "text-slate-700"
+														}`}
+													>
+														{link.name}
+													</button>
+													{/* Chevron — only toggles sub-menu */}
+													<button
+														type="button"
+														onClick={() => setMobileExpanded(expanded ? null : link.name)}
+														aria-expanded={expanded}
+														aria-label={`${expanded ? "Collapse" : "Expand"} ${link.name} menu`}
+														className={`px-4 py-3.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 border-l ${
+															expanded
+																? "border-blue-200 text-blue-500"
+																: "border-slate-200 text-slate-400"
+														}`}
+													>
 														<svg
 															aria-hidden="true"
-															className={`w-4 h-4 opacity-50 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+															className={`w-4 h-4 transition-transform duration-200 ${expanded ? "rotate-180 text-blue-500" : ""}`}
 															fill="none"
 															stroke="currentColor"
 															viewBox="0 0 24 24"
 														>
-															<path
-																strokeLinecap="round"
-																strokeLinejoin="round"
-																strokeWidth={2.5}
-																d="M19 9l-7 7-7-7"
-															/>
+															<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
 														</svg>
-													) : isActive(link.path) ? (
-														<span
-															className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 ml-auto"
-															aria-hidden="true"
-														/>
-													) : null}
-												</a>
-											</div>
-											{/* Expandable sub-items */}
+													</button>
+												</div>
+											) : (
+												/* ── Plain nav item — just navigates ── */
+												<button
+													type="button"
+													onClick={() => handleNav(link.path)}
+													aria-current={active ? "page" : undefined}
+													className={`w-full text-left flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+														active
+															? "text-blue-600 bg-blue-50 border border-blue-200"
+															: "text-slate-700 hover:text-blue-600 hover:bg-slate-50 border border-transparent"
+													}`}
+												>
+													{link.name}
+													{active && (
+														<span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" aria-hidden="true" />
+													)}
+												</button>
+											)}
+
+											{/* ── Expandable sub-items ── */}
 											{subItems && expanded && (
-												<ul className="ml-4 mt-1 space-y-0.5 border-l-2 border-blue-100 pl-3">
+												<ul className="ml-2 mt-1 mb-1 space-y-0.5 border-l-2 border-blue-100 pl-3">
 													{subItems.map((item) => (
 														<li key={item.label}>
 															<button
 																type="button"
 																onClick={() => {
-																	handleNav(link.path);
-																	if (item.cat) {
-																		setTimeout(() => {
-																			window.dispatchEvent(
-																				new CustomEvent(
-																					"ke:setProductCategory",
-																					{ detail: item.cat },
-																				),
-																			);
-																		}, 80);
-																	}
 																	setMobileExpanded(null);
+																	if (item.id && link.name === "Industries") {
+																		handleNav(`/industry/${item.id}`);
+																	} else if (item.id && link.name === "Services") {
+																		handleNav(`/service/${item.id}`);
+																	} else if (item.cat) {
+																		handleNav(link.path);
+																		requestAnimationFrame(() => {
+																			window.dispatchEvent(
+																				new CustomEvent("ke:setProductCategory", { detail: item.cat }),
+																			);
+																		});
+																	} else {
+																		handleNav(link.path);
+																	}
 																}}
-																className="w-full text-left px-3 py-2.5 text-sm font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 flex items-center gap-2"
+																className="w-full text-left px-3 py-2.5 text-sm font-semibold text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 flex items-center justify-between gap-2 group"
 															>
-																<span
-																	className="w-1 h-1 rounded-full bg-blue-300 shrink-0"
-																	aria-hidden="true"
-																/>
-																{item.label}
+																<span className="flex items-center gap-2">
+																	<span className="w-1 h-1 rounded-full bg-blue-300 group-hover:bg-blue-500 shrink-0 transition-colors" aria-hidden="true" />
+																	{item.label}
+																</span>
+																<svg className="w-3 h-3 text-slate-300 group-hover:text-blue-400 shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+																	<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+																</svg>
 															</button>
 														</li>
 													))}
-													<li>
-														<button
-															type="button"
-															onClick={() => {
-																handleNav(link.path);
-																setMobileExpanded(null);
-															}}
-															className="w-full text-left px-3 py-2 text-xs font-black text-blue-600 hover:bg-blue-50 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 uppercase tracking-wider"
-														>
-															View all {link.name} →
-														</button>
-													</li>
 												</ul>
 											)}
 										</li>
 									);
 								})}
-								{/* Blog demoted to secondary — smaller, below the main links */}
-								<li>
-									<button
-										type="button"
-										role="menuitem"
-										onClick={() => handleNav("/blog")}
-										aria-current={isActive("/blog") ? "page" : undefined}
-										className={`w-full flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold tracking-tight transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-											isActive("/blog")
-												? "text-blue-600 bg-blue-50 border border-blue-100"
-												: "text-slate-400 hover:text-blue-500 hover:bg-slate-50"
-										}`}
-									>
-										<span className="text-[10px] font-black uppercase tracking-widest bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">
-											Blog
-										</span>
-										{isActive("/blog") && (
-											<span
-												className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0 ml-auto"
-												aria-hidden="true"
-											/>
-										)}
-									</button>
-								</li>
 							</ul>
 							<div className="border-t border-slate-100 pt-4 flex flex-col gap-3">
 								<a
@@ -12333,7 +12422,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 							>
 								Report an Issue
 							</h2>
-							<p className="text-xs text-slate-500 font-medium truncate max-w-[15rem]">
+							<p className="text-xs text-slate-500 font-medium truncate max-w-60">
 								{context.name}
 							</p>
 						</div>
@@ -12914,7 +13003,7 @@ const WhatsAppBubble = memo(() => {
 			{/* Greeting bubble */}
 			{showGreeting && (
 				<div
-					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-[13.75rem] animate-[fadeSlideUp_0.35s_ease_forwards]"
+					className="relative bg-white border border-slate-200 rounded-2xl rounded-br-sm shadow-xl px-4 py-3 max-w-55 animate-[fadeSlideUp_0.35s_ease_forwards]"
 					role="status"
 					aria-live="polite"
 				>
@@ -13036,6 +13125,12 @@ const InlineRFQForm = memo(({ productTitle }) => {
 		}
 		setStatus("sending");
 		setErrMsg("");
+		// Guard: if key is not configured, surface a clear message instead of a silent API failure
+		if (!WEB3FORMS_KEY) {
+			setErrMsg("Form not configured — please contact us directly via WhatsApp or phone.");
+			setStatus("error");
+			return;
+		}
 		try {
 			const fd = new FormData();
 			fd.append("access_key", WEB3FORMS_KEY);
@@ -14187,7 +14282,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			<main
 				id="main-content"
 				tabIndex={-1}
-				className="pt-24 pb-[5.5rem] md:pb-20 bg-slate-50 min-h-screen"
+				className="pt-24 pb-22 md:pb-20 bg-slate-50 min-h-screen"
 			>
 				<SEOHead
 					title={`${product.title} | ${product.category}`}
@@ -14222,7 +14317,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 							/
 						</span>
 						<span
-							className="text-slate-800 truncate max-w-[12.5rem] md:max-w-full"
+							className="text-slate-800 truncate max-w-50 md:max-w-full"
 							aria-current="page"
 						>
 							{product.title}
@@ -15331,12 +15426,12 @@ const AnnouncementBar = memo(({ navigate }) => {
 	if (!visible) return null;
 	return (
 		<div
-			className="relative bg-blue-700 text-white text-sm font-semibold py-2.5 px-4 flex items-center justify-center gap-3 text-center"
+			className="relative bg-blue-700 text-white text-xs sm:text-sm font-semibold py-2 sm:py-2.5 px-4 flex items-center justify-center gap-2 sm:gap-3 text-center"
 			role="banner"
 			aria-label="Site announcement"
 		>
-			<span className="w-2 h-2 rounded-full bg-cyan-300 animate-pulse shrink-0" aria-hidden="true" />
-			<span>{ANNOUNCEMENT.text}</span>
+			<span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-cyan-300 animate-pulse shrink-0" aria-hidden="true" />
+			<span className="hidden sm:inline">{ANNOUNCEMENT.text}</span>
 			<button
 				type="button"
 				onClick={() => { dismiss(); navigate(ANNOUNCEMENT.linkPath); }}
@@ -15528,23 +15623,26 @@ const HomePage = memo(({ navigate }) => {
 								</span>
 							</div>
 
-							{/* Trust proof — clean single row with pipe dividers */}
-							<div className="flex items-center justify-center lg:justify-start gap-0 mb-8 divide-x divide-slate-600">
-								{[
-									{ Icon: TrendingUp, text: "20+ years in service" },
-									{ Icon: Shield,     text: "PMI-certified spares" },
-									{ Icon: Clock,      text: "24×7 emergency response" },
-								].map(({ Icon, text }) => (
-									<div key={text} className="flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap px-4 first:pl-0 last:pr-0">
-										<Icon className="w-3.5 h-3.5 text-cyan-400 shrink-0" aria-hidden="true" />
-										<span>{text}</span>
-									</div>
-								))}
+							{/* Trust proof — pipe-divided row, scrollable on very small screens */}
+							<div className="overflow-x-auto mb-8" style={{scrollbarWidth:"none"}}>
+								<div className="flex items-center justify-start gap-0 divide-x divide-slate-600 min-w-max lg:min-w-0">
+									{[
+										{ Icon: TrendingUp, text: "20+ years in service" },
+										{ Icon: Shield,     text: "PMI-certified spares" },
+										{ Icon: Clock,      text: "24×7 emergency response" },
+									].map(({ Icon, text }) => (
+										<div key={text} className="flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap px-4 first:pl-0 last:pr-0">
+											<Icon className="w-3.5 h-3.5 text-cyan-400 shrink-0" aria-hidden="true" />
+											<span>{text}</span>
+										</div>
+									))}
+								</div>
 							</div>
 
-							{/* CTAs — both buttons equal height, vertically aligned */}
-							<div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start items-stretch">
-								<div className="relative pt-4">
+							{/* CTAs — equal height on all breakpoints */}
+							<div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+								{/* Primary CTA with badge */}
+								<div className="relative pt-5 flex-1 sm:flex-none">
 									<span
 										className="absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-amber-900 text-[10px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md z-10"
 										aria-hidden="true"
@@ -15557,18 +15655,19 @@ const HomePage = memo(({ navigate }) => {
 											window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
 											navigate("/contact");
 										}}
-										className="h-full w-full bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 text-base shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+										className="w-full bg-blue-600 text-white px-8 py-4 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 text-base shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
 									>
 										Request a Technical Quote
 										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
 									</button>
 								</div>
-								<div className="sm:pt-4">
+								{/* Emergency CTA — pt-5 matches badge offset so tops align */}
+								<div className="relative pt-5 flex-1 sm:flex-none">
 									<a
 										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="h-full bg-white/5 text-white border border-white/20 px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2.5 text-base backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
+										className="w-full bg-white/5 text-white border border-white/20 px-8 py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2.5 text-base backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
 									>
 										<LifeBuoy className="w-5 h-5 text-cyan-400 shrink-0" aria-hidden="true" />
 										Emergency Breakdown
@@ -15579,11 +15678,9 @@ const HomePage = memo(({ navigate }) => {
 						</div>
 					</div>
 
-					{/* ── RIGHT COLUMN — proof cards ── */}
-					<div className={`w-full lg:w-[42%] lg:mt-[60px] transition-all duration-1000 delay-200 ${loaded ? "translate-x-0 opacity-100" : "lg:translate-x-12 opacity-0"}`}>
-
-						{/* Desktop: clean vertical stack */}
-						<div className="hidden lg:flex flex-col gap-5">
+					{/* ── RIGHT COLUMN — proof cards, desktop only ── */}
+					<div className={`hidden lg:block lg:w-[42%] lg:mt-15 transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}>
+						<div className="flex flex-col gap-5">
 							{[
 								{
 									label: "NO LEARNING CURVE",
@@ -15617,43 +15714,6 @@ const HomePage = memo(({ navigate }) => {
 								</div>
 							))}
 						</div>
-
-						{/* Mobile: horizontal snap-scroll strip */}
-						<div className="lg:hidden flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x snap-mandatory mt-6" style={{scrollbarWidth:"none"}}>
-							{[
-								{
-									label: "NO LEARNING CURVE",
-									Icon: Award,
-									title: "Ex-OEM Engineers",
-									sub: "Triveni, Siemens, BHEL & Belliss — same expertise at your plant.",
-								},
-								{
-									label: "EVERY JOB DOCUMENTED",
-									Icon: CheckCircle2,
-									title: "Report on Delivery",
-									sub: "PMI certs, balancing reports — at job completion.",
-								},
-								{
-									label: "WHEN MINUTES MATTER",
-									Icon: PhoneCall,
-									title: "24×7 Emergency",
-									sub: "Multiple locations across India. Call at 2 AM — someone answers.",
-								},
-							].map(({ label, Icon, title, sub }) => (
-								<div
-									key={label}
-									className="bg-[#0d1f38]/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-lg shrink-0 w-[72vw] max-w-[280px] snap-start"
-								>
-									<div className="flex justify-between items-center mb-2">
-										<span className="text-blue-300 text-[9px] font-black uppercase tracking-[0.12em]">{label}</span>
-										<Icon className="w-4 h-4 text-blue-400" aria-hidden="true" />
-									</div>
-									<div className="text-base font-black text-white tracking-tight mb-1">{title}</div>
-									<div className="text-xs text-slate-400 leading-relaxed">{sub}</div>
-								</div>
-							))}
-						</div>
-
 					</div>
 
 				</div>
@@ -15755,7 +15815,7 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 			{/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
 			<section
-				className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto"
+				className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto overflow-hidden"
 				aria-labelledby="why-us-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15823,7 +15883,7 @@ const HomePage = memo(({ navigate }) => {
 			<FeaturedProductsStrip products={featuredProducts} navigate={navigate} />
 			{/* Services Preview */}
 			<section
-				className="py-24 md:py-32 bg-white border-t border-slate-200 cv-auto lazy-section"
+				className="py-24 md:py-32 bg-white border-t border-slate-200 cv-auto lazy-section overflow-hidden"
 				aria-labelledby="services-preview-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15909,7 +15969,7 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 			{/* ── TESTIMONIALS ── */}
 			<section
-				className="py-20 md:py-28 bg-white border-t border-slate-100 cv-auto lazy-section"
+				className="py-20 md:py-28 bg-white border-t border-slate-100 cv-auto lazy-section overflow-hidden"
 				aria-labelledby="testimonials-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16090,7 +16150,7 @@ const HomePage = memo(({ navigate }) => {
 				aria-labelledby="capabilities-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="max-w-4xl mx-auto text-center md:text-left">
+					<div className="max-w-4xl mx-auto text-center lg:text-left">
 						<h2
 							id="capabilities-heading"
 							className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight"
@@ -16098,7 +16158,7 @@ const HomePage = memo(({ navigate }) => {
 							Precision Manufacturing.
 						</h2>
 						<div
-							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full mx-auto md:mx-0"
+							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full mx-auto lg:mx-0"
 							aria-hidden="true"
 						/>
 						<p className="text-slate-600 font-medium text-xl mb-12 leading-relaxed">
@@ -16139,7 +16199,7 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 			{/* ── Featured Projects teaser ────────────────────────── */}
 			<section
-				className="py-24 md:py-32 bg-white border-t border-slate-100 lazy-section"
+				className="py-24 md:py-32 bg-white border-t border-slate-100 lazy-section overflow-hidden"
 				aria-labelledby="projects-teaser-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16179,7 +16239,7 @@ const HomePage = memo(({ navigate }) => {
 								{/* Image / hero */}
 								<div className="h-44 bg-[#0A192F] relative overflow-hidden shrink-0">
 									<div
-										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:2rem_2rem]"
+										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
 										aria-hidden="true"
 									/>
 									{cs.image && (
@@ -16286,15 +16346,7 @@ const HomePage = memo(({ navigate }) => {
 						{BLOG_POSTS.slice(0, 2).map((post) => (
 							<article
 								key={post.id}
-								role="button"
-								tabIndex={0}
-								aria-label={`Read article: ${post.title}`}
-								className="group bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
-								onClick={() => navigate(`/blog/${post.slug}`)}
-								onKeyDown={(e) =>
-									(e.key === "Enter" || e.key === " ") &&
-									navigate(`/blog/${post.slug}`)
-								}
+								className="group bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all focus-within:ring-4 focus-within:ring-blue-500/50"
 							>
 								<div className="flex flex-wrap gap-2 mb-4">
 									{post.tags.slice(0, 2).map((tag) => (
@@ -16318,7 +16370,8 @@ const HomePage = memo(({ navigate }) => {
 								</p>
 								<button
 									type="button"
-									onClick={(e) => { e.stopPropagation(); navigate(`/blog/${post.slug}`); }}
+									onClick={() => navigate(`/blog/${post.slug}`)}
+									aria-label={`Read article: ${post.title}`}
 									className="inline-flex items-center gap-1.5 text-blue-600 font-black text-xs hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group-hover:gap-2.5"
 								>
 									Read Article
@@ -16326,6 +16379,56 @@ const HomePage = memo(({ navigate }) => {
 								</button>
 							</article>
 						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ── Free Downloads promo strip ── */}
+			<section
+				className="py-14 md:py-16 bg-white border-t border-slate-100 lazy-section"
+				aria-labelledby="dl-strip-heading"
+			>
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="bg-[#0A192F] rounded-2xl px-6 md:px-10 py-9 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 relative overflow-hidden">
+						{/* Background grid texture */}
+						<div
+							className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[3rem_3rem] pointer-events-none"
+							aria-hidden="true"
+						/>
+						<div className="relative z-10 shrink-0">
+							<div className="w-14 h-14 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
+								<Download className="w-7 h-7 text-blue-400" aria-hidden="true" />
+							</div>
+						</div>
+						<div className="relative z-10 flex-1 min-w-0">
+							<p className="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-1" id="dl-strip-heading">
+								Free Engineering Resources
+							</p>
+							<h2 className="text-white font-black text-xl md:text-2xl leading-snug mb-2">
+								Turbine checklists, datasheets & RFQ templates — free download
+							</h2>
+							<p className="text-slate-400 text-sm leading-relaxed">
+								Overhaul checklists, lube oil filter datasheets, bearing clearance
+								references, and blank RFQ sheets. Written by ex-OEM engineers.
+							</p>
+							<div className="flex flex-wrap gap-2 mt-3">
+								{["Overhaul Checklist", "Lube Oil Datasheet", "RFQ Template", "Bearing Reference"].map((label) => (
+									<span key={label} className="text-[10px] font-black uppercase tracking-wider bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">
+										{label}
+									</span>
+								))}
+							</div>
+						</div>
+						<div className="relative z-10 shrink-0">
+							<button
+								type="button"
+								onClick={() => navigate("/downloads")}
+								className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-500 active:scale-[0.98] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+							>
+								<Download className="w-4 h-4" aria-hidden="true" />
+								Browse Free Downloads
+							</button>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -16379,9 +16482,9 @@ const HomePage = memo(({ navigate }) => {
 									}}
 									className="w-full bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								>
-									Request a Free Technical Quote — Because 12-Week OEM Lead Times Cost You More{" "}
+									Request a Free Technical Quote
 									<ArrowRight
-										className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+										className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0"
 										aria-hidden="true"
 									/>
 								</button>
@@ -16430,7 +16533,7 @@ const HomePage = memo(({ navigate }) => {
 						</div>
 					</div>
 					{/* Risk-reversal strip below CTAs — addresses the four real B2B buyer fears */}
-					<div className="flex flex-wrap justify-center gap-6 mt-10">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
 						{[
 							{ Icon: CheckCircle2, text: "No obligation — we send a technical answer, you decide what's next" },
 							{ Icon: Shield,       text: "Confidential RFQ — your plant details never reach OEM reps" },
@@ -16439,10 +16542,10 @@ const HomePage = memo(({ navigate }) => {
 						].map(({ Icon, text }) => (
 							<div
 								key={text}
-								className="flex items-center gap-2 text-slate-400 text-sm font-medium"
+								className="flex items-start gap-2.5 text-slate-400 text-sm font-medium"
 							>
 								<Icon
-									className="w-4 h-4 text-blue-400 shrink-0"
+									className="w-4 h-4 text-blue-400 shrink-0 mt-0.5"
 									aria-hidden="true"
 								/>
 								<span>{text}</span>
@@ -16523,6 +16626,7 @@ const AboutPage = memo(({ navigate }) => {
 				description="Keshav Enterprises — 20+ years of industrial turbine engineering, reverse engineering, and OEM-compatible spare parts manufacturing from Shamli, UP, India."
 				canonicalPath="/about"
 				pageType="website"
+				schema={ABOUT_PAGE_SCHEMA}
 			/>
 
 			{/* ── HERO BANNER — "OUR STORY" with background image ── */}
@@ -17746,6 +17850,24 @@ const BLOG_POSTS = [
 	},
 ];
 
+// Assign now that BLOG_POSTS is defined — forward reference resolved.
+BLOG_COLLECTION_SCHEMA = {
+	"@context": "https://schema.org",
+	"@type": "CollectionPage",
+	name: "Engineering Blog — Turbine Maintenance, Industrial Filtration & HVAC Insights",
+	description:
+		"Technical articles on steam turbine overhauling, lube oil filtration, HVAC air filter selection, pulse-jet dust collectors, reverse engineering, and industrial maintenance best practices from Keshav Enterprises.",
+	url: `${SITE_URL}/blog`,
+	hasPart: BLOG_POSTS.map((p) => ({
+		"@type": "Article",
+		headline: p.title,
+		url: `${SITE_URL}/blog/${p.slug}`,
+		datePublished: p.date,
+		description: p.excerpt,
+		author: { "@type": "Organization", name: BRAND_NAME },
+	})),
+};
+
 // ─── BLOG LIST PAGE — with search + tag filter ──────────────────
 //
 // All tag chips are derived once from BLOG_POSTS at module level
@@ -17811,12 +17933,13 @@ const BlogPage = memo(({ navigate }) => {
 				description="Technical articles on steam turbine overhauling, lube oil filtration, HVAC air filter selection, pulse-jet dust collectors, reverse engineering, and industrial maintenance best practices from Keshav Enterprises."
 				canonicalPath="/blog"
 				pageType="website"
+				schema={BLOG_COLLECTION_SCHEMA}
 			/>
 
 			{/* ── Hero banner ── */}
 			<div className="bg-[#0A192F] text-white py-24 mb-10 border-b-8 border-blue-600 relative overflow-hidden">
 				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
 				/>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
@@ -17954,15 +18077,7 @@ const BlogPage = memo(({ navigate }) => {
 				{/* ── Featured post (first in filtered set) ── */}
 				{featuredPost && (
 					<article
-						role="button"
-						tabIndex={0}
-						aria-label={`Read featured article: ${featuredPost.title}`}
-						className="mb-16 group cursor-pointer w-full text-left bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:border-blue-300 transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500"
-						onClick={() => navigate(`/blog/${featuredPost.slug}`)}
-						onKeyDown={(e) =>
-							(e.key === "Enter" || e.key === " ") &&
-							navigate(`/blog/${featuredPost.slug}`)
-						}
+						className="mb-16 group bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:border-blue-300 transition-all duration-300 focus-within:ring-4 focus-within:ring-blue-500"
 					>
 						<div className="grid grid-cols-1 lg:grid-cols-2">
 							<div className="h-72 lg:h-auto bg-slate-100 flex items-center justify-center relative overflow-hidden">
@@ -18391,7 +18506,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						/
 					</span>
 					<span
-						className="text-slate-800 truncate max-w-[15.625rem] md:max-w-full normal-case"
+						className="text-slate-800 truncate max-w-62.5 md:max-w-full normal-case"
 						aria-current="page"
 					>
 						{post.title}
@@ -18455,11 +18570,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				</div>
 				{/* Content */}
 				<div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 mb-12">
-					{post.content.map((block, i) => (
-						<React.Fragment key={`block-${block.type}-${i}`}>
-							{renderBlock(block, i)}
-						</React.Fragment>
-					))}
+					{post.content.map((block, i) => renderBlock(block, i))}
 				</div>
 				{/* Share */}
 				<div className="bg-slate-900 rounded-2xl p-8 mb-12 flex flex-col sm:flex-row items-center gap-6">
@@ -18640,7 +18751,7 @@ const ServicesPage = memo(({ navigate }) => (
 		/>
 		<div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
 			<div
-				className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+				className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 				aria-hidden="true"
 			/>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
@@ -18695,7 +18806,7 @@ const ServicesPage = memo(({ navigate }) => (
 
 									{/* Dark fallback layer — visible only when no image */}
 									<div
-										className="absolute inset-0 opacity-10 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] [background-size:16px_16px]"
+										className="absolute inset-0 opacity-10 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] bg-size-[16px_16px]"
 										aria-hidden="true"
 									/>
 
@@ -20066,6 +20177,15 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 			</main>
 		);
 
+	// Scope & Turnaround badge content — hoisted from inline IIFE (audit 3.3)
+	const scopeInfo = SVC_SCOPE_MAP[service.id] ?? null;
+
+	// Related projects for sidebar — hoisted from inline IIFE (audit 3.3)
+	const sidebarMatchCat = SVC_CATEGORY_MAP[serviceId];
+	const sidebarRelatedProjects = sidebarMatchCat
+		? CASE_STUDIES.filter((c) => c.category === sidebarMatchCat).slice(0, 2)
+		: CASE_STUDIES.slice(0, 2);
+
 	return (
 		<>
 			<main id="main-content" tabIndex={-1} className="pt-20 pb-24 bg-white">
@@ -20111,7 +20231,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 				>
 					{/* Grid texture — matches ServicesPage hero */}
 					<div
-						className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+						className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 						aria-hidden="true"
 					/>
 
@@ -20249,23 +20369,19 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									</div>
 								)}
 
-								{/* Scope & Turnaround badge — SVC_SCOPE_MAP hoisted to module level */}
-								{(() => {
-									const info = SVC_SCOPE_MAP[service.id];
-									if (!info) return null;
-									return (
-										<div className="mt-5 flex flex-wrap gap-2" style={hs(0.5)}>
-											<span className="inline-flex items-center gap-1.5 bg-blue-600/20 border border-blue-500/30 text-blue-200 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
-												<Briefcase className="w-3 h-3 shrink-0" aria-hidden="true" />
-												{info.scope}
-											</span>
-											<span className="inline-flex items-center gap-1.5 bg-emerald-600/20 border border-emerald-500/30 text-emerald-200 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
-												<Clock className="w-3 h-3 shrink-0" aria-hidden="true" />
-												{info.turnaround}
-											</span>
-										</div>
-									);
-								})()}
+								{/* Scope & Turnaround badge */}
+								{scopeInfo && (
+									<div className="mt-5 flex flex-wrap gap-2" style={hs(0.5)}>
+										<span className="inline-flex items-center gap-1.5 bg-blue-600/20 border border-blue-500/30 text-blue-200 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
+											<Briefcase className="w-3 h-3 shrink-0" aria-hidden="true" />
+											{scopeInfo.scope}
+										</span>
+										<span className="inline-flex items-center gap-1.5 bg-emerald-600/20 border border-emerald-500/30 text-emerald-200 text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
+											<Clock className="w-3 h-3 shrink-0" aria-hidden="true" />
+											{scopeInfo.turnaround}
+										</span>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
@@ -20281,7 +20397,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							)}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="flex items-center justify-center gap-2 flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 min-h-[3.25rem]"
+							className="flex items-center justify-center gap-2 flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 min-h-13"
 						>
 							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />{" "}
 							Get a Quote on WhatsApp
@@ -20299,7 +20415,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								}
 								navigate("/contact");
 							}}
-							className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-[3.25rem]"
+							className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13"
 						>
 							Get a Free Quote{" "}
 							<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -20488,7 +20604,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 										cause in minimum time.
 									</p>
 									<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm overflow-x-auto">
-										<div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F] min-w-[33.75rem]">
+										<div className="grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] bg-[#0A192F] min-w-135">
 											{[
 												"Symptom Observed",
 												"Possible Root Causes",
@@ -20507,7 +20623,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 										{detail.faultMatrix.map((row, i) => (
 											<div
 												key={`fault-${row.symptom}`}
-												className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0 min-w-[33.75rem]"
+												className="sd-reveal sd-fault-row grid grid-cols-1 sm:grid-cols-[2fr_2fr_2fr] divide-y sm:divide-y-0 sm:divide-x divide-slate-100 border-b border-slate-100 last:border-b-0 min-w-135"
 												style={{ animationDelay: `${i * 45}ms` }}
 											>
 												<div className="px-5 py-4">
@@ -20567,7 +20683,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 												style={{ animationDelay: `${i * 40}ms` }}
 											>
 												{/* Body badge — blue-50 matches site card accent pattern */}
-												<span className="text-[10px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded uppercase tracking-wider shrink-0 mt-0.5 min-w-[2.75rem] text-center">
+												<span className="text-[10px] font-black text-blue-600 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded uppercase tracking-wider shrink-0 mt-0.5 min-w-11 text-center">
 													{std.body}
 												</span>
 												<div>
@@ -20765,53 +20881,45 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							</div>
 
 							{/* Related Projects — filtered by this service's category */}
-							{/* Related Projects — SVC_CATEGORY_MAP hoisted to module level */}
-							{(() => {
-								const matchCat = SVC_CATEGORY_MAP[serviceId];
-								const related = matchCat
-									? CASE_STUDIES.filter((c) => c.category === matchCat).slice(0, 2)
-									: CASE_STUDIES.slice(0, 2);
-								if (related.length === 0) return null;
-								return (
-									<div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-										<div className="bg-[#0A192F] px-5 py-4 flex items-center justify-between gap-2">
-											<h4 className="font-black text-white text-sm uppercase tracking-widest">
-												Related Projects
-											</h4>
-											<button
-												type="button"
-												onClick={() => navigate("/projects")}
-												className="text-blue-400 hover:text-blue-200 text-[10px] font-bold uppercase tracking-wider transition-colors focus:outline-none focus-visible:underline shrink-0"
-											>
-												View All →
-											</button>
-										</div>
-										<ul className="divide-y divide-slate-100">
-											{related.map((cs) => (
-												<li key={cs.id}>
-													<button
-														type="button"
-														onClick={() => navigate(`/project/${cs.id}`)}
-														className="w-full text-left px-5 py-4 hover:bg-blue-50/40 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
-													>
-														<p className="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">
-															{cs.industry}
-														</p>
-														<p className="text-slate-800 font-bold text-xs leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
-															{cs.title}
-														</p>
-														{cs.outcomes?.[0] && (
-															<p className="mt-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 inline-block">
-																{cs.outcomes[0]}
-															</p>
-														)}
-													</button>
-												</li>
-											))}
-										</ul>
+							{sidebarRelatedProjects.length > 0 && (
+								<div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+									<div className="bg-[#0A192F] px-5 py-4 flex items-center justify-between gap-2">
+										<h4 className="font-black text-white text-sm uppercase tracking-widest">
+											Related Projects
+										</h4>
+										<button
+											type="button"
+											onClick={() => navigate("/projects")}
+											className="text-blue-400 hover:text-blue-200 text-[10px] font-bold uppercase tracking-wider transition-colors focus:outline-none focus-visible:underline shrink-0"
+										>
+											View All →
+										</button>
 									</div>
-								);
-							})()}
+									<ul className="divide-y divide-slate-100">
+										{sidebarRelatedProjects.map((cs) => (
+											<li key={cs.id}>
+												<button
+													type="button"
+													onClick={() => navigate(`/project/${cs.id}`)}
+													className="w-full text-left px-5 py-4 hover:bg-blue-50/40 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+												>
+													<p className="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">
+														{cs.industry}
+													</p>
+													<p className="text-slate-800 font-bold text-xs leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
+														{cs.title}
+													</p>
+													{cs.outcomes?.[0] && (
+														<p className="mt-1.5 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-full px-2 py-0.5 inline-block">
+															{cs.outcomes[0]}
+														</p>
+													)}
+												</button>
+											</li>
+										))}
+									</ul>
+								</div>
+							)}
 						</aside>
 					</div>
 
@@ -20924,6 +21032,8 @@ const ProductsPage = memo(({ navigate }) => {
 	const [showLeft, setShowLeft] = useState(false);
 	const [showRight, setShowRight] = useState(true);
 	const topRef = useRef(null);
+	const [showOEMMenu, setShowOEMMenu] = useState(false);
+	const oemMenuRef = useRef(null);
 
 	const handleScroll = useCallback(() => {
 		if (!categoryScrollRef.current) return;
@@ -20941,6 +21051,22 @@ const ProductsPage = memo(({ navigate }) => {
 			window.removeEventListener("resize", handleScroll);
 		};
 	}, [activeCategory, handleScroll]);
+
+	// Close OEM dropdown on outside-click or Escape
+	useEffect(() => {
+		if (!showOEMMenu) return;
+		const onKey = (e) => { if (e.key === "Escape") setShowOEMMenu(false); };
+		const onClick = (e) => {
+			if (oemMenuRef.current && !oemMenuRef.current.contains(e.target))
+				setShowOEMMenu(false);
+		};
+		document.addEventListener("keydown", onKey);
+		document.addEventListener("mousedown", onClick);
+		return () => {
+			document.removeEventListener("keydown", onKey);
+			document.removeEventListener("mousedown", onClick);
+		};
+	}, [showOEMMenu]);
 
 	const scrollCats = useCallback((dir) => {
 		categoryScrollRef.current?.scrollBy({
@@ -21070,7 +21196,7 @@ const ProductsPage = memo(({ navigate }) => {
 			{/* Hero */}
 			<div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
 				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
 				/>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
@@ -21127,9 +21253,11 @@ const ProductsPage = memo(({ navigate }) => {
 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* ── Search + Filter Controls ── */}
-				<div className="mb-10 flex flex-col gap-5">
-					{/* Row 1: search + sort + filter toggle */}
-					<div className="flex flex-col sm:flex-row gap-3">
+				<div className="mb-10 flex flex-col gap-4">
+
+					{/* Row 1: search + Sort + Price + OEM — all on one line */}
+					<div className="flex items-center gap-3">
+						{/* Search */}
 						<div className="relative flex-1 max-w-2xl">
 							<label htmlFor="product-search" className="sr-only">
 								Search products by name, specification, or application
@@ -21161,16 +21289,14 @@ const ProductsPage = memo(({ navigate }) => {
 							)}
 						</div>
 
-						{/* Sort selector */}
-						<div className="flex gap-2 shrink-0">
-							<label htmlFor="product-sort" className="sr-only">
-								Sort products
-							</label>
+						{/* Sort pill */}
+						<div className="bg-white border-2 border-slate-200 rounded-2xl shadow-md flex items-center gap-2 px-4 py-4 shrink-0">
+							<label htmlFor="product-sort" className="sr-only">Sort products</label>
 							<select
 								id="product-sort"
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
-								className="h-full px-4 py-4 bg-white border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 shadow-md cursor-pointer min-w-[10rem]"
+								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer pr-1"
 							>
 								<option value="default">Default order</option>
 								<option value="az">Name A → Z</option>
@@ -21178,120 +21304,143 @@ const ProductsPage = memo(({ navigate }) => {
 								<option value="price_asc">Price: Low → High</option>
 								<option value="price_desc">Price: High → Low</option>
 							</select>
+						</div>
 
-							{/* Price filter toggle */}
+						{/* Price pill */}
+						<button
+							type="button"
+							onClick={() => setShowFilters((v) => !v)}
+							aria-expanded={showFilters}
+							aria-controls="price-filter-panel"
+							className={`bg-white border-2 rounded-2xl shadow-md flex items-center gap-2 px-4 py-4 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 shrink-0 ${showFilters ? "border-blue-500 bg-blue-600 text-white" : "border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600"}`}
+						>
+							<Filter className="w-4 h-4" aria-hidden="true" />
+							Price
+						</button>
+
+						{/* OEM dropdown — same line as search + Sort + Price */}
+						{OEMS.some((oem) => oemCounts[oem] > 0) && (
+						<div className="relative shrink-0" ref={oemMenuRef}>
 							<button
 								type="button"
-								onClick={() => setShowFilters((v) => !v)}
-								aria-expanded={showFilters}
-								aria-controls="price-filter-panel"
-								className={`px-4 py-4 rounded-2xl text-sm font-bold border-2 flex items-center gap-2 shadow-md transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showFilters ? "bg-blue-600 text-white border-blue-600" : "bg-white text-slate-700 border-slate-200 hover:border-blue-400"}`}
+								onClick={() => setShowOEMMenu((v) => !v)}
+								aria-expanded={showOEMMenu}
+								aria-haspopup="listbox"
+								className={`bg-white border-2 rounded-2xl shadow-md flex items-center gap-2 px-4 py-3 text-sm font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${showOEMMenu || activeOEM !== "All" ? "border-blue-500 bg-blue-600 text-white" : "border-slate-200 text-slate-700 hover:border-blue-400 hover:text-blue-600"}`}
 							>
-								<Filter className="w-4 h-4" aria-hidden="true" />
-								Price
+								<Building2 className="w-4 h-4" aria-hidden="true" />
+								{activeOEM === "All" ? "OEM" : activeOEM}
+								{activeOEM !== "All" && (
+									<span className="ml-1 text-[10px] bg-white/20 text-white px-1.5 py-0.5 rounded-full font-black">
+										{oemCounts[activeOEM]}
+									</span>
+								)}
+								<ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${showOEMMenu ? "rotate-90" : ""}`} aria-hidden="true" />
 							</button>
-						</div>
-					</div>
 
-					{/* Price range panel */}
-					{showFilters && (
-						<fieldset
-							id="price-filter-panel"
-							className="bg-white rounded-2xl p-5 shadow-md border-0 m-0 min-w-0"
-						>
-							<legend className="sr-only">Filter by price range (INR)</legend>
-							<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">
-								Estimated Price Range (INR) — based on market data
-							</p>
-							<div className="flex flex-col sm:flex-row gap-3 items-end">
-								<div className="flex-1">
-									<label
-										htmlFor="price-min"
-										className="block text-xs font-bold text-slate-600 mb-1.5"
-									>
-										Min Price (₹)
-									</label>
-									<input
-										id="price-min"
-										type="number"
-										min="0"
-										placeholder="e.g. 500"
-										value={priceMin}
-										onChange={(e) => setPriceMin(e.target.value)}
-										className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-									/>
-								</div>
-								<div className="flex-1">
-									<label
-										htmlFor="price-max"
-										className="block text-xs font-bold text-slate-600 mb-1.5"
-									>
-										Max Price (₹)
-									</label>
-									<input
-										id="price-max"
-										type="number"
-										min="0"
-										placeholder="e.g. 50000"
-										value={priceMax}
-										onChange={(e) => setPriceMax(e.target.value)}
-										className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-									/>
-								</div>
-								{(priceMin || priceMax) && (
+							{showOEMMenu && (
+								<div
+									role="listbox"
+									aria-label="Filter by OEM"
+									className="absolute left-0 top-full mt-2 z-30 bg-white border-2 border-slate-200 rounded-2xl shadow-xl p-3 min-w-55 flex flex-col gap-1.5"
+								>
 									<button
 										type="button"
-										onClick={() => {
-											setPriceMin("");
-											setPriceMax("");
-										}}
-										className="px-4 py-3 text-sm font-bold text-red-600 hover:text-red-800 border-2 border-red-100 hover:border-red-300 rounded-xl transition-colors shrink-0"
+										role="option"
+										aria-selected={activeOEM === "All"}
+										onClick={() => { setActiveOEM("All"); setShowOEMMenu(false); }}
+										className={`w-full text-left px-3 py-2 rounded-xl text-sm font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeOEM === "All" ? "bg-slate-900 text-white border-slate-900" : "bg-slate-50 text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600"}`}
 									>
-										Clear
+										All OEMs
 									</button>
-								)}
-							</div>
-							<p className="mt-3 text-[11px] text-slate-400 font-medium leading-relaxed">
-								Prices are indicative market estimates sourced from IndiaMART,
-								TradeIndia and ExportersIndia (2025). Actual pricing depends on
-								size, material, quantity, and OEM spec. Contact us for an exact
-								quotation.
-							</p>
-						</fieldset>
+									{OEMS.filter((oem) => oemCounts[oem] > 0).map((oem) => (
+										<button
+											key={oem}
+											type="button"
+											role="option"
+											aria-selected={activeOEM === oem}
+											onClick={() => { setActiveOEM(activeOEM === oem ? "All" : oem); setShowOEMMenu(false); }}
+											className={`w-full text-left px-3 py-2 rounded-xl text-sm font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 flex items-center justify-between ${activeOEM === oem ? "bg-blue-600 text-white border-blue-600" : "bg-slate-50 text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600"}`}
+										>
+											<span>{oem}</span>
+											<span className={`text-[10px] px-1.5 py-0.5 rounded-full font-black ${activeOEM === oem ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}>
+												{oemCounts[oem]}
+											</span>
+										</button>
+									))}
+								</div>
+							)}
+						</div>
 					)}
+					</div>{/* end Row 1 */}
 
-					{/* Fix 9 (audit): OEM filter chips — derived from OEMS that have ≥1 match in current category */}
-					{OEMS.some((oem) => oemCounts[oem] > 0) && (
-						<fieldset className="flex flex-wrap gap-2 mt-1 mb-1 border-0 p-0 m-0 min-w-0">
-							<legend className="sr-only">Filter by OEM compatibility</legend>
-							<span className="text-[11px] font-black text-slate-400 uppercase tracking-widest self-center mr-1 shrink-0">
-								OEM:
-							</span>
-							<button
-								type="button"
-								onClick={() => setActiveOEM("All")}
-								aria-pressed={activeOEM === "All"}
-								className={`px-3 py-1.5 rounded-full text-xs font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${activeOEM === "All" ? "bg-slate-900 text-white border-slate-900" : "bg-white text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600"}`}
+					{/* Price range panel — slides open below */}
+					{showFilters && (
+					<div className="max-w-2xl bg-white border-2 border-slate-200 rounded-2xl shadow-md overflow-hidden">
+							<fieldset
+								id="price-filter-panel"
+								className="px-5 pt-4 pb-5 border-0 m-0 min-w-0"
 							>
-								All OEMs
-							</button>
-							{OEMS.filter((oem) => oemCounts[oem] > 0).map((oem) => (
-								<button
-									key={oem}
-									type="button"
-									onClick={() => setActiveOEM(activeOEM === oem ? "All" : oem)}
-									aria-pressed={activeOEM === oem}
-									className={`px-3 py-1.5 rounded-full text-xs font-black border transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 flex items-center gap-1.5 ${activeOEM === oem ? "bg-blue-600 text-white border-blue-600" : "bg-white text-slate-600 border-slate-200 hover:border-blue-400 hover:text-blue-600"}`}
-								>
-									{oem}
-									<span
-										className={`text-[10px] px-1 py-0.5 rounded-full font-black ${activeOEM === oem ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"}`}
-									>
-										{oemCounts[oem]}
-									</span>
-								</button>
-							))}
-						</fieldset>
+								<legend className="sr-only">Filter by price range (INR)</legend>
+								<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">
+									Estimated Price Range (INR) — based on market data
+								</p>
+								<div className="flex flex-col sm:flex-row gap-3 items-end">
+									<div className="flex-1">
+										<label
+											htmlFor="price-min"
+											className="block text-xs font-bold text-slate-600 mb-1.5"
+										>
+											Min Price (₹)
+										</label>
+										<input
+											id="price-min"
+											type="number"
+											min="0"
+											placeholder="e.g. 500"
+											value={priceMin}
+											onChange={(e) => setPriceMin(e.target.value)}
+											className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+										/>
+									</div>
+									<div className="flex-1">
+										<label
+											htmlFor="price-max"
+											className="block text-xs font-bold text-slate-600 mb-1.5"
+										>
+											Max Price (₹)
+										</label>
+										<input
+											id="price-max"
+											type="number"
+											min="0"
+											placeholder="e.g. 50000"
+											value={priceMax}
+											onChange={(e) => setPriceMax(e.target.value)}
+											className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+										/>
+									</div>
+									{(priceMin || priceMax) && (
+										<button
+											type="button"
+											onClick={() => {
+												setPriceMin("");
+												setPriceMax("");
+											}}
+											className="px-4 py-3 text-sm font-bold text-red-600 hover:text-red-800 border-2 border-red-100 hover:border-red-300 rounded-xl transition-colors shrink-0"
+										>
+											Clear
+										</button>
+									)}
+								</div>
+								<p className="mt-3 text-[11px] text-slate-400 font-medium leading-relaxed">
+									Prices are indicative market estimates sourced from IndiaMART,
+									TradeIndia and ExportersIndia (2025). Actual pricing depends on
+									size, material, quantity, and OEM spec. Contact us for an exact
+									quotation.
+								</p>
+							</fieldset>
+					</div>
 					)}
 
 					{/* Category scroll strip */}
@@ -21371,22 +21520,22 @@ const ProductsPage = memo(({ navigate }) => {
 				</div>
 
 				{/* ── Indicative pricing notice ── */}
-				<p className="mb-6 flex items-center gap-2 text-[11px] text-slate-400 leading-relaxed">
-					<AlertTriangle
-						className="w-3.5 h-3.5 text-amber-400 shrink-0"
-						aria-hidden="true"
-					/>
-					Prices shown are indicative. Actual pricing depends on size, quantity,
-					and spec.{" "}
-					<button
-						type="button"
-						onClick={() => navigate("/contact")}
-						className="text-blue-500 font-bold hover:underline focus:outline-none focus-visible:underline"
-					>
-						Contact us
-					</button>{" "}
-					for a firm quotation.
-				</p>
+				<div className="mb-6 flex gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+					<AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" aria-hidden="true" />
+					<div className="flex flex-col gap-0.5">
+						<p className="text-xs font-bold text-amber-800">Prices shown are indicative estimates only</p>
+						<p className="text-xs text-amber-700 leading-relaxed">
+							Actual pricing depends on turbine model, OEM spec, material grade, surface treatment, and order quantity. Figures are indicative and may not reflect current market rates.{" "}
+							<button
+								type="button"
+								onClick={() => navigate("/contact")}
+								className="font-bold text-blue-600 hover:underline focus:outline-none focus-visible:underline whitespace-nowrap"
+							>
+								Contact us for a firm quotation →
+							</button>
+						</p>
+					</div>
+				</div>
 
 				{/* ── Product grid ── */}
 				{paginated.length > 0 ? (
@@ -22409,7 +22558,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 			{/* ── Hero ── */}
 			<div className="bg-[#0A192F] text-white pt-24 pb-20 relative overflow-hidden border-b-8 border-blue-600">
 				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
 				/>
 				{ind.image && (
@@ -22712,7 +22861,7 @@ const IndustriesPage = memo(({ navigate }) => (
 		/>
 		<div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
 			<div
-				className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+				className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 				aria-hidden="true"
 			/>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
@@ -22751,7 +22900,7 @@ const IndustriesPage = memo(({ navigate }) => (
 							>
 								{/* ── LEFT PANEL: full background image + overlay infographic ── */}
 								<div
-									className="lg:w-2/5 relative overflow-hidden min-h-[17.5rem] sm:min-h-[21.25rem] lg:min-h-[27.5rem] shrink-0"
+									className="lg:w-2/5 relative overflow-hidden min-h-70 sm:min-h-85 lg:min-h-110 shrink-0"
 									style={{ isolation: "isolate" }}
 								>
 									{/* Background photo — object-cover fills the absolute container; no aspectRatio on img */}
@@ -22974,7 +23123,7 @@ IndustriesPage.displayName = "IndustriesPage";
 const MapEmbed = memo(({ src }) => {
 	const [mapLoaded, setMapLoaded] = useState(false);
 	return (
-		<div className="w-full h-[25rem] relative bg-slate-100">
+		<div className="w-full h-100 relative bg-slate-100">
 			{/* Skeleton placeholder shown until iframe fires onLoad */}
 			{!mapLoaded && (
 				<div className="absolute inset-0 ke-map-placeholder" aria-hidden="true">
@@ -23158,6 +23307,12 @@ const ContactPage = memo(({ navigate }) => {
 				setStatus("error");
 				return;
 			}
+			// Guard: if key not configured, surface message instead of silent API failure
+			if (!WEB3FORMS_KEY) {
+				setSubmitError("Form not configured — please contact us directly via WhatsApp or phone.");
+				setStatus("error");
+				return;
+			}
 			try {
 				const fd = new FormData();
 				fd.append("access_key", WEB3FORMS_KEY);
@@ -23234,7 +23389,7 @@ const ContactPage = memo(({ navigate }) => {
 			{/* Hero — matches site-wide dark banner pattern */}
 			<div className="bg-[#0A192F] text-white py-16 mb-12 relative overflow-hidden border-b-8 border-blue-600">
 				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
 				/>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 flex flex-col items-center">
@@ -24272,6 +24427,24 @@ const CASE_STUDIES = [
 	},
 ];
 
+// Assign now that CASE_STUDIES is defined — forward reference resolved.
+PROJECTS_LIST_SCHEMA = {
+	"@context": "https://schema.org",
+	"@type": "ItemList",
+	name: "Projects & Case Studies — Field-Proven Turbine Solutions",
+	description:
+		"Real-world engineering case studies: turbine overhauls, reverse engineering, erection & commissioning, lube oil flushing, and precision alignment by Keshav Enterprises.",
+	url: `${SITE_URL}/projects`,
+	numberOfItems: CASE_STUDIES.length,
+	itemListElement: CASE_STUDIES.map((cs, i) => ({
+		"@type": "ListItem",
+		position: i + 1,
+		name: cs.title,
+		url: `${SITE_URL}/project/${cs.id}`,
+		description: cs.scope,
+	})),
+};
+
 // ─── PROJECT GALLERY PAGE ─────────────────────────────────────
 const ProjectGalleryPage = memo(({ navigate }) => {
 	const [activeCategory, setActiveCategory] = useState("All");
@@ -24302,12 +24475,13 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 				description="Real-world case studies: turbine overhauls, reverse engineering, erection & commissioning, lube oil flushing, and precision alignment by Keshav Enterprises."
 				canonicalPath="/projects"
 				pageType="website"
+				schema={PROJECTS_LIST_SCHEMA}
 			/>
 
 			{/* ── Hero ── */}
 			<div className="bg-[#0A192F] text-white pt-24 pb-16 relative overflow-hidden border-b-8 border-blue-600">
 				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
 				/>
 				<div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -24434,7 +24608,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 								{/* Image */}
 								<div className="h-44 bg-[#0A192F] relative overflow-hidden shrink-0">
 									<div
-										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:2rem_2rem]"
+										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
 										aria-hidden="true"
 									/>
 									{cs.image && (
@@ -24655,7 +24829,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 			{/* ── Hero ── */}
 			<div className="bg-[#0A192F] text-white pt-24 pb-16 relative overflow-hidden border-b-8 border-blue-600">
 				<div
-					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] [background-size:4rem_4rem]"
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
 				/>
 				{cs.image && (
@@ -25006,6 +25180,741 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 });
 ProjectDetailPage.displayName = "ProjectDetailPage";
 
+// ─── DOWNLOADS PAGE ──────────────────────────────────────────
+// Implementation: Option A — files in /public, gated by modal (zero cost).
+// Files sit in /public on Cloudflare Pages. The download URL is only revealed
+// after the user submits the gate form. Session-cache bypasses the gate for
+// repeat downloads in the same browser session (better UX, same lead quality).
+//
+// To add more files: append to DOWNLOADS below and upload the PDF to /public.
+
+const DOWNLOADS = [
+	{
+		id: "dl_1",
+		title: "Turbine Overhaul Checklist",
+		desc: "Step-by-step checklist for major and minor turbine overhauls. Covers clearances, balancing, torque sign-off, and pre-commissioning checks.",
+		category: "Maintenance",
+		tags: ["Turbine", "Overhauling", "Checklist"],
+		fileSize: "420 KB",
+		fileType: "PDF",
+		file: "turbine-overhaul-checklist.pdf",
+		featured: true,
+	},
+	{
+		id: "dl_2",
+		title: "Filter Element Datasheet — Lube Oil",
+		desc: "Technical ratings, differential pressure curves, and compatibility chart for all lube oil filter elements supplied by Keshav Enterprises.",
+		category: "Datasheets",
+		tags: ["Filtration", "Lube Oil", "Datasheet"],
+		fileSize: "1.2 MB",
+		fileType: "PDF",
+		file: "filter-element-datasheet-lube-oil.pdf",
+		featured: false,
+	},
+	{
+		id: "dl_3",
+		title: "Lube Oil Flushing Checklist",
+		desc: "ISO-compliant flushing procedure checklist. Covers mobile centrifuge setup, oil sampling protocol, cleanliness verification, and sign-off.",
+		category: "Maintenance",
+		tags: ["Lube Oil", "Flushing", "ISO"],
+		fileSize: "310 KB",
+		fileType: "PDF",
+		file: "lube-oil-flushing-checklist.pdf",
+		featured: false,
+	},
+	{
+		id: "dl_4",
+		title: "Bearing Selection & Clearance Reference",
+		desc: "Quick-reference guide for bearing selection, journal clearances, and radial/axial tolerances across common steam turbine makes.",
+		category: "Technical Guides",
+		tags: ["Bearings", "Clearances", "Reference"],
+		fileSize: "680 KB",
+		fileType: "PDF",
+		file: "bearing-selection-clearance-reference.pdf",
+		featured: false,
+	},
+	{
+		id: "dl_5",
+		title: "Turbine RFQ Template",
+		desc: "Blank turbine specification sheet for requesting a repair or overhaul quote. Fill in your make, model, power, and service history.",
+		category: "RFQ / Forms",
+		tags: ["RFQ", "Template", "Quote"],
+		fileSize: "185 KB",
+		fileType: "XLSX",
+		file: "turbine-rfq-template.xlsx",
+		featured: true,
+	},
+	{
+		id: "dl_6",
+		title: "Keshav Enterprises Company Profile",
+		desc: "Capabilities deck for procurement teams and plant managers. Covers services, OEM coverage, workshop equipment, and reference projects.",
+		category: "Company",
+		tags: ["Profile", "Capabilities", "Brochure"],
+		fileSize: "3.4 MB",
+		fileType: "PDF",
+		file: "keshav-enterprises-company-profile.pdf",
+		featured: false,
+	},
+];
+
+// Derive category list from DOWNLOADS at module level — stable, no recalculation on render.
+const DOWNLOAD_CATEGORIES = ["All", ...Array.from(new Set(DOWNLOADS.map((d) => d.category)))];
+
+// Session-storage key: stores JSON array of download IDs already gated this session.
+const DL_SESSION_KEY = "ke_dl_gated";
+
+function getSessionGated() {
+	try {
+		return JSON.parse(sessionStorage.getItem(DL_SESSION_KEY) || "[]");
+	} catch {
+		return [];
+	}
+}
+
+function markSessionGated(id) {
+	try {
+		const existing = getSessionGated();
+		if (!existing.includes(id)) {
+			sessionStorage.setItem(DL_SESSION_KEY, JSON.stringify([...existing, id]));
+		}
+	} catch { /* ok — session storage blocked */ }
+}
+
+// ── Download Gate Modal ──────────────────────────────────────
+// Collects lead info via Web3Forms, then triggers the download.
+const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
+	const modalRef = useRef(null);
+	useFocusTrap(modalRef, true);
+
+	const [name, setName]       = useState("");
+	const [company, setCompany] = useState("");
+	const [email, setEmail]     = useState("");
+	const [phone, setPhone]     = useState("");
+	const [city, setCity]       = useState("");
+	const [status, setStatus]   = useState("idle"); // idle | loading | success | error
+	const [errors, setErrors]   = useState({});
+	const [submitError, setSubmitError] = useState("");
+
+	// Close on Escape — but not while a submission is in flight (would lose the request)
+	useEffect(() => {
+		const handler = (e) => {
+			if (e.key === "Escape" && status !== "loading") onClose();
+		};
+		document.addEventListener("keydown", handler);
+		return () => document.removeEventListener("keydown", handler);
+	}, [onClose, status]);
+
+	// Prevent body scroll while open
+	useEffect(() => {
+		const prev = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		return () => { document.body.style.overflow = prev; };
+	}, []);
+
+	const clearFieldErr = useCallback((field) => {
+		setErrors((prev) => {
+			if (!prev[field]) return prev;
+			const next = { ...prev };
+			delete next[field];
+			return next;
+		});
+		if (status === "error") { setStatus("idle"); setSubmitError(""); }
+	}, [status]);
+
+	const validate = useCallback(() => {
+		const e = {};
+		if (!name.trim())    e.name    = "Your name is required";
+		if (!company.trim()) e.company = "Company name is required";
+		if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+			e.email = "Valid email address required";
+		if (!phone.trim() || phone.replace(/\D/g, "").length < 10)
+			e.phone = "Valid phone / WhatsApp number required";
+		return e;
+	}, [name, company, email, phone]);
+
+	const handleSubmit = useCallback(async () => {
+		const e = validate();
+		if (Object.keys(e).length > 0) { setErrors(e); return; }
+		setErrors({});
+		setSubmitError("");
+		setStatus("loading");
+
+		if (!checkFormRateLimit("ke_dl_ts", 10, 3_600_000)) {
+			setSubmitError("Too many submissions. Please wait before trying again.");
+			setStatus("error");
+			return;
+		}
+
+		if (!WEB3FORMS_KEY) {
+			// No key configured — still allow download but warn in console
+			console.warn("[Downloads] WEB3FORMS_KEY not configured — lead not captured.");
+			markSessionGated(item.id);
+			setStatus("success");
+			onSuccess(item);
+			return;
+		}
+
+		try {
+			const fd = new FormData();
+			fd.append("access_key", WEB3FORMS_KEY);
+			fd.append("botcheck", ""); // honeypot
+			fd.append("subject",    `New Download — ${sanitise(item.title)}`);
+			fd.append("from_name",  "Keshav Enterprises Website");
+			fd.append("Name",       sanitise(name));
+			fd.append("Company",    sanitise(company));
+			fd.append("Email",      sanitise(email));
+			fd.append("Phone",      sanitise(phone));
+			if (city.trim()) fd.append("City", sanitise(city));
+			fd.append("File",       `${sanitise(item.title)} (${item.fileType})`);
+
+			const res  = await fetch("https://api.web3forms.com/submit", {
+				method: "POST",
+				headers: { Accept: "application/json" },
+				body: fd,
+			});
+			const data = await res.json();
+			if (!res.ok || data.success === false)
+				throw new Error(data.message || "Submission failed");
+
+			markSessionGated(item.id);
+			setStatus("success");
+			onSuccess(item);
+		} catch (err) {
+			setSubmitError(err?.message || "Submission failed. Please try again.");
+			setStatus("error");
+		}
+	}, [validate, name, company, email, phone, city, item, onSuccess]);
+
+	const isLoading = status === "loading";
+	const isSuccess = status === "success";
+
+	return (
+		<div
+			className="fixed inset-0 z-9999 flex items-center justify-center p-4"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="dl-modal-title"
+		>
+			{/* Backdrop — clicking closes unless a submission is in flight */}
+			<div
+				className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+				onClick={status !== "loading" ? onClose : undefined}
+				aria-hidden="true"
+			/>
+
+			{/* Panel */}
+			<div
+				ref={modalRef}
+				className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+				tabIndex={-1}
+			>
+				{/* Header */}
+				<div className="bg-[#0A192F] px-6 py-5 flex items-start justify-between gap-4">
+					<div className="flex items-start gap-3 min-w-0">
+						<div className="w-9 h-9 bg-blue-600/30 border border-blue-500/40 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+							<FileText className="w-4 h-4 text-blue-400" aria-hidden="true" />
+						</div>
+						<div className="min-w-0">
+							<p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">
+								{item.category} · {item.fileType} · {item.fileSize}
+							</p>
+							<h2 id="dl-modal-title" className="text-white font-black text-base leading-snug">
+								{item.title}
+							</h2>
+						</div>
+					</div>
+					<button
+						type="button"
+						onClick={onClose}
+						aria-label="Close"
+						className="shrink-0 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded mt-0.5"
+					>
+						<X className="w-5 h-5" aria-hidden="true" />
+					</button>
+				</div>
+
+				{isSuccess ? (
+					/* ── Success state ── */
+					<div className="px-6 py-10 text-center">
+						<div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+							<CheckCircle2 className="w-7 h-7 text-green-600" aria-hidden="true" />
+						</div>
+						<h3 className="text-lg font-black text-[#0A192F] mb-2">Your download is ready</h3>
+						<p className="text-slate-500 text-sm mb-6 leading-relaxed">
+							The file opened in a new tab. If it didn&apos;t open,{" "}
+							<button
+								type="button"
+								className="text-blue-600 font-semibold hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded"
+								onClick={() => window.open(`/${item.file}`, "_blank", "noopener")}
+							>
+								click here
+							</button>
+							.
+						</p>
+						<button
+							type="button"
+							onClick={onClose}
+							className="w-full bg-[#0A192F] text-white py-3 rounded-xl font-black hover:bg-slate-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+						>
+							Done
+						</button>
+					</div>
+				) : (
+					/* ── Gate form ── */
+					<div className="px-6 py-5">
+						<p className="text-sm text-slate-500 leading-relaxed mb-5">
+							Enter your details to unlock the free download. We&apos;ll never spam
+							you — this is just so our engineering team can follow up if helpful.
+						</p>
+
+						<div className="space-y-3">
+							{/* Name */}
+							<div>
+								<label htmlFor="dl-name" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
+									Your Name <span className="text-red-500" aria-hidden="true">*</span>
+								</label>
+								<input
+									id="dl-name"
+									type="text"
+									value={name}
+									onChange={(e) => { setName(e.target.value); clearFieldErr("name"); }}
+									autoComplete="name"
+									placeholder="Rahul Sharma"
+									disabled={isLoading}
+									className={`w-full border rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors ${errors.name ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50 hover:border-slate-300"}`}
+								/>
+								{errors.name && <p className="text-xs text-red-600 mt-1 font-medium">{errors.name}</p>}
+							</div>
+
+							{/* Company */}
+							<div>
+								<label htmlFor="dl-company" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
+									Company <span className="text-red-500" aria-hidden="true">*</span>
+								</label>
+								<input
+									id="dl-company"
+									type="text"
+									value={company}
+									onChange={(e) => { setCompany(e.target.value); clearFieldErr("company"); }}
+									autoComplete="organization"
+									placeholder="ABC Sugar Mills"
+									disabled={isLoading}
+									className={`w-full border rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors ${errors.company ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50 hover:border-slate-300"}`}
+								/>
+								{errors.company && <p className="text-xs text-red-600 mt-1 font-medium">{errors.company}</p>}
+							</div>
+
+							{/* Email + Phone side by side on wider screens */}
+							<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+								<div>
+									<label htmlFor="dl-email" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
+										Email <span className="text-red-500" aria-hidden="true">*</span>
+									</label>
+									<input
+										id="dl-email"
+										type="email"
+										value={email}
+										onChange={(e) => { setEmail(e.target.value); clearFieldErr("email"); }}
+										autoComplete="email"
+										placeholder="r.sharma@company.com"
+										disabled={isLoading}
+										className={`w-full border rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors ${errors.email ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50 hover:border-slate-300"}`}
+									/>
+									{errors.email && <p className="text-xs text-red-600 mt-1 font-medium">{errors.email}</p>}
+								</div>
+								<div>
+									<label htmlFor="dl-phone" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
+										Phone / WhatsApp <span className="text-red-500" aria-hidden="true">*</span>
+									</label>
+									<input
+										id="dl-phone"
+										type="tel"
+										value={phone}
+										onChange={(e) => { setPhone(e.target.value); clearFieldErr("phone"); }}
+										autoComplete="tel"
+										placeholder="+91 98765 43210"
+										disabled={isLoading}
+										className={`w-full border rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors ${errors.phone ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50 hover:border-slate-300"}`}
+									/>
+									{errors.phone && <p className="text-xs text-red-600 mt-1 font-medium">{errors.phone}</p>}
+								</div>
+							</div>
+
+							{/* City — optional */}
+							<div>
+								<label htmlFor="dl-city" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
+									City / State <span className="text-slate-400 font-normal normal-case">(optional)</span>
+								</label>
+								<input
+									id="dl-city"
+									type="text"
+									value={city}
+									onChange={(e) => setCity(e.target.value)}
+									autoComplete="address-level2"
+									placeholder="Shamli, U.P."
+									disabled={isLoading}
+									className="w-full border border-slate-200 bg-slate-50 hover:border-slate-300 rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-colors"
+								/>
+							</div>
+						</div>
+
+						{submitError && (
+							<div role="alert" className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700 font-medium">
+								{submitError}
+							</div>
+						)}
+
+						<button
+							type="button"
+							onClick={handleSubmit}
+							disabled={isLoading}
+							className="mt-5 w-full bg-blue-600 text-white py-3.5 rounded-xl font-black hover:bg-blue-500 active:scale-[0.98] transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 disabled:opacity-60 disabled:cursor-not-allowed"
+						>
+							{isLoading ? (
+								<>
+									<svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+										<circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+										<path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+									</svg>
+									Sending…
+								</>
+							) : (
+								<>
+									<Download className="w-4 h-4" aria-hidden="true" /> Download Free PDF
+								</>
+							)}
+						</button>
+
+						<p className="text-center text-xs text-slate-400 mt-3 leading-relaxed">
+							<Lock className="w-3 h-3 inline-block mr-1 align-middle" aria-hidden="true" />
+							No spam. Your details are only used to send you relevant engineering
+							updates.
+						</p>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+});
+DownloadGateModal.displayName = "DownloadGateModal";
+
+// ── Download Card ────────────────────────────────────────────
+const DownloadCard = memo(({ item, onDownload, alreadyGated }) => {
+	const fileColor = item.fileType === "PDF" ? "text-red-600 bg-red-50 border-red-200" : "text-green-700 bg-green-50 border-green-200";
+	return (
+		<article
+			className={`group relative bg-white border rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg ${item.featured ? "border-blue-200 ring-1 ring-blue-100" : "border-slate-200"}`}
+		>
+			{item.featured && (
+				<div className="absolute top-3 right-3 z-10">
+					<span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest bg-blue-600 text-white px-2.5 py-1 rounded-full">
+						<Star className="w-2.5 h-2.5 fill-current" aria-hidden="true" /> Featured
+					</span>
+				</div>
+			)}
+			<div className="p-5 flex-1">
+				<div className="flex items-start gap-3 mb-3">
+					<div className="w-10 h-10 bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-center shrink-0">
+						<FileText className="w-5 h-5 text-slate-500" aria-hidden="true" />
+					</div>
+					<div className="min-w-0 flex-1">
+						<h3 className="font-black text-[#0A192F] text-sm leading-snug mb-0.5 group-hover:text-blue-700 transition-colors">
+							{item.title}
+						</h3>
+						<div className="flex items-center gap-1.5 flex-wrap">
+							<span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border ${fileColor}`}>
+								{item.fileType}
+							</span>
+							<span className="text-[11px] text-slate-400 font-medium">{item.fileSize}</span>
+						</div>
+					</div>
+				</div>
+				<p className="text-slate-500 text-sm leading-relaxed mb-3">{item.desc}</p>
+				<div className="flex flex-wrap gap-1.5">
+					{item.tags.map((tag) => (
+						<span key={tag} className="text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">
+							{tag}
+						</span>
+					))}
+				</div>
+			</div>
+			<div className="px-5 pb-5">
+				<button
+					type="button"
+					onClick={() => onDownload(item)}
+					className="w-full flex items-center justify-center gap-2 bg-[#0A192F] text-white py-2.5 rounded-xl font-black text-sm hover:bg-blue-700 active:scale-[0.98] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2"
+					aria-label={alreadyGated ? `Download ${item.title} again` : `Download ${item.title}`}
+				>
+					<Download className="w-4 h-4" aria-hidden="true" />
+					{alreadyGated ? "Download Again" : "Free Download"}
+				</button>
+			</div>
+		</article>
+	);
+});
+DownloadCard.displayName = "DownloadCard";
+
+// ── Downloads Page ───────────────────────────────────────────
+const DownloadsPage = memo(({ navigate }) => {
+	const [activeCategory, setActiveCategory] = useState("All");
+	const [query, setQuery]                   = useState("");
+	const [gateItem, setGateItem]             = useState(null); // item currently in gate modal
+	const [sessionGated, setSessionGated]     = useState(() => getSessionGated()); // IDs already gated this session
+	const searchRef = useRef(null);
+
+	// Filtered list — memoised for perf
+	const q = query.trim().toLowerCase();
+	const filtered = useMemo(() => {
+		return DOWNLOADS.filter((d) => {
+			if (activeCategory !== "All" && d.category !== activeCategory) return false;
+			if (q) {
+				const haystack = [d.title, d.desc, d.category, ...d.tags].join(" ").toLowerCase();
+				if (!haystack.includes(q)) return false;
+			}
+			return true;
+		});
+	}, [activeCategory, q]);
+
+	const hasFilters = activeCategory !== "All" || q !== "";
+
+	const clearAll = useCallback(() => {
+		setActiveCategory("All");
+		setQuery("");
+		searchRef.current?.focus();
+	}, []);
+
+	// Called when user clicks a download card
+	const handleDownload = useCallback((item) => {
+		// If already gated this session, go straight to download
+		if (sessionGated.includes(item.id)) {
+			window.open(`/${item.file}`, "_blank", "noopener");
+			return;
+		}
+		setGateItem(item);
+	}, [sessionGated]);
+
+	// Called by modal on successful gate submit
+	const handleGateSuccess = useCallback((item) => {
+		// Small delay so user sees the success state in the modal before download fires
+		setTimeout(() => {
+			window.open(`/${item.file}`, "_blank", "noopener");
+		}, 400);
+		setSessionGated((prev) => prev.includes(item.id) ? prev : [...prev, item.id]);
+	}, []);
+
+	const closeModal = useCallback(() => setGateItem(null), []);
+
+	// JSON-LD ItemList schema — one ListItem per document for Google rich results.
+	// Memoised so it isn't reconstructed on filter/search state changes.
+	const downloadsSchema = useMemo(() => ({
+		"@context": "https://schema.org",
+		"@type": "ItemList",
+		name: "Free Technical Downloads — Keshav Turbo Services",
+		description: "Free steam turbine engineering documents: overhaul checklists, lube oil datasheets, bearing clearance references, and RFQ templates.",
+		url: `${SITE_URL}/downloads`,
+		numberOfItems: DOWNLOADS.length,
+		itemListElement: DOWNLOADS.map((d, i) => ({
+			"@type": "ListItem",
+			position: i + 1,
+			name: d.title,
+			description: d.desc,
+			url: `${SITE_URL}/${d.file}`,
+		})),
+	}), []);
+
+	return (
+		<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-slate-50 min-h-screen">
+			<SEOHead
+				title="Free Technical Downloads — Turbine Checklists, Datasheets & RFQ Templates"
+				description="Download free steam turbine overhaul checklists, lube oil filter datasheets, bearing clearance guides, and RFQ templates from Keshav Enterprises — India's steam turbine specialists."
+				canonicalPath="/downloads"
+				pageType="website"
+				schema={downloadsSchema}
+			/>
+
+			{/* ── Hero banner ── */}
+			<div className="bg-[#0A192F] text-white py-24 mb-10 border-b-8 border-blue-600 relative overflow-hidden">
+				<div
+					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
+					aria-hidden="true"
+				/>
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center relative z-10">
+					<div className="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mb-6">
+						<Download className="w-8 h-8 text-blue-400" aria-hidden="true" />
+					</div>
+					<h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight drop-shadow-lg">
+						Free Downloads
+					</h1>
+					<div className="section-divider w-24 h-1.5 bg-blue-500 mb-8 rounded-full" aria-hidden="true" />
+					<p className="text-slate-300 font-medium max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed mb-10">
+						Technical checklists, datasheets, bearing references, and RFQ templates —
+						free for plant engineers and procurement teams.
+					</p>
+					{/* Search */}
+					<div className="w-full max-w-2xl relative">
+						<label htmlFor="dl-search" className="sr-only">Search downloads</label>
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+						<input
+							ref={searchRef}
+							id="dl-search"
+							type="search"
+							value={query}
+							onChange={(e) => setQuery(e.target.value)}
+							placeholder="Search checklists, datasheets…"
+							autoComplete="off"
+							spellCheck="false"
+							className="w-full bg-white/10 border border-white/20 text-white placeholder:text-slate-400 rounded-xl pl-12 pr-12 py-4 text-base font-medium focus:outline-none focus:bg-white/20 focus:border-blue-400 focus-visible:ring-2 focus-visible:ring-blue-400 transition-all"
+						/>
+						{query && (
+							<button
+								type="button"
+								onClick={() => setQuery("")}
+								aria-label="Clear search"
+								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+							>
+								<X className="w-4 h-4" aria-hidden="true" />
+							</button>
+						)}
+					</div>
+				</div>
+			</div>
+
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+				{/* ── Category filter chips ── */}
+				<fieldset className="mb-10 flex flex-wrap items-center gap-2 border-0 p-0 m-0 min-w-0">
+					<legend className="sr-only">Filter by category</legend>
+					<span className="text-xs font-black text-slate-500 uppercase tracking-widest mr-1 shrink-0">
+						Category:
+					</span>
+					{DOWNLOAD_CATEGORIES.map((cat) => (
+						<button
+							key={cat}
+							type="button"
+							onClick={() => setActiveCategory(cat)}
+							aria-pressed={activeCategory === cat}
+							className={`px-4 py-1.5 rounded-full text-sm font-black transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
+								activeCategory === cat
+									? "bg-blue-600 text-white shadow-sm"
+									: "bg-white text-slate-600 border border-slate-200 hover:border-blue-300 hover:text-blue-700"
+							}`}
+						>
+							{cat}
+						</button>
+					))}
+					{hasFilters && (
+						<button
+							type="button"
+							onClick={clearAll}
+							className="ml-1 text-xs font-black text-slate-400 hover:text-slate-700 underline underline-offset-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+						>
+							Clear all
+						</button>
+					)}
+				</fieldset>
+
+				{/* ── Results count ── */}
+				<div className="flex items-center justify-between mb-6">
+					<p className="text-sm font-medium text-slate-500" aria-live="polite" aria-atomic="true">
+						{filtered.length === 0
+							? "No documents match your search"
+							: `${filtered.length} document${filtered.length === 1 ? "" : "s"} available`}
+					</p>
+					{hasFilters && filtered.length > 0 && (
+						<p className="text-xs text-slate-400">
+							Filtered from {DOWNLOADS.length} total
+						</p>
+					)}
+				</div>
+
+				{/* ── Empty state ── */}
+				{filtered.length === 0 && (
+					<div className="text-center py-20 lazy-section">
+						<div className="w-16 h-16 bg-slate-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
+							<Search className="w-8 h-8 text-slate-400" aria-hidden="true" />
+						</div>
+						<h2 className="text-xl font-black text-slate-700 mb-2">No documents found</h2>
+						<p className="text-slate-400 mb-6 max-w-sm mx-auto">
+							Try a different keyword or browse all categories.
+						</p>
+						<button
+							type="button"
+							onClick={clearAll}
+							className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-black hover:bg-blue-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Show all downloads
+						</button>
+					</div>
+				)}
+
+				{/* ── Document grid ── */}
+				{filtered.length > 0 && (
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-14 lazy-section">
+						{filtered.map((item) => (
+							<DownloadCard
+								key={item.id}
+								item={item}
+								onDownload={handleDownload}
+								alreadyGated={sessionGated.includes(item.id)}
+							/>
+						))}
+					</div>
+				)}
+
+				{/* ── Trust strip ── */}
+				<div className="border-t border-slate-200 pt-12 pb-4 lazy-section">
+					<p className="text-xs font-black text-slate-400 uppercase tracking-widest text-center mb-6">
+						Why download from Keshav Enterprises?
+					</p>
+					<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+						{[
+							{ Icon: Shield, title: "Ex-OEM Engineers", sub: "Written by engineers with hands-on Triveni, Siemens, BHEL, and Belliss experience." },
+							{ Icon: Award, title: "ISO-Referenced", sub: "Checklists and guides reference applicable ISO and API standards throughout." },
+							{ Icon: Download, title: "Always Free", sub: "All documents are free. We only ask for your contact so we can follow up if useful." },
+						].map(({ Icon, title, sub }) => (
+							<div key={title} className="text-center px-4">
+								<div className="w-11 h-11 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+									<Icon className="w-5 h-5 text-blue-600" aria-hidden="true" />
+								</div>
+								<p className="text-sm font-black text-[#0A192F] mb-1">{title}</p>
+								<p className="text-xs text-slate-500 leading-relaxed">{sub}</p>
+							</div>
+						))}
+					</div>
+				</div>
+
+				{/* ── CTA to contact ── */}
+				<div className="mt-14 bg-[#0A192F] rounded-2xl px-6 py-10 text-center lazy-section">
+					<h2 className="text-white font-black text-xl md:text-2xl mb-3">
+						Need a custom document or datasheet?
+					</h2>
+					<p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-lg mx-auto">
+						If you need a specific turbine RFQ template, a custom filter sizing chart,
+						or a technical datasheet not listed here, contact our engineering team.
+					</p>
+					<button
+						type="button"
+						onClick={() => navigate("/contact")}
+						className="inline-flex items-center gap-2 bg-blue-600 text-white px-7 py-3 rounded-xl font-black hover:bg-blue-500 transition-all shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+					>
+						<Mail className="w-4 h-4" aria-hidden="true" /> Contact Engineering Team
+					</button>
+				</div>
+			</div>
+
+			{/* ── Gate modal (portal-style, rendered at end of main for stacking context) ── */}
+			{gateItem && (
+				<DownloadGateModal
+					item={gateItem}
+					onClose={closeModal}
+					onSuccess={handleGateSuccess}
+				/>
+			)}
+		</main>
+	);
+});
+DownloadsPage.displayName = "DownloadsPage";
+
 // ─── 404 NOT FOUND PAGE (Audit Fix: unknown routes) ──────────
 const NotFoundPage = memo(({ navigate }) => (
 	<main
@@ -25063,7 +25972,7 @@ const NotFoundPage = memo(({ navigate }) => (
 				{[
 					{ label: "Services", path: "/services", Icon: Settings },
 					{ label: "Products", path: "/products", Icon: Layers },
-					{ label: "Industries", path: "/industries", Icon: Factory },
+					{ label: "Downloads", path: "/downloads", Icon: Download },
 					{ label: "Projects", path: "/projects", Icon: Briefcase },
 					{ label: "Contact", path: "/contact", Icon: Phone },
 				].map(({ label, path, Icon }) => (
@@ -25088,7 +25997,7 @@ NotFoundPage.displayName = "NotFoundPage";
 // ─── APP ROOT ─────────────────────────────────────────────────
 // Paths where the exit-intent popup is suppressed (review form already present,
 // or the page would feel intrusive). Defined at module level — stable reference.
-const POPUP_EXCLUDED_PATHS = ["/contact", "/product/", "/service/"];
+const POPUP_EXCLUDED_PATHS = ["/contact", "/product/", "/service/", "/downloads"];
 
 export default function App() {
 	// Seed the initial history entry with idx:0 if it has none yet.
@@ -25189,6 +26098,7 @@ export default function App() {
 	// Filename matches the actual <img src> used in HomePage: hero-background.png
 	useEffect(() => {
 		const PRELOAD_ID = "hero-bg-preload";
+		const PRELOAD_WEBP_ID = "hero-bg-preload-webp";
 		if (currentPath === "/") {
 			if (!document.getElementById(PRELOAD_ID)) {
 				const pl = document.createElement("link");
@@ -25199,9 +26109,21 @@ export default function App() {
 				pl.setAttribute("fetchpriority", "high");
 				document.head.appendChild(pl);
 			}
+			// Also cover the .webp variant that index.html may inject
+			if (!document.getElementById(PRELOAD_WEBP_ID)) {
+				const plw = document.createElement("link");
+				plw.id = PRELOAD_WEBP_ID;
+				plw.rel = "preload";
+				plw.as = "image";
+				plw.type = "image/webp";
+				plw.href = "hero-background.webp";
+				plw.setAttribute("fetchpriority", "high");
+				document.head.appendChild(plw);
+			}
 		} else {
-			// Remove preload when navigating away so it doesn't linger
+			// Remove preloads when navigating away so they don't linger
 			document.getElementById(PRELOAD_ID)?.remove();
+			document.getElementById(PRELOAD_WEBP_ID)?.remove();
 		}
 	}, [currentPath]);
 
@@ -25269,24 +26191,22 @@ export default function App() {
 		trackPageView(path);
 		// AUDIT FIX: move focus to main content after navigation for a11y
 		setTimeout(() => document.getElementById("main-content")?.focus(), 100);
-		// AUDIT FIX: announce route change to screen readers
-		// Only announce if the route actually changed — avoids re-announcing
-		// when the user clicks an already-active nav link.
-		if (path !== currentPathRef.current) {
-			const pageName =
-				path === "/"
-					? "Home"
-					: path
-							.replace(/\/+$/, "")
-							.replace(/^\//, "")
-							.replace(/\//g, " — ")
-							.replace(/-/g, " ");
-			setRouteAnnouncement(`Navigated to ${pageName} page`);
-			// Cancel any previous clear timer before starting a new one — prevents
-			// rapid navigation from stacking timers that blank a newer announcement.
-			clearTimeout(announceClearTimer.current);
-			announceClearTimer.current = setTimeout(() => setRouteAnnouncement(""), 1500);
-		}
+		// Announce route change to screen readers. The guard at the top of this
+		// function already returned early when path === currentPathRef.current,
+		// so we can announce unconditionally here.
+		const pageName =
+			path === "/"
+				? "Home"
+				: path
+						.replace(/\/+$/, "")
+						.replace(/^\//, "")
+						.replace(/\//g, " — ")
+						.replace(/-/g, " ");
+		setRouteAnnouncement(`Navigated to ${pageName} page`);
+		// Cancel any previous clear timer before starting a new one — prevents
+		// rapid navigation from stacking timers that blank a newer announcement.
+		clearTimeout(announceClearTimer.current);
+		announceClearTimer.current = setTimeout(() => setRouteAnnouncement(""), 1500);
 	}, []);
 
 	// Route resolution — memoized so unrelated state changes (e.g. routeAnnouncement)
@@ -25344,6 +26264,8 @@ export default function App() {
 				return <ProjectGalleryPage navigate={navigate} />;
 			case "/contact":
 				return <ContactPage navigate={navigate} />;
+			case "/downloads":
+				return <DownloadsPage navigate={navigate} />;
 			default:
 				return <NotFoundPage navigate={navigate} />;
 		}
