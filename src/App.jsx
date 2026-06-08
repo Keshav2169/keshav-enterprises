@@ -8065,10 +8065,12 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
 
-  /* ─── HERO BADGES — stack full-width on mobile, row on sm+ ─── */
-  @media(max-width:639px){
-	.hero-badges{flex-direction:column!important;align-items:stretch!important}
-	.hero-badges>*{width:100%!important;max-width:100%!important;justify-content:flex-start!important;box-sizing:border-box}
+  /* ─── HERO BADGES — equal-width side-by-side row on all sizes ─── */
+  .hero-badges{display:flex!important;flex-direction:row!important;align-items:stretch!important}
+  .hero-badges>*{flex:1 1 0%;min-width:0;box-sizing:border-box}
+  /* Cap badge width on desktop so they don't stretch too wide */
+  @media(min-width:640px){
+	.hero-badges>*{flex:0 0 auto;width:auto}
   }
   /* Navbar = fixed 64px. AnnouncementBar = static ~36px above hero. */
   /* On mobile: content starts from top of section (no section pt), */
@@ -15635,8 +15637,8 @@ const HomePage = memo(({ navigate }) => {
 					<div className="w-full lg:w-[55%]">
 						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
-							{/* Trust badges — stacked full-width on mobile, row on desktop */}
-							<div className="hero-badges flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2 sm:gap-3 mb-6">
+							{/* Trust badges — side by side row on all screen sizes */}
+							<div className="hero-badges flex flex-row items-stretch justify-center lg:justify-start gap-2 mb-6">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
