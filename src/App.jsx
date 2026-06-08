@@ -8060,16 +8060,32 @@ const MARQUEE_CSS = `
      contain:paint would silently clip any overflow — contain:layout style is safe. */
   section:not(.hero-section){contain:layout style}
 
-  /* ─── VON RESTORFF CTA BADGE — isolates primary CTA visually ─── */
-  .ke-cta-badge-wrap{padding-top:1.1rem}
-  @media(max-width:640px){.ke-cta-badge-wrap{padding-top:1.25rem}}
 
   /* ─── HERO MOBILE ─── */
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
+
+  /* ─── HERO BADGES — stack full-width on mobile, row on sm+ ─── */
+  @media(max-width:639px){
+	.hero-badges{flex-direction:column!important;align-items:stretch!important}
+	.hero-badges>*{width:100%!important;max-width:100%!important;justify-content:flex-start!important;box-sizing:border-box}
+  }
+  /* Navbar = fixed 64px. AnnouncementBar = static ~36px above hero. */
+  /* On mobile: content starts from top of section (no section pt), */
+  /* inner wrap gets pt to clear navbar. Bottom pb ensures CTAs breathe. */
+  .hero-content-wrap{
+	padding: 80px 20px 48px;
+  }
+  @media(min-width:640px){
+	.hero-content-wrap{padding: 96px 24px 64px}
+  }
+  @media(min-width:1024px){
+	.hero-content-wrap{padding: 120px 32px 80px}
+  }
+
   @media(max-width:767px){
 	.hero-section{
-	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.82) 0%,rgba(10,25,47,0.65) 50%,rgba(10,25,47,0.88) 100%),url('hero-background.png');
+	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.72) 0%,rgba(10,25,47,0.50) 45%,rgba(10,25,47,0.82) 100%),url('hero-background.png');
 	  background-size:cover;
 	  background-position:center center;
 	  background-repeat:no-repeat;
@@ -8082,23 +8098,46 @@ const MARQUEE_CSS = `
 	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
-  /* ─── MOBILE TYPOGRAPHY BOOST ─── */
-  @media(max-width:640px){
-	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
-	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
-	p{font-size:max(15px,1em);line-height:1.65}
-	.hero-h1{font-size:clamp(2.75rem,10.5vw,3.4rem)!important;line-height:1.05!important;letter-spacing:-0.03em!important;text-shadow:0 2px 16px rgba(0,0,0,0.6)}
-	.glass-hero{padding:1rem!important;border-radius:1rem!important}
-	.glass-hero p{color:#d0e4f5!important;font-size:0.938rem!important;line-height:1.7!important}
-	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
-	.hero-phone-link{font-size:0.938rem!important}
-	/* badges: stacked, full-width, centered */
-	.hero-badges{flex-direction:column!important;align-items:center!important;gap:0.5rem!important}
-	.hero-badges>*{width:100%!important;max-width:280px!important;justify-content:flex-start!important}
-	/* trust bar: clean inline row, no dividers */
-	.hero-trust-bar .trust-items{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:0.5rem!important;padding-left:0.25rem}
-	.hero-trust-bar .trust-items>div{width:100%!important;padding:0!important;border:none!important;justify-content:flex-start!important}
+  /* ─── HERO H1 — single clamp, all breakpoints ─── */
+  .hero-h1{
+	font-size:clamp(2.4rem,9vw,5.6rem);
+	line-height:1.08;
+	letter-spacing:-0.03em;
+	text-shadow:0 2px 16px rgba(0,0,0,0.6)
   }
+
+  /* ─── GLASS CARD ─── */
+  .glass-hero{padding:1.125rem 1.25rem}
+  .glass-hero p{font-size:1rem;line-height:1.7;color:#ddeeff}
+  @media(min-width:640px){
+	.glass-hero{padding:1.25rem 1.5rem}
+	.glass-hero p{font-size:1.0625rem}
+  }
+  @media(min-width:768px){
+	.glass-hero p{font-size:1.125rem}
+  }
+
+  /* ─── PHONE LINKS ─── */
+  .hero-phone-link{font-size:1rem}
+  .hero-phone-link svg{width:1rem;height:1rem}
+  @media(min-width:640px){.hero-phone-link{font-size:1.0625rem}}
+
+  /* ─── TRUST BAR ─── */
+  .hero-trust-bar{display:flex;flex-direction:column;gap:0.625rem}
+  .hero-trust-bar .trust-item{font-size:0.9375rem}
+  .hero-trust-bar .trust-item svg{width:1.0625rem;height:1.0625rem}
+  @media(min-width:640px){
+	.hero-trust-bar{flex-direction:row;align-items:center;flex-wrap:wrap;gap:0 1rem}
+	.hero-trust-bar .trust-item+.trust-item{border-left:1px solid #475569;padding-left:1rem}
+  }
+
+  /* ─── CTAs ─── */
+  .hero-cta-primary,.hero-cta-secondary{
+	padding:1rem 1.5rem;
+	font-size:1.0625rem;
+	border-radius:0.875rem;
+  }
+  .hero-cta-primary svg,.hero-cta-secondary svg{width:1.25rem;height:1.25rem}
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
@@ -8115,6 +8154,14 @@ const MARQUEE_CSS = `
 	article .bg-white h2,article .bg-white p{text-align:left!important}
 	.md\\:w-3\\/5 h2,.md\\:w-3\\/5 p,
 	.lg\\:col-span-7 h1,.lg\\:col-span-7 p{text-align:left!important}
+  }
+
+  /* ─── MOBILE TYPOGRAPHY BOOST ─── */
+  @media(max-width:640px){
+	.bg-\\[\\#0A192F\\] .text-slate-400,.bg-slate-900 .text-slate-400,.bg-slate-800 .text-slate-400{color:#9ab1c8!important}
+	.bg-\\[\\#0A192F\\] .text-slate-500,.bg-slate-900 .text-slate-500,.bg-slate-800 .text-slate-500{color:#7f97b0!important}
+	p{font-size:max(15px,1em);line-height:1.65}
+	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
 
   /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
@@ -15556,7 +15603,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-screen flex items-center pt-8 pb-12 sm:items-start sm:pt-14 sm:pb-20 overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-[100svh] flex items-start overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15574,7 +15621,7 @@ const HomePage = memo(({ navigate }) => {
 					)}
 					<div
 						className="hero-mobile-vignette absolute inset-0"
-						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.65) 0%,rgba(10,25,47,0.15) 30%,rgba(10,25,47,0.15) 60%,rgba(10,25,47,0.85) 100%)" }}
+						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.55) 0%,rgba(10,25,47,0.15) 35%,rgba(10,25,47,0.15) 60%,rgba(10,25,47,0.85) 100%)" }}
 					/>
 					<div className="hero-desktop-grad absolute inset-0 bg-linear-to-r from-[#0A192F]/92 via-[#0A192F]/60 to-[#0A192F]/15" />
 					<div className="hero-bottom-overlay absolute inset-0 bg-linear-to-t from-[#0A192F]/80 via-transparent to-transparent z-10" />
@@ -15582,14 +15629,14 @@ const HomePage = memo(({ navigate }) => {
 					<div className="hero-glow-orb absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px]" />
 				</div>
 
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30 w-full flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
+				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
 
 					{/* ── LEFT COLUMN ── */}
 					<div className="w-full lg:w-[55%]">
 						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
-							{/* Trust badges */}
-							<div className="hero-badges flex items-center justify-center lg:justify-start gap-3 mb-7">
+							{/* Trust badges — stacked full-width on mobile, row on desktop */}
+							<div className="hero-badges flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2 sm:gap-3 mb-6">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
@@ -15597,62 +15644,60 @@ const HomePage = memo(({ navigate }) => {
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 text-5xl md:text-7xl lg:text-[5.6rem] font-black text-white leading-[1.05] tracking-tighter mb-5 sm:mb-7 drop-shadow-2xl text-center lg:text-left"
+								className="hero-h1 font-black text-white leading-[1.08] tracking-tighter mb-5 drop-shadow-2xl text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
 
 							{/* Sub-text block */}
-							<div className="glass-hero bg-white/5 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-2xl p-5 sm:max-w-xl shadow-xl mx-auto lg:mx-0 mb-6 sm:mb-8">
-								<p className="text-[0.938rem] sm:text-base md:text-lg text-slate-200 font-medium leading-relaxed">
+							<div className="glass-hero bg-white/8 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-xl shadow-xl mx-auto lg:mx-0 mb-6">
+								<p className="text-slate-200 font-medium leading-relaxed">
 									{h.sub}
 								</p>
 							</div>
 
 							{/* Phone numbers + live status */}
-							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 gap-y-2 mb-5">
+							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 mb-5">
 								{CONTACT_INFO.phones.map((ph) => (
 									<a
 										key={ph}
 										href={`tel:${ph.replace(/\s/g, "")}`}
-										className="hero-phone-link inline-flex items-center gap-1.5 text-slate-300 text-base font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
+										className="hero-phone-link inline-flex items-center gap-2 text-white font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
 									>
-										<Phone className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+										<Phone className="text-cyan-400 shrink-0" aria-hidden="true" />
 										{ph}
 									</a>
 								))}
 								<span
-									className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border whitespace-nowrap ${officeHours.isOfficeHours ? "bg-emerald-900/30 border-emerald-500/30 text-emerald-300" : "bg-amber-900/30 border-amber-500/30 text-amber-300"}`}
+									className={`inline-flex items-center gap-1.5 font-bold px-3 py-1.5 rounded-full border whitespace-nowrap ${officeHours.isOfficeHours ? "bg-emerald-900/40 border-emerald-500/40 text-emerald-300" : "bg-amber-900/40 border-amber-500/40 text-amber-300"}`}
 									role="status"
 									aria-live="polite"
 								>
-									<span className={`w-1.5 h-1.5 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
+									<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
 									{officeHours.isOfficeHours ? "Engineers online" : "Emergency line active"}
 								</span>
 							</div>
 
-							{/* Trust proof */}
-							<div className="hero-trust-bar mb-6 sm:mb-8">
-								<div className="trust-items flex sm:flex-nowrap items-center justify-center lg:justify-start gap-y-1.5 sm:divide-x divide-slate-600">
-									{[
-										{ Icon: TrendingUp, text: "20+ years in service" },
-										{ Icon: Shield,     text: "PMI-certified spares" },
-										{ Icon: Clock,      text: "24×7 emergency response" },
-									].map(({ Icon, text }, i) => (
-										<div key={text} className={`flex items-center gap-1.5 text-slate-300 text-sm font-semibold whitespace-nowrap justify-center sm:justify-start ${i > 0 ? "sm:pl-4" : ""} ${i < 2 ? "sm:pr-4" : ""}`}>
-											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
-											<span>{text}</span>
-										</div>
-									))}
-								</div>
+							{/* Trust proof bar */}
+							<div className="hero-trust-bar mb-6">
+								{[
+									{ Icon: TrendingUp, text: "20+ years in service" },
+									{ Icon: Shield,     text: "PMI-certified spares" },
+									{ Icon: Clock,      text: "24×7 emergency response" },
+								].map(({ Icon, text }) => (
+									<div key={text} className="trust-item flex items-center gap-2 text-slate-300 font-semibold">
+										<Icon className="text-cyan-400 shrink-0" aria-hidden="true" />
+										<span>{text}</span>
+									</div>
+								))}
 							</div>
 
 							{/* CTAs */}
 							<div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
 								{/* Primary CTA with badge */}
-								<div className="relative pt-5 flex-1 sm:flex-none">
+								<div className="relative pt-6 flex-1 sm:flex-none">
 									<span
-										className="absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-amber-900 text-[10px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md z-10"
+										className="absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-amber-900 text-[11px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md z-10"
 										aria-hidden="true"
 									>
 										★ Most Requested
@@ -15663,21 +15708,21 @@ const HomePage = memo(({ navigate }) => {
 											window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
 											navigate("/contact");
 										}}
-										className="w-full bg-blue-600 text-white px-6 py-4 rounded-xl font-black hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 text-base sm:text-base shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+										className="hero-cta-primary w-full bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
 									>
 										Request a Technical Quote
 										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
 									</button>
 								</div>
 								{/* Emergency CTA */}
-								<div className="relative pt-5 flex-1 sm:flex-none">
+								<div className="flex-1 sm:flex-none">
 									<a
 										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="w-full bg-white/5 text-white border border-white/20 px-6 py-4 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2.5 text-base backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
+										className="hero-cta-secondary w-full bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
 									>
-										<LifeBuoy className="w-5 h-5 text-cyan-400 shrink-0" aria-hidden="true" />
+										<LifeBuoy className="text-cyan-400 shrink-0" aria-hidden="true" />
 										Emergency Breakdown
 									</a>
 								</div>
@@ -15790,7 +15835,7 @@ const HomePage = memo(({ navigate }) => {
 					Company statistics
 				</h2>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16">
+					<div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-16">
 						{HOME_STATS.map(({ Icon, end, suffix, label, sub }, i) => (
 							<div
 								key={label}
@@ -15895,7 +15940,7 @@ const HomePage = memo(({ navigate }) => {
 				aria-labelledby="services-preview-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="text-center mb-16">
+					<div className="text-center mb-10 md:mb-16">
 						<span className="text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">
 							End-to-End Turbine Lifecycle
 						</span>
@@ -16079,7 +16124,7 @@ const HomePage = memo(({ navigate }) => {
 								{/* Quote */}
 								<blockquote className="flex-1 text-slate-700 font-medium text-sm md:text-base leading-relaxed mb-6">
 									<span
-										className="text-blue-200 text-4xl font-black leading-none select-none"
+										className="block text-blue-300 text-5xl font-black leading-none select-none mb-1 -ml-1"
 										aria-hidden="true"
 									>
 										&ldquo;
@@ -16158,7 +16203,7 @@ const HomePage = memo(({ navigate }) => {
 				aria-labelledby="capabilities-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="max-w-4xl mx-auto text-center lg:text-left">
+					<div className="max-w-4xl mx-auto text-left">
 						<h2
 							id="capabilities-heading"
 							className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight"
@@ -16166,7 +16211,7 @@ const HomePage = memo(({ navigate }) => {
 							Precision Manufacturing.
 						</h2>
 						<div
-							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full mx-auto lg:mx-0"
+							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full"
 							aria-hidden="true"
 						/>
 						<p className="text-slate-600 font-medium text-xl mb-12 leading-relaxed">
@@ -16247,7 +16292,7 @@ const HomePage = memo(({ navigate }) => {
 								{/* Image / hero */}
 								<div className="h-44 bg-[#0A192F] relative overflow-hidden shrink-0">
 									<div
-										className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
+										className="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[2rem_2rem]"
 										aria-hidden="true"
 									/>
 									{cs.image && (
