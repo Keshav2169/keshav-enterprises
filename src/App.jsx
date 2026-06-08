@@ -8065,24 +8065,26 @@ const MARQUEE_CSS = `
   .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
 
-  /* ─── HERO BADGES — equal-width side-by-side row on all sizes ─── */
-  .hero-badges{display:flex!important;flex-direction:row!important;align-items:stretch!important}
-  .hero-badges>*{flex:1 1 0%;min-width:0;box-sizing:border-box}
-  /* Cap badge width on desktop so they don't stretch too wide */
+  /* ─── HERO BADGES ─── */
+  /* Mobile: stacked, each badge full width, centred */
+  .hero-badges{display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+  .hero-badges>*{width:100%!important;max-width:340px!important;box-sizing:border-box!important}
+  /* Desktop (sm+): side-by-side, auto width */
   @media(min-width:640px){
-	.hero-badges>*{flex:0 0 auto;width:auto}
+	.hero-badges{flex-direction:row;align-items:center;justify-content:flex-start}
+	.hero-badges>*{width:auto!important;max-width:none!important;flex:0 0 auto}
   }
   /* Navbar = fixed 64px. AnnouncementBar = static ~36px above hero. */
   /* On mobile: content starts from top of section (no section pt), */
   /* inner wrap gets pt to clear navbar. Bottom pb ensures CTAs breathe. */
   .hero-content-wrap{
-	padding: 80px 20px 48px;
+	padding: 72px 20px 48px;
   }
   @media(min-width:640px){
-	.hero-content-wrap{padding: 96px 24px 64px}
+	.hero-content-wrap{padding: 88px 24px 64px}
   }
   @media(min-width:1024px){
-	.hero-content-wrap{padding: 120px 32px 80px}
+	.hero-content-wrap{padding: 112px 32px 80px}
   }
 
   @media(max-width:767px){
@@ -8102,10 +8104,10 @@ const MARQUEE_CSS = `
 
   /* ─── HERO H1 — single clamp, all breakpoints ─── */
   .hero-h1{
-	font-size:clamp(2.4rem,9vw,5.6rem);
-	line-height:1.08;
+	font-size:clamp(2.8rem,10.5vw,5.6rem);
+	line-height:1.06;
 	letter-spacing:-0.03em;
-	text-shadow:0 2px 16px rgba(0,0,0,0.6)
+	text-shadow:0 2px 20px rgba(0,0,0,0.7)
   }
 
   /* ─── GLASS CARD ─── */
@@ -8124,13 +8126,16 @@ const MARQUEE_CSS = `
   .hero-phone-link svg{width:1rem;height:1rem}
   @media(min-width:640px){.hero-phone-link{font-size:1.0625rem}}
 
-  /* ─── TRUST BAR ─── */
-  .hero-trust-bar{display:flex;flex-direction:column;gap:0.625rem}
-  .hero-trust-bar .trust-item{font-size:0.9375rem}
-  .hero-trust-bar .trust-item svg{width:1.0625rem;height:1.0625rem}
+  /* ─── TRUST BAR — 2-col grid on mobile, 3rd item spans full width centred ─── */
+  .hero-trust-bar{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 1rem;justify-items:start}
+  .hero-trust-bar .trust-item{font-size:0.9375rem;display:flex;align-items:center;gap:0.5rem}
+  .hero-trust-bar .trust-item svg{width:1.0625rem;height:1.0625rem;flex-shrink:0}
+  /* 3rd item spans both columns and centres */
+  .hero-trust-bar .trust-item:last-child{grid-column:1/-1;justify-self:center}
   @media(min-width:640px){
-	.hero-trust-bar{flex-direction:row;align-items:center;flex-wrap:wrap;gap:0 1rem}
-	.hero-trust-bar .trust-item+.trust-item{border-left:1px solid #475569;padding-left:1rem}
+	.hero-trust-bar{display:flex;flex-direction:row;align-items:center;flex-wrap:nowrap;gap:0;justify-items:unset}
+	.hero-trust-bar .trust-item:last-child{grid-column:unset;justify-self:unset}
+	.hero-trust-bar .trust-item+.trust-item{border-left:1px solid #475569;padding-left:1rem;margin-left:1rem}
   }
 
   /* ─── CTAs ─── */
@@ -9141,7 +9146,7 @@ const MakeInIndiaBadge = memo(() => {
 	const [e, sE] = useState(false);
 	return (
 		<div
-			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl w-fit"
+			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl"
 			role="img"
 			aria-label="Make In India — Vocal For Local"
 		>
@@ -9184,7 +9189,7 @@ const IndiaMartBadge = memo(() => {
 			target="_blank"
 			rel="noopener noreferrer"
 			aria-label="View Keshav Enterprises on IndiaMART — Verified Supplier 4.3/5 rating"
-			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer w-fit"
+			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer"
 		>
 			{!e ? (
 				<div className="h-8 bg-white rounded px-1.5 flex items-center justify-center">
@@ -15637,8 +15642,8 @@ const HomePage = memo(({ navigate }) => {
 					<div className="w-full lg:w-[55%]">
 						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
-							{/* Trust badges — side by side row on all screen sizes */}
-							<div className="hero-badges flex flex-row items-stretch justify-center lg:justify-start gap-2 mb-6">
+							{/* Trust badges — stacked vertically, full width, matching reference */}
+							<div className="hero-badges flex flex-col items-stretch justify-center lg:justify-start gap-2 mb-6">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
