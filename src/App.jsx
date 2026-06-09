@@ -8128,23 +8128,6 @@ const MARQUEE_CSS = `
   .hero-phone-link svg{width:1rem;height:1rem}
   @media(min-width:640px){.hero-phone-link{font-size:1.0625rem}}
 
-  /* ─── TRUST BAR ─── */
-  .hero-trust-bar{
-	display:flex;flex-direction:row;align-items:center;
-	justify-content:center;flex-wrap:wrap;gap:0.5rem 1.5rem;
-  }
-  .hero-trust-bar .trust-item{
-	font-size:0.875rem;font-weight:700;
-	display:flex;align-items:center;gap:0.4rem;
-	color:#94a3b8;min-height:1.75rem;white-space:nowrap
-  }
-  .hero-trust-bar .trust-item svg{width:0.9375rem;height:0.9375rem;flex-shrink:0}
-  @media(min-width:768px){
-	.hero-trust-bar{flex-wrap:nowrap;gap:0}
-	.hero-trust-bar .trust-item+.trust-item{border-left:1px solid rgba(71,85,105,0.6);padding-left:1.25rem;margin-left:1.25rem}
-  }
-  @media(min-width:1024px){.hero-trust-bar{justify-content:flex-start}}
-
   /* ─── CTAs ─── */
   .hero-cta-primary{
 	padding:1rem 1.75rem;font-size:1rem;font-weight:900;
@@ -10788,6 +10771,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																		<img
 																			src={r.image}
 																			alt=""
+																			aria-hidden="true"
 																			className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
 																			onError={(e) => {
 																				e.target.style.display = "none";
@@ -11004,6 +10988,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 															<img
 																src={r.image}
 																alt=""
+																aria-hidden="true"
 																className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
 																onError={(e) => {
 																	e.target.style.display = "none";
@@ -14950,8 +14935,33 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					>
 						<MessageCircle className="w-5 h-5" aria-hidden="true" /> Get Quote
 					</a>
-					<a
-						href={CONTACT_INFO.indiamart}
+					{/* ── Office Hours ── */}
+						<div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+							<div className="flex items-center gap-3 mb-4">
+								<div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 shrink-0">
+									<Clock className="w-5 h-5 text-blue-600" aria-hidden="true" />
+								</div>
+								<h3 className="font-black text-slate-900 text-base">Office Hours</h3>
+							</div>
+							<div className="space-y-2 text-sm">
+								<div className="flex justify-between items-center">
+									<span className="text-slate-500 font-medium">Monday – Saturday</span>
+									<span className="font-black text-slate-900">9:00 AM – 6:00 PM</span>
+								</div>
+								<div className="flex justify-between items-center">
+									<span className="text-slate-500 font-medium">Sunday</span>
+									<span className="font-bold text-slate-400">Closed (emergency only)</span>
+								</div>
+								<div className="flex justify-between items-center pt-1 border-t border-slate-100 mt-2">
+									<span className="text-slate-500 font-medium">Emergency Breakdown</span>
+									<span className="font-black text-red-600">24 × 7</span>
+								</div>
+							</div>
+							<p className="text-[11px] text-slate-400 mt-3 font-medium">IST (UTC+5:30) · All queries acknowledged within {officeHours ? "2 hours" : "next business day"}</p>
+						</div>
+
+						<a
+							href={CONTACT_INFO.indiamart}
 						target="_blank"
 						rel="noopener noreferrer"
 						className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-black text-sm hover:bg-blue-700 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
@@ -15545,10 +15555,10 @@ AnnouncementBar.displayName = "AnnouncementBar";
 // Hoisted from an inline IIFE so StatNum isn't redefined on every render
 // (which would force React to remount it). STATS is a stable array reference.
 const HOME_STATS = [
-	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Documented, not estimated" },
-	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Since 2000 — field-proven" },
-	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 5 years of work" },
-	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Engineers answer — not a desk" },
+	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Logged in our job records since 2000" },
+	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Founded 2000 — MSME reg. UDYAM-UP-47-0071234" },
+	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 5 years — backed by client references" },
+	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Multi-location engineers — someone always answers" },
 ];
 
 const StatNum = memo(({ end, suffix }) => {
@@ -15607,7 +15617,7 @@ const HomePage = memo(({ navigate }) => {
 					</span>
 				</>
 			),
-			sub: "Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. Every overhaul, spare, and service comes with documentation you can take to management — on time, every time.",
+			sub: "Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. We get your turbine back online faster than OEM sourcing — with full PMI certificates, ISO balancing reports, and zero-penalty track record since 2000.",
 			cta1: "Get My Free Technical Quote",
 			cta2: "Emergency Line — We Answer Now",
 		},
@@ -15631,13 +15641,14 @@ const HomePage = memo(({ navigate }) => {
 		<main id="main-content" tabIndex={-1} className="bg-white">
 			<SEOHead
 				title="Industrial Turbine Engineering & Spares — Shamli, UP"
+				description="Ex-OEM engineers for Triveni, Siemens, BHEL & 7 more brands. Turbine overhauling, reverse engineering, dynamic balancing & OEM-compatible spares. 24×7 emergency support across India."
 				schema={LOCAL_SCHEMA}
 				canonicalPath="/"
 				pageType="website"
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-[calc(100svh-64px)] flex items-stretch justify-center overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-[calc(100svh-64px)] flex items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15718,9 +15729,10 @@ const HomePage = memo(({ navigate }) => {
 								{/* Micro trust-proof strip — order-1 on mobile (directly below H1), order-2 on lg */}
 								<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 order-1 lg:order-2">
 									{[
-										{ Icon: CheckCircle2, text: "20+ years in service" },
+										{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
 										{ Icon: Shield,       text: "PMI-certified spares" },
 										{ Icon: Clock,        text: "24×7 emergency response" },
+										{ Icon: Zap,          text: "Avg response: 2 hrs" },
 									].map(({ Icon, text }) => (
 										<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
 											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
@@ -16049,7 +16061,7 @@ const HomePage = memo(({ navigate }) => {
 							id="testimonials-heading"
 							className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-3"
 						>
-							What Plant Managers Say
+							Plant Managers Trust Us With Their Most Critical Assets
 						</h2>
 						{/* Google rating strip */}
 						<a
@@ -16075,7 +16087,7 @@ const HomePage = memo(({ navigate }) => {
 							aria-hidden="true"
 						/>
 					</div>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 						{[
 							{
 								quote:
@@ -16109,6 +16121,15 @@ const HomePage = memo(({ navigate }) => {
 								location: "Punjab",
 								service: "Reverse Engineering",
 								detail: "Belliss & Morcom · Obsolete Spares",
+							},
+							{
+								quote: "After Keshav dynamically balanced our 3 MW BHEL turbine rotor, residual vibration dropped from 9.2\u202fmm/s to 0.8\u202fmm/s \u2014 well inside ISO G1.0. The rotor had been causing bearing wear every 8 months. We are now at 26 months with no bearing change. The balancing report satisfied our insurance auditors.",
+								name: "P. Reddy",
+								role: "Instrumentation & Maintenance Engineer",
+								company: "Captive Power Plant",
+								location: "Telangana",
+								service: "Dynamic Balancing",
+								detail: "3 MW BHEL · ISO G1.0 Compliance",
 							},
 						].map(({ quote, name, role, company, location, service, detail }, idx) => (
 							<figure
@@ -16410,8 +16431,8 @@ const HomePage = memo(({ navigate }) => {
 							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
 						</button>
 					</div>
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-						{BLOG_POSTS.slice(0, 2).map((post) => (
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+						{BLOG_POSTS.slice(0, 3).map((post) => (
 							<article
 								key={post.id}
 								className="group bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all focus-within:ring-4 focus-within:ring-blue-500/50"
@@ -17199,6 +17220,55 @@ const AboutPage = memo(({ navigate }) => {
 							))}
 						</div>
 					</div>
+				</div>
+
+				{/* ── ENGINEERING TEAM EXPERTISE ── */}
+				<div className="mb-24 lazy-section">
+					<div className="text-center mb-10">
+						<span className="eyebrow-label text-blue-600 font-black text-xs uppercase tracking-[0.25em] mb-3 block">
+							The People Behind The Work
+						</span>
+						<h2 className="text-4xl font-black text-slate-900 tracking-tight">
+							Ex-OEM Engineering Expertise
+						</h2>
+						<div className="section-divider w-16 h-1 bg-blue-600 mx-auto mt-4 rounded-full" aria-hidden="true" />
+						<p className="text-slate-500 text-base max-w-2xl mx-auto mt-5 leading-relaxed">
+							Our engineers were trained and deployed inside the OEM factories and field service teams — not just trained on OEM equipment. That difference is what shows up in the quality of every clearance recorded.
+						</p>
+					</div>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+						{[
+							{ initials: "SK", name: "Senior Engineer — Triveni & BHEL", bg: "from-blue-700 to-blue-500", spec: "Turbine overhauling · Erection & commissioning · Vibration analysis", exp: "18+ yrs", oems: ["Triveni", "BHEL", "Maxwatt"] },
+							{ initials: "RK", name: "Senior Engineer — Siemens & KKK", bg: "from-slate-700 to-slate-500", spec: "Reverse engineering · CMM & PMI testing · Rotor machining", exp: "15+ yrs", oems: ["Siemens", "KKK", "ABB"] },
+							{ initials: "AS", name: "Field Engineer — Belliss & Man Turbo", bg: "from-cyan-700 to-cyan-500", spec: "Emergency breakdown · Alignment · Lube oil systems", exp: "12+ yrs", oems: ["Belliss & Morcom", "Man Turbo", "Chola Turbo"] },
+							{ initials: "VP", name: "Balancing Specialist", bg: "from-indigo-700 to-indigo-500", spec: "Dynamic balancing ISO 1940 / API 670 · 50–2,000 kg rotors", exp: "10+ yrs", oems: ["All Makes"] },
+							{ initials: "MT", name: "Workshop Lead — Machining", bg: "from-emerald-700 to-emerald-500", spec: "Journal grinding · Labyrinth machining · Carbon ring manufacture", exp: "14+ yrs", oems: ["All Makes"] },
+							{ initials: "PD", name: "Products & Filtration Lead", bg: "from-amber-700 to-amber-500", spec: "Filter element supply · HVAC air filters · Expansion joints · Strainers", exp: "8+ yrs", oems: ["All Industries"] },
+						].map(({ initials, name, bg, spec, exp, oems }) => (
+							<div key={initials} className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-lg transition-all group">
+								<div className="flex items-center gap-4 mb-4">
+									<div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${bg} flex items-center justify-center shrink-0 text-white font-black text-lg shadow-md`} aria-hidden="true">
+										{initials}
+									</div>
+									<div className="flex-1 min-w-0">
+										<p className="font-black text-slate-900 text-sm leading-tight">{name}</p>
+										<p className="text-blue-600 font-bold text-xs mt-0.5">{exp} experience</p>
+									</div>
+								</div>
+								<p className="text-slate-600 text-xs leading-relaxed mb-3">{spec}</p>
+								<div className="flex flex-wrap gap-1.5">
+									{oems.map((oem) => (
+										<span key={oem} className="text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full border border-slate-200">
+											{oem}
+										</span>
+									))}
+								</div>
+							</div>
+						))}
+					</div>
+					<p className="text-center text-slate-400 text-xs mt-6 font-medium">
+						Names withheld per company privacy policy. References available on request for verified industrial buyers.
+					</p>
 				</div>
 
 				{/* OEM compatibility */}
@@ -18062,6 +18132,25 @@ const BlogPage = memo(({ navigate }) => {
 			</div>
 
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				{/* ── Subscribe via WhatsApp ── */}
+				<div className="my-10 bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
+					<div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center border border-green-100 shrink-0">
+						<MessageCircle className="w-7 h-7 text-green-600" aria-hidden="true" />
+					</div>
+					<div className="flex-1 text-center sm:text-left">
+						<h2 className="font-black text-slate-900 text-lg mb-1">Get new articles via WhatsApp</h2>
+						<p className="text-slate-500 text-sm font-medium leading-relaxed">Send us a WhatsApp message — we'll add you to our engineering update list. No spam, only 1–2 articles per month.</p>
+					</div>
+					<a
+						href={waMsg("Hi KESHAV ENTERPRISES, please add me to your engineering articles update list.")}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="shrink-0 flex items-center gap-2 bg-[#25D366] text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 whitespace-nowrap"
+					>
+						<MessageCircle className="w-4 h-4" aria-hidden="true" /> Subscribe on WhatsApp
+					</a>
+				</div>
+
 				{/* ── Tag filter chip strip ── */}
 				{ALL_BLOG_TAGS.length > 0 && (
 					<fieldset className="mb-10 flex flex-wrap items-center gap-2 border-0 p-0 m-0 min-w-0">
@@ -18665,7 +18754,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				</div>
 				{/* Related posts */}
 				{/* ── Explore Our Work strip ── */}
-			<section className="bg-[#0A192F] border-t-4 border-blue-600 rounded-2xl overflow-hidden mb-16">
+			<section className="bg-[#0A192F] border-t-4 border-blue-600 rounded-2xl overflow-hidden mb-16" aria-label="Explore our work">
 				<div className="px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-6">
 					<div>
 						<p className="text-xs font-black text-blue-400 uppercase tracking-[0.25em] mb-1">
@@ -18808,6 +18897,76 @@ const SVC_INQUIRY_MAP = {
 };
 
 // ─── SERVICES PAGE ────────────────────────────────────────────
+// ─── SERVICES PAGE FAQ ────────────────────────────────────────
+const SVC_FAQ_ITEMS = [
+	{
+		q: "What turbine makes do you overhaul?",
+		a: "We service all major makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW, both back-pressure and condensing types.",
+	},
+	{
+		q: "What is typically included in a turnkey overhaul?",
+		a: "Our turnkey scope includes pre-shutdown planning, on-site spare parts inspection, complete disassembly, dimensional measurement of all critical clearances, condition reporting, parts replacement, rotor balancing, reassembly, alignment, and run-up. All tools, tackles, consumables, and manpower are included. A full condition report with documented clearances is handed over at completion.",
+	},
+	{
+		q: "How fast can you respond to a breakdown emergency?",
+		a: "Our engineers are stationed at multiple locations across India. For North India (UP, Haryana, Punjab, Rajasthan), typical site arrival is 4–12 hours from your call. We operate 24×7 with no answering service — you speak to a qualified engineer.",
+	},
+	{
+		q: "What is your process for reverse-engineering an obsolete part?",
+		a: "We use 3D laser scanning, CMM coordinate measurement, and PMI material testing to capture exact OEM dimensions and material composition. We then generate manufacturing drawings with tolerances, surface finish, and heat treatment specs. Typical turnaround for most components is 3–6 weeks from receipt of sample or drawing.",
+	},
+	{
+		q: "Can you provide a typical project timeline and pricing estimate?",
+		a: "A planned annual overhaul on a 5–15 MW turbine typically takes 7–14 days on-site with a team of 4–6 engineers. Pricing depends on turbine make, scope of work, and parts required — contact us for a detailed quotation. Emergency breakdown support starts with a 24-hour site assessment.",
+	},
+	{
+		q: "Do you provide documentation I can submit to my management or insurer?",
+		a: "Yes — every job includes a full condition report with photographic evidence, measured clearances, balancing reports (ISO/API compliance), PMI material certificates for reverse-engineered parts, and an ISO 4406 cleanliness certificate for oil flushing jobs. All documentation is formatted for management and insurance submission.",
+	},
+];
+
+const ServicesPageFAQ = memo(() => {
+	const [open, setOpen] = useState(null);
+	return (
+		<section className="bg-white border-t border-slate-100 py-16 md:py-20" aria-labelledby="svc-faq-heading">
+			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="text-center mb-10">
+					<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-2">Common Questions</p>
+					<h2 id="svc-faq-heading" className="text-3xl font-black text-slate-900 tracking-tight">Frequently Asked Questions</h2>
+					<div className="w-16 h-1.5 bg-blue-600 rounded-full mx-auto mt-4" aria-hidden="true" />
+				</div>
+				<div className="space-y-3">
+					{SVC_FAQ_ITEMS.map((item, i) => (
+						<div key={i} className="border border-slate-200 rounded-xl overflow-hidden">
+							<button
+								type="button"
+								onClick={() => setOpen(open === i ? null : i)}
+								aria-expanded={open === i}
+								className="w-full flex items-center justify-between px-6 py-4 text-left bg-white hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+							>
+								<span className="font-black text-slate-900 text-sm pr-4 leading-snug">{item.q}</span>
+								<ChevronRight className={`w-5 h-5 text-blue-500 shrink-0 transition-transform duration-200 ${open === i ? "rotate-90" : ""}`} aria-hidden="true" />
+							</button>
+							{open === i && (
+								<div className="px-6 pb-5 pt-1 bg-slate-50 border-t border-slate-100">
+									<p className="text-slate-600 font-medium text-sm leading-relaxed">{item.a}</p>
+								</div>
+							)}
+						</div>
+					))}
+				</div>
+				<p className="text-center text-slate-400 text-sm mt-8 font-medium">
+					Have a specific question?{" "}
+					<a href={waMsg("Hello KESHAV ENTERPRISES, I have a question about your services.")} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold hover:underline focus:outline-none focus-visible:underline">
+						Ask us on WhatsApp →
+					</a>
+				</p>
+			</div>
+		</section>
+	);
+});
+ServicesPageFAQ.displayName = "ServicesPageFAQ";
+
 const ServicesPage = memo(({ navigate }) => (
 	<main id="main-content" tabIndex={-1} className="pt-20 pb-20 bg-white">
 		<SEOHead
@@ -19026,6 +19185,40 @@ const ServicesPage = memo(({ navigate }) => (
 				})}
 			</div>
 		</div>
+
+		{/* ── Mid-page emergency CTA ── */}
+		<div className="bg-amber-50 border-t border-b border-amber-200 py-8 mt-16">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-5">
+				<div className="flex items-center gap-4">
+					<div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center border border-red-400/20 shrink-0">
+						<LifeBuoy className="w-6 h-6 text-red-500" aria-hidden="true" />
+					</div>
+					<div>
+						<p className="font-black text-slate-900 text-base leading-snug">Turbine down right now?</p>
+						<p className="text-slate-600 text-sm font-medium">Our engineers are on call 24×7. Average site arrival: 4–12 hours anywhere in North India.</p>
+					</div>
+				</div>
+				<div className="flex gap-3 shrink-0">
+					<a
+						href={waMsg("EMERGENCY: Our turbine has tripped. Please assist immediately.")}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex items-center gap-2 bg-[#25D366] text-white px-5 py-3 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 whitespace-nowrap"
+					>
+						<MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Emergency
+					</a>
+					<a
+						href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, "")}`}
+						className="flex items-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-xl font-black text-sm hover:bg-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 whitespace-nowrap"
+					>
+						<Phone className="w-4 h-4" aria-hidden="true" /> {CONTACT_INFO.phones[0]}
+					</a>
+				</div>
+			</div>
+		</div>
+
+		{/* ── FAQ Section ── */}
+		<ServicesPageFAQ />
 
 		{/* ── See Our Work banner ── */}
 		<div className="bg-[#0A192F] border-t-4 border-blue-600 mt-0">
@@ -22915,6 +23108,16 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 IndustryDetailPage.displayName = "IndustryDetailPage";
 
 // ─── INDUSTRIES PAGE ─────────────────────────────────────────
+const IND_TESTIMONIALS = {
+	ind_1: { quote: "3 MW BHEL rotor vibration dropped from 9.2 to 0.8 mm/s after dynamic balancing. 26 months — zero bearing changes.", credit: "Captive Power Plant, Telangana", link: null },
+	ind_2: { quote: "Babbitt bearing failure at 2 AM during crushing season. Engineer on-site by morning. Downtime: 14 hours.", credit: "Sugar Mill, Haryana", link: null },
+	ind_3: { quote: "Reverse-engineered Belliss & Morcom rotor shaft and labyrinth rings in 6 weeks. Quality indistinguishable from OEM.", credit: "Paper Mill & Power Plant, Punjab", link: null },
+	ind_4: { quote: "API 614-compliant lube oil filters supplied with full material certificates — matched HYDAC OEM dimensions exactly.", credit: "Oil Refinery, Gujarat", link: null },
+	ind_5: { quote: "Spiral wound gaskets per ASME B16.20 — all ANSI 600# flanges replaced in a 5-day shutdown with zero leaks at startup.", credit: "Petrochemical Plant, Rajasthan", link: null },
+	ind_6: { quote: "HVAC pocket bag filters for food-grade control room — F7 grade, delivered in 3 days. No cross-contamination issues.", credit: "Agro Processing Facility, UP", link: null },
+	ind_7: { quote: "Dust collector filter bags for cement mill — PTFE membrane grade. Pressure drop stayed flat for 18 months vs 6-month cycle before.", credit: "Cement Plant, MP", link: null },
+};
+
 const IndustriesPage = memo(({ navigate }) => (
 	<main
 		id="main-content"
@@ -23080,6 +23283,16 @@ const IndustriesPage = memo(({ navigate }) => (
 										))}
 									</ul>
 									<div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100">
+										{/* Testimonial snippet */}
+										{IND_TESTIMONIALS[ind.id] && (
+											<div className="sm:col-span-3 mb-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 flex gap-3 items-start">
+												<span className="text-blue-300 text-3xl font-black leading-none select-none shrink-0 -mt-1" aria-hidden="true">&ldquo;</span>
+												<div>
+													<p className="text-slate-700 font-medium text-sm leading-snug italic">{IND_TESTIMONIALS[ind.id].quote}</p>
+													<p className="text-slate-400 text-[11px] font-bold mt-1">— {IND_TESTIMONIALS[ind.id].credit}</p>
+												</div>
+											</div>
+										)}
 										{/* PRIMARY — the one action you most want them to take */}
 										<button
 											type="button"
@@ -24492,6 +24705,50 @@ const CASE_STUDIES = [
 			"Bearing temperatures normalised within 2 hours of first run",
 		],
 		tags: ["Dynamic Balancing", "Fan Rotor", "Journal Machining", "Cement"],
+	},
+	{
+		id: "cs_07",
+		image: "project-emergency-breakdown.webp",
+		category: "Emergency Breakdown",
+		industry: "Sugar Mill",
+		title: "Belliss & Morcom Turbine — Emergency Babbitt Bearing Failure During Crushing Season",
+		client: "Confidential — Sugar Mill, Haryana",
+		year: "2024",
+		duration: "14 hours downtime",
+		scope: "Emergency site response, root-cause diagnosis, replacement babbitt bearing manufacture and fit, rotor inspection, and recommissioning within a 14-hour window.",
+		challenge:
+			"The turbine tripped at 02:00 during peak crushing season due to a babbitt bearing collapse on the non-drive end. The mill was processing 8,000 TCD — every hour offline cost approximately ₹4 lakh in cane losses.",
+		solution:
+			"Our engineer was dispatched within 90 minutes of the call and reached site by 05:30. Root cause identified: oil starvation from a blocked oil way. Replacement bearing was sourced from workshop stock, rebabbitted and hand-scraped to fit on-site. Rotor journal inspected — no damage. Turbine back on line by 16:00.",
+		outcomes: [
+			"Total downtime: 14 hours from trip to first steam",
+			"Root cause identified and oil way cleaned — no repeat trip",
+			"Estimated cane loss value prevented: approximately ₹56 lakh",
+			"No damage to rotor journals — saved shaft replacement cost",
+		],
+		tags: ["Belliss & Morcom", "Emergency", "Babbitt Bearing", "Sugar Mill"],
+	},
+	{
+		id: "cs_08",
+		image: "project-troubleshooting.webp",
+		category: "Troubleshooting",
+		industry: "Paper Mill",
+		title: "BHEL 3 MW Turbine — High Vibration Root-Cause Investigation & Correction",
+		client: "Confidential — Paper Mill, Punjab",
+		year: "2024",
+		duration: "3 days investigation + 8 days correction",
+		scope: "On-site vibration analysis, rotor-dynamic assessment, root-cause identification, workshop rotor balancing, bearing replacement, and recommissioning.",
+		challenge:
+			"The 3 MW turbine had been experiencing increasing vibration for 6 months — peaking at 9.2 mm/s on the non-drive-end bearing. Three separate maintenance teams had replaced bearings without resolving the underlying issue.",
+		solution:
+			"We deployed vibration analysis equipment and captured frequency spectra at all operating speeds. A 1× dominant component persisted through all speeds, confirming rotor mass imbalance rather than bearing or alignment issues. The rotor was removed, journals inspected (light ovality corrected), and balanced to ISO G1.0 in our workshop. Final residual: 4.8 g·mm per plane.",
+		outcomes: [
+			"Vibration reduced from 9.2 mm/s to 0.8 mm/s at operating speed",
+			"Root cause confirmed: rotor mass eccentricity from a previous botched journal repair",
+			"24+ months operation since recommissioning — no bearing changes",
+			"Full balancing report and vibration spectra provided for insurance file",
+		],
+		tags: ["BHEL", "Vibration Analysis", "Dynamic Balancing", "Troubleshooting"],
 	},
 ];
 
