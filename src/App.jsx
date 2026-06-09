@@ -8040,14 +8040,14 @@ const MARQUEE_CSS = `
   .pdp-sliding.pdp-slide-right{animation:pdp-in-right .3s cubic-bezier(.25,.46,.45,.94) both}
 
   /* font-display:swap prevents invisible-text Lighthouse warning */
-  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed')}
-  @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow')}
+  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600 900;font-display:swap;src:local('Barlow Condensed'),url('https://fonts.gstatic.com/s/barlowcondensed/v12/HTxwL3I-JCGChYJ8VI-L6OO_au7B43LT.woff2') format('woff2')}
+  @font-face{font-family:'Barlow';font-style:normal;font-weight:400 900;font-display:swap;src:local('Barlow'),url('https://fonts.gstatic.com/s/barlow/v12/3Jn9BXw4usMiGoNMQ.woff2') format('woff2')}
 
   /* PERF: content-visibility on below-fold sections */
   .cv-auto{content-visibility:auto;contain-intrinsic-size:0 600px}
 
   /* Prevent flow images from overflowing; use an explicit class allowlist instead of
-     substring matching "absolute" which would incorrectly match classes like "text-absolute-size" */
+	 substring matching "absolute" which would incorrectly match classes like "text-absolute-size" */
   img:not(.absolute):not(.fixed):not(.relative):not(.sticky){max-width:100%;height:auto;display:block}
   /* Absolute/fixed cover images: ensure object-cover fills parent correctly */
   img.absolute,img.fixed{display:block;}
@@ -8056,8 +8056,8 @@ const MARQUEE_CSS = `
   .ke-marquee,.ke-marquee-slow{transform:translateZ(0);backface-visibility:hidden}
 
   /* Paint containment replaced with layout+style: avoids clipping absolutely-positioned
-     children (dropdowns, tooltips, sticky overlays) that need to escape section bounds.
-     contain:paint would silently clip any overflow — contain:layout style is safe. */
+	 children (dropdowns, tooltips, sticky overlays) that need to escape section bounds.
+	 contain:paint would silently clip any overflow — contain:layout style is safe. */
   section:not(.hero-section){contain:layout style}
 
 
@@ -8066,33 +8066,19 @@ const MARQUEE_CSS = `
   .hero-bg-img{opacity:0.90;object-position:center center}
 
   /* ─── HERO BADGES ─── */
-  /* Mobile: stacked, each badge full width, centred */
-  .hero-badges{display:flex;flex-direction:column;align-items:center;gap:0.5rem}
-  .hero-badges>*{width:100%!important;max-width:340px!important;box-sizing:border-box!important}
-  /* Desktop (sm+): side-by-side, auto width */
-  @media(min-width:640px){
-	.hero-badges{flex-direction:row;align-items:center;justify-content:flex-start}
-	.hero-badges>*{width:auto!important;max-width:none!important;flex:0 0 auto}
-  }
-  /* Navbar = fixed 64px. AnnouncementBar = static ~36px above hero. */
-  /* On mobile: content starts from top of section (no section pt), */
-  /* inner wrap gets pt to clear navbar. Bottom pb ensures CTAs breathe. */
-  .hero-content-wrap{
-	padding: 72px 20px 48px;
-  }
-  @media(min-width:640px){
-	.hero-content-wrap{padding: 88px 24px 64px}
-  }
-  @media(min-width:1024px){
-	.hero-content-wrap{padding: 112px 32px 80px}
-  }
+  .hero-badges{display:flex;flex-direction:row;align-items:center;gap:0.75rem;flex-wrap:wrap}
+  .hero-badges>*{flex:0 0 auto}
+  @media(min-width:1024px){.hero-badges{justify-content:flex-start}}
+
+  /* ─── HERO CONTENT PADDING ─── */
+  .hero-content-wrap{padding:28px 20px 44px;min-height:calc(100svh - 64px)}
+  @media(min-width:640px){.hero-content-wrap{padding:60px 32px 52px}}
+  @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset}}
 
   @media(max-width:767px){
 	.hero-section{
-	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.72) 0%,rgba(10,25,47,0.50) 45%,rgba(10,25,47,0.82) 100%),url('hero-background.png');
-	  background-size:cover;
-	  background-position:center center;
-	  background-repeat:no-repeat;
+	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.75) 0%,rgba(10,25,47,0.45) 45%,rgba(10,25,47,0.88) 100%),url('hero-background.png');
+	  background-size:cover;background-position:center center;background-repeat:no-repeat;
 	}
 	.hero-bg-layer{display:none!important}
 	.hero-desktop-grad{display:none!important}
@@ -8102,49 +8088,89 @@ const MARQUEE_CSS = `
 	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
   }
 
-  /* ─── HERO H1 — single clamp, all breakpoints ─── */
+  /* ─── HERO H1 ─── */
   .hero-h1{
-	font-size:clamp(2.8rem,10.5vw,5.6rem);
-	line-height:1.06;
-	letter-spacing:-0.03em;
-	text-shadow:0 2px 20px rgba(0,0,0,0.7)
+	font-family:'Barlow Condensed','Barlow',system-ui,sans-serif;
+	font-size:clamp(3rem,8.5vw,5rem);
+	line-height:1.04;
+	letter-spacing:-0.02em;
+	color:#ffffff;
+	text-shadow:0 2px 24px rgba(0,0,0,0.6),0 1px 2px rgba(0,0,0,0.4)
+  }
+  @media(min-width:640px){.hero-h1{font-size:clamp(3rem,6.5vw,5.5rem)}}
+  @media(min-width:1024px){.hero-h1{font-size:clamp(3.5rem,4.8vw,6rem)}}
+  /* Gradient span must reset text-shadow so bg-clip-text renders correctly */
+  .hero-h1 .hero-gradient-text{
+	-webkit-background-clip:text;
+	background-clip:text;
+	-webkit-text-fill-color:transparent;
+	color:transparent;
+	text-shadow:none;
+	display:inline;
   }
 
+  /* ─── GRADIENT ACCENT ─── */
   /* ─── GLASS CARD ─── */
-  .glass-hero{padding:1.125rem 1.25rem}
-  .glass-hero p{font-size:1rem;line-height:1.7;color:#ddeeff}
-  @media(min-width:640px){
-	.glass-hero{padding:1.25rem 1.5rem}
-	.glass-hero p{font-size:1.0625rem}
+  .glass-hero{
+	padding:1rem 1.25rem;
+	background:rgba(255,255,255,0.06)!important;
+	border:1px solid rgba(255,255,255,0.12)!important;
+	border-left:3px solid #22d3ee!important;
+	border-radius:12px;
+	backdrop-filter:blur(12px);
   }
-  @media(min-width:768px){
-	.glass-hero p{font-size:1.125rem}
-  }
+  .glass-hero p{font-size:0.9375rem;line-height:1.68;color:#cbd5e1}
+  @media(min-width:640px){.glass-hero p{font-size:1.125rem}}
+  @media(min-width:1024px){.glass-hero p{font-size:1.0625rem;line-height:1.7}}
 
   /* ─── PHONE LINKS ─── */
-  .hero-phone-link{font-size:1rem}
+  .hero-phone-link{font-size:1rem;letter-spacing:0.01em}
   .hero-phone-link svg{width:1rem;height:1rem}
   @media(min-width:640px){.hero-phone-link{font-size:1.0625rem}}
 
-  /* ─── TRUST BAR — 2-col grid on mobile, 3rd item spans full width centred ─── */
-  .hero-trust-bar{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 1rem;justify-items:start}
-  .hero-trust-bar .trust-item{font-size:0.9375rem;display:flex;align-items:center;gap:0.5rem}
-  .hero-trust-bar .trust-item svg{width:1.0625rem;height:1.0625rem;flex-shrink:0}
-  /* 3rd item spans both columns and centres */
-  .hero-trust-bar .trust-item:last-child{grid-column:1/-1;justify-self:center}
-  @media(min-width:640px){
-	.hero-trust-bar{display:flex;flex-direction:row;align-items:center;flex-wrap:nowrap;gap:0;justify-items:unset}
-	.hero-trust-bar .trust-item:last-child{grid-column:unset;justify-self:unset}
-	.hero-trust-bar .trust-item+.trust-item{border-left:1px solid #475569;padding-left:1rem;margin-left:1rem}
+  /* ─── TRUST BAR ─── */
+  .hero-trust-bar{
+	display:flex;flex-direction:row;align-items:center;
+	justify-content:center;flex-wrap:wrap;gap:0.5rem 1.5rem;
   }
+  .hero-trust-bar .trust-item{
+	font-size:0.875rem;font-weight:700;
+	display:flex;align-items:center;gap:0.4rem;
+	color:#94a3b8;min-height:1.75rem;white-space:nowrap
+  }
+  .hero-trust-bar .trust-item svg{width:0.9375rem;height:0.9375rem;flex-shrink:0}
+  @media(min-width:768px){
+	.hero-trust-bar{flex-wrap:nowrap;gap:0}
+	.hero-trust-bar .trust-item+.trust-item{border-left:1px solid rgba(71,85,105,0.6);padding-left:1.25rem;margin-left:1.25rem}
+  }
+  @media(min-width:1024px){.hero-trust-bar{justify-content:flex-start}}
 
   /* ─── CTAs ─── */
-  .hero-cta-primary,.hero-cta-secondary{
-	padding:1rem 1.5rem;
-	font-size:1.0625rem;
-	border-radius:0.875rem;
+  .hero-cta-primary{
+	padding:1rem 1.75rem;font-size:1rem;font-weight:900;
+	border-radius:10px;letter-spacing:0.01em;
   }
-  .hero-cta-primary svg,.hero-cta-secondary svg{width:1.25rem;height:1.25rem}
+  .hero-cta-secondary{
+	padding:0.9375rem 1.5rem;font-size:1rem;font-weight:700;
+	border-radius:10px;
+  }
+  .hero-cta-primary svg,.hero-cta-secondary svg{width:1.125rem;height:1.125rem}
+
+  /* ─── PROOF CARDS ─── */
+  .hero-proof-card{
+	background:rgba(13,31,60,0.8);
+	backdrop-filter:blur(16px);
+	border:1px solid rgba(255,255,255,0.09);
+	border-radius:16px;
+	padding:1.25rem 1.375rem;
+	display:flex;flex-direction:column;
+	transition:border-color 0.2s,transform 0.2s,box-shadow 0.2s;
+  }
+  .hero-proof-card:hover{
+	border-color:rgba(34,211,238,0.28);
+	transform:translateY(-2px);
+	box-shadow:0 8px 32px rgba(6,182,212,0.12);
+  }
 
   /* ─── MOBILE HEADING ALIGNMENT ─── */
   @media(max-width:767px){
@@ -8182,11 +8208,11 @@ const MARQUEE_CSS = `
   /* Desktop: centred flex, cards never wrap. Mobile: horizontal scroll */
   /* Mobile: 1-column stack, no scroll ever */
   /* ─── DIGITAL PROFILES STRIP ─────────────────────────────────
-     Mobile  (<480px)  : 1-column stack, no scroll
-     Tablet  (480-767px): 2-column grid
-     Desktop (≥768px)   : single centred row, cards auto-sized
-     The card element never uses w-full on desktop so the row
-     doesn't wrap — flex-shrink:0 + width:auto keeps it tight.
+	 Mobile  (<480px)  : 1-column stack, no scroll
+	 Tablet  (480-767px): 2-column grid
+	 Desktop (≥768px)   : single centred row, cards auto-sized
+	 The card element never uses w-full on desktop so the row
+	 doesn't wrap — flex-shrink:0 + width:auto keeps it tight.
   ─────────────────────────────────────────────────────────── */
   .dir-strip-scroll{
 	display:grid;
@@ -8644,6 +8670,7 @@ if (typeof document !== "undefined") {
 	};
 	addLink("preconnect", "https://fonts.googleapis.com");
 	addLink("preconnect", "https://fonts.gstatic.com", "");
+	addLink("stylesheet", "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700;800;900&display=swap");
 	addLink("dns-prefetch", "https://api.whatsapp.com");
 	addLink("dns-prefetch", "https://www.indiamart.com");
 	// Hero image preload is injected conditionally in the App component
@@ -15575,7 +15602,7 @@ const HomePage = memo(({ navigate }) => {
 				<>
 					Precision Engineering for
 					<br />
-					<span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
+					<span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
 						Maximum Uptime.
 					</span>
 				</>
@@ -15589,7 +15616,7 @@ const HomePage = memo(({ navigate }) => {
 				<>
 					अधिकतम अपटाइम के लिए
 					<br />
-					<span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
+					<span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
 						प्रेसिशन इंजीनियरिंग।
 					</span>
 				</>
@@ -15610,7 +15637,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-[100svh] flex items-start overflow-hidden">
+			<section className="hero-section relative bg-[#0A192F] min-h-[calc(100svh-64px)] flex items-stretch justify-center overflow-hidden">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15630,20 +15657,20 @@ const HomePage = memo(({ navigate }) => {
 						className="hero-mobile-vignette absolute inset-0"
 						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.55) 0%,rgba(10,25,47,0.15) 35%,rgba(10,25,47,0.15) 60%,rgba(10,25,47,0.85) 100%)" }}
 					/>
-					<div className="hero-desktop-grad absolute inset-0 bg-linear-to-r from-[#0A192F]/92 via-[#0A192F]/60 to-[#0A192F]/15" />
+					<div className="hero-desktop-grad absolute inset-0" style={{background:"radial-gradient(ellipse at center,rgba(10,25,47,0.35) 0%,rgba(10,25,47,0.75) 70%,rgba(10,25,47,0.92) 100%)"}} />
 					<div className="hero-bottom-overlay absolute inset-0 bg-linear-to-t from-[#0A192F]/80 via-transparent to-transparent z-10" />
 					<div className="hero-glow-orb absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[128px]" />
 					<div className="hero-glow-orb absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px]" />
 				</div>
 
-				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16">
+				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-10">
 
-					{/* ── LEFT COLUMN ── */}
-					<div className="w-full lg:w-[55%]">
-						<div className={`transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
+					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
+					<div className="w-full lg:w-3/5 flex flex-col">
+						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
-							{/* Trust badges — stacked vertically, full width, matching reference */}
-							<div className="hero-badges flex flex-col items-stretch justify-center lg:justify-start gap-2 mb-6">
+							{/* Trust badges — same row, no wrap */}
+							<div className="hero-badges mb-4 justify-center lg:justify-start">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
@@ -15651,132 +15678,113 @@ const HomePage = memo(({ navigate }) => {
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 font-black text-white leading-[1.08] tracking-tighter mb-5 drop-shadow-2xl text-center lg:text-left"
+								className="hero-h1 font-black leading-[1.04] tracking-tight mb-4 text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
 
-							{/* Sub-text block */}
-							<div className="glass-hero bg-white/8 backdrop-blur-md border border-white/10 border-l-4 border-l-cyan-400 rounded-xl shadow-xl mx-auto lg:mx-0 mb-6">
-								<p className="text-slate-200 font-medium leading-relaxed">
-									{h.sub}
-								</p>
-							</div>
-
-							{/* Phone numbers + live status */}
-							<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 mb-5">
-								{CONTACT_INFO.phones.map((ph) => (
-									<a
-										key={ph}
-										href={`tel:${ph.replace(/\s/g, "")}`}
-										className="hero-phone-link inline-flex items-center gap-2 text-white font-bold hover:text-cyan-300 transition-colors focus:outline-none focus-visible:underline whitespace-nowrap"
-									>
-										<Phone className="text-cyan-400 shrink-0" aria-hidden="true" />
-										{ph}
-									</a>
-								))}
-								<span
-									className={`inline-flex items-center gap-1.5 font-bold px-3 py-1.5 rounded-full border whitespace-nowrap ${officeHours.isOfficeHours ? "bg-emerald-900/40 border-emerald-500/40 text-emerald-300" : "bg-amber-900/40 border-amber-500/40 text-amber-300"}`}
-									role="status"
-									aria-live="polite"
-								>
-									<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
-									{officeHours.isOfficeHours ? "Engineers online" : "Emergency line active"}
-								</span>
-							</div>
-
-							{/* Trust proof bar */}
-							<div className="hero-trust-bar mb-6">
-								{[
-									{ Icon: TrendingUp, text: "20+ years in service" },
-									{ Icon: Shield,     text: "PMI-certified spares" },
-									{ Icon: Clock,      text: "24×7 emergency response" },
-								].map(({ Icon, text }) => (
-									<div key={text} className="trust-item flex items-center gap-2 text-slate-300 font-semibold">
-										<Icon className="text-cyan-400 shrink-0" aria-hidden="true" />
-										<span>{text}</span>
-									</div>
-								))}
-							</div>
-
-							{/* CTAs */}
-							<div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-								{/* Primary CTA with badge */}
-								<div className="relative pt-6 flex-1 sm:flex-none">
-									<span
-										className="absolute top-0 left-1/2 -translate-x-1/2 whitespace-nowrap bg-amber-400 text-amber-900 text-[11px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md z-10"
-										aria-hidden="true"
-									>
-										★ Most Requested
-									</span>
+							<div className="flex flex-col gap-6 flex-1">
+								{/* CTAs — order-4 on mobile (bottom of hero), order-3 on lg */}
+								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3 mt-auto lg:mt-0">
 									<button
 										type="button"
 										onClick={() => {
 											window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
 											navigate("/contact");
 										}}
-										className="hero-cta-primary w-full bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+										className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
 									>
 										Request a Technical Quote
 										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
 									</button>
-								</div>
-								{/* Emergency CTA */}
-								<div className="flex-1 sm:flex-none">
 									<a
 										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
 										target="_blank"
 										rel="noopener noreferrer"
-										className="hero-cta-secondary w-full bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
+										className="hero-cta-secondary flex-1 sm:flex-none bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
 									>
 										<LifeBuoy className="text-cyan-400 shrink-0" aria-hidden="true" />
 										Emergency Breakdown
 									</a>
 								</div>
-							</div>
 
-						</div>
-					</div>
-
-					{/* ── RIGHT COLUMN — proof cards, desktop only ── */}
-					<div className={`hidden lg:block lg:w-[42%] lg:mt-15 transition-all duration-1000 delay-200 ${loaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}>
-						<div className="flex flex-col gap-5">
-							{[
-								{
-									label: "NO LEARNING CURVE",
-									Icon: Award,
-									title: "Ex-OEM Engineers",
-									sub: "Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.",
-								},
-								{
-									label: "EVERY JOB DOCUMENTED",
-									Icon: CheckCircle2,
-									title: "Report on Delivery",
-									sub: "PMI certs, balancing reports, alignment records, condition reports — handed over at job completion.",
-								},
-								{
-									label: "WHEN MINUTES MATTER",
-									Icon: PhoneCall,
-									title: "24×7 Emergency",
-									sub: "Engineers at multiple locations across India. Call us at 2 AM — someone answers.",
-								},
-							].map(({ label, Icon, title, sub }) => (
-								<div
-									key={label}
-									className="bg-[#0d1f38]/80 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.45)] hover:border-blue-400/40 hover:-translate-y-1 transition-all duration-300 group"
-								>
-									<div className="flex justify-between items-center mb-3">
-										<span className="text-blue-300 text-[10px] font-black uppercase tracking-[0.15em]">{label}</span>
-										<Icon className="w-5 h-5 text-blue-400 group-hover:text-cyan-400 transition-colors" aria-hidden="true" />
-									</div>
-									<div className="text-2xl font-black text-white tracking-tight mb-2">{title}</div>
-									<div className="text-sm text-slate-400 leading-relaxed">{sub}</div>
+								{/* Pain-point subtext — order-3 on mobile (above CTAs), order-1 on lg */}
+								<div className="glass-hero mx-auto lg:mx-0 order-3 lg:order-1">
+									<p className="text-slate-200 font-medium leading-relaxed text-center lg:text-left">
+										{h.sub}
+									</p>
 								</div>
-							))}
+
+								{/* Micro trust-proof strip — order-1 on mobile (directly below H1), order-2 on lg */}
+								<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 order-1 lg:order-2">
+									{[
+										{ Icon: CheckCircle2, text: "20+ years in service" },
+										{ Icon: Shield,       text: "PMI-certified spares" },
+										{ Icon: Clock,        text: "24×7 emergency response" },
+									].map(({ Icon, text }) => (
+										<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
+											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+											<span>{text}</span>
+										</div>
+									))}
+								</div>
+							</div>
+							{/* end flex-col order wrapper */}
+
+
+
 						</div>
+					</div>{/* end left column */}
+
+					{/* ── RIGHT COLUMN — proof cards, desktop only, 2/5 width ── */}
+					<div
+						className="w-full lg:w-2/5 hidden lg:flex flex-col gap-5"
+						aria-hidden="true"
+					>
+						{[
+							{
+								delay: "delay-300",
+								label: "No Learning Curve",
+								Icon: Award,
+								title: "Ex-OEM Engineers",
+								sub: "Our team has worked inside Triveni, Siemens, BHEL & Belliss — the same expertise, delivered to your plant.",
+							},
+							{
+								delay: "delay-500",
+								label: "Every Job Documented",
+								Icon: CheckCircle2,
+								title: "Report on Delivery",
+								sub: "PMI certs, balancing reports, alignment records, condition reports — handed over at job completion.",
+							},
+							{
+								delay: "delay-700",
+								label: "When Minutes Matter",
+								Icon: PhoneCall,
+								title: "24×7 Emergency",
+								sub: "Engineers at multiple locations across India. Call us at 2 AM — someone answers.",
+							},
+						].map(({ delay, label, Icon, title, sub }, i) => (
+							<div
+								key={label}
+								className={`bg-linear-to-br from-[#0A192F]/80 to-slate-900/80 backdrop-blur-xl border border-white/10 p-6 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-1000 ${delay} hover:border-blue-400/40 hover:-translate-y-2 group ${i === 1 ? "ml-10" : i === 2 ? "ml-3" : ""} ${loaded ? "translate-x-0 opacity-100" : "translate-x-16 opacity-0"}`}
+							>
+								<div className="flex justify-between items-start mb-3">
+									<div className="text-blue-300 text-xs font-black uppercase tracking-widest">
+										{label}
+									</div>
+									<Icon className="w-5 h-5 text-blue-400" aria-hidden="true" />
+								</div>
+								<div className="text-2xl font-black text-white tracking-tighter mb-2">
+									{title}
+								</div>
+								<div className="text-sm text-slate-400 font-medium leading-relaxed">
+									{sub}
+								</div>
+							</div>
+						))}
 					</div>
 
-				</div>
+				</div>{/* end hero-content-wrap */}
 			</section>
 			<section
 				className="bg-white py-14 md:py-20 border-b border-slate-100 overflow-hidden"
@@ -15833,7 +15841,7 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 			{/* Stats — IntersectionObserver count-up + entrance animation */}
 			{/* Stats — IntersectionObserver count-up + entrance animation.
-			    HOME_STATS and StatNum are defined at module level above HomePage. */}
+				HOME_STATS and StatNum are defined at module level above HomePage. */}
 			<section
 				className="bg-slate-900 py-16 md:py-20 border-b border-slate-800"
 				aria-labelledby="stats-heading"
@@ -24107,7 +24115,7 @@ const ContactPage = memo(({ navigate }) => {
 							</button>
 
 							{/* Risk-reversal block — addresses the four real B2B buyer fears
-							    Research: removing perceived risk increases form completion by 30–40% */}
+								Research: removing perceived risk increases form completion by 30–40% */}
 							<div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
 								{[
 									{
@@ -24254,7 +24262,7 @@ const ContactPage = memo(({ navigate }) => {
 							</h2>
 						</div>
 						{/* Map with loading skeleton — prevents blank white flash on slow connections.
-						    MapEmbed is a named component so useState is called at the top level. */}
+							MapEmbed is a named component so useState is called at the top level. */}
 						<MapEmbed src={CONTACT_INFO.googleMapsEmbed} />
 						<div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
 							<p className="text-slate-500 font-medium text-sm">
@@ -25194,7 +25202,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 						</button>
 
 						{/* Related services — matched service first, then fill to 4.
-						    Computed via useMemo above as `relatedServices` + `relatedMatchedId`. */}
+							Computed via useMemo above as `relatedServices` + `relatedMatchedId`. */}
 						{relatedServices.length > 0 && (
 							<div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
 								<div className="bg-[#0A192F] px-5 py-4">
@@ -26360,7 +26368,7 @@ export default function App() {
 				<DigitalProfilesStrip />
 				<Footer navigate={navigate} />
 				{/* On mobile, product detail pages render their own sticky CTA bar,
-			    so hide the floating WhatsApp FAB there to avoid overlap. */}
+				so hide the floating WhatsApp FAB there to avoid overlap. */}
 				<div
 					className={
 						currentPath.startsWith("/product/") ? "md:block hidden" : ""
@@ -26371,9 +26379,9 @@ export default function App() {
 				<BackToTopButton />
 
 				{/* Exit-intent review popup: fixed overlay, zero layout impact.
-			    Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
-			    minTimeMs lowered to 2 min and scrollPct to 40% to catch engaged visitors.
-			    Both popup and form are lazy-loaded — only fetched when exit intent fires. */}
+				Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
+				minTimeMs lowered to 2 min and scrollPct to 40% to catch engaged visitors.
+				Both popup and form are lazy-loaded — only fetched when exit intent fires. */}
 				{showExitPopup && (
 					<Suspense fallback={null}>
 						<ExitIntentReviewPopup
