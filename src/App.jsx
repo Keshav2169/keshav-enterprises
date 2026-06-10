@@ -41,6 +41,7 @@ import {
 	Target,
 	TrendingUp,
 	User,
+	UserCircle,
 	Users,
 	Wind,
 	Wrench,
@@ -14935,33 +14936,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					>
 						<MessageCircle className="w-5 h-5" aria-hidden="true" /> Get Quote
 					</a>
-					{/* ── Office Hours ── */}
-						<div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-							<div className="flex items-center gap-3 mb-4">
-								<div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 shrink-0">
-									<Clock className="w-5 h-5 text-blue-600" aria-hidden="true" />
-								</div>
-								<h3 className="font-black text-slate-900 text-base">Office Hours</h3>
-							</div>
-							<div className="space-y-2 text-sm">
-								<div className="flex justify-between items-center">
-									<span className="text-slate-500 font-medium">Monday – Saturday</span>
-									<span className="font-black text-slate-900">9:00 AM – 6:00 PM</span>
-								</div>
-								<div className="flex justify-between items-center">
-									<span className="text-slate-500 font-medium">Sunday</span>
-									<span className="font-bold text-slate-400">Closed (emergency only)</span>
-								</div>
-								<div className="flex justify-between items-center pt-1 border-t border-slate-100 mt-2">
-									<span className="text-slate-500 font-medium">Emergency Breakdown</span>
-									<span className="font-black text-red-600">24 × 7</span>
-								</div>
-							</div>
-							<p className="text-[11px] text-slate-400 mt-3 font-medium">IST (UTC+5:30) · All queries acknowledged within {officeHours ? "2 hours" : "next business day"}</p>
-						</div>
-
-						<a
-							href={CONTACT_INFO.indiamart}
+					<a
+						href={CONTACT_INFO.indiamart}
 						target="_blank"
 						rel="noopener noreferrer"
 						className="flex-1 bg-slate-900 text-white py-3.5 rounded-xl font-black text-sm hover:bg-blue-700 transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-500"
@@ -18417,25 +18393,23 @@ const BlogPage = memo(({ navigate }) => {
 												{post.excerpt}
 											</p>
 											<div className="flex items-center justify-between mt-auto pt-5 border-t border-slate-100">
-												<div className="flex items-center gap-4 text-xs text-slate-500 font-medium flex-wrap">
-													<span className="flex items-center gap-1.5">
-														<Calendar
-															className="w-3.5 h-3.5 text-blue-400"
-															aria-hidden="true"
-														/>
-														{new Date(post.date).toLocaleDateString("en-IN", {
-															month: "short",
-															day: "numeric",
-															year: "numeric",
-														})}
-													</span>
-													<span className="flex items-center gap-1.5">
-														<Clock
-															className="w-3.5 h-3.5 text-blue-400"
-															aria-hidden="true"
-														/>
-														{post.readTime}
-													</span>
+												<div className="flex flex-col gap-1.5">
+													<div className="flex items-center gap-3 text-xs text-slate-500 font-medium flex-wrap">
+														<span className="flex items-center gap-1.5">
+															<Calendar className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+															{new Date(post.date).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
+														</span>
+														<span className="flex items-center gap-1.5">
+															<Clock className="w-3.5 h-3.5 text-blue-400" aria-hidden="true" />
+															{post.readTime}
+														</span>
+													</div>
+													{post.author && (
+														<span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+															<UserCircle className="w-3 h-3" aria-hidden="true" />
+															{typeof post.author === "object" ? post.author.name : post.author}
+														</span>
+													)}
 												</div>
 												<div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 transition-colors shadow-sm">
 													<ArrowRight
@@ -18510,6 +18484,20 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 		() => (post ? BLOG_POSTS.filter((p) => p.id !== post.id).slice(0, 2) : []),
 		[post],
 	);
+	// Reading progress bar
+	const [readProgress, setReadProgress] = useState(0);
+	useEffect(() => {
+		const onScroll = () => {
+			const el = document.getElementById("blog-article-body");
+			if (!el) return;
+			const { top, height } = el.getBoundingClientRect();
+			const winH = window.innerHeight;
+			const scrolled = Math.max(0, winH - top);
+			setReadProgress(Math.min(100, (scrolled / height) * 100));
+		};
+		window.addEventListener("scroll", onScroll, { passive: true });
+		return () => window.removeEventListener("scroll", onScroll);
+	}, [slug]);
 	// Scroll instantly in render phase — before React paints — so new post always starts at top
 	const [prevSlug, setPrevSlug] = useState(slug);
 	if (slug !== prevSlug) {
@@ -18611,6 +18599,12 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 			tabIndex={-1}
 			className="pt-20 pb-20 bg-slate-50 min-h-screen"
 		>
+			{/* Reading progress bar */}
+			<div
+				className="fixed top-0 left-0 z-[9999] h-1 bg-blue-600 transition-all duration-150"
+				style={{ width: `${readProgress}%` }}
+				aria-hidden="true"
+			/>
 			<SEOHead
 				title={post.title}
 				description={post.excerpt}
@@ -18707,11 +18701,22 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 					</div>
 				</div>
 				{/* Meta */}
-				<div className="flex flex-wrap items-center gap-6 text-sm text-slate-500 font-medium mb-10 pb-10 border-b border-slate-200">
+				<div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 font-medium mb-10 pb-10 border-b border-slate-200">
+					{/* Author with credential badge */}
 					<span className="flex items-center gap-2">
-						<User className="w-4 h-4 text-blue-500" aria-hidden="true" />
-						{post.author}
+						<span className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+							<User className="w-4 h-4 text-white" aria-hidden="true" />
+						</span>
+						<span>
+							<span className="block font-black text-slate-800 text-sm leading-tight">
+								{typeof post.author === "object" ? post.author.name : post.author}
+							</span>
+							<span className="block text-[11px] text-blue-600 font-bold leading-tight">
+								Ex-OEM Engineers · 15+ yrs experience
+							</span>
+						</span>
 					</span>
+					<span className="hidden sm:block w-px h-8 bg-slate-200" aria-hidden="true" />
 					<span className="flex items-center gap-2">
 						<Calendar className="w-4 h-4 text-blue-500" aria-hidden="true" />
 						{new Date(post.date).toLocaleDateString("en-IN", {
@@ -18724,9 +18729,20 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						<Clock className="w-4 h-4 text-blue-500" aria-hidden="true" />
 						{post.readTime}
 					</span>
+					{/* LinkedIn share — engineers share on LinkedIn */}
+					<a
+						href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/blog/${post.slug}`)}`}
+						target="_blank"
+						rel="noopener noreferrer"
+						title="Share on LinkedIn"
+						className="ml-auto flex items-center gap-2 bg-[#0A66C2] text-white text-xs font-black px-4 py-2 rounded-lg hover:bg-[#004182] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 shrink-0"
+					>
+						<svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+						Share
+					</a>
 				</div>
 				{/* Content */}
-				<div className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 mb-12">
+				<div id="blog-article-body" className="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 mb-12">
 					{post.content.map((block, i) => renderBlock(block, i))}
 				</div>
 				{/* Share */}
@@ -18740,17 +18756,28 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 							consultation.
 						</p>
 					</div>
-					<a
-						href={waMsg(
-							`Hi KESHAV ENTERPRISES, I read "${post.title}" on your website and would like to discuss.`,
-						)}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="shrink-0 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
-					>
-						<MessageCircle className="w-5 h-5" aria-hidden="true" />
-						Discuss on WhatsApp
-					</a>
+					<div className="flex flex-col sm:flex-row gap-3 shrink-0">
+						<a
+							href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${SITE_URL}/blog/${post.slug}`)}`}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center gap-2 bg-[#0A66C2] text-white px-5 py-3.5 rounded-xl font-black text-sm hover:bg-[#004182] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+						>
+							<svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+							Share on LinkedIn
+						</a>
+						<a
+							href={waMsg(
+								`Hi KESHAV ENTERPRISES, I read "${post.title}" on your website and would like to discuss.`,
+							)}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="shrink-0 bg-[#25D366] text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						>
+							<MessageCircle className="w-5 h-5" aria-hidden="true" />
+							Discuss on WhatsApp
+						</a>
+					</div>
 				</div>
 				{/* Related posts */}
 				{/* ── Explore Our Work strip ── */}
@@ -18882,7 +18909,7 @@ const SVC_CATEGORY_MAP = {
 	srv_4: "Dynamic Balancing",
 	srv_5: "Lube Oil Flushing",
 	srv_6: "Machine Alignment",
-	srv_7: null,
+	srv_7: "Troubleshooting",
 };
 
 // Maps service IDs → contact-form inquiry type (used by "Get a Quote" buttons).
@@ -21182,7 +21209,35 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								</div>
 							)}
 						</aside>
-					</div>
+						</div>
+
+					{/* ── See It In Action — Case Studies (mobile-visible) ── */}
+					{sidebarRelatedProjects.length > 0 && (
+						<div className="mt-10 lg:hidden">
+							<div className="border border-slate-200 rounded-2xl overflow-hidden">
+								<div className="bg-[#0A192F] px-6 py-4 flex items-center justify-between">
+									<h3 className="font-black text-white text-sm uppercase tracking-widest">See This Service In Action</h3>
+									<button type="button" onClick={() => navigate("/projects")} className="text-blue-400 hover:text-blue-200 text-[10px] font-bold uppercase tracking-wider transition-colors focus:outline-none focus-visible:underline">View All →</button>
+								</div>
+								<div className="divide-y divide-slate-100">
+									{sidebarRelatedProjects.map((cs) => (
+										<button
+											key={cs.id}
+											type="button"
+											onClick={() => navigate(`/project/${cs.id}`)}
+											className="w-full text-left px-6 py-4 hover:bg-blue-50/40 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
+										>
+											<p className="text-[10px] font-black text-blue-500 uppercase tracking-wider mb-1">{cs.industry} · {cs.year}</p>
+											<p className="font-bold text-slate-900 text-sm leading-snug group-hover:text-blue-600 transition-colors mb-2">{cs.title}</p>
+											{cs.outcomes?.[0] && (
+												<p className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-0.5 inline-block">✓ {cs.outcomes[0]}</p>
+											)}
+										</button>
+									))}
+								</div>
+							</div>
+						</div>
+					)}
 
 					{/* Prev / Next — matches site border-slate-200 card pattern */}
 					{(prevService || nextService) && (
@@ -23807,6 +23862,35 @@ const ContactPage = memo(({ navigate }) => {
 								</div>
 							</div>
 						))}
+						{/* ── Office Hours ── */}
+						<div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+							<div className="flex items-center gap-3 mb-4">
+								<div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 shrink-0">
+									<Clock className="w-5 h-5 text-blue-600" aria-hidden="true" />
+								</div>
+								<h3 className="font-black text-slate-900 text-base">Office Hours</h3>
+							</div>
+							<div className="space-y-2 text-sm">
+								<div className="flex justify-between items-center">
+									<span className="text-slate-500 font-medium">Monday – Saturday</span>
+									<span className="font-black text-slate-900">9:00 AM – 6:00 PM IST</span>
+								</div>
+								<div className="flex justify-between items-center">
+									<span className="text-slate-500 font-medium">Sunday</span>
+									<span className="font-bold text-slate-400">Closed (emergency only)</span>
+								</div>
+								<div className="flex justify-between items-center pt-2 border-t border-slate-100 mt-1">
+									<span className="text-slate-500 font-medium">Emergency Line</span>
+									<span className="font-black text-red-600">24 × 7 Active</span>
+								</div>
+							</div>
+							<p className="text-[11px] text-slate-400 mt-3 font-medium">
+								{officeHours.isOfficeHours
+									? "● We're online now — expect reply within 2 hours"
+									: "● Currently outside office hours — emergency line still active"}
+							</p>
+						</div>
+
 						<a
 							href={CONTACT_INFO.indiamart}
 							target="_blank"
@@ -23894,8 +23978,10 @@ const ContactPage = memo(({ navigate }) => {
 												aria-hidden="true"
 											/>
 											<p className="font-black text-lg">
-												Your inquiry has been sent to our engineers. We will
-												respond within 24 hours.
+												Inquiry sent to our engineers.
+											</p>
+											<p className="text-green-700 font-semibold text-sm mt-1">
+												Expect a technical response within <strong>24 hours</strong> for planned inquiries, or <strong>1 hour</strong> for emergency breakdowns — from an engineer, not a call centre.
 											</p>
 										</div>
 										<button
@@ -24117,7 +24203,7 @@ const ContactPage = memo(({ navigate }) => {
 									className={`${contactInputClass(errors.iType)} appearance-none cursor-pointer`}
 								>
 									<option value="" disabled>
-										Select your requirement...
+										Select inquiry type…
 									</option>
 									<option value="Turbine Overhauling Service">
 										Turbine Overhauling (Planned / Scheduled)
@@ -24254,16 +24340,20 @@ const ContactPage = memo(({ navigate }) => {
 							<div className="mb-10 p-6 bg-slate-50 border-2 border-slate-200 border-dashed rounded-2xl hover:border-blue-400 transition-colors">
 								<label
 									htmlFor="c-files"
-									className="flex items-center text-sm font-black text-slate-700 mb-3 uppercase tracking-widest cursor-pointer"
+									className="flex items-center text-sm font-black text-slate-700 mb-1.5 uppercase tracking-widest cursor-pointer"
 								>
 									<Paperclip className="w-5 h-5 mr-3" aria-hidden="true" />{" "}
 									Attach Technical Drawings / Datasheet (Optional)
 								</label>
+								<p className="text-xs text-slate-400 font-medium mb-3">
+									PDF, DWG, DXF, JPG, PNG — max 10 MB per file. Helps us respond faster with a more accurate quote.
+								</p>
 								<input
 									id="c-files"
 									type="file"
 									multiple
-									aria-label="Attach technical drawings or datasheets (optional)"
+									accept=".pdf,.dwg,.dxf,.jpg,.jpeg,.png"
+									aria-label="Attach technical drawings or datasheets (optional) — PDF, DWG, DXF, JPG, PNG up to 10MB"
 									className="w-full text-slate-700 file:cursor-pointer file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-slate-900 file:text-white hover:file:bg-blue-600 transition-all cursor-pointer outline-none"
 								/>
 							</div>
@@ -25184,9 +25274,9 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 						<button
 							type="button"
 							onClick={() => navigate("/projects")}
-							className="hover:text-blue-400 transition-colors flex items-center gap-1 focus:outline-none focus-visible:underline"
+							className="hover:text-blue-400 transition-colors flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg focus:outline-none focus-visible:underline"
 						>
-							<ArrowLeft className="w-3.5 h-3.5" /> Projects
+							<ArrowLeft className="w-3.5 h-3.5" /> All Projects
 						</button>
 						<ChevronRight className="w-3.5 h-3.5 opacity-40" />
 						<span className="text-blue-400 truncate max-w-xs">{cs.category}</span>
@@ -25289,7 +25379,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 						{/* ── Similar work CTA ── */}
 						<div className="bg-[#0A192F] rounded-2xl overflow-hidden border border-slate-700">
 							<div className="border-t-4 border-blue-600" />
-							<div className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+							<div className="p-6 flex flex-col gap-5">
 								<div>
 									<p className="text-xs font-black text-blue-400 uppercase tracking-widest mb-1">
 										Have a Similar Requirement?
@@ -25330,6 +25420,16 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 									>
 										Send a Detailed RFQ
 										<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+									</button>
+									{/* Download as PDF — lets B2B buyers share internally */}
+									<button
+										type="button"
+										onClick={() => window.print()}
+										className="border border-slate-700 text-slate-400 px-6 py-2.5 rounded-xl font-bold text-xs hover:border-slate-500 hover:text-slate-300 transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+										aria-label="Print or save this case study as PDF for internal sharing"
+									>
+										<Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+										Save as PDF for Internal Sharing
 									</button>
 								</div>
 							</div>
