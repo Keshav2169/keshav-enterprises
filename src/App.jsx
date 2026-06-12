@@ -8291,6 +8291,20 @@ const MARQUEE_CSS = `
   /* ─── GLOBAL OVERFLOW GUARD ─── */
   html,body{overflow-x:hidden;max-width:100vw}
   *{box-sizing:border-box}
+
+  /* ─── PRINT STYLES ─── */
+  @media print{
+    nav,footer,.ke-fab-call,.ke-fab-wa,#skip-nav,[role="banner"],[aria-label="Floating actions"]{display:none!important}
+    body{font-size:11pt;color:#000;background:#fff}
+    a{color:#000;text-decoration:underline}
+    a[href^="tel"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:9pt}
+    .lazy-section{opacity:1!important;transform:none!important}
+    table,th,td{border:1px solid #999;border-collapse:collapse}
+    th,td{padding:4pt 6pt}
+    h1,h2,h3{page-break-after:avoid}
+    .product-spec-table{width:100%;margin-bottom:1rem}
+    @page{margin:1.5cm}
+  }
 `;
 
 // ─── SITE & BRAND CONSTANTS ────────────────────────────────────
@@ -9302,6 +9316,8 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 								loading={priority ? "eager" : "lazy"}
 								decoding={priority ? "sync" : "async"}
 								fetchPriority={priority ? "high" : "low"}
+								width="320"
+								height="320"
 								className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-700 group-hover:scale-110 ${imgLoaded ? "is-loaded" : ""}`}
 								onLoad={() => setImgLoaded(true)}
 								onError={() => {
@@ -10773,6 +10789,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																			src={r.image}
 																			alt=""
 																			aria-hidden="true"
+																			width="800"
+																			height="600"
 																			className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
 																			onError={(e) => {
 																				e.target.style.display = "none";
@@ -10990,6 +11008,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																src={r.image}
 																alt=""
 																aria-hidden="true"
+																width="800"
+																height="600"
 																className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
 																onError={(e) => {
 																	e.target.style.display = "none";
@@ -11190,6 +11210,8 @@ const CredentialBadge = memo(({ imgSrc, Icon, iconColor, title, sub }) => {
 					<img
 						src={imgSrc}
 						alt={title}
+						width="36"
+						height="36"
 						className="w-full h-full object-contain"
 						onError={() => setImgErr(true)}
 					/>
@@ -11241,6 +11263,8 @@ const FooterBadge = memo(
 							src={imgSrc}
 							alt=""
 							aria-hidden="true"
+							width="26"
+							height="26"
 							style={{
 								width: "1.6rem",
 								height: "1.6rem",
@@ -12888,6 +12912,8 @@ const RecentlyViewedStrip = memo(({ currentProductId, navigate }) => {
 									<img
 										src={img}
 										alt={`${p.title} — ${p.category}`}
+										width="160"
+										height="160"
 										loading="lazy"
 										className="max-h-full max-w-full object-contain"
 										onError={(e) => {
@@ -14481,6 +14507,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 													loading="eager"
 													decoding="async"
 													fetchPriority="high"
+													width="600"
+													height="600"
 													className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.12)] ${imgLoaded ? "is-loaded" : ""}`}
 													onLoad={() => setImgLoaded(true)}
 													onError={() => {
@@ -14961,7 +14989,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					className="fixed inset-0 z-9999 bg-black/93 flex items-center justify-center"
 					role="dialog"
 					aria-modal="true"
-					aria-label={`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
+					aria-labelledby="lightbox-dialog-title"
 					onClick={() => setLightbox(false)}
 					onKeyDown={(e) => e.key === "Escape" && setLightbox(false)}
 					onTouchStart={onTouchStart}
@@ -14976,6 +15004,9 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					>
 						<X className="w-5 h-5" aria-hidden="true" />
 					</button>
+					<span id="lightbox-dialog-title" className="sr-only">
+						{`Zoomed: ${product.title} — image ${safeActive + 1} of ${total}`}
+					</span>
 					<span
 						className="absolute top-4 left-4 bg-white/10 border border-white/20 text-white text-sm font-bold px-3 py-1 rounded-full backdrop-blur-sm"
 						aria-live="polite"
@@ -15034,6 +15065,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 								key={`lb-${safeActive}`}
 								src={activeImage}
 								alt={`${product.title} — zoomed view ${safeActive + 1}`}
+								width="1200"
+								height="1200"
 								className={`max-w-[92vw] max-h-[88vh] object-contain drop-shadow-2xl transition-opacity duration-300 ${lbLoaded ? "opacity-100" : "opacity-0"}`}
 								onLoad={() => setLbLoaded(true)}
 								onError={() => {
@@ -15098,6 +15131,8 @@ const FeaturedProductImage = memo(({ product }) => {
 							loading="lazy"
 							decoding="async"
 							fetchPriority="low"
+							width="240"
+							height="240"
 							className={`media-img max-w-full max-h-full w-auto h-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-700 group-hover:scale-110 pointer-events-none ${imgLoaded ? "is-loaded" : ""}`}
 							onLoad={() => setImgLoaded(true)}
 							onError={() => {
@@ -15141,10 +15176,17 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 	// PERF: arrow state is sampled every 12 frames (~5x/s) instead of 60fps
 	// to avoid triggering 60 React re-renders per second from the rAF loop.
 	// PERF: rAF is gated by isVisible — it fully stops when scrolled off-screen.
+	// ACCESSIBILITY: rAF loop is skipped entirely when prefers-reduced-motion is set.
 	const frameCount = useRef(0);
 	const tickRef = useRef(null);
+	const prefersReducedMotion = useMemo(
+		() => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+		[],
+	);
 
 	useEffect(() => {
+		// Don't auto-scroll when user prefers reduced motion
+		if (prefersReducedMotion) return;
 		tickRef.current = () => {
 			const el = trackRef.current;
 			if (!el) {
@@ -15547,6 +15589,11 @@ const StatNum = memo(({ end, suffix }) => {
 			([entry]) => {
 				if (!entry.isIntersecting || fired) return;
 				setFired(true);
+				// Skip animation entirely when user prefers reduced motion
+				if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+					setVal(end);
+					return;
+				}
 				const duration = 1400;
 				const start = performance.now();
 				const easeOut = (t) => 1 - (1 - t) ** 3;
@@ -16312,6 +16359,8 @@ const HomePage = memo(({ navigate }) => {
 											src={cs.image}
 											alt=""
 											aria-hidden="true"
+											width="800"
+											height="500"
 											loading="lazy"
 											decoding="async"
 											className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300"
@@ -17049,7 +17098,7 @@ const AboutPage = memo(({ navigate }) => {
 								tabIndex={onClick ? 0 : undefined}
 								onClick={onClick || undefined}
 								onKeyDown={
-									onClick ? (e) => e.key === "Enter" && onClick() : undefined
+									onClick ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onClick()) : undefined
 								}
 								className={`group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 transition-all hover:-translate-y-1 hover:shadow-xl${onClick ? " cursor-pointer hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" : " hover:border-slate-400"}`}
 								style={{ aspectRatio: "4/3" }}
@@ -17057,6 +17106,8 @@ const AboutPage = memo(({ navigate }) => {
 								<img
 									src={src}
 									alt={alt}
+									width="600"
+									height="450"
 									loading="lazy"
 									decoding="async"
 									className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -22882,6 +22933,8 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 						src={ind.image}
 						alt=""
 						aria-hidden="true"
+						width="800"
+						height="600"
 						loading="eager"
 						decoding="async"
 						fetchPriority="high"
@@ -23103,6 +23156,74 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					</div>
 				</section>
 
+				{/* ── Industry Case Studies ── */}
+				{(() => {
+					// Map industry ID → industry label(s) used in CASE_STUDIES
+					const IND_CS_MAP = {
+						ind_1: ["Power Generation"],
+						ind_2: ["Sugar Mill", "Distillery"],
+						ind_3: ["Paper Mill"],
+						ind_4: [],
+						ind_5: [],
+						ind_6: [],
+						ind_7: ["Cement Plant", "Steel Plant"],
+					};
+					const labels = IND_CS_MAP[industryId] || [];
+					const relatedCS = CASE_STUDIES.filter((cs) => labels.includes(cs.industry)).slice(0, 3);
+					if (relatedCS.length === 0) return null;
+					return (
+						<section aria-label="Related case studies" className="lazy-section">
+							<div className="flex items-center gap-3 mb-8">
+								<div className={`w-1.5 h-8 rounded-full ${ind.accent.replace("text-", "bg-")}`} />
+								<h2 className="text-2xl font-black text-slate-900 tracking-tight">
+									See How We Helped {ind.title} Clients
+								</h2>
+							</div>
+							<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+								{relatedCS.map((cs) => (
+									<button
+										key={cs.id}
+										type="button"
+										onClick={() => navigate(`/project/${cs.id}`)}
+										className="group text-left bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-blue-300 hover:-translate-y-0.5 transition-all p-6 flex flex-col gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+									>
+										<div className="flex gap-2 flex-wrap">
+											<span className="bg-blue-600/10 text-blue-700 text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+												{cs.category}
+											</span>
+											<span className="bg-slate-100 text-slate-500 text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+												{cs.year}
+											</span>
+										</div>
+										<p className="font-black text-slate-900 text-sm leading-snug group-hover:text-blue-700 transition-colors">
+											{cs.title}
+										</p>
+										{cs.outcomes[0] && (
+											<div className="flex items-start gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2.5 mt-auto">
+												<CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" aria-hidden="true" />
+												<p className="text-emerald-800 text-xs font-semibold leading-snug">{cs.outcomes[0]}</p>
+											</div>
+										)}
+										<span className="flex items-center gap-1 text-xs font-black text-blue-600 group-hover:gap-2 transition-all">
+											Read Case Study <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+										</span>
+									</button>
+								))}
+							</div>
+							<div className="mt-6 text-center">
+								<button
+									type="button"
+									onClick={() => navigate("/projects")}
+									className="inline-flex items-center gap-2 border-2 border-slate-200 text-slate-600 px-6 py-3 rounded-xl font-black text-sm hover:border-blue-400 hover:text-blue-700 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+								>
+									<Briefcase className="w-4 h-4 shrink-0" aria-hidden="true" />
+									View All {ind.title} Projects
+								</button>
+							</div>
+						</section>
+					);
+				})()}
+
 				{/* ── CTA ── */}
 				<section
 					aria-label="Get in touch"
@@ -23235,6 +23356,8 @@ const IndustriesPage = memo(({ navigate }) => (
 											src={ind.image}
 											alt=""
 											aria-hidden="true"
+											width="800"
+											height="600"
 											className="absolute inset-0 w-full h-full object-cover object-center"
 											style={{ opacity: 0.9 }}
 											loading="lazy"
@@ -24861,9 +24984,15 @@ PROJECTS_LIST_SCHEMA = {
 };
 
 // ─── PROJECT GALLERY PAGE ─────────────────────────────────────
+const PROJECTS_PAGE_SIZE = 9;
+
 const ProjectGalleryPage = memo(({ navigate }) => {
 	const [activeCategory, setActiveCategory] = useState("All");
 	const [activeIndustry, setActiveIndustry] = useState("All");
+	const [searchQuery, setSearchQuery] = useState("");
+	const [currentPage, setCurrentPage] = useState(1);
+	const searchRef = useRef(null);
+	const gridTopRef = useRef(null);
 
 	const categories = useMemo(
 		() => ["All", ...new Set(CASE_STUDIES.map((c) => c.category))],
@@ -24873,15 +25002,41 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 		() => ["All", ...new Set(CASE_STUDIES.map((c) => c.industry))],
 		[],
 	);
-	const filtered = useMemo(
-		() =>
-			CASE_STUDIES.filter(
-				(c) =>
-					(activeCategory === "All" || c.category === activeCategory) &&
-					(activeIndustry === "All" || c.industry === activeIndustry),
-			),
-		[activeCategory, activeIndustry],
-	);
+
+	// Reset to page 1 whenever filters/search change
+	const setActiveCategoryAndReset = useCallback((v) => { setActiveCategory(v); setCurrentPage(1); }, []);
+	const setActiveIndustryAndReset = useCallback((v) => { setActiveIndustry(v); setCurrentPage(1); }, []);
+	const setSearchQueryAndReset = useCallback((v) => { setSearchQuery(v); setCurrentPage(1); }, []);
+
+	const filtered = useMemo(() => {
+		const q = searchQuery.trim().toLowerCase();
+		return CASE_STUDIES.filter((c) => {
+			if (activeCategory !== "All" && c.category !== activeCategory) return false;
+			if (activeIndustry !== "All" && c.industry !== activeIndustry) return false;
+			if (q) {
+				const hay = [c.title, c.scope, c.challenge, c.solution, c.industry, c.category, ...(c.tags || []), ...(c.outcomes || [])].join(" ").toLowerCase();
+				if (!hay.includes(q)) return false;
+			}
+			return true;
+		});
+	}, [activeCategory, activeIndustry, searchQuery]);
+
+	const totalPages = Math.ceil(filtered.length / PROJECTS_PAGE_SIZE);
+	const paginated = filtered.slice((currentPage - 1) * PROJECTS_PAGE_SIZE, currentPage * PROJECTS_PAGE_SIZE);
+
+	const goPage = useCallback((n) => {
+		setCurrentPage(n);
+		gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+	}, []);
+
+	const hasFilters = activeCategory !== "All" || activeIndustry !== "All" || searchQuery !== "";
+	const clearAll = useCallback(() => {
+		setActiveCategory("All");
+		setActiveIndustry("All");
+		setSearchQuery("");
+		setCurrentPage(1);
+		searchRef.current?.focus();
+	}, []);
 
 	return (
 		<main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
@@ -24938,6 +25093,32 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 							</div>
 						))}
 					</div>
+					{/* ── Search box ── */}
+					<div className="mt-8 w-full max-w-2xl relative">
+						<label htmlFor="projects-search" className="sr-only">Search case studies</label>
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+						<input
+							ref={searchRef}
+							id="projects-search"
+							type="search"
+							value={searchQuery}
+							onChange={(e) => setSearchQueryAndReset(e.target.value)}
+							placeholder="Search by turbine type, industry, or service…"
+							autoComplete="off"
+							spellCheck="false"
+							className="w-full bg-white/10 border border-white/20 text-white placeholder:text-slate-400 rounded-xl pl-12 pr-12 py-4 text-base font-medium focus:outline-none focus:bg-white/20 focus:border-blue-400 focus-visible:ring-2 focus-visible:ring-blue-400 transition-all"
+						/>
+						{searchQuery && (
+							<button
+								type="button"
+								onClick={() => setSearchQueryAndReset("")}
+								aria-label="Clear search"
+								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+							>
+								<X className="w-4 h-4" aria-hidden="true" />
+							</button>
+						)}
+					</div>
 				</div>
 			</div>
 
@@ -24952,7 +25133,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 							<button
 								key={cat}
 								type="button"
-								onClick={() => setActiveCategory(cat)}
+								onClick={() => setActiveCategoryAndReset(cat)}
 								className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
 									activeCategory === cat
 										? "bg-blue-600 text-white shadow-md"
@@ -24969,7 +25150,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 							<button
 								key={ind}
 								type="button"
-								onClick={() => setActiveIndustry(ind)}
+								onClick={() => setActiveIndustryAndReset(ind)}
 								className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
 									activeIndustry === ind
 										? "bg-slate-800 text-white shadow-md"
@@ -24979,6 +25160,15 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 								{ind}
 							</button>
 						))}
+						{hasFilters && (
+							<button
+								type="button"
+								onClick={clearAll}
+								className="ml-2 text-xs font-black text-slate-400 hover:text-slate-700 underline underline-offset-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+							>
+								Clear all
+							</button>
+						)}
 					</div>
 				</div>
 			</div>
@@ -25013,8 +25203,8 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 						</div>
 					</div>
 				) : (
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-						{filtered.map((cs, i) => (
+					<div ref={gridTopRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+						{paginated.map((cs, i) => (
 							<article
 								key={cs.id}
 								className="lazy-section bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 flex flex-col group cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50"
@@ -25031,6 +25221,8 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 											src={cs.image}
 											alt=""
 											aria-hidden="true"
+											width="800"
+											height="500"
 											loading="lazy"
 											decoding="async"
 											className="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity duration-300"
@@ -25105,6 +25297,58 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 								</div>
 							</article>
 						))}
+					</div>
+				)}
+
+				{/* ── Pagination ── */}
+				{totalPages > 1 && (
+					<div className="mt-10 flex items-center justify-center gap-2 flex-wrap">
+						<button
+							type="button"
+							onClick={() => goPage(currentPage - 1)}
+							disabled={currentPage === 1}
+							aria-label="Previous page"
+							className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:border-blue-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+						>
+							<ChevronLeft className="w-4 h-4" aria-hidden="true" />
+						</button>
+						{Array.from({ length: totalPages }, (_, i) => i + 1)
+							.filter((n) => n === 1 || n === totalPages || Math.abs(n - currentPage) <= 1)
+							.reduce((acc, n, idx, arr) => {
+								if (idx > 0 && n - arr[idx - 1] > 1) acc.push("…");
+								acc.push(n);
+								return acc;
+							}, [])
+							.map((item, idx) =>
+								item === "…" ? (
+									<span key={`ellipsis-${idx}`} className="w-10 h-10 flex items-center justify-center text-slate-400 font-bold text-sm">
+										…
+									</span>
+								) : (
+									<button
+										key={item}
+										type="button"
+										onClick={() => goPage(item)}
+										aria-current={item === currentPage ? "page" : undefined}
+										className={`w-10 h-10 flex items-center justify-center rounded-xl text-sm font-black transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${
+											item === currentPage
+												? "bg-blue-600 text-white shadow-md"
+												: "border border-slate-200 bg-white text-slate-600 hover:border-blue-400 hover:text-blue-600"
+										}`}
+									>
+										{item}
+									</button>
+								),
+							)}
+						<button
+							type="button"
+							onClick={() => goPage(currentPage + 1)}
+							disabled={currentPage === totalPages}
+							aria-label="Next page"
+							className="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 hover:border-blue-400 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+						>
+							<ChevronRight className="w-4 h-4" aria-hidden="true" />
+						</button>
 					</div>
 				)}
 
@@ -25252,6 +25496,8 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 						src={cs.image}
 						alt=""
 						aria-hidden="true"
+						width="800"
+						height="500"
 						loading="eager"
 						decoding="async"
 						fetchPriority="high"
@@ -26341,82 +26587,139 @@ const DownloadsPage = memo(({ navigate }) => {
 DownloadsPage.displayName = "DownloadsPage";
 
 // ─── 404 NOT FOUND PAGE (Audit Fix: unknown routes) ──────────
-const NotFoundPage = memo(({ navigate }) => (
-	<main
-		id="main-content"
-		tabIndex={-1}
-		className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-[#0A192F] px-4"
-	>
-		<SEOHead
-			title="Page Not Found — 404"
-			description="The page you're looking for doesn't exist. Browse our products and services."
-			noIndex={true}
-		/>
-		<div className="text-center max-w-2xl w-full">
-			{/* Big 404 */}
-			<p
-				className="text-[7rem] md:text-[9rem] font-black leading-none mb-2 text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500"
-				aria-hidden="true"
-			>
-				404
-			</p>
-			<div className="w-16 h-1 bg-blue-600 rounded-full mx-auto mb-6" aria-hidden="true" />
-			<h1 className="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">
-				This page has gone offline
-			</h1>
-			<p className="text-slate-400 font-medium mb-10 max-w-md mx-auto leading-relaxed">
-				The page you&apos;re looking for doesn&apos;t exist or has been moved.
-				Use the links below to get back on track — our engineering team is still
-				available 24×7.
-			</p>
-			{/* Primary actions */}
-			<div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
-				<button
-					type="button"
-					onClick={() => navigate("/")}
-					className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black hover:bg-blue-500 transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+const NotFoundPage = memo(({ navigate }) => {
+	const [notFoundSearch, setNotFoundSearch] = useState("");
+
+	const handleNotFoundSearch = useCallback((e) => {
+		e.preventDefault();
+		const q = notFoundSearch.trim().toLowerCase();
+		if (!q) return;
+		// Route to best matching section based on keywords
+		if (/product|spare|bearing|seal|filter|strainer|hose|bellow|joint|ring/i.test(q)) {
+			navigate("/products");
+		} else if (/service|overhaul|commission|erect|balanc|alignment|flush|reverse|engineer/i.test(q)) {
+			navigate("/services");
+		} else if (/project|case study|case-study|sugar|paper|cement|steel|power plant/i.test(q)) {
+			navigate("/projects");
+		} else if (/download|catalogue|catalog|datasheet|brochure/i.test(q)) {
+			navigate("/downloads");
+		} else if (/blog|article|guide/i.test(q)) {
+			navigate("/blog");
+		} else if (/about|team|company|who/i.test(q)) {
+			navigate("/about");
+		} else if (/contact|quote|rfq|call|whatsapp/i.test(q)) {
+			navigate("/contact");
+		} else {
+			navigate("/products");
+		}
+	}, [notFoundSearch, navigate]);
+
+	return (
+		<main
+			id="main-content"
+			tabIndex={-1}
+			className="pt-20 pb-20 min-h-screen flex flex-col items-center justify-center bg-[#0A192F] px-4"
+		>
+			<SEOHead
+				title="Page Not Found — 404"
+				description="The page you're looking for doesn't exist. Browse our products and services."
+				noIndex={true}
+			/>
+			<div className="text-center max-w-2xl w-full">
+				{/* Big 404 */}
+				<p
+					className="text-[7rem] md:text-[9rem] font-black leading-none mb-2 text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500"
+					aria-hidden="true"
 				>
-					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Back to Home
-				</button>
-				<a
-					href={waMsg(
-						"Hi, I couldn't find a page on your website. Can you help?",
-					)}
-					target="_blank"
-					rel="noopener noreferrer"
-					className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-black hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+					404
+				</p>
+				<div className="w-16 h-1 bg-blue-600 rounded-full mx-auto mb-6" aria-hidden="true" />
+				<h1 className="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">
+					This page has gone offline
+				</h1>
+				<p className="text-slate-400 font-medium mb-8 max-w-md mx-auto leading-relaxed">
+					The page you&apos;re looking for doesn&apos;t exist or has been moved.
+					Search for what you need, or use the links below.
+				</p>
+
+				{/* ── Search bar ── */}
+				<form
+					onSubmit={handleNotFoundSearch}
+					className="mb-10 w-full max-w-lg mx-auto"
+					role="search"
+					aria-label="Search site"
 				>
-					<MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
-				</a>
-			</div>
-			{/* Quick-links grid */}
-			<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">
-				Or jump to
-			</p>
-			<div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-				{[
-					{ label: "Services", path: "/services", Icon: Settings },
-					{ label: "Products", path: "/products", Icon: Layers },
-					{ label: "Downloads", path: "/downloads", Icon: Download },
-					{ label: "Projects", path: "/projects", Icon: Briefcase },
-					{ label: "Contact", path: "/contact", Icon: Phone },
-				].map(({ label, path, Icon }) => (
+					<div className="relative">
+						<label htmlFor="notfound-search" className="sr-only">Search our site</label>
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+						<input
+							id="notfound-search"
+							type="search"
+							value={notFoundSearch}
+							onChange={(e) => setNotFoundSearch(e.target.value)}
+							placeholder="Search products, services, projects…"
+							autoComplete="off"
+							spellCheck="false"
+							className="w-full bg-white/10 border border-white/20 text-white placeholder:text-slate-400 rounded-xl pl-12 pr-32 py-4 text-base font-medium focus:outline-none focus:bg-white/15 focus:border-blue-400 focus-visible:ring-2 focus-visible:ring-blue-400 transition-all"
+						/>
+						<button
+							type="submit"
+							className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-black transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+						>
+							Search
+						</button>
+					</div>
+				</form>
+
+				{/* Primary actions */}
+				<div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
 					<button
-						key={path}
 						type="button"
-						onClick={() => navigate(path)}
-						className="flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-400/60 hover:bg-white/10 hover:-translate-y-0.5 transition-all text-slate-400 hover:text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+						onClick={() => navigate("/")}
+						className="bg-blue-600 text-white px-7 py-3.5 rounded-xl font-black hover:bg-blue-500 transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 					>
-						<div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition-colors border border-white/10">
-							<Icon className="w-5 h-5" aria-hidden="true" />
-						</div>
-						<span className="text-sm font-black">{label}</span>
+						<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Back to Home
 					</button>
-				))}
+					<a
+						href={waMsg(
+							"Hi, I couldn't find a page on your website. Can you help?",
+						)}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-black hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+					>
+						<MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
+					</a>
+				</div>
+				{/* Quick-links grid */}
+				<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">
+					Or jump to
+				</p>
+				<div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+					{[
+						{ label: "Services", path: "/services", Icon: Settings },
+						{ label: "Products", path: "/products", Icon: Layers },
+						{ label: "Downloads", path: "/downloads", Icon: Download },
+						{ label: "Projects", path: "/projects", Icon: Briefcase },
+						{ label: "Contact", path: "/contact", Icon: Phone },
+					].map(({ label, path, Icon }) => (
+						<button
+							key={path}
+							type="button"
+							onClick={() => navigate(path)}
+							className="flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-400/60 hover:bg-white/10 hover:-translate-y-0.5 transition-all text-slate-400 hover:text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+						>
+							<div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition-colors border border-white/10">
+								<Icon className="w-5 h-5" aria-hidden="true" />
+							</div>
+							<span className="text-sm font-black">{label}</span>
+						</button>
+					))}
+				</div>
 			</div>
-		</div>
-	</main>
-));
+		</main>
+	);
+});
 NotFoundPage.displayName = "NotFoundPage";
 
 // ─── APP ROOT ─────────────────────────────────────────────────
