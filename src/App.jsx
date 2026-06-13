@@ -7770,9 +7770,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 					role="listbox"
 					aria-label="Select currency"
 					className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
-					style={{
-						animation: "mobileDrawerIn 0.18s cubic-bezier(0.3,0,0,1) both",
-					}}
+					style={MOBILE_DRAWER_ANIM_STYLE_V2}
 				>
 					{/* "Auto-detected" hint shown only on first visit */}
 					{detectedAuto && (
@@ -7807,7 +7805,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 								{c.flag}
 							</span>
 							<span className="font-bold w-9 shrink-0">{c.code}</span>
-							<span className="text-slate-400 text-xs truncate">{c.name}</span>
+							<span className="text-slate-500 text-xs truncate">{c.name}</span>
 							{c.code === code && (
 								<CheckCircle2
 									className="w-3.5 h-3.5 ml-auto shrink-0 text-blue-500"
@@ -7817,7 +7815,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 						</button>
 					))}
 					<div className="px-3.5 py-2 bg-slate-50 border-t border-slate-100">
-						<p className="text-[10px] text-slate-400 leading-relaxed">
+						<p className="text-[10px] text-slate-500 leading-relaxed">
 							Prices converted from INR at live market rates. Actual invoice
 							will be in INR.
 						</p>
@@ -8072,8 +8070,8 @@ const MARQUEE_CSS = `
   @media(min-width:1024px){.hero-badges{justify-content:flex-start}}
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:28px 20px 44px;min-height:calc(100svh - 64px)}
-  @media(min-width:640px){.hero-content-wrap{padding:60px 32px 52px}}
+  .hero-content-wrap{padding:28px 20px 36px}
+  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px)}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset}}
 
   @media(max-width:767px){
@@ -8306,6 +8304,58 @@ const MARQUEE_CSS = `
     @page{margin:1.5cm}
   }
 `;
+
+// ─── STATIC STYLE OBJECTS ─────────────────────────────────────────────────
+// Hoisted from JSX render returns — prevents new object allocation each render.
+const FOOTER_BADGE_IMG_STYLE = { width: "1.6rem", height: "1.6rem", objectFit: "contain" };
+const ABOUT_IMG_STYLE = { opacity: 0.45, objectFit: "cover", objectPosition: "center center", width: "100%", height: "100%" };
+const FLEX_ITEM_STYLE = { flex: "1 1 280px" };
+const FONT_NORMAL_STYLE = { fontStyle: "normal" };
+const FOOTER_BADGES_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".45rem", alignItems: "center" };
+const FOOTER_BADGE_CHIP_LABEL_STYLE = { fontWeight: 700, color: "#38BDF8", fontSize: "7.5px", letterSpacing: ".15em", textTransform: "uppercase" };
+const FOOTER_BADGE_SUB_STYLE = { margin: "2px 0 0", fontSize: ".68rem", color: "#64748b", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis" };
+const FOOTER_BADGE_TITLE_STYLE = { margin: 0, fontSize: ".78rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.25 };
+const FOOTER_BOTTOM_SECTION_STYLE = { marginBottom: "1rem", paddingBottom: "1rem", borderBottom: "1px solid #0d2040" };
+const FOOTER_CARD_LABEL_STYLE = { fontSize: "9px", fontWeight: 800, letterSpacing: ".2em", textTransform: "uppercase", color: "#64748b" };
+const FOOTER_CARD_STYLE = { borderRadius: ".875rem", padding: "1.4rem", background: "#071428", border: "1px solid #0d2040" };
+const FOOTER_CERT_ROW_STYLE = { display: "flex", alignItems: "center", gap: ".6rem", fontFamily: "monospace", fontSize: ".62rem", color: "#475569", letterSpacing: ".1em" };
+const FOOTER_COL_STYLE = { display: "flex", flexDirection: "column", gap: ".85rem" };
+const FOOTER_DIVIDER_STYLE = { height: "1px", background: "#0d2040", marginBottom: "1.75rem" };
+const FOOTER_ELLIPSIS_STYLE = { display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" };
+const FOOTER_ICON_CONTACT_STYLE = { width: ".85rem", height: ".85rem", color: "#38BDF8", flexShrink: 0, marginTop: ".1rem" };
+const FOOTER_ICON_LG_STYLE = { width: ".875rem", height: ".875rem", color: "#0891B2", flexShrink: 0 };
+const FOOTER_ICON_SM_STYLE = { width: ".75rem", height: ".75rem", color: "#0891B2", flexShrink: 0 };
+const FOOTER_INNER_STYLE = { maxWidth: "80rem", margin: "0 auto", padding: "2.75rem 1.5rem" };
+const FOOTER_LABEL_STYLE = { fontSize: "8.5px", fontWeight: 700, letterSpacing: ".2em", textTransform: "uppercase", color: "#64748b", marginBottom: ".5rem" };
+const FOOTER_LIST_STYLE = { listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: ".45rem" };
+const FOOTER_MONO_BOLD_STYLE = { fontFamily: "monospace", fontWeight: 600, fontSize: ".82rem", color: "#e2e8f0" };
+const FOOTER_MONO_STYLE = { fontFamily: "monospace", fontSize: ".66rem", color: "#475569" };
+const FOOTER_ROW_STYLE = { display: "flex", gap: ".75rem", alignItems: "flex-start" };
+const FOOTER_STAT_LABEL_STYLE = { margin: ".25rem 0 0", fontSize: ".6rem", color: "#64748b", letterSpacing: ".1em", textTransform: "uppercase" };
+const FOOTER_STAT_NUM_STYLE = { fontSize: "2rem", fontWeight: 900, color: "#fff", lineHeight: 1 };
+const FOOTER_STAT_UNIT_STYLE = { fontSize: "1.25rem", fontWeight: 300, color: "#38BDF8" };
+const FOOTER_TINY_LABEL_STYLE = { fontFamily: "monospace", fontSize: "8px", letterSpacing: ".18em", textTransform: "uppercase", color: "#64748b" };
+const FOOTER_UPPER_STYLE = { maxWidth: "80rem", margin: "0 auto", padding: "3.5rem 1.5rem 2rem" };
+const MB_10_STYLE = { marginBottom: "2.5rem" };
+const MB_5_STYLE = { marginBottom: "1.25rem" };
+const MIN_WIDTH_FLEX_STYLE = { minWidth: 0, flex: 1 };
+const MIN_WIDTH_STYLE = { minWidth: 0 };
+const MOBILE_DRAWER_ANIM_STYLE = { animation: "mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both", paddingBottom: "env(safe-area-inset-bottom)" };
+const MOBILE_DRAWER_ANIM_STYLE_V2 = { animation: "mobileDrawerIn 0.18s cubic-bezier(0.3,0,0,1) both" };
+const PROGRESS_BAR_STYLE = { height: "4px", background: "linear-gradient(90deg,#0891B2 0%,#06B6D4 50%,#38BDF8 100%)" };
+const PROGRESS_BG_STYLE = { position: "relative", overflow: "hidden", background: "linear-gradient(135deg,#0A192F 0%,#0d2b4e 50%,#0A192F 100%)" };
+const PROGRESS_OVERLAY_STYLE = { position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at 20% 50%,rgba(56,189,248,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(14,165,233,0.06) 0%,transparent 60%)" };
+const PROJECTS_DOT_BG_STYLE = { backgroundImage: "radial-gradient(circle, #3b82f6 1px, transparent 1px)", backgroundSize: "24px 24px" };
+const PROJECTS_GRID_STYLE = { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(320px,100%),1fr))", gap: "1.5rem" };
+const SAFE_AREA_BOTTOM_STYLE = { paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0px))" };
+const SEARCH_POPOVER_ANIM_STYLE = { animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both" };
+const SEARCH_POPOVER_ANIM_STYLE_V2 = { animation: "searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both" };
+const SKELETON_IMG_STYLE = { background: "#e2e8f0", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem" };
+const SOCIAL_PILLS_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".75rem", alignItems: "center" };
+const SOCIAL_PILL_INNER_STYLE = { display: "inline-flex", alignItems: "center", gap: "5px" };
+const TESTIMONIAL_ATTRIB_STYLE = { margin: 0, fontSize: ".78rem", color: "#94a3b8", fontWeight: 500, lineHeight: 1.3 };
+const TESTIMONIAL_QUOTE_STYLE = { fontFamily: "Georgia,serif", fontStyle: "italic", fontSize: "clamp(1rem,2vw,1.2rem)", lineHeight: 1.65, color: "#e2e8f0" };
+const THUMB_SIZE_STYLE = { width: "clamp(56px, 15vw, 84px)", height: "clamp(56px, 15vw, 84px)" };
 
 // ─── SITE & BRAND CONSTANTS ────────────────────────────────────
 // Declared here — before LOCAL_SCHEMA — so every consumer below
@@ -9286,7 +9336,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 			{/* Fixed-height image container — prevents CLS */}
 			<div
 				key={pImg}
-				className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
+				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
 				aria-hidden="true"
 			>
 				{/* Category badge */}
@@ -9337,7 +9387,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 				)}
 			</div>
 
-			<div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
+			<div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col bg-white">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
 					<a
 						href={`#/product/${product.id}`}
@@ -9380,11 +9430,11 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 							)}
 						</span>
 						{product.priceRange.unit && (
-							<span className="text-xs text-slate-400 font-semibold">
+							<span className="text-xs text-slate-500 font-semibold">
 								{product.priceRange.unit}
 							</span>
 						)}
-						<span className="ml-auto text-[10px] text-slate-400 font-medium italic">
+						<span className="ml-auto text-[10px] text-slate-500 font-medium italic">
 							indicative
 						</span>
 					</div>
@@ -9397,13 +9447,13 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						<span className="text-sm font-semibold text-slate-500">
 							Price on request
 						</span>
-						<span className="ml-auto text-[10px] text-slate-400 font-medium italic">
+						<span className="ml-auto text-[10px] text-slate-500 font-medium italic">
 							contact for quote
 						</span>
 					</div>
 				)}
 
-				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
+				<div className="flex flex-row gap-2 mt-auto pt-5 border-t border-slate-100">
 					<a
 						href={waMsg(
 							`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`,
@@ -9412,19 +9462,19 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						rel="noopener noreferrer"
 						onClick={(e) => e.stopPropagation()}
 						aria-label={`Request quote for ${product.title} via WhatsApp`}
-						className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-xs sm:text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 					>
-						<MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> RFQ /
-						WhatsApp
+						<MessageCircle className="w-4 h-4 mr-1.5 shrink-0" aria-hidden="true" />
+						RFQ
 					</a>
 					{/* FIX: was pointer-events-none decorative; now a real interactive button */}
 					<button
 						type="button"
 						onClick={handleSpecsClick}
-						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3 text-xs sm:text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 						aria-label={`View technical specs for ${product.title}`}
 					>
-						Technical Specs{" "}
+						Specs{" "}
 						<ArrowRight
 							className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform"
 							aria-hidden="true"
@@ -9622,15 +9672,7 @@ const FLAG_IMG = ({ flagCode, size = 24 }) => (
 			FLAG_SVGS[flagCode]
 		) : (
 			<span
-				style={{
-					background: "#e2e8f0",
-					width: "100%",
-					height: "100%",
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "center",
-					color: "#94a3b8",
-				}}
+				style={SKELETON_IMG_STYLE}
 			>
 				<Globe style={{ width: size * 0.65, height: size * 0.65 }} />
 			</span>
@@ -9925,7 +9967,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 					<div className="px-3 pt-3 pb-2 border-b border-slate-100">
 						<div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5">
 							<Search
-								className="w-3.5 h-3.5 text-slate-400 shrink-0"
+								className="w-3.5 h-3.5 text-slate-500 shrink-0"
 								aria-hidden="true"
 							/>
 							<input
@@ -9941,7 +9983,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 								<button
 									type="button"
 									onClick={() => setLangSearch("")}
-									className="text-slate-400 hover:text-slate-600"
+									className="text-slate-500 hover:text-slate-600"
 									aria-label="Clear search"
 								>
 									<X className="w-3 h-3" />
@@ -9951,13 +9993,13 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 					</div>
 					{/* Label row */}
 					<div className="px-3.5 pt-2 pb-1 flex items-center justify-between">
-						<span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+						<span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
 							{isSearching
 								? `${filteredLangs.length} result${filteredLangs.length !== 1 ? "s" : ""}`
 								: "Popular"}
 						</span>
 						{!isSearching && (
-							<span className="text-[10px] text-slate-400">
+							<span className="text-[10px] text-slate-500">
 								{ALL_LANGUAGES.length} total · search to see all
 							</span>
 						)}
@@ -9968,7 +10010,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 						className="max-h-64 overflow-y-auto py-1 scrollbar-hide"
 					>
 						{filteredLangs.length === 0 && (
-							<p className="text-center text-[12px] text-slate-400 py-4">
+							<p className="text-center text-[12px] text-slate-500 py-4">
 								No languages found
 							</p>
 						)}
@@ -10000,7 +10042,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 									>
 										{lang.name}
 									</span>
-									<span className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">
+									<span className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
 										{lang.code.toUpperCase()}
 									</span>
 								</div>
@@ -10119,9 +10161,7 @@ const MoreDropdown = memo(({ links, scrolled, isActive, handleNav }) => {
 					role="menu"
 					aria-label="More navigation links"
 					className="absolute top-[calc(100%+10px)] left-0 min-w-40 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200"
-					style={{
-						animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both",
-					}}
+					style={SEARCH_POPOVER_ANIM_STYLE}
 				>
 					{links.map((link) => (
 						<a
@@ -10297,9 +10337,7 @@ const NavDropdown = memo(
 						role="menu"
 						aria-label={`${label} menu`}
 						className={`absolute top-[calc(100%+10px)] left-0 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-200 py-1 ${label === "Industries" ? "min-w-[16rem]" : "min-w-55"}`}
-						style={{
-							animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both",
-						}}
+						style={SEARCH_POPOVER_ANIM_STYLE}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
 					>
@@ -10694,10 +10732,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									id="desktop-search-popover"
 									role="search"
 									className="absolute top-[calc(100%+14px)] right-0 w-120 max-w-[90vw] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
-									style={{
-										animation:
-											"searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both",
-									}}
+									style={SEARCH_POPOVER_ANIM_STYLE_V2}
 								>
 									<div className="flex items-center gap-2 px-4 py-3 border-b border-slate-100">
 										<Search
@@ -10723,7 +10758,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 												type="button"
 												onClick={() => setQuery("")}
 												aria-label="Clear search"
-												className="text-slate-400 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded p-0.5"
+												className="text-slate-500 hover:text-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded p-0.5"
 											>
 												<X className="w-3.5 h-3.5" aria-hidden="true" />
 											</button>
@@ -10731,7 +10766,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									</div>
 									<div className="max-h-[60vh] overflow-y-auto p-2">
 										{!query ? (
-											<p className="text-center text-xs text-slate-400 py-6">
+											<p className="text-center text-xs text-slate-500 py-6">
 												Start typing to search products &amp; services
 											</p>
 										) : searchResults.length === 0 ? (
@@ -10747,7 +10782,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 												<p className="text-sm font-semibold text-slate-600 mb-1">
 													No results for &ldquo;{query}&rdquo;
 												</p>
-												<p className="text-xs text-slate-400 leading-relaxed">
+												<p className="text-xs text-slate-500 leading-relaxed">
 													Try:{" "}
 													<span className="font-medium text-blue-600">
 														Turbine Overhauling
@@ -10773,7 +10808,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																setQuery("");
 																navigate(r.path);
 																setIsOpen(false);
-															}}
+														}}
 															className="w-full text-left p-3 rounded-xl hover:bg-slate-50 transition-colors flex flex-col gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 														>
 															<div className="flex gap-3 w-full items-center">
@@ -10794,7 +10829,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 																			className="absolute inset-0 w-full h-full object-cover mix-blend-multiply"
 																			onError={(e) => {
 																				e.target.style.display = "none";
-																			}}
+																		}}
 																		/>
 																	)}
 																</div>
@@ -10869,7 +10904,6 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							<Phone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
 							<span>Call Us</span>
 						</a>
-						<LanguageSwitcher scrolled={scrolled} />
 						<button
 							type="button"
 							onClick={() => {
@@ -10920,12 +10954,9 @@ const Navbar = memo(({ currentPath, navigate }) => {
 			{(isOpen || isSearchOpen) && (
 				<div
 					id="mobile-nav"
-					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto"
+					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85dvh] overflow-y-auto overscroll-contain"
 					role="menu"
-					style={{
-						animation: "mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both",
-						paddingBottom: "env(safe-area-inset-bottom, 0px)",
-					}}
+					style={MOBILE_DRAWER_ANIM_STYLE}
 				>
 					{/*
 					 * Fix 8 — Unified mobile drawer:
@@ -10938,7 +10969,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 					<div className="px-4 pt-4 pb-3 border-b border-slate-100">
 						<div className="relative">
 							<Search
-								className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+								className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500"
 								aria-hidden="true"
 							/>
 							<label htmlFor="mobile-drawer-search" className="sr-only">
@@ -10957,14 +10988,14 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									type="button"
 									onClick={() => setQuery("")}
 									aria-label="Clear search"
-									className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700"
+									className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700"
 								>
 									<X className="w-4 h-4" aria-hidden="true" />
 								</button>
 							)}
 						</div>
 						{query && (
-							<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
+							<div className="max-h-[40dvh] overflow-y-auto overscroll-contain mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
 								{searchResults.length === 0 ? (
 									<div
 										className="p-6 text-center"
@@ -10978,7 +11009,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										<p className="text-sm font-semibold text-slate-600 mb-1">
 											No results for &ldquo;{query}&rdquo;
 										</p>
-										<p className="text-xs text-slate-400">
+										<p className="text-xs text-slate-500">
 											Try: Turbine Overhauling, Dynamic Balancing, Lube Oil
 										</p>
 									</div>
@@ -11092,7 +11123,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 														className={`px-4 py-3.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500 border-l ${
 															expanded
 																? "border-blue-200 text-blue-500"
-																: "border-slate-200 text-slate-400"
+																: "border-slate-200 text-slate-500"
 														}`}
 													>
 														<svg
@@ -11190,6 +11221,11 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									<Phone className="w-4 h-4" aria-hidden="true" />{" "}
 									{CONTACT_INFO.phones[0]}
 								</a>
+								{/* Language switcher — relocated from mobile header to drawer footer. */}
+								<div className="mt-1 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+									<span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Language</span>
+									<LanguageSwitcher scrolled={true} />
+								</div>
 							</div>
 						</div>
 					)}
@@ -11265,11 +11301,7 @@ const FooterBadge = memo(
 							aria-hidden="true"
 							width="26"
 							height="26"
-							style={{
-								width: "1.6rem",
-								height: "1.6rem",
-								objectFit: "contain",
-							}}
+							style={FOOTER_BADGE_IMG_STYLE}
 							onError={() => setErr(true)}
 						/>
 					) : (
@@ -11280,28 +11312,14 @@ const FooterBadge = memo(
 					)}
 				</div>
 				{/* Text */}
-				<div style={{ minWidth: 0, flex: 1 }}>
+				<div style={MIN_WIDTH_FLEX_STYLE}>
 					<p
-						style={{
-							margin: 0,
-							fontSize: ".78rem",
-							fontWeight: 700,
-							color: "#e2e8f0",
-							lineHeight: 1.25,
-						}}
+						style={FOOTER_BADGE_TITLE_STYLE}
 					>
 						{title}
 					</p>
 					<p
-						style={{
-							margin: "2px 0 0",
-							fontSize: ".68rem",
-							color: "#64748b",
-							lineHeight: 1.4,
-							overflow: "hidden",
-							textOverflow: "ellipsis",
-							whiteSpace: "nowrap",
-						}}
+						style={FOOTER_BADGE_SUB_STYLE}
 					>
 						{sub}
 					</p>
@@ -11455,8 +11473,10 @@ const Footer = memo(({ navigate }) => {
 				@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
 				@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2.2fr 1fr 1.25fr 1.6fr}}
 
-				/* Social pill row — wraps naturally on mobile */
-				.ke-social-row{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
+				/* Social pill row — 2-col grid on mobile, flex wrap on larger */
+				.ke-social-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem}
+				@media(min-width:420px){.ke-social-row{grid-template-columns:repeat(3,1fr)}}
+				@media(min-width:540px){.ke-social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem}}
 
 				/* ── Column heading ── */
 				.ke-col-h3{
@@ -11495,9 +11515,10 @@ const Footer = memo(({ navigate }) => {
 				.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
 
 				/* ── Social pill links ── */
-				.ke-soc-pill{display:inline-flex;align-items:center;gap:.45rem;padding:.38rem .75rem;border-radius:2rem;text-decoration:none;border:1px solid transparent;font-size:.75rem;font-weight:700;color:#94a3b8;background:#0a1628;transition:color .15s,background .15s,border-color .15s}
+				.ke-soc-pill{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.48rem .6rem;border-radius:2rem;text-decoration:none;border:1px solid transparent;font-size:.72rem;font-weight:700;color:#94a3b8;background:#0a1628;transition:color .15s,background .15s,border-color .15s;min-height:36px}
 				.ke-soc-pill:hover,.ke-soc-pill:focus{outline:none}
 				.ke-soc-pill svg{flex-shrink:0}
+				@media(min-width:540px){.ke-soc-pill{display:inline-flex;justify-content:flex-start;padding:.44rem .75rem;font-size:.75rem}}
 
 				/* ── Industry tags ── */
 				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
@@ -11511,6 +11532,10 @@ const Footer = memo(({ navigate }) => {
 				.ke-contact-icon{width:1.9rem;height:1.9rem;border-radius:.45rem;background:#0a1a30;border:1px solid #132040;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:border-color .15s,background .15s}
 				.ke-contact-row:hover .ke-contact-icon{background:#0891B220;border-color:#0891B260}
 
+				/* ── Back-to-top inline button ── */
+				.ke-back-top{background:none;border:1px solid #1e3a5f;border-radius:.375rem;color:#38BDF8;font-size:.75rem;font-weight:700;padding:.3rem .7rem;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap;flex-shrink:0}
+				.ke-back-top:hover,.ke-back-top:focus{background:#0891B215;border-color:#0891B2;outline:none}
+
 				/* ── Reduced motion ── */
 				@media(prefers-reduced-motion:reduce){.ke-cta-call,.ke-cta-wa,.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
 			`}</style>
@@ -11518,64 +11543,24 @@ const Footer = memo(({ navigate }) => {
 			{/* ── Top accent bar ── */}
 			<div
 				aria-hidden="true"
-				style={{
-					height: "4px",
-					background:
-						"linear-gradient(90deg,#0891B2 0%,#06B6D4 35%,#67E8F9 50%,#06B6D4 65%,#0891B2 100%)",
-				}}
+				style={PROGRESS_BAR_STYLE}
 			/>
 
 			{/* ── Pre-footer CTA band ── */}
 			<div
-				style={{
-					position: "relative",
-					overflow: "hidden",
-					background:
-						"linear-gradient(135deg,#071428 0%,#0d1f3c 50%,#071428 100%)",
-					borderBottom: "1px solid #0891B225",
-				}}
+				style={PROGRESS_BG_STYLE}
 			>
 				<div
 					aria-hidden="true"
-					style={{
-						position: "absolute",
-						inset: 0,
-						pointerEvents: "none",
-						backgroundImage:
-							"radial-gradient(circle at 15% 50%,#0891B218 0%,transparent 55%),radial-gradient(circle at 85% 50%,#06B6D418 0%,transparent 55%)",
-					}}
+					style={PROGRESS_OVERLAY_STYLE}
 				/>
 				<div
-					style={{
-						maxWidth: "80rem",
-						margin: "0 auto",
-						padding: "2.75rem 1.5rem",
-						display: "flex",
-						flexWrap: "wrap",
-						gap: "1.5rem",
-						alignItems: "center",
-						justifyContent: "space-between",
-						position: "relative",
-						zIndex: 1,
-					}}
+					style={FOOTER_INNER_STYLE}
 				>
 					{/* Headline */}
-					<div style={{ flex: "1 1 280px" }}>
+					<div style={FLEX_ITEM_STYLE}>
 						<span
-							style={{
-								display: "inline-flex",
-								alignItems: "center",
-								gap: "5px",
-								background: "#FF4500",
-								color: "#fff",
-								fontSize: "9px",
-								fontWeight: 800,
-								letterSpacing: ".18em",
-								textTransform: "uppercase",
-								padding: "4px 10px",
-								borderRadius: "99px",
-								marginBottom: "10px",
-							}}
+							style={SOCIAL_PILL_INNER_STYLE}
 						>
 							<Zap
 								aria-hidden="true"
@@ -11584,25 +11569,12 @@ const Footer = memo(({ navigate }) => {
 							24 h Emergency Support Available
 						</span>
 						<h2
-							style={{
-								fontFamily: "Georgia,serif",
-								fontStyle: "italic",
-								fontSize: "clamp(1.1rem,2.5vw,1.6rem)",
-								fontWeight: 700,
-								lineHeight: 1.35,
-								color: "#fff",
-								margin: "0 0 6px",
-							}}
+							style={TESTIMONIAL_QUOTE_STYLE}
 						>
 							Need a quote or facing an emergency breakdown?
 						</h2>
 						<p
-							style={{
-								margin: 0,
-								fontSize: ".78rem",
-								color: "#94a3b8",
-								fontWeight: 500,
-							}}
+							style={TESTIMONIAL_ATTRIB_STYLE}
 						>
 							Our ex-OEM engineering team responds within 24 hours — call or
 							WhatsApp.
@@ -11610,12 +11582,7 @@ const Footer = memo(({ navigate }) => {
 					</div>
 					{/* CTAs */}
 					<div
-						style={{
-							display: "flex",
-							flexWrap: "wrap",
-							gap: ".75rem",
-							alignItems: "center",
-						}}
+						style={SOCIAL_PILLS_WRAP_STYLE}
 					>
 						<a
 							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, "")}`}
@@ -11647,23 +11614,15 @@ const Footer = memo(({ navigate }) => {
 
 			{/* ── Main body ── */}
 			<div
-				style={{
-					maxWidth: "80rem",
-					margin: "0 auto",
-					padding: "3.5rem 1.5rem 2rem",
-				}}
+				style={FOOTER_UPPER_STYLE}
 			>
 				{/* 4-column grid */}
-				<div className="ke-footer-grid" style={{ marginBottom: "2.5rem" }}>
+				<div className="ke-footer-grid" style={MB_10_STYLE}>
 					{/* Col 1 — Brand */}
 					<div>
 						{/* ── Logo block — uses BrandLogo so it always matches navbar ── */}
 						<div
-							style={{
-								marginBottom: "1rem",
-								paddingBottom: "1rem",
-								borderBottom: "1px solid #0d2040",
-							}}
+														style={FOOTER_BOTTOM_SECTION_STYLE}
 						>
 							<BrandLogo
 								scrolled={false}
@@ -11677,7 +11636,7 @@ const Footer = memo(({ navigate }) => {
 								fontSize: ".82rem",
 								lineHeight: 1.8,
 								color: "#94a3b8",
-								marginBottom: "1.5rem",
+								margin: 0,
 								maxWidth: "22rem",
 							}}
 						>
@@ -11687,7 +11646,7 @@ const Footer = memo(({ navigate }) => {
 
 						{/* ── Credential badges — larger logos ── */}
 						{/* CredentialBadge is a named component so it can legally call useState */}
-						<div style={{ marginBottom: "1.25rem" }}>
+						<div style={MB_5_STYLE}>
 							{[
 								{
 									imgSrc: "msme-logo.png",
@@ -11720,24 +11679,12 @@ const Footer = memo(({ navigate }) => {
 
 						{/* OEM list */}
 						<p
-							style={{
-								fontSize: "8.5px",
-								fontWeight: 700,
-								letterSpacing: ".2em",
-								textTransform: "uppercase",
-								color: "#38BDF8",
-								marginBottom: ".4rem",
-							}}
+														style={FOOTER_LABEL_STYLE}
 						>
 							OEM Compatible With
 						</p>
 						<p
-							style={{
-								fontFamily: "monospace",
-								fontSize: ".66rem",
-								color: "#475569",
-								lineHeight: 1.9,
-							}}
+														style={FOOTER_MONO_STYLE}
 						>
 							{OEMS.join(" · ")}
 						</p>
@@ -11747,14 +11694,7 @@ const Footer = memo(({ navigate }) => {
 					<nav aria-label="Footer site links">
 						<span className="ke-col-h3">Navigate</span>
 						<ul
-							style={{
-								listStyle: "none",
-								margin: 0,
-								padding: 0,
-								display: "flex",
-								flexDirection: "column",
-								gap: ".55rem",
-							}}
+														style={FOOTER_LIST_STYLE}
 						>
 							{NAV_LINKS.map((link) => (
 								<li key={link.name}>
@@ -11765,12 +11705,7 @@ const Footer = memo(({ navigate }) => {
 									>
 										<ChevronRight
 											aria-hidden="true"
-											style={{
-												width: ".875rem",
-												height: ".875rem",
-												color: "#0891B2",
-												flexShrink: 0,
-											}}
+																						style={FOOTER_ICON_LG_STYLE}
 										/>
 										{link.name}
 									</button>
@@ -11783,14 +11718,7 @@ const Footer = memo(({ navigate }) => {
 					<div>
 						<span className="ke-col-h3">Core Services</span>
 						<ul
-							style={{
-								listStyle: "none",
-								margin: 0,
-								padding: 0,
-								display: "flex",
-								flexDirection: "column",
-								gap: ".55rem",
-							}}
+														style={FOOTER_LIST_STYLE}
 						>
 							{[
 								{ label: "Turbine Erection", id: "srv_1" },
@@ -11808,12 +11736,7 @@ const Footer = memo(({ navigate }) => {
 									>
 										<Hexagon
 											aria-hidden="true"
-											style={{
-												width: ".75rem",
-												height: ".75rem",
-												color: "#0891B2",
-												flexShrink: 0,
-											}}
+																						style={FOOTER_ICON_SM_STYLE}
 										/>
 										{label}
 									</button>
@@ -11834,32 +11757,20 @@ const Footer = memo(({ navigate }) => {
 					</div>
 
 					{/* Col 4 — Contact */}
-					<address style={{ fontStyle: "normal" }}>
+					<address style={FONT_NORMAL_STYLE}>
 						<span className="ke-col-h3">Contact Us</span>
 						<div
-							style={{
-								display: "flex",
-								flexDirection: "column",
-								gap: ".85rem",
-							}}
+														style={FOOTER_COL_STYLE}
 						>
 							{/* Address */}
 							<div
 								className="ke-contact-row"
-								style={{
-									display: "flex",
-									gap: ".75rem",
-									alignItems: "flex-start",
-								}}
+																style={FOOTER_ROW_STYLE}
 							>
 								<div className="ke-contact-icon">
 									<MapPin
 										aria-hidden="true"
-										style={{
-											width: ".85rem",
-											height: ".85rem",
-											color: "#38BDF8",
-										}}
+																				style={FOOTER_ICON_CONTACT_STYLE}
 									/>
 								</div>
 								<a
@@ -11896,11 +11807,7 @@ const Footer = memo(({ navigate }) => {
 											key={p}
 											href={`tel:${p.replace(/\s/g, "")}`}
 											className="ke-contact-link"
-											style={{
-												fontFamily: "monospace",
-												fontWeight: 600,
-												fontSize: ".82rem",
-											}}
+																						style={FOOTER_MONO_BOLD_STYLE}
 										>
 											{p}
 										</a>
@@ -11926,7 +11833,7 @@ const Footer = memo(({ navigate }) => {
 										}}
 									/>
 								</div>
-								<div style={{ minWidth: 0 }}>
+								<div style={MIN_WIDTH_STYLE}>
 									{[
 										{ addr: CONTACT_INFO.email, label: "General" },
 										{ addr: CONTACT_INFO.infoEmail, label: "Info" },
@@ -11938,24 +11845,12 @@ const Footer = memo(({ navigate }) => {
 											style={{ marginBottom: "6px" }}
 										>
 											<span
-												style={{
-													display: "block",
-													overflow: "hidden",
-													textOverflow: "ellipsis",
-													whiteSpace: "nowrap",
-												}}
+																								style={FOOTER_ELLIPSIS_STYLE}
 											>
 												{addr}
 											</span>
 											<span
-												style={{
-													fontFamily: "monospace",
-													fontSize: "8px",
-													letterSpacing: ".14em",
-													textTransform: "uppercase",
-													color: "#38BDF8",
-													opacity: 0.8,
-												}}
+																								style={FOOTER_TINY_LABEL_STYLE}
 											>
 												{label}
 											</span>
@@ -11971,18 +11866,7 @@ const Footer = memo(({ navigate }) => {
 				{/* ── Follow Us ── */}
 				<div style={{ marginBottom: "2rem", textAlign: "center" }}>
 					<p
-						style={{
-							display: "flex",
-							alignItems: "center",
-							gap: ".6rem",
-							fontFamily: "monospace",
-							fontSize: "9px",
-							fontWeight: 700,
-							letterSpacing: ".22em",
-							textTransform: "uppercase",
-							color: "#06B6D4",
-							marginBottom: "1rem",
-						}}
+												style={FOOTER_CERT_ROW_STYLE}
 					>
 						<span style={{ flex: 1, height: "1px", background: "#0d2040" }} />
 						Follow Us
@@ -12031,42 +11915,23 @@ const Footer = memo(({ navigate }) => {
 				{/* Divider */}
 				<div
 					aria-hidden="true"
-					style={{
-						height: "1px",
-						background: "#0d2040",
-						marginBottom: "1.75rem",
-					}}
+										style={FOOTER_DIVIDER_STYLE}
 				/>
 
 				{/* Industries panel */}
 				<div
-					style={{
-						borderRadius: ".875rem",
-						padding: "1.4rem",
-						background: "#071428",
-						border: "1px solid #0d2040",
-						marginBottom: "1.75rem",
-					}}
+										style={FOOTER_CARD_STYLE}
 				>
 					<div
 						style={{
 							display: "flex",
-							flexWrap: "wrap",
-							justifyContent: "space-between",
-							alignItems: "flex-start",
-							gap: "1.5rem",
+							flexDirection: "column",
+							gap: "1.25rem",
 						}}
 					>
-						<div style={{ flex: "1 1 300px" }}>
+						<div>
 							<p
-								style={{
-									fontSize: "9px",
-									fontWeight: 800,
-									letterSpacing: ".2em",
-									textTransform: "uppercase",
-									color: "#fff",
-									marginBottom: ".8rem",
-								}}
+																style={FOOTER_CARD_LABEL_STYLE}
 							>
 								Industries Served
 							</p>
@@ -12094,59 +11959,31 @@ const Footer = memo(({ navigate }) => {
 								))}
 							</div>
 						</div>
-						<div style={{ textAlign: "right", flexShrink: 0 }}>
+						<div style={{ textAlign: "left" }}>
 							<p
-								style={{
-									fontSize: "9px",
-									fontWeight: 800,
-									letterSpacing: ".2em",
-									textTransform: "uppercase",
-									color: "#fff",
-									marginBottom: ".5rem",
-								}}
+																style={FOOTER_CARD_LABEL_STYLE}
 							>
 								Capability Range
 							</p>
 							<p style={{ margin: 0 }}>
 								<span
-									style={{
-										fontSize: "2rem",
-										fontWeight: 900,
-										color: "#fff",
-										lineHeight: 1,
-									}}
+																		style={FOOTER_STAT_NUM_STYLE}
 								>
 									5 kW
 								</span>
 								<span
-									style={{
-										fontSize: "1.25rem",
-										fontWeight: 300,
-										color: "#38BDF8",
-										margin: "0 .375rem",
-									}}
+																		style={FOOTER_STAT_UNIT_STYLE}
 								>
 									—
 								</span>
 								<span
-									style={{
-										fontSize: "2rem",
-										fontWeight: 900,
-										color: "#fff",
-										lineHeight: 1,
-									}}
+																		style={FOOTER_STAT_NUM_STYLE}
 								>
 									27 MW
 								</span>
 							</p>
 							<p
-								style={{
-									margin: ".25rem 0 0",
-									fontSize: ".6rem",
-									color: "#64748b",
-									letterSpacing: ".1em",
-									textTransform: "uppercase",
-								}}
+																style={FOOTER_STAT_LABEL_STYLE}
 							>
 								Back Pressure &amp; Condensing Turbines
 							</p>
@@ -12158,10 +11995,8 @@ const Footer = memo(({ navigate }) => {
 				<div
 					style={{
 						display: "flex",
-						flexWrap: "wrap",
-						justifyContent: "space-between",
-						alignItems: "center",
-						gap: ".75rem",
+						flexDirection: "column",
+						gap: ".6rem",
 						paddingTop: "1.1rem",
 						borderTop: "1px solid #0d2040",
 					}}
@@ -12169,13 +12004,9 @@ const Footer = memo(({ navigate }) => {
 					<p style={{ margin: 0, fontSize: ".78rem", color: "#475569" }}>
 						© {year} Keshav Enterprises. All rights reserved.
 					</p>
+					<div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: ".45rem" }}>
 					<div
-						style={{
-							display: "flex",
-							flexWrap: "wrap",
-							gap: ".45rem",
-							alignItems: "center",
-						}}
+												style={FOOTER_BADGES_WRAP_STYLE}
 					>
 						{[
 							{ label: "GST", value: CONTACT_INFO.gst },
@@ -12187,7 +12018,6 @@ const Footer = memo(({ navigate }) => {
 									display: "inline-flex",
 									alignItems: "center",
 									gap: ".35rem",
-									background: "#071428",
 									border: "1px solid #0d2040",
 									borderRadius: ".375rem",
 									padding: ".22rem .55rem",
@@ -12196,12 +12026,7 @@ const Footer = memo(({ navigate }) => {
 								}}
 							>
 								<span
-									style={{
-										fontWeight: 700,
-										color: "#38BDF8",
-										fontSize: "7.5px",
-										letterSpacing: ".1em",
-									}}
+																		style={FOOTER_BADGE_CHIP_LABEL_STYLE}
 								>
 									{label}
 								</span>
@@ -12219,6 +12044,7 @@ const Footer = memo(({ navigate }) => {
 					>
 						↑ Top
 					</button>
+					</div>
 				</div>
 			</div>
 			{/* end max-w-7xl */}
@@ -12290,7 +12116,7 @@ const DigitalProfilesStrip = memo(() => {
 				<div className="text-center mb-4 sm:mb-8">
 					<p
 						id="digital-profiles-heading"
-						className="text-[11px] font-black text-slate-400 uppercase tracking-[0.22em] mb-2"
+						className="text-[11px] font-black text-slate-500 uppercase tracking-[0.22em] mb-2"
 					>
 						Find Us Everywhere
 					</p>
@@ -12490,7 +12316,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 
 	return (
 		<div
-			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
+			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-0 sm:p-4"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="report-modal-title"
@@ -12502,10 +12328,12 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 				aria-hidden="true"
 			/>
 
-			{/* Panel */}
+			{/* Panel — on mobile: bottom sheet with rounded top corners and dvh cap.
+			    dvh accounts for browser chrome (address bar) so content never overflows.
+			    overscroll-contain stops momentum scroll from bleeding to the page. */}
 			<div
 				ref={modalRef}
-				className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden"
+				className="relative bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-lg max-h-[85dvh] sm:max-h-[92vh] flex flex-col overflow-hidden overscroll-contain"
 				tabIndex={-1}
 			>
 				{/* Header */}
@@ -12548,7 +12376,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 									<React.Fragment key={label}>
 										<div className="flex items-center gap-1.5 shrink-0">
 											<div
-												className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${done ? "bg-blue-600 text-white" : active ? "bg-blue-100 text-blue-700 ring-2 ring-blue-300" : "bg-slate-100 text-slate-400"}`}
+												className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${done ? "bg-blue-600 text-white" : active ? "bg-blue-100 text-blue-700 ring-2 ring-blue-300" : "bg-slate-100 text-slate-500"}`}
 											>
 												{done ? (
 													<CheckCircle2
@@ -12689,7 +12517,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 									<span />
 								)}
 								<span
-									className={`text-xs font-medium ${description.length < 15 ? "text-slate-400" : "text-green-600"}`}
+									className={`text-xs font-medium ${description.length < 15 ? "text-slate-500" : "text-green-600"}`}
 								>
 									{description.length} chars
 								</span>
@@ -12716,7 +12544,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 									className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2"
 								>
 									Your name{" "}
-									<span className="text-slate-400 font-medium normal-case tracking-normal">
+									<span className="text-slate-500 font-medium normal-case tracking-normal">
 										(optional)
 									</span>
 								</label>
@@ -12735,13 +12563,14 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 									className="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2"
 								>
 									Phone / WhatsApp{" "}
-									<span className="text-slate-400 font-medium normal-case tracking-normal">
+									<span className="text-slate-500 font-medium normal-case tracking-normal">
 										(optional)
 									</span>
 								</label>
 								<input
 									id="ri-phone"
 									type="tel"
+									inputMode="tel"
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}
 									placeholder="+91 XXXXX XXXXX"
@@ -13397,6 +13226,7 @@ const InlineRFQForm = memo(({ productTitle }) => {
 								<input
 									id="rfq-phone"
 									type="tel"
+									inputMode="tel"
 									autoComplete="tel"
 									value={phone}
 									onChange={(e) => {
@@ -13497,7 +13327,7 @@ const InlineRFQForm = memo(({ productTitle }) => {
 										</>
 									)}
 								</button>
-								<p className="mt-2 text-center text-[11px] text-slate-400">
+								<p className="mt-2 text-center text-[11px] text-slate-500">
 									We respond within 1 business day · No spam
 								</p>
 							</div>
@@ -14056,10 +13886,10 @@ const SpecsTable = memo(
 										<span className="text-blue-700 font-bold">
 											{fmtPrice(pr.min)} – {fmtPrice(pr.max)}
 										</span>
-										<span className="text-slate-400 ml-1.5 font-medium">
+										<span className="text-slate-500 ml-1.5 font-medium">
 											{pr.unit}
 										</span>
-										<span className="block text-[11px] text-slate-400 mt-0.5">
+										<span className="block text-[11px] text-slate-500 mt-0.5">
 											Indicative estimate · contact for firm quote
 										</span>
 									</td>
@@ -14085,7 +13915,7 @@ const SpecsTable = memo(
 
 				{/* ── Tab hint when tabs are active ── */}
 				{showTabs && (
-					<p className="px-4 py-2 text-[11px] text-slate-400 bg-slate-50 border-t border-slate-100 text-right select-none">
+					<p className="px-4 py-2 text-[11px] text-slate-500 bg-slate-50 border-t border-slate-100 text-right select-none">
 						Price &amp; Lead Time shown on every tab
 					</p>
 				)}
@@ -14410,7 +14240,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 						<button
 							type="button"
 							onClick={() => navigate("/products")}
-							className="hover:text-blue-600 transition-colors text-slate-400 focus:outline-none focus-visible:underline"
+							className="hover:text-blue-600 transition-colors text-slate-500 focus:outline-none focus-visible:underline"
 						>
 							{product.category}
 						</button>
@@ -14649,7 +14479,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 											display: "flex",
 											flexWrap: "wrap",
 											justifyContent: "center",
-											gap: "8px",
+											gap: "clamp(3px,1vw,6px)",
 											listStyle: "none",
 											margin: 0,
 											padding: 0,
@@ -14662,10 +14492,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												<li
 													key={img}
 													className="relative shrink-0"
-													style={{
-														width: "clamp(56px, 15vw, 84px)",
-														height: "clamp(56px, 15vw, 84px)",
-													}}
+																										style={THUMB_SIZE_STYLE}
 												>
 													<button
 														type="button"
@@ -14726,7 +14553,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 									<div className="mb-5 bg-linear-to-r from-blue-50 to-slate-50 border border-blue-100 rounded-2xl p-5">
 										<div className="flex flex-col sm:flex-row sm:items-center gap-3">
 											<div className="flex-1">
-												<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 flex items-center gap-1.5">
+												<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-1 flex items-center gap-1.5">
 													<TrendingUp
 														className="w-3.5 h-3.5"
 														aria-hidden="true"
@@ -14735,14 +14562,14 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												</p>
 												<p className="text-2xl font-black text-slate-900">
 													{fmtPrice(product.priceRange.min)}
-													<span className="text-slate-400 mx-2">–</span>
+													<span className="text-slate-500 mx-2">–</span>
 													{fmtPrice(product.priceRange.max)}
 													<span className="text-sm font-bold text-slate-500 ml-2">
 														{product.priceRange.unit}
 													</span>
 												</p>
 												{product.priceRange.note && (
-													<p className="text-xs text-slate-400 mt-1">
+													<p className="text-xs text-slate-500 mt-1">
 														{product.priceRange.note}
 													</p>
 												)}
@@ -14759,7 +14586,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												Get Quote
 											</a>
 										</div>
-										<p className="mt-3 text-[11px] text-slate-400 leading-relaxed border-t border-blue-100 pt-2">
+										<p className="mt-3 text-[11px] text-slate-500 leading-relaxed border-t border-blue-100 pt-2">
 											{currencyCode !== "INR"
 												? `Prices converted from INR at live market rates (open.er-api.com). Actual invoice will be in INR. Rate is indicative — contact us for a firm quotation.`
 												: `Prices vary by turbine model, OEM spec, material grade, and order quantity. The range shown reflects our typical market spread — contact us for a firm quotation.`}
@@ -14943,9 +14770,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 			so the WhatsApp / IndiaMART CTAs are always reachable without scrolling. */}
 			<section
 				className="md:hidden fixed bottom-0 left-0 right-0 z-900 bg-white border-t-2 border-slate-200 shadow-2xl shadow-slate-900/20 px-4 pt-2 flex flex-col gap-1.5"
-				style={{
-					paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0px))",
-				}}
+								style={SAFE_AREA_BOTTOM_STYLE}
 				aria-label="Quick actions"
 			>
 				{/* Urgency micro-copy */}
@@ -15393,7 +15218,7 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 						</button>
 					</div>
 					<span
-						className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-400 font-medium select-none"
+						className="hidden sm:inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium select-none"
 						aria-hidden="true"
 					>
 						<svg
@@ -15485,6 +15310,13 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 					))}
 				</ul>
 			</div>
+			{/* Mobile swipe affordance — shows on touch devices; hidden on sm+ */}
+			<div className="flex sm:hidden items-center justify-center gap-1.5 mt-3 mb-1" aria-hidden="true">
+				<span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Swipe to browse</span>
+				<svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-slate-300">
+					<path d="M2 6h16M13 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+				</svg>
+			</div>
 
 			{/* Mobile CTA */}
 			<div className="mt-8 flex justify-center sm:hidden px-4">
@@ -15527,7 +15359,7 @@ const FEATURED_PRODUCTS = (() => {
 // Dismissible top-of-page urgency strip. Shown once per session.
 // Swap the message/link each season without touching layout code.
 const ANNOUNCEMENT = {
-	text: "Pre-monsoon turbine health check — limited inspection slots for June/July. Book now.",
+	text: "Turbine inspection slots are limited — we take a fixed number of shutdowns per quarter.",
 	linkText: "Check Availability →",
 	linkPath: "/contact",
 };
@@ -15573,10 +15405,10 @@ AnnouncementBar.displayName = "AnnouncementBar";
 // Hoisted from an inline IIFE so StatNum isn't redefined on every render
 // (which would force React to remount it). STATS is a stable array reference.
 const HOME_STATS = [
-	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Logged in our job records since 2000" },
-	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Founded 2000 — MSME reg. UDYAM-UP-47-0071234" },
-	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 5 years — backed by client references" },
-	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Multi-location engineers — someone always answers" },
+	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Sugar, power, paper & cement plants across India" },
+	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Continuous operations since 2000 — no ownership changes" },
+	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 24 years — client references available on request" },
+	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Engineers at multiple locations — avg. dispatch under 4 hrs" },
 ];
 
 const StatNum = memo(({ end, suffix }) => {
@@ -15635,7 +15467,7 @@ const HomePage = memo(({ navigate }) => {
 				<>
 					Precision Engineering for
 					<br />
-					<span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+					<span className="hero-gradient-text text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
 						Maximum Uptime.
 					</span>
 				</>
@@ -15649,7 +15481,7 @@ const HomePage = memo(({ navigate }) => {
 				<>
 					अधिकतम अपटाइम के लिए
 					<br />
-					<span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+					<span className="hero-gradient-text text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
 						प्रेसिशन इंजीनियरिंग।
 					</span>
 				</>
@@ -15671,7 +15503,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] min-h-[calc(100svh-64px)] flex items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
+			<section className="hero-section relative bg-[#0A192F] md:min-h-[calc(100svh-64px)] flex items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
@@ -15728,7 +15560,7 @@ const HomePage = memo(({ navigate }) => {
 										}}
 										className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
 									>
-										Request a Technical Quote
+										Send Us Your Requirements
 										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
 									</button>
 									<a
@@ -15754,7 +15586,6 @@ const HomePage = memo(({ navigate }) => {
 									{[
 										{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
 										{ Icon: Shield,       text: "PMI-certified spares" },
-										{ Icon: Clock,        text: "24×7 emergency response" },
 										{ Icon: Zap,          text: "Avg response: 2 hrs" },
 									].map(({ Icon, text }) => (
 										<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
@@ -15762,6 +15593,11 @@ const HomePage = memo(({ navigate }) => {
 											<span>{text}</span>
 										</div>
 									))}
+									{/* Live office hours pill — uses real IST time */}
+									<div className={`flex items-center gap-2 text-sm font-bold ${officeHours.isOfficeHours ? "text-emerald-300" : "text-amber-300"}`}>
+										<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
+										<span>{officeHours.label}</span>
+									</div>
 								</div>
 							</div>
 							{/* end flex-col order wrapper */}
@@ -15812,7 +15648,7 @@ const HomePage = memo(({ navigate }) => {
 								<div className="text-2xl font-black text-white tracking-tighter mb-2">
 									{title}
 								</div>
-								<div className="text-sm text-slate-400 font-medium leading-relaxed">
+								<div className="text-sm text-slate-500 font-medium leading-relaxed">
 									{sub}
 								</div>
 							</div>
@@ -15836,7 +15672,11 @@ const HomePage = memo(({ navigate }) => {
 				>
 					<div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
 					<div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
-					<div className="ke-marquee gap-8 md:gap-16 px-4">
+					<div
+						className="ke-marquee gap-8 md:gap-16 px-4"
+						onTouchStart={(e) => { e.currentTarget.style.animationPlayState = "paused"; }}
+						onTouchEnd={(e) => { e.currentTarget.style.animationPlayState = "running"; }}
+					>
 						{[...OEMS, ...OEMS].map((oem, i) => (
 							<div
 								key={`oem-${oem}-${i}`}
@@ -15878,7 +15718,7 @@ const HomePage = memo(({ navigate }) => {
 			{/* Stats — IntersectionObserver count-up + entrance animation.
 				HOME_STATS and StatNum are defined at module level above HomePage. */}
 			<section
-				className="bg-slate-900 py-16 md:py-20 border-b border-slate-800"
+				className="bg-slate-900 py-14 md:py-16 border-b border-slate-800"
 				aria-labelledby="stats-heading"
 			>
 				<h2 id="stats-heading" className="sr-only">
@@ -15908,7 +15748,7 @@ const HomePage = memo(({ navigate }) => {
 								<div className="type-label text-slate-300 mb-1">
 									{label}
 								</div>
-								<div className="text-xs text-slate-400 font-medium">
+								<div className="text-xs text-slate-500 font-medium">
 									{sub}
 								</div>
 							</div>
@@ -15916,77 +15756,11 @@ const HomePage = memo(({ navigate }) => {
 					</div>
 				</div>
 			</section>
-			{/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
-			<section
-				className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto overflow-hidden"
-				aria-labelledby="why-us-heading"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<p
-						id="why-us-heading"
-						className="text-center text-xs font-black text-slate-400 uppercase tracking-widest mb-10"
-					>
-						Why Engineers &amp; Plant Managers Choose Keshav Enterprises
-					</p>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-						{[
-							{
-								Icon: Award,
-								title: "Same expertise as your OEM",
-								body: "Our engineers were trained inside Triveni, Siemens, BHEL, and Belliss. No learning curve on your machine.",
-								color: "text-blue-600",
-								bg: "bg-blue-50",
-								border: "border-blue-100",
-							},
-							{
-								Icon: CheckCircle2,
-								title: "Documentation at handover",
-								body: "PMI certificates, balancing reports, condition reports, and ISO cleanliness certification — delivered with every job.",
-								color: "text-emerald-600",
-								bg: "bg-emerald-50",
-								border: "border-emerald-100",
-							},
-							{
-								Icon: Clock,
-								title: "Faster than OEM sourcing",
-								body: "OEM spares take 12–26 weeks. We reverse-engineer, manufacture, and ship certified components in a fraction of the time.",
-								color: "text-amber-600",
-								bg: "bg-amber-50",
-								border: "border-amber-100",
-							},
-							{
-								Icon: PhoneCall,
-								title: "24×7 — someone always answers",
-								body: "Multi-location engineers across India. Whether it's a scheduled overhaul or a 2 AM trip — we show up.",
-								color: "text-red-600",
-								bg: "bg-red-50",
-								border: "border-red-100",
-							},
-						].map(({ Icon, title, body, color, bg, border }) => (
-							<div
-								key={title}
-								className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}
-							>
-								<div
-									className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}
-								>
-									<Icon className={`w-6 h-6 ${color}`} aria-hidden="true" />
-								</div>
-								<h3 className="font-black text-slate-900 text-base mb-2 leading-snug">
-									{title}
-								</h3>
-								<p className="text-slate-500 text-sm leading-relaxed">{body}</p>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
-
 			{/* ── Featured Products Strip — rAF auto-scroll + touch drag + nav arrows ── */}
 			<FeaturedProductsStrip products={featuredProducts} navigate={navigate} />
 			{/* Services Preview */}
 			<section
-				className="py-24 md:py-32 bg-white border-t border-slate-200 cv-auto lazy-section overflow-hidden"
+				className="py-16 md:py-20 bg-white border-t border-slate-200 cv-auto lazy-section overflow-hidden"
 				aria-labelledby="services-preview-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16005,22 +15779,15 @@ const HomePage = memo(({ navigate }) => {
 							aria-hidden="true"
 						/>
 						<p className="text-slate-600 font-medium text-xl max-w-3xl mx-auto leading-relaxed">
-							From erection to emergency breakdown — the same ex-OEM engineers,
-							every time.
+							The same ex-OEM engineers handle your overhaul, your spares, and your 2 AM emergency — no sub-contracting, no handoffs.
 						</p>
 					</div>
 
 					{/* Pain-aware service cards — SERVICE_PAIN_LINES hoisted to module level */}
 					<div
-						style={{
-							display: "grid",
-							gridTemplateColumns:
-								"repeat(auto-fill,minmax(min(100%,340px),1fr))",
-							gap: "2rem",
-							justifyItems: "stretch",
-						}}
+												style={PROJECTS_GRID_STYLE}
 					>
-						{SERVICES.map((service) => {
+						{SERVICES.filter(s => ["srv_2","srv_3","srv_4"].includes(s.id)).map((service) => {
 							const Icon = SERVICE_ICONS[service.id];
 							return (
 								<button
@@ -16064,7 +15831,7 @@ const HomePage = memo(({ navigate }) => {
 							onClick={() => navigate("/services")}
 							className="bg-blue-600 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 						>
-							View All Services{" "}
+							View All 7 Services{" "}
 							<ArrowRight className="inline ml-3 w-5 h-5" aria-hidden="true" />
 						</button>
 					</div>
@@ -16072,41 +15839,44 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 			{/* ── TESTIMONIALS ── */}
 			<section
-				className="py-20 md:py-28 bg-white border-t border-slate-100 cv-auto lazy-section overflow-hidden"
+				className="py-16 md:py-20 bg-white border-t border-slate-100 cv-auto lazy-section overflow-hidden"
 				aria-labelledby="testimonials-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-14">
 						<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-3">
-							From the Plants We Serve
+							Verified Client Feedback
 						</p>
 						<h2
 							id="testimonials-heading"
-							className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-3"
+							className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-5"
 						>
-							Plant Managers Trust Us With Their Most Critical Assets
+							Trusted by Plant Managers Across India
 						</h2>
-						{/* Google rating strip */}
+						{/* Google rating strip — primary trust anchor */}
 						<a
 							href={CONTACT_INFO.googleBusiness}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:underline mb-5"
+							className="inline-flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 hover:border-blue-300 hover:bg-blue-50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 mb-6"
 							aria-label="View our Google Business reviews"
 						>
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 								<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
 								<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
 								<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
 								<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
 							</svg>
-							<span className="text-amber-500">★★★★★</span>
-							<span>{CONTACT_INFO.googleRating} on Google</span>
-							<span className="text-slate-400 font-medium">· {CONTACT_INFO.googleReviewCount}+ reviews</span>
-							<ExternalLink className="w-3.5 h-3.5 text-slate-400" aria-hidden="true" />
+							<span className="text-2xl font-black text-slate-900">{CONTACT_INFO.googleRating}</span>
+							<span className="text-amber-500 text-lg tracking-tight">★★★★★</span>
+							<span className="text-slate-600 font-bold text-sm">{CONTACT_INFO.googleReviewCount}+ verified reviews on Google</span>
+							<ExternalLink className="w-4 h-4 text-slate-400" aria-hidden="true" />
 						</a>
+						<p className="text-slate-500 text-sm font-medium max-w-xl mx-auto">
+							Client names are abbreviated at their request. Full references available on enquiry.
+						</p>
 						<div
-							className="section-divider w-20 h-1.5 bg-blue-600 rounded-full mx-auto"
+							className="section-divider w-20 h-1.5 bg-blue-600 rounded-full mx-auto mt-5"
 							aria-hidden="true"
 						/>
 					</div>
@@ -16242,76 +16012,47 @@ const HomePage = memo(({ navigate }) => {
 						))}
 					</div>
 					{/* Nudge to leave review */}
-					<p className="text-center text-slate-400 font-medium text-sm mt-10">
-						We&apos;ve served 100+ plants across India.{" "}
+					<p className="text-center text-slate-500 font-medium text-sm mt-10">
+						Worked with us?{" "}
 						<a
 							href={CONTACT_INFO.googleBusiness}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-blue-600 font-bold hover:underline focus:outline-none focus-visible:underline"
 						>
-							Leave us a Google review →
+							Leave a Google review — it helps other plant managers find us →
 						</a>
 					</p>
 				</div>
 			</section>
 
-			{/* Capabilities */}
-			<section
-				className="py-24 md:py-32 bg-slate-50 border-t border-slate-200 cv-auto lazy-section"
-				aria-labelledby="capabilities-heading"
-			>
+			{/* ── Capabilities strip — compact, embedded before projects ── */}
+			<div className="bg-slate-50 border-t border-slate-200 py-10 lazy-section">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="max-w-4xl mx-auto text-left">
-						<h2
-							id="capabilities-heading"
-							className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight"
-						>
-							Precision Manufacturing.
-						</h2>
-						<div
-							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full"
-							aria-hidden="true"
-						/>
-						<p className="text-slate-600 font-medium text-xl mb-12 leading-relaxed">
-							We manufacture high-tolerance turbine spares, industrial
-							strainers, and metallic expansion bellows (DN 15 to DN 12,000).
-							Using 3D laser scanning, CMM, and PMI testing, we recreate
-							obsolete components to exact specifications, drastically reducing
-							plant downtime.
-						</p>
-						<ul
-							className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left"
-							aria-label="Manufacturing capabilities"
-						>
-							{[
-								"Reduced lead times vs. OEM sourcing (Triveni, Siemens, BHEL)",
-								"Material upgrades: Duplex, Incoloy, Inconel, Titanium, Hastelloy",
-								"ISO/API standard dynamic balancing (50-2,000 kg capacity)",
-								"Custom expansion bellows (DN 15-12,000, up to 150 barg)",
-								"Filter elements per ISO 16889, API 614, ASME & EN standards",
-								"Lube oil systems per ISO 4406:99 cleanliness classification",
-							].map((item) => (
-								<li
-									key={item}
-									className="flex items-start bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 hover:shadow-md transition-all"
-								>
-									<Shield
-										className="w-7 h-7 text-blue-500 mr-4 shrink-0"
-										aria-hidden="true"
-									/>
-									<span className="text-slate-800 font-bold text-base leading-snug">
-										{item}
-									</span>
-								</li>
-							))}
-						</ul>
+					<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-6 text-center">
+						Manufacturing &amp; Technical Capabilities
+					</p>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+						{[
+							{ icon: Zap,        text: "Faster lead times than OEM sourcing — Triveni, Siemens, BHEL" },
+							{ icon: Layers,     text: "Material upgrades: Duplex, Incoloy, Inconel, Titanium, Hastelloy" },
+							{ icon: Activity,   text: "ISO/API dynamic balancing 50–2,000 kg capacity" },
+							{ icon: Wind,       text: "Custom expansion bellows DN 15–12,000, up to 150 barg" },
+							{ icon: Droplets,   text: "Filter elements per ISO 16889, API 614, ASME & EN standards" },
+							{ icon: Cpu,        text: "Lube oil systems per ISO 4406:99 cleanliness classification" },
+						].map(({ icon: Icon, text }) => (
+							<div key={text} className="flex items-start gap-3 bg-white border border-slate-100 rounded-xl px-4 py-3.5 hover:border-blue-200 transition-all">
+								<Icon className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" aria-hidden="true" />
+								<span className="text-slate-700 font-semibold text-sm leading-snug">{text}</span>
+							</div>
+						))}
 					</div>
 				</div>
-			</section>
+			</div>
+
 			{/* ── Featured Projects teaser ────────────────────────── */}
 			<section
-				className="py-24 md:py-32 bg-white border-t border-slate-100 lazy-section overflow-hidden"
+				className="py-16 md:py-20 bg-white border-t border-slate-100 lazy-section overflow-hidden"
 				aria-labelledby="projects-teaser-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16341,9 +16082,9 @@ const HomePage = memo(({ navigate }) => {
 							<ArrowRight className="w-4 h-4" aria-hidden="true" />
 						</button>
 					</div>
-					{/* Three featured cards */}
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{CASE_STUDIES.slice(0, 3).map((cs) => (
+					{/* Two featured cards — enough to show depth, not enough to overwhelm */}
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						{CASE_STUDIES.slice(0, 2).map((cs) => (
 							<article
 								key={cs.id}
 								className="group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 flex flex-col cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50"
@@ -16428,124 +16169,30 @@ const HomePage = memo(({ navigate }) => {
 				</div>
 			</section>
 
-			{/* ── Blog preview strip ── */}
-			<section
-				className="py-16 md:py-20 bg-slate-50 border-t border-slate-100"
-				aria-labelledby="blog-strip-heading"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-						<div>
-							<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-2">
-								Technical Insights
-							</p>
-							<h2
-								id="blog-strip-heading"
-								className="text-slate-900 text-3xl md:text-4xl font-black tracking-tight"
-							>
-								From Our Engineering Team
-							</h2>
-							<div className="w-16 h-1.5 bg-blue-600 mt-3 rounded-full" aria-hidden="true" />
-						</div>
-						<button
-							type="button"
-							onClick={() => navigate("/blog")}
-							className="shrink-0 inline-flex items-center gap-2 text-blue-600 font-black text-sm hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group"
-						>
-							All articles
-							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-						</button>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{BLOG_POSTS.slice(0, 3).map((post) => (
-							<article
-								key={post.id}
-								className="group bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all focus-within:ring-4 focus-within:ring-blue-500/50"
-							>
-								<div className="flex flex-wrap gap-2 mb-4">
-									{post.tags.slice(0, 2).map((tag) => (
-										<span
-											key={tag}
-											className="bg-blue-50 text-blue-700 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-100"
-										>
-											{tag}
-										</span>
-									))}
-									<span className="text-slate-400 text-[10px] font-bold ml-auto flex items-center gap-1">
-										<Clock className="w-3 h-3" aria-hidden="true" />
-										{post.readTime}
-									</span>
-								</div>
-								<h3 className="text-base font-black text-slate-900 leading-snug mb-3 group-hover:text-blue-700 transition-colors line-clamp-2">
-									{post.title}
-								</h3>
-								<p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">
-									{post.excerpt}
-								</p>
-								<button
-									type="button"
-									onClick={() => navigate(`/blog/${post.slug}`)}
-									aria-label={`Read article: ${post.title}`}
-									className="inline-flex items-center gap-1.5 text-blue-600 font-black text-xs hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group-hover:gap-2.5"
-								>
-									Read Article
-									<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-								</button>
-							</article>
-						))}
-					</div>
+			{/* ── Compact resource bar — Blog + Downloads in one line, no dedicated section needed ── */}
+			<div className="bg-slate-50 border-t border-slate-100 py-5">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 text-sm font-bold">
+					<button
+						type="button"
+						onClick={() => navigate("/blog")}
+						className="inline-flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:underline"
+					>
+						<BookOpen className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						Technical articles from our engineering team
+						<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+					</button>
+					<span className="hidden sm:block w-px h-4 bg-slate-300" aria-hidden="true" />
+					<button
+						type="button"
+						onClick={() => navigate("/downloads")}
+						className="inline-flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:underline"
+					>
+						<Download className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						Free overhaul checklists, RFQ templates & datasheets
+						<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+					</button>
 				</div>
-			</section>
-
-			{/* ── Free Downloads promo strip ── */}
-			<section
-				className="py-14 md:py-16 bg-white border-t border-slate-100 lazy-section"
-				aria-labelledby="dl-strip-heading"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="bg-[#0A192F] rounded-2xl px-6 md:px-10 py-9 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 relative overflow-hidden">
-						{/* Background grid texture */}
-						<div
-							className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[3rem_3rem] pointer-events-none"
-							aria-hidden="true"
-						/>
-						<div className="relative z-10 shrink-0">
-							<div className="w-14 h-14 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
-								<Download className="w-7 h-7 text-blue-400" aria-hidden="true" />
-							</div>
-						</div>
-						<div className="relative z-10 flex-1 min-w-0">
-							<p className="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-1" id="dl-strip-heading">
-								Free Engineering Resources
-							</p>
-							<h2 className="text-white font-black text-xl md:text-2xl leading-snug mb-2">
-								Turbine checklists, datasheets & RFQ templates — free download
-							</h2>
-							<p className="text-slate-400 text-sm leading-relaxed">
-								Overhaul checklists, lube oil filter datasheets, bearing clearance
-								references, and blank RFQ sheets. Written by ex-OEM engineers.
-							</p>
-							<div className="flex flex-wrap gap-2 mt-3">
-								{["Overhaul Checklist", "Lube Oil Datasheet", "RFQ Template", "Bearing Reference"].map((label) => (
-									<span key={label} className="text-[10px] font-black uppercase tracking-wider bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">
-										{label}
-									</span>
-								))}
-							</div>
-						</div>
-						<div className="relative z-10 shrink-0">
-							<button
-								type="button"
-								onClick={() => navigate("/downloads")}
-								className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-500 active:scale-[0.98] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
-							>
-								<Download className="w-4 h-4" aria-hidden="true" />
-								Browse Free Downloads
-							</button>
-						</div>
-					</div>
-				</div>
-			</section>
+			</div>
 
 			{/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
 			<section
@@ -16558,9 +16205,10 @@ const HomePage = memo(({ navigate }) => {
 							id="cta-heading"
 							className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4"
 						>
-							Get a Free Technical Quote — Because Every Day Offline Has a Cost
+							Get a Technical Quote.{" "}
+							Every Hour Offline Has a Cost.
 						</h2>
-						<p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto">
+						<p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
 							Our engineers respond with a technical answer within 24 hours for
 							planned work — and within the hour for breakdowns — because your
 							plant&apos;s availability is your bottom line.
@@ -16578,7 +16226,7 @@ const HomePage = memo(({ navigate }) => {
 							<h3 className="text-xl font-black text-white mb-3">
 								Planned Overhaul or RFQ
 							</h3>
-							<p className="text-slate-400 text-sm leading-relaxed mb-6">
+							<p className="text-slate-500 text-sm leading-relaxed mb-6">
 								Scheduled maintenance, spare procurement, expansion joint
 								supply, or filter element orders. Share your requirements and
 								get a detailed technical quote.
@@ -16596,7 +16244,7 @@ const HomePage = memo(({ navigate }) => {
 									}}
 									className="w-full bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								>
-									Request a Free Technical Quote
+									Send Us Your Requirements
 									<ArrowRight
 										className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0"
 										aria-hidden="true"
@@ -16619,7 +16267,7 @@ const HomePage = memo(({ navigate }) => {
 							<h3 className="text-xl font-black text-white mb-3">
 								Emergency Breakdown — Right Now
 							</h3>
-							<p className="text-slate-400 text-sm leading-relaxed mb-6">
+							<p className="text-slate-500 text-sm leading-relaxed mb-6">
 								Turbine tripped? High vibration? Unexpected shutdown? Our
 								engineers are reachable 24×7. Call or WhatsApp immediately —
 								every hour offline has a cost.
@@ -16656,7 +16304,7 @@ const HomePage = memo(({ navigate }) => {
 						].map(({ Icon, text }) => (
 							<div
 								key={text}
-								className="flex items-start gap-2.5 text-slate-400 text-sm font-medium"
+								className="flex items-start gap-2.5 text-slate-500 text-sm font-medium"
 							>
 								<Icon
 									className="w-4 h-4 text-blue-400 shrink-0 mt-0.5"
@@ -16757,11 +16405,7 @@ const AboutPage = memo(({ navigate }) => {
 					loading="eager"
 					decoding="async"
 					className="absolute inset-0 w-full h-full pointer-events-none select-none"
-					style={{
-						opacity: 0.45,
-						objectFit: "cover",
-						objectPosition: "center center",
-					}}
+										style={ABOUT_IMG_STYLE}
 					onError={(e) => {
 						e.target.style.display = "none";
 					}}
@@ -16870,7 +16514,7 @@ const AboutPage = memo(({ navigate }) => {
 									<div className="text-xs font-black text-blue-300 uppercase tracking-widest mb-1">
 										{label}
 									</div>
-									<div className="text-xs text-slate-400">{sub}</div>
+									<div className="text-xs text-slate-500">{sub}</div>
 								</div>
 							))}
 							<div className="col-span-2 bg-blue-600/20 border border-blue-500/30 rounded-2xl p-5 flex items-center gap-4">
@@ -16882,7 +16526,7 @@ const AboutPage = memo(({ navigate }) => {
 									<div className="text-white font-black text-sm">
 										IndiaMART TrustSeal Verified
 									</div>
-									<div className="text-slate-400 text-xs mt-0.5">
+									<div className="text-slate-500 text-xs mt-0.5">
 										50+ buyer reviews · 4.3/5 rating
 									</div>
 								</div>
@@ -16896,7 +16540,7 @@ const AboutPage = memo(({ navigate }) => {
 									<div className="text-white font-black text-sm">
 										MSME Registered
 									</div>
-									<div className="text-slate-400 text-xs mt-0.5">
+									<div className="text-slate-500 text-xs mt-0.5">
 										Udyam Certified Enterprise · Govt. of India
 									</div>
 								</div>
@@ -17136,11 +16780,7 @@ const AboutPage = memo(({ navigate }) => {
 								{/* Dot-pattern placeholder */}
 								<div
 									className="absolute inset-0 -z-10 opacity-20"
-									style={{
-										backgroundImage:
-											"radial-gradient(circle, #3b82f6 1px, transparent 1px)",
-										backgroundSize: "20px 20px",
-									}}
+																		style={PROJECTS_DOT_BG_STYLE}
 									aria-hidden="true"
 								/>
 							</div>
@@ -17274,7 +16914,7 @@ const AboutPage = memo(({ navigate }) => {
 						].map(({ initials, name, bg, spec, exp, oems }) => (
 							<div key={initials} className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-lg transition-all group">
 								<div className="flex items-center gap-4 mb-4">
-									<div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${bg} flex items-center justify-center shrink-0 text-white font-black text-lg shadow-md`} aria-hidden="true">
+									<div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${bg} flex items-center justify-center shrink-0 text-white font-black text-lg shadow-md`} aria-hidden="true">
 										{initials}
 									</div>
 									<div className="flex-1 min-w-0">
@@ -17293,7 +16933,7 @@ const AboutPage = memo(({ navigate }) => {
 							</div>
 						))}
 					</div>
-					<p className="text-center text-slate-400 text-xs mt-6 font-medium">
+					<p className="text-center text-slate-500 text-xs mt-6 font-medium">
 						Names withheld per company privacy policy. References available on request for verified industrial buyers.
 					</p>
 				</div>
@@ -17309,7 +16949,7 @@ const AboutPage = memo(({ navigate }) => {
 							<br />
 							One Engineering Partner.
 						</h2>
-						<p className="text-slate-400 text-base max-w-2xl mx-auto mb-10 leading-relaxed">
+						<p className="text-slate-500 text-base max-w-2xl mx-auto mb-10 leading-relaxed">
 							Our ex-OEM engineers have hands-on experience with all major
 							turbine makes. No learning curve. Authoritative technical
 							expertise from day one.
@@ -17403,7 +17043,7 @@ const AboutPage = memo(({ navigate }) => {
 									<h3 className="keep-left font-black text-white text-base mb-1">
 										ExportersIndia Verified
 									</h3>
-									<p className="text-slate-400 text-sm keep-left">
+									<p className="text-slate-500 text-sm keep-left">
 										Listed as an export-ready supplier for Indian industrial
 										exporters on ExportersIndia.com
 									</p>
@@ -18130,7 +17770,7 @@ const BlogPage = memo(({ navigate }) => {
 							Search articles
 						</label>
 						<Search
-							className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none"
+							className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none"
 							aria-hidden="true"
 						/>
 						<input
@@ -18149,7 +17789,7 @@ const BlogPage = memo(({ navigate }) => {
 								type="button"
 								onClick={() => setQuery("")}
 								aria-label="Clear search"
-								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
 							>
 								<X className="w-4 h-4" aria-hidden="true" />
 							</button>
@@ -18456,7 +18096,7 @@ const BlogPage = memo(({ navigate }) => {
 														</span>
 													</div>
 													{post.author && (
-														<span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+														<span className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
 															<UserCircle className="w-3 h-3" aria-hidden="true" />
 															{typeof post.author === "object" ? post.author.name : post.author}
 														</span>
@@ -18485,7 +18125,7 @@ const BlogPage = memo(({ navigate }) => {
 							<h2 className="text-3xl font-black text-white tracking-tight mb-4">
 								From the Blog to the Workshop
 							</h2>
-							<p className="text-slate-400 font-medium text-lg max-w-2xl mx-auto mb-10">
+							<p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto mb-10">
 								Every article here comes from real field experience. Ask our engineers
 								a question, browse the services we write about, or see the documented
 								results from actual jobs.
@@ -18652,7 +18292,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 		>
 			{/* Reading progress bar */}
 			<div
-				className="fixed top-0 left-0 z-[9999] h-1 bg-blue-600 transition-all duration-150"
+				className="fixed top-0 left-0 z-9999 h-1 bg-blue-600 transition-all duration-150"
 				style={{ width: `${readProgress}%` }}
 				aria-hidden="true"
 			/>
@@ -18802,7 +18442,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						<h3 className="text-xl font-black text-white mb-2">
 							Found this article useful?
 						</h3>
-						<p className="text-slate-400 font-medium text-sm">
+						<p className="text-slate-500 font-medium text-sm">
 							Share with your maintenance team or contact us for a technical
 							consultation.
 						</p>
@@ -18841,7 +18481,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						<h2 className="text-xl md:text-2xl font-black text-white leading-tight">
 							See This Work in Action
 						</h2>
-						<p className="text-slate-400 text-sm mt-1.5 max-w-sm">
+						<p className="text-slate-500 text-sm mt-1.5 max-w-sm">
 							Real case studies, documented results, and the services behind every job.
 						</p>
 					</div>
@@ -19033,7 +18673,7 @@ const ServicesPageFAQ = memo(() => {
 						</div>
 					))}
 				</div>
-				<p className="text-center text-slate-400 text-sm mt-8 font-medium">
+				<p className="text-center text-slate-500 text-sm mt-8 font-medium">
 					Have a specific question?{" "}
 					<a href={waMsg("Hello KESHAV ENTERPRISES, I have a question about your services.")} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold hover:underline focus:outline-none focus-visible:underline">
 						Ask us on WhatsApp →
@@ -19309,7 +18949,7 @@ const ServicesPage = memo(({ navigate }) => (
 						<h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
 							See These Services in Action
 						</h2>
-						<p className="text-slate-400 text-sm mt-2 max-w-md">
+						<p className="text-slate-500 text-sm mt-2 max-w-md">
 							Real case studies — actual outcomes, actual numbers. From a Triveni
 							overhaul that cut vibration by 72% to a reverse-engineered Siemens
 							disc delivered in 21 days at ₹12 lakh below OEM price.
@@ -20624,7 +20264,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								<li aria-hidden="true" className="text-slate-700">
 									/
 								</li>
-								<li className="text-slate-400">{service.title}</li>
+								<li className="text-slate-500">{service.title}</li>
 							</ol>
 						</nav>
 
@@ -20762,6 +20402,34 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					</div>
 
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-16">
+					{/* ── MOBILE JUMP-TO-SECTION NAV ──
+					 *  Mirrors the desktop sidebar nav on mobile via a horizontally-scrolling
+					 *  chip bar. Sticky below the reading-progress bar (top-16 = navbar height).
+					 *  Only visible on mobile (lg:hidden). */}
+					<nav
+						aria-label="Jump to section"
+						className="lg:hidden col-span-full -mx-4 px-4 py-2.5 bg-white/95 backdrop-blur-sm border-b border-slate-100 sticky top-16 z-40 flex gap-2 overflow-x-auto scrollbar-hide"
+					>
+						{[
+							{ label: "Overview", href: "#sd-overview" },
+							{ label: "Process", href: "#sd-process" },
+							{ label: "Standards", href: "#sd-standards" },
+							{ label: "All Services", href: "#sd-all-services" },
+						].map(({ label, href }) => (
+							<a
+								key={href}
+								href={href}
+								onClick={(e) => {
+									e.preventDefault();
+									const el = document.getElementById(href.slice(1));
+									if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+								}}
+								className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-700 hover:bg-blue-600 hover:text-white transition-colors whitespace-nowrap border border-transparent hover:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							>
+								{label}
+							</a>
+						))}
+					</nav>
 						{/* ── MAIN COLUMN ── */}
 						<div className="lg:col-span-2 space-y-20">
 							{/* Why Us — matches site blue-50 bg callout blocks */}
@@ -20785,7 +20453,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							)}
 
 							{/* Overview */}
-							<section aria-labelledby="overview-heading">
+							<section id="sd-overview" aria-labelledby="overview-heading">
 								<div className="sd-reveal flex items-center gap-4 mb-5">
 									<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 									<h2
@@ -20801,7 +20469,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							</section>
 
 							{/* Procedures */}
-							<section aria-labelledby="procedure-heading">
+							<section id="sd-process" aria-labelledby="procedure-heading">
 								<div className="sd-reveal flex items-center gap-4 mb-4">
 									<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 									<h2
@@ -20891,7 +20559,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 													className="sd-reveal sd-tool-row flex items-start px-6 py-4 gap-4"
 													style={{ animationDelay: `${i * 40}ms` }}
 												>
-													<span className="text-[11px] font-black text-slate-400 w-8 pt-0.5 shrink-0">
+													<span className="text-[11px] font-black text-slate-500 w-8 pt-0.5 shrink-0">
 														{String(i + 1).padStart(2, "0")}
 													</span>
 													<div className="flex items-start gap-3 flex-1 min-w-0">
@@ -20953,7 +20621,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 													key={h}
 													className="px-5 py-3.5 border-r border-slate-700 last:border-r-0"
 												>
-													<span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+													<span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
 														{h}
 													</span>
 												</div>
@@ -21000,7 +20668,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							)}
 
 							{/* Standards & Compliance */}
-							<section aria-labelledby="standards-heading">
+							<section id="sd-standards" aria-labelledby="standards-heading">
 								<div className="sd-reveal flex items-center gap-4 mb-4">
 									<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 									<h2
@@ -21053,7 +20721,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								>
 									{service.title}
 								</h3>
-								<p className="text-slate-400 font-medium mb-8 max-w-lg leading-relaxed text-sm">
+								<p className="text-slate-500 font-medium mb-8 max-w-lg leading-relaxed text-sm">
 									Speak directly to our ex-OEM engineers about your turbine
 									make, site conditions, and shutdown window.
 								</p>
@@ -21177,7 +20845,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							</button>
 
 							{/* All Services Nav — matches site card header pattern */}
-							<div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+							<div id="sd-all-services" className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
 								<div className="bg-[#0A192F] px-5 py-4">
 									<h4 className="font-black text-white text-sm uppercase tracking-widest">
 										All Services
@@ -21309,7 +20977,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 										/>
 									</div>
 									<div className="min-w-0">
-										<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+										<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-0.5">
 											Previous
 										</p>
 										<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
@@ -21327,7 +20995,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-right justify-end sm:col-start-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 								>
 									<div className="min-w-0 text-right">
-										<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+										<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-0.5">
 											Next
 										</p>
 										<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
@@ -21641,7 +21309,7 @@ const ProductsPage = memo(({ navigate }) => {
 								className="w-full pl-14 pr-6 py-4 bg-white border-2 border-slate-200 rounded-2xl text-base font-bold text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-md"
 							/>
 							<Search
-								className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400 pointer-events-none"
+								className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500 pointer-events-none"
 								aria-hidden="true"
 							/>
 							{searchQuery && (
@@ -21649,7 +21317,7 @@ const ProductsPage = memo(({ navigate }) => {
 									type="button"
 									onClick={() => setSearchQuery("")}
 									aria-label="Clear search"
-									className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+									className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
 								>
 									<X className="w-5 h-5" aria-hidden="true" />
 								</button>
@@ -21663,7 +21331,7 @@ const ProductsPage = memo(({ navigate }) => {
 								id="product-sort"
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
-								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer max-w-[7rem] sm:max-w-none"
+								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer max-w-28 sm:max-w-none"
 							>
 								<option value="default">Default order</option>
 								<option value="az">Name A → Z</option>
@@ -21764,6 +21432,7 @@ const ProductsPage = memo(({ navigate }) => {
 											id="price-min"
 											type="number"
 											min="0"
+											inputMode="numeric"
 											placeholder="e.g. 500"
 											value={priceMin}
 											onChange={(e) => setPriceMin(e.target.value)}
@@ -21781,6 +21450,7 @@ const ProductsPage = memo(({ navigate }) => {
 											id="price-max"
 											type="number"
 											min="0"
+											inputMode="numeric"
 											placeholder="e.g. 50000"
 											value={priceMax}
 											onChange={(e) => setPriceMax(e.target.value)}
@@ -21800,7 +21470,7 @@ const ProductsPage = memo(({ navigate }) => {
 										</button>
 									)}
 								</div>
-								<p className="mt-3 text-[11px] text-slate-400 font-medium leading-relaxed">
+								<p className="mt-3 text-[11px] text-slate-500 font-medium leading-relaxed">
 									Prices are indicative market estimates sourced from IndiaMART,
 									TradeIndia and ExportersIndia (2025). Actual pricing depends on
 									size, material, quantity, and OEM spec. Contact us for an exact
@@ -21951,7 +21621,7 @@ const ProductsPage = memo(({ navigate }) => {
 										item === "…" ? (
 											<span
 												key={`ellipsis-${i}`}
-												className="w-10 h-10 flex items-center justify-center text-slate-400 font-bold select-none"
+												className="w-10 h-10 flex items-center justify-center text-slate-500 font-bold select-none"
 											>
 												…
 											</span>
@@ -21996,7 +21666,7 @@ const ProductsPage = memo(({ navigate }) => {
 							Try adjusting your search, category, or price filter.
 						</p>
 						{(priceMin || priceMax) && (
-							<p className="text-slate-400 text-sm mb-4">
+							<p className="text-slate-500 text-sm mb-4">
 								Price filter:{" "}
 								{priceMin
 									? `₹${Number(priceMin).toLocaleString("en-IN")}`
@@ -22049,7 +21719,7 @@ const ProductsPage = memo(({ navigate }) => {
 							<h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
 								Need Installation, Overhauling, or a Custom Solution?
 							</h2>
-							<p className="text-slate-400 text-sm mt-2 max-w-md">
+							<p className="text-slate-500 text-sm mt-2 max-w-md">
 								Our field engineers install, commission, and maintain everything we
 								supply — plus handle turbine work, alignment, and balancing that no
 								product alone can fix.
@@ -22867,6 +22537,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 	const detail = INDUSTRY_DETAILS[industryId];
 	// Scroll instantly in render phase — before React paints — so new industry always starts at top
 	const [prevIndustryId, setPrevIndustryId] = useState(industryId);
+	const [showAllProducts, setShowAllProducts] = useState(false);
 	if (industryId !== prevIndustryId) {
 		setPrevIndustryId(industryId);
 		window.scrollTo({ top: 0, behavior: "instant" });
@@ -22953,7 +22624,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					{/* Breadcrumb */}
 					<nav
 						aria-label="Breadcrumb"
-						className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10"
+						className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest mb-10"
 					>
 						<button
 							type="button"
@@ -23088,7 +22759,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 						</h2>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-						{detail.products.map((prod) => {
+						{(showAllProducts ? detail.products : detail.products.slice(0, 3)).map((prod) => {
 							const prodId = INDUSTRY_PRODUCT_IDS[prod.name];
 							const isClickable = !!prodId;
 							const cardInner = (
@@ -23467,7 +23138,7 @@ const IndustriesPage = memo(({ navigate }) => (
 												<span className="text-blue-300 text-3xl font-black leading-none select-none shrink-0 -mt-1" aria-hidden="true">&ldquo;</span>
 												<div>
 													<p className="text-slate-700 font-medium text-sm leading-snug italic">{IND_TESTIMONIALS[ind.id].quote}</p>
-													<p className="text-slate-400 text-[11px] font-bold mt-1">— {IND_TESTIMONIALS[ind.id].credit}</p>
+													<p className="text-slate-500 text-[11px] font-bold mt-1">— {IND_TESTIMONIALS[ind.id].credit}</p>
 												</div>
 											</div>
 										)}
@@ -23544,7 +23215,7 @@ const IndustriesPage = memo(({ navigate }) => (
 						<h2 className="text-2xl md:text-3xl font-black text-white leading-tight">
 							See Our Work Across Every Industry
 						</h2>
-						<p className="text-slate-400 text-sm mt-2 max-w-md">
+						<p className="text-slate-500 text-sm mt-2 max-w-md">
 							From sugar mills and power plants to cement factories and petrochemical
 							facilities — real jobs, documented outcomes, and verified field results.
 						</p>
@@ -23581,6 +23252,11 @@ IndustriesPage.displayName = "IndustriesPage";
 // at the top level of a proper component (rules-of-hooks compliance).
 const MapEmbed = memo(({ src }) => {
 	const [mapLoaded, setMapLoaded] = useState(false);
+	// Mobile UX: iframes capture touch scroll and fight with page scroll.
+	// We show a tap-to-interact overlay on touch devices; once tapped it hides
+	// and the iframe receives touches normally. This is the same pattern Google
+	// Maps itself uses on embedded previews.
+	const [interacting, setInteracting] = useState(false);
 	return (
 		<div className="w-full h-100 relative bg-slate-100">
 			{/* Skeleton placeholder shown until iframe fires onLoad */}
@@ -23591,7 +23267,7 @@ const MapEmbed = memo(({ src }) => {
 						className="w-10 h-10 text-slate-300 relative z-10"
 						aria-hidden="true"
 					/>
-					<p className="text-sm font-medium text-slate-400 relative z-10">
+					<p className="text-sm font-medium text-slate-500 relative z-10">
 						Loading map…
 					</p>
 				</div>
@@ -23612,6 +23288,21 @@ const MapEmbed = memo(({ src }) => {
 				className="absolute inset-0"
 				onLoad={() => setMapLoaded(true)}
 			/>
+			{/* Tap-to-interact overlay — only on touch devices, hides once tapped.
+			    Prevents the iframe from hijacking page scroll on iOS/Android. */}
+			{mapLoaded && !interacting && (
+				<button
+					type="button"
+					aria-label="Tap to interact with map"
+					onClick={() => setInteracting(true)}
+					className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-black/20 backdrop-blur-[1px] sm:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+				>
+					<MapPin className="w-8 h-8 text-white drop-shadow" aria-hidden="true" />
+					<span className="text-white text-sm font-black bg-black/50 px-4 py-1.5 rounded-full shadow-lg">
+						Tap to interact with map
+					</span>
+				</button>
+			)}
 		</div>
 	);
 });
@@ -23873,7 +23564,7 @@ const ContactPage = memo(({ navigate }) => {
 						].map(({ Icon, text }) => (
 							<div
 								key={text}
-								className="flex items-center gap-2 text-slate-400 text-sm font-semibold"
+								className="flex items-center gap-2 text-slate-500 text-sm font-semibold"
 							>
 								<Icon
 									className="w-4 h-4 text-blue-400 shrink-0"
@@ -23897,7 +23588,7 @@ const ContactPage = memo(({ navigate }) => {
 									<div className="space-y-4">
 										{/* Phone 1 — Sales & RFQ */}
 										<div>
-											<p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+											<p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
 												Sales &amp; RFQ
 											</p>
 											<a
@@ -23909,7 +23600,7 @@ const ContactPage = memo(({ navigate }) => {
 										</div>
 										{/* Phone 2 — 24×7 Emergency + WhatsApp badge */}
 										<div>
-											<p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+											<p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">
 												24×7 Emergency Breakdown
 											</p>
 											<a
@@ -24000,14 +23691,14 @@ const ContactPage = memo(({ navigate }) => {
 								</div>
 								<div className="flex justify-between items-center">
 									<span className="text-slate-500 font-medium">Sunday</span>
-									<span className="font-bold text-slate-400">Closed (emergency only)</span>
+									<span className="font-bold text-slate-500">Closed (emergency only)</span>
 								</div>
 								<div className="flex justify-between items-center pt-2 border-t border-slate-100 mt-1">
 									<span className="text-slate-500 font-medium">Emergency Line</span>
 									<span className="font-black text-red-600">24 × 7 Active</span>
 								</div>
 							</div>
-							<p className="text-[11px] text-slate-400 mt-3 font-medium">
+							<p className="text-[11px] text-slate-500 mt-3 font-medium">
 								{officeHours.isOfficeHours
 									? "● We're online now — expect reply within 2 hours"
 									: "● Currently outside office hours — emergency line still active"}
@@ -24044,7 +23735,7 @@ const ContactPage = memo(({ navigate }) => {
 
 						{/* ── Connect on Social ── */}
 						<div className="bg-slate-50 border border-slate-200 rounded-3xl p-6">
-							<p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">
+							<p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3">
 								Connect With Us
 							</p>
 							<div className="flex flex-wrap gap-2">
@@ -24282,6 +23973,7 @@ const ContactPage = memo(({ navigate }) => {
 									<input
 										id="c-phone"
 										type="tel"
+										inputMode="tel"
 										value={phone}
 										autoComplete="tel"
 										onChange={(e) => {
@@ -24387,7 +24079,7 @@ const ContactPage = memo(({ navigate }) => {
 									className="block text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3"
 								>
 									Turbine Make / Model{" "}
-									<span className="text-slate-400 font-normal normal-case tracking-normal">
+									<span className="text-slate-500 font-normal normal-case tracking-normal">
 										(if applicable)
 									</span>
 								</label>
@@ -24446,7 +24138,7 @@ const ContactPage = memo(({ navigate }) => {
 												? `${20 - details.length} more character${20 - details.length !== 1 ? "s" : ""} needed`
 												: `✓ Looks good!`}
 									</span>
-									<span className="ke-char-count text-slate-400">
+									<span className="ke-char-count text-slate-500">
 										{details.length} / 2000
 									</span>
 								</div>
@@ -24468,7 +24160,7 @@ const ContactPage = memo(({ navigate }) => {
 									<Paperclip className="w-5 h-5 mr-3" aria-hidden="true" />{" "}
 									Attach Technical Drawings / Datasheet (Optional)
 								</label>
-								<p className="text-xs text-slate-400 font-medium mb-3">
+								<p className="text-xs text-slate-500 font-medium mb-3">
 									PDF, DWG, DXF, JPG, PNG — max 10 MB per file. Helps us respond faster with a more accurate quote.
 								</p>
 								<input
@@ -24670,7 +24362,7 @@ const ContactPage = memo(({ navigate }) => {
 								className="w-4 h-4 text-blue-400 shrink-0"
 								aria-hidden="true"
 							/>
-							<p className="text-slate-400 text-sm font-bold">
+							<p className="text-slate-500 text-sm font-bold">
 								Our Manufacturing Facility, Shamli, U.P.
 							</p>
 						</div>
@@ -25096,7 +24788,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 					{/* ── Search box ── */}
 					<div className="mt-8 w-full max-w-2xl relative">
 						<label htmlFor="projects-search" className="sr-only">Search case studies</label>
-						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" aria-hidden="true" />
 						<input
 							ref={searchRef}
 							id="projects-search"
@@ -25113,7 +24805,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 								type="button"
 								onClick={() => setSearchQueryAndReset("")}
 								aria-label="Clear search"
-								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
 							>
 								<X className="w-4 h-4" aria-hidden="true" />
 							</button>
@@ -25126,7 +24818,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 			<div className="sticky top-16 z-30 bg-white border-b border-slate-200 shadow-sm">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
 					<div className="flex flex-wrap gap-2 items-center">
-						<span className="text-xs font-black text-slate-400 uppercase tracking-widest mr-1 shrink-0">
+						<span className="text-xs font-black text-slate-500 uppercase tracking-widest mr-1 shrink-0">
 							Service:
 						</span>
 						{categories.map((cat) => (
@@ -25143,7 +24835,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 								{cat}
 							</button>
 						))}
-						<span className="text-xs font-black text-slate-400 uppercase tracking-widest mr-1 ml-3 shrink-0">
+						<span className="text-xs font-black text-slate-500 uppercase tracking-widest mr-1 ml-3 shrink-0">
 							Industry:
 						</span>
 						{industries.map((ind) => (
@@ -25164,7 +24856,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 							<button
 								type="button"
 								onClick={clearAll}
-								className="ml-2 text-xs font-black text-slate-400 hover:text-slate-700 underline underline-offset-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+								className="ml-2 text-xs font-black text-slate-500 hover:text-slate-700 underline underline-offset-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
 							>
 								Clear all
 							</button>
@@ -25321,7 +25013,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 							}, [])
 							.map((item, idx) =>
 								item === "…" ? (
-									<span key={`ellipsis-${idx}`} className="w-10 h-10 flex items-center justify-center text-slate-400 font-bold text-sm">
+									<span key={`ellipsis-${idx}`} className="w-10 h-10 flex items-center justify-center text-slate-500 font-bold text-sm">
 										…
 									</span>
 								) : (
@@ -25360,7 +25052,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 					<h2 className="text-2xl font-black tracking-tight mb-3">
 						Talk to Our Engineers Directly
 					</h2>
-					<p className="text-slate-400 font-medium mb-8 max-w-lg mx-auto text-sm leading-relaxed">
+					<p className="text-slate-500 font-medium mb-8 max-w-lg mx-auto text-sm leading-relaxed">
 						Describe your turbine make, site conditions, and shutdown window —
 						our ex-OEM engineers will give you a straight answer on scope and
 						timeline.
@@ -25515,7 +25207,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 					{/* Breadcrumb */}
 					<nav
 						aria-label="Breadcrumb"
-						className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest mb-10"
+						className="flex items-center gap-2 text-xs font-black text-slate-500 uppercase tracking-widest mb-10"
 					>
 						<button
 							type="button"
@@ -25633,7 +25325,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 									<p className="text-white font-black text-base leading-snug">
 										We handle {cs.category} jobs across all major OEM brands and industries.
 									</p>
-									<p className="text-slate-400 text-xs mt-1">
+									<p className="text-slate-500 text-xs mt-1">
 										Tell us your turbine make, capacity, and symptoms — we respond with a technical answer, not a brochure.
 									</p>
 								</div>
@@ -25671,7 +25363,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 									<button
 										type="button"
 										onClick={() => window.print()}
-										className="border border-slate-700 text-slate-400 px-6 py-2.5 rounded-xl font-bold text-xs hover:border-slate-500 hover:text-slate-300 transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+										className="border border-slate-700 text-slate-500 px-6 py-2.5 rounded-xl font-bold text-xs hover:border-slate-500 hover:text-slate-300 transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 										aria-label="Print or save this case study as PDF for internal sharing"
 									>
 										<Download className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
@@ -25700,7 +25392,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 											/>
 										</div>
 										<div className="min-w-0">
-											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+											<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-0.5">
 												Previous
 											</p>
 											<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
@@ -25718,7 +25410,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 										className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-md hover:-translate-y-0.5 transition-all group text-right justify-end sm:col-start-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 									>
 										<div className="min-w-0 text-right">
-											<p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-0.5">
+											<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-0.5">
 												Next
 											</p>
 											<p className="font-black text-slate-900 group-hover:text-blue-600 transition-colors text-sm truncate">
@@ -26098,7 +25790,7 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 						type="button"
 						onClick={onClose}
 						aria-label="Close"
-						className="shrink-0 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded mt-0.5"
+						className="shrink-0 text-slate-500 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded mt-0.5"
 					>
 						<X className="w-5 h-5" aria-hidden="true" />
 					</button>
@@ -26214,7 +25906,7 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 							{/* City — optional */}
 							<div>
 								<label htmlFor="dl-city" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
-									City / State <span className="text-slate-400 font-normal normal-case">(optional)</span>
+									City / State <span className="text-slate-500 font-normal normal-case">(optional)</span>
 								</label>
 								<input
 									id="dl-city"
@@ -26256,7 +25948,7 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 							)}
 						</button>
 
-						<p className="text-center text-xs text-slate-400 mt-3 leading-relaxed">
+						<p className="text-center text-xs text-slate-500 mt-3 leading-relaxed">
 							<Lock className="w-3 h-3 inline-block mr-1 align-middle" aria-hidden="true" />
 							No spam. Your details are only used to send you relevant engineering
 							updates.
@@ -26296,7 +25988,7 @@ const DownloadCard = memo(({ item, onDownload, alreadyGated }) => {
 							<span className={`text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border ${fileColor}`}>
 								{item.fileType}
 							</span>
-							<span className="text-[11px] text-slate-400 font-medium">{item.fileSize}</span>
+							<span className="text-[11px] text-slate-500 font-medium">{item.fileSize}</span>
 						</div>
 					</div>
 				</div>
@@ -26424,7 +26116,7 @@ const DownloadsPage = memo(({ navigate }) => {
 					{/* Search */}
 					<div className="w-full max-w-2xl relative">
 						<label htmlFor="dl-search" className="sr-only">Search downloads</label>
-						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" aria-hidden="true" />
 						<input
 							ref={searchRef}
 							id="dl-search"
@@ -26441,7 +26133,7 @@ const DownloadsPage = memo(({ navigate }) => {
 								type="button"
 								onClick={() => setQuery("")}
 								aria-label="Clear search"
-								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+								className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
 							>
 								<X className="w-4 h-4" aria-hidden="true" />
 							</button>
@@ -26477,7 +26169,7 @@ const DownloadsPage = memo(({ navigate }) => {
 						<button
 							type="button"
 							onClick={clearAll}
-							className="ml-1 text-xs font-black text-slate-400 hover:text-slate-700 underline underline-offset-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
+							className="ml-1 text-xs font-black text-slate-500 hover:text-slate-700 underline underline-offset-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded"
 						>
 							Clear all
 						</button>
@@ -26492,7 +26184,7 @@ const DownloadsPage = memo(({ navigate }) => {
 							: `${filtered.length} document${filtered.length === 1 ? "" : "s"} available`}
 					</p>
 					{hasFilters && filtered.length > 0 && (
-						<p className="text-xs text-slate-400">
+						<p className="text-xs text-slate-500">
 							Filtered from {DOWNLOADS.length} total
 						</p>
 					)}
@@ -26505,7 +26197,7 @@ const DownloadsPage = memo(({ navigate }) => {
 							<Search className="w-8 h-8 text-slate-400" aria-hidden="true" />
 						</div>
 						<h2 className="text-xl font-black text-slate-700 mb-2">No documents found</h2>
-						<p className="text-slate-400 mb-6 max-w-sm mx-auto">
+						<p className="text-slate-500 mb-6 max-w-sm mx-auto">
 							Try a different keyword or browse all categories.
 						</p>
 						<button
@@ -26534,7 +26226,7 @@ const DownloadsPage = memo(({ navigate }) => {
 
 				{/* ── Trust strip ── */}
 				<div className="border-t border-slate-200 pt-12 pb-4 lazy-section">
-					<p className="text-xs font-black text-slate-400 uppercase tracking-widest text-center mb-6">
+					<p className="text-xs font-black text-slate-500 uppercase tracking-widest text-center mb-6">
 						Why download from Keshav Enterprises?
 					</p>
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
@@ -26559,7 +26251,7 @@ const DownloadsPage = memo(({ navigate }) => {
 					<h2 className="text-white font-black text-xl md:text-2xl mb-3">
 						Need a custom document or datasheet?
 					</h2>
-					<p className="text-slate-400 text-sm leading-relaxed mb-6 max-w-lg mx-auto">
+					<p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-lg mx-auto">
 						If you need a specific turbine RFQ template, a custom filter sizing chart,
 						or a technical datasheet not listed here, contact our engineering team.
 					</p>
@@ -26637,7 +26329,7 @@ const NotFoundPage = memo(({ navigate }) => {
 				<h1 className="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">
 					This page has gone offline
 				</h1>
-				<p className="text-slate-400 font-medium mb-8 max-w-md mx-auto leading-relaxed">
+				<p className="text-slate-500 font-medium mb-8 max-w-md mx-auto leading-relaxed">
 					The page you&apos;re looking for doesn&apos;t exist or has been moved.
 					Search for what you need, or use the links below.
 				</p>
@@ -26651,7 +26343,7 @@ const NotFoundPage = memo(({ navigate }) => {
 				>
 					<div className="relative">
 						<label htmlFor="notfound-search" className="sr-only">Search our site</label>
-						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" aria-hidden="true" />
+						<Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" aria-hidden="true" />
 						<input
 							id="notfound-search"
 							type="search"
@@ -26707,7 +26399,7 @@ const NotFoundPage = memo(({ navigate }) => {
 							key={path}
 							type="button"
 							onClick={() => navigate(path)}
-							className="flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-400/60 hover:bg-white/10 hover:-translate-y-0.5 transition-all text-slate-400 hover:text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+							className="flex flex-col items-center gap-2 bg-white/5 border border-white/10 rounded-xl p-4 hover:border-blue-400/60 hover:bg-white/10 hover:-translate-y-0.5 transition-all text-slate-500 hover:text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
 						>
 							<div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition-colors border border-white/10">
 								<Icon className="w-5 h-5" aria-hidden="true" />
