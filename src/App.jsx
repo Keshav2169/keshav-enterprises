@@ -8071,12 +8071,13 @@ const MARQUEE_CSS = `
   @media(min-width:1024px){.hero-badges{justify-content:flex-start}}
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:28px 20px 36px}
+  .hero-content-wrap{padding:28px 20px 36px;min-height:calc(100svh - 64px)}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px)}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset}}
 
   @media(max-width:767px){
 	.hero-section{
+	  min-height:calc(100svh - 64px);
 	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.75) 0%,rgba(10,25,47,0.45) 45%,rgba(10,25,47,0.88) 100%),url('hero-background.png');
 	  background-size:cover;background-position:center center;background-repeat:no-repeat;
 	}
@@ -8314,7 +8315,6 @@ const MARQUEE_CSS = `
 // Hoisted from JSX render returns — prevents new object allocation each render.
 const FOOTER_BADGE_IMG_STYLE = { width: "1.6rem", height: "1.6rem", objectFit: "contain" };
 const ABOUT_IMG_STYLE = { opacity: 0.45, objectFit: "cover", objectPosition: "center center", width: "100%", height: "100%" };
-const FLEX_ITEM_STYLE = { flex: "1 1 280px" };
 const FONT_NORMAL_STYLE = { fontStyle: "normal" };
 const FOOTER_BADGES_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".45rem", alignItems: "center" };
 const FOOTER_BADGE_CHIP_LABEL_STYLE = { fontWeight: 700, color: "#38BDF8", fontSize: "7.5px", letterSpacing: ".15em", textTransform: "uppercase" };
@@ -8330,7 +8330,6 @@ const FOOTER_ELLIPSIS_STYLE = { display: "block", overflow: "hidden", textOverfl
 const FOOTER_ICON_CONTACT_STYLE = { width: ".85rem", height: ".85rem", color: "#38BDF8", flexShrink: 0, marginTop: ".1rem" };
 const FOOTER_ICON_LG_STYLE = { width: ".875rem", height: ".875rem", color: "#0891B2", flexShrink: 0 };
 const FOOTER_ICON_SM_STYLE = { width: ".75rem", height: ".75rem", color: "#0891B2", flexShrink: 0 };
-const FOOTER_INNER_STYLE = { maxWidth: "80rem", margin: "0 auto", padding: "2.75rem 1.5rem" };
 const FOOTER_LABEL_STYLE = { fontSize: "8.5px", fontWeight: 700, letterSpacing: ".2em", textTransform: "uppercase", color: "#64748b", marginBottom: ".5rem" };
 const FOOTER_LIST_STYLE = { listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: ".45rem" };
 const FOOTER_MONO_BOLD_STYLE = { fontFamily: "monospace", fontWeight: 600, fontSize: ".82rem", color: "#e2e8f0" };
@@ -8348,18 +8347,12 @@ const MIN_WIDTH_STYLE = { minWidth: 0 };
 const MOBILE_DRAWER_ANIM_STYLE = { animation: "mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both", paddingBottom: "env(safe-area-inset-bottom)" };
 const MOBILE_DRAWER_ANIM_STYLE_V2 = { animation: "mobileDrawerIn 0.18s cubic-bezier(0.3,0,0,1) both" };
 const PROGRESS_BAR_STYLE = { height: "4px", background: "linear-gradient(90deg,#0891B2 0%,#06B6D4 50%,#38BDF8 100%)" };
-const PROGRESS_BG_STYLE = { position: "relative", overflow: "hidden", background: "linear-gradient(135deg,#0A192F 0%,#0d2b4e 50%,#0A192F 100%)" };
-const PROGRESS_OVERLAY_STYLE = { position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at 20% 50%,rgba(56,189,248,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(14,165,233,0.06) 0%,transparent 60%)" };
 const PROJECTS_DOT_BG_STYLE = { backgroundImage: "radial-gradient(circle, #3b82f6 1px, transparent 1px)", backgroundSize: "24px 24px" };
 const PROJECTS_GRID_STYLE = { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(320px,100%),1fr))", gap: "1.5rem" };
 const SAFE_AREA_BOTTOM_STYLE = { paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0px))" };
 const SEARCH_POPOVER_ANIM_STYLE = { animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both" };
 const SEARCH_POPOVER_ANIM_STYLE_V2 = { animation: "searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both" };
 const SKELETON_IMG_STYLE = { background: "#e2e8f0", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem" };
-const SOCIAL_PILLS_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".75rem", alignItems: "center" };
-const SOCIAL_PILL_INNER_STYLE = { display: "inline-flex", alignItems: "center", gap: "5px" };
-const TESTIMONIAL_ATTRIB_STYLE = { margin: 0, fontSize: ".78rem", color: "#94a3b8", fontWeight: 500, lineHeight: 1.3 };
-const TESTIMONIAL_QUOTE_STYLE = { fontFamily: "Georgia,serif", fontStyle: "italic", fontSize: "clamp(1rem,2vw,1.2rem)", lineHeight: 1.65, color: "#e2e8f0" };
 const THUMB_SIZE_STYLE = { width: "clamp(56px, 15vw, 84px)", height: "clamp(56px, 15vw, 84px)" };
 
 // ─── SITE & BRAND CONSTANTS ────────────────────────────────────
@@ -8747,17 +8740,17 @@ if (typeof document !== "undefined") {
 		[
 			"default-src 'self'",
 			// Scripts: self + Cloudflare Turnstile + GA4 + Clarity + Google Translate + inline event handlers
-			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.clarity.ms https://cdn.clarity.ms https://translate.googleapis.com https://translate.google.com",
-			// Styles: self + Google Fonts + Google Translate + inline (Tailwind/CSS-in-JS)
-			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com",
+			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.clarity.ms https://cdn.clarity.ms https://translate.googleapis.com https://translate.google.com https://translate-pa.googleapis.com https://www.gstatic.com",
+			// Styles: self + Google Fonts + Google Translate (served from gstatic) + inline (Tailwind/CSS-in-JS)
+			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com https://www.gstatic.com",
 			// Fonts
-			"font-src 'self' https://fonts.gstatic.com",
+			"font-src 'self' https://fonts.gstatic.com https://www.gstatic.com",
 			// Images: self + data URIs + Google Translate assets + CDN sources
 			"img-src 'self' data: https: blob:",
 			// Frames: Turnstile iframe + Google Maps embed + Google Translate
-			"frame-src https://challenges.cloudflare.com https://maps.google.com https://www.google.com",
+			"frame-src https://challenges.cloudflare.com https://maps.google.com https://www.google.com https://translate.google.com",
 			// API fetches: Web3Forms, exchange rates, BigDataCloud geolocation, GA4, Google Translate
-			"connect-src 'self' https://api.web3forms.com https://open.er-api.com https://api.bigdatacloud.net https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://translate.googleapis.com",
+			"connect-src 'self' https://api.web3forms.com https://open.er-api.com https://api.bigdatacloud.net https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
 			// Tighten mixed-content + object/base
 			"upgrade-insecure-requests",
 			"object-src 'none'",
@@ -11517,15 +11510,6 @@ const Footer = memo(({ navigate }) => {
 				.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
 				.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
 
-				/* ── CTA buttons ── */
-				.ke-cta-call{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#0891B2,#0e7490);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;border:none;cursor:pointer;transition:transform .15s,box-shadow .18s;box-shadow:0 4px 20px #0891B240}
-				.ke-cta-call:hover{transform:translateY(-2px);box-shadow:0 10px 32px #0891B250}
-				.ke-cta-call:focus{outline:2px solid #38BDF8;outline-offset:3px}
-
-				.ke-cta-wa{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .18s;border:none;box-shadow:0 4px 20px #22c55e30}
-				.ke-cta-wa:hover{transform:translateY(-2px);box-shadow:0 10px 32px #22c55e40}
-				.ke-cta-wa:focus{outline:2px solid #22c55e;outline-offset:3px}
-
 				/* ── Credential badges ── */
 				.ke-badge{
 					display:flex;align-items:center;gap:.85rem;
@@ -11559,7 +11543,7 @@ const Footer = memo(({ navigate }) => {
 				.ke-back-top:hover,.ke-back-top:focus{background:#0891B215;border-color:#0891B2;outline:none}
 
 				/* ── Reduced motion ── */
-				@media(prefers-reduced-motion:reduce){.ke-cta-call,.ke-cta-wa,.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
+				@media(prefers-reduced-motion:reduce){.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
 			`}</style>
 
 			{/* ── Top accent bar ── */}
@@ -11567,72 +11551,6 @@ const Footer = memo(({ navigate }) => {
 				aria-hidden="true"
 				style={PROGRESS_BAR_STYLE}
 			/>
-
-			{/* ── Pre-footer CTA band ── */}
-			<div
-				style={PROGRESS_BG_STYLE}
-			>
-				<div
-					aria-hidden="true"
-					style={PROGRESS_OVERLAY_STYLE}
-				/>
-				<div
-					style={FOOTER_INNER_STYLE}
-				>
-					{/* Headline */}
-					<div style={FLEX_ITEM_STYLE}>
-						<span
-							style={SOCIAL_PILL_INNER_STYLE}
-						>
-							<Zap
-								aria-hidden="true"
-								style={{ width: ".75rem", height: ".75rem" }}
-							/>
-							24 h Emergency Support Available
-						</span>
-						<h2
-							style={TESTIMONIAL_QUOTE_STYLE}
-						>
-							Need a quote or facing an emergency breakdown?
-						</h2>
-						<p
-							style={TESTIMONIAL_ATTRIB_STYLE}
-						>
-							Our ex-OEM engineering team responds within 24 hours — call or
-							WhatsApp.
-						</p>
-					</div>
-					{/* CTAs */}
-					<div
-						style={SOCIAL_PILLS_WRAP_STYLE}
-					>
-						<a
-							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, "")}`}
-							className="ke-cta-call"
-						>
-							<Phone
-								aria-hidden="true"
-								style={{ width: "1.1rem", height: "1.1rem" }}
-							/>
-							{CONTACT_INFO.phones[0]}
-						</a>
-						<a
-							href={waMsg(
-								"Hi KESHAV ENTERPRISES, I would like to request a technical quote.",
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="ke-cta-wa"
-						>
-							<MessageCircle
-								aria-hidden="true"
-								style={{ width: "1.1rem", height: "1.1rem" }}
-							/>
-							WhatsApp Now
-						</a>
-					</div>
-				</div>
-			</div>
 
 			{/* ── Main body ── */}
 			<div
@@ -15060,8 +14978,9 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 			rafRef.current = null;
 			clearTimeout(resumeTimer.current);
 		};
-		// halfW changes only when products list changes — rAF restarts correctly
-	}, [halfW]);
+		// halfW changes only when products list changes — rAF restarts correctly.
+		// prefersReducedMotion is a stable useMemo value (computed once on mount).
+	}, [halfW, prefersReducedMotion]);
 
 	// ── Visibility gate — truly stop rAF when section is off-screen ────
 	// When off-screen: cancel the rAF loop entirely (no more scheduled frames).
@@ -15551,7 +15470,7 @@ const HomePage = memo(({ navigate }) => {
 					<div className="hero-glow-orb absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px]" />
 				</div>
 
-				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-10">
+				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-8 lg:gap-10">
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
 					<div className="w-full lg:w-3/5 flex flex-col">
@@ -15604,21 +15523,29 @@ const HomePage = memo(({ navigate }) => {
 								</div>
 
 								{/* Micro trust-proof strip — order-1 on mobile (directly below H1), order-2 on lg */}
-								<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 order-1 lg:order-2">
-									{[
-										{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
-										{ Icon: Shield,       text: "PMI-certified spares" },
-										{ Icon: Zap,          text: "Avg response: 2 hrs" },
-									].map(({ Icon, text }) => (
-										<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
-											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
-											<span>{text}</span>
-										</div>
-									))}
+								<div className="flex flex-col gap-3 order-1 lg:order-2">
+									<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
+										{[
+											{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
+											{ Icon: Shield,       text: "PMI-certified spares" },
+											{ Icon: Zap,          text: "Avg response: 2 hrs" },
+										].map(({ Icon, text }) => (
+											<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
+												<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+												<span>{text}</span>
+											</div>
+										))}
+									</div>
 									{/* Live office hours pill — uses real IST time */}
-									<div className={`flex items-center gap-2 text-sm font-bold ${officeHours.isOfficeHours ? "text-emerald-300" : "text-amber-300"}`}>
+									<div
+										className={`flex items-center gap-2.5 self-center lg:self-start px-3.5 py-2 rounded-full border text-xs sm:text-sm font-bold ${
+											officeHours.isOfficeHours
+												? "text-emerald-300 bg-emerald-400/10 border-emerald-400/25"
+												: "text-amber-300 bg-amber-400/10 border-amber-400/25"
+										}`}
+									>
 										<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
-										<span>{officeHours.label}</span>
+										<span className="text-center lg:text-left">{officeHours.label}</span>
 									</div>
 								</div>
 							</div>
@@ -20227,7 +20154,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 				{/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
 				<div
-					className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600 min-h-[340px] sm:min-h-[420px] lg:min-h-[480px]"
+					className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600 min-h-85 sm:min-h-105 lg:min-h-120"
 				>
 					{/* Grid texture — matches ServicesPage hero */}
 					<div
@@ -24243,21 +24170,24 @@ const ContactPage = memo(({ navigate }) => {
 								type="button"
 								onClick={handleSubmit}
 								disabled={status === "loading"}
-								className="w-full bg-blue-600 text-white py-5 rounded-xl font-black text-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+								className="w-full bg-blue-600 text-white py-4 sm:py-5 px-5 rounded-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								aria-live="polite"
 							>
 								{status === "loading" ? (
 									<>
 										<span
-											className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+											className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0"
 											aria-hidden="true"
 										/>
-										Sending to Engineering Team...
+										<span className="font-black text-lg sm:text-xl">Sending to Engineering Team...</span>
 									</>
 								) : (
 									<>
-										<MessageCircle className="w-6 h-6" aria-hidden="true" />
-										Send to Our Lead Engineer — Get a Technical Answer, Not a Brochure
+										<MessageCircle className="w-6 h-6 shrink-0" aria-hidden="true" />
+										<span className="flex flex-col items-center text-center leading-tight">
+											<span className="font-black text-lg sm:text-xl">Send to Our Lead Engineer</span>
+											<span className="font-semibold text-xs sm:text-sm text-blue-100 mt-0.5">Get a technical answer, not a brochure</span>
+										</span>
 									</>
 								)}
 							</button>
@@ -24267,10 +24197,13 @@ const ContactPage = memo(({ navigate }) => {
 								type="button"
 								disabled={status === "loading"}
 								onClick={handleSubmitEmailOnly}
-								className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-base hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+								className="w-full bg-slate-900 text-white py-3.5 px-5 rounded-xl hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 							>
-								<Mail className="w-5 h-5" aria-hidden="true" />
-								Submit via Email — Because Not Everyone Uses WhatsApp
+								<Mail className="w-5 h-5 shrink-0" aria-hidden="true" />
+								<span className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2 items-center text-center leading-tight">
+									<span className="font-bold text-sm sm:text-base">Submit via Email</span>
+									<span className="font-medium text-xs sm:text-sm text-slate-400">Because not everyone uses WhatsApp</span>
+								</span>
 							</button>
 
 							{/* Risk-reversal block — addresses the four real B2B buyer fears
