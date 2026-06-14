@@ -8062,7 +8062,6 @@ const MARQUEE_CSS = `
 
 
   /* ─── HERO MOBILE ─── */
-  .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
 
   /* ─── HERO BADGES ─── */
@@ -8071,9 +8070,9 @@ const MARQUEE_CSS = `
   @media(min-width:1024px){.hero-badges{justify-content:flex-start}}
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:28px 20px 36px;min-height:calc(100svh - 64px)}
-  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px)}}
-  @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset}}
+  .hero-content-wrap{padding:32px 20px 40px;min-height:calc(100svh - 64px);justify-content:space-between}
+  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
+  @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
   @media(max-width:767px){
 	.hero-section{
@@ -8083,7 +8082,6 @@ const MARQUEE_CSS = `
 	}
 	.hero-bg-layer{display:none!important}
 	.hero-desktop-grad{display:none!important}
-	.hero-mobile-vignette{display:none!important}
 	.hero-glow-orb{display:none!important}
 	.hero-bottom-overlay{display:none!important}
 	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
@@ -8092,7 +8090,7 @@ const MARQUEE_CSS = `
   /* ─── HERO H1 ─── */
   .hero-h1{
 	font-family:'Barlow Condensed','Barlow',system-ui,sans-serif;
-	font-size:clamp(3rem,8.5vw,5rem);
+	font-size:clamp(3.25rem,9.5vw,5rem);
 	line-height:1.04;
 	letter-spacing:-0.02em;
 	color:#ffffff;
@@ -8100,10 +8098,8 @@ const MARQUEE_CSS = `
   }
   @media(min-width:640px){.hero-h1{font-size:clamp(3rem,6.5vw,5.5rem)}}
   @media(min-width:1024px){.hero-h1{font-size:clamp(3.5rem,4.8vw,6rem)}}
-  /* Narrow phones (≤400px, e.g. 360×640): the base clamp's 3rem floor is
-     too large for "Precision Engineering for" + gradient line on screen,
-     causing horizontal overflow. Scale down further on these viewports. */
-  @media(max-width:400px){.hero-h1{font-size:clamp(2.25rem,10vw,3rem)}}
+  /* Narrow phones (≤400px, e.g. 360×640): scale down to prevent overflow. */
+  @media(max-width:400px){.hero-h1{font-size:clamp(2.5rem,10.5vw,3.25rem)}}
   /* Gradient span must reset text-shadow so bg-clip-text renders correctly */
   .hero-h1 .hero-gradient-text{
 	-webkit-background-clip:text;
@@ -8117,14 +8113,14 @@ const MARQUEE_CSS = `
   /* ─── GRADIENT ACCENT ─── */
   /* ─── GLASS CARD ─── */
   .glass-hero{
-	padding:1rem 1.25rem;
+	padding:1.125rem 1.375rem;
 	background:rgba(255,255,255,0.06)!important;
 	border:1px solid rgba(255,255,255,0.12)!important;
 	border-left:3px solid #22d3ee!important;
 	border-radius:12px;
 	backdrop-filter:blur(12px);
   }
-  .glass-hero p{font-size:0.9375rem;line-height:1.68;color:#cbd5e1}
+  .glass-hero p{font-size:1rem;line-height:1.7;color:#cbd5e1}
   @media(min-width:640px){.glass-hero p{font-size:1.125rem}}
   @media(min-width:1024px){.glass-hero p{font-size:1.0625rem;line-height:1.7}}
 
@@ -8135,11 +8131,11 @@ const MARQUEE_CSS = `
 
   /* ─── CTAs ─── */
   .hero-cta-primary{
-	padding:1rem 1.75rem;font-size:1rem;font-weight:900;
+	padding:1.125rem 1.75rem;font-size:1.0625rem;font-weight:900;
 	border-radius:10px;letter-spacing:0.01em;
   }
   .hero-cta-secondary{
-	padding:0.9375rem 1.5rem;font-size:1rem;font-weight:700;
+	padding:1.0625rem 1.5rem;font-size:1.0625rem;font-weight:700;
 	border-radius:10px;
   }
   .hero-cta-primary svg,.hero-cta-secondary svg{width:1.125rem;height:1.125rem}
@@ -8184,11 +8180,6 @@ const MARQUEE_CSS = `
 	p{font-size:max(15px,1em);line-height:1.65}
 	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
-
-  /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
-  .product-img-wrap{aspect-ratio:1/1;contain:layout style;overflow:hidden}
-  .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
-  .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
 
   /* ─── FOOTER SOCIAL PILLS — handled in Footer's scoped style tag ─── */
 
@@ -8242,19 +8233,6 @@ const MARQUEE_CSS = `
 	.fp-card{width:13rem!important}
   }
 
-  /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
-  @media(max-width:640px){
-	.sd-step-gap{gap:0.875rem!important}
-	.sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
-  }
-
-  /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
-  .email-link{
-	word-break:break-all;
-	overflow-wrap:anywhere;
-	min-width:0;
-  }
-
   /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
   @media(max-width:767px){
 	.timeline-connector{left:1rem!important}
@@ -8270,7 +8248,6 @@ const MARQUEE_CSS = `
   /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
 	a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-	.floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
   /* ─── REDUCED MOTION ─── */
@@ -8298,7 +8275,7 @@ const MARQUEE_CSS = `
 
   /* ─── PRINT STYLES ─── */
   @media print{
-    nav,footer,.ke-fab-call,.ke-fab-wa,#skip-nav,[role="banner"],[aria-label="Floating actions"]{display:none!important}
+    nav,footer,#skip-nav{display:none!important}
     body{font-size:11pt;color:#000;background:#fff}
     a{color:#000;text-decoration:underline}
     a[href^="tel"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:9pt}
@@ -8306,7 +8283,6 @@ const MARQUEE_CSS = `
     table,th,td{border:1px solid #999;border-collapse:collapse}
     th,td{padding:4pt 6pt}
     h1,h2,h3{page-break-after:avoid}
-    .product-spec-table{width:100%;margin-bottom:1rem}
     @page{margin:1.5cm}
   }
 `;
@@ -9318,10 +9294,16 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 	const pImg = product.images?.[0];
 	const av = product.availability;
 
-	const handleSpecsClick = useCallback(
+	const handleCardClick = useCallback(() => {
+		navigate(`/product/${product.id}`);
+	}, [navigate, product.id]);
+
+	const handleCardKeyDown = useCallback(
 		(e) => {
-			e.stopPropagation();
-			navigate(`/product/${product.id}`);
+			if (e.key === "Enter" || e.key === " ") {
+				e.preventDefault();
+				navigate(`/product/${product.id}`);
+			}
 		},
 		[navigate, product.id],
 	);
@@ -9329,12 +9311,16 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 	return (
 		<article
 			aria-label={`${product.title} product card`}
-			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
+			role="button"
+			tabIndex={0}
+			onClick={handleCardClick}
+			onKeyDown={handleCardKeyDown}
+			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left cursor-pointer"
 		>
 			{/* Fixed-height image container — prevents CLS */}
 			<div
 				key={pImg}
-				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
+				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0"
 				aria-hidden="true"
 			>
 				{/* Category badge */}
@@ -9387,17 +9373,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 
 			<div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col bg-white">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
-					<a
-						href={`#/product/${product.id}`}
-						onClick={(e) => {
-							e.stopPropagation();
-							e.preventDefault();
-							navigate(`/product/${product.id}`);
-						}}
-						className="focus:outline-none focus-visible:underline"
-					>
-						{product.title}
-					</a>
+					{product.title}
 				</h3>
 				<p className="text-slate-600 font-medium text-sm md:text-base mb-4 leading-relaxed line-clamp-2">
 					{product.desc}
@@ -9465,10 +9441,9 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						<MessageCircle className="w-4 h-4 mr-1.5 shrink-0" aria-hidden="true" />
 						RFQ
 					</a>
-					{/* FIX: was pointer-events-none decorative; now a real interactive button */}
 					<button
 						type="button"
-						onClick={handleSpecsClick}
+						onClick={(e) => { e.stopPropagation(); navigate(`/product/${product.id}`); }}
 						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3 text-xs sm:text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 						aria-label={`View technical specs for ${product.title}`}
 					>
@@ -15461,10 +15436,9 @@ const HomePage = memo(({ navigate }) => {
 						/>
 					)}
 					<div
-						className="hero-mobile-vignette absolute inset-0"
-						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.55) 0%,rgba(10,25,47,0.15) 35%,rgba(10,25,47,0.15) 60%,rgba(10,25,47,0.85) 100%)" }}
+						className="hero-desktop-grad absolute inset-0"
+						style={{background:"radial-gradient(ellipse at center,rgba(10,25,47,0.35) 0%,rgba(10,25,47,0.75) 70%,rgba(10,25,47,0.92) 100%)"}}
 					/>
-					<div className="hero-desktop-grad absolute inset-0" style={{background:"radial-gradient(ellipse at center,rgba(10,25,47,0.35) 0%,rgba(10,25,47,0.75) 70%,rgba(10,25,47,0.92) 100%)"}} />
 					<div className="hero-bottom-overlay absolute inset-0 bg-linear-to-t from-[#0A192F]/80 via-transparent to-transparent z-10" />
 					<div className="hero-glow-orb absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[128px]" />
 					<div className="hero-glow-orb absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px]" />
@@ -15477,7 +15451,7 @@ const HomePage = memo(({ navigate }) => {
 						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
-							<div className="hero-badges mb-4 justify-center lg:justify-start">
+							<div className="hero-badges mb-0 lg:mb-4 justify-center lg:justify-start">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
@@ -15485,12 +15459,12 @@ const HomePage = memo(({ navigate }) => {
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 font-black leading-[1.04] tracking-tight mb-4 text-center lg:text-left"
+								className="hero-h1 font-black leading-[1.04] tracking-tight mb-0 lg:mb-4 text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
 
-							<div className="flex flex-col gap-6 flex-1">
+							<div className="flex flex-col justify-between lg:gap-6 lg:justify-start flex-1">
 								{/* CTAs — order-4 on mobile (bottom of hero), order-3 on lg */}
 								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3 mt-auto lg:mt-0">
 									<button

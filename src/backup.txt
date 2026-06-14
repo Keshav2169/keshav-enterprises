@@ -11,6 +11,7 @@ import {
 	CheckCircle2,
 	ChevronLeft,
 	ChevronRight,
+	ChevronDown,
 	ChevronUp,
 	Clock,
 	Cog,
@@ -8061,7 +8062,6 @@ const MARQUEE_CSS = `
 
 
   /* ─── HERO MOBILE ─── */
-  .hero-mobile-vignette{display:none}
   .hero-bg-img{opacity:0.90;object-position:center center}
 
   /* ─── HERO BADGES ─── */
@@ -8070,18 +8070,18 @@ const MARQUEE_CSS = `
   @media(min-width:1024px){.hero-badges{justify-content:flex-start}}
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:28px 20px 36px}
-  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px)}}
-  @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset}}
+  .hero-content-wrap{padding:32px 20px 40px;min-height:calc(100svh - 64px);justify-content:space-between}
+  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
+  @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
   @media(max-width:767px){
 	.hero-section{
+	  min-height:calc(100svh - 64px);
 	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.75) 0%,rgba(10,25,47,0.45) 45%,rgba(10,25,47,0.88) 100%),url('hero-background.png');
 	  background-size:cover;background-position:center center;background-repeat:no-repeat;
 	}
 	.hero-bg-layer{display:none!important}
 	.hero-desktop-grad{display:none!important}
-	.hero-mobile-vignette{display:none!important}
 	.hero-glow-orb{display:none!important}
 	.hero-bottom-overlay{display:none!important}
 	.backdrop-blur-xl{backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important}
@@ -8090,7 +8090,7 @@ const MARQUEE_CSS = `
   /* ─── HERO H1 ─── */
   .hero-h1{
 	font-family:'Barlow Condensed','Barlow',system-ui,sans-serif;
-	font-size:clamp(3rem,8.5vw,5rem);
+	font-size:clamp(3.25rem,9.5vw,5rem);
 	line-height:1.04;
 	letter-spacing:-0.02em;
 	color:#ffffff;
@@ -8098,6 +8098,8 @@ const MARQUEE_CSS = `
   }
   @media(min-width:640px){.hero-h1{font-size:clamp(3rem,6.5vw,5.5rem)}}
   @media(min-width:1024px){.hero-h1{font-size:clamp(3.5rem,4.8vw,6rem)}}
+  /* Narrow phones (≤400px, e.g. 360×640): scale down to prevent overflow. */
+  @media(max-width:400px){.hero-h1{font-size:clamp(2.5rem,10.5vw,3.25rem)}}
   /* Gradient span must reset text-shadow so bg-clip-text renders correctly */
   .hero-h1 .hero-gradient-text{
 	-webkit-background-clip:text;
@@ -8111,14 +8113,14 @@ const MARQUEE_CSS = `
   /* ─── GRADIENT ACCENT ─── */
   /* ─── GLASS CARD ─── */
   .glass-hero{
-	padding:1rem 1.25rem;
+	padding:1.125rem 1.375rem;
 	background:rgba(255,255,255,0.06)!important;
 	border:1px solid rgba(255,255,255,0.12)!important;
 	border-left:3px solid #22d3ee!important;
 	border-radius:12px;
 	backdrop-filter:blur(12px);
   }
-  .glass-hero p{font-size:0.9375rem;line-height:1.68;color:#cbd5e1}
+  .glass-hero p{font-size:1rem;line-height:1.7;color:#cbd5e1}
   @media(min-width:640px){.glass-hero p{font-size:1.125rem}}
   @media(min-width:1024px){.glass-hero p{font-size:1.0625rem;line-height:1.7}}
 
@@ -8129,11 +8131,11 @@ const MARQUEE_CSS = `
 
   /* ─── CTAs ─── */
   .hero-cta-primary{
-	padding:1rem 1.75rem;font-size:1rem;font-weight:900;
+	padding:1.125rem 1.75rem;font-size:1.0625rem;font-weight:900;
 	border-radius:10px;letter-spacing:0.01em;
   }
   .hero-cta-secondary{
-	padding:0.9375rem 1.5rem;font-size:1rem;font-weight:700;
+	padding:1.0625rem 1.5rem;font-size:1.0625rem;font-weight:700;
 	border-radius:10px;
   }
   .hero-cta-primary svg,.hero-cta-secondary svg{width:1.125rem;height:1.125rem}
@@ -8178,11 +8180,6 @@ const MARQUEE_CSS = `
 	p{font-size:max(15px,1em);line-height:1.65}
 	.eyebrow-label{color:#60a5fa!important;letter-spacing:0.18em!important}
   }
-
-  /* ─── CLS-SAFE ASPECT RATIO CONTAINERS ─── */
-  .product-img-wrap{aspect-ratio:1/1;contain:layout style;overflow:hidden}
-  .service-img-wrap{aspect-ratio:4/3;contain:layout style;overflow:hidden}
-  .product-card-img{aspect-ratio:400/192;width:100%;object-fit:cover}
 
   /* ─── FOOTER SOCIAL PILLS — handled in Footer's scoped style tag ─── */
 
@@ -8236,19 +8233,6 @@ const MARQUEE_CSS = `
 	.fp-card{width:13rem!important}
   }
 
-  /* ─── SERVICE DETAIL — STEP CONNECTOR ─── */
-  @media(max-width:640px){
-	.sd-step-gap{gap:0.875rem!important}
-	.sd-step-num{width:2.5rem!important;height:2.5rem!important;font-size:0.75rem!important;flex-shrink:0}
-  }
-
-  /* ─── CONTACT FORM — EMAIL OVERFLOW ─── */
-  .email-link{
-	word-break:break-all;
-	overflow-wrap:anywhere;
-	min-width:0;
-  }
-
   /* ─── ABOUT PAGE TIMELINE — MOBILE ─── */
   @media(max-width:767px){
 	.timeline-connector{left:1rem!important}
@@ -8264,7 +8248,6 @@ const MARQUEE_CSS = `
   /* ─── TAP TARGETS + SAFE AREA ─── */
   @media(max-width:767px){
 	a[href],button{-webkit-tap-highlight-color:rgba(30,111,255,0.15);min-height:44px}
-	.floating-buttons{padding-bottom:max(1.5rem,env(safe-area-inset-bottom,0px))}
   }
 
   /* ─── REDUCED MOTION ─── */
@@ -8292,7 +8275,7 @@ const MARQUEE_CSS = `
 
   /* ─── PRINT STYLES ─── */
   @media print{
-    nav,footer,.ke-fab-call,.ke-fab-wa,#skip-nav,[role="banner"],[aria-label="Floating actions"]{display:none!important}
+    nav,footer,#skip-nav{display:none!important}
     body{font-size:11pt;color:#000;background:#fff}
     a{color:#000;text-decoration:underline}
     a[href^="tel"]::after,a[href^="mailto"]::after{content:" (" attr(href) ")";font-size:9pt}
@@ -8300,7 +8283,6 @@ const MARQUEE_CSS = `
     table,th,td{border:1px solid #999;border-collapse:collapse}
     th,td{padding:4pt 6pt}
     h1,h2,h3{page-break-after:avoid}
-    .product-spec-table{width:100%;margin-bottom:1rem}
     @page{margin:1.5cm}
   }
 `;
@@ -8309,9 +8291,8 @@ const MARQUEE_CSS = `
 // Hoisted from JSX render returns — prevents new object allocation each render.
 const FOOTER_BADGE_IMG_STYLE = { width: "1.6rem", height: "1.6rem", objectFit: "contain" };
 const ABOUT_IMG_STYLE = { opacity: 0.45, objectFit: "cover", objectPosition: "center center", width: "100%", height: "100%" };
-const FLEX_ITEM_STYLE = { flex: "1 1 280px" };
 const FONT_NORMAL_STYLE = { fontStyle: "normal" };
-const FOOTER_BADGES_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".45rem", alignItems: "center", minWidth: 0, overflow: "hidden" };
+const FOOTER_BADGES_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".45rem", alignItems: "center" };
 const FOOTER_BADGE_CHIP_LABEL_STYLE = { fontWeight: 700, color: "#38BDF8", fontSize: "7.5px", letterSpacing: ".15em", textTransform: "uppercase" };
 const FOOTER_BADGE_SUB_STYLE = { margin: "2px 0 0", fontSize: ".68rem", color: "#64748b", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis" };
 const FOOTER_BADGE_TITLE_STYLE = { margin: 0, fontSize: ".78rem", fontWeight: 700, color: "#e2e8f0", lineHeight: 1.25 };
@@ -8325,7 +8306,6 @@ const FOOTER_ELLIPSIS_STYLE = { display: "block", overflow: "hidden", textOverfl
 const FOOTER_ICON_CONTACT_STYLE = { width: ".85rem", height: ".85rem", color: "#38BDF8", flexShrink: 0, marginTop: ".1rem" };
 const FOOTER_ICON_LG_STYLE = { width: ".875rem", height: ".875rem", color: "#0891B2", flexShrink: 0 };
 const FOOTER_ICON_SM_STYLE = { width: ".75rem", height: ".75rem", color: "#0891B2", flexShrink: 0 };
-const FOOTER_INNER_STYLE = { maxWidth: "80rem", margin: "0 auto", padding: "2.75rem 1.5rem" };
 const FOOTER_LABEL_STYLE = { fontSize: "8.5px", fontWeight: 700, letterSpacing: ".2em", textTransform: "uppercase", color: "#64748b", marginBottom: ".5rem" };
 const FOOTER_LIST_STYLE = { listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: ".45rem" };
 const FOOTER_MONO_BOLD_STYLE = { fontFamily: "monospace", fontWeight: 600, fontSize: ".82rem", color: "#e2e8f0" };
@@ -8343,18 +8323,12 @@ const MIN_WIDTH_STYLE = { minWidth: 0 };
 const MOBILE_DRAWER_ANIM_STYLE = { animation: "mobileDrawerIn 0.25s cubic-bezier(0.3,0,0,1) both", paddingBottom: "env(safe-area-inset-bottom)" };
 const MOBILE_DRAWER_ANIM_STYLE_V2 = { animation: "mobileDrawerIn 0.18s cubic-bezier(0.3,0,0,1) both" };
 const PROGRESS_BAR_STYLE = { height: "4px", background: "linear-gradient(90deg,#0891B2 0%,#06B6D4 50%,#38BDF8 100%)" };
-const PROGRESS_BG_STYLE = { position: "relative", overflow: "hidden", background: "linear-gradient(135deg,#0A192F 0%,#0d2b4e 50%,#0A192F 100%)" };
-const PROGRESS_OVERLAY_STYLE = { position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at 20% 50%,rgba(56,189,248,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 50%,rgba(14,165,233,0.06) 0%,transparent 60%)" };
 const PROJECTS_DOT_BG_STYLE = { backgroundImage: "radial-gradient(circle, #3b82f6 1px, transparent 1px)", backgroundSize: "24px 24px" };
 const PROJECTS_GRID_STYLE = { display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(320px,100%),1fr))", gap: "1.5rem" };
 const SAFE_AREA_BOTTOM_STYLE = { paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0px))" };
 const SEARCH_POPOVER_ANIM_STYLE = { animation: "searchPopoverIn 0.15s cubic-bezier(0.3,0,0,1) both" };
 const SEARCH_POPOVER_ANIM_STYLE_V2 = { animation: "searchPopoverIn 0.18s cubic-bezier(0.3,0,0,1) both" };
 const SKELETON_IMG_STYLE = { background: "#e2e8f0", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2.5rem" };
-const SOCIAL_PILLS_WRAP_STYLE = { display: "flex", flexWrap: "wrap", gap: ".75rem", alignItems: "center" };
-const SOCIAL_PILL_INNER_STYLE = { display: "inline-flex", alignItems: "center", gap: "5px" };
-const TESTIMONIAL_ATTRIB_STYLE = { margin: 0, fontSize: ".78rem", color: "#94a3b8", fontWeight: 500, lineHeight: 1.3 };
-const TESTIMONIAL_QUOTE_STYLE = { fontFamily: "Georgia,serif", fontStyle: "italic", fontSize: "clamp(1rem,2vw,1.2rem)", lineHeight: 1.65, color: "#e2e8f0" };
 const THUMB_SIZE_STYLE = { width: "clamp(56px, 15vw, 84px)", height: "clamp(56px, 15vw, 84px)" };
 
 // ─── SITE & BRAND CONSTANTS ────────────────────────────────────
@@ -8742,17 +8716,17 @@ if (typeof document !== "undefined") {
 		[
 			"default-src 'self'",
 			// Scripts: self + Cloudflare Turnstile + GA4 + Clarity + Google Translate + inline event handlers
-			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.clarity.ms https://cdn.clarity.ms https://translate.googleapis.com https://translate.google.com",
-			// Styles: self + Google Fonts + Google Translate + inline (Tailwind/CSS-in-JS)
-			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com",
+			"script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.clarity.ms https://cdn.clarity.ms https://translate.googleapis.com https://translate.google.com https://translate-pa.googleapis.com https://www.gstatic.com",
+			// Styles: self + Google Fonts + Google Translate (served from gstatic) + inline (Tailwind/CSS-in-JS)
+			"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com https://www.gstatic.com",
 			// Fonts
-			"font-src 'self' https://fonts.gstatic.com",
+			"font-src 'self' https://fonts.gstatic.com https://www.gstatic.com",
 			// Images: self + data URIs + Google Translate assets + CDN sources
 			"img-src 'self' data: https: blob:",
 			// Frames: Turnstile iframe + Google Maps embed + Google Translate
-			"frame-src https://challenges.cloudflare.com https://maps.google.com https://www.google.com",
+			"frame-src https://challenges.cloudflare.com https://maps.google.com https://www.google.com https://translate.google.com",
 			// API fetches: Web3Forms, exchange rates, BigDataCloud geolocation, GA4, Google Translate
-			"connect-src 'self' https://api.web3forms.com https://open.er-api.com https://api.bigdatacloud.net https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://translate.googleapis.com",
+			"connect-src 'self' https://api.web3forms.com https://open.er-api.com https://api.bigdatacloud.net https://www.google-analytics.com https://region1.google-analytics.com https://www.clarity.ms https://translate.googleapis.com https://translate-pa.googleapis.com https://www.gstatic.com",
 			// Tighten mixed-content + object/base
 			"upgrade-insecure-requests",
 			"object-src 'none'",
@@ -9336,7 +9310,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 			{/* Fixed-height image container — prevents CLS */}
 			<div
 				key={pImg}
-				className="h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
+				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
 				aria-hidden="true"
 			>
 				{/* Category badge */}
@@ -9387,7 +9361,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 				)}
 			</div>
 
-			<div className="p-6 md:p-8 flex-1 flex flex-col bg-white">
+			<div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col bg-white">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
 					<a
 						href={`#/product/${product.id}`}
@@ -9453,7 +9427,7 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 					</div>
 				)}
 
-				<div className="flex flex-col xl:flex-row gap-3 mt-auto pt-5 border-t border-slate-100">
+				<div className="flex flex-row gap-2 mt-auto pt-5 border-t border-slate-100">
 					<a
 						href={waMsg(
 							`Hello KESHAV ENTERPRISES, I need a quotation for: ${product.title}.`,
@@ -9462,19 +9436,19 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						rel="noopener noreferrer"
 						onClick={(e) => e.stopPropagation()}
 						aria-label={`Request quote for ${product.title} via WhatsApp`}
-						className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						className="flex-1 bg-[#25D366] text-white flex items-center justify-center py-3 text-xs sm:text-sm font-bold rounded-lg hover:bg-[#1ebe5d] transition-all shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 					>
-						<MessageCircle className="w-4 h-4 mr-2" aria-hidden="true" /> RFQ /
-						WhatsApp
+						<MessageCircle className="w-4 h-4 mr-1.5 shrink-0" aria-hidden="true" />
+						RFQ
 					</a>
 					{/* FIX: was pointer-events-none decorative; now a real interactive button */}
 					<button
 						type="button"
 						onClick={handleSpecsClick}
-						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3.5 text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3 text-xs sm:text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 						aria-label={`View technical specs for ${product.title}`}
 					>
-						Technical Specs{" "}
+						Specs{" "}
 						<ArrowRight
 							className="w-4 h-4 ml-2 opacity-70 group-hover:translate-x-1 transition-transform"
 							aria-hidden="true"
@@ -10398,6 +10372,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	const fmtPrice = useFmtPrice();
 	const menuRef = useRef(null);
 	const searchInputRef = useRef(null);
+	const mobileSearchInputRef = useRef(null);
 	// PERF: ref mirrors query so outside-click handler reads current value without
 	// needing query in its dependency array (which would re-register on every keystroke)
 	const queryRef = useRef("");
@@ -10577,7 +10552,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		<nav
 			ref={menuRef}
 			aria-label="Main navigation"
-			className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? "translate-y-0" : "-translate-y-full"} ${scrolled ? "bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg" : "bg-[#0A192F]/95 backdrop-blur-sm border-white/10"}`}
+			className={`fixed top-0 left-0 w-full z-55 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? "translate-y-0" : "-translate-y-full"} ${scrolled ? "bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg" : "bg-[#0A192F]/95 backdrop-blur-sm border-white/10"}`}
 		>
 			<a
 				href="#main-content"
@@ -10904,7 +10879,6 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							<Phone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
 							<span>Call Us</span>
 						</a>
-						<LanguageSwitcher scrolled={scrolled} />
 						<button
 							type="button"
 							onClick={() => {
@@ -10955,7 +10929,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 			{(isOpen || isSearchOpen) && (
 				<div
 					id="mobile-nav"
-					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85vh] overflow-y-auto"
+					className="lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 max-h-[85dvh] overflow-y-auto overscroll-contain"
 					role="menu"
 					style={MOBILE_DRAWER_ANIM_STYLE}
 				>
@@ -10978,6 +10952,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							</label>
 							<input
 								id="mobile-drawer-search"
+								ref={mobileSearchInputRef}
 								type="text"
 								placeholder="Search products & services…"
 								value={query}
@@ -10996,8 +10971,22 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							)}
 						</div>
 						{query && (
-							<div className="max-h-[45vh] overflow-y-auto mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
-								{searchResults.length === 0 ? (
+							<>
+								{/* Keyboard-dismiss button — on some Android browsers, tapping
+								   outside the input does not close the on-screen keyboard once
+								   results are visible. Gives users an explicit way to hide it. */}
+								<div className="flex justify-end mt-2 mb-1">
+									<button
+										type="button"
+										onClick={() => mobileSearchInputRef.current?.blur()}
+										className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-blue-600 px-2 py-1 -mr-2 rounded-lg transition-colors"
+									>
+										<ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />
+										Hide keyboard
+									</button>
+								</div>
+								<div className="max-h-[40dvh] overflow-y-auto overscroll-contain bg-white rounded-xl border border-slate-100 shadow-inner">
+									{searchResults.length === 0 ? (
 									<div
 										className="p-6 text-center"
 										role="status"
@@ -11070,7 +11059,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										))}
 									</ul>
 								)}
-							</div>
+								</div>
+							</>
 						)}
 					</div>
 
@@ -11222,6 +11212,11 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									<Phone className="w-4 h-4" aria-hidden="true" />{" "}
 									{CONTACT_INFO.phones[0]}
 								</a>
+								{/* Language switcher — relocated from mobile header to drawer footer. */}
+								<div className="mt-1 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+									<span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Language</span>
+									<LanguageSwitcher scrolled={true} />
+								</div>
 							</div>
 						</div>
 					)}
@@ -11473,6 +11468,7 @@ const Footer = memo(({ navigate }) => {
 				.ke-social-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem}
 				@media(min-width:420px){.ke-social-row{grid-template-columns:repeat(3,1fr)}}
 				@media(min-width:540px){.ke-social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem}}
+
 				/* ── Column heading ── */
 				.ke-col-h3{
 					display:flex;align-items:center;gap:.5rem;
@@ -11490,17 +11486,6 @@ const Footer = memo(({ navigate }) => {
 				.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
 				.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
 
-				/* ── CTA buttons ── */
-				.ke-cta-call{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#0891B2,#0e7490);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;border:none;cursor:pointer;transition:transform .15s,box-shadow .18s;box-shadow:0 4px 20px #0891B240;width:100%}
-				.ke-cta-call:hover{transform:translateY(-2px);box-shadow:0 10px 32px #0891B250}
-				.ke-cta-call:focus{outline:2px solid #38BDF8;outline-offset:3px}
-				@media(min-width:480px){.ke-cta-call{width:auto}}
-
-				.ke-cta-wa{display:inline-flex;align-items:center;gap:8px;padding:.8rem 1.5rem;border-radius:.7rem;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-weight:700;font-size:.85rem;text-decoration:none;cursor:pointer;transition:transform .15s,box-shadow .18s;border:none;box-shadow:0 4px 20px #22c55e30;width:100%}
-				.ke-cta-wa:hover{transform:translateY(-2px);box-shadow:0 10px 32px #22c55e40}
-				.ke-cta-wa:focus{outline:2px solid #22c55e;outline-offset:3px}
-				@media(min-width:480px){.ke-cta-wa{width:auto}}
-
 				/* ── Credential badges ── */
 				.ke-badge{
 					display:flex;align-items:center;gap:.85rem;
@@ -11512,10 +11497,10 @@ const Footer = memo(({ navigate }) => {
 				.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
 
 				/* ── Social pill links ── */
-				.ke-soc-pill{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.48rem .6rem;border-radius:2rem;text-decoration:none;border:1px solid transparent;font-size:.72rem;font-weight:700;color:#94a3b8;background:#0a1628;transition:color .15s,background .15s,border-color .15s;min-height:36px;width:100%}
+				.ke-soc-pill{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.48rem .6rem;border-radius:2rem;text-decoration:none;border:1px solid transparent;font-size:.72rem;font-weight:700;color:#94a3b8;background:#0a1628;transition:color .15s,background .15s,border-color .15s;min-height:36px}
 				.ke-soc-pill:hover,.ke-soc-pill:focus{outline:none}
 				.ke-soc-pill svg{flex-shrink:0}
-				@media(min-width:540px){.ke-soc-pill{display:inline-flex;justify-content:flex-start;padding:.44rem .75rem;font-size:.75rem;width:auto}}
+				@media(min-width:540px){.ke-soc-pill{display:inline-flex;justify-content:flex-start;padding:.44rem .75rem;font-size:.75rem}}
 
 				/* ── Industry tags ── */
 				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
@@ -11534,7 +11519,7 @@ const Footer = memo(({ navigate }) => {
 				.ke-back-top:hover,.ke-back-top:focus{background:#0891B215;border-color:#0891B2;outline:none}
 
 				/* ── Reduced motion ── */
-				@media(prefers-reduced-motion:reduce){.ke-cta-call,.ke-cta-wa,.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
+				@media(prefers-reduced-motion:reduce){.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
 			`}</style>
 
 			{/* ── Top accent bar ── */}
@@ -11542,72 +11527,6 @@ const Footer = memo(({ navigate }) => {
 				aria-hidden="true"
 				style={PROGRESS_BAR_STYLE}
 			/>
-
-			{/* ── Pre-footer CTA band ── */}
-			<div
-				style={PROGRESS_BG_STYLE}
-			>
-				<div
-					aria-hidden="true"
-					style={PROGRESS_OVERLAY_STYLE}
-				/>
-				<div
-					style={FOOTER_INNER_STYLE}
-				>
-					{/* Headline */}
-					<div style={FLEX_ITEM_STYLE}>
-						<span
-							style={SOCIAL_PILL_INNER_STYLE}
-						>
-							<Zap
-								aria-hidden="true"
-								style={{ width: ".75rem", height: ".75rem" }}
-							/>
-							24 h Emergency Support Available
-						</span>
-						<h2
-							style={TESTIMONIAL_QUOTE_STYLE}
-						>
-							Need a quote or facing an emergency breakdown?
-						</h2>
-						<p
-							style={TESTIMONIAL_ATTRIB_STYLE}
-						>
-							Our ex-OEM engineering team responds within 24 hours — call or
-							WhatsApp.
-						</p>
-					</div>
-					{/* CTAs */}
-					<div
-						style={SOCIAL_PILLS_WRAP_STYLE}
-					>
-						<a
-							href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, "")}`}
-							className="ke-cta-call"
-						>
-							<Phone
-								aria-hidden="true"
-								style={{ width: "1.1rem", height: "1.1rem" }}
-							/>
-							{CONTACT_INFO.phones[0]}
-						</a>
-						<a
-							href={waMsg(
-								"Hi KESHAV ENTERPRISES, I would like to request a technical quote.",
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="ke-cta-wa"
-						>
-							<MessageCircle
-								aria-hidden="true"
-								style={{ width: "1.1rem", height: "1.1rem" }}
-							/>
-							WhatsApp Now
-						</a>
-					</div>
-				</div>
-			</div>
 
 			{/* ── Main body ── */}
 			<div
@@ -11998,19 +11917,10 @@ const Footer = memo(({ navigate }) => {
 						borderTop: "1px solid #0d2040",
 					}}
 				>
-					<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: ".45rem", flexWrap: "wrap" }}>
 					<p style={{ margin: 0, fontSize: ".78rem", color: "#475569" }}>
 						© {year} Keshav Enterprises. All rights reserved.
 					</p>
-					<button
-						type="button"
-						className="ke-back-top"
-						onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-						aria-label="Back to top"
-					>
-						↑ Top
-					</button>
-					</div>
+					<div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: ".45rem" }}>
 					<div
 												style={FOOTER_BADGES_WRAP_STYLE}
 					>
@@ -12029,8 +11939,6 @@ const Footer = memo(({ navigate }) => {
 									padding: ".22rem .55rem",
 									fontSize: ".68rem",
 									color: "#64748b",
-									minWidth: 0,
-									overflow: "hidden",
 								}}
 							>
 								<span
@@ -12038,11 +11946,20 @@ const Footer = memo(({ navigate }) => {
 								>
 									{label}
 								</span>
-								<span style={{ fontFamily: "monospace", color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+								<span style={{ fontFamily: "monospace", color: "#94a3b8" }}>
 									{value}
 								</span>
 							</span>
 						))}
+					</div>
+					<button
+						type="button"
+						className="ke-back-top"
+						onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+						aria-label="Back to top"
+					>
+						↑ Top
+					</button>
 					</div>
 				</div>
 			</div>
@@ -12315,7 +12232,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 
 	return (
 		<div
-			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-4"
+			className="fixed inset-0 z-9999 flex items-end sm:items-center justify-center p-0 sm:p-4"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="report-modal-title"
@@ -12327,10 +12244,12 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 				aria-hidden="true"
 			/>
 
-			{/* Panel */}
+			{/* Panel — on mobile: bottom sheet with rounded top corners and dvh cap.
+			    dvh accounts for browser chrome (address bar) so content never overflows.
+			    overscroll-contain stops momentum scroll from bleeding to the page. */}
 			<div
 				ref={modalRef}
-				className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] flex flex-col overflow-hidden"
+				className="relative bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-lg max-h-[85dvh] sm:max-h-[92vh] flex flex-col overflow-hidden overscroll-contain"
 				tabIndex={-1}
 			>
 				{/* Header */}
@@ -12567,6 +12486,7 @@ const ReportIssueModal = memo(({ context, onClose }) => {
 								<input
 									id="ri-phone"
 									type="tel"
+									inputMode="tel"
 									value={phone}
 									onChange={(e) => setPhone(e.target.value)}
 									placeholder="+91 XXXXX XXXXX"
@@ -13222,6 +13142,7 @@ const InlineRFQForm = memo(({ productTitle }) => {
 								<input
 									id="rfq-phone"
 									type="tel"
+									inputMode="tel"
 									autoComplete="tel"
 									value={phone}
 									onChange={(e) => {
@@ -13818,7 +13739,7 @@ const SpecsTable = memo(
 								aria-controls={`spec-panel-${id}`}
 								aria-selected={resolvedSpecTab === id}
 								onClick={() => setActiveSpecTab(id)}
-								className={`px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500
+								className={`min-h-11 px-4 py-3 text-xs font-black uppercase tracking-wider transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500
 								${
 									resolvedSpecTab === id
 										? "bg-white text-blue-600 border-b-2 border-blue-600 -mb-px z-10 relative"
@@ -15033,8 +14954,9 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 			rafRef.current = null;
 			clearTimeout(resumeTimer.current);
 		};
-		// halfW changes only when products list changes — rAF restarts correctly
-	}, [halfW]);
+		// halfW changes only when products list changes — rAF restarts correctly.
+		// prefersReducedMotion is a stable useMemo value (computed once on mount).
+	}, [halfW, prefersReducedMotion]);
 
 	// ── Visibility gate — truly stop rAF when section is off-screen ────
 	// When off-screen: cancel the rAF loop entirely (no more scheduled frames).
@@ -15305,6 +15227,13 @@ const FeaturedProductsStrip = memo(({ products, navigate }) => {
 					))}
 				</ul>
 			</div>
+			{/* Mobile swipe affordance — shows on touch devices; hidden on sm+ */}
+			<div className="flex sm:hidden items-center justify-center gap-1.5 mt-3 mb-1" aria-hidden="true">
+				<span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Swipe to browse</span>
+				<svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-slate-300">
+					<path d="M2 6h16M13 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+				</svg>
+			</div>
 
 			{/* Mobile CTA */}
 			<div className="mt-8 flex justify-center sm:hidden px-4">
@@ -15347,7 +15276,7 @@ const FEATURED_PRODUCTS = (() => {
 // Dismissible top-of-page urgency strip. Shown once per session.
 // Swap the message/link each season without touching layout code.
 const ANNOUNCEMENT = {
-	text: "Pre-monsoon turbine health check — limited inspection slots for June/July. Book now.",
+	text: "Turbine inspection slots are limited — we take a fixed number of shutdowns per quarter.",
 	linkText: "Check Availability →",
 	linkPath: "/contact",
 };
@@ -15393,10 +15322,10 @@ AnnouncementBar.displayName = "AnnouncementBar";
 // Hoisted from an inline IIFE so StatNum isn't redefined on every render
 // (which would force React to remount it). STATS is a stable array reference.
 const HOME_STATS = [
-	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Logged in our job records since 2000" },
-	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Founded 2000 — MSME reg. UDYAM-UP-47-0071234" },
-	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 5 years — backed by client references" },
-	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Multi-location engineers — someone always answers" },
+	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Sugar, power, paper & cement plants across India" },
+	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Continuous operations since 2000 — no ownership changes" },
+	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 24 years — client references available on request" },
+	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Engineers at multiple locations — avg. dispatch under 4 hrs" },
 ];
 
 const StatNum = memo(({ end, suffix }) => {
@@ -15455,7 +15384,7 @@ const HomePage = memo(({ navigate }) => {
 				<>
 					Precision Engineering for
 					<br />
-					<span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+					<span className="hero-gradient-text text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
 						Maximum Uptime.
 					</span>
 				</>
@@ -15469,7 +15398,7 @@ const HomePage = memo(({ navigate }) => {
 				<>
 					अधिकतम अपटाइम के लिए
 					<br />
-					<span className="hero-gradient-text text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+					<span className="hero-gradient-text text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
 						प्रेसिशन इंजीनियरिंग।
 					</span>
 				</>
@@ -15508,23 +15437,22 @@ const HomePage = memo(({ navigate }) => {
 						/>
 					)}
 					<div
-						className="hero-mobile-vignette absolute inset-0"
-						style={{ background: "linear-gradient(to bottom,rgba(10,25,47,0.55) 0%,rgba(10,25,47,0.15) 35%,rgba(10,25,47,0.15) 60%,rgba(10,25,47,0.85) 100%)" }}
+						className="hero-desktop-grad absolute inset-0"
+						style={{background:"radial-gradient(ellipse at center,rgba(10,25,47,0.35) 0%,rgba(10,25,47,0.75) 70%,rgba(10,25,47,0.92) 100%)"}}
 					/>
-					<div className="hero-desktop-grad absolute inset-0" style={{background:"radial-gradient(ellipse at center,rgba(10,25,47,0.35) 0%,rgba(10,25,47,0.75) 70%,rgba(10,25,47,0.92) 100%)"}} />
 					<div className="hero-bottom-overlay absolute inset-0 bg-linear-to-t from-[#0A192F]/80 via-transparent to-transparent z-10" />
 					<div className="hero-glow-orb absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/30 rounded-full blur-[128px]" />
 					<div className="hero-glow-orb absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px]" />
 				</div>
 
-				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-10">
+				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-8 lg:gap-10">
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
 					<div className="w-full lg:w-3/5 flex flex-col">
 						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
-							<div className="hero-badges mb-4 justify-center lg:justify-start">
+							<div className="hero-badges mb-0 lg:mb-4 justify-center lg:justify-start">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
@@ -15532,14 +15460,14 @@ const HomePage = memo(({ navigate }) => {
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 font-black leading-[1.04] tracking-tight mb-4 text-center lg:text-left"
+								className="hero-h1 font-black leading-[1.04] tracking-tight mb-0 lg:mb-4 text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
 
-							<div className="flex flex-col gap-6">
+							<div className="flex flex-col justify-between lg:gap-6 lg:justify-start flex-1">
 								{/* CTAs — order-4 on mobile (bottom of hero), order-3 on lg */}
-								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3">
+								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3 mt-auto lg:mt-0">
 									<button
 										type="button"
 										onClick={() => {
@@ -15548,7 +15476,7 @@ const HomePage = memo(({ navigate }) => {
 										}}
 										className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
 									>
-										Request a Technical Quote
+										Send Us Your Requirements
 										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
 									</button>
 									<a
@@ -15570,18 +15498,30 @@ const HomePage = memo(({ navigate }) => {
 								</div>
 
 								{/* Micro trust-proof strip — order-1 on mobile (directly below H1), order-2 on lg */}
-								<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 order-1 lg:order-2">
-									{[
-										{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
-										{ Icon: Shield,       text: "PMI-certified spares" },
-										{ Icon: Clock,        text: "24×7 emergency response" },
-										{ Icon: Zap,          text: "Avg response: 2 hrs" },
-									].map(({ Icon, text }) => (
-										<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
-											<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
-											<span>{text}</span>
-										</div>
-									))}
+								<div className="flex flex-col gap-3 order-1 lg:order-2">
+									<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
+										{[
+											{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
+											{ Icon: Shield,       text: "PMI-certified spares" },
+											{ Icon: Zap,          text: "Avg response: 2 hrs" },
+										].map(({ Icon, text }) => (
+											<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
+												<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+												<span>{text}</span>
+											</div>
+										))}
+									</div>
+									{/* Live office hours pill — uses real IST time */}
+									<div
+										className={`flex items-center gap-2.5 self-center lg:self-start px-3.5 py-2 rounded-full border text-xs sm:text-sm font-bold ${
+											officeHours.isOfficeHours
+												? "text-emerald-300 bg-emerald-400/10 border-emerald-400/25"
+												: "text-amber-300 bg-amber-400/10 border-amber-400/25"
+										}`}
+									>
+										<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
+										<span className="text-center lg:text-left">{officeHours.label}</span>
+									</div>
 								</div>
 							</div>
 							{/* end flex-col order wrapper */}
@@ -15656,7 +15596,11 @@ const HomePage = memo(({ navigate }) => {
 				>
 					<div className="absolute left-0 top-0 w-24 md:w-48 h-full bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
 					<div className="absolute right-0 top-0 w-24 md:w-48 h-full bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
-					<div className="ke-marquee gap-8 md:gap-16 px-4">
+					<div
+						className="ke-marquee gap-8 md:gap-16 px-4"
+						onTouchStart={(e) => { e.currentTarget.style.animationPlayState = "paused"; }}
+						onTouchEnd={(e) => { e.currentTarget.style.animationPlayState = "running"; }}
+					>
 						{[...OEMS, ...OEMS].map((oem, i) => (
 							<div
 								key={`oem-${oem}-${i}`}
@@ -15698,7 +15642,7 @@ const HomePage = memo(({ navigate }) => {
 			{/* Stats — IntersectionObserver count-up + entrance animation.
 				HOME_STATS and StatNum are defined at module level above HomePage. */}
 			<section
-				className="bg-slate-900 py-16 md:py-20 border-b border-slate-800"
+				className="bg-slate-900 py-14 md:py-16 border-b border-slate-800"
 				aria-labelledby="stats-heading"
 			>
 				<h2 id="stats-heading" className="sr-only">
@@ -15736,77 +15680,11 @@ const HomePage = memo(({ navigate }) => {
 					</div>
 				</div>
 			</section>
-			{/* ── Segment Empathy Bar — speaks to each visitor type's real concern ── */}
-			<section
-				className="bg-white py-14 border-b border-slate-100 lazy-section cv-auto overflow-hidden"
-				aria-labelledby="why-us-heading"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<p
-						id="why-us-heading"
-						className="text-center text-xs font-black text-slate-500 uppercase tracking-widest mb-10"
-					>
-						Why Engineers &amp; Plant Managers Choose Keshav Enterprises
-					</p>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-						{[
-							{
-								Icon: Award,
-								title: "Same expertise as your OEM",
-								body: "Our engineers were trained inside Triveni, Siemens, BHEL, and Belliss. No learning curve on your machine.",
-								color: "text-blue-600",
-								bg: "bg-blue-50",
-								border: "border-blue-100",
-							},
-							{
-								Icon: CheckCircle2,
-								title: "Documentation at handover",
-								body: "PMI certificates, balancing reports, condition reports, and ISO cleanliness certification — delivered with every job.",
-								color: "text-emerald-600",
-								bg: "bg-emerald-50",
-								border: "border-emerald-100",
-							},
-							{
-								Icon: Clock,
-								title: "Faster than OEM sourcing",
-								body: "OEM spares take 12–26 weeks. We reverse-engineer, manufacture, and ship certified components in a fraction of the time.",
-								color: "text-amber-600",
-								bg: "bg-amber-50",
-								border: "border-amber-100",
-							},
-							{
-								Icon: PhoneCall,
-								title: "24×7 — someone always answers",
-								body: "Multi-location engineers across India. Whether it's a scheduled overhaul or a 2 AM trip — we show up.",
-								color: "text-red-600",
-								bg: "bg-red-50",
-								border: "border-red-100",
-							},
-						].map(({ Icon, title, body, color, bg, border }) => (
-							<div
-								key={title}
-								className={`bg-white border ${border} rounded-2xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all group`}
-							>
-								<div
-									className={`w-12 h-12 ${bg} rounded-xl flex items-center justify-center mb-4 border ${border}`}
-								>
-									<Icon className={`w-6 h-6 ${color}`} aria-hidden="true" />
-								</div>
-								<h3 className="font-black text-slate-900 text-base mb-2 leading-snug">
-									{title}
-								</h3>
-								<p className="text-slate-500 text-sm leading-relaxed">{body}</p>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
-
 			{/* ── Featured Products Strip — rAF auto-scroll + touch drag + nav arrows ── */}
 			<FeaturedProductsStrip products={featuredProducts} navigate={navigate} />
 			{/* Services Preview */}
 			<section
-				className="py-24 md:py-32 bg-white border-t border-slate-200 cv-auto lazy-section overflow-hidden"
+				className="py-16 md:py-20 bg-white border-t border-slate-200 cv-auto lazy-section overflow-hidden"
 				aria-labelledby="services-preview-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15825,8 +15703,7 @@ const HomePage = memo(({ navigate }) => {
 							aria-hidden="true"
 						/>
 						<p className="text-slate-600 font-medium text-xl max-w-3xl mx-auto leading-relaxed">
-							From erection to emergency breakdown — the same ex-OEM engineers,
-							every time.
+							The same ex-OEM engineers handle your overhaul, your spares, and your 2 AM emergency — no sub-contracting, no handoffs.
 						</p>
 					</div>
 
@@ -15834,7 +15711,7 @@ const HomePage = memo(({ navigate }) => {
 					<div
 												style={PROJECTS_GRID_STYLE}
 					>
-						{SERVICES.map((service) => {
+						{SERVICES.filter(s => ["srv_2","srv_3","srv_4"].includes(s.id)).map((service) => {
 							const Icon = SERVICE_ICONS[service.id];
 							return (
 								<button
@@ -15878,7 +15755,7 @@ const HomePage = memo(({ navigate }) => {
 							onClick={() => navigate("/services")}
 							className="bg-blue-600 text-white px-10 py-5 rounded-xl font-black text-lg hover:bg-blue-500 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 						>
-							View All Services{" "}
+							View All 7 Services{" "}
 							<ArrowRight className="inline ml-3 w-5 h-5" aria-hidden="true" />
 						</button>
 					</div>
@@ -15886,41 +15763,44 @@ const HomePage = memo(({ navigate }) => {
 			</section>
 			{/* ── TESTIMONIALS ── */}
 			<section
-				className="py-20 md:py-28 bg-white border-t border-slate-100 cv-auto lazy-section overflow-hidden"
+				className="py-16 md:py-20 bg-white border-t border-slate-100 cv-auto lazy-section overflow-hidden"
 				aria-labelledby="testimonials-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-14">
 						<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-3">
-							From the Plants We Serve
+							Verified Client Feedback
 						</p>
 						<h2
 							id="testimonials-heading"
-							className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-3"
+							className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-5"
 						>
-							Plant Managers Trust Us With Their Most Critical Assets
+							Trusted by Plant Managers Across India
 						</h2>
-						{/* Google rating strip */}
+						{/* Google rating strip — primary trust anchor */}
 						<a
 							href={CONTACT_INFO.googleBusiness}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:underline mb-5"
+							className="inline-flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-xl px-5 py-3 hover:border-blue-300 hover:bg-blue-50 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 mb-6"
 							aria-label="View our Google Business reviews"
 						>
-							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 								<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
 								<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
 								<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
 								<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
 							</svg>
-							<span className="text-amber-500">★★★★★</span>
-							<span>{CONTACT_INFO.googleRating} on Google</span>
-							<span className="text-slate-500 font-medium">· {CONTACT_INFO.googleReviewCount}+ reviews</span>
-							<ExternalLink className="w-3.5 h-3.5 text-slate-500" aria-hidden="true" />
+							<span className="text-2xl font-black text-slate-900">{CONTACT_INFO.googleRating}</span>
+							<span className="text-amber-500 text-lg tracking-tight">★★★★★</span>
+							<span className="text-slate-600 font-bold text-sm">{CONTACT_INFO.googleReviewCount}+ verified reviews on Google</span>
+							<ExternalLink className="w-4 h-4 text-slate-400" aria-hidden="true" />
 						</a>
+						<p className="text-slate-500 text-sm font-medium max-w-xl mx-auto">
+							Client names are abbreviated at their request. Full references available on enquiry.
+						</p>
 						<div
-							className="section-divider w-20 h-1.5 bg-blue-600 rounded-full mx-auto"
+							className="section-divider w-20 h-1.5 bg-blue-600 rounded-full mx-auto mt-5"
 							aria-hidden="true"
 						/>
 					</div>
@@ -16057,75 +15937,46 @@ const HomePage = memo(({ navigate }) => {
 					</div>
 					{/* Nudge to leave review */}
 					<p className="text-center text-slate-500 font-medium text-sm mt-10">
-						We&apos;ve served 100+ plants across India.{" "}
+						Worked with us?{" "}
 						<a
 							href={CONTACT_INFO.googleBusiness}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-blue-600 font-bold hover:underline focus:outline-none focus-visible:underline"
 						>
-							Leave us a Google review →
+							Leave a Google review — it helps other plant managers find us →
 						</a>
 					</p>
 				</div>
 			</section>
 
-			{/* Capabilities */}
-			<section
-				className="py-24 md:py-32 bg-slate-50 border-t border-slate-200 cv-auto lazy-section"
-				aria-labelledby="capabilities-heading"
-			>
+			{/* ── Capabilities strip — compact, embedded before projects ── */}
+			<div className="bg-slate-50 border-t border-slate-200 py-10 lazy-section">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="max-w-4xl mx-auto text-left">
-						<h2
-							id="capabilities-heading"
-							className="text-slate-900 text-4xl md:text-5xl font-black mb-6 tracking-tight"
-						>
-							Precision Manufacturing.
-						</h2>
-						<div
-							className="section-divider w-24 h-1.5 bg-blue-600 mb-8 rounded-full"
-							aria-hidden="true"
-						/>
-						<p className="text-slate-600 font-medium text-xl mb-12 leading-relaxed">
-							We manufacture high-tolerance turbine spares, industrial
-							strainers, and metallic expansion bellows (DN 15 to DN 12,000).
-							Using 3D laser scanning, CMM, and PMI testing, we recreate
-							obsolete components to exact specifications, drastically reducing
-							plant downtime.
-						</p>
-						<ul
-							className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left"
-							aria-label="Manufacturing capabilities"
-						>
-							{[
-								"Reduced lead times vs. OEM sourcing (Triveni, Siemens, BHEL)",
-								"Material upgrades: Duplex, Incoloy, Inconel, Titanium, Hastelloy",
-								"ISO/API standard dynamic balancing (50-2,000 kg capacity)",
-								"Custom expansion bellows (DN 15-12,000, up to 150 barg)",
-								"Filter elements per ISO 16889, API 614, ASME & EN standards",
-								"Lube oil systems per ISO 4406:99 cleanliness classification",
-							].map((item) => (
-								<li
-									key={item}
-									className="flex items-start bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-blue-200 hover:shadow-md transition-all"
-								>
-									<Shield
-										className="w-7 h-7 text-blue-500 mr-4 shrink-0"
-										aria-hidden="true"
-									/>
-									<span className="text-slate-800 font-bold text-base leading-snug">
-										{item}
-									</span>
-								</li>
-							))}
-						</ul>
+					<p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-6 text-center">
+						Manufacturing &amp; Technical Capabilities
+					</p>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+						{[
+							{ icon: Zap,        text: "Faster lead times than OEM sourcing — Triveni, Siemens, BHEL" },
+							{ icon: Layers,     text: "Material upgrades: Duplex, Incoloy, Inconel, Titanium, Hastelloy" },
+							{ icon: Activity,   text: "ISO/API dynamic balancing 50–2,000 kg capacity" },
+							{ icon: Wind,       text: "Custom expansion bellows DN 15–12,000, up to 150 barg" },
+							{ icon: Droplets,   text: "Filter elements per ISO 16889, API 614, ASME & EN standards" },
+							{ icon: Cpu,        text: "Lube oil systems per ISO 4406:99 cleanliness classification" },
+						].map(({ icon: Icon, text }) => (
+							<div key={text} className="flex items-start gap-3 bg-white border border-slate-100 rounded-xl px-4 py-3.5 hover:border-blue-200 transition-all">
+								<Icon className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" aria-hidden="true" />
+								<span className="text-slate-700 font-semibold text-sm leading-snug">{text}</span>
+							</div>
+						))}
 					</div>
 				</div>
-			</section>
+			</div>
+
 			{/* ── Featured Projects teaser ────────────────────────── */}
 			<section
-				className="py-24 md:py-32 bg-white border-t border-slate-100 lazy-section overflow-hidden"
+				className="py-16 md:py-20 bg-white border-t border-slate-100 lazy-section overflow-hidden"
 				aria-labelledby="projects-teaser-heading"
 			>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16155,9 +16006,9 @@ const HomePage = memo(({ navigate }) => {
 							<ArrowRight className="w-4 h-4" aria-hidden="true" />
 						</button>
 					</div>
-					{/* Three featured cards */}
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{CASE_STUDIES.slice(0, 3).map((cs) => (
+					{/* Two featured cards — enough to show depth, not enough to overwhelm */}
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						{CASE_STUDIES.slice(0, 2).map((cs) => (
 							<article
 								key={cs.id}
 								className="group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 flex flex-col cursor-pointer focus-within:ring-4 focus-within:ring-blue-500/50"
@@ -16242,124 +16093,30 @@ const HomePage = memo(({ navigate }) => {
 				</div>
 			</section>
 
-			{/* ── Blog preview strip ── */}
-			<section
-				className="py-16 md:py-20 bg-slate-50 border-t border-slate-100"
-				aria-labelledby="blog-strip-heading"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-						<div>
-							<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-2">
-								Technical Insights
-							</p>
-							<h2
-								id="blog-strip-heading"
-								className="text-slate-900 text-3xl md:text-4xl font-black tracking-tight"
-							>
-								From Our Engineering Team
-							</h2>
-							<div className="w-16 h-1.5 bg-blue-600 mt-3 rounded-full" aria-hidden="true" />
-						</div>
-						<button
-							type="button"
-							onClick={() => navigate("/blog")}
-							className="shrink-0 inline-flex items-center gap-2 text-blue-600 font-black text-sm hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group"
-						>
-							All articles
-							<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-						</button>
-					</div>
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{BLOG_POSTS.slice(0, 3).map((post) => (
-							<article
-								key={post.id}
-								className="group bg-white border border-slate-200 rounded-2xl p-7 hover:border-blue-300 hover:shadow-lg hover:-translate-y-0.5 transition-all focus-within:ring-4 focus-within:ring-blue-500/50"
-							>
-								<div className="flex flex-wrap gap-2 mb-4">
-									{post.tags.slice(0, 2).map((tag) => (
-										<span
-											key={tag}
-											className="bg-blue-50 text-blue-700 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider border border-blue-100"
-										>
-											{tag}
-										</span>
-									))}
-									<span className="text-slate-500 text-[10px] font-bold ml-auto flex items-center gap-1">
-										<Clock className="w-3 h-3" aria-hidden="true" />
-										{post.readTime}
-									</span>
-								</div>
-								<h3 className="text-base font-black text-slate-900 leading-snug mb-3 group-hover:text-blue-700 transition-colors line-clamp-2">
-									{post.title}
-								</h3>
-								<p className="text-slate-500 text-sm leading-relaxed line-clamp-2 mb-4">
-									{post.excerpt}
-								</p>
-								<button
-									type="button"
-									onClick={() => navigate(`/blog/${post.slug}`)}
-									aria-label={`Read article: ${post.title}`}
-									className="inline-flex items-center gap-1.5 text-blue-600 font-black text-xs hover:text-blue-500 transition-colors focus:outline-none focus-visible:underline group-hover:gap-2.5"
-								>
-									Read Article
-									<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
-								</button>
-							</article>
-						))}
-					</div>
+			{/* ── Compact resource bar — Blog + Downloads in one line, no dedicated section needed ── */}
+			<div className="bg-slate-50 border-t border-slate-100 py-5">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-10 text-sm font-bold">
+					<button
+						type="button"
+						onClick={() => navigate("/blog")}
+						className="inline-flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:underline"
+					>
+						<BookOpen className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						Technical articles from our engineering team
+						<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+					</button>
+					<span className="hidden sm:block w-px h-4 bg-slate-300" aria-hidden="true" />
+					<button
+						type="button"
+						onClick={() => navigate("/downloads")}
+						className="inline-flex items-center gap-2 text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus-visible:underline"
+					>
+						<Download className="w-4 h-4 text-blue-500 shrink-0" aria-hidden="true" />
+						Free overhaul checklists, RFQ templates & datasheets
+						<ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+					</button>
 				</div>
-			</section>
-
-			{/* ── Free Downloads promo strip ── */}
-			<section
-				className="py-14 md:py-16 bg-white border-t border-slate-100 lazy-section"
-				aria-labelledby="dl-strip-heading"
-			>
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					<div className="bg-[#0A192F] rounded-2xl px-6 md:px-10 py-9 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 relative overflow-hidden">
-						{/* Background grid texture */}
-						<div
-							className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[3rem_3rem] pointer-events-none"
-							aria-hidden="true"
-						/>
-						<div className="relative z-10 shrink-0">
-							<div className="w-14 h-14 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
-								<Download className="w-7 h-7 text-blue-400" aria-hidden="true" />
-							</div>
-						</div>
-						<div className="relative z-10 flex-1 min-w-0">
-							<p className="text-blue-400 font-black text-[10px] uppercase tracking-widest mb-1" id="dl-strip-heading">
-								Free Engineering Resources
-							</p>
-							<h2 className="text-white font-black text-xl md:text-2xl leading-snug mb-2">
-								Turbine checklists, datasheets & RFQ templates — free download
-							</h2>
-							<p className="text-slate-500 text-sm leading-relaxed">
-								Overhaul checklists, lube oil filter datasheets, bearing clearance
-								references, and blank RFQ sheets. Written by ex-OEM engineers.
-							</p>
-							<div className="flex flex-wrap gap-2 mt-3">
-								{["Overhaul Checklist", "Lube Oil Datasheet", "RFQ Template", "Bearing Reference"].map((label) => (
-									<span key={label} className="text-[10px] font-black uppercase tracking-wider bg-white/5 border border-white/10 text-slate-500 px-2.5 py-1 rounded-full">
-										{label}
-									</span>
-								))}
-							</div>
-						</div>
-						<div className="relative z-10 shrink-0">
-							<button
-								type="button"
-								onClick={() => navigate("/downloads")}
-								className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-500 active:scale-[0.98] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
-							>
-								<Download className="w-4 h-4" aria-hidden="true" />
-								Browse Free Downloads
-							</button>
-						</div>
-					</div>
-				</div>
-			</section>
+			</div>
 
 			{/* Two-path CTA — addresses both visitor types: planned work vs emergency */}
 			<section
@@ -16372,7 +16129,8 @@ const HomePage = memo(({ navigate }) => {
 							id="cta-heading"
 							className="text-4xl md:text-5xl font-black text-white tracking-tight mb-4"
 						>
-							Get a Free Technical Quote — Because Every Day Offline Has a Cost
+							Get a Technical Quote.{" "}
+							Every Hour Offline Has a Cost.
 						</h2>
 						<p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto">
 							Our engineers respond with a technical answer within 24 hours for
@@ -16410,7 +16168,7 @@ const HomePage = memo(({ navigate }) => {
 									}}
 									className="w-full bg-blue-600 text-white px-6 py-3.5 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								>
-									Request a Free Technical Quote
+									Send Us Your Requirements
 									<ArrowRight
 										className="w-4 h-4 group-hover:translate-x-1 transition-transform shrink-0"
 										aria-hidden="true"
@@ -17080,7 +16838,7 @@ const AboutPage = memo(({ navigate }) => {
 						].map(({ initials, name, bg, spec, exp, oems }) => (
 							<div key={initials} className="bg-white border border-slate-200 rounded-2xl p-6 hover:border-blue-300 hover:shadow-lg transition-all group">
 								<div className="flex items-center gap-4 mb-4">
-									<div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${bg} flex items-center justify-center shrink-0 text-white font-black text-lg shadow-md`} aria-hidden="true">
+									<div className={`w-14 h-14 rounded-2xl bg-linear-to-br ${bg} flex items-center justify-center shrink-0 text-white font-black text-lg shadow-md`} aria-hidden="true">
 										{initials}
 									</div>
 									<div className="flex-1 min-w-0">
@@ -17091,7 +16849,7 @@ const AboutPage = memo(({ navigate }) => {
 								<p className="text-slate-600 text-xs leading-relaxed mb-3">{spec}</p>
 								<div className="flex flex-wrap gap-1.5">
 									{oems.map((oem) => (
-										<span key={oem} className="text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full border border-slate-200">
+										<span key={oem} className="text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full border border-slate-200">
 											{oem}
 										</span>
 									))}
@@ -18458,7 +18216,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 		>
 			{/* Reading progress bar */}
 			<div
-				className="fixed top-0 left-0 z-[9999] h-1 bg-blue-600 transition-all duration-150"
+				className="fixed top-0 left-0 z-9999 h-1 bg-blue-600 transition-all duration-150"
 				style={{ width: `${readProgress}%` }}
 				aria-hidden="true"
 			/>
@@ -18964,13 +18722,13 @@ const ServicesPage = memo(({ navigate }) => (
 												{service.oems.slice(0, 6).map((oem) => (
 													<span
 														key={oem}
-														className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip pointer-events-none select-none"
+														className="text-[11px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip pointer-events-none select-none"
 													>
 														{oem}
 													</span>
 												))}
 												{service.oems.length > 6 && (
-													<span className="text-[10px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">
+													<span className="text-[11px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">
 														+{service.oems.length - 6} more
 													</span>
 												)}
@@ -20371,8 +20129,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 				{/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
 				<div
-					className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600"
-					style={{ minHeight: "480px" }}
+					className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600 min-h-85 sm:min-h-105 lg:min-h-120"
 				>
 					{/* Grid texture — matches ServicesPage hero */}
 					<div
@@ -20568,6 +20325,34 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					</div>
 
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-16">
+					{/* ── MOBILE JUMP-TO-SECTION NAV ──
+					 *  Mirrors the desktop sidebar nav on mobile via a horizontally-scrolling
+					 *  chip bar. Sticky below the reading-progress bar (top-16 = navbar height).
+					 *  Only visible on mobile (lg:hidden). */}
+					<nav
+						aria-label="Jump to section"
+						className="lg:hidden col-span-full -mx-4 px-4 py-2.5 bg-white/95 backdrop-blur-sm border-b border-slate-100 sticky top-16 z-40 flex gap-2 overflow-x-auto scrollbar-hide"
+					>
+						{[
+							{ label: "Overview", href: "#sd-overview" },
+							{ label: "Process", href: "#sd-process" },
+							{ label: "Standards", href: "#sd-standards" },
+							{ label: "All Services", href: "#sd-all-services" },
+						].map(({ label, href }) => (
+							<a
+								key={href}
+								href={href}
+								onClick={(e) => {
+									e.preventDefault();
+									const el = document.getElementById(href.slice(1));
+									if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+								}}
+								className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-black bg-slate-100 text-slate-700 hover:bg-blue-600 hover:text-white transition-colors whitespace-nowrap border border-transparent hover:border-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							>
+								{label}
+							</a>
+						))}
+					</nav>
 						{/* ── MAIN COLUMN ── */}
 						<div className="lg:col-span-2 space-y-20">
 							{/* Why Us — matches site blue-50 bg callout blocks */}
@@ -20591,7 +20376,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							)}
 
 							{/* Overview */}
-							<section aria-labelledby="overview-heading">
+							<section id="sd-overview" aria-labelledby="overview-heading">
 								<div className="sd-reveal flex items-center gap-4 mb-5">
 									<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 									<h2
@@ -20607,7 +20392,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							</section>
 
 							{/* Procedures */}
-							<section aria-labelledby="procedure-heading">
+							<section id="sd-process" aria-labelledby="procedure-heading">
 								<div className="sd-reveal flex items-center gap-4 mb-4">
 									<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 									<h2
@@ -20806,7 +20591,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							)}
 
 							{/* Standards & Compliance */}
-							<section aria-labelledby="standards-heading">
+							<section id="sd-standards" aria-labelledby="standards-heading">
 								<div className="sd-reveal flex items-center gap-4 mb-4">
 									<span className="w-10 h-0.5 bg-blue-600" aria-hidden="true" />
 									<h2
@@ -20983,7 +20768,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 							</button>
 
 							{/* All Services Nav — matches site card header pattern */}
-							<div className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+							<div id="sd-all-services" className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
 								<div className="bg-[#0A192F] px-5 py-4">
 									<h4 className="font-black text-white text-sm uppercase tracking-widest">
 										All Services
@@ -21469,7 +21254,7 @@ const ProductsPage = memo(({ navigate }) => {
 								id="product-sort"
 								value={sortBy}
 								onChange={(e) => setSortBy(e.target.value)}
-								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer max-w-[7rem] sm:max-w-none"
+								className="bg-transparent text-sm font-bold text-slate-700 focus:outline-none cursor-pointer max-w-28 sm:max-w-none"
 							>
 								<option value="default">Default order</option>
 								<option value="az">Name A → Z</option>
@@ -21570,6 +21355,7 @@ const ProductsPage = memo(({ navigate }) => {
 											id="price-min"
 											type="number"
 											min="0"
+											inputMode="numeric"
 											placeholder="e.g. 500"
 											value={priceMin}
 											onChange={(e) => setPriceMin(e.target.value)}
@@ -21587,6 +21373,7 @@ const ProductsPage = memo(({ navigate }) => {
 											id="price-max"
 											type="number"
 											min="0"
+											inputMode="numeric"
 											placeholder="e.g. 50000"
 											value={priceMax}
 											onChange={(e) => setPriceMax(e.target.value)}
@@ -22673,8 +22460,10 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 	const detail = INDUSTRY_DETAILS[industryId];
 	// Scroll instantly in render phase — before React paints — so new industry always starts at top
 	const [prevIndustryId, setPrevIndustryId] = useState(industryId);
+	const [showAllProducts, setShowAllProducts] = useState(false);
 	if (industryId !== prevIndustryId) {
 		setPrevIndustryId(industryId);
+		setShowAllProducts(false);
 		window.scrollTo({ top: 0, behavior: "instant" });
 	}
 
@@ -22894,7 +22683,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 						</h2>
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-						{detail.products.map((prod) => {
+						{(showAllProducts ? detail.products : detail.products.slice(0, 3)).map((prod) => {
 							const prodId = INDUSTRY_PRODUCT_IDS[prod.name];
 							const isClickable = !!prodId;
 							const cardInner = (
@@ -22960,6 +22749,25 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 							);
 						})}
 					</div>
+					{/* Progressive disclosure — long product lists collapse to 3 on mobile */}
+					{detail.products.length > 3 && (
+						<div className="mt-6 flex justify-center md:hidden">
+							<button
+								type="button"
+								onClick={() => setShowAllProducts((v) => !v)}
+								aria-expanded={showAllProducts}
+								className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-slate-200 rounded-full text-sm font-black text-slate-700 hover:border-blue-400 hover:text-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							>
+								{showAllProducts
+									? "Show fewer products"
+									: `Show all ${detail.products.length} products`}
+								<ChevronRight
+									className={`w-4 h-4 transition-transform ${showAllProducts ? "rotate-90" : ""}`}
+									aria-hidden="true"
+								/>
+							</button>
+						</div>
+					)}
 				</section>
 
 				{/* ── Industry Case Studies ── */}
@@ -23387,6 +23195,11 @@ IndustriesPage.displayName = "IndustriesPage";
 // at the top level of a proper component (rules-of-hooks compliance).
 const MapEmbed = memo(({ src }) => {
 	const [mapLoaded, setMapLoaded] = useState(false);
+	// Mobile UX: iframes capture touch scroll and fight with page scroll.
+	// We show a tap-to-interact overlay on touch devices; once tapped it hides
+	// and the iframe receives touches normally. This is the same pattern Google
+	// Maps itself uses on embedded previews.
+	const [interacting, setInteracting] = useState(false);
 	return (
 		<div className="w-full h-100 relative bg-slate-100">
 			{/* Skeleton placeholder shown until iframe fires onLoad */}
@@ -23418,6 +23231,21 @@ const MapEmbed = memo(({ src }) => {
 				className="absolute inset-0"
 				onLoad={() => setMapLoaded(true)}
 			/>
+			{/* Tap-to-interact overlay — only on touch devices, hides once tapped.
+			    Prevents the iframe from hijacking page scroll on iOS/Android. */}
+			{mapLoaded && !interacting && (
+				<button
+					type="button"
+					aria-label="Tap to interact with map"
+					onClick={() => setInteracting(true)}
+					className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 bg-black/20 backdrop-blur-[1px] sm:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+				>
+					<MapPin className="w-8 h-8 text-white drop-shadow" aria-hidden="true" />
+					<span className="text-white text-sm font-black bg-black/50 px-4 py-1.5 rounded-full shadow-lg">
+						Tap to interact with map
+					</span>
+				</button>
+			)}
 		</div>
 	);
 });
@@ -24088,6 +23916,7 @@ const ContactPage = memo(({ navigate }) => {
 									<input
 										id="c-phone"
 										type="tel"
+										inputMode="tel"
 										value={phone}
 										autoComplete="tel"
 										onChange={(e) => {
@@ -24316,21 +24145,24 @@ const ContactPage = memo(({ navigate }) => {
 								type="button"
 								onClick={handleSubmit}
 								disabled={status === "loading"}
-								className="w-full bg-blue-600 text-white py-5 rounded-xl font-black text-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+								className="w-full bg-blue-600 text-white py-4 sm:py-5 px-5 rounded-xl hover:bg-blue-500 transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
 								aria-live="polite"
 							>
 								{status === "loading" ? (
 									<>
 										<span
-											className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"
+											className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0"
 											aria-hidden="true"
 										/>
-										Sending to Engineering Team...
+										<span className="font-black text-lg sm:text-xl">Sending to Engineering Team...</span>
 									</>
 								) : (
 									<>
-										<MessageCircle className="w-6 h-6" aria-hidden="true" />
-										Send to Our Lead Engineer — Get a Technical Answer, Not a Brochure
+										<MessageCircle className="w-6 h-6 shrink-0" aria-hidden="true" />
+										<span className="flex flex-col items-center text-center leading-tight">
+											<span className="font-black text-lg sm:text-xl">Send to Our Lead Engineer</span>
+											<span className="font-semibold text-xs sm:text-sm text-blue-100 mt-0.5">Get a technical answer, not a brochure</span>
+										</span>
 									</>
 								)}
 							</button>
@@ -24340,10 +24172,13 @@ const ContactPage = memo(({ navigate }) => {
 								type="button"
 								disabled={status === "loading"}
 								onClick={handleSubmitEmailOnly}
-								className="w-full bg-slate-900 text-white py-4 rounded-xl font-bold text-base hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+								className="w-full bg-slate-900 text-white py-3.5 px-5 rounded-xl hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 							>
-								<Mail className="w-5 h-5" aria-hidden="true" />
-								Submit via Email — Because Not Everyone Uses WhatsApp
+								<Mail className="w-5 h-5 shrink-0" aria-hidden="true" />
+								<span className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2 items-center text-center leading-tight">
+									<span className="font-bold text-sm sm:text-base">Submit via Email</span>
+									<span className="font-medium text-xs sm:text-sm text-slate-400">Because not everyone uses WhatsApp</span>
+								</span>
 							</button>
 
 							{/* Risk-reversal block — addresses the four real B2B buyer fears
