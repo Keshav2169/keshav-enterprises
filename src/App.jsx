@@ -11,6 +11,7 @@ import {
 	CheckCircle2,
 	ChevronLeft,
 	ChevronRight,
+	ChevronDown,
 	ChevronUp,
 	Clock,
 	Cog,
@@ -8098,6 +8099,10 @@ const MARQUEE_CSS = `
   }
   @media(min-width:640px){.hero-h1{font-size:clamp(3rem,6.5vw,5.5rem)}}
   @media(min-width:1024px){.hero-h1{font-size:clamp(3.5rem,4.8vw,6rem)}}
+  /* Narrow phones (≤400px, e.g. 360×640): the base clamp's 3rem floor is
+     too large for "Precision Engineering for" + gradient line on screen,
+     causing horizontal overflow. Scale down further on these viewports. */
+  @media(max-width:400px){.hero-h1{font-size:clamp(2.25rem,10vw,3rem)}}
   /* Gradient span must reset text-shadow so bg-clip-text renders correctly */
   .hero-h1 .hero-gradient-text{
 	-webkit-background-clip:text;
@@ -10398,6 +10403,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 	const fmtPrice = useFmtPrice();
 	const menuRef = useRef(null);
 	const searchInputRef = useRef(null);
+	const mobileSearchInputRef = useRef(null);
 	// PERF: ref mirrors query so outside-click handler reads current value without
 	// needing query in its dependency array (which would re-register on every keystroke)
 	const queryRef = useRef("");
@@ -10577,7 +10583,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 		<nav
 			ref={menuRef}
 			aria-label="Main navigation"
-			className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? "translate-y-0" : "-translate-y-full"} ${scrolled ? "bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg" : "bg-[#0A192F]/95 backdrop-blur-sm border-white/10"}`}
+			className={`fixed top-0 left-0 w-full z-55 transition-all duration-500 ease-[cubic-bezier(0.3,0,0,1)] border-b ${isVisible ? "translate-y-0" : "-translate-y-full"} ${scrolled ? "bg-white/97 backdrop-blur-xl border-slate-200 shadow-lg" : "bg-[#0A192F]/95 backdrop-blur-sm border-white/10"}`}
 		>
 			<a
 				href="#main-content"
@@ -10977,6 +10983,7 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							</label>
 							<input
 								id="mobile-drawer-search"
+								ref={mobileSearchInputRef}
 								type="text"
 								placeholder="Search products & services…"
 								value={query}
@@ -10995,8 +11002,22 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							)}
 						</div>
 						{query && (
-							<div className="max-h-[40dvh] overflow-y-auto overscroll-contain mt-2 bg-white rounded-xl border border-slate-100 shadow-inner">
-								{searchResults.length === 0 ? (
+							<>
+								{/* Keyboard-dismiss button — on some Android browsers, tapping
+								   outside the input does not close the on-screen keyboard once
+								   results are visible. Gives users an explicit way to hide it. */}
+								<div className="flex justify-end mt-2 mb-1">
+									<button
+										type="button"
+										onClick={() => mobileSearchInputRef.current?.blur()}
+										className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-blue-600 px-2 py-1 -mr-2 rounded-lg transition-colors"
+									>
+										<ChevronDown className="w-3.5 h-3.5" aria-hidden="true" />
+										Hide keyboard
+									</button>
+								</div>
+								<div className="max-h-[40dvh] overflow-y-auto overscroll-contain bg-white rounded-xl border border-slate-100 shadow-inner">
+									{searchResults.length === 0 ? (
 									<div
 										className="p-6 text-center"
 										role="status"
@@ -11069,7 +11090,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 										))}
 									</ul>
 								)}
-							</div>
+								</div>
+							</>
 						)}
 					</div>
 
@@ -13823,7 +13845,7 @@ const SpecsTable = memo(
 								aria-controls={`spec-panel-${id}`}
 								aria-selected={resolvedSpecTab === id}
 								onClick={() => setActiveSpecTab(id)}
-								className={`px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500
+								className={`min-h-11 px-4 py-3 text-xs font-black uppercase tracking-wider transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500
 								${
 									resolvedSpecTab === id
 										? "bg-white text-blue-600 border-b-2 border-blue-600 -mb-px z-10 relative"
@@ -16925,7 +16947,7 @@ const AboutPage = memo(({ navigate }) => {
 								<p className="text-slate-600 text-xs leading-relaxed mb-3">{spec}</p>
 								<div className="flex flex-wrap gap-1.5">
 									{oems.map((oem) => (
-										<span key={oem} className="text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full border border-slate-200">
+										<span key={oem} className="text-[11px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full border border-slate-200">
 											{oem}
 										</span>
 									))}
@@ -18798,13 +18820,13 @@ const ServicesPage = memo(({ navigate }) => (
 												{service.oems.slice(0, 6).map((oem) => (
 													<span
 														key={oem}
-														className="text-[10px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip pointer-events-none select-none"
+														className="text-[11px] font-black text-slate-200 bg-slate-800/80 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-white/10 ind-oem-chip pointer-events-none select-none"
 													>
 														{oem}
 													</span>
 												))}
 												{service.oems.length > 6 && (
-													<span className="text-[10px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">
+													<span className="text-[11px] font-black text-blue-300 bg-blue-900/50 backdrop-blur-sm px-2.5 py-1 rounded-full uppercase tracking-wide border border-blue-500/20">
 														+{service.oems.length - 6} more
 													</span>
 												)}
@@ -20205,8 +20227,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 				{/* ══ HERO — #0A192F navy matching site Navbar / ServicesPage hero ══ */}
 				<div
-					className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600"
-					style={{ minHeight: "480px" }}
+					className="bg-[#0A192F] text-white relative overflow-hidden border-b-8 border-blue-600 min-h-[340px] sm:min-h-[420px] lg:min-h-[480px]"
 				>
 					{/* Grid texture — matches ServicesPage hero */}
 					<div
@@ -22540,6 +22561,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 	const [showAllProducts, setShowAllProducts] = useState(false);
 	if (industryId !== prevIndustryId) {
 		setPrevIndustryId(industryId);
+		setShowAllProducts(false);
 		window.scrollTo({ top: 0, behavior: "instant" });
 	}
 
@@ -22825,6 +22847,25 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 							);
 						})}
 					</div>
+					{/* Progressive disclosure — long product lists collapse to 3 on mobile */}
+					{detail.products.length > 3 && (
+						<div className="mt-6 flex justify-center md:hidden">
+							<button
+								type="button"
+								onClick={() => setShowAllProducts((v) => !v)}
+								aria-expanded={showAllProducts}
+								className="flex items-center gap-2 px-6 py-3 bg-white border-2 border-slate-200 rounded-full text-sm font-black text-slate-700 hover:border-blue-400 hover:text-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+							>
+								{showAllProducts
+									? "Show fewer products"
+									: `Show all ${detail.products.length} products`}
+								<ChevronRight
+									className={`w-4 h-4 transition-transform ${showAllProducts ? "rotate-90" : ""}`}
+									aria-hidden="true"
+								/>
+							</button>
+						</div>
+					)}
 				</section>
 
 				{/* ── Industry Case Studies ── */}
