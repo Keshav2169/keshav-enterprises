@@ -8076,7 +8076,7 @@ const MARQUEE_CSS = `
   }
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:24px 20px 36px;min-height:unset;justify-content:flex-start}
+  .hero-content-wrap{padding:24px 20px 36px;min-height:100svh;justify-content:center}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
@@ -11234,11 +11234,6 @@ const Navbar = memo(({ currentPath, navigate }) => {
 									<Phone className="w-4 h-4" aria-hidden="true" />{" "}
 									{CONTACT_INFO.phones[0]}
 								</a>
-								{/* Language switcher — relocated from mobile header to drawer footer. */}
-								<div className="mt-1 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-									<span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Language</span>
-									<LanguageSwitcher scrolled={true} />
-								</div>
 							</div>
 						</div>
 					)}
