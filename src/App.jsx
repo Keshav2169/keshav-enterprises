@@ -8078,7 +8078,7 @@ const MARQUEE_CSS = `
   /* ─── HERO CONTENT PADDING ─── */
   /* Mobile: distribute content across full viewport height instead of
      clumping it in the center/bottom (was leaving an empty gap at top). */
-  .hero-content-wrap{padding:28px 20px 40px;min-height:100svh;justify-content:space-between}
+  .hero-content-wrap{padding:28px 20px 40px;min-height:100svh;justify-content:flex-start}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
@@ -15469,8 +15469,8 @@ const HomePage = memo(({ navigate }) => {
 				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-stretch lg:items-start justify-center lg:justify-between gap-8 lg:gap-10">
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
-					<div className="w-full h-full lg:h-auto lg:w-3/5 flex flex-col">
-						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
+					<div className="w-full lg:h-auto lg:w-3/5 flex flex-col">
+						<div className={`flex flex-col lg:flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
 							<div className="hero-badges mb-4 lg:mb-4 justify-center lg:justify-start">
@@ -15486,9 +15486,9 @@ const HomePage = memo(({ navigate }) => {
 								{h.headline}
 							</h1>
 
-							<div className="flex flex-col justify-between lg:gap-6 lg:justify-start flex-1">
+							<div className="flex flex-col gap-5 lg:gap-6 lg:justify-between lg:flex-1">
 								{/* Micro trust-proof strip — top item on mobile, order-2 on lg */}
-								<div className="flex flex-col gap-3 order-1 lg:order-2">
+								<div className="flex flex-col gap-3 lg:order-2">
 									<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
 										{[
 											{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
@@ -15516,13 +15516,13 @@ const HomePage = memo(({ navigate }) => {
 
 								{/* Bottom group — pain-point text + CTAs, kept together on mobile, order-1/3 on lg */}
 								<div className="flex flex-col gap-4 lg:gap-6 lg:contents">
-									<div className="glass-hero mx-auto lg:mx-0 order-3 lg:order-1">
+									<div className="glass-hero mx-auto lg:mx-0 lg:order-1">
 										<p className="text-slate-200 font-medium leading-relaxed text-center lg:text-left">
 											{h.sub}
 										</p>
 									</div>
 
-									<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3 lg:mt-0">
+									<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start lg:order-3 lg:mt-0">
 										<button
 											type="button"
 											onClick={() => {
