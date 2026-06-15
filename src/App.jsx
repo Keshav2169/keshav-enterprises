@@ -8078,8 +8078,8 @@ const MARQUEE_CSS = `
   /* ─── HERO CONTENT PADDING ─── */
   /* Mobile: distribute content across full viewport height instead of
      clumping it in the center/bottom (was leaving an empty gap at top). */
-  .hero-content-wrap{padding:28px 20px 40px;min-height:100svh;justify-content:flex-start}
-  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
+  .hero-content-wrap{padding:28px 20px 40px;min-height:unset;justify-content:flex-start}
+  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:unset;justify-content:flex-start}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
   @media(max-width:767px){
@@ -15441,7 +15441,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] flex items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
+			<section className="hero-section relative bg-[#0A192F] flex lg:items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
