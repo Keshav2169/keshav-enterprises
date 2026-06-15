@@ -8082,7 +8082,6 @@ const MARQUEE_CSS = `
 
   @media(max-width:767px){
 	.hero-section{
-	  min-height:calc(100svh - 64px);
 	  background-image:linear-gradient(to bottom,rgba(10,25,47,0.75) 0%,rgba(10,25,47,0.45) 45%,rgba(10,25,47,0.88) 100%),url('hero-background.png');
 	  background-size:cover;background-position:center center;background-repeat:no-repeat;
 	}
@@ -9201,7 +9200,7 @@ const MakeInIndiaBadge = memo(() => {
 	const [e, sE] = useState(false);
 	return (
 		<div
-			className="hero-badge-root inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl"
+			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl"
 			role="img"
 			aria-label="Make In India — Vocal For Local"
 		>
@@ -9215,7 +9214,7 @@ const MakeInIndiaBadge = memo(() => {
 					loading="lazy"
 					decoding="async"
 					fetchPriority="low"
-					className="hero-badge-img h-8 object-contain"
+					className="h-8 object-contain"
 					onError={() => sE(true)}
 				/>
 			) : (
@@ -9223,7 +9222,7 @@ const MakeInIndiaBadge = memo(() => {
 					<Zap className="w-4 h-4 text-white" aria-hidden="true" />
 				</div>
 			)}
-			<div className="hero-badge-text flex flex-col justify-center border-l border-white/20 pl-3">
+			<div className="flex flex-col justify-center border-l border-white/20 pl-3">
 				<span className="text-white font-black text-sm leading-none uppercase tracking-widest">
 					Make In India
 				</span>
@@ -9244,10 +9243,10 @@ const IndiaMartBadge = memo(() => {
 			target="_blank"
 			rel="noopener noreferrer"
 			aria-label="View Keshav Enterprises on IndiaMART — Verified Supplier 4.3/5 rating"
-			className="hero-badge-root inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer"
+			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer"
 		>
 			{!e ? (
-				<div className="hero-badge-img h-8 bg-white rounded px-1.5 flex items-center justify-center">
+				<div className="h-8 bg-white rounded px-1.5 flex items-center justify-center">
 					<img
 						src="indiamart-logo.png"
 						alt="IndiaMART"
@@ -9265,7 +9264,7 @@ const IndiaMartBadge = memo(() => {
 					<CheckCircle2 className="w-4 h-4 text-green-400" aria-hidden="true" />
 				</div>
 			)}
-			<div className="hero-badge-text flex flex-col justify-center border-l border-white/20 pl-3">
+			<div className="flex flex-col justify-center border-l border-white/20 pl-3">
 				<span className="text-white font-black text-sm leading-none tracking-widest">
 					IndiaMART Verified
 				</span>
