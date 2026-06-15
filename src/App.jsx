@@ -15470,7 +15470,7 @@ const HomePage = memo(({ navigate }) => {
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
 					<div className="w-full h-full lg:h-auto lg:w-3/5 flex flex-col">
-						<div className={`flex flex-col flex-1 justify-between lg:justify-start transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
+						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
 							<div className="hero-badges mb-4 lg:mb-4 justify-center lg:justify-start">
@@ -15487,38 +15487,7 @@ const HomePage = memo(({ navigate }) => {
 							</h1>
 
 							<div className="flex flex-col justify-between lg:gap-6 lg:justify-start flex-1">
-								{/* CTAs — order-4 on mobile (bottom of hero), order-3 on lg */}
-								<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3 mt-auto lg:mt-0">
-									<button
-										type="button"
-										onClick={() => {
-											window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
-											navigate("/contact");
-										}}
-										className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
-									>
-										Send Us Your Requirements
-										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
-									</button>
-									<a
-										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="hero-cta-secondary flex-1 sm:flex-none bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
-									>
-										<LifeBuoy className="text-cyan-400 shrink-0" aria-hidden="true" />
-										Emergency Breakdown
-									</a>
-								</div>
-
-								{/* Pain-point subtext — order-3 on mobile (above CTAs), order-1 on lg */}
-								<div className="glass-hero mx-auto lg:mx-0 order-3 lg:order-1">
-									<p className="text-slate-200 font-medium leading-relaxed text-center lg:text-left">
-										{h.sub}
-									</p>
-								</div>
-
-								{/* Micro trust-proof strip — order-1 on mobile (directly below H1), order-2 on lg */}
+								{/* Micro trust-proof strip — top item on mobile, order-2 on lg */}
 								<div className="flex flex-col gap-3 order-1 lg:order-2">
 									<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
 										{[
@@ -15542,6 +15511,38 @@ const HomePage = memo(({ navigate }) => {
 									>
 										<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
 										<span className="text-center lg:text-left">{officeHours.label}</span>
+									</div>
+								</div>
+
+								{/* Bottom group — pain-point text + CTAs, kept together on mobile, order-1/3 on lg */}
+								<div className="flex flex-col gap-4 lg:gap-6 lg:contents">
+									<div className="glass-hero mx-auto lg:mx-0 order-3 lg:order-1">
+										<p className="text-slate-200 font-medium leading-relaxed text-center lg:text-left">
+											{h.sub}
+										</p>
+									</div>
+
+									<div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-5 justify-center lg:justify-start order-4 lg:order-3 lg:mt-0">
+										<button
+											type="button"
+											onClick={() => {
+												window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
+												navigate("/contact");
+											}}
+											className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+										>
+											Send Us Your Requirements
+											<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
+										</button>
+										<a
+											href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="hero-cta-secondary flex-1 sm:flex-none bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
+										>
+											<LifeBuoy className="text-cyan-400 shrink-0" aria-hidden="true" />
+											Emergency Breakdown
+										</a>
 									</div>
 								</div>
 							</div>
