@@ -8065,12 +8065,18 @@ const MARQUEE_CSS = `
   .hero-bg-img{opacity:0.90;object-position:center center}
 
   /* ─── HERO BADGES ─── */
-  .hero-badges{display:flex;flex-direction:row;align-items:center;gap:0.75rem;flex-wrap:wrap}
+  .hero-badges{display:flex;flex-direction:row;align-items:center;gap:0.5rem;flex-wrap:wrap;justify-content:center}
   .hero-badges>*{flex:0 0 auto}
   @media(min-width:1024px){.hero-badges{justify-content:flex-start}}
+  @media(max-width:767px){
+    .hero-badge-root{padding:0.35rem 0.625rem;gap:0.5rem;border-radius:6px}
+    .hero-badge-img{height:1.375rem}
+    .hero-badge-text span:first-child{font-size:0.6875rem}
+    .hero-badge-text span:last-child{font-size:0.625rem}
+  }
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:32px 20px 40px;min-height:calc(100svh - 64px);justify-content:space-between}
+  .hero-content-wrap{padding:24px 20px 36px;min-height:unset;justify-content:flex-start}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
@@ -9195,7 +9201,7 @@ const MakeInIndiaBadge = memo(() => {
 	const [e, sE] = useState(false);
 	return (
 		<div
-			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl"
+			className="hero-badge-root inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl"
 			role="img"
 			aria-label="Make In India — Vocal For Local"
 		>
@@ -9209,7 +9215,7 @@ const MakeInIndiaBadge = memo(() => {
 					loading="lazy"
 					decoding="async"
 					fetchPriority="low"
-					className="h-8 object-contain"
+					className="hero-badge-img h-8 object-contain"
 					onError={() => sE(true)}
 				/>
 			) : (
@@ -9217,7 +9223,7 @@ const MakeInIndiaBadge = memo(() => {
 					<Zap className="w-4 h-4 text-white" aria-hidden="true" />
 				</div>
 			)}
-			<div className="flex flex-col justify-center border-l border-white/20 pl-3">
+			<div className="hero-badge-text flex flex-col justify-center border-l border-white/20 pl-3">
 				<span className="text-white font-black text-sm leading-none uppercase tracking-widest">
 					Make In India
 				</span>
@@ -9238,10 +9244,10 @@ const IndiaMartBadge = memo(() => {
 			target="_blank"
 			rel="noopener noreferrer"
 			aria-label="View Keshav Enterprises on IndiaMART — Verified Supplier 4.3/5 rating"
-			className="inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer"
+			className="hero-badge-root inline-flex items-center space-x-3 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-md border border-white/20 shadow-xl hover:bg-white/10 transition-colors group cursor-pointer"
 		>
 			{!e ? (
-				<div className="h-8 bg-white rounded px-1.5 flex items-center justify-center">
+				<div className="hero-badge-img h-8 bg-white rounded px-1.5 flex items-center justify-center">
 					<img
 						src="indiamart-logo.png"
 						alt="IndiaMART"
@@ -9259,7 +9265,7 @@ const IndiaMartBadge = memo(() => {
 					<CheckCircle2 className="w-4 h-4 text-green-400" aria-hidden="true" />
 				</div>
 			)}
-			<div className="flex flex-col justify-center border-l border-white/20 pl-3">
+			<div className="hero-badge-text flex flex-col justify-center border-l border-white/20 pl-3">
 				<span className="text-white font-black text-sm leading-none tracking-widest">
 					IndiaMART Verified
 				</span>
@@ -9294,16 +9300,10 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 	const pImg = product.images?.[0];
 	const av = product.availability;
 
-	const handleCardClick = useCallback(() => {
-		navigate(`/product/${product.id}`);
-	}, [navigate, product.id]);
-
-	const handleCardKeyDown = useCallback(
+	const handleSpecsClick = useCallback(
 		(e) => {
-			if (e.key === "Enter" || e.key === " ") {
-				e.preventDefault();
-				navigate(`/product/${product.id}`);
-			}
+			e.stopPropagation();
+			navigate(`/product/${product.id}`);
 		},
 		[navigate, product.id],
 	);
@@ -9311,16 +9311,12 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 	return (
 		<article
 			aria-label={`${product.title} product card`}
-			role="button"
-			tabIndex={0}
-			onClick={handleCardClick}
-			onKeyDown={handleCardKeyDown}
-			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left cursor-pointer"
+			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
 		>
 			{/* Fixed-height image container — prevents CLS */}
 			<div
 				key={pImg}
-				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0"
+				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
 				aria-hidden="true"
 			>
 				{/* Category badge */}
@@ -9373,7 +9369,17 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 
 			<div className="p-4 md:p-6 lg:p-8 flex-1 flex flex-col bg-white">
 				<h3 className="text-xl md:text-2xl font-black text-slate-900 mb-3 leading-tight group-hover:text-blue-600 transition-colors tracking-tight">
-					{product.title}
+					<a
+						href={`#/product/${product.id}`}
+						onClick={(e) => {
+							e.stopPropagation();
+							e.preventDefault();
+							navigate(`/product/${product.id}`);
+						}}
+						className="focus:outline-none focus-visible:underline"
+					>
+						{product.title}
+					</a>
 				</h3>
 				<p className="text-slate-600 font-medium text-sm md:text-base mb-4 leading-relaxed line-clamp-2">
 					{product.desc}
@@ -9441,9 +9447,10 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 						<MessageCircle className="w-4 h-4 mr-1.5 shrink-0" aria-hidden="true" />
 						RFQ
 					</a>
+					{/* FIX: was pointer-events-none decorative; now a real interactive button */}
 					<button
 						type="button"
-						onClick={(e) => { e.stopPropagation(); navigate(`/product/${product.id}`); }}
+						onClick={handleSpecsClick}
 						className="flex-1 bg-slate-900 text-white flex items-center justify-center py-3 text-xs sm:text-sm font-bold rounded-lg hover:bg-blue-600 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 						aria-label={`View technical specs for ${product.title}`}
 					>
@@ -15419,7 +15426,7 @@ const HomePage = memo(({ navigate }) => {
 			/>
 			<AnnouncementBar navigate={navigate} />
 			{/* Hero */}
-			<section className="hero-section relative bg-[#0A192F] md:min-h-[calc(100svh-64px)] flex items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
+			<section className="hero-section relative bg-[#0A192F] flex items-stretch justify-center overflow-hidden" aria-label="Hero — Precision Engineering for Maximum Uptime">
 				<div className="hero-bg-layer absolute inset-0 z-0" aria-hidden="true">
 					{!heroErr && (
 						<img
