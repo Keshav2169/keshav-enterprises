@@ -8076,7 +8076,9 @@ const MARQUEE_CSS = `
   }
 
   /* ─── HERO CONTENT PADDING ─── */
-  .hero-content-wrap{padding:24px 20px 36px;min-height:100svh;justify-content:center}
+  /* Mobile: distribute content across full viewport height instead of
+     clumping it in the center/bottom (was leaving an empty gap at top). */
+  .hero-content-wrap{padding:28px 20px 40px;min-height:100svh;justify-content:space-between}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:calc(100svh - 64px);justify-content:center}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
@@ -9929,7 +9931,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				aria-label="Change Language"
 				aria-haspopup="listbox"
 				aria-expanded={isOpen}
-				className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl font-bold text-[13px] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+				className={`flex items-center gap-1 sm:gap-2 px-2 sm:px-3.5 py-2.5 rounded-xl font-bold text-[13px] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
 					scrolled
 						? "bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700"
 						: "bg-white/10 border border-white/25 text-white hover:bg-white/20 backdrop-blur-md"
@@ -10901,6 +10903,8 @@ const Navbar = memo(({ currentPath, navigate }) => {
 							<Phone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
 							<span>Call Us</span>
 						</a>
+						{/* Language switcher — mobile navbar, always visible */}
+						<LanguageSwitcher scrolled={scrolled} />
 						<button
 							type="button"
 							onClick={() => {
@@ -15462,14 +15466,14 @@ const HomePage = memo(({ navigate }) => {
 					<div className="hero-glow-orb absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-[128px]" />
 				</div>
 
-				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-center lg:items-start justify-center lg:justify-between gap-8 lg:gap-10">
+				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-stretch lg:items-start justify-center lg:justify-between gap-8 lg:gap-10">
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
-					<div className="w-full lg:w-3/5 flex flex-col">
-						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
+					<div className="w-full h-full lg:h-auto lg:w-3/5 flex flex-col">
+						<div className={`flex flex-col flex-1 justify-between lg:justify-start transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
-							<div className="hero-badges mb-0 lg:mb-4 justify-center lg:justify-start">
+							<div className="hero-badges mb-4 lg:mb-4 justify-center lg:justify-start">
 								<MakeInIndiaBadge />
 								<IndiaMartBadge />
 							</div>
@@ -15477,7 +15481,7 @@ const HomePage = memo(({ navigate }) => {
 							{/* Headline */}
 							<h1
 								id="hero-heading"
-								className="hero-h1 font-black leading-[1.04] tracking-tight mb-0 lg:mb-4 text-center lg:text-left"
+								className="hero-h1 font-black leading-[1.04] tracking-tight mb-4 lg:mb-4 text-center lg:text-left"
 							>
 								{h.headline}
 							</h1>
