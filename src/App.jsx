@@ -8115,6 +8115,23 @@ const MARQUEE_CSS = `
 	display:inline;
   }
 
+  /* ─── HERO H1 LINE BREAK ─── */
+  /* Force "Maximum Uptime." onto its own line on all screen sizes, matching
+     the previous <br/> behaviour but without depending on font metrics */
+  .hero-h1-line1{display:block}
+
+  /* ─── WHATSAPP FAB LABEL ─── */
+  /* Hide "Chat" text by default on mobile; show on hover/focus for desktop */
+  .ke-wa-label{
+    display:none;
+    font-size:0.875rem;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  @media(min-width:768px){
+    .ke-wa-label{display:inline}
+  }
+
   /* ─── GRADIENT ACCENT ─── */
   /* ─── GLASS CARD ─── */
   .glass-hero{
@@ -12878,10 +12895,10 @@ const WhatsAppBubble = memo(() => {
 				</div>
 			)}
 
-			{/* Phone pill */}
+			{/* Phone pill — hidden on mobile to avoid overlapping hero CTAs */}
 			<a
 				href={`tel:${CONTACT_INFO.phones[0].replace(/\s/g, "")}`}
-				className="flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-900 p-3.5 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
+				className="hidden md:flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-900 p-3.5 rounded-full shadow-lg hover:bg-slate-50 hover:scale-105 transition-all group font-bold text-sm"
 				aria-label={`Call Keshav Enterprises: ${CONTACT_INFO.phones[0]}`}
 			>
 				<Phone
@@ -12902,7 +12919,7 @@ const WhatsAppBubble = memo(() => {
 				rel="noopener noreferrer"
 				aria-label="Chat with Keshav Enterprises on WhatsApp"
 				onClick={() => setShowGreeting(false)}
-				className="ke-wa-fab flex items-center gap-2 bg-[#25D366] text-white pl-3.5 pr-4 py-3.5 rounded-full shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+				className="ke-wa-fab flex items-center gap-2 bg-[#25D366] text-white p-3.5 md:pl-3.5 md:pr-4 md:py-3.5 rounded-full shadow-[0_0_16px_rgba(37,211,102,0.4)] hover:bg-[#1ebe5d] transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 			>
 				<MessageCircle className="w-6 h-6 shrink-0" aria-hidden="true" />
 				<span className="ke-wa-label" aria-hidden="true">
@@ -15387,8 +15404,8 @@ const HomePage = memo(({ navigate }) => {
 		en: {
 			headline: (
 				<>
-					Precision Engineering for
-					<br />
+					<span className="hero-h1-line1">Precision Engineering for</span>
+					{" "}
 					<span className="hero-gradient-text text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-cyan-300 to-blue-500">
 						Maximum Uptime.
 					</span>
