@@ -9692,142 +9692,139 @@ const TOP_LANGUAGES = [
 	{ code: "ja", name: "Japanese", flagCode: "jp", color: "#BC002D" },
 ];
 
-// All Google Translate supported languages (flagCode null = globe icon)
+// Default color for languages that have no flag SVG (Google-blue).
+// Stored once here instead of repeated on every entry — saves ~5 KB in the bundle.
+const LANG_DEFAULT_COLOR = "#1a73e8";
+
+// All Google Translate supported languages (flagCode null = globe icon).
+// Entries without a flagCode intentionally omit the `color` field; consumers
+// should fall back to LANG_DEFAULT_COLOR:
+//   lang.color ?? LANG_DEFAULT_COLOR
 const ALL_LANGUAGES = [
 	...TOP_LANGUAGES,
-	{ code: "af", name: "Afrikaans", flagCode: null, color: "#1a73e8" },
-	{ code: "sq", name: "Albanian", flagCode: null, color: "#1a73e8" },
-	{ code: "am", name: "Amharic", flagCode: null, color: "#1a73e8" },
-	{ code: "hy", name: "Armenian", flagCode: null, color: "#1a73e8" },
-	{ code: "as", name: "Assamese", flagCode: null, color: "#1a73e8" },
-	{ code: "ay", name: "Aymara", flagCode: null, color: "#1a73e8" },
-	{ code: "az", name: "Azerbaijani", flagCode: null, color: "#1a73e8" },
-	{ code: "bm", name: "Bambara", flagCode: null, color: "#1a73e8" },
-	{ code: "eu", name: "Basque", flagCode: null, color: "#1a73e8" },
-	{ code: "be", name: "Belarusian", flagCode: null, color: "#1a73e8" },
-	{ code: "bn", name: "Bengali", flagCode: null, color: "#1a73e8" },
-	{ code: "bho", name: "Bhojpuri", flagCode: null, color: "#1a73e8" },
-	{ code: "bs", name: "Bosnian", flagCode: null, color: "#1a73e8" },
-	{ code: "bg", name: "Bulgarian", flagCode: null, color: "#1a73e8" },
-	{ code: "ca", name: "Catalan", flagCode: null, color: "#1a73e8" },
-	{ code: "ceb", name: "Cebuano", flagCode: null, color: "#1a73e8" },
-	{ code: "ny", name: "Chichewa", flagCode: null, color: "#1a73e8" },
-	{
-		code: "zh-TW",
-		name: "Chinese (Traditional)",
-		flagCode: null,
-		color: "#1a73e8",
-	},
-	{ code: "co", name: "Corsican", flagCode: null, color: "#1a73e8" },
-	{ code: "hr", name: "Croatian", flagCode: null, color: "#1a73e8" },
-	{ code: "cs", name: "Czech", flagCode: null, color: "#1a73e8" },
-	{ code: "da", name: "Danish", flagCode: null, color: "#1a73e8" },
-	{ code: "dv", name: "Dhivehi", flagCode: null, color: "#1a73e8" },
-	{ code: "doi", name: "Dogri", flagCode: null, color: "#1a73e8" },
-	{ code: "nl", name: "Dutch", flagCode: null, color: "#1a73e8" },
-	{ code: "eo", name: "Esperanto", flagCode: null, color: "#1a73e8" },
-	{ code: "et", name: "Estonian", flagCode: null, color: "#1a73e8" },
-	{ code: "ee", name: "Ewe", flagCode: null, color: "#1a73e8" },
-	{ code: "tl", name: "Filipino", flagCode: null, color: "#1a73e8" },
-	{ code: "fi", name: "Finnish", flagCode: null, color: "#1a73e8" },
-	{ code: "fy", name: "Frisian", flagCode: null, color: "#1a73e8" },
-	{ code: "gl", name: "Galician", flagCode: null, color: "#1a73e8" },
-	{ code: "ka", name: "Georgian", flagCode: null, color: "#1a73e8" },
-	{ code: "el", name: "Greek", flagCode: null, color: "#1a73e8" },
-	{ code: "gn", name: "Guarani", flagCode: null, color: "#1a73e8" },
-	{ code: "gu", name: "Gujarati", flagCode: null, color: "#1a73e8" },
-	{ code: "ht", name: "Haitian Creole", flagCode: null, color: "#1a73e8" },
-	{ code: "ha", name: "Hausa", flagCode: null, color: "#1a73e8" },
-	{ code: "haw", name: "Hawaiian", flagCode: null, color: "#1a73e8" },
-	{ code: "iw", name: "Hebrew", flagCode: null, color: "#1a73e8" },
-	{ code: "hmn", name: "Hmong", flagCode: null, color: "#1a73e8" },
-	{ code: "hu", name: "Hungarian", flagCode: null, color: "#1a73e8" },
-	{ code: "is", name: "Icelandic", flagCode: null, color: "#1a73e8" },
-	{ code: "ig", name: "Igbo", flagCode: null, color: "#1a73e8" },
-	{ code: "ilo", name: "Ilocano", flagCode: null, color: "#1a73e8" },
-	{ code: "id", name: "Indonesian", flagCode: null, color: "#1a73e8" },
-	{ code: "ga", name: "Irish", flagCode: null, color: "#1a73e8" },
-	{ code: "it", name: "Italian", flagCode: null, color: "#1a73e8" },
-	{ code: "jw", name: "Javanese", flagCode: null, color: "#1a73e8" },
-	{ code: "kn", name: "Kannada", flagCode: null, color: "#1a73e8" },
-	{ code: "kk", name: "Kazakh", flagCode: null, color: "#1a73e8" },
-	{ code: "km", name: "Khmer", flagCode: null, color: "#1a73e8" },
-	{ code: "rw", name: "Kinyarwanda", flagCode: null, color: "#1a73e8" },
-	{ code: "gom", name: "Konkani", flagCode: null, color: "#1a73e8" },
-	{ code: "ko", name: "Korean", flagCode: null, color: "#1a73e8" },
-	{ code: "kri", name: "Krio", flagCode: null, color: "#1a73e8" },
-	{ code: "ku", name: "Kurdish (Kurmanji)", flagCode: null, color: "#1a73e8" },
-	{ code: "ckb", name: "Kurdish (Sorani)", flagCode: null, color: "#1a73e8" },
-	{ code: "ky", name: "Kyrgyz", flagCode: null, color: "#1a73e8" },
-	{ code: "lo", name: "Lao", flagCode: null, color: "#1a73e8" },
-	{ code: "la", name: "Latin", flagCode: null, color: "#1a73e8" },
-	{ code: "lv", name: "Latvian", flagCode: null, color: "#1a73e8" },
-	{ code: "ln", name: "Lingala", flagCode: null, color: "#1a73e8" },
-	{ code: "lt", name: "Lithuanian", flagCode: null, color: "#1a73e8" },
-	{ code: "lg", name: "Luganda", flagCode: null, color: "#1a73e8" },
-	{ code: "lb", name: "Luxembourgish", flagCode: null, color: "#1a73e8" },
-	{ code: "mk", name: "Macedonian", flagCode: null, color: "#1a73e8" },
-	{ code: "mai", name: "Maithili", flagCode: null, color: "#1a73e8" },
-	{ code: "mg", name: "Malagasy", flagCode: null, color: "#1a73e8" },
-	{ code: "ms", name: "Malay", flagCode: null, color: "#1a73e8" },
-	{ code: "ml", name: "Malayalam", flagCode: null, color: "#1a73e8" },
-	{ code: "mt", name: "Maltese", flagCode: null, color: "#1a73e8" },
-	{ code: "mi", name: "Maori", flagCode: null, color: "#1a73e8" },
-	{ code: "mr", name: "Marathi", flagCode: null, color: "#1a73e8" },
-	{
-		code: "mni-Mtei",
-		name: "Meitei (Manipuri)",
-		flagCode: null,
-		color: "#1a73e8",
-	},
-	{ code: "lus", name: "Mizo", flagCode: null, color: "#1a73e8" },
-	{ code: "mn", name: "Mongolian", flagCode: null, color: "#1a73e8" },
-	{ code: "my", name: "Myanmar (Burmese)", flagCode: null, color: "#1a73e8" },
-	{ code: "ne", name: "Nepali", flagCode: null, color: "#1a73e8" },
-	{ code: "no", name: "Norwegian", flagCode: null, color: "#1a73e8" },
-	{ code: "or", name: "Odia (Oriya)", flagCode: null, color: "#1a73e8" },
-	{ code: "om", name: "Oromo", flagCode: null, color: "#1a73e8" },
-	{ code: "ps", name: "Pashto", flagCode: null, color: "#1a73e8" },
-	{ code: "fa", name: "Persian", flagCode: null, color: "#1a73e8" },
-	{ code: "pl", name: "Polish", flagCode: null, color: "#1a73e8" },
-	{ code: "pa", name: "Punjabi", flagCode: null, color: "#1a73e8" },
-	{ code: "qu", name: "Quechua", flagCode: null, color: "#1a73e8" },
-	{ code: "ro", name: "Romanian", flagCode: null, color: "#1a73e8" },
-	{ code: "sm", name: "Samoan", flagCode: null, color: "#1a73e8" },
-	{ code: "sa", name: "Sanskrit", flagCode: null, color: "#1a73e8" },
-	{ code: "gd", name: "Scots Gaelic", flagCode: null, color: "#1a73e8" },
-	{ code: "nso", name: "Sepedi", flagCode: null, color: "#1a73e8" },
-	{ code: "sr", name: "Serbian", flagCode: null, color: "#1a73e8" },
-	{ code: "st", name: "Sesotho", flagCode: null, color: "#1a73e8" },
-	{ code: "sn", name: "Shona", flagCode: null, color: "#1a73e8" },
-	{ code: "sd", name: "Sindhi", flagCode: null, color: "#1a73e8" },
-	{ code: "si", name: "Sinhala", flagCode: null, color: "#1a73e8" },
-	{ code: "sk", name: "Slovak", flagCode: null, color: "#1a73e8" },
-	{ code: "sl", name: "Slovenian", flagCode: null, color: "#1a73e8" },
-	{ code: "so", name: "Somali", flagCode: null, color: "#1a73e8" },
-	{ code: "su", name: "Sundanese", flagCode: null, color: "#1a73e8" },
-	{ code: "sw", name: "Swahili", flagCode: null, color: "#1a73e8" },
-	{ code: "sv", name: "Swedish", flagCode: null, color: "#1a73e8" },
-	{ code: "tg", name: "Tajik", flagCode: null, color: "#1a73e8" },
-	{ code: "ta", name: "Tamil", flagCode: null, color: "#1a73e8" },
-	{ code: "tt", name: "Tatar", flagCode: null, color: "#1a73e8" },
-	{ code: "te", name: "Telugu", flagCode: null, color: "#1a73e8" },
-	{ code: "th", name: "Thai", flagCode: null, color: "#1a73e8" },
-	{ code: "ti", name: "Tigrinya", flagCode: null, color: "#1a73e8" },
-	{ code: "ts", name: "Tsonga", flagCode: null, color: "#1a73e8" },
-	{ code: "tr", name: "Turkish", flagCode: null, color: "#1a73e8" },
-	{ code: "tk", name: "Turkmen", flagCode: null, color: "#1a73e8" },
-	{ code: "ak", name: "Twi", flagCode: null, color: "#1a73e8" },
-	{ code: "uk", name: "Ukrainian", flagCode: null, color: "#1a73e8" },
-	{ code: "ur", name: "Urdu", flagCode: null, color: "#1a73e8" },
-	{ code: "ug", name: "Uyghur", flagCode: null, color: "#1a73e8" },
-	{ code: "uz", name: "Uzbek", flagCode: null, color: "#1a73e8" },
-	{ code: "vi", name: "Vietnamese", flagCode: null, color: "#1a73e8" },
-	{ code: "cy", name: "Welsh", flagCode: null, color: "#1a73e8" },
-	{ code: "xh", name: "Xhosa", flagCode: null, color: "#1a73e8" },
-	{ code: "yi", name: "Yiddish", flagCode: null, color: "#1a73e8" },
-	{ code: "yo", name: "Yoruba", flagCode: null, color: "#1a73e8" },
-	{ code: "zu", name: "Zulu", flagCode: null, color: "#1a73e8" },
+	{ code: "af", name: "Afrikaans", flagCode: null },
+	{ code: "sq", name: "Albanian", flagCode: null },
+	{ code: "am", name: "Amharic", flagCode: null },
+	{ code: "hy", name: "Armenian", flagCode: null },
+	{ code: "as", name: "Assamese", flagCode: null },
+	{ code: "ay", name: "Aymara", flagCode: null },
+	{ code: "az", name: "Azerbaijani", flagCode: null },
+	{ code: "bm", name: "Bambara", flagCode: null },
+	{ code: "eu", name: "Basque", flagCode: null },
+	{ code: "be", name: "Belarusian", flagCode: null },
+	{ code: "bn", name: "Bengali", flagCode: null },
+	{ code: "bho", name: "Bhojpuri", flagCode: null },
+	{ code: "bs", name: "Bosnian", flagCode: null },
+	{ code: "bg", name: "Bulgarian", flagCode: null },
+	{ code: "ca", name: "Catalan", flagCode: null },
+	{ code: "ceb", name: "Cebuano", flagCode: null },
+	{ code: "ny", name: "Chichewa", flagCode: null },
+	{ code: "zh-TW", name: "Chinese (Traditional)", flagCode: null },
+	{ code: "co", name: "Corsican", flagCode: null },
+	{ code: "hr", name: "Croatian", flagCode: null },
+	{ code: "cs", name: "Czech", flagCode: null },
+	{ code: "da", name: "Danish", flagCode: null },
+	{ code: "dv", name: "Dhivehi", flagCode: null },
+	{ code: "doi", name: "Dogri", flagCode: null },
+	{ code: "nl", name: "Dutch", flagCode: null },
+	{ code: "eo", name: "Esperanto", flagCode: null },
+	{ code: "et", name: "Estonian", flagCode: null },
+	{ code: "ee", name: "Ewe", flagCode: null },
+	{ code: "tl", name: "Filipino", flagCode: null },
+	{ code: "fi", name: "Finnish", flagCode: null },
+	{ code: "fy", name: "Frisian", flagCode: null },
+	{ code: "gl", name: "Galician", flagCode: null },
+	{ code: "ka", name: "Georgian", flagCode: null },
+	{ code: "el", name: "Greek", flagCode: null },
+	{ code: "gn", name: "Guarani", flagCode: null },
+	{ code: "gu", name: "Gujarati", flagCode: null },
+	{ code: "ht", name: "Haitian Creole", flagCode: null },
+	{ code: "ha", name: "Hausa", flagCode: null },
+	{ code: "haw", name: "Hawaiian", flagCode: null },
+	{ code: "iw", name: "Hebrew", flagCode: null },
+	{ code: "hmn", name: "Hmong", flagCode: null },
+	{ code: "hu", name: "Hungarian", flagCode: null },
+	{ code: "is", name: "Icelandic", flagCode: null },
+	{ code: "ig", name: "Igbo", flagCode: null },
+	{ code: "ilo", name: "Ilocano", flagCode: null },
+	{ code: "id", name: "Indonesian", flagCode: null },
+	{ code: "ga", name: "Irish", flagCode: null },
+	{ code: "it", name: "Italian", flagCode: null },
+	{ code: "jw", name: "Javanese", flagCode: null },
+	{ code: "kn", name: "Kannada", flagCode: null },
+	{ code: "kk", name: "Kazakh", flagCode: null },
+	{ code: "km", name: "Khmer", flagCode: null },
+	{ code: "rw", name: "Kinyarwanda", flagCode: null },
+	{ code: "gom", name: "Konkani", flagCode: null },
+	{ code: "ko", name: "Korean", flagCode: null },
+	{ code: "kri", name: "Krio", flagCode: null },
+	{ code: "ku", name: "Kurdish (Kurmanji)", flagCode: null },
+	{ code: "ckb", name: "Kurdish (Sorani)", flagCode: null },
+	{ code: "ky", name: "Kyrgyz", flagCode: null },
+	{ code: "lo", name: "Lao", flagCode: null },
+	{ code: "la", name: "Latin", flagCode: null },
+	{ code: "lv", name: "Latvian", flagCode: null },
+	{ code: "ln", name: "Lingala", flagCode: null },
+	{ code: "lt", name: "Lithuanian", flagCode: null },
+	{ code: "lg", name: "Luganda", flagCode: null },
+	{ code: "lb", name: "Luxembourgish", flagCode: null },
+	{ code: "mk", name: "Macedonian", flagCode: null },
+	{ code: "mai", name: "Maithili", flagCode: null },
+	{ code: "mg", name: "Malagasy", flagCode: null },
+	{ code: "ms", name: "Malay", flagCode: null },
+	{ code: "ml", name: "Malayalam", flagCode: null },
+	{ code: "mt", name: "Maltese", flagCode: null },
+	{ code: "mi", name: "Maori", flagCode: null },
+	{ code: "mr", name: "Marathi", flagCode: null },
+	{ code: "mni-Mtei", name: "Meitei (Manipuri)", flagCode: null },
+	{ code: "lus", name: "Mizo", flagCode: null },
+	{ code: "mn", name: "Mongolian", flagCode: null },
+	{ code: "my", name: "Myanmar (Burmese)", flagCode: null },
+	{ code: "ne", name: "Nepali", flagCode: null },
+	{ code: "no", name: "Norwegian", flagCode: null },
+	{ code: "or", name: "Odia (Oriya)", flagCode: null },
+	{ code: "om", name: "Oromo", flagCode: null },
+	{ code: "ps", name: "Pashto", flagCode: null },
+	{ code: "fa", name: "Persian", flagCode: null },
+	{ code: "pl", name: "Polish", flagCode: null },
+	{ code: "pa", name: "Punjabi", flagCode: null },
+	{ code: "qu", name: "Quechua", flagCode: null },
+	{ code: "ro", name: "Romanian", flagCode: null },
+	{ code: "sm", name: "Samoan", flagCode: null },
+	{ code: "sa", name: "Sanskrit", flagCode: null },
+	{ code: "gd", name: "Scots Gaelic", flagCode: null },
+	{ code: "nso", name: "Sepedi", flagCode: null },
+	{ code: "sr", name: "Serbian", flagCode: null },
+	{ code: "st", name: "Sesotho", flagCode: null },
+	{ code: "sn", name: "Shona", flagCode: null },
+	{ code: "sd", name: "Sindhi", flagCode: null },
+	{ code: "si", name: "Sinhala", flagCode: null },
+	{ code: "sk", name: "Slovak", flagCode: null },
+	{ code: "sl", name: "Slovenian", flagCode: null },
+	{ code: "so", name: "Somali", flagCode: null },
+	{ code: "su", name: "Sundanese", flagCode: null },
+	{ code: "sw", name: "Swahili", flagCode: null },
+	{ code: "sv", name: "Swedish", flagCode: null },
+	{ code: "tg", name: "Tajik", flagCode: null },
+	{ code: "ta", name: "Tamil", flagCode: null },
+	{ code: "tt", name: "Tatar", flagCode: null },
+	{ code: "te", name: "Telugu", flagCode: null },
+	{ code: "th", name: "Thai", flagCode: null },
+	{ code: "ti", name: "Tigrinya", flagCode: null },
+	{ code: "ts", name: "Tsonga", flagCode: null },
+	{ code: "tr", name: "Turkish", flagCode: null },
+	{ code: "tk", name: "Turkmen", flagCode: null },
+	{ code: "ak", name: "Twi", flagCode: null },
+	{ code: "uk", name: "Ukrainian", flagCode: null },
+	{ code: "ur", name: "Urdu", flagCode: null },
+	{ code: "ug", name: "Uyghur", flagCode: null },
+	{ code: "uz", name: "Uzbek", flagCode: null },
+	{ code: "vi", name: "Vietnamese", flagCode: null },
+	{ code: "cy", name: "Welsh", flagCode: null },
+	{ code: "xh", name: "Xhosa", flagCode: null },
+	{ code: "yi", name: "Yiddish", flagCode: null },
+	{ code: "yo", name: "Yoruba", flagCode: null },
+	{ code: "zu", name: "Zulu", flagCode: null },
 ];
 
 // LANGUAGES alias used by the active-lang lookup elsewhere
@@ -9903,12 +9900,15 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 		setCurrentLang(langCode);
 		setIsOpen(false);
 		setLangSearch("");
-		setCookie("googtrans", `/en/${langCode}`, {
-			path: "/",
-			domain: window.location.hostname,
-		});
-		setCookie("googtrans", `/en/${langCode}`, { path: "/" }); // for localhost and IP addresses
-		window.location.reload();
+		// Google Translate requires a page reload — it patches the DOM at load time
+		// via the googtrans cookie. Set cookie on both hostname and "/" so it works
+		// across localhost, IP addresses, and production.
+		const cookieVal = langCode === "en" ? "/en/en" : `/en/${langCode}`;
+		setCookie("googtrans", cookieVal, { path: "/", domain: window.location.hostname });
+		setCookie("googtrans", cookieVal, { path: "/" });
+		// replace() instead of reload() so the language switch doesn't push an
+		// extra history entry — pressing Back won't re-trigger another reload.
+		window.location.replace(window.location.href);
 	};
 
 	const activeLang =
@@ -9940,7 +9940,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 				<FLAG_IMG flagCode={activeLang.flagCode} size={22} />
 				<span
 					className="text-[12px] font-black tracking-widest leading-none"
-					style={{ color: scrolled ? activeLang.color : "#ffffff" }}
+					style={{ color: scrolled ? (activeLang.color ?? LANG_DEFAULT_COLOR) : "#ffffff" }}
 				>
 					{activeLang.code === "zh-CN" ? "ZH" : activeLang.code.toUpperCase()}
 				</span>
@@ -10023,7 +10023,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 								style={
 									currentLang === lang.code
 										? {
-												borderLeft: `3px solid ${lang.color}`,
+												borderLeft: `3px solid ${lang.color ?? LANG_DEFAULT_COLOR}`,
 												paddingLeft: "10px",
 											}
 										: { borderLeft: "3px solid transparent" }
@@ -10036,7 +10036,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 								<div className="flex flex-col leading-none gap-0.75 min-w-0">
 									<span
 										className="text-[13px] font-bold truncate"
-										style={{ color: lang.color }}
+										style={{ color: lang.color ?? LANG_DEFAULT_COLOR }}
 									>
 										{lang.name}
 									</span>
@@ -10049,7 +10049,7 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 								{currentLang === lang.code && (
 									<CheckCircle2
 										className="w-4 h-4 ml-auto shrink-0"
-										style={{ color: lang.color }}
+										style={{ color: lang.color ?? LANG_DEFAULT_COLOR }}
 										aria-hidden="true"
 									/>
 								)}
@@ -12938,7 +12938,10 @@ FloatingButtons.displayName = "FloatingButtons";
 // Submits via Web3Forms (same key as the contact page).
 // No file upload — keeps the form lightweight for procurement managers on work devices.
 const InlineRFQForm = memo(({ productTitle }) => {
-	const [open, setOpen] = useState(false);
+	// AUDIT FIX: open by default — this is the primary on-page conversion
+	// action and was previously hidden behind a click, suppressing RFQ
+	// submissions. Still collapsible so the page doesn't feel form-heavy.
+	const [open, setOpen] = useState(true);
 	const [name, setName] = useState("");
 	const [company, setCompany] = useState("");
 	const [email, setEmail] = useState("");
@@ -18089,16 +18092,6 @@ const BlogPage = memo(({ navigate }) => {
 								results from actual jobs.
 							</p>
 							<div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
-								<a
-									href={waMsg(
-										"Hi KESHAV ENTERPRISES, I read your blog and have a technical question.",
-									)}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-xl font-black text-base hover:bg-[#1ebe5d] transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
-								>
-									<MessageCircle className="w-5 h-5" aria-hidden="true" /> Ask Our Engineers
-								</a>
 								<button
 									type="button"
 									onClick={() => navigate("/services")}
@@ -18108,6 +18101,16 @@ const BlogPage = memo(({ navigate }) => {
 									Our Services
 									<ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
 								</button>
+								<a
+									href={waMsg(
+										"Hi KESHAV ENTERPRISES, I read your blog and have a technical question.",
+									)}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="inline-flex items-center gap-3 border-2 border-[#25D366] text-[#25D366] px-8 py-4 rounded-xl font-black text-base hover:bg-[#25D366] hover:text-white transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+								>
+									<MessageCircle className="w-5 h-5" aria-hidden="true" /> Ask Our Engineers
+								</a>
 								<button
 									type="button"
 									onClick={() => navigate("/projects")}
@@ -18125,6 +18128,78 @@ const BlogPage = memo(({ navigate }) => {
 	);
 });
 BlogPage.displayName = "BlogPage";
+
+// ─── BLOG → SERVICE/PRODUCT INTERNAL LINKS ─────────────────────
+// AUDIT FIX: blog posts previously had no internal links to related
+// services/products inside the article body — every post was a dead end
+// that sent engaged readers no further than "Back to Blog". This table maps
+// specific phrases that actually occur in BLOG_POSTS content to the most
+// relevant existing route. Phrases are matched case-insensitively and only
+// the FIRST occurrence of any given target is turned into a link per post
+// (via `usedGroups` below), so a post that says "overhauling" five times
+// doesn't end up riddled with five identical links.
+// Sorted longest-phrase-first so e.g. "turbine overhauling" is preferred
+// over the shorter "overhauling" it contains.
+const BLOG_LINK_TARGETS = [
+	{ phrase: "lube oil flushing", group: "/service/srv_5" },
+	{ phrase: "reverse-engineered", group: "/service/srv_3" },
+	{ phrase: "reverse engineering", group: "/service/srv_3" },
+	{ phrase: "reverse engineer", group: "/service/srv_3" },
+	{ phrase: "turbine overhauling", group: "/service/srv_2" },
+	{ phrase: "overhauling", group: "/service/srv_2" },
+	{ phrase: "dynamic balancing", group: "/service/srv_4" },
+	{ phrase: "coupling alignment", group: "/service/srv_6" },
+	{ phrase: "laser alignment", group: "/service/srv_6" },
+	{ phrase: "misalignment", group: "/service/srv_6" },
+	{ phrase: "troubleshooting", group: "/service/srv_7" },
+	{ phrase: "turbine erection", group: "/service/srv_1" },
+	{ phrase: "lube oil filter elements", group: "/products" },
+	{ phrase: "filter elements", group: "/products" },
+	{ phrase: "dust collector filter bags", group: "/products" },
+	{ phrase: "filter bags", group: "/products" },
+	{ phrase: "dust collector", group: "/products" },
+	{ phrase: "air filtration", group: "/products" },
+	{ phrase: "filtration", group: "/products" },
+	{ phrase: "hvac", group: "/products" },
+].sort((a, b) => b.phrase.length - a.phrase.length);
+
+// Escape regex metacharacters in each phrase, then build one alternation.
+const BLOG_LINK_REGEX = new RegExp(
+	`\\b(${BLOG_LINK_TARGETS.map((t) =>
+		t.phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+	).join("|")})\\b`,
+	"gi",
+);
+const BLOG_LINK_BY_PHRASE = new Map(
+	BLOG_LINK_TARGETS.map((t) => [t.phrase.toLowerCase(), t.group]),
+);
+
+// Splits `text` on BLOG_LINK_REGEX and turns the first occurrence of each
+// distinct `group` into a clickable internal link, leaving everything else
+// — including the original capitalisation of the matched phrase — untouched.
+// `usedGroups` is a Set the caller creates ONCE per post render and passes
+// into every paragraph/list-item call, so the "only the first mention"
+// rule holds across the whole article, not just within one block.
+function linkifyBlogText(text, navigate, usedGroups) {
+	if (typeof text !== "string" || !text) return text;
+	const parts = text.split(BLOG_LINK_REGEX);
+	if (parts.length === 1) return text;
+	return parts.map((part, i) => {
+		const group = part ? BLOG_LINK_BY_PHRASE.get(part.toLowerCase()) : null;
+		if (!group || usedGroups.has(group)) return part;
+		usedGroups.add(group);
+		return (
+			<button
+				key={`bloglink-${i}-${group}`}
+				type="button"
+				onClick={() => navigate(group)}
+				className="text-blue-600 font-bold hover:underline focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-400 rounded"
+			>
+				{part}
+			</button>
+		);
+	});
+}
 
 // ─── BLOG POST PAGE ────────────────────────────────────────────
 const BlogPostPage = memo(({ slug, navigate }) => {
@@ -18179,6 +18254,10 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				</div>
 			</main>
 		);
+	// AUDIT FIX: shared across every block of THIS post render so each
+	// internal-link target (a given service/products page) is only woven in
+	// once per article, no matter how many paragraphs/list items mention it.
+	const usedLinkGroups = new Set();
 	const renderBlock = (block, i) => {
 		switch (block.type) {
 			case "h2":
@@ -18196,7 +18275,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						key={`block-p-${i}`}
 						className="text-slate-700 font-medium text-lg leading-relaxed mb-6"
 					>
-						{block.text}
+						{linkifyBlogText(block.text, navigate, usedLinkGroups)}
 					</p>
 				);
 			case "list":
@@ -18211,7 +18290,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 									className="w-5 h-5 text-blue-500 shrink-0 mt-0.5"
 									aria-hidden="true"
 								/>
-								{item}
+								{linkifyBlogText(item, navigate, usedLinkGroups)}
 							</li>
 						))}
 					</ul>
@@ -18262,30 +18341,51 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				publishedTime={post.date}
 				schema={{
 					"@context": "https://schema.org",
-					"@type": "Article",
-					headline: post.title,
-					description: post.excerpt,
-					datePublished: post.date,
-					author: {
-						"@type": "Organization",
-						name: post.author || BRAND_AUTHOR,
-					},
-					publisher: {
-						"@type": "Organization",
-						name: BRAND_NAME,
-						url: SITE_URL,
-						logo: {
-							"@type": "ImageObject",
-							url: `${SITE_URL}/logo.png`,
+					"@graph": [
+						{
+							"@type": "Article",
+							headline: post.title,
+							description: post.excerpt,
+							datePublished: post.date,
+							author: {
+								"@type": "Organization",
+								name: post.author || BRAND_AUTHOR,
+							},
+							publisher: {
+								"@type": "Organization",
+								name: BRAND_NAME,
+								url: SITE_URL,
+								logo: {
+									"@type": "ImageObject",
+									url: `${SITE_URL}/logo.png`,
+								},
+							},
+							mainEntityOfPage: {
+								"@type": "WebPage",
+								"@id": `${SITE_URL}/#/blog/${post.slug}`,
+							},
+							image: post.coverImage
+								? `${SITE_URL}/${post.coverImage}`
+								: OG_IMAGE,
 						},
-					},
-					mainEntityOfPage: {
-						"@type": "WebPage",
-						"@id": `${SITE_URL}/#/blog/${post.slug}`,
-					},
-					image: post.coverImage
-						? `${SITE_URL}/${post.coverImage}`
-						: OG_IMAGE,
+						{
+							"@type": "BreadcrumbList",
+							itemListElement: [
+								{
+									"@type": "ListItem",
+									position: 1,
+									name: "Blog",
+									item: `${SITE_URL}/#/blog`,
+								},
+								{
+									"@type": "ListItem",
+									position: 2,
+									name: post.title,
+									item: `${SITE_URL}/#/blog/${post.slug}`,
+								},
+							],
+						},
+					],
 				}}
 			/>
 			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18703,6 +18803,11 @@ const ServicesPage = memo(({ navigate }) => (
 											style={{ aspectRatio: "560/420" }}
 											onError={(e) => {
 												e.target.style.display = "none";
+												const fallback =
+													e.target.parentElement?.querySelector(
+														".svc-card-fallback-icon",
+													);
+												if (fallback) fallback.style.display = "flex";
 											}}
 										/>
 									)}
@@ -18731,17 +18836,18 @@ const ServicesPage = memo(({ navigate }) => (
 										</div>
 									</div>
 
-									{/* Fallback center icon — shows when no image uploaded yet */}
-									{!service.image && (
-										<div className="relative z-10 w-full h-full flex items-center justify-center">
-											<div className="w-28 h-28 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20">
-												<Icon
-													className="w-14 h-14 text-blue-400"
-													aria-hidden="true"
-												/>
-											</div>
+									{/* Fallback center icon — shown when no image uploaded yet, or revealed by onError above if the file 404s */}
+									<div
+										className="svc-card-fallback-icon relative z-10 w-full h-full items-center justify-center"
+										style={{ display: service.image ? "none" : "flex" }}
+									>
+										<div className="w-28 h-28 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center border border-white/20">
+											<Icon
+												className="w-14 h-14 text-blue-400"
+												aria-hidden="true"
+											/>
 										</div>
-									)}
+									</div>
 
 									{/* OEM chips at bottom */}
 									{service.oems && (
@@ -20010,8 +20116,22 @@ const SERVICE_DETAIL_CSS = `
 }
 `;
 
+// AUDIT FIX (FOUC): inject this stylesheet at module evaluation time — same
+// pattern as MARQUEE_CSS / NAVBAR_STYLES above — instead of inside a
+// useEffect. An effect only runs AFTER the first commit/paint, so on a slow
+// connection the unstyled .sd-reveal elements could flash at full opacity
+// for a frame before the rules landed. Injecting synchronously as soon as
+// the module is evaluated (well before ServiceDetailPage ever mounts) means
+// the rules are already in <head> by the time this page's markup paints.
+if (typeof document !== "undefined" && !document.getElementById("sd-css")) {
+	const sdStyleEl = document.createElement("style");
+	sdStyleEl.id = "sd-css";
+	sdStyleEl.textContent = SERVICE_DETAIL_CSS;
+	document.head.appendChild(sdStyleEl);
+}
+
 // ─── SERVICE DETAIL PAGE ─────────────────────────────────────
-// SERVICE_DETAIL_CSS defined above
+// SERVICE_DETAIL_CSS defined above and injected once at module load.
 
 const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 	const service = SERVICES.find((s) => s.id === serviceId);
@@ -20024,17 +20144,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 	const [heroVisible, setHeroVisible] = useState(false);
 	const [scrollY, setScrollY] = useState(0);
 	const [showReport, setShowReport] = useState(false);
-
-	// Inject CSS once
-	useEffect(() => {
-		const id = "sd-css";
-		if (!document.getElementById(id)) {
-			const s = document.createElement("style");
-			s.id = id;
-			s.textContent = SERVICE_DETAIL_CSS;
-			document.head.appendChild(s);
-		}
-	}, []);
 
 	// Scroll-to-top + hero entrance on service change — render phase so scroll happens before paint
 	const [prevServiceId, setPrevServiceId] = useState(serviceId);
@@ -20133,20 +20242,47 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					pageType="website"
 					schema={{
 						"@context": "https://schema.org",
-						"@type": "Service",
-						name: service.title,
-						description: service.desc,
-						provider: {
-							"@type": "LocalBusiness",
-							name: BRAND_NAME,
-							url: SITE_URL,
-						},
-						areaServed: {
-							"@type": "Country",
-							name: "India",
-						},
-						serviceType: service.title,
-						url: `${SITE_URL}/#/service/${serviceId}`,
+						"@graph": [
+							{
+								"@type": "Service",
+								name: service.title,
+								description: service.desc,
+								provider: {
+									"@type": "LocalBusiness",
+									name: BRAND_NAME,
+									url: SITE_URL,
+								},
+								areaServed: {
+									"@type": "Country",
+									name: "India",
+								},
+								serviceType: service.title,
+								url: `${SITE_URL}/#/service/${serviceId}`,
+							},
+							{
+								"@type": "BreadcrumbList",
+								itemListElement: [
+									{
+										"@type": "ListItem",
+										position: 1,
+										name: "Home",
+										item: `${SITE_URL}/#/`,
+									},
+									{
+										"@type": "ListItem",
+										position: 2,
+										name: "Services",
+										item: `${SITE_URL}/#/services`,
+									},
+									{
+										"@type": "ListItem",
+										position: 3,
+										name: service.title,
+										item: `${SITE_URL}/#/service/${serviceId}`,
+									},
+								],
+							},
+						],
 					}}
 				/>
 
@@ -20316,6 +20452,15 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 											<Clock className="w-3 h-3 shrink-0" aria-hidden="true" />
 											{scopeInfo.turnaround}
 										</span>
+										{/* AUDIT FIX (pricing anchor): no flat "from ₹X" figure is published
+										since cost genuinely depends on turbine make/capacity/site condition,
+										but this above-the-fold badge still sets the same expectation a price
+										anchor would — free, fast, no-strings — to qualify the lead before
+										they even reach a CTA. */}
+										<span className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-wide">
+											<CheckCircle2 className="w-3 h-3 shrink-0" aria-hidden="true" />
+											Free, No-Obligation Quote
+										</span>
 									</div>
 								)}
 							</div>
@@ -20325,39 +20470,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 
 				{/* ══ BODY ══ */}
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-					{/* Mobile CTA strip — shown only on mobile, above main content */}
-					<div className="flex flex-col sm:flex-row gap-3 mb-8 lg:hidden">
-						<a
-							href={waMsg(
-								`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`,
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="flex items-center justify-center gap-2 flex-1 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 min-h-13"
-						>
-							<MessageCircle className="w-5 h-5 shrink-0" aria-hidden="true" />{" "}
-							Get a Quote on WhatsApp
-						</a>
-						<button
-							type="button"
-							onClick={() => {
-								const iType = SVC_INQUIRY_MAP[service.id];
-								if (iType) {
-									window.dispatchEvent(
-										new CustomEvent("ke:prefillContact", {
-											detail: { iType },
-										}),
-									);
-								}
-								navigate("/contact");
-							}}
-							className="flex items-center justify-center gap-2 flex-1 bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 min-h-13"
-						>
-							Get a Free Quote{" "}
-							<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
-						</button>
-					</div>
-
 					<div className="grid grid-cols-1 lg:grid-cols-3 gap-12 xl:gap-16">
 					{/* ── MOBILE JUMP-TO-SECTION NAV ──
 					 *  Mirrors the desktop sidebar nav on mobile via a horizontally-scrolling
@@ -20678,25 +20790,26 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								>
 									{service.title}
 								</h3>
-								<p className="text-slate-500 font-medium mb-8 max-w-lg leading-relaxed text-sm">
+								<p className="text-slate-500 font-medium mb-4 max-w-lg leading-relaxed text-sm">
 									Speak directly to our ex-OEM engineers about your turbine
 									make, site conditions, and shutdown window.
 								</p>
+								{/* AUDIT FIX (pricing anchor): we don't publish a flat "from ₹X"
+								figure because scope/turnaround — and therefore cost — genuinely
+								varies by turbine make, capacity, and site condition (see the
+								scope/turnaround badges in the hero above). Rather than invent a
+								number, this line still qualifies the lead the way a price
+								anchor would: it sets the expectation that the quote is free,
+								fast, and tied to their actual equipment — not a generic rate card. */}
+								<p className="text-emerald-400 font-bold text-xs mb-8 flex items-center gap-1.5">
+									<CheckCircle2 className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+									Free, no-obligation quote — scoped to your exact turbine model & site conditions
+								</p>
+								{/* AUDIT FIX (CTA hierarchy): quote form first as the primary,
+								full-strength CTA; WhatsApp second as a lighter outline
+								secondary — previously both used solid fills back-to-back with
+								no clear "do this first" signal. */}
 								<div className="flex flex-col sm:flex-row gap-3">
-									<a
-										href={waMsg(
-											`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`,
-										)}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 shadow-lg"
-									>
-										<MessageCircle
-											className="w-4 h-4 shrink-0"
-											aria-hidden="true"
-										/>{" "}
-										WhatsApp Us Now
-									</a>
 									<button
 										type="button"
 										onClick={() => {
@@ -20718,6 +20831,20 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 											aria-hidden="true"
 										/>
 									</button>
+									<a
+										href={waMsg(
+											`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`,
+										)}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="flex items-center justify-center gap-2 bg-transparent border-2 border-white/30 hover:border-white/60 text-white px-6 py-3 rounded-xl font-black text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+									>
+										<MessageCircle
+											className="w-4 h-4 shrink-0"
+											aria-hidden="true"
+										/>{" "}
+										Or WhatsApp Us
+									</a>
 								</div>
 								<div className="pt-4">
 									<button
@@ -20765,23 +20892,16 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 								</ul>
 							</div>
 
-							{/* WhatsApp CTA — matches site btn-wa */}
-							<a
-								href={waMsg(
-									`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`,
-								)}
-								target="_blank"
-								rel="noopener noreferrer"
-								className="sd-reveal flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
-							>
-								<MessageCircle
-									className="w-4 h-4 shrink-0"
-									aria-hidden="true"
-								/>{" "}
-								Get a Quote on WhatsApp
-							</a>
+							{/* AUDIT FIX (CTA hierarchy): the on-site quote form is now the
+							primary CTA — listed first, solid full-saturation fill, slightly
+							larger touch target with hover-lift — since it's the path that
+							captures a complete, follow-up-able lead (name, scope, contact
+							details). WhatsApp is offered second as a lighter-weight outline
+							secondary for visitors who'd rather just chat; previously both
+							buttons used full-strength solid fills back-to-back, giving them
+							equal visual weight and no clear "do this first" signal. */}
 
-							{/* RFQ button — matches site btn-primary */}
+							{/* RFQ button — primary CTA, matches site btn-primary */}
 							<button
 								type="button"
 								onClick={() => {
@@ -20795,11 +20915,27 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 									}
 									navigate("/contact");
 								}}
-								className="sd-reveal w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
+								className="sd-reveal w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
 							>
 								Get a Free Quote{" "}
 								<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
 							</button>
+
+							{/* WhatsApp CTA — secondary action, outline treatment */}
+							<a
+								href={waMsg(
+									`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`,
+								)}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="sd-reveal flex items-center justify-center gap-2 w-full bg-white border-2 border-[#25D366] text-[#0F8A45] px-6 py-3 font-black text-sm transition-colors rounded-xl hover:bg-green-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+							>
+								<MessageCircle
+									className="w-4 h-4 shrink-0"
+									aria-hidden="true"
+								/>{" "}
+								Or Ask on WhatsApp
+							</a>
 
 							{/* All Services Nav — matches site card header pattern */}
 							<div id="sd-all-services" className="sd-reveal bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
@@ -20971,6 +21107,68 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					)}
 				</div>
 			</main>
+
+			{/* ── AUDIT FIX: Sticky mobile CTA bar ──
+			Previously the only mobile CTA was an inline strip sitting at the TOP
+			of the body — once a visitor scrolled past it, both conversion paths
+			were gone until they scrolled all the way back up. Pinning a bar to
+			the bottom of the viewport (same pattern as ProductDetailPage) keeps
+			"Get a Quote" reachable from anywhere on the page on small screens.
+			This also fixes the CTA-hierarchy finding: "Get a Free Quote" is the
+			primary action (solid fill, leads, slightly larger) because it's the
+			one that actually captures a complete, follow-up-able lead; WhatsApp
+			is offered second as a lighter-weight outline secondary for visitors
+			who'd rather just chat. */}
+			<section
+				className="md:hidden fixed bottom-0 left-0 right-0 z-900 bg-white border-t-2 border-slate-200 shadow-2xl shadow-slate-900/20 px-4 pt-2 flex flex-col gap-1.5"
+				style={SAFE_AREA_BOTTOM_STYLE}
+				aria-label="Quick actions"
+			>
+				<p className="text-center text-[11px] font-semibold text-slate-500">
+					<span className="text-emerald-600 font-black">●</span>{" "}
+					{scopeInfo?.turnaround ? (
+						<>
+							Typical scope: <strong className="text-slate-700">{scopeInfo.turnaround}</strong>
+						</>
+					) : (
+						<>
+							Quotes typically answered within <strong className="text-slate-700">2 hours</strong>
+						</>
+					)}
+				</p>
+				<div className="flex gap-3">
+					<button
+						type="button"
+						onClick={() => {
+							const iType = SVC_INQUIRY_MAP[service.id];
+							if (iType) {
+								window.dispatchEvent(
+									new CustomEvent("ke:prefillContact", {
+										detail: { iType },
+									}),
+								);
+							}
+							navigate("/contact");
+						}}
+						className="flex-1 min-h-12 bg-blue-600 hover:bg-blue-500 text-white py-3.5 rounded-xl font-black text-sm transition-all shadow-sm flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300"
+					>
+						Get a Free Quote
+						<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
+					</button>
+					<a
+						href={waMsg(
+							`Hello KESHAV ENTERPRISES, I need a quote for *${service.title}*. Please contact me.`,
+						)}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="flex-1 min-h-12 bg-white border-2 border-[#25D366] text-[#0F8A45] py-3 rounded-xl font-black text-sm hover:bg-green-50 transition-colors flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+					>
+						<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+						WhatsApp
+					</a>
+				</div>
+			</section>
+
 			{showReport && service && (
 				<ReportIssueModal
 					context={{ type: "service", name: service.title, id: service.id }}
@@ -22534,20 +22732,41 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 				pageType="website"
 				schema={{
 					"@context": "https://schema.org",
-					"@type": "Service",
-					name: `${ind.title} — Turbine Engineering Solutions`,
-					description: ind.desc,
-					provider: {
-						"@type": "LocalBusiness",
-						name: BRAND_NAME,
-						url: SITE_URL,
-					},
-					areaServed: {
-						"@type": "Country",
-						name: "India",
-					},
-					serviceType: ind.title,
-					url: `${SITE_URL}/#/industry/${ind.id}`,
+					"@graph": [
+						{
+							"@type": "Service",
+							name: `${ind.title} — Turbine Engineering Solutions`,
+							description: ind.desc,
+							provider: {
+								"@type": "LocalBusiness",
+								name: BRAND_NAME,
+								url: SITE_URL,
+							},
+							areaServed: {
+								"@type": "Country",
+								name: "India",
+							},
+							serviceType: ind.title,
+							url: `${SITE_URL}/#/industry/${ind.id}`,
+						},
+						{
+							"@type": "BreadcrumbList",
+							itemListElement: [
+								{
+									"@type": "ListItem",
+									position: 1,
+									name: "Industries",
+									item: `${SITE_URL}/#/industries`,
+								},
+								{
+									"@type": "ListItem",
+									position: 2,
+									name: ind.title,
+									item: `${SITE_URL}/#/industry/${ind.id}`,
+								},
+							],
+						},
+					],
 				}}
 			/>
 
@@ -22911,7 +23130,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 							)}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="bg-[#25D366] text-white px-8 py-4 rounded-xl font-black hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-3 shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+							className="border-2 border-[#25D366] text-[#25D366] px-8 py-4 rounded-xl font-black hover:bg-[#25D366] hover:text-white transition-all flex items-center justify-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 						>
 							<MessageCircle className="w-5 h-5" /> WhatsApp Us
 						</a>
@@ -24399,18 +24618,47 @@ const ContactPage = memo(({ navigate }) => {
 ContactPage.displayName = "ContactPage";
 
 // ─── ERROR BOUNDARY (Audit Fix: prevents full-page crashes) ──
+// ─── ERROR BOUNDARY ──────────────────────────────────────────
+// Catches render errors in any child page/component and shows a recovery UI.
+//
+// Usage:
+//   <ErrorBoundary resetKey={currentPath}>
+//     {page}
+//   </ErrorBoundary>
+//
+// When `resetKey` changes (i.e. the user navigates to a new route) React
+// calls getDerivedStateFromProps with the new key value, which resets
+// hasError back to false so the new page renders cleanly — no stale
+// error screen bleeds across route transitions.
 class ErrorBoundary extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { hasError: false, error: null };
+		this.state = { hasError: false, error: null, resetKey: props.resetKey };
+		this._handleGoHome = this._handleGoHome.bind(this);
 	}
+
+	// Reset state whenever the parent supplies a new resetKey (route change).
+	static getDerivedStateFromProps(props, state) {
+		if (props.resetKey !== state.resetKey) {
+			return { hasError: false, error: null, resetKey: props.resetKey };
+		}
+		return null;
+	}
+
 	static getDerivedStateFromError(error) {
 		return { hasError: true, error };
 	}
+
 	componentDidCatch(error, errorInfo) {
-		// Log to console; replace with Sentry.captureException(error) when available
+		// Replace with Sentry.captureException(error, { extra: errorInfo }) when available.
 		console.error("[ErrorBoundary]", error, errorInfo);
 	}
+
+	_handleGoHome() {
+		window.location.hash = "#/";
+		this.setState({ hasError: false, error: null });
+	}
+
 	render() {
 		if (this.state.hasError) {
 			return (
@@ -24426,18 +24674,13 @@ class ErrorBoundary extends React.Component {
 						Something went wrong
 					</h1>
 					<p className="text-slate-500 font-medium text-center max-w-md mb-8">
-						An unexpected error occurred. Please refresh the page or contact our
-						team for assistance.
+						An unexpected error occurred on this page. You can go back to the
+						home page or reach us directly for assistance.
 					</p>
 					<div className="flex gap-4">
 						<button
 							type="button"
-							onClick={() => {
-								// Reset error state — React will re-render children cleanly.
-								// reload() would discard this setState immediately, so we don't call it.
-								window.location.hash = "#/";
-								this.setState({ hasError: false, error: null });
-							}}
+							onClick={this._handleGoHome}
 							className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-all"
 						>
 							Go to Home
@@ -24446,7 +24689,7 @@ class ErrorBoundary extends React.Component {
 							href={`https://wa.me/${CONTACT_INFO.whatsapp}?text=${encodeURIComponent("Hi, I encountered an error on your website.")}`}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#1ebe5d] transition-all flex items-center gap-2"
+							className="border-2 border-[#25D366] text-[#25D366] px-6 py-3 rounded-xl font-bold hover:bg-[#25D366] hover:text-white transition-all flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
 						>
 							<MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
 						</a>
@@ -25041,17 +25284,6 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 						timeline.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-3 justify-center">
-						<a
-							href={waMsg(
-								"Hello KESHAV ENTERPRISES, I reviewed your case studies and would like to discuss a similar requirement.",
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-3.5 rounded-xl font-black text-sm transition-colors shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
-						>
-							<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
-							WhatsApp Us Now
-						</a>
 						<button
 							type="button"
 							onClick={() => navigate("/contact")}
@@ -25060,6 +25292,17 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 							Get a Free Quote
 							<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
 						</button>
+						<a
+							href={waMsg(
+								"Hello KESHAV ENTERPRISES, I reviewed your case studies and would like to discuss a similar requirement.",
+							)}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center justify-center gap-2 bg-transparent border-2 border-white/30 hover:border-white/60 text-white px-6 py-3 rounded-xl font-black text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						>
+							<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+							Or WhatsApp Us
+						</a>
 					</div>
 				</div>
 			</div>
@@ -25133,30 +25376,51 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 				pageType="article"
 				schema={{
 					"@context": "https://schema.org",
-					"@type": "Article",
-					headline: `${cs.title} — Case Study`,
-					description: cs.scope,
-					datePublished: cs.year ? `${cs.year}-01-01` : undefined,
-					author: {
-						"@type": "Organization",
-						name: BRAND_AUTHOR,
-					},
-					publisher: {
-						"@type": "Organization",
-						name: BRAND_NAME,
-						url: SITE_URL,
-						logo: {
-							"@type": "ImageObject",
-							url: `${SITE_URL}/logo.png`,
+					"@graph": [
+						{
+							"@type": "Article",
+							headline: `${cs.title} — Case Study`,
+							description: cs.scope,
+							datePublished: cs.year ? `${cs.year}-01-01` : undefined,
+							author: {
+								"@type": "Organization",
+								name: BRAND_AUTHOR,
+							},
+							publisher: {
+								"@type": "Organization",
+								name: BRAND_NAME,
+								url: SITE_URL,
+								logo: {
+									"@type": "ImageObject",
+									url: `${SITE_URL}/logo.png`,
+								},
+							},
+							mainEntityOfPage: {
+								"@type": "WebPage",
+								"@id": `${SITE_URL}/#/project/${cs.id}`,
+							},
+							image: cs.image ? `${SITE_URL}/${cs.image}` : OG_IMAGE,
+							articleSection: cs.category || "Industrial Engineering",
+							keywords: (cs.tags || []).join(", "),
 						},
-					},
-					mainEntityOfPage: {
-						"@type": "WebPage",
-						"@id": `${SITE_URL}/#/project/${cs.id}`,
-					},
-					image: cs.image ? `${SITE_URL}/${cs.image}` : OG_IMAGE,
-					articleSection: cs.category || "Industrial Engineering",
-					keywords: (cs.tags || []).join(", "),
+						{
+							"@type": "BreadcrumbList",
+							itemListElement: [
+								{
+									"@type": "ListItem",
+									position: 1,
+									name: "Projects",
+									item: `${SITE_URL}/#/projects`,
+								},
+								{
+									"@type": "ListItem",
+									position: 2,
+									name: cs.title,
+									item: `${SITE_URL}/#/project/${cs.id}`,
+								},
+							],
+						},
+					],
 				}}
 			/>
 
@@ -25313,17 +25577,6 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 									</p>
 								</div>
 								<div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
-									<a
-										href={waMsg(
-											`Hello KESHAV ENTERPRISES, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
-										)}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-[#1ebe5d] transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
-									>
-										<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
-										WhatsApp Us Now
-									</a>
 									<button
 										type="button"
 										onClick={() => {
@@ -25337,11 +25590,22 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 											);
 											navigate("/contact");
 										}}
-										className="border border-slate-600 text-slate-300 px-6 py-3 rounded-xl font-black text-sm hover:border-blue-400 hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+										className="bg-blue-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-blue-500 transition-all flex items-center justify-center gap-2 shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
 									>
 										Send a Detailed RFQ
 										<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
 									</button>
+									<a
+										href={waMsg(
+											`Hello KESHAV ENTERPRISES, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
+										)}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="border border-[#25D366] text-[#25D366] px-6 py-3 rounded-xl font-black text-sm hover:bg-[#25D366] hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+									>
+										<MessageCircle className="w-4 h-4 shrink-0" aria-hidden="true" />
+										Or WhatsApp Us
+									</a>
 									{/* Download as PDF — lets B2B buyers share internally */}
 									<button
 										type="button"
@@ -25433,23 +25697,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 							</div>
 						</div>
 
-						{/* WhatsApp CTA */}
-						<a
-							href={waMsg(
-								`Hello KESHAV ENTERPRISES, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
-							)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="flex items-center justify-center gap-2 w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white px-6 py-4 font-black text-sm transition-colors rounded-xl shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
-						>
-							<MessageCircle
-								className="w-4 h-4 shrink-0"
-								aria-hidden="true"
-							/>
-							Discuss a Similar Project
-						</a>
-
-						{/* Get Quote */}
+						{/* Get Quote — primary CTA */}
 						<button
 							type="button"
 							onClick={() => {
@@ -25463,11 +25711,27 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 								);
 								navigate("/contact");
 							}}
-							className="w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3.5 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
+							className="w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-4 rounded-xl font-black text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 flex items-center justify-center gap-2"
 						>
 							Get a Free Quote
 							<ArrowRight className="w-4 h-4 shrink-0" aria-hidden="true" />
 						</button>
+
+						{/* WhatsApp CTA — secondary action, outline treatment */}
+						<a
+							href={waMsg(
+								`Hello KESHAV ENTERPRISES, I read your case study "${cs.title}" and have a similar requirement. Please contact me.`,
+							)}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="flex items-center justify-center gap-2 w-full bg-white border-2 border-[#25D366] text-[#0F8A45] px-6 py-3 font-black text-sm hover:bg-green-50 transition-colors rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400"
+						>
+							<MessageCircle
+								className="w-4 h-4 shrink-0"
+								aria-hidden="true"
+							/>
+							Or Discuss on WhatsApp
+						</a>
 
 						{/* Back to all projects */}
 						<button
@@ -25673,8 +25937,11 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 		if (!company.trim()) e.company = "Company name is required";
 		if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
 			e.email = "Valid email address required";
-		if (!phone.trim() || phone.replace(/\D/g, "").length < 10)
-			e.phone = "Valid phone / WhatsApp number required";
+		// AUDIT FIX: phone is now optional — only validate format when the
+		// visitor actually enters something, instead of hard-requiring it.
+		// Reduces gate friction while still catching obviously-malformed input.
+		if (phone.trim() && phone.replace(/\D/g, "").length < 10)
+			e.phone = "Enter a valid phone / WhatsApp number, or leave it blank";
 		return e;
 	}, [name, company, email, phone]);
 
@@ -25709,7 +25976,7 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 			fd.append("Name",       sanitise(name));
 			fd.append("Company",    sanitise(company));
 			fd.append("Email",      sanitise(email));
-			fd.append("Phone",      sanitise(phone));
+			fd.append("Phone",      sanitise(phone) || "Not provided");
 			if (city.trim()) fd.append("City", sanitise(city));
 			fd.append("File",       `${sanitise(item.title)} (${item.fileType})`);
 
@@ -25870,7 +26137,7 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 								</div>
 								<div>
 									<label htmlFor="dl-phone" className="block text-xs font-black text-slate-700 mb-1 uppercase tracking-wide">
-										Phone / WhatsApp <span className="text-red-500" aria-hidden="true">*</span>
+										Phone / WhatsApp <span className="text-slate-500 font-normal normal-case">(optional)</span>
 									</label>
 									<input
 										id="dl-phone"
@@ -26361,7 +26628,7 @@ const NotFoundPage = memo(({ navigate }) => {
 						)}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="bg-[#25D366] text-white px-7 py-3.5 rounded-xl font-black hover:bg-[#1ebe5d] transition-all shadow-md flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
+						className="border-2 border-[#25D366] text-[#25D366] px-7 py-3.5 rounded-xl font-black hover:bg-[#25D366] hover:text-white transition-all flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-300"
 					>
 						<MessageCircle className="w-4 h-4" aria-hidden="true" /> WhatsApp Us
 					</a>
@@ -26549,30 +26816,53 @@ export default function App() {
 		return () => cancelAnimationFrame(raf);
 	}, [currentPath]);
 
-	// ── PERF: Intersection Observer — re-observe after each route change ──
+	// ── PERF / AUDIT FIX: create the lazy-section IntersectionObserver
+	// exactly once for the lifetime of the app. The actual per-route
+	// "observe new elements" work happens in the effect below, which reuses
+	// this same instance instead of constructing a new one on every navigation.
+	const lazySectionObserverRef = useRef(null);
+	useEffect(() => {
+		lazySectionObserverRef.current = new IntersectionObserver(
+			(entries) => {
+				for (const e of entries) {
+					if (!e.isIntersecting) continue;
+					e.target.classList.add("visible");
+					lazySectionObserverRef.current?.unobserve(e.target);
+				}
+			},
+			{ rootMargin: "0px 0px 200px 0px", threshold: 0 },
+		);
+		return () => {
+			lazySectionObserverRef.current?.disconnect();
+			lazySectionObserverRef.current = null;
+		};
+	}, []); // intentionally empty — this observer lives for the whole app session
+
+	// ── PERF / AUDIT FIX: Intersection Observer — single stable instance ──
+	// Previously a brand-new IntersectionObserver was constructed (and the
+	// old one disconnected) on every single route change. Since this effect
+	// used to fire on EVERY navigation across the whole app, that's a lot of
+	// needless observer churn. The observer instance itself is now created
+	// exactly once (see the creation effect above this component's render
+	// logic, stored in lazySectionObserverRef) and reused for the lifetime of
+	// the app. This effect just asks that one stable instance to start
+	// watching whatever new `.lazy-section` elements the latest route
+	// rendered.
 	// rootMargin '200px' bottom pre-triggers sections 200px BEFORE they scroll into
 	// view so content is already visible when the user reaches it.
 	// threshold:0 fires as soon as even 1px is within the extended root.
 	// No idle/timeout delay — observe immediately so above-fold sections fire at load.
 	useEffect(() => {
-		const io = new IntersectionObserver(
-			(entries) => {
-				for (const e of entries) {
-					if (!e.isIntersecting) continue;
-					e.target.classList.add("visible");
-					io.unobserve(e.target);
-				}
-			},
-			{ rootMargin: "0px 0px 200px 0px", threshold: 0 },
-		);
-
+		const io = lazySectionObserverRef.current;
+		if (!io) return;
 		for (const el of document.querySelectorAll(".lazy-section:not(.visible)")) {
 			io.observe(el);
 		}
-
-		return () => {
-			io.disconnect();
-		};
+		// No per-route cleanup/disconnect here — the observer is shared and
+		// long-lived; individual targets unobserve themselves once visible
+		// (see the IntersectionObserver callback below), and any nodes removed
+		// by the route swap before they intersect are simply garbage collected
+		// once React unmounts them.
 	}, [currentPath]);
 
 	const navigate = useCallback((path) => {
@@ -26688,7 +26978,10 @@ export default function App() {
 				</div>
 				<Navbar currentPath={currentPath} navigate={navigate} />
 				<div className="flex-1 flex flex-col">
-					<ErrorBoundary>
+					{/* resetKey={currentPath}: whenever the user navigates, ErrorBoundary
+					    resets via getDerivedStateFromProps so the new page renders
+					    cleanly instead of showing a stale error screen. */}
+					<ErrorBoundary resetKey={currentPath}>
 						<Suspense
 							fallback={
 								<div className="flex-1 flex items-center justify-center min-h-[60vh]">
@@ -26702,11 +26995,14 @@ export default function App() {
 				</div>
 				<DigitalProfilesStrip />
 				<Footer navigate={navigate} />
-				{/* On mobile, product detail pages render their own sticky CTA bar,
-				so hide the floating WhatsApp FAB there to avoid overlap. */}
+				{/* On mobile, product and service detail pages render their own sticky
+				CTA bar, so hide the floating WhatsApp FAB there to avoid overlap. */}
 				<div
 					className={
-						currentPath.startsWith("/product/") ? "md:block hidden" : ""
+						currentPath.startsWith("/product/") ||
+						currentPath.startsWith("/service/")
+							? "md:block hidden"
+							: ""
 					}
 				>
 					<FloatingButtons />
