@@ -8078,8 +8078,8 @@ const MARQUEE_CSS = `
   /* ─── HERO CONTENT PADDING ─── */
   /* Mobile: distribute content across full viewport height instead of
      clumping it in the center/bottom (was leaving an empty gap at top). */
-  .hero-content-wrap{padding:28px 20px 40px;min-height:unset;justify-content:flex-start}
-  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:unset;justify-content:flex-start}}
+  .hero-content-wrap{padding:28px 20px 40px;min-height:100vh;min-height:100dvh;justify-content:flex-start}
+  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:100vh;min-height:100dvh;justify-content:flex-start}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
   @media(max-width:767px){
