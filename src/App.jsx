@@ -8076,10 +8076,11 @@ const MARQUEE_CSS = `
   }
 
   /* ─── HERO CONTENT PADDING ─── */
-  /* Mobile: distribute content across full viewport height instead of
-     clumping it in the center/bottom (was leaving an empty gap at top). */
-  .hero-content-wrap{padding:28px 20px 40px;min-height:100vh;min-height:100dvh;justify-content:flex-start}
-  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:100vh;min-height:100dvh;justify-content:flex-start}}
+  /* Mobile: fill full viewport height and space content evenly so there's
+     no dead gap at the bottom. Using space-between with padding provides
+     natural breathing room at top/bottom while stretching content to fill. */
+  .hero-content-wrap{padding:24px 20px 36px;min-height:100vh;min-height:100dvh;justify-content:space-between}
+  @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:100vh;min-height:100dvh;justify-content:space-between}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
   @media(max-width:767px){
@@ -15472,8 +15473,8 @@ const HomePage = memo(({ navigate }) => {
 				<div className="hero-content-wrap max-w-7xl mx-auto w-full relative z-30 flex flex-col lg:flex-row items-stretch lg:items-start justify-center lg:justify-between gap-8 lg:gap-10">
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
-					<div className="w-full lg:h-auto lg:w-3/5 flex flex-col">
-						<div className={`flex flex-col lg:flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
+					<div className="w-full flex-1 lg:h-auto lg:w-3/5 flex flex-col">
+						<div className={`flex flex-col flex-1 lg:flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
 							<div className="hero-badges mb-4 lg:mb-4 justify-center lg:justify-start">
@@ -15500,7 +15501,7 @@ const HomePage = memo(({ navigate }) => {
 							    lg:order-2 → trust strip + pill
 							    lg:order-3 → CTAs
 							*/}
-							<div className="flex flex-col gap-4 lg:flex-1 lg:justify-between lg:gap-6">
+							<div className="flex flex-col flex-1 justify-between gap-4 lg:flex-1 lg:justify-between lg:gap-6">
 
 								{/* 1 — Pain-point glass card  (mobile: top · desktop: order-1 top) */}
 								<div className="glass-hero mx-auto lg:mx-0 lg:order-1">
