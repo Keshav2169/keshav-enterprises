@@ -8078,7 +8078,7 @@ const MARQUEE_CSS = `
   /* ─── HERO CONTENT PADDING ─── */
   /* Mobile: distribute content across full viewport height instead of
      clumping it in the center/bottom (was leaving an empty gap at top). */
-  .hero-content-wrap{padding:28px 20px 40px;min-height:unset;justify-content:flex-start}
+  .hero-content-wrap{padding:28px 20px 56px;min-height:unset;justify-content:flex-start}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:100vh;min-height:100dvh;justify-content:flex-start}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
@@ -15622,7 +15622,7 @@ const HomePage = memo(({ navigate }) => {
 				</div>{/* end hero-content-wrap */}
 			</section>
 			<section
-				className="bg-white py-14 md:py-20 border-b border-slate-100 overflow-hidden"
+				className="bg-white py-14 md:py-20 border-b border-slate-100 overflow-hidden border-t-4 border-t-[#0A192F]"
 				aria-label="OEM-compatible brands"
 			>
 				<div className="max-w-7xl mx-auto px-4 mb-8">
