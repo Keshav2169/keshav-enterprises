@@ -8097,16 +8097,16 @@ const MARQUEE_CSS = `
   /* ─── HERO H1 ─── */
   .hero-h1{
 	font-family:'Barlow Condensed','Barlow',system-ui,sans-serif;
-	font-size:clamp(3.25rem,9.5vw,5rem);
+	font-size:clamp(3.75rem,11vw,5rem);
 	line-height:1.04;
 	letter-spacing:-0.02em;
 	color:#ffffff;
 	text-shadow:0 2px 24px rgba(0,0,0,0.6),0 1px 2px rgba(0,0,0,0.4)
   }
-  @media(min-width:640px){.hero-h1{font-size:clamp(3rem,6.5vw,5.5rem)}}
+  @media(min-width:640px){.hero-h1{font-size:clamp(3.5rem,7vw,5.5rem)}}
   @media(min-width:1024px){.hero-h1{font-size:clamp(3.5rem,4.8vw,6rem)}}
   /* Narrow phones (≤400px, e.g. 360×640): scale down to prevent overflow. */
-  @media(max-width:400px){.hero-h1{font-size:clamp(2.5rem,10.5vw,3.25rem)}}
+  @media(max-width:400px){.hero-h1{font-size:clamp(2.9rem,12vw,3.6rem)}}
   /* Gradient span must reset text-shadow so bg-clip-text renders correctly */
   .hero-h1 .hero-gradient-text{
 	-webkit-background-clip:text;
@@ -15500,15 +15500,17 @@ const HomePage = memo(({ navigate }) => {
 							    lg:order-2 → trust strip + pill
 							    lg:order-3 → CTAs
 							*/}
-							<div className="flex flex-col flex-1 gap-4 lg:flex-1 lg:justify-between lg:gap-6">
+							<div className="flex flex-col flex-1 lg:flex-1 lg:justify-between lg:gap-6">
 
 								{/* 1 — Pain-point glass card  (mobile: top · desktop: order-1 top) */}
-								<div className="glass-hero mx-auto lg:mx-0 lg:order-1 mb-auto lg:mb-0">
+								<div className="glass-hero mx-auto lg:mx-0 lg:order-1 mb-6 lg:mb-0">
 									<p className="text-slate-200 font-medium leading-relaxed text-center lg:text-left">
 										{h.sub}
 									</p>
 								</div>
 
+								{/* 2+3 — CTAs + trust strip grouped tight (mobile) · desktop keeps order-* */}
+								<div className="flex flex-col gap-4 lg:contents">
 								{/* 2 — CTAs  (mobile: below glass · desktop: order-3 bottom) */}
 								<div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start lg:order-3">
 									<button
@@ -15558,7 +15560,8 @@ const HomePage = memo(({ navigate }) => {
 										<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
 										<span className="text-center lg:text-left">{officeHours.label}</span>
 									</div>
-								</div>
+								</div>{/* end trust strip */}
+								</div>{/* end CTAs+trust group */}
 
 							</div>
 							{/* end flex-col order wrapper */}
