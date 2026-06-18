@@ -8076,9 +8076,9 @@ const MARQUEE_CSS = `
   }
 
   /* ─── HERO CONTENT PADDING ─── */
-  /* Mobile: left column fills full dvh height; CTAs+trust strip are pushed
-     to the bottom via mt-auto so no dead gap appears below the glass card. */
-  .hero-content-wrap{padding:28px 20px 36px;min-height:100vh;min-height:100dvh;justify-content:flex-start}
+  /* Mobile: distribute content across full viewport height instead of
+     clumping it in the center/bottom (was leaving an empty gap at top). */
+  .hero-content-wrap{padding:28px 20px 40px;min-height:100vh;min-height:100dvh;justify-content:flex-start}
   @media(min-width:768px){.hero-content-wrap{padding:48px 32px 48px;min-height:100vh;min-height:100dvh;justify-content:flex-start}}
   @media(min-width:1024px){.hero-content-wrap{padding:72px 48px 64px;min-height:unset;justify-content:space-between}}
 
@@ -15473,7 +15473,7 @@ const HomePage = memo(({ navigate }) => {
 
 					{/* ── LEFT COLUMN — 3/5 width on desktop ── */}
 					<div className="w-full flex-1 lg:h-auto lg:w-3/5 flex flex-col">
-						<div className={`flex flex-col flex-1 lg:flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
+						<div className={`flex flex-col flex-1 transform transition-all duration-1000 ease-out ${loaded ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}`}>
 
 							{/* Trust badges — same row, no wrap */}
 							<div className="hero-badges mb-4 lg:mb-4 justify-center lg:justify-start">
@@ -15500,71 +15500,65 @@ const HomePage = memo(({ navigate }) => {
 							    lg:order-2 → trust strip + pill
 							    lg:order-3 → CTAs
 							*/}
-							<div className="flex flex-col flex-1 gap-5 lg:flex-1 lg:justify-between lg:gap-6">
+							<div className="flex flex-col flex-1 gap-4 lg:flex-1 lg:justify-between lg:gap-6">
 
 								{/* 1 — Pain-point glass card  (mobile: top · desktop: order-1 top) */}
-								<div className="glass-hero mx-auto lg:mx-0 lg:order-1">
+								<div className="glass-hero mx-auto lg:mx-0 lg:order-1 mb-auto lg:mb-0">
 									<p className="text-slate-200 font-medium leading-relaxed text-center lg:text-left">
 										{h.sub}
 									</p>
 								</div>
 
-								{/* 2+3 — CTAs + Trust strip: pinned to bottom on mobile via mt-auto,
-								    desktop order handled by lg:order-* inside lg:flex layout */}
-								<div className="flex flex-col gap-4 mt-auto lg:mt-0 lg:contents">
+								{/* 2 — CTAs  (mobile: below glass · desktop: order-3 bottom) */}
+								<div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start lg:order-3">
+									<button
+										type="button"
+										onClick={() => {
+											window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
+											navigate("/contact");
+										}}
+										className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
+									>
+										Send Us Your Requirements
+										<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
+									</button>
+									<a
+										href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
+										target="_blank"
+										rel="noopener noreferrer"
+										className="hero-cta-secondary flex-1 sm:flex-none bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
+									>
+										<LifeBuoy className="text-cyan-400 shrink-0" aria-hidden="true" />
+										Emergency Breakdown
+									</a>
+								</div>
 
-									{/* 2 — CTAs  (mobile: below glass · desktop: order-3 bottom) */}
-									<div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start lg:order-3">
-										<button
-											type="button"
-											onClick={() => {
-												window.dispatchEvent(new CustomEvent("ke:prefillContact", { detail: { iType: "General Inquiry" } }));
-												navigate("/contact");
-											}}
-											className="hero-cta-primary flex-1 sm:flex-none bg-blue-600 text-white font-black rounded-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-2.5 shadow-[0_0_30px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.6)] group tracking-tight hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 whitespace-nowrap"
-										>
-											Send Us Your Requirements
-											<ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform shrink-0" aria-hidden="true" />
-										</button>
-										<a
-											href={waMsg("Hi KESHAV ENTERPRISES, we have an emergency breakdown. Please assist immediately.")}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="hero-cta-secondary flex-1 sm:flex-none bg-white/8 text-white border border-white/25 font-bold rounded-xl hover:bg-white/15 transition-all flex items-center justify-center gap-2.5 backdrop-blur-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white whitespace-nowrap"
-										>
-											<LifeBuoy className="text-cyan-400 shrink-0" aria-hidden="true" />
-											Emergency Breakdown
-										</a>
+								{/* 3 — Trust-proof strip + office hours pill  (mobile: bottom · desktop: order-2 middle) */}
+								<div className="flex flex-col gap-3 lg:order-2">
+									<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
+										{[
+											{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
+											{ Icon: Shield,       text: "PMI-certified spares" },
+											{ Icon: Zap,          text: "Avg response: 2 hrs" },
+										].map(({ Icon, text }) => (
+											<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
+												<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
+												<span>{text}</span>
+											</div>
+										))}
 									</div>
-
-									{/* 3 — Trust-proof strip + office hours pill  (mobile: bottom · desktop: order-2 middle) */}
-									<div className="flex flex-col gap-3 lg:order-2">
-										<div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2">
-											{[
-												{ Icon: CheckCircle2, text: "20+ years · 1,400+ overhauls" },
-												{ Icon: Shield,       text: "PMI-certified spares" },
-												{ Icon: Zap,          text: "Avg response: 2 hrs" },
-											].map(({ Icon, text }) => (
-												<div key={text} className="flex items-center gap-2 text-slate-300 text-sm font-bold">
-													<Icon className="w-4 h-4 text-cyan-400 shrink-0" aria-hidden="true" />
-													<span>{text}</span>
-												</div>
-											))}
-										</div>
-										{/* Live office hours pill */}
-										<div
-											className={`flex items-center gap-2.5 self-center lg:self-start px-3.5 py-2 rounded-full border text-xs sm:text-sm font-bold ${
-												officeHours.isOfficeHours
-													? "text-emerald-300 bg-emerald-400/10 border-emerald-400/25"
-													: "text-amber-300 bg-amber-400/10 border-amber-400/25"
-											}`}
-										>
-											<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
-											<span className="text-center lg:text-left">{officeHours.label}</span>
-										</div>
+									{/* Live office hours pill */}
+									<div
+										className={`flex items-center gap-2.5 self-center lg:self-start px-3.5 py-2 rounded-full border text-xs sm:text-sm font-bold ${
+											officeHours.isOfficeHours
+												? "text-emerald-300 bg-emerald-400/10 border-emerald-400/25"
+												: "text-amber-300 bg-amber-400/10 border-amber-400/25"
+										}`}
+									>
+										<span className={`w-2 h-2 rounded-full shrink-0 ${officeHours.isOfficeHours ? "bg-emerald-400 animate-pulse" : "bg-amber-400"}`} aria-hidden="true" />
+										<span className="text-center lg:text-left">{officeHours.label}</span>
 									</div>
-
-								</div>{/* end mobile mt-auto wrapper */}
+								</div>
 
 							</div>
 							{/* end flex-col order wrapper */}
