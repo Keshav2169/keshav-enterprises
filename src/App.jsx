@@ -15573,7 +15573,7 @@ const HomePage = memo(({ navigate }) => {
 
 					{/* ── RIGHT COLUMN — proof cards, desktop only, 2/5 width ── */}
 					<div
-						className="w-full lg:w-2/5 hidden lg:flex flex-col gap-5"
+						className="w-full lg:w-2/5 hidden lg:flex flex-col gap-5 lg:mt-10"
 						aria-hidden="true"
 					>
 						{[
