@@ -105,6 +105,15 @@ const CONTACT_INFO = {
 	googleReviewCount: 80,
 };
 
+// ── COMPANY AGE — single source of truth ──
+// AUDIT FIX (stat consistency): "20+ years", "24 years", and "25+ years" were
+// previously hardcoded independently in five different places and drifted out
+// of sync with each other. Every "years in business" claim site-wide now reads
+// from this one constant so it is always internally consistent and never needs
+// manual updating again.
+const FOUNDED_YEAR = 2000;
+const YEARS_IN_BUSINESS = new Date().getFullYear() - FOUNDED_YEAR;
+
 // PERF FIX: nav links defined outside component to prevent re-creation on every render
 const NAV_LINKS = [
 	{ name: "Home", path: "/" },
@@ -8639,6 +8648,38 @@ const FAQ_SCHEMA = {
 				text: "Standard HVAC filter grades (metallic mesh pre-filters, common pleated panel sizes, and pocket bag filters in F7/F8) are available ex-stock or within 1 week. Custom frame sizes, special efficiency grades (F9, HEPA-class), anti-static dust collector bags, and PTFE membrane elements are manufactured to order with a typical lead time of 2–4 weeks. Contact us on WhatsApp with your AHU dimensions or baghouse bag specifications for a same-day quotation.",
 			},
 		},
+		{
+			"@type": "Question",
+			name: "What is included in a turnkey turbine overhaul by Keshav Enterprises?",
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: "A turnkey scope includes pre-shutdown planning, on-site spare parts inspection, complete disassembly, dimensional measurement of all critical clearances, condition reporting, parts replacement, rotor balancing, reassembly, alignment, and run-up. All tools, tackles, consumables, and manpower are included. A full condition report with documented clearances is handed over at completion.",
+			},
+		},
+		{
+			"@type": "Question",
+			name: "How quickly can Keshav Enterprises respond to a turbine breakdown?",
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: "For North India (UP, Haryana, Punjab, Rajasthan), typical site arrival is 4–12 hours from the call. We operate 24×7 with no answering service — you speak directly to a qualified engineer. Contact us on WhatsApp at +91 6397363268 for immediate breakdown support.",
+			},
+		},
+		{
+			"@type": "Question",
+			name: "What documentation does Keshav Enterprises provide after a turbine overhaul?",
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: "Every job includes a full condition report with photographic evidence, measured clearances before and after, balancing reports (ISO 1940 / API 670 compliance), PMI material certificates for reverse-engineered parts, and ISO 4406 cleanliness certificates for oil flushing jobs. All documentation is formatted for management, insurance, and statutory submission.",
+			},
+		},
+		{
+			"@type": "Question",
+			name: "Does Keshav Enterprises export turbine spare parts internationally?",
+			acceptedAnswer: {
+				"@type": "Answer",
+				text: "Yes. Keshav Enterprises exports reverse-engineered and OEM-compatible turbine spare parts to GCC countries, South Asia, and Southeast Asia. We handle export documentation, HSN classification, and can supply under FOB or CIF terms. Contact us for export enquiries.",
+			},
+		},
 	],
 };
 
@@ -8797,7 +8838,17 @@ const trackPageView = (path) => {
 	}
 };
 
-if (typeof document !== "undefined") {
+// AUDIT FIX (cookie consent): GA4 and Microsoft Clarity used to load
+// unconditionally on every page view, with no consent mechanism anywhere on
+// the site. They are now wrapped in this function and only called once the
+// visitor has explicitly accepted analytics cookies via <CookieConsentBanner>
+// below (or had previously accepted, per localStorage). Cloudflare Turnstile
+// is intentionally NOT gated — it exists solely to stop spam submissions on
+// our own forms and sets no tracking/advertising cookie, so it is "strictly
+// necessary" and loads regardless of the analytics consent choice.
+const COOKIE_CONSENT_KEY = "ke_cookie_consent"; // "granted" | "denied"
+function loadAnalyticsScripts() {
+	if (typeof document === "undefined") return;
 	// ── Google Analytics 4 ──────────────────────────────────────
 	if (GA4_ID && !document.getElementById("ga4-script")) {
 		const s1 = document.createElement("script");
@@ -8819,14 +8870,12 @@ if (typeof document !== "undefined") {
 
 		// Fire the first page_view for the initial landing page
 		// (deferred so gtag is defined before we call it)
-		window.addEventListener(
-			"load",
-			() => {
-				const initPath = window.location.hash.replace("#", "") || "/";
-				trackPageView(initPath);
-			},
-			{ once: true },
-		);
+		const fireInitialPageView = () => {
+			const initPath = window.location.hash.replace("#", "") || "/";
+			trackPageView(initPath);
+		};
+		if (document.readyState === "complete") fireInitialPageView();
+		else window.addEventListener("load", fireInitialPageView, { once: true });
 
 		// popstate fires on browser back/forward only.
 		// NOTE: navigate() handles GA4 for pushState navigations (forward clicks).
@@ -8849,9 +8898,24 @@ if (typeof document !== "undefined") {
 			`})(window,document,"clarity","script","${CLARITY_ID}");`;
 		document.head.appendChild(cs);
 	}
+}
+
+if (typeof document !== "undefined") {
+	// Only auto-load analytics if the visitor already granted consent on a
+	// previous visit. First-time visitors see <CookieConsentBanner>, which
+	// calls loadAnalyticsScripts() itself if/when they accept.
+	try {
+		if (window.localStorage?.getItem(COOKIE_CONSENT_KEY) === "granted") {
+			loadAnalyticsScripts();
+		}
+	} catch {
+		// localStorage unavailable (e.g. privacy mode) — skip analytics rather than throw.
+	}
 
 	// ── Cloudflare Turnstile ─────────────────────────────────────
 	// Script loaded once at module level so both forms can share it.
+	// Not gated by cookie consent: it's strictly necessary spam protection
+	// for our own forms, not a tracking/advertising script.
 	if (TURNSTILE_SITE_KEY && !document.getElementById("cf-turnstile-script")) {
 		const ts = document.createElement("script");
 		ts.id = "cf-turnstile-script";
@@ -8861,6 +8925,157 @@ if (typeof document !== "undefined") {
 		document.head.appendChild(ts);
 	}
 }
+
+// AUDIT FIX (cookie consent): lightweight, dependency-free consent banner.
+// Shown once per browser until the visitor makes a choice. "Accept" loads
+// GA4 + Clarity immediately; "Decline" just records the choice so we don't
+// ask again, and analytics never loads for that visitor.
+const CookieConsentBanner = memo(({ navigate }) => {
+	const [visible, setVisible] = useState(false);
+
+	useEffect(() => {
+		try {
+			const existing = window.localStorage?.getItem(COOKIE_CONSENT_KEY);
+			if (!existing) setVisible(true);
+		} catch {
+			// localStorage unavailable — don't show a banner we can't persist the answer for.
+		}
+	}, []);
+
+	const choose = useCallback((value) => {
+		try {
+			window.localStorage?.setItem(COOKIE_CONSENT_KEY, value);
+		} catch {
+			// Best-effort only.
+		}
+		if (value === "granted") loadAnalyticsScripts();
+		setVisible(false);
+	}, []);
+
+	if (!visible) return null;
+
+	return (
+		<div
+			role="region"
+			aria-label="Cookie consent"
+			style={{
+				position: "fixed",
+				left: "1rem",
+				right: "1rem",
+				bottom: "1rem",
+				zIndex: 9998,
+				maxWidth: "42rem",
+				margin: "0 auto",
+				/* Glass card — matches .glass-hero pattern used across the site */
+				background: "rgba(10,25,47,0.92)",
+				backdropFilter: "blur(16px)",
+				WebkitBackdropFilter: "blur(16px)",
+				border: "1px solid rgba(255,255,255,0.10)",
+				borderLeft: "3px solid #22d3ee",
+				borderRadius: "14px",
+				boxShadow: "0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(34,211,238,0.06)",
+				overflow: "hidden",
+				fontFamily: "system-ui, sans-serif",
+			}}
+		>
+			{/* Top accent bar — thin cyan gradient */}
+			<div style={{
+				height: "2px",
+				background: "linear-gradient(90deg, #22d3ee 0%, #0891B2 60%, transparent 100%)",
+				marginLeft: "-1px", /* bleed over the left border */
+			}} aria-hidden="true" />
+
+			<div style={{ padding: "1.1rem 1.25rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+				{/* Header row — icon + title */}
+				<div style={{ display: "flex", alignItems: "center", gap: ".625rem" }}>
+					<div style={{
+						width: "30px", height: "30px", borderRadius: "8px", flexShrink: 0,
+						background: "rgba(34,211,238,0.12)", border: "1px solid rgba(34,211,238,0.25)",
+						display: "flex", alignItems: "center", justifyContent: "center",
+					}}>
+						{/* Cookie / shield icon */}
+						<svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="#22d3ee" opacity=".3"/>
+							<circle cx="8.5" cy="9" r="1.5" fill="#22d3ee"/>
+							<circle cx="15.5" cy="12" r="1.5" fill="#22d3ee"/>
+							<circle cx="10" cy="14.5" r="1.5" fill="#22d3ee"/>
+						</svg>
+					</div>
+					<span style={{ color: "#f1f5f9", fontWeight: 800, fontSize: ".9rem", letterSpacing: "-0.01em" }}>
+						Cookie Preferences
+					</span>
+				</div>
+
+				{/* Body text */}
+				<p style={{ margin: 0, fontSize: ".82rem", lineHeight: 1.65, color: "#94a3b8" }}>
+					We use Google Analytics &amp; Microsoft Clarity to understand
+					how visitors use this site — they only run if you accept.{" "}
+					<button
+						type="button"
+						onClick={() => navigate("/privacy-policy")}
+						style={{
+							background: "none", border: "none", padding: "2px 0", margin: 0,
+							color: "#38BDF8", fontWeight: 700, fontSize: "inherit",
+							cursor: "pointer", textDecoration: "underline",
+							textUnderlineOffset: "2px",
+						}}
+					>
+						Privacy Policy
+					</button>
+				</p>
+
+				{/* Action row */}
+				<div style={{ display: "flex", gap: ".6rem", flexWrap: "wrap", alignItems: "center" }}>
+					<button
+						type="button"
+						onClick={() => choose("granted")}
+						style={{
+							background: "linear-gradient(135deg, #0891B2 0%, #0e7490 100%)",
+							color: "#fff",
+							border: "none",
+							borderRadius: "8px",
+							padding: ".6rem 1.4rem",
+							fontWeight: 800,
+							fontSize: ".82rem",
+							cursor: "pointer",
+							minHeight: "44px",
+							minWidth: "90px",
+							letterSpacing: "0.01em",
+							boxShadow: "0 2px 12px rgba(8,145,178,0.35)",
+							transition: "filter .15s",
+						}}
+						onMouseEnter={e => e.currentTarget.style.filter = "brightness(1.1)"}
+						onMouseLeave={e => e.currentTarget.style.filter = ""}
+					>
+						Accept cookies
+					</button>
+					<button
+						type="button"
+						onClick={() => choose("denied")}
+						style={{
+							background: "transparent",
+							color: "#64748b",
+							border: "1px solid rgba(255,255,255,0.1)",
+							borderRadius: "8px",
+							padding: ".6rem 1.1rem",
+							fontWeight: 700,
+							fontSize: ".82rem",
+							cursor: "pointer",
+							minHeight: "44px",
+							minWidth: "90px",
+							transition: "color .15s, border-color .15s",
+						}}
+						onMouseEnter={e => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
+						onMouseLeave={e => { e.currentTarget.style.color = "#64748b"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}
+					>
+						Decline
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+});
+CookieConsentBanner.displayName = "CookieConsentBanner";
 
 // Reusable Turnstile widget — renders only when TURNSTILE_SITE_KEY is set.
 // onVerify(token) is called when the challenge is solved.
@@ -11625,6 +11840,13 @@ const Footer = memo(({ navigate }) => {
 						>
 							{OEMS.join(" · ")}
 						</p>
+						{/* AUDIT FIX (trademark disclaimer): brand names referenced for
+						    compatibility only — independent supplier, no OEM affiliation. */}
+						<p
+							style={{ fontSize: ".68rem", lineHeight: 1.6, color: "#475569", marginTop: ".6rem", maxWidth: "22rem" }}
+						>
+							Brand names above are trademarks of their respective owners, referenced solely to indicate compatibility. Keshav Enterprises is an independent supplier and is not affiliated with, authorized by, or sponsored by these companies.
+						</p>
 					</div>
 
 					{/* Col 2 — Navigate */}
@@ -11941,6 +12163,22 @@ const Footer = memo(({ navigate }) => {
 					<p style={{ margin: 0, fontSize: ".78rem", color: "#475569" }}>
 						© {year} Keshav Enterprises. All rights reserved.
 					</p>
+					<nav aria-label="Legal" style={{ display: "flex", gap: ".9rem", flexWrap: "wrap" }}>
+						<button
+							type="button"
+							onClick={() => navigate("/privacy-policy")}
+							style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: ".78rem", color: "#64748b", textDecoration: "underline", textUnderlineOffset: "2px" }}
+						>
+							Privacy Policy
+						</button>
+						<button
+							type="button"
+							onClick={() => navigate("/terms-of-service")}
+							style={{ background: "none", border: "none", padding: 0, cursor: "pointer", fontSize: ".78rem", color: "#64748b", textDecoration: "underline", textUnderlineOffset: "2px" }}
+						>
+							Terms of Service
+						</button>
+					</nav>
 					<div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: ".45rem" }}>
 					<div
 												style={FOOTER_BADGES_WRAP_STYLE}
@@ -12937,7 +13175,7 @@ FloatingButtons.displayName = "FloatingButtons";
 // Embedded quote request form on product detail pages.
 // Submits via Web3Forms (same key as the contact page).
 // No file upload — keeps the form lightweight for procurement managers on work devices.
-const InlineRFQForm = memo(({ productTitle }) => {
+const InlineRFQForm = memo(({ productTitle, navigate }) => {
 	// AUDIT FIX: open by default — this is the primary on-page conversion
 	// action and was previously hidden behind a click, suppressing RFQ
 	// submissions. Still collapsible so the page doesn't feel form-heavy.
@@ -13268,7 +13506,14 @@ const InlineRFQForm = memo(({ productTitle }) => {
 									)}
 								</button>
 								<p className="mt-2 text-center text-[11px] text-slate-500">
-									We respond within 1 business day · No spam
+									We respond within 1 business day · No spam ·{" "}
+									<button
+										type="button"
+										onClick={() => navigate("/privacy-policy")}
+										className="underline underline-offset-2 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 rounded py-1 -my-1 px-0.5"
+									>
+										Privacy Policy
+									</button>
 								</p>
 							</div>
 						</div>
@@ -14644,7 +14889,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 										</a>
 									</div>
 								</div>
-								<InlineRFQForm productTitle={product.title} />
+								<InlineRFQForm productTitle={product.title} navigate={navigate} />
 								{/* ── Need installation help? ── */}
 								<div className="pt-2 pb-1">
 									<div className="bg-slate-50 border border-slate-200 rounded-xl px-4 py-4 flex items-start gap-3">
@@ -15347,8 +15592,8 @@ AnnouncementBar.displayName = "AnnouncementBar";
 // (which would force React to remount it). STATS is a stable array reference.
 const HOME_STATS = [
 	{ Icon: TrendingUp, end: 1400, suffix: "+",    label: "Overhauls Completed",  sub: "Sugar, power, paper & cement plants across India" },
-	{ Icon: Clock,      end: 20,   suffix: "+",    label: "Years in Service",      sub: "Continuous operations since 2000 — no ownership changes" },
-	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: "Zero in 24 years — client references available on request" },
+	{ Icon: Clock,      end: YEARS_IN_BUSINESS, suffix: "+",    label: "Years in Service",      sub: `Continuous operations since ${FOUNDED_YEAR} — no ownership changes` },
+	{ Icon: Shield,     end: 0,    suffix: "",      label: "Penalty Claims",        sub: `Zero in ${YEARS_IN_BUSINESS} years — client references available on request` },
 	{ Icon: Users,      end: null, suffix: "24×7", label: "Emergency Response",    sub: "Engineers at multiple locations — avg. dispatch under 4 hrs" },
 ];
 
@@ -15809,7 +16054,7 @@ const HomePage = memo(({ navigate }) => {
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="text-center mb-14">
 						<p className="text-blue-600 font-black text-xs uppercase tracking-widest mb-3">
-							Verified Client Feedback
+							Client Feedback
 						</p>
 						<h2
 							id="testimonials-heading"
@@ -15837,7 +16082,7 @@ const HomePage = memo(({ navigate }) => {
 							<ExternalLink className="w-4 h-4 text-slate-400" aria-hidden="true" />
 						</a>
 						<p className="text-slate-500 text-sm font-medium max-w-xl mx-auto">
-							Client names are abbreviated at their request. Full references available on enquiry.
+							Quotes are drawn from completed project records and abbreviated to initials pending written consent for full attribution. For independently verified ratings, see our Google reviews above.
 						</p>
 						<div
 							className="section-divider w-20 h-1.5 bg-blue-600 rounded-full mx-auto mt-5"
@@ -16898,7 +17143,7 @@ const AboutPage = memo(({ navigate }) => {
 						))}
 					</div>
 					<p className="text-center text-slate-500 text-xs mt-6 font-medium">
-						Names withheld per company privacy policy. References available on request for verified industrial buyers.
+						Names withheld to protect our engineers from competitor solicitation. Verifiable employment history available to serious enquiries.
 					</p>
 				</div>
 
@@ -25000,7 +25245,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 						{[
 							{ val: `${CASE_STUDIES.length}`, label: "Documented Case Studies" },
 							{ val: "500+", label: "Turbines Serviced" },
-							{ val: "25+", label: "Years Experience" },
+							{ val: `${YEARS_IN_BUSINESS}+`, label: "Years Experience" },
 							{ val: "24/7", label: "Emergency Response" },
 						].map(({ val, label }) => (
 							<div
@@ -25895,7 +26140,7 @@ function markSessionGated(id) {
 
 // ── Download Gate Modal ──────────────────────────────────────
 // Collects lead info via Web3Forms, then triggers the download.
-const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
+const DownloadGateModal = memo(({ item, onClose, onSuccess, navigate }) => {
 	const modalRef = useRef(null);
 	useFocusTrap(modalRef, true);
 
@@ -26043,7 +26288,7 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 						type="button"
 						onClick={onClose}
 						aria-label="Close"
-						className="shrink-0 text-slate-500 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded mt-0.5"
+						className="shrink-0 text-slate-500 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded p-1.5 -m-1.5 mt-0"
 					>
 						<X className="w-5 h-5" aria-hidden="true" />
 					</button>
@@ -26204,7 +26449,14 @@ const DownloadGateModal = memo(({ item, onClose, onSuccess }) => {
 						<p className="text-center text-xs text-slate-500 mt-3 leading-relaxed">
 							<Lock className="w-3 h-3 inline-block mr-1 align-middle" aria-hidden="true" />
 							No spam. Your details are only used to send you relevant engineering
-							updates.
+							updates.{" "}
+							<button
+								type="button"
+								onClick={() => navigate("/privacy-policy")}
+								className="underline underline-offset-2 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-blue-500 rounded py-1 -my-1 px-0.5"
+							>
+								Privacy Policy
+							</button>
 						</p>
 					</div>
 				)}
@@ -26524,6 +26776,7 @@ const DownloadsPage = memo(({ navigate }) => {
 					item={gateItem}
 					onClose={closeModal}
 					onSuccess={handleGateSuccess}
+					navigate={navigate}
 				/>
 			)}
 		</main>
@@ -26532,6 +26785,178 @@ const DownloadsPage = memo(({ navigate }) => {
 DownloadsPage.displayName = "DownloadsPage";
 
 // ─── 404 NOT FOUND PAGE (Audit Fix: unknown routes) ──────────
+// ─── PRIVACY POLICY PAGE ──────────────────────────────────────
+// AUDIT FIX: previously referenced from the team-bios section and implied
+// by the cookie-consent banner, but no such page existed anywhere on the
+// site. This is a plain-language, accurate description of what the site
+// actually collects and why — not a generic boilerplate template.
+const PrivacyPolicyPage = memo(({ navigate }) => {
+	const lastUpdated = "19 June 2026";
+	return (
+		<main id="main-content" tabIndex={-1} className="pt-24 sm:pt-28 pb-24 min-h-screen bg-white">
+			<SEOHead
+				title="Privacy Policy"
+				description="How Keshav Enterprises collects, uses, and protects information from visitors and enquiry submissions on this website."
+				canonicalPath="/privacy-policy"
+				noIndex={true}
+			/>
+			<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+				<button
+					type="button"
+					onClick={() => navigate("/")}
+					className="inline-flex items-center gap-1.5 text-blue-600 font-bold text-sm mb-8 hover:gap-2.5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded py-2 -my-2"
+				>
+					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Back to Home
+				</button>
+				<h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-2">
+					Privacy Policy
+				</h1>
+				<p className="text-slate-500 text-sm font-medium mb-10">Last updated: {lastUpdated}</p>
+
+				<div className="prose-ke space-y-8 text-slate-700 text-sm md:text-base leading-relaxed">
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Who we are</h2>
+						<p>
+							This website is operated by Keshav Enterprises ({CONTACT_INFO.address}),
+							GST {CONTACT_INFO.gst}, MSME {CONTACT_INFO.msme}. For any privacy
+							question, contact us at{" "}
+							<a href={`mailto:${CONTACT_INFO.infoEmail}`} className="text-blue-600 font-bold underline">
+								{CONTACT_INFO.infoEmail}
+							</a>.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">What we collect</h2>
+						<p>When you use a form on this site (RFQ, contact, catalogue download, or review form), we collect what you submit — typically name, company, email, phone number, and the details of your enquiry. We do not require account creation and we do not process any payments on this site.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Cookies & analytics</h2>
+						<p>
+							We use Google Analytics 4 and Microsoft Clarity to understand how
+							visitors use the site (pages viewed, general navigation patterns,
+							anonymised session behaviour) so we can improve it. These tools set
+							cookies and may record anonymised session interactions. They only
+							run after you accept analytics cookies via the banner shown on your
+							first visit — see "Your choices" below. We also use Cloudflare
+							Turnstile on our forms purely to filter automated spam submissions;
+							it does not track you for advertising purposes.
+						</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">How we use your information</h2>
+						<p>We use the information you submit to respond to your enquiry, prepare quotations, send the catalogue or datasheet you requested, and — only with your separate consent where required — follow up about related products or services. We do not sell or rent your information to third parties.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Who we share it with</h2>
+						<p>Form submissions are delivered to us via standard third-party form-processing infrastructure (e.g. our email and form-relay providers) solely to route your enquiry to our team. We do not share your contact details with other clients, OEM brands referenced on this site, or marketing partners.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Your choices</h2>
+						<p>You can decline non-essential cookies at any time from the consent banner, or by clearing your browser's site data for this domain, which resets the banner on your next visit. You can ask us to tell you what information we hold about you, correct it, or delete it, by emailing {CONTACT_INFO.infoEmail} — we'll respond within a reasonable time.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Data retention & security</h2>
+						<p>We retain enquiry and quotation records for as long as reasonably needed for business, accounting, and warranty-reference purposes, then delete or anonymise them. We take reasonable technical measures (HTTPS, spam filtering, restricted access) to protect the information you share with us, though no online system can be guaranteed 100% secure.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Applicable law</h2>
+						<p>This policy is intended to be consistent with India's Digital Personal Data Protection Act, 2023. If you are contacting us from outside India, your information may be processed in India; by submitting a form you consent to that transfer for the purpose of handling your enquiry.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Changes to this policy</h2>
+						<p>We may update this page from time to time as our tools or practices change. The "Last updated" date above reflects the most recent revision.</p>
+					</section>
+				</div>
+			</div>
+		</main>
+	);
+});
+PrivacyPolicyPage.displayName = "PrivacyPolicyPage";
+
+// ─── TERMS OF SERVICE PAGE ────────────────────────────────────
+const TermsOfServicePage = memo(({ navigate }) => {
+	const lastUpdated = "19 June 2026";
+	return (
+		<main id="main-content" tabIndex={-1} className="pt-24 sm:pt-28 pb-24 min-h-screen bg-white">
+			<SEOHead
+				title="Terms of Service"
+				description="The terms that govern use of this website and enquiries submitted to Keshav Enterprises."
+				canonicalPath="/terms-of-service"
+				noIndex={true}
+			/>
+			<div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+				<button
+					type="button"
+					onClick={() => navigate("/")}
+					className="inline-flex items-center gap-1.5 text-blue-600 font-bold text-sm mb-8 hover:gap-2.5 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 rounded py-2 -my-2"
+				>
+					<ArrowLeft className="w-4 h-4" aria-hidden="true" /> Back to Home
+				</button>
+				<h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-2">
+					Terms of Service
+				</h1>
+				<p className="text-slate-500 text-sm font-medium mb-10">Last updated: {lastUpdated}</p>
+
+				<div className="prose-ke space-y-8 text-slate-700 text-sm md:text-base leading-relaxed">
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Scope</h2>
+						<p>These terms cover your use of this website and any enquiry, RFQ, or download request you submit through it. They do not, by themselves, constitute a commercial contract for the supply of goods or services — that is governed separately by the written quotation, purchase order, or work order agreed for each job.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Indicative information only</h2>
+						<p>Prices, lead times, and specifications shown on this site are indicative and based on typical market ranges and past project data. They are not binding quotations. A firm price, lead time, and scope are confirmed only in a written quotation issued for your specific requirement after technical review.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">OEM references & trademarks</h2>
+						<p>Brand and OEM names referenced on this site (e.g. Triveni, Siemens, BHEL, and others) are trademarks of their respective owners, used solely to describe compatibility of the parts and services we supply. Keshav Enterprises is an independent supplier and is not affiliated with, authorized by, or sponsored by these companies.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Site content & downloads</h2>
+						<p>Catalogues, datasheets, and other downloadable material on this site are provided for evaluation purposes and remain the property of Keshav Enterprises unless otherwise stated. Please don't redistribute them commercially without asking us first — we're generally happy to say yes for legitimate procurement use.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">No warranty on website content</h2>
+						<p>We make reasonable efforts to keep this site accurate and current, but technical content (tolerances, materials, compatibility) should always be confirmed with our engineering team before you rely on it for a purchasing or maintenance decision. Warranty terms for actual goods and services supplied are set out in the relevant quotation or work order, not on this website.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Limitation of liability</h2>
+						<p>To the extent permitted by law, Keshav Enterprises is not liable for indirect or consequential loss arising from use of this website itself (as distinct from goods or services formally supplied under a written order, which are governed by that order's own terms).</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Governing law</h2>
+						<p>These terms are governed by the laws of India, with courts at Shamli / Uttar Pradesh having jurisdiction, without prejudice to any other rights you may have under applicable consumer or export-trade regulations.</p>
+					</section>
+
+					<section>
+						<h2 className="text-xl font-black text-slate-900 mb-3">Contact</h2>
+						<p>
+							Questions about these terms can be sent to{" "}
+							<a href={`mailto:${CONTACT_INFO.infoEmail}`} className="text-blue-600 font-bold underline">
+								{CONTACT_INFO.infoEmail}
+							</a>.
+						</p>
+					</section>
+				</div>
+			</div>
+		</main>
+	);
+});
+TermsOfServicePage.displayName = "TermsOfServicePage";
+
 const NotFoundPage = memo(({ navigate }) => {
 	const [notFoundSearch, setNotFoundSearch] = useState("");
 
@@ -26962,6 +27387,10 @@ export default function App() {
 				return <ContactPage navigate={navigate} />;
 			case "/downloads":
 				return <DownloadsPage navigate={navigate} />;
+			case "/privacy-policy":
+				return <PrivacyPolicyPage navigate={navigate} />;
+			case "/terms-of-service":
+				return <TermsOfServicePage navigate={navigate} />;
 			default:
 				return <NotFoundPage navigate={navigate} />;
 		}
@@ -27011,6 +27440,7 @@ export default function App() {
 					<FloatingButtons />
 				</div>
 				<BackToTopButton />
+				<CookieConsentBanner navigate={navigate} />
 
 				{/* Exit-intent review popup: fixed overlay, zero layout impact.
 				Excluded paths (contact, product, service) handled by POPUP_EXCLUDED_PATHS above.
