@@ -78,6 +78,7 @@ const CONTACT_INFO = {
 	indiamart: "https://www.indiamart.com/keshav-enterprises-shamli/",
 	gmapsShare: "https://share.google/uLc4GwsGec5eM62Ep",
 	gst: "09BOSPS3115K1ZC",
+	iec: "BOSPS3115K",
 	msme: "UDYAM-UP-47-0071234",
 	// ── BUSINESS DIRECTORIES ──
 	googleBusiness: "https://share.google/B7KVUQrAcCh86oSyu",
@@ -8536,7 +8537,7 @@ const ABOUT_PAGE_SCHEMA = {
 		logo: `${SITE_URL}/keshav-logo.png`,
 		foundingDate: "2000",
 		description:
-			"Ex-OEM engineers from Triveni, Siemens, BHEL, Belliss & Morcom, Man Turbo, KKK, and ABB. Steam turbines 5 kW to 27 MW. MSME registered. IndiaMART TrustSeal verified.",
+			"Ex-OEM engineers from Triveni, Siemens, BHEL, Belliss & Morcom, Man Turbo, KKK, and ABB. Steam turbines 5 kW to 27 MW. MSME registered. IEC registered exporter. IndiaMART TrustSeal verified.",
 		address: {
 			"@type": "PostalAddress",
 			streetAddress: "Dayanand Nagar Gali No.2, Near Subash Ki Chakki",
@@ -8552,6 +8553,13 @@ const ABOUT_PAGE_SCHEMA = {
 				credentialCategory: "Government Registration",
 				recognizedBy: { "@type": "GovernmentOrganization", name: "Government of India" },
 				identifier: "UDYAM-UP-47-0071234",
+			},
+			{
+				"@type": "EducationalOccupationalCredential",
+				name: "Importer Exporter Code (IEC)",
+				credentialCategory: "Government Export Registration",
+				recognizedBy: { "@type": "GovernmentOrganization", name: "Directorate General of Foreign Trade (DGFT), Government of India" },
+				identifier: "BOSPS3115K",
 			},
 			{
 				"@type": "EducationalOccupationalCredential",
@@ -11809,6 +11817,14 @@ const Footer = memo(({ navigate }) => {
 									bg: "#071e38",
 								},
 								{
+									imgSrc: "iec-logo.png",
+									FallbackIcon: Flag,
+									title: "IEC Registered",
+									sub: CONTACT_INFO.iec,
+									accentColor: "#f472b6",
+									bg: "#2a0a1c",
+								},
+								{
 									imgSrc: "indiamart-logo.png",
 									FallbackIcon: Award,
 									title: "IndiaMART TrustSeal",
@@ -12186,6 +12202,7 @@ const Footer = memo(({ navigate }) => {
 						{[
 							{ label: "GST", value: CONTACT_INFO.gst },
 							{ label: "MSME", value: CONTACT_INFO.msme },
+							{ label: "IEC", value: CONTACT_INFO.iec },
 						].map(({ label, value }) => (
 							<span
 								key={label}
@@ -16560,8 +16577,8 @@ const AboutPage = memo(({ navigate }) => {
 		},
 		{
 			year: "Today",
-			title: "Pan-India Reach",
-			desc: "Today serving power, sugar, paper, oil & gas, petrochemical, and agro industries across India with 24×7 emergency engineering support.",
+			title: "Global Export Ready",
+			desc: "IEC registered with DGFT — now supplying turbine components, filtration, and industrial spares to international clients across South Asia, Middle East, and Africa. Pan-India domestic reach continues with 24×7 emergency engineering support.",
 		},
 	];
 	const values = [
@@ -16664,6 +16681,8 @@ const AboutPage = memo(({ navigate }) => {
 									"3D Laser Scanning",
 									"CMM Precision",
 									"24×7 Response",
+									"IEC Registered",
+									"Export Ready",
 									"IndiaMART TrustSeal",
 									"Make In India",
 									"MSME Registered",
@@ -17190,25 +17209,28 @@ const AboutPage = memo(({ navigate }) => {
 								</span>
 							</div>
 							<h2 className="keep-left text-4xl font-black text-slate-900 tracking-tight mb-4 leading-tight">
-								Supplying Indian Exporters
+								Built For Export
 								<br className="hidden sm:block" />
-								<span className="text-blue-600"> Who Ship Globally</span>
+								<span className="text-blue-600"> Buyers To Vet Easily</span>
 							</h2>
 							<div className="section-divider w-16 h-1 bg-blue-600 mb-6 rounded-full" />
 							<div className="space-y-4 text-slate-600 text-base leading-relaxed keep-left">
 								<p>
-									Keshav Enterprises is verified on{" "}
-									<strong className="text-slate-800">ExportersIndia</strong> as
-									an export-ready supplier — serving Indian exporters who ship
+									Keshav Enterprises holds an active{" "}
+									<strong className="text-slate-800">
+										Importer-Exporter Code (IEC)
+									</strong>{" "}
+									issued by the DGFT, the legal credential required to ship
 									turbine engineering spares, industrial filtration products,
-									and OEM-compatible components to overseas end-clients.
+									and OEM-compatible components outside India.
 								</p>
 								<p>
 									Our precision-manufactured products — filter elements,
 									expansion joints, strainers, turbine spares, and flexible hose
 									assemblies — are produced to international standards including
-									ISO 16889, API 614, and ASME Sec. VIII, making them suitable
-									for global industrial supply chains.
+									ISO 16889, API 614, and ASME Sec. VIII, and classified under
+									standard HSN export codes, so overseas buyers can verify
+									compliance before placing an order.
 								</p>
 							</div>
 							{/* Key export facts */}
@@ -17236,36 +17258,58 @@ const AboutPage = memo(({ navigate }) => {
 
 						{/* Right — export credentials + product categories */}
 						<div className="space-y-5">
-							{/* Export-verified badge */}
+							{/* IEC — lead credential */}
 							<div className="bg-slate-900 rounded-2xl p-6 flex items-center gap-5">
 								<div
 									className="w-14 h-14 rounded-xl flex items-center justify-center shrink-0 border border-slate-700"
-									style={{ backgroundColor: "#dcfce7" }}
+									style={{ backgroundColor: "#fce7f3" }}
 								>
-									<Globe
+									<Flag
 										className="w-7 h-7"
-										style={{ color: "#166534" }}
+										style={{ color: "#be185d" }}
 										aria-hidden="true"
 									/>
 								</div>
 								<div>
 									<h3 className="keep-left font-black text-white text-base mb-1">
-										ExportersIndia Verified
+										IEC Registered Exporter
 									</h3>
 									<p className="text-slate-500 text-sm keep-left">
-										Listed as an export-ready supplier for Indian industrial
-										exporters on ExportersIndia.com
+										DGFT Importer-Exporter Code{" "}
+										<span className="font-mono text-slate-400">
+											{CONTACT_INFO.iec}
+										</span>{" "}
+										— active and verifiable
 									</p>
-									<a
-										href={CONTACT_INFO.exportersindia}
-										target="_blank"
-										rel="noopener noreferrer"
-										className="inline-flex items-center gap-1.5 mt-2 text-blue-400 text-xs font-black hover:text-blue-300 transition-colors focus:outline-none focus-visible:underline"
-									>
-										View our profile
-										<ExternalLink className="w-3 h-3" aria-hidden="true" />
-									</a>
 								</div>
+							</div>
+
+							{/* Export readiness checklist */}
+							<div className="bg-white border border-slate-200 rounded-2xl p-6">
+								<h3 className="keep-left font-black text-slate-900 text-base mb-4 tracking-tight">
+									Export Readiness Checklist
+								</h3>
+								<ul className="space-y-2.5">
+									{[
+										"Active IEC issued by DGFT — legally cleared to export",
+										"Products classified under standard HSN export codes",
+										"Manufactured to ISO, API & ASME international standards",
+										"English-language datasheets, test certs & QC documentation",
+										"GST-registered with full export invoicing compliance",
+										"MSME-registered manufacturing base in Shamli, Uttar Pradesh",
+									].map((item) => (
+										<li
+											key={item}
+											className="flex items-start gap-3 text-slate-600 text-sm leading-snug"
+										>
+											<CheckCircle2
+												className="w-4 h-4 text-blue-500 shrink-0 mt-0.5"
+												aria-hidden="true"
+											/>
+											{item}
+										</li>
+									))}
+								</ul>
 							</div>
 
 							{/* Exportable product categories */}
@@ -17298,9 +17342,9 @@ const AboutPage = memo(({ navigate }) => {
 								</ul>
 							</div>
 
-							{/* MSME + Make in India */}
-							<div className="flex gap-3">
-								<div className="flex-1 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 text-center">
+							{/* Supporting credentials */}
+							<div className="grid grid-cols-3 gap-3">
+								<div className="bg-blue-50 border border-blue-100 rounded-xl px-3 py-3 text-center">
 									<div className="text-blue-700 font-black text-sm tracking-tight">
 										MSME Registered
 									</div>
@@ -17308,7 +17352,7 @@ const AboutPage = memo(({ navigate }) => {
 										{CONTACT_INFO.msme}
 									</div>
 								</div>
-								<div className="flex-1 bg-orange-50 border border-orange-100 rounded-xl px-4 py-3 text-center">
+								<div className="bg-orange-50 border border-orange-100 rounded-xl px-3 py-3 text-center">
 									<div className="text-orange-700 font-black text-sm tracking-tight">
 										Make In India
 									</div>
@@ -17316,6 +17360,20 @@ const AboutPage = memo(({ navigate }) => {
 										Vocal For Local
 									</div>
 								</div>
+								<a
+									href={CONTACT_INFO.exportersindia}
+									target="_blank"
+									rel="noopener noreferrer"
+									className="bg-green-50 border border-green-100 rounded-xl px-3 py-3 text-center hover:bg-green-100 transition-colors"
+								>
+									<div className="text-green-700 font-black text-sm tracking-tight">
+										ExportersIndia
+									</div>
+									<div className="text-green-600 text-[11px] font-bold uppercase tracking-wider mt-0.5 inline-flex items-center gap-1">
+										View Profile
+										<ExternalLink className="w-2.5 h-2.5" aria-hidden="true" />
+									</div>
+								</a>
 							</div>
 						</div>
 					</div>
