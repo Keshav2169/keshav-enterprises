@@ -7502,8 +7502,12 @@ const SUPPORTED_CURRENCIES = [
 	{ code: "EUR", symbol: "€", flag: "🇪🇺", name: "Euro" },
 	{ code: "GBP", symbol: "£", flag: "🇬🇧", name: "British Pound" },
 	{ code: "AED", symbol: "د.إ", flag: "🇦🇪", name: "UAE Dirham" },
+	{ code: "SAR", symbol: "﷼", flag: "🇸🇦", name: "Saudi Riyal" },
 	{ code: "SGD", symbol: "S$", flag: "🇸🇬", name: "Singapore Dollar" },
+	{ code: "AUD", symbol: "A$", flag: "🇦🇺", name: "Australian Dollar" },
 	{ code: "JPY", symbol: "¥", flag: "🇯🇵", name: "Japanese Yen" },
+	{ code: "CNY", symbol: "¥", flag: "🇨🇳", name: "Chinese Yuan" },
+	{ code: "KRW", symbol: "₩", flag: "🇰🇷", name: "South Korean Won" },
 ];
 
 // Fallback rates (INR base) — used if open.er-api.com is unreachable.
@@ -7514,8 +7518,12 @@ const FALLBACK_RATES = {
 	EUR: 0.01098,
 	GBP: 0.00942,
 	AED: 0.04388,
+	SAR: 0.04482,
 	SGD: 0.01617,
+	AUD: 0.01862,
 	JPY: 1.845,
+	CNY: 0.08665,
+	KRW: 16.52,
 };
 
 // Country code → currency code map for IP geo auto-detection
@@ -7523,17 +7531,23 @@ const COUNTRY_CURRENCY = {
 	IN: "INR",
 	US: "USD",
 	GB: "GBP",
-	AU: "USD",
+	AU: "AUD",
 	CA: "USD",
 	AE: "AED",
-	SA: "AED",
 	QA: "AED",
 	KW: "AED",
 	BH: "AED",
 	OM: "AED",
+	SA: "SAR",
 	SG: "SGD",
 	MY: "SGD",
+	AU: "AUD",
+	NZ: "AUD",
 	JP: "JPY",
+	CN: "CNY",
+	HK: "CNY",
+	TW: "CNY",
+	KR: "KRW",
 	DE: "EUR",
 	FR: "EUR",
 	IT: "EUR",
@@ -7556,16 +7570,22 @@ const LOCALE_CURRENCY = {
 	gu: "INR",
 	pa: "INR",
 	"en-US": "USD",
-	"en-AU": "USD",
+	"en-AU": "AUD",
 	"en-CA": "USD",
 	"en-GB": "GBP",
 	"en-AE": "AED",
 	"ar-AE": "AED",
-	"ar-SA": "AED",
+	"ar-SA": "SAR",
+	"en-SA": "SAR",
 	"en-SG": "SGD",
 	ms: "SGD",
 	ja: "JPY",
 	"ja-JP": "JPY",
+	zh: "CNY",
+	"zh-CN": "CNY",
+	"zh-HK": "CNY",
+	ko: "KRW",
+	"ko-KR": "KRW",
 	de: "EUR",
 	fr: "EUR",
 	it: "EUR",
@@ -7780,7 +7800,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 				<div
 					role="listbox"
 					aria-label="Select currency"
-					className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200"
+					className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200 flex flex-col"
 					style={MOBILE_DRAWER_ANIM_STYLE_V2}
 				>
 					{/* "Auto-detected" hint shown only on first visit */}
@@ -7795,6 +7815,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 							</span>
 						</div>
 					)}
+					<div className="overflow-y-auto" style={{ maxHeight: "min(320px, 60vh)" }}>
 					{SUPPORTED_CURRENCIES.map((c) => (
 						<button
 							key={c.code}
@@ -7825,7 +7846,8 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 							)}
 						</button>
 					))}
-					<div className="px-3.5 py-2 bg-slate-50 border-t border-slate-100">
+					</div>
+					<div className="px-3.5 py-2 bg-slate-50 border-t border-slate-100 shrink-0">
 						<p className="text-[10px] text-slate-500 leading-relaxed">
 							Prices converted from INR at live market rates. Actual invoice
 							will be in INR.
@@ -8685,7 +8707,7 @@ const FAQ_SCHEMA = {
 			name: "Does Keshav Enterprises export turbine spare parts internationally?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Yes. Keshav Enterprises exports reverse-engineered and OEM-compatible turbine spare parts to GCC countries, South Asia, and Southeast Asia. We handle export documentation, HSN classification, and can supply under FOB or CIF terms. Contact us for export enquiries.",
+				text: "Keshav Enterprises holds an active Importer-Exporter Code (IEC) issued by the DGFT and is equipped to export reverse-engineered and OEM-compatible turbine spare parts. Products are manufactured to ISO, API, and ASME international standards and classified under standard HSN export codes, with full documentation support for overseas buyers. Contact us for export enquiries.",
 			},
 		},
 	],
@@ -16577,8 +16599,8 @@ const AboutPage = memo(({ navigate }) => {
 		},
 		{
 			year: "Today",
-			title: "Global Export Ready",
-			desc: "IEC registered with DGFT — now supplying turbine components, filtration, and industrial spares to international clients across South Asia, Middle East, and Africa. Pan-India domestic reach continues with 24×7 emergency engineering support.",
+			title: "Export Ready",
+			desc: "IEC registered with DGFT — turbine components, filtration products, and industrial spares manufactured to ISO/API/ASME standards and HSN-classified for export, with documentation support for overseas buyers. Pan-India domestic reach continues with 24×7 emergency engineering support.",
 		},
 	];
 	const values = [
@@ -21708,32 +21730,27 @@ const ProductsPage = memo(({ navigate }) => {
 						{PRODUCT_CATEGORIES.length - 1} categories. ISO/API/ASME compliant
 						with full technical specifications.
 					</p>
-					{/* Export destinations */}
+					{/* Export readiness */}
 					<div className="mt-5 flex flex-wrap items-center justify-center gap-2">
 						<span className="text-[11px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
 							<Globe className="w-3 h-3 text-blue-500" aria-hidden="true" />{" "}
-							Exported to
+							Export Ready
 						</span>
 						{[
-							{ flag: "🇦🇪", label: "UAE" },
-							{ flag: "🇺🇸", label: "USA" },
-							{ flag: "🇬🇧", label: "UK" },
-							{ flag: "🇸🇬", label: "Singapore" },
-							{ flag: "🇯🇵", label: "Japan" },
-							{ flag: "🇪🇺", label: "Europe" },
-						].map(({ flag, label }) => (
+							"IEC Registered",
+							"HSN Classified",
+							"ISO / API / ASME Compliant",
+						].map((label) => (
 							<span
 								key={label}
 								className="inline-flex items-center gap-1 bg-white/10 border border-white/15 text-slate-200 text-xs font-semibold px-2.5 py-1 rounded-full"
 							>
-								<span aria-hidden="true">{flag}</span>
 								{label}
 							</span>
 						))}
-						<span className="text-slate-600 text-xs">&amp; more</span>
 					</div>
 					<p className="mt-1.5 text-[11px] text-slate-600 tracking-wide">
-						Sea · Air · Courier &nbsp;·&nbsp; CIF / FOB on request
+						Sea · Air · Courier &nbsp;·&nbsp; Export documentation on request
 					</p>
 					{/* Currency selector */}
 					<div className="mt-7 flex justify-center">
