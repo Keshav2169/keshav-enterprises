@@ -24,6 +24,7 @@ import {
 	Filter,
 	Flag,
 	Globe,
+	Info,
 	Hexagon,
 	Layers,
 	LifeBuoy,
@@ -7497,17 +7498,17 @@ const PRODUCT_PRICE_MAP = {
 // Returning visitors: localStorage saves their manual pick — used instantly.
 
 const SUPPORTED_CURRENCIES = [
-	{ code: "INR", symbol: "₹", flag: "🇮🇳", name: "Indian Rupee" },
-	{ code: "USD", symbol: "$", flag: "🇺🇸", name: "US Dollar" },
-	{ code: "EUR", symbol: "€", flag: "🇪🇺", name: "Euro" },
-	{ code: "GBP", symbol: "£", flag: "🇬🇧", name: "British Pound" },
-	{ code: "AED", symbol: "د.إ", flag: "🇦🇪", name: "UAE Dirham" },
-	{ code: "SAR", symbol: "﷼", flag: "🇸🇦", name: "Saudi Riyal" },
-	{ code: "SGD", symbol: "S$", flag: "🇸🇬", name: "Singapore Dollar" },
-	{ code: "AUD", symbol: "A$", flag: "🇦🇺", name: "Australian Dollar" },
-	{ code: "JPY", symbol: "¥", flag: "🇯🇵", name: "Japanese Yen" },
-	{ code: "CNY", symbol: "¥", flag: "🇨🇳", name: "Chinese Yuan" },
-	{ code: "KRW", symbol: "₩", flag: "🇰🇷", name: "South Korean Won" },
+	{ code: "INR", symbol: "₹", flag: "🇮🇳", name: "Indian Rupee", nativeName: "भारतीय रुपया" },
+	{ code: "USD", symbol: "$", flag: "🇺🇸", name: "US Dollar", nativeName: "US Dollar" },
+	{ code: "EUR", symbol: "€", flag: "🇪🇺", name: "Euro", nativeName: "Euro" },
+	{ code: "GBP", symbol: "£", flag: "🇬🇧", name: "British Pound", nativeName: "British Pound" },
+	{ code: "AED", symbol: "د.إ", flag: "🇦🇪", name: "UAE Dirham", nativeName: "درهم إماراتي" },
+	{ code: "SAR", symbol: "﷼", flag: "🇸🇦", name: "Saudi Riyal", nativeName: "ريال سعودي" },
+	{ code: "SGD", symbol: "S$", flag: "🇸🇬", name: "Singapore Dollar", nativeName: "Singapore Dollar" },
+	{ code: "AUD", symbol: "A$", flag: "🇦🇺", name: "Australian Dollar", nativeName: "Australian Dollar" },
+	{ code: "JPY", symbol: "¥", flag: "🇯🇵", name: "Japanese Yen", nativeName: "日本円" },
+	{ code: "CNY", symbol: "¥", flag: "🇨🇳", name: "Chinese Yuan", nativeName: "人民币" },
+	{ code: "KRW", symbol: "₩", flag: "🇰🇷", name: "South Korean Won", nativeName: "대한민국 원" },
 ];
 
 // Fallback rates (INR base) — used if open.er-api.com is unreachable.
@@ -7748,7 +7749,7 @@ function useFmtPrice() {
 }
 
 // Currency selector dropdown — drop this anywhere in the Navbar JSX
-const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
+const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled, openUp = false }) {
 	const { code, select, detectedAuto } = useCurrency();
 	const [open, setOpen] = useState(false);
 	const dropRef = useRef(null);
@@ -7800,12 +7801,22 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 				<div
 					role="listbox"
 					aria-label="Select currency"
-					className="absolute right-0 top-full mt-1.5 w-52 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-200 flex flex-col"
+					className={`absolute right-0 ${openUp ? "bottom-full mb-2" : "top-full mt-1.5"} w-[17.5rem] bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(10,25,47,0.35)] border border-slate-200/80 overflow-hidden z-[500] flex flex-col`}
 					style={MOBILE_DRAWER_ANIM_STYLE_V2}
 				>
+					{/* Panel header */}
+					<div className="px-4 pt-3.5 pb-3 border-b border-slate-100 flex items-center justify-between shrink-0 bg-gradient-to-b from-slate-50 to-white">
+						<span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
+							Select currency
+						</span>
+						<span className="text-[10px] font-bold text-slate-300">
+							{SUPPORTED_CURRENCIES.length}
+						</span>
+					</div>
+
 					{/* "Auto-detected" hint shown only on first visit */}
 					{detectedAuto && (
-						<div className="px-3.5 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-1.5">
+						<div className="mx-3 mt-3 px-3 py-2 bg-blue-50 border border-blue-100 rounded-xl flex items-center gap-1.5 shrink-0">
 							<Globe
 								className="w-3 h-3 text-blue-500 shrink-0"
 								aria-hidden="true"
@@ -7815,7 +7826,10 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 							</span>
 						</div>
 					)}
-					<div className="overflow-y-auto" style={{ maxHeight: "min(320px, 60vh)" }}>
+					<div
+						className="overflow-y-auto overflow-x-hidden py-1.5 currency-scroll"
+						style={{ maxHeight: "min(320px, 60vh)" }}
+					>
 					{SUPPORTED_CURRENCIES.map((c) => (
 						<button
 							key={c.code}
@@ -7826,28 +7840,59 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled }) {
 								select(c.code);
 								setOpen(false);
 							}}
-							className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 text-sm text-left transition-colors focus:outline-none focus-visible:bg-slate-50
+							className={`group relative w-[calc(100%-0.75rem)] flex items-center gap-2.5 pl-3.5 pr-3 py-2.5 mx-1.5 my-0.5 rounded-xl text-sm text-left transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400
 								${
 									c.code === code
-										? "bg-blue-50 text-blue-700 font-bold"
-										: "text-slate-700 hover:bg-slate-50"
+										? "bg-blue-50/80"
+										: "hover:bg-slate-50"
 								}`}
 						>
-							<span className="text-base" aria-hidden="true">
+							{c.code === code && (
+								<span
+									className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-blue-600"
+									aria-hidden="true"
+								/>
+							)}
+							<span className="text-base leading-none" aria-hidden="true">
 								{c.flag}
 							</span>
-							<span className="font-bold w-9 shrink-0">{c.code}</span>
-							<span className="text-slate-500 text-xs truncate">{c.name}</span>
+							<span
+								className={`shrink-0 text-[11px] font-extrabold tracking-wide px-1.5 py-0.5 rounded-md ${
+									c.code === code
+										? "bg-blue-600 text-white"
+										: "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
+								}`}
+							>
+								{c.code}
+							</span>
+							<span className="flex flex-col min-w-0 leading-tight">
+								<span
+									className={`text-xs truncate ${
+										c.code === code
+											? "text-blue-900 font-bold"
+											: "text-slate-600 font-medium"
+									}`}
+								>
+									{c.name}
+								</span>
+								{c.nativeName && c.nativeName !== c.name && (
+									<span className="text-slate-400 text-[10px] truncate">{c.nativeName}</span>
+								)}
+							</span>
 							{c.code === code && (
 								<CheckCircle2
-									className="w-3.5 h-3.5 ml-auto shrink-0 text-blue-500"
+									className="w-4 h-4 ml-auto shrink-0 text-blue-600"
 									aria-hidden="true"
 								/>
 							)}
 						</button>
 					))}
 					</div>
-					<div className="px-3.5 py-2 bg-slate-50 border-t border-slate-100 shrink-0">
+					<div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 shrink-0 flex items-start gap-1.5">
+						<Info
+							className="w-3 h-3 text-slate-400 shrink-0 mt-[1px]"
+							aria-hidden="true"
+						/>
 						<p className="text-[10px] text-slate-500 leading-relaxed">
 							Prices converted from INR at live market rates. Actual invoice
 							will be in INR.
@@ -8030,6 +8075,11 @@ const MARQUEE_CSS = `
   .ke-marquee:hover,.ke-marquee-slow:hover{animation-play-state:paused}
   .scrollbar-hide::-webkit-scrollbar{display:none}
   .scrollbar-hide{-ms-overflow-style:none;scrollbar-width:none}
+  .currency-scroll{scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent}
+  .currency-scroll::-webkit-scrollbar{width:5px}
+  .currency-scroll::-webkit-scrollbar-track{background:transparent}
+  .currency-scroll::-webkit-scrollbar-thumb{background-color:#cbd5e1;border-radius:9999px}
+  .currency-scroll::-webkit-scrollbar-thumb:hover{background-color:#94a3b8}
   .lazy-section{opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
   .lazy-section.visible{opacity:1;transform:none}
 
@@ -8063,6 +8113,7 @@ const MARQUEE_CSS = `
   }
   .media-img{opacity:0;transition:opacity .35s ease}
   .media-img.is-loaded{opacity:1}
+  .media-img-90.is-loaded{opacity:0.9}
 
   /* ─── PRODUCT DETAIL GALLERY — slide transitions ─── */
   @keyframes pdp-in-left {from{opacity:0;transform:translateX(28px)} to{opacity:1;transform:translateX(0)}}
@@ -11763,10 +11814,12 @@ const Footer = memo(({ navigate }) => {
 				.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
 
 				/* ── Social pill links ── */
-				.ke-soc-pill{display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.48rem .6rem;border-radius:2rem;text-decoration:none;border:1px solid transparent;font-size:.72rem;font-weight:700;color:#94a3b8;background:#0a1628;transition:color .15s,background .15s,border-color .15s;min-height:36px}
+				.ke-soc-pill{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .5rem .4rem;border-radius:2rem;text-decoration:none;border:1px solid #1e293b;background:#0a1628;transition:background .15s,border-color .15s,transform .15s;min-height:42px}
 				.ke-soc-pill:hover,.ke-soc-pill:focus{outline:none}
-				.ke-soc-pill svg{flex-shrink:0}
-				@media(min-width:540px){.ke-soc-pill{display:inline-flex;justify-content:flex-start;padding:.44rem .75rem;font-size:.75rem}}
+				.ke-soc-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+				.ke-soc-badge svg{flex-shrink:0}
+				.ke-soc-handle{font-size:.81rem;font-weight:600;color:#e2e8f0;white-space:nowrap}
+				@media(min-width:540px){.ke-soc-pill{display:inline-flex;padding:.5rem 1.1rem .5rem .45rem}}
 
 				/* ── Industry tags ── */
 				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
@@ -12081,16 +12134,16 @@ const Footer = memo(({ navigate }) => {
 										rel="noopener noreferrer"
 										aria-label={label}
 										className="ke-soc-pill"
-										style={{ borderColor: `${color}30` }}
+										style={{ borderColor: "#1e293b" }}
 										onMouseEnter={(e) => {
-											e.currentTarget.style.color = "#fff";
-											e.currentTarget.style.background = `${ic}28`;
-											e.currentTarget.style.borderColor = `${color}60`;
+											e.currentTarget.style.background = "#0f1f33";
+											e.currentTarget.style.borderColor = `${color}80`;
+											e.currentTarget.style.transform = "translateY(-1px)";
 										}}
 										onMouseLeave={(e) => {
-											e.currentTarget.style.color = "#94a3b8";
 											e.currentTarget.style.background = "#0a1628";
-											e.currentTarget.style.borderColor = `${color}30`;
+											e.currentTarget.style.borderColor = "#1e293b";
+											e.currentTarget.style.transform = "translateY(0)";
 										}}
 										onFocus={(e) => {
 											e.currentTarget.style.outline = `2px solid ${color}`;
@@ -12100,14 +12153,22 @@ const Footer = memo(({ navigate }) => {
 											e.currentTarget.style.outline = "none";
 										}}
 									>
-										<span style={{ color, display: "flex" }}>{icon}</span>
-										<span>{handle}</span>
+										<span
+											className="ke-soc-badge"
+											style={{ background: ic }}
+										>
+											<span style={{ color: "#fff", display: "flex" }}>
+												{icon}
+											</span>
+										</span>
+										<span className="ke-soc-handle">{handle}</span>
 									</a>
 								);
 							},
 						)}
 					</nav>
 				</div>
+
 
 				{/* Divider */}
 				<div
@@ -12950,19 +13011,25 @@ const RecentlyViewedStrip = memo(({ currentProductId, navigate }) => {
 							className="group flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-blue-300 hover:-translate-y-0.5 transition-all text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 							aria-label={`View ${p.title}`}
 						>
-							<div className="h-28 bg-slate-50 flex items-center justify-center p-3 border-b border-slate-100">
+							<div className="h-28 bg-slate-50 flex items-center justify-center p-3 border-b border-slate-100 relative overflow-hidden">
 								{img ? (
-									<img
-										src={img}
-										alt={`${p.title} — ${p.category}`}
-										width="160"
-										height="160"
-										loading="lazy"
-										className="max-h-full max-w-full object-contain"
-										onError={(e) => {
-											e.target.style.display = "none";
-										}}
-									/>
+									<>
+										<div className="skeleton-shimmer" aria-hidden="true" />
+										<img
+											src={img}
+											alt={`${p.title} — ${p.category}`}
+											width="160"
+											height="160"
+											loading="lazy"
+											className="media-img max-h-full max-w-full object-contain relative z-10"
+											onLoad={(e) => {
+												e.currentTarget.classList.add("is-loaded");
+											}}
+											onError={(e) => {
+												e.target.style.display = "none";
+											}}
+										/>
+									</>
 								) : (
 									<div
 										className="w-10 h-10 bg-slate-200 rounded-lg"
@@ -13022,7 +13089,7 @@ const BackToTopButton = memo(() => {
 				alignItems: "center",
 				justifyContent: "center",
 				boxShadow: "0 4px 14px rgba(0,0,0,0.25)",
-				transition: "opacity .25s ease, transform .25s ease, background .2s",
+				transition: "opacity .25s ease, transform .25s ease, background .2s, bottom .2s ease-out",
 				opacity: visible ? 1 : 0,
 				transform: visible
 					? "translateY(0) scale(1)"
@@ -16959,6 +17026,7 @@ const AboutPage = memo(({ navigate }) => {
 								desc: "Precision CNC lathes, copying lathes, and grinding machines for rotor journal machining, polishing, and labyrinth portion work.",
 								onClick: null,
 								linkLabel: null,
+								icon: Cog,
 							},
 							{
 								src: "workshop-gallery-2.webp",
@@ -16967,6 +17035,7 @@ const AboutPage = memo(({ navigate }) => {
 								desc: "7 specialist services — turbine erection & commissioning, turnkey overhauling, reverse engineering, dynamic balancing, lube oil flushing, machine alignment, and 24×7 troubleshooting.",
 								onClick: () => navigate("/services"),
 								linkLabel: "Browse Services",
+								icon: Wrench,
 							},
 							{
 								src: "workshop-gallery-products.webp",
@@ -16975,6 +17044,7 @@ const AboutPage = memo(({ navigate }) => {
 								desc: `${PRODUCTS.length} engineered products across 9 categories — filtration, HVAC air filters, strainers, expansion joints, turbine spares, rubber products, flexible hoses, electronic equipment, and hydraulic components.`,
 								onClick: () => navigate("/products"),
 								linkLabel: "Browse Products",
+								icon: Layers,
 							},
 							{
 								src: "workshop-gallery-4.webp",
@@ -16983,8 +17053,9 @@ const AboutPage = memo(({ navigate }) => {
 								desc: "Ex-OEM engineers measure and record every clearance, gap, and dimension during inspection — full condition report with each job.",
 								onClick: null,
 								linkLabel: null,
+								icon: Search,
 							},
-						].map(({ src, alt, caption, desc, onClick, linkLabel }) => (
+						].map(({ src, alt, caption, desc, onClick, linkLabel, icon: Icon }) => (
 							// biome-ignore lint/a11y/noStaticElementInteractions: has role="button" + onKeyDown when interactive
 							<div
 								key={caption}
@@ -16997,6 +17068,19 @@ const AboutPage = memo(({ navigate }) => {
 								className={`group relative rounded-2xl overflow-hidden bg-slate-900 border border-slate-200 transition-all hover:-translate-y-1 hover:shadow-xl${onClick ? " cursor-pointer hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" : " hover:border-slate-400"}`}
 								style={{ aspectRatio: "4/3" }}
 							>
+								{/* Branded placeholder — sits beneath the photo so every card reads as
+								an intentional panel even before/if the image loads, instead of a flat
+								empty rectangle. Covered automatically once the <img> below paints. */}
+								<div
+									className="absolute inset-0 flex items-center justify-center bg-slate-900"
+									aria-hidden="true"
+								>
+									<div
+										className="absolute inset-0 opacity-20"
+										style={PROJECTS_DOT_BG_STYLE}
+									/>
+									<Icon className="w-10 h-10 text-blue-500/40 relative z-10" />
+								</div>
 								<img
 									src={src}
 									alt={alt}
@@ -17027,18 +17111,13 @@ const AboutPage = memo(({ navigate }) => {
 										</div>
 									)}
 								</div>
-								{/* Dot-pattern placeholder */}
-								<div
-									className="absolute inset-0 -z-10 opacity-20"
-																		style={PROJECTS_DOT_BG_STYLE}
-									aria-hidden="true"
-								/>
 							</div>
 						))}
 					</div>
 
+
 					{/* Browse all CTA */}
-					<div className="text-center">
+					<div className="text-center mt-10">
 						<button
 							type="button"
 							onClick={() => navigate("/products")}
@@ -19119,25 +19198,31 @@ const ServicesPage = memo(({ navigate }) => (
 								>
 									{/* Full-size service photo at full opacity — upload to /public */}
 									{service.image && (
-										<img
-											src={service.image}
-											alt={service.title}
-											className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-											loading="lazy"
-											decoding="async"
-											fetchPriority="low"
-											width="560"
-											height="420"
-											style={{ aspectRatio: "560/420" }}
-											onError={(e) => {
-												e.target.style.display = "none";
-												const fallback =
-													e.target.parentElement?.querySelector(
-														".svc-card-fallback-icon",
-													);
-												if (fallback) fallback.style.display = "flex";
-											}}
-										/>
+										<>
+											<div className="skeleton-shimmer" aria-hidden="true" />
+											<img
+												src={service.image}
+												alt={service.title}
+												className="media-img absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+												loading="lazy"
+												decoding="async"
+												fetchPriority="low"
+												width="560"
+												height="420"
+												style={{ aspectRatio: "560/420" }}
+												onLoad={(e) => {
+													e.currentTarget.classList.add("is-loaded");
+												}}
+												onError={(e) => {
+													e.target.style.display = "none";
+													const fallback =
+														e.target.parentElement?.querySelector(
+															".svc-card-fallback-icon",
+														);
+													if (fallback) fallback.style.display = "flex";
+												}}
+											/>
+										</>
 									)}
 
 									{/* Dark fallback layer — visible only when no image */}
@@ -19331,7 +19416,7 @@ const ServicesPage = memo(({ navigate }) => (
 		<ServicesPageFAQ />
 
 		{/* ── See Our Work banner ── */}
-		<div className="bg-[#0A192F] border-t-4 border-blue-600 mt-0">
+		<div className="bg-[#0A192F] border-t-4 border-blue-600 mt-16">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
 				<div className="flex flex-col md:flex-row items-center justify-between gap-8">
 					<div className="text-center md:text-left">
@@ -21712,7 +21797,7 @@ const ProductsPage = memo(({ navigate }) => {
 			/>
 
 			{/* Hero */}
-			<div className="bg-[#0A192F] text-white py-20 mb-12 relative overflow-hidden border-b-8 border-blue-600">
+			<div className="bg-[#0A192F] text-white py-20 mb-12 relative border-b-8 border-blue-600" style={{ isolation: "isolate" }}>
 				<div
 					className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-size-[4rem_4rem]"
 					aria-hidden="true"
@@ -21758,7 +21843,7 @@ const ProductsPage = memo(({ navigate }) => {
 							<span className="text-slate-300 text-xs font-black uppercase tracking-widest">
 								View prices in
 							</span>
-							<CurrencyDropdown scrolled={false} />
+							<CurrencyDropdown scrolled={false} openUp />
 						</div>
 					</div>
 				</div>
@@ -22074,7 +22159,7 @@ const ProductsPage = memo(({ navigate }) => {
 						{totalPages > 1 && (
 							<nav
 								aria-label="Product catalog pagination"
-								className="mt-14 flex items-center justify-center gap-2 flex-wrap"
+								className="mt-14 mb-6 flex items-center justify-center gap-2 flex-wrap"
 							>
 								<button
 									type="button"
@@ -22187,7 +22272,7 @@ const ProductsPage = memo(({ navigate }) => {
 			</div>
 
 			{/* ── Cross-link CTA strip ── */}
-			<div className="bg-[#0A192F] border-t-4 border-blue-600">
+			<div className="bg-[#0A192F] border-t-4 border-blue-600 mt-16">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 					<div className="flex flex-col md:flex-row items-center justify-between gap-8">
 						<div className="text-center md:text-left">
@@ -23540,30 +23625,33 @@ const IndustriesPage = memo(({ navigate }) => (
 									className="lg:w-2/5 relative overflow-hidden min-h-70 sm:min-h-85 lg:min-h-110 shrink-0"
 									style={{ isolation: "isolate" }}
 								>
-									{/* Background photo — object-cover fills the absolute container; no aspectRatio on img */}
-									{ind.image && (
-										<img
-											src={ind.image}
-											alt=""
-											aria-hidden="true"
-											width="800"
-											height="600"
-											className="absolute inset-0 w-full h-full object-cover object-center"
-											style={{ opacity: 0.9 }}
-											loading="lazy"
-											decoding="async"
-											fetchPriority="low"
-											width="560"
-											height="440"
-											onError={(e) => {
-												e.target.style.display = "none";
-											}}
-										/>
-									)}
 									{/* Fallback gradient when no image or image fails — always present as base */}
 									<div
 										className={`absolute inset-0 bg-linear-to-br ${ind.color}`}
 									/>
+									{/* Background photo — object-cover fills the absolute container; no aspectRatio on img */}
+									{ind.image && (
+										<>
+											<div className="skeleton-shimmer" aria-hidden="true" />
+											<img
+												src={ind.image}
+												alt=""
+												aria-hidden="true"
+												width="560"
+												height="440"
+												className="media-img media-img-90 absolute inset-0 w-full h-full object-cover object-center"
+												loading="lazy"
+												decoding="async"
+												fetchPriority="low"
+												onLoad={(e) => {
+													e.currentTarget.classList.add("is-loaded");
+												}}
+												onError={(e) => {
+													e.target.style.display = "none";
+												}}
+											/>
+										</>
+									)}
 									{/* Dark scrim so white text is readable over any photo */}
 									<div className="absolute inset-0 bg-[#0A192F]/60" />
 									{/* Subtle vignette at edges */}
@@ -23724,7 +23812,7 @@ const IndustriesPage = memo(({ navigate }) => (
 		</div>
 
 		{/* ── Bottom CTA banner ── */}
-		<div className="bg-[#0A192F] border-t-4 border-blue-600">
+		<div className="bg-[#0A192F] border-t-4 border-blue-600 mt-16">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
 				<div className="flex flex-col md:flex-row items-center justify-between gap-8">
 					<div className="text-center md:text-left">
@@ -24748,7 +24836,7 @@ const ContactPage = memo(({ navigate }) => {
 								type="button"
 								disabled={status === "loading"}
 								onClick={handleSubmitEmailOnly}
-								className="w-full bg-slate-900 text-white py-3.5 px-5 rounded-xl hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
+								className="w-full mt-4 bg-slate-900 text-white py-3.5 px-5 rounded-xl hover:bg-slate-700 transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400"
 							>
 								<Mail className="w-5 h-5 shrink-0" aria-hidden="true" />
 								<span className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2 items-center text-center leading-tight">
