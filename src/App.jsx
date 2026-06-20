@@ -7801,7 +7801,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled, openUp = fal
 				<div
 					role="listbox"
 					aria-label="Select currency"
-					className={`absolute right-0 ${openUp ? "bottom-full mb-2" : "top-full mt-1.5"} w-[17.5rem] bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(10,25,47,0.35)] border border-slate-200/80 overflow-hidden z-[500] flex flex-col`}
+					className={`absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 ${openUp ? "bottom-full mb-2" : "top-full mt-1.5"} w-[min(17.5rem,calc(100vw-2rem))] bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(10,25,47,0.35)] border border-slate-200/80 overflow-hidden z-[500] flex flex-col`}
 					style={MOBILE_DRAWER_ANIM_STYLE_V2}
 				>
 					{/* Panel header */}
@@ -21843,7 +21843,7 @@ const ProductsPage = memo(({ navigate }) => {
 							<span className="text-slate-300 text-xs font-black uppercase tracking-widest">
 								View prices in
 							</span>
-							<CurrencyDropdown scrolled={false} openUp />
+							<CurrencyDropdown scrolled={false} />
 						</div>
 					</div>
 				</div>
