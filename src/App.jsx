@@ -8922,7 +8922,7 @@ const trackPageView = (path) => {
 	if (typeof window.gtag === "function") {
 		window.gtag("event", "page_view", {
 			page_path: path,
-			page_location: `${window.location.origin}/#${path}`,
+			page_location: `${window.location.origin}${path}`,
 			page_title: document.title,
 		});
 	}
@@ -8978,7 +8978,7 @@ function loadAnalyticsScripts() {
 		if (!window.__kePopstateRegistered) {
 			window.__kePopstateRegistered = true;
 			window.addEventListener("popstate", () => {
-				const path = window.location.hash.replace("#", "") || "/";
+				const path = window.location.pathname || "/";
 				trackPageView(path);
 			});
 		}
@@ -8986,15 +8986,23 @@ function loadAnalyticsScripts() {
 
 	// ── Microsoft Clarity ───────────────────────────────────────
 	if (CLARITY_ID && !document.getElementById("clarity-script")) {
-		const cs = document.createElement("script");
-		cs.id = "clarity-script";
-		cs.type = "text/javascript";
-		cs.text =
-			`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};` +
-			`t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;` +
-			`y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);` +
-			`})(window,document,"clarity","script","${CLARITY_ID}");`;
-		document.head.appendChild(cs);
+		const injectClarity = () => {
+			if (document.getElementById("clarity-script")) return;
+			const cs = document.createElement("script");
+			cs.id = "clarity-script";
+			cs.type = "text/javascript";
+			cs.text =
+				`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};` +
+				`t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;` +
+				`y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);` +
+				`})(window,document,"clarity","script","${CLARITY_ID}");`;
+			document.head.appendChild(cs);
+		};
+		if ("requestIdleCallback" in window) {
+			requestIdleCallback(injectClarity, { timeout: 4000 });
+		} else {
+			setTimeout(injectClarity, 2000);
+		}
 	}
 }
 
@@ -9253,6 +9261,7 @@ const SEOHead = memo(
 		canonicalPath,
 		publishedTime,
 		noIndex,
+		ogImage,
 	}) => {
 		useEffect(() => {
 			const fullTitle = title
@@ -9313,6 +9322,10 @@ const SEOHead = memo(
 			// ── Canonical ──
 			sl("canonical", canonical);
 
+			// ── hreflang (self-referential; add hi-IN when Hindi pages exist) ──
+			sl("alternate", canonical, { hreflang: "en-IN" });
+			sl("alternate", canonical, { hreflang: "x-default" });
+
 			// ── Viewport meta ──
 			if (!document.querySelector('meta[name="viewport"]')) {
 				const vm = document.createElement("meta");
@@ -9347,7 +9360,8 @@ const SEOHead = memo(
 				pageType === "article" ? "article" : "website",
 			);
 			sm('meta[property="og:url"]', "property", "og:url", canonical);
-			sm('meta[property="og:image"]', "property", "og:image", OG_IMAGE);
+			const resolvedOgImage = ogImage || OG_IMAGE;
+			sm('meta[property="og:image"]', "property", "og:image", resolvedOgImage);
 			sm(
 				'meta[property="og:image:width"]',
 				"property",
@@ -11812,6 +11826,78 @@ const SOCIAL_LINKS = [
 ];
 
 // ─── FOOTER ───────────────────────────────────────────────────
+// ── Footer scoped styles — injected once at module level, not per-render ──
+if (typeof document !== "undefined" && !document.getElementById("ke-footer-styles")) {
+	const _footerStyles = document.createElement("style");
+	_footerStyles.id = "ke-footer-styles";
+	_footerStyles.textContent = `
+		/* ── Grid layouts ── */
+		.ke-footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
+		@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
+		@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2.2fr 1fr 1.25fr 1.6fr}}
+
+		/* Social pill row — 2-col grid on mobile, flex wrap on larger */
+		.ke-social-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem}
+		@media(min-width:420px){.ke-social-row{grid-template-columns:repeat(3,1fr)}}
+		@media(min-width:540px){.ke-social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem}}
+
+		/* ── Column heading ── */
+		.ke-col-h3{
+			display:flex;align-items:center;gap:.5rem;
+			font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
+			color:#38BDF8;margin:0 0 1.1rem;padding-bottom:.6rem;
+			border-bottom:1px solid #0d2040;
+		}
+		.ke-col-h3::before{content:'';display:inline-block;width:3px;height:12px;background:#0891B2;border-radius:99px;flex-shrink:0}
+
+		/* ── Nav/service links ── */
+		.ke-nav-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;color:#94a3b8;font-size:.83rem;font-weight:500;padding:.2rem 0;text-align:left;transition:color .15s,gap .15s}
+		.ke-nav-btn:hover,.ke-nav-btn:focus{color:#e2e8f0;gap:.6rem;outline:none}
+
+		/* ── Contact links ── */
+		.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
+		.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
+
+		/* ── Credential badges ── */
+		.ke-badge{
+			display:flex;align-items:center;gap:.85rem;
+			padding:.75rem 1rem;margin-bottom:.5rem;
+			background:linear-gradient(135deg,#071428 0%,#0a1c38 100%);
+			border:1px solid #132040;border-radius:.75rem;
+			transition:border-color .2s,box-shadow .2s;cursor:default;
+		}
+		.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
+
+		/* ── Social pill links ── */
+		.ke-soc-pill{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .5rem .4rem;border-radius:2rem;text-decoration:none;border:1px solid #1e293b;background:#0a1628;transition:background .15s,border-color .15s,transform .15s;min-height:42px}
+		.ke-soc-pill:hover,.ke-soc-pill:focus{outline:none}
+		.ke-soc-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+		.ke-soc-badge svg{flex-shrink:0}
+		.ke-soc-handle{font-size:.81rem;font-weight:600;color:#e2e8f0;white-space:nowrap}
+		@media(min-width:540px){.ke-soc-pill{display:inline-flex;padding:.5rem 1.1rem .5rem .45rem}}
+
+		/* ── Industry tags ── */
+		.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
+		.ke-ind-tag:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
+
+		/* ── All services ghost btn ── */
+		.ke-all-srv{display:inline-flex;align-items:center;gap:5px;margin-top:1rem;padding:.45rem .875rem;background:transparent;border:1px solid #1e3a5f;border-radius:.5rem;color:#38BDF8;font-size:.72rem;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
+		.ke-all-srv:hover{border-color:#0891B2;background:#0891B215;color:#fff}
+
+		/* ── Contact icon wrapper ── */
+		.ke-contact-icon{width:1.9rem;height:1.9rem;border-radius:.45rem;background:#0a1a30;border:1px solid #132040;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:border-color .15s,background .15s}
+		.ke-contact-row:hover .ke-contact-icon{background:#0891B220;border-color:#0891B260}
+
+		/* ── Back-to-top inline button ── */
+		.ke-back-top{background:none;border:1px solid #1e3a5f;border-radius:.375rem;color:#38BDF8;font-size:.75rem;font-weight:700;padding:.3rem .7rem;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap;flex-shrink:0}
+		.ke-back-top:hover,.ke-back-top:focus{background:#0891B215;border-color:#0891B2;outline:none}
+
+		/* ── Reduced motion ── */
+		@media(prefers-reduced-motion:reduce){.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
+	`;
+	document.head.appendChild(_footerStyles);
+}
+
 const Footer = memo(({ navigate }) => {
 	const year = new Date().getFullYear();
 	return (
@@ -11819,73 +11905,6 @@ const Footer = memo(({ navigate }) => {
 			role="contentinfo"
 			style={{ background: "#050d1a", color: "#fff", fontFamily: "sans-serif" }}
 		>
-			{/* ── Scoped styles ── */}
-			<style>{`
-				/* ── Grid layouts ── */
-				.ke-footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
-				@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
-				@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2.2fr 1fr 1.25fr 1.6fr}}
-
-				/* Social pill row — 2-col grid on mobile, flex wrap on larger */
-				.ke-social-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem}
-				@media(min-width:420px){.ke-social-row{grid-template-columns:repeat(3,1fr)}}
-				@media(min-width:540px){.ke-social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem}}
-
-				/* ── Column heading ── */
-				.ke-col-h3{
-					display:flex;align-items:center;gap:.5rem;
-					font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
-					color:#38BDF8;margin:0 0 1.1rem;padding-bottom:.6rem;
-					border-bottom:1px solid #0d2040;
-				}
-				.ke-col-h3::before{content:'';display:inline-block;width:3px;height:12px;background:#0891B2;border-radius:99px;flex-shrink:0}
-
-				/* ── Nav/service links ── */
-				.ke-nav-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;color:#94a3b8;font-size:.83rem;font-weight:500;padding:.2rem 0;text-align:left;transition:color .15s,gap .15s}
-				.ke-nav-btn:hover,.ke-nav-btn:focus{color:#e2e8f0;gap:.6rem;outline:none}
-
-				/* ── Contact links ── */
-				.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
-				.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
-
-				/* ── Credential badges ── */
-				.ke-badge{
-					display:flex;align-items:center;gap:.85rem;
-					padding:.75rem 1rem;margin-bottom:.5rem;
-					background:linear-gradient(135deg,#071428 0%,#0a1c38 100%);
-					border:1px solid #132040;border-radius:.75rem;
-					transition:border-color .2s,box-shadow .2s;cursor:default;
-				}
-				.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
-
-				/* ── Social pill links ── */
-				.ke-soc-pill{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .5rem .4rem;border-radius:2rem;text-decoration:none;border:1px solid #1e293b;background:#0a1628;transition:background .15s,border-color .15s,transform .15s;min-height:42px}
-				.ke-soc-pill:hover,.ke-soc-pill:focus{outline:none}
-				.ke-soc-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-				.ke-soc-badge svg{flex-shrink:0}
-				.ke-soc-handle{font-size:.81rem;font-weight:600;color:#e2e8f0;white-space:nowrap}
-				@media(min-width:540px){.ke-soc-pill{display:inline-flex;padding:.5rem 1.1rem .5rem .45rem}}
-
-				/* ── Industry tags ── */
-				.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
-				.ke-ind-tag:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
-
-				/* ── All services ghost btn ── */
-				.ke-all-srv{display:inline-flex;align-items:center;gap:5px;margin-top:1rem;padding:.45rem .875rem;background:transparent;border:1px solid #1e3a5f;border-radius:.5rem;color:#38BDF8;font-size:.72rem;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
-				.ke-all-srv:hover{border-color:#0891B2;background:#0891B215;color:#fff}
-
-				/* ── Contact icon wrapper ── */
-				.ke-contact-icon{width:1.9rem;height:1.9rem;border-radius:.45rem;background:#0a1a30;border:1px solid #132040;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:border-color .15s,background .15s}
-				.ke-contact-row:hover .ke-contact-icon{background:#0891B220;border-color:#0891B260}
-
-				/* ── Back-to-top inline button ── */
-				.ke-back-top{background:none;border:1px solid #1e3a5f;border-radius:.375rem;color:#38BDF8;font-size:.75rem;font-weight:700;padding:.3rem .7rem;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap;flex-shrink:0}
-				.ke-back-top:hover,.ke-back-top:focus{background:#0891B215;border-color:#0891B2;outline:none}
-
-				/* ── Reduced motion ── */
-				@media(prefers-reduced-motion:reduce){.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
-			`}</style>
-
 			{/* ── Top accent bar ── */}
 			<div
 				aria-hidden="true"
@@ -14514,14 +14533,14 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 										"@type": "ListItem",
 										position: 1,
 										name: "Products",
-										item: "https://www.keshavturboservices.com/#/products",
+										item: `${SITE_URL}/products`,
 									},
 									{ "@type": "ListItem", position: 2, name: product.category },
 									{
 										"@type": "ListItem",
 										position: 3,
 										name: product.title,
-										item: `https://www.keshavturboservices.com/#/product/${product.id}`,
+										item: `${SITE_URL}/product/${product.id}`,
 									},
 								],
 							},
@@ -14624,7 +14643,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												alt=""
 												width="1"
 												height="1"
-												loading="eager"
+												loading="lazy"
 												decoding="async"
 												onLoad={() => probeOk(i)}
 												onError={() => probeErr(i)}
@@ -14684,6 +14703,12 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												<img
 													key={activeImage}
 													src={activeImage}
+													srcSet={[
+														`${activeImage}?w=400 400w`,
+														`${activeImage}?w=800 800w`,
+														`${activeImage} 1200w`,
+													].join(", ")}
+													sizes="(max-width: 1024px) 100vw, 42vw"
 													alt=""
 													aria-hidden="true"
 													loading="eager"
@@ -18795,10 +18820,13 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 		"@context": "https://schema.org",
 		"@graph": [
 			{
-				"@type": "Article",
+				"@type": "BlogPosting",
 				headline: post.title,
 				description: post.excerpt,
 				datePublished: post.date,
+				url: `${SITE_URL}/blog/${post.slug}`,
+				inLanguage: "en-IN",
+				keywords: post.tags?.join(", ") || "steam turbine, industrial engineering, Shamli",
 				author: {
 					"@type": "Organization",
 					name: post.author || BRAND_AUTHOR,
@@ -18814,7 +18842,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				},
 				mainEntityOfPage: {
 					"@type": "WebPage",
-					"@id": `${SITE_URL}/#/blog/${post.slug}`,
+					"@id": `${SITE_URL}/blog/${post.slug}`,
 				},
 				image: post.coverImage ? `${SITE_URL}/${post.coverImage}` : OG_IMAGE,
 			},
@@ -18825,13 +18853,13 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 						"@type": "ListItem",
 						position: 1,
 						name: "Blog",
-						item: `${SITE_URL}/#/blog`,
+						item: `${SITE_URL}/blog`,
 					},
 					{
 						"@type": "ListItem",
 						position: 2,
 						name: post.title,
-						item: `${SITE_URL}/#/blog/${post.slug}`,
+						item: `${SITE_URL}/blog/${post.slug}`,
 					},
 				],
 			},
@@ -20727,7 +20755,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					name: "India",
 				},
 				serviceType: service.title,
-				url: `${SITE_URL}/#/service/${serviceId}`,
+				url: `${SITE_URL}/service/${serviceId}`,
 			},
 			{
 				"@type": "BreadcrumbList",
@@ -20736,22 +20764,34 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 						"@type": "ListItem",
 						position: 1,
 						name: "Home",
-						item: `${SITE_URL}/#/`,
+						item: `${SITE_URL}/`,
 					},
 					{
 						"@type": "ListItem",
 						position: 2,
 						name: "Services",
-						item: `${SITE_URL}/#/services`,
+						item: `${SITE_URL}/services`,
 					},
 					{
 						"@type": "ListItem",
 						position: 3,
 						name: service.title,
-						item: `${SITE_URL}/#/service/${serviceId}`,
+						item: `${SITE_URL}/service/${serviceId}`,
 					},
 				],
 			},
+			// ── FAQ schema from procedure steps (enables rich results) ──
+			...(service.procedure && service.procedure.length > 0 ? [{
+				"@type": "FAQPage",
+				mainEntity: service.procedure.map((step, i) => ({
+					"@type": "Question",
+					name: typeof step === "string" ? `Step ${i + 1}: ${step}` : `Step ${i + 1}: ${step.title || step}`,
+					acceptedAnswer: {
+						"@type": "Answer",
+						text: typeof step === "string" ? step : (step.desc || step.title || step),
+					},
+				})),
+			}] : []),
 		],
 	}), [service, serviceId]);
 
@@ -23218,7 +23258,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					name: "India",
 				},
 				serviceType: ind.title,
-				url: `${SITE_URL}/#/industry/${ind.id}`,
+				url: `${SITE_URL}/industry/${ind.id}`,
 			},
 			{
 				"@type": "BreadcrumbList",
@@ -23227,13 +23267,13 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 						"@type": "ListItem",
 						position: 1,
 						name: "Industries",
-						item: `${SITE_URL}/#/industries`,
+						item: `${SITE_URL}/industries`,
 					},
 					{
 						"@type": "ListItem",
 						position: 2,
 						name: ind.title,
-						item: `${SITE_URL}/#/industry/${ind.id}`,
+						item: `${SITE_URL}/industry/${ind.id}`,
 					},
 				],
 			},
@@ -25880,7 +25920,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 				},
 				mainEntityOfPage: {
 					"@type": "WebPage",
-					"@id": `${SITE_URL}/#/project/${cs.id}`,
+					"@id": `${SITE_URL}/project/${cs.id}`,
 				},
 				image: cs.image ? `${SITE_URL}/${cs.image}` : OG_IMAGE,
 				articleSection: cs.category || "Industrial Engineering",
@@ -25893,13 +25933,13 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 						"@type": "ListItem",
 						position: 1,
 						name: "Projects",
-						item: `${SITE_URL}/#/projects`,
+						item: `${SITE_URL}/projects`,
 					},
 					{
 						"@type": "ListItem",
 						position: 2,
 						name: cs.title,
-						item: `${SITE_URL}/#/project/${cs.id}`,
+						item: `${SITE_URL}/project/${cs.id}`,
 					},
 				],
 			},
