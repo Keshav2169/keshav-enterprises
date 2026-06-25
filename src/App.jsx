@@ -61,6 +61,7 @@ import React, {
 	useRef,
 	useState,
 } from "react";
+import { createPortal } from "react-dom";
 
 // Exit-intent review popup — lazy-loaded because it is only shown on exit intent,
 // so deferring it reduces the initial JS payload.
@@ -7752,13 +7753,42 @@ function useFmtPrice() {
 const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled, openUp = false }) {
 	const { code, select, detectedAuto } = useCurrency();
 	const [open, setOpen] = useState(false);
+	const [panelPos, setPanelPos] = useState({ top: 0, right: 0, openUp: false });
 	const dropRef = useRef(null);
+	const btnRef = useRef(null);
 	const cur = SUPPORTED_CURRENCIES.find((c) => c.code === code);
+
+	// Recalculate panel position whenever it opens or window scrolls/resizes
+	const calcPos = useCallback(() => {
+		if (!btnRef.current) return;
+		const r = btnRef.current.getBoundingClientRect();
+		setPanelPos({
+			top: r.bottom + window.scrollY + 6,
+			bottomFromViewport: window.innerHeight - r.top + 4,
+			right: window.innerWidth - r.right,
+			openUp,
+		});
+	}, [openUp]);
+
+	useEffect(() => {
+		if (!open) return;
+		calcPos();
+		window.addEventListener("scroll", calcPos, true);
+		window.addEventListener("resize", calcPos);
+		return () => {
+			window.removeEventListener("scroll", calcPos, true);
+			window.removeEventListener("resize", calcPos);
+		};
+	}, [open, calcPos]);
 
 	// Close on outside click
 	useEffect(() => {
 		const handler = (e) => {
-			if (!dropRef.current?.contains(e.target)) setOpen(false);
+			if (
+				!dropRef.current?.contains(e.target) &&
+				!btnRef.current?.contains(e.target)
+			)
+				setOpen(false);
 		};
 		document.addEventListener("mousedown", handler);
 		return () => document.removeEventListener("mousedown", handler);
@@ -7773,63 +7803,51 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled, openUp = fal
 		return () => document.removeEventListener("keydown", handler);
 	}, []);
 
-	return (
-		<div ref={dropRef} className="relative">
-			<button
-				type="button"
-				onClick={() => setOpen((o) => !o)}
-				aria-label={`Currency: ${cur?.name ?? code}. Click to change.`}
-				aria-expanded={open}
-				aria-haspopup="listbox"
-				title={detectedAuto ? `Auto-detected: ${cur?.name}` : cur?.name}
-				className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95
-					${
-						scrolled
-							? "bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700"
-							: "bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
-					}`}
+	const panel = open
+		? createPortal(
+			<div
+				ref={dropRef}
+				role="listbox"
+				aria-label="Select currency"
+				className="w-[min(17.5rem,calc(100vw-2rem))] bg-white rounded-2xl border border-slate-200/80 overflow-hidden flex flex-col"
+				style={{
+					position: "absolute",
+					...(panelPos.openUp
+						? { bottom: panelPos.bottomFromViewport, top: "auto" }
+						: { top: panelPos.top }),
+					right: panelPos.right,
+					zIndex: 99999,
+					boxShadow: "0 20px 50px -12px rgba(10,25,47,0.35)",
+					...MOBILE_DRAWER_ANIM_STYLE_V2,
+				}}
 			>
-				<span aria-hidden="true">{cur?.flag}</span>
-				<span>{cur?.code}</span>
-				<ChevronRight
-					className={`w-3 h-3 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
-					aria-hidden="true"
-				/>
-			</button>
+				{/* Panel header */}
+				<div className="px-4 pt-3.5 pb-3 border-b border-slate-100 flex items-center justify-between shrink-0 bg-gradient-to-b from-slate-50 to-white">
+					<span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
+						Select currency
+					</span>
+					<span className="text-[10px] font-bold text-slate-300">
+						{SUPPORTED_CURRENCIES.length}
+					</span>
+				</div>
 
-			{open && (
-				<div
-					role="listbox"
-					aria-label="Select currency"
-					className={`absolute left-1/2 -translate-x-1/2 sm:left-auto sm:right-0 sm:translate-x-0 ${openUp ? "bottom-full mb-2" : "top-full mt-1.5"} w-[min(17.5rem,calc(100vw-2rem))] bg-white rounded-2xl shadow-[0_20px_50px_-12px_rgba(10,25,47,0.35)] border border-slate-200/80 overflow-hidden z-[500] flex flex-col`}
-					style={MOBILE_DRAWER_ANIM_STYLE_V2}
-				>
-					{/* Panel header */}
-					<div className="px-4 pt-3.5 pb-3 border-b border-slate-100 flex items-center justify-between shrink-0 bg-gradient-to-b from-slate-50 to-white">
-						<span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
-							Select currency
-						</span>
-						<span className="text-[10px] font-bold text-slate-300">
-							{SUPPORTED_CURRENCIES.length}
+				{/* "Auto-detected" hint shown only on first visit */}
+				{detectedAuto && (
+					<div className="mx-3 mt-3 px-3 py-2 bg-blue-50 border border-blue-100 rounded-xl flex items-center gap-1.5 shrink-0">
+						<Globe
+							className="w-3 h-3 text-blue-500 shrink-0"
+							aria-hidden="true"
+						/>
+						<span className="text-[10px] text-blue-600 font-bold uppercase tracking-wide">
+							Auto-detected from your region
 						</span>
 					</div>
+				)}
 
-					{/* "Auto-detected" hint shown only on first visit */}
-					{detectedAuto && (
-						<div className="mx-3 mt-3 px-3 py-2 bg-blue-50 border border-blue-100 rounded-xl flex items-center gap-1.5 shrink-0">
-							<Globe
-								className="w-3 h-3 text-blue-500 shrink-0"
-								aria-hidden="true"
-							/>
-							<span className="text-[10px] text-blue-600 font-bold uppercase tracking-wide">
-								Auto-detected from your region
-							</span>
-						</div>
-					)}
-					<div
-						className="overflow-y-auto overflow-x-hidden py-1.5 currency-scroll"
-						style={{ maxHeight: "min(320px, 60vh)" }}
-					>
+				<div
+					className="overflow-y-auto overflow-x-hidden py-1.5 currency-scroll"
+					style={{ maxHeight: "min(320px, 60vh)" }}
+				>
 					{SUPPORTED_CURRENCIES.map((c) => (
 						<button
 							key={c.code}
@@ -7841,11 +7859,7 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled, openUp = fal
 								setOpen(false);
 							}}
 							className={`group relative w-[calc(100%-0.75rem)] flex items-center gap-2.5 pl-3.5 pr-3 py-2.5 mx-1.5 my-0.5 rounded-xl text-sm text-left transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400
-								${
-									c.code === code
-										? "bg-blue-50/80"
-										: "hover:bg-slate-50"
-								}`}
+								${c.code === code ? "bg-blue-50/80" : "hover:bg-slate-50"}`}
 						>
 							{c.code === code && (
 								<span
@@ -7887,19 +7901,48 @@ const CurrencyDropdown = memo(function CurrencyDropdown({ scrolled, openUp = fal
 							)}
 						</button>
 					))}
-					</div>
-					<div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 shrink-0 flex items-start gap-1.5">
-						<Info
-							className="w-3 h-3 text-slate-400 shrink-0 mt-[1px]"
-							aria-hidden="true"
-						/>
-						<p className="text-[10px] text-slate-500 leading-relaxed">
-							Prices converted from INR at live market rates. Actual invoice
-							will be in INR.
-						</p>
-					</div>
 				</div>
-			)}
+
+				<div className="px-4 py-2.5 bg-slate-50 border-t border-slate-100 shrink-0 flex items-start gap-1.5">
+					<Info
+						className="w-3 h-3 text-slate-400 shrink-0 mt-[1px]"
+						aria-hidden="true"
+					/>
+					<p className="text-[10px] text-slate-500 leading-relaxed">
+						Prices converted from INR at live market rates. Actual invoice
+						will be in INR.
+					</p>
+				</div>
+			</div>,
+			document.body
+		)
+		: null;
+
+	return (
+		<div className="relative">
+			<button
+				ref={btnRef}
+				type="button"
+				onClick={() => setOpen((o) => !o)}
+				aria-label={`Currency: ${cur?.name ?? code}. Click to change.`}
+				aria-expanded={open}
+				aria-haspopup="listbox"
+				title={detectedAuto ? `Auto-detected: ${cur?.name}` : cur?.name}
+				className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 active:scale-95
+					${
+						scrolled
+							? "bg-slate-100 border border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700"
+							: "bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+					}`}
+			>
+				<span aria-hidden="true">{cur?.flag}</span>
+				<span>{cur?.code}</span>
+				<ChevronRight
+					className={`w-3 h-3 transition-transform duration-200 ${open ? "rotate-90" : ""}`}
+					aria-hidden="true"
+				/>
+			</button>
+			{panel}
 		</div>
 	);
 });
@@ -8669,96 +8712,62 @@ let BLOG_COLLECTION_SCHEMA = null; // assigned after BLOG_POSTS is declared
 let PROJECTS_LIST_SCHEMA = null;
 
 // ─── FAQ SCHEMA for Services/Contact pages ───────────────────
+// DATA FIX: FAQ_SCHEMA previously contained 11 questions while the visible
+// SVC_FAQ_ITEMS accordion on the Services page only shows 6. Google's FAQ
+// rich-result validator flags a mismatch between structured data and visible
+// page content, which risks rich-result ineligibility.
+// The schema now mirrors SVC_FAQ_ITEMS exactly — same questions, same answers.
+// If you add or edit items in SVC_FAQ_ITEMS, update this object to match.
 const FAQ_SCHEMA = {
 	"@context": "https://schema.org",
 	"@type": "FAQPage",
 	mainEntity: [
 		{
 			"@type": "Question",
-			name: "What turbine makes does Keshav Enterprises service?",
+			name: "What turbine makes do you overhaul?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Keshav Turbo Services services all major turbine makes including Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW.",
+				text: "We service all major makes: Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt, Man Turbo, Chola Turbo, DLF-Skoda, KKK, and ABB — covering turbines from 5 kW to 27 MW, both back-pressure and condensing types.",
 			},
 		},
 		{
 			"@type": "Question",
-			name: "Does Keshav Enterprises offer emergency turbine breakdown support?",
+			name: "What is typically included in a turnkey overhaul?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Yes. Keshav Turbo Services provides 24×7 emergency turbine breakdown support with engineers stationed at multiple locations across India. Contact us on WhatsApp at +91 6397363268 for immediate assistance.",
+				text: "Our turnkey scope includes pre-shutdown planning, on-site spare parts inspection, complete disassembly, dimensional measurement of all critical clearances, condition reporting, parts replacement, rotor balancing, reassembly, alignment, and run-up. All tools, tackles, consumables, and manpower are included. A full condition report with documented clearances is handed over at completion.",
 			},
 		},
 		{
 			"@type": "Question",
-			name: "What is the power range of turbines Keshav Enterprises can overhaul?",
+			name: "How fast can you respond to a breakdown emergency?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Keshav Turbo Services handles steam turbines from 5 kW to 27 MW — both back-pressure and condensing types, horizontal and vertical, single and multi-stage.",
+				text: "Our engineers are stationed at multiple locations across India. For North India (UP, Haryana, Punjab, Rajasthan), typical site arrival is 4–12 hours from your call. We operate 24×7 with no answering service — you speak to a qualified engineer.",
 			},
 		},
 		{
 			"@type": "Question",
-			name: "Can Keshav Enterprises reverse engineer obsolete turbine parts?",
+			name: "What is your process for reverse-engineering an obsolete part?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Yes. Using 3D laser scanners, CMM coordinate measuring machines, and PMI material testing, Keshav Turbo Services reverse engineers obsolete turbine components to exact OEM dimensional and material standards.",
+				text: "We use 3D laser scanning, CMM coordinate measurement, and PMI material testing to capture exact OEM dimensions and material composition. We then generate manufacturing drawings with tolerances, surface finish, and heat treatment specs. Typical turnaround for most components is 3–6 weeks from receipt of sample or drawing.",
 			},
 		},
 		{
 			"@type": "Question",
-			name: "Where is Keshav Enterprises located?",
+			name: "Can you provide a typical project timeline and pricing estimate?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Keshav Turbo Services is located at Dayanand Nagar Gali No.2, Near Subash Ki Chakki, Shamli – 247776, Uttar Pradesh, India.",
+				text: "A planned annual overhaul on a 5–15 MW turbine typically takes 7–14 days on-site with a team of 4–6 engineers. Pricing depends on turbine make, scope of work, and parts required — contact us for a detailed quotation. Emergency breakdown support starts with a 24-hour site assessment.",
 			},
 		},
 		{
 			"@type": "Question",
-			name: "Does Keshav Enterprises supply HVAC air filters and dust collector bags?",
+			name: "Do you provide documentation I can submit to my management or insurer?",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "Yes. Keshav Enterprises supplies a full range of HVAC and air filtration products including multi-pocket bag filters (F5–F9, EN 779 / ISO 16890), pleated panel air filters, metallic mesh pre-filters, activated carbon vent filters, pulse-jet dust collector filter bags (polyester, aramid, PTFE membrane), pleated cartridge elements, and bulk filter media rolls. These are supplied for industrial AHUs, control rooms, baghouse dust collectors in cement and power plants, and food-grade production environments.",
-			},
-		},
-		{
-			"@type": "Question",
-			name: "What is the lead time for HVAC air filters and filter media from Keshav Enterprises?",
-			acceptedAnswer: {
-				"@type": "Answer",
-				text: "Standard HVAC filter grades (metallic mesh pre-filters, common pleated panel sizes, and pocket bag filters in F7/F8) are available ex-stock or within 1 week. Custom frame sizes, special efficiency grades (F9, HEPA-class), anti-static dust collector bags, and PTFE membrane elements are manufactured to order with a typical lead time of 2–4 weeks. Contact us on WhatsApp with your AHU dimensions or baghouse bag specifications for a same-day quotation.",
-			},
-		},
-		{
-			"@type": "Question",
-			name: "What is included in a turnkey turbine overhaul by Keshav Enterprises?",
-			acceptedAnswer: {
-				"@type": "Answer",
-				text: "A turnkey scope includes pre-shutdown planning, on-site spare parts inspection, complete disassembly, dimensional measurement of all critical clearances, condition reporting, parts replacement, rotor balancing, reassembly, alignment, and run-up. All tools, tackles, consumables, and manpower are included. A full condition report with documented clearances is handed over at completion.",
-			},
-		},
-		{
-			"@type": "Question",
-			name: "How quickly can Keshav Enterprises respond to a turbine breakdown?",
-			acceptedAnswer: {
-				"@type": "Answer",
-				text: "For North India (UP, Haryana, Punjab, Rajasthan), typical site arrival is 4–12 hours from the call. We operate 24×7 with no answering service — you speak directly to a qualified engineer. Contact us on WhatsApp at +91 6397363268 for immediate breakdown support.",
-			},
-		},
-		{
-			"@type": "Question",
-			name: "What documentation does Keshav Enterprises provide after a turbine overhaul?",
-			acceptedAnswer: {
-				"@type": "Answer",
-				text: "Every job includes a full condition report with photographic evidence, measured clearances before and after, balancing reports (ISO 1940 / API 670 compliance), PMI material certificates for reverse-engineered parts, and ISO 4406 cleanliness certificates for oil flushing jobs. All documentation is formatted for management, insurance, and statutory submission.",
-			},
-		},
-		{
-			"@type": "Question",
-			name: "Does Keshav Enterprises export turbine spare parts internationally?",
-			acceptedAnswer: {
-				"@type": "Answer",
-				text: "Keshav Enterprises holds an active Importer-Exporter Code (IEC) issued by the DGFT and is equipped to export reverse-engineered and OEM-compatible turbine spare parts. Products are manufactured to ISO, API, and ASME international standards and classified under standard HSN export codes, with full documentation support for overseas buyers. Contact us for export enquiries.",
+				text: "Yes — every job includes a full condition report with photographic evidence, measured clearances, balancing reports (ISO/API compliance), PMI material certificates for reverse-engineered parts, and an ISO 4406 cleanliness certificate for oil flushing jobs. All documentation is formatted for management and insurance submission.",
 			},
 		},
 	],
@@ -8961,10 +8970,18 @@ function loadAnalyticsScripts() {
 		// popstate fires on browser back/forward only.
 		// NOTE: navigate() handles GA4 for pushState navigations (forward clicks).
 		// DO NOT add trackPageView inside the App's popstate handler — it would double-fire.
-		window.addEventListener("popstate", () => {
-			const path = window.location.hash.replace("#", "") || "/";
-			trackPageView(path);
-		});
+		// LATENT FIX: guard with a flag so this listener is registered at most once,
+		// even if loadAnalyticsScripts() is ever called a second time (e.g. after a
+		// future refactor of the consent flow). Previously the guard was implicit —
+		// the outer !getElementById check happened to prevent re-entry, but that
+		// relied on script injection order that could silently break.
+		if (!window.__kePopstateRegistered) {
+			window.__kePopstateRegistered = true;
+			window.addEventListener("popstate", () => {
+				const path = window.location.hash.replace("#", "") || "/";
+				trackPageView(path);
+			});
+		}
 	}
 
 	// ── Microsoft Clarity ───────────────────────────────────────
@@ -9197,7 +9214,17 @@ const TurnstileWidget = memo(({ onVerify, onExpire, widgetId }) => {
 					render();
 				}
 			}, 100);
-			return () => clearInterval(t);
+			// BUG FIX: the previous cleanup only called clearInterval, leaving an
+			// orphaned widget if the component unmounts after the interval fired
+			// (i.e. render() ran) but before the synchronous-load cleanup could
+			// call window.turnstile.remove().  We must remove the widget here too.
+			return () => {
+				clearInterval(t);
+				if (renderIdRef.current != null && window.turnstile) {
+					window.turnstile.remove(renderIdRef.current);
+					renderIdRef.current = null;
+				}
+			};
 		}
 
 		return () => {
@@ -9622,15 +9649,25 @@ const ProductCard = memo(({ product, navigate, priority = false }) => {
 		[navigate, product.id],
 	);
 
+	const handleCardClick = useCallback(
+		(e) => {
+			// Don't navigate if user clicked a focusable child (button, anchor)
+			if (e.target.closest("a, button")) return;
+			navigate(`/product/${product.id}`);
+		},
+		[navigate, product.id],
+	);
+
 	return (
 		<article
 			aria-label={`${product.title} product card`}
-			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left"
+			className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 group flex flex-col h-full focus-within:ring-4 focus-within:ring-blue-500/50 w-full text-left cursor-pointer"
+			onClick={handleCardClick}
 		>
 			{/* Fixed-height image container — prevents CLS */}
 			<div
 				key={pImg}
-				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0 cursor-pointer"
+				className="h-48 sm:h-64 product-img-bg border-b border-slate-100 flex items-center justify-center relative overflow-hidden shrink-0"
 				aria-hidden="true"
 			>
 				{/* Category badge */}
@@ -9805,6 +9842,7 @@ const FLAG_SVGS = {
 			{[...Array(24)].map((_, i) => {
 				const a = ((i * 15 - 90) * Math.PI) / 180;
 				return (
+					// biome-ignore lint/correctness/useJsxKeyInIterable: computed SVG geometry — no stable ID; array is static and never reordered
 					<line
 						key={i}
 						x1="450"
@@ -10136,7 +10174,13 @@ const getCookie = (name) => {
 	return match ? decodeURIComponent(match[1]) : undefined;
 };
 const setCookie = (name, value, attrs = {}) => {
-	let str = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+	// BUG FIX: Google Translate reads the `googtrans` cookie raw — its script
+	// expects a literal "/en/hi" value and does NOT call decodeURIComponent.
+	// Encoding it to "%2Fen%2Fhi" means the translate widget updates the UI
+	// dropdown but never actually triggers a translation.
+	// Solution: accept a `raw` flag that skips encodeURIComponent on the value.
+	const encodedValue = attrs.raw ? value : encodeURIComponent(value);
+	let str = `${encodeURIComponent(name)}=${encodedValue}`;
 	if (attrs.path) str += `; path=${attrs.path}`;
 	if (attrs.domain) str += `; domain=${attrs.domain}`;
 	str += "; SameSite=Lax";
@@ -10200,8 +10244,9 @@ const LanguageSwitcher = memo(({ scrolled }) => {
 		// via the googtrans cookie. Set cookie on both hostname and "/" so it works
 		// across localhost, IP addresses, and production.
 		const cookieVal = langCode === "en" ? "/en/en" : `/en/${langCode}`;
-		setCookie("googtrans", cookieVal, { path: "/", domain: window.location.hostname });
-		setCookie("googtrans", cookieVal, { path: "/" });
+		// raw: true — Google Translate requires the unencoded "/en/xx" value
+		setCookie("googtrans", cookieVal, { path: "/", domain: window.location.hostname, raw: true });
+		setCookie("googtrans", cookieVal, { path: "/", raw: true });
 		// replace() instead of reload() so the language switch doesn't push an
 		// extra history entry — pressing Back won't re-trigger another reload.
 		window.location.replace(window.location.href);
@@ -13296,7 +13341,9 @@ const InlineRFQForm = memo(({ productTitle, navigate }) => {
 	const [errMsg, setErrMsg] = useState("");
 	const [turnstileToken, setTurnstileToken] = useState("");
 	const formRef = useRef(null);
-	useFocusTrap(formRef, open);
+	// BUG FIX: InlineRFQForm is an on-page inline form, NOT a modal — it must
+	// never steal focus on load. useFocusTrap is intentionally omitted here.
+	// (Focus-trap is appropriate only for overlay dialogs that gate the full UI.)
 
 	// Strip HTML tags, script injection chars, and WhatsApp markdown before
 	// sending to Web3Forms — mirrors the module-level sanitise helper.
@@ -13528,6 +13575,7 @@ const InlineRFQForm = memo(({ productTitle, navigate }) => {
 								<input
 									id="rfq-qty"
 									type="text"
+									autoComplete="off"
 									value={qty}
 									onChange={(e) => {
 										setQty(e.target.value);
@@ -13545,6 +13593,7 @@ const InlineRFQForm = memo(({ productTitle, navigate }) => {
 									id="rfq-message"
 									rows={3}
 									maxLength={1000}
+									autoComplete="off"
 									value={message}
 									onChange={(e) => {
 										setMessage(e.target.value);
@@ -14352,11 +14401,23 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 	// Keyboard navigation
 	useEffect(() => {
 		const h = (e) => {
-			if (e.key === "ArrowLeft") {
+			// BUG FIX: Only intercept arrow keys when the lightbox is open OR
+			// the focused element is not a text-entry control.  Without this
+			// guard the global listener swallows ArrowLeft/Right inside every
+			// <input>, <textarea>, and <select> on the product page, breaking
+			// normal text-cursor movement for the user.
+			const tag = document.activeElement?.tagName ?? "";
+			const isTyping =
+				tag === "INPUT" ||
+				tag === "TEXTAREA" ||
+				tag === "SELECT" ||
+				document.activeElement?.isContentEditable;
+
+			if (e.key === "ArrowLeft" && (lightbox || !isTyping)) {
 				e.preventDefault();
 				prev();
 			}
-			if (e.key === "ArrowRight") {
+			if (e.key === "ArrowRight" && (lightbox || !isTyping)) {
 				e.preventDefault();
 				next();
 			}
@@ -16239,9 +16300,9 @@ const HomePage = memo(({ navigate }) => {
 								service: "Dynamic Balancing",
 								detail: "3 MW BHEL · ISO G1.0 Compliance",
 							},
-						].map(({ quote, name, role, company, location, service, detail }, idx) => (
+						].map(({ quote, name, role, company, location, service, detail }) => (
 							<figure
-								key={idx}
+								key={`${name}-${company}`}
 								className="bg-slate-50 border border-slate-200 rounded-2xl p-8 flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 group"
 							>
 								{/* Service tag */}
@@ -18728,6 +18789,55 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				return null;
 		}
 	};
+
+	// PERF FIX: memoize so SEOHead only rewrites the <script> tag on navigation.
+	const blogSchema = useMemo(() => ({
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "Article",
+				headline: post.title,
+				description: post.excerpt,
+				datePublished: post.date,
+				author: {
+					"@type": "Organization",
+					name: post.author || BRAND_AUTHOR,
+				},
+				publisher: {
+					"@type": "Organization",
+					name: BRAND_NAME,
+					url: SITE_URL,
+					logo: {
+						"@type": "ImageObject",
+						url: `${SITE_URL}/logo.png`,
+					},
+				},
+				mainEntityOfPage: {
+					"@type": "WebPage",
+					"@id": `${SITE_URL}/#/blog/${post.slug}`,
+				},
+				image: post.coverImage ? `${SITE_URL}/${post.coverImage}` : OG_IMAGE,
+			},
+			{
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{
+						"@type": "ListItem",
+						position: 1,
+						name: "Blog",
+						item: `${SITE_URL}/#/blog`,
+					},
+					{
+						"@type": "ListItem",
+						position: 2,
+						name: post.title,
+						item: `${SITE_URL}/#/blog/${post.slug}`,
+					},
+				],
+			},
+		],
+	}), [post]);
+
 	return (
 		<main
 			id="main-content"
@@ -18746,54 +18856,7 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				canonicalPath={`/blog/${post.slug}`}
 				pageType="article"
 				publishedTime={post.date}
-				schema={{
-					"@context": "https://schema.org",
-					"@graph": [
-						{
-							"@type": "Article",
-							headline: post.title,
-							description: post.excerpt,
-							datePublished: post.date,
-							author: {
-								"@type": "Organization",
-								name: post.author || BRAND_AUTHOR,
-							},
-							publisher: {
-								"@type": "Organization",
-								name: BRAND_NAME,
-								url: SITE_URL,
-								logo: {
-									"@type": "ImageObject",
-									url: `${SITE_URL}/logo.png`,
-								},
-							},
-							mainEntityOfPage: {
-								"@type": "WebPage",
-								"@id": `${SITE_URL}/#/blog/${post.slug}`,
-							},
-							image: post.coverImage
-								? `${SITE_URL}/${post.coverImage}`
-								: OG_IMAGE,
-						},
-						{
-							"@type": "BreadcrumbList",
-							itemListElement: [
-								{
-									"@type": "ListItem",
-									position: 1,
-									name: "Blog",
-									item: `${SITE_URL}/#/blog`,
-								},
-								{
-									"@type": "ListItem",
-									position: 2,
-									name: post.title,
-									item: `${SITE_URL}/#/blog/${post.slug}`,
-								},
-							],
-						},
-					],
-				}}
+				schema={blogSchema}
 			/>
 			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* Breadcrumb */}
@@ -19120,7 +19183,7 @@ const ServicesPageFAQ = memo(() => {
 				</div>
 				<div className="space-y-3">
 					{SVC_FAQ_ITEMS.map((item, i) => (
-						<div key={i} className="border border-slate-200 rounded-xl overflow-hidden">
+						<div key={item.q} className="border border-slate-200 rounded-xl overflow-hidden">
 							<button
 								type="button"
 								onClick={() => setOpen(open === i ? null : i)}
@@ -20645,6 +20708,53 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 		? CASE_STUDIES.filter((c) => c.category === sidebarMatchCat).slice(0, 2)
 		: CASE_STUDIES.slice(0, 2);
 
+	// PERF FIX: memoize schema so SEOHead's useEffect only re-runs on navigation,
+	// not on every scroll/resize/state update that triggers a re-render.
+	const serviceSchema = useMemo(() => ({
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "Service",
+				name: service.title,
+				description: service.desc,
+				provider: {
+					"@type": "LocalBusiness",
+					name: BRAND_NAME,
+					url: SITE_URL,
+				},
+				areaServed: {
+					"@type": "Country",
+					name: "India",
+				},
+				serviceType: service.title,
+				url: `${SITE_URL}/#/service/${serviceId}`,
+			},
+			{
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{
+						"@type": "ListItem",
+						position: 1,
+						name: "Home",
+						item: `${SITE_URL}/#/`,
+					},
+					{
+						"@type": "ListItem",
+						position: 2,
+						name: "Services",
+						item: `${SITE_URL}/#/services`,
+					},
+					{
+						"@type": "ListItem",
+						position: 3,
+						name: service.title,
+						item: `${SITE_URL}/#/service/${serviceId}`,
+					},
+				],
+			},
+		],
+	}), [service, serviceId]);
+
 	return (
 		<>
 			<main id="main-content" tabIndex={-1} className="pt-20 pb-24 bg-white">
@@ -20653,50 +20763,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					description={`${service.desc} Ex-OEM engineers. ISO/API standard procedures. 24×7 availability across India.`}
 					canonicalPath={`/service/${serviceId}`}
 					pageType="website"
-					schema={{
-						"@context": "https://schema.org",
-						"@graph": [
-							{
-								"@type": "Service",
-								name: service.title,
-								description: service.desc,
-								provider: {
-									"@type": "LocalBusiness",
-									name: BRAND_NAME,
-									url: SITE_URL,
-								},
-								areaServed: {
-									"@type": "Country",
-									name: "India",
-								},
-								serviceType: service.title,
-								url: `${SITE_URL}/#/service/${serviceId}`,
-							},
-							{
-								"@type": "BreadcrumbList",
-								itemListElement: [
-									{
-										"@type": "ListItem",
-										position: 1,
-										name: "Home",
-										item: `${SITE_URL}/#/`,
-									},
-									{
-										"@type": "ListItem",
-										position: 2,
-										name: "Services",
-										item: `${SITE_URL}/#/services`,
-									},
-									{
-										"@type": "ListItem",
-										position: 3,
-										name: service.title,
-										item: `${SITE_URL}/#/service/${serviceId}`,
-									},
-								],
-							},
-						],
-					}}
+					schema={serviceSchema}
 				/>
 
 				{/* Reading progress bar — blue-600 matching site CTA */}
@@ -23131,6 +23198,48 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 		);
 
 	const { Icon } = ind;
+
+	// PERF FIX: memoize schema — prevents SEOHead from rewriting <script> tags
+	// on every scroll/state update that re-renders this component.
+	const industrySchema = useMemo(() => ({
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "Service",
+				name: `${ind.title} — Turbine Engineering Solutions`,
+				description: ind.desc,
+				provider: {
+					"@type": "LocalBusiness",
+					name: BRAND_NAME,
+					url: SITE_URL,
+				},
+				areaServed: {
+					"@type": "Country",
+					name: "India",
+				},
+				serviceType: ind.title,
+				url: `${SITE_URL}/#/industry/${ind.id}`,
+			},
+			{
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{
+						"@type": "ListItem",
+						position: 1,
+						name: "Industries",
+						item: `${SITE_URL}/#/industries`,
+					},
+					{
+						"@type": "ListItem",
+						position: 2,
+						name: ind.title,
+						item: `${SITE_URL}/#/industry/${ind.id}`,
+					},
+				],
+			},
+		],
+	}), [ind]);
+
 	return (
 		<main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
 			<SEOHead
@@ -23138,44 +23247,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 				description={`${ind.desc} — Keshav Enterprises, Shamli, UP.`}
 				canonicalPath={`/industry/${ind.id}`}
 				pageType="website"
-				schema={{
-					"@context": "https://schema.org",
-					"@graph": [
-						{
-							"@type": "Service",
-							name: `${ind.title} — Turbine Engineering Solutions`,
-							description: ind.desc,
-							provider: {
-								"@type": "LocalBusiness",
-								name: BRAND_NAME,
-								url: SITE_URL,
-							},
-							areaServed: {
-								"@type": "Country",
-								name: "India",
-							},
-							serviceType: ind.title,
-							url: `${SITE_URL}/#/industry/${ind.id}`,
-						},
-						{
-							"@type": "BreadcrumbList",
-							itemListElement: [
-								{
-									"@type": "ListItem",
-									position: 1,
-									name: "Industries",
-									item: `${SITE_URL}/#/industries`,
-								},
-								{
-									"@type": "ListItem",
-									position: 2,
-									name: ind.title,
-									item: `${SITE_URL}/#/industry/${ind.id}`,
-								},
-							],
-						},
-					],
-				}}
+				schema={industrySchema}
 			/>
 
 			{/* ── Hero ── */}
@@ -23243,9 +23315,9 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 					</div>
 					{/* Key Facts Strip */}
 					<div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-						{detail.keyFacts.map((fact, i) => (
+						{detail.keyFacts.map((fact) => (
 							<div
-								key={i}
+								key={fact}
 								className="bg-white/[0.07] border border-white/[0.14] rounded-xl px-5 py-4 flex items-start gap-3"
 							>
 								<CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
@@ -25732,6 +25804,11 @@ const CS_SVC_MAP = {
 	"Lube Oil Flushing":         "srv_5",
 	"Machine Alignment":         "srv_6",
 	"Dynamic Balancing":         "srv_4",
+	// DATA FIX: these two categories existed in CASE_STUDIES but were missing
+	// from this map, so their Related Services sidebar silently fell back to
+	// array order rather than surfacing the directly relevant service.
+	"Troubleshooting":           "srv_7",
+	"Emergency Breakdown":       "srv_7",
 };
 
 const ProjectDetailPage = memo(({ projectId, navigate }) => {
@@ -25778,6 +25855,57 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 			</main>
 		);
 
+	// PERF FIX: memoize schema — prevents SEOHead from rewriting <script> tags
+	// on every re-render triggered by scroll/interaction state changes.
+	const projectSchema = useMemo(() => ({
+		"@context": "https://schema.org",
+		"@graph": [
+			{
+				"@type": "Article",
+				headline: `${cs.title} — Case Study`,
+				description: cs.scope,
+				datePublished: cs.year ? `${cs.year}-01-01` : undefined,
+				author: {
+					"@type": "Organization",
+					name: BRAND_AUTHOR,
+				},
+				publisher: {
+					"@type": "Organization",
+					name: BRAND_NAME,
+					url: SITE_URL,
+					logo: {
+						"@type": "ImageObject",
+						url: `${SITE_URL}/logo.png`,
+					},
+				},
+				mainEntityOfPage: {
+					"@type": "WebPage",
+					"@id": `${SITE_URL}/#/project/${cs.id}`,
+				},
+				image: cs.image ? `${SITE_URL}/${cs.image}` : OG_IMAGE,
+				articleSection: cs.category || "Industrial Engineering",
+				keywords: (cs.tags || []).join(", "),
+			},
+			{
+				"@type": "BreadcrumbList",
+				itemListElement: [
+					{
+						"@type": "ListItem",
+						position: 1,
+						name: "Projects",
+						item: `${SITE_URL}/#/projects`,
+					},
+					{
+						"@type": "ListItem",
+						position: 2,
+						name: cs.title,
+						item: `${SITE_URL}/#/project/${cs.id}`,
+					},
+				],
+			},
+		],
+	}), [cs]);
+
 	return (
 		<main id="main-content" tabIndex={-1} className="bg-slate-50 min-h-screen">
 			<SEOHead
@@ -25785,54 +25913,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 				description={cs.scope}
 				canonicalPath={`/project/${cs.id}`}
 				pageType="article"
-				schema={{
-					"@context": "https://schema.org",
-					"@graph": [
-						{
-							"@type": "Article",
-							headline: `${cs.title} — Case Study`,
-							description: cs.scope,
-							datePublished: cs.year ? `${cs.year}-01-01` : undefined,
-							author: {
-								"@type": "Organization",
-								name: BRAND_AUTHOR,
-							},
-							publisher: {
-								"@type": "Organization",
-								name: BRAND_NAME,
-								url: SITE_URL,
-								logo: {
-									"@type": "ImageObject",
-									url: `${SITE_URL}/logo.png`,
-								},
-							},
-							mainEntityOfPage: {
-								"@type": "WebPage",
-								"@id": `${SITE_URL}/#/project/${cs.id}`,
-							},
-							image: cs.image ? `${SITE_URL}/${cs.image}` : OG_IMAGE,
-							articleSection: cs.category || "Industrial Engineering",
-							keywords: (cs.tags || []).join(", "),
-						},
-						{
-							"@type": "BreadcrumbList",
-							itemListElement: [
-								{
-									"@type": "ListItem",
-									position: 1,
-									name: "Projects",
-									item: `${SITE_URL}/#/projects`,
-								},
-								{
-									"@type": "ListItem",
-									position: 2,
-									name: cs.title,
-									item: `${SITE_URL}/#/project/${cs.id}`,
-								},
-							],
-						},
-					],
-				}}
+				schema={projectSchema}
 			/>
 
 			{/* ── Hero ── */}
@@ -25958,8 +26039,8 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 								Measured Outcomes
 							</h2>
 							<ul className="space-y-3">
-								{cs.outcomes.map((o, i) => (
-									<li key={i} className="flex items-start gap-3">
+								{cs.outcomes.map((o) => (
+									<li key={o} className="flex items-start gap-3">
 										<CheckCircle2
 											className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5"
 											aria-hidden="true"
@@ -27298,8 +27379,13 @@ export default function App() {
 	// scrollPositions[historyIdx] = scrollY for that history entry.
 	// historyIdx is a monotonic counter we store in history.state.
 	// On popstate we compare new idx to current idx to know direction:
-	//   back  (newIdx < curIdx) → restore saved position
-	//   forward (newIdx > curIdx) → scroll to top (new content)
+	//   back    (newIdx < curIdx) → restore saved scroll position
+	//   forward (newIdx > curIdx) → also restore saved scroll position
+	//     ↑ popstate ONLY fires for browser Back/Forward buttons, never for
+	//       navigate() link clicks. So every popstate event means "the user
+	//       has already visited this entry" — restore it regardless of direction.
+	//       navigate() already calls scrollTo(top) for fresh forward navigations,
+	//       so that case is handled there and never reaches this handler.
 	const scrollPositions = useRef({});
 	const historyIdxRef = useRef(0); // idx of the currently visible entry
 	const historyCounter = useRef(0); // ever-increasing, used when pushing new entries
@@ -27313,7 +27399,6 @@ export default function App() {
 			// Determine direction using the history index stored in state.
 			const newIdx = event.state?.idx ?? 0;
 			const curIdx = historyIdxRef.current;
-			const isBack = newIdx < curIdx;
 
 			// Save scroll of the page we're leaving before React re-renders it.
 			scrollPositions.current[curIdx] = window.scrollY;
@@ -27323,16 +27408,15 @@ export default function App() {
 
 			setCurrentPath(newPath);
 
-			// After React paints the restored/new page, apply scroll.
+			// After React paints the restored page, apply scroll.
+			// Both Back AND Forward restore the saved position — popstate only fires
+			// for browser history traversal, so the target entry has always been
+			// visited before and the user expects to land where they left off.
+			// Fresh forward navigations (link clicks) scroll to top inside navigate()
+			// before pushState is called, so they never reach this handler.
 			requestAnimationFrame(() => {
-				if (isBack) {
-					// Back: restore saved position for this history entry.
-					const saved = scrollPositions.current[newIdx] ?? 0;
-					window.scrollTo({ top: saved, behavior: "instant" });
-				} else {
-					// Forward: always start at top.
-					window.scrollTo({ top: 0, behavior: "instant" });
-				}
+				const saved = scrollPositions.current[newIdx] ?? 0;
+				window.scrollTo({ top: saved, behavior: "instant" });
 			});
 
 			// a11y: move focus to main content after back/forward navigation.
