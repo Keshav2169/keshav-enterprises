@@ -1,12 +1,12 @@
 # ════════════════════════════════════════════════════════════════════
-# robots.txt — Keshav Turbo Services
-# Domain   : https://www.keshavturboservices.com
+# robots.txt — Keshav Enterprises
+# Domain   : https://www.keshavturbotech.com
 # Updated  : 2026-05-17
 # Standard : https://www.robotstxt.org/robotstxt.html
 #
 # SYNCED WITH Appf.jsx v3 (latest upload):
-#   ✓ SITE_URL = www.keshavturboservices.com (confirmed)
-#   ✓ LOCAL_SCHEMA brand = "Keshav Turbo Services" (confirmed)
+#   ✓ SITE_URL = www.keshavturbotech.com (confirmed)
+#   ✓ LOCAL_SCHEMA brand = "Keshav Enterprises" (confirmed)
 #   ✓ 105 products across 8 categories (f, st, e, ts, r, h, ee, hv)
 #   ✓ New category: Hydraulic Components (prod_hv1)
 #   ✓ category label: "Electronic Equipments" (prod_ee*)
@@ -237,7 +237,7 @@ Crawl-delay: 5
 # ════════════════════════════════════════════════════════════════════
 # SITEMAP
 # ════════════════════════════════════════════════════════════════════
-Sitemap: https://www.keshavturboservices.com/sitemap.xml
+Sitemap: https://www.keshavturbotech.com/sitemap.xml
 
 # ── AI / LLM CONTENT FILES (llmstxt.org standard) ───────────────────
 # llms.txt      → AI-readable site summary (ChatGPT, Claude, Gemini, Perplexity)
@@ -245,5 +245,5 @@ Sitemap: https://www.keshavturboservices.com/sitemap.xml
 #
 # Also referenced via <link rel="help"> in SEOHead (Appf.jsx)
 # Deploy both to /public/ so they resolve at:
-#   https://www.keshavturboservices.com/llms.txt
-#   https://www.keshavturboservices.com/llms-full.txt
+#   https://www.keshavturbotech.com/llms.txt
+#   https://www.keshavturbotech.com/llms-full.txt

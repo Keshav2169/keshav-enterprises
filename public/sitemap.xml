@@ -3,55 +3,55 @@
 
   <!-- ── Core pages ── -->
   <url>
-    <loc>https://www.keshavturboservices.com/</loc>
+    <loc>https://www.keshavturbotech.com/</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/about</loc>
+    <loc>https://www.keshavturbotech.com/about</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/services</loc>
+    <loc>https://www.keshavturbotech.com/services</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/products</loc>
+    <loc>https://www.keshavturbotech.com/products</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/industries</loc>
+    <loc>https://www.keshavturbotech.com/industries</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/projects</loc>
+    <loc>https://www.keshavturbotech.com/projects</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog</loc>
+    <loc>https://www.keshavturbotech.com/blog</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/downloads</loc>
+    <loc>https://www.keshavturbotech.com/downloads</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/contact</loc>
+    <loc>https://www.keshavturbotech.com/contact</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -59,43 +59,43 @@
 
   <!-- ── Service detail pages ── -->
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_1</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_1</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_2</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_2</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_3</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_3</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_4</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_4</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_5</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_5</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_6</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_6</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/service/srv_7</loc>
+    <loc>https://www.keshavturbotech.com/service/srv_7</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -103,43 +103,43 @@
 
   <!-- ── Blog posts ── -->
   <url>
-    <loc>https://www.keshavturboservices.com/blog/steam-turbine-overhauling-checklist</loc>
+    <loc>https://www.keshavturbotech.com/blog/steam-turbine-overhauling-checklist</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog/lube-oil-contamination-turbine-bearings</loc>
+    <loc>https://www.keshavturbotech.com/blog/lube-oil-contamination-turbine-bearings</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog/reverse-engineering-turbine-spares-india</loc>
+    <loc>https://www.keshavturbotech.com/blog/reverse-engineering-turbine-spares-india</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog/belliss-morcom-turbine-common-faults-india</loc>
+    <loc>https://www.keshavturbotech.com/blog/belliss-morcom-turbine-common-faults-india</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog/iso-4406-lube-oil-cleanliness-guide</loc>
+    <loc>https://www.keshavturbotech.com/blog/iso-4406-lube-oil-cleanliness-guide</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog/hvac-air-filter-selection-guide-industrial</loc>
+    <loc>https://www.keshavturbotech.com/blog/hvac-air-filter-selection-guide-industrial</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/blog/pulse-jet-dust-collector-filter-bag-selection</loc>
+    <loc>https://www.keshavturbotech.com/blog/pulse-jet-dust-collector-filter-bag-selection</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -147,37 +147,37 @@
 
   <!-- ── Project / case study pages ── -->
   <url>
-    <loc>https://www.keshavturboservices.com/project/cs_01</loc>
+    <loc>https://www.keshavturbotech.com/project/cs_01</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/project/cs_02</loc>
+    <loc>https://www.keshavturbotech.com/project/cs_02</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/project/cs_03</loc>
+    <loc>https://www.keshavturbotech.com/project/cs_03</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/project/cs_04</loc>
+    <loc>https://www.keshavturbotech.com/project/cs_04</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/project/cs_05</loc>
+    <loc>https://www.keshavturbotech.com/project/cs_05</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/project/cs_06</loc>
+    <loc>https://www.keshavturbotech.com/project/cs_06</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
@@ -186,63 +186,63 @@
   <!-- ── High-value product detail pages ── -->
   <!-- Filter elements: OEM-brand searches (Triveni, Siemens, BHEL, Belliss & Morcom, Maxwatt) -->
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_f1</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_f1</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_f2</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_f2</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_f3</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_f3</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_f4</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_f4</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_f5</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_f5</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <!-- Turbine spares: high procurement-intent searches -->
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_ts1</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_ts1</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_ts2</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_ts2</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_ts3</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_ts3</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <!-- Strainers: duplex/simplex searches from plant engineers -->
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_st1</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_st1</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.keshavturboservices.com/product/prod_st2</loc>
+    <loc>https://www.keshavturbotech.com/product/prod_st2</loc>
     <lastmod>2026-06-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

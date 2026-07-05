@@ -8487,12 +8487,12 @@ const THUMB_SIZE_STYLE = { width: "clamp(56px, 15vw, 84px)", height: "clamp(56px
 
 // Live production domain. Keep /public/sitemap.xml, robots.txt,
 // llms.txt, and llms-full.txt deployed alongside this app.
-const SITE_URL = "https://www.keshavturboservices.com";
+const SITE_URL = "https://www.keshavturbotech.com";
 const OG_IMAGE = `${SITE_URL}/og-image.webp`;
 
 // Single source of truth for the business name and known aliases.
 // Update here and every schema / meta tag stays in sync automatically.
-const BRAND_NAME      = "Keshav Turbo Services";
+const BRAND_NAME      = "Keshav Enterprises";
 const BRAND_ALT_NAMES = ["Keshav Enterprises", "Keshav Engg"];
 const BRAND_TAGLINE   = "Industrial Steam Turbine Engineering — Shamli, UP";
 const BRAND_AUTHOR    = "Keshav Enterprises Engineering Team";
@@ -8961,7 +8961,7 @@ function loadAnalyticsScripts() {
 		// Fire the first page_view for the initial landing page
 		// (deferred so gtag is defined before we call it)
 		const fireInitialPageView = () => {
-			const initPath = window.location.hash.replace("#", "") || "/";
+			const initPath = window.location.pathname || "/";
 			trackPageView(initPath);
 		};
 		if (document.readyState === "complete") fireInitialPageView();
@@ -9262,6 +9262,7 @@ const SEOHead = memo(
 		publishedTime,
 		noIndex,
 		ogImage,
+		keywords,
 	}) => {
 		useEffect(() => {
 			const fullTitle = title
@@ -9307,7 +9308,7 @@ const SEOHead = memo(
 
 			// ── Core meta ──
 			sm('meta[name="description"]', "name", "description", fullDesc);
-			sm('meta[name="keywords"]', "name", "keywords", SITE_KEYWORDS);
+			sm('meta[name="keywords"]', "name", "keywords", keywords || SITE_KEYWORDS);
 			sm(
 				'meta[name="robots"]',
 				"name",
@@ -9322,7 +9323,7 @@ const SEOHead = memo(
 			// ── Canonical ──
 			sl("canonical", canonical);
 
-			// ── hreflang (self-referential; add hi-IN when Hindi pages exist) ──
+			// ── hreflang — self-referential now; add hi-IN when Hindi pages exist ──
 			sl("alternate", canonical, { hreflang: "en-IN" });
 			sl("alternate", canonical, { hreflang: "x-default" });
 
@@ -9378,7 +9379,7 @@ const SEOHead = memo(
 				'meta[property="og:image:alt"]',
 				"property",
 				"og:image:alt",
-				"Keshav Turbo Services — Industrial Turbine Engineering, Shamli, UP",
+				"Keshav Enterprises — Industrial Turbine Engineering, Shamli, UP",
 			);
 			sm('meta[property="og:locale"]', "property", "og:locale", "en_IN");
 			// og:locale:alternate — signals multilingual support to social crawlers
@@ -9436,12 +9437,12 @@ const SEOHead = memo(
 				"twitter:description",
 				fullDesc,
 			);
-			sm('meta[name="twitter:image"]', "name", "twitter:image", OG_IMAGE);
+			sm('meta[name="twitter:image"]', "name", "twitter:image", resolvedOgImage);
 			sm(
 				'meta[name="twitter:image:alt"]',
 				"name",
 				"twitter:image:alt",
-				"Keshav Turbo Services — Industrial Turbine Engineering",
+				"Keshav Enterprises — Industrial Turbine Engineering",
 			);
 
 			// ── Geo ──
@@ -9479,6 +9480,8 @@ const SEOHead = memo(
 			canonicalPath,
 			publishedTime,
 			noIndex,
+			ogImage,
+			keywords,
 		]);
 		return null;
 	},
@@ -11826,78 +11829,43 @@ const SOCIAL_LINKS = [
 ];
 
 // ─── FOOTER ───────────────────────────────────────────────────
-// ── Footer scoped styles — injected once at module level, not per-render ──
+// Styles injected once at module level — not on every render
 if (typeof document !== "undefined" && !document.getElementById("ke-footer-styles")) {
-	const _footerStyles = document.createElement("style");
-	_footerStyles.id = "ke-footer-styles";
-	_footerStyles.textContent = `
-		/* ── Grid layouts ── */
+	const _fs = document.createElement("style");
+	_fs.id = "ke-footer-styles";
+	_fs.textContent = `
 		.ke-footer-grid{display:grid;grid-template-columns:1fr;gap:2.5rem 3rem}
 		@media(min-width:640px){.ke-footer-grid{grid-template-columns:1fr 1fr}}
 		@media(min-width:1024px){.ke-footer-grid{grid-template-columns:2.2fr 1fr 1.25fr 1.6fr}}
-
-		/* Social pill row — 2-col grid on mobile, flex wrap on larger */
 		.ke-social-row{display:grid;grid-template-columns:repeat(2,1fr);gap:.4rem}
 		@media(min-width:420px){.ke-social-row{grid-template-columns:repeat(3,1fr)}}
 		@media(min-width:540px){.ke-social-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem}}
-
-		/* ── Column heading ── */
-		.ke-col-h3{
-			display:flex;align-items:center;gap:.5rem;
-			font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;
-			color:#38BDF8;margin:0 0 1.1rem;padding-bottom:.6rem;
-			border-bottom:1px solid #0d2040;
-		}
+		.ke-col-h3{display:flex;align-items:center;gap:.5rem;font-size:9px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:#38BDF8;margin:0 0 1.1rem;padding-bottom:.6rem;border-bottom:1px solid #0d2040;}
 		.ke-col-h3::before{content:'';display:inline-block;width:3px;height:12px;background:#0891B2;border-radius:99px;flex-shrink:0}
-
-		/* ── Nav/service links ── */
 		.ke-nav-btn{background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;color:#94a3b8;font-size:.83rem;font-weight:500;padding:.2rem 0;text-align:left;transition:color .15s,gap .15s}
 		.ke-nav-btn:hover,.ke-nav-btn:focus{color:#e2e8f0;gap:.6rem;outline:none}
-
-		/* ── Contact links ── */
 		.ke-contact-link{color:#94a3b8;font-size:.82rem;text-decoration:none;display:block;transition:color .15s;line-height:1.6}
 		.ke-contact-link:hover,.ke-contact-link:focus{color:#38BDF8;outline:none}
-
-		/* ── Credential badges ── */
-		.ke-badge{
-			display:flex;align-items:center;gap:.85rem;
-			padding:.75rem 1rem;margin-bottom:.5rem;
-			background:linear-gradient(135deg,#071428 0%,#0a1c38 100%);
-			border:1px solid #132040;border-radius:.75rem;
-			transition:border-color .2s,box-shadow .2s;cursor:default;
-		}
+		.ke-badge{display:flex;align-items:center;gap:.85rem;padding:.75rem 1rem;margin-bottom:.5rem;background:linear-gradient(135deg,#071428 0%,#0a1c38 100%);border:1px solid #132040;border-radius:.75rem;transition:border-color .2s,box-shadow .2s;cursor:default;}
 		.ke-badge:hover{border-color:#0891B250;box-shadow:0 4px 16px #0891B218}
-
-		/* ── Social pill links ── */
 		.ke-soc-pill{display:flex;align-items:center;gap:.5rem;padding:.5rem .9rem .5rem .4rem;border-radius:2rem;text-decoration:none;border:1px solid #1e293b;background:#0a1628;transition:background .15s,border-color .15s,transform .15s;min-height:42px}
 		.ke-soc-pill:hover,.ke-soc-pill:focus{outline:none}
 		.ke-soc-badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 		.ke-soc-badge svg{flex-shrink:0}
 		.ke-soc-handle{font-size:.81rem;font-weight:600;color:#e2e8f0;white-space:nowrap}
 		@media(min-width:540px){.ke-soc-pill{display:inline-flex;padding:.5rem 1.1rem .5rem .45rem}}
-
-		/* ── Industry tags ── */
 		.ke-ind-tag{display:inline-block;font-size:.68rem;font-weight:600;padding:.3rem .75rem;border-radius:2rem;border:1px solid;transition:transform .15s,box-shadow .15s}
 		.ke-ind-tag:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.3)}
-
-		/* ── All services ghost btn ── */
 		.ke-all-srv{display:inline-flex;align-items:center;gap:5px;margin-top:1rem;padding:.45rem .875rem;background:transparent;border:1px solid #1e3a5f;border-radius:.5rem;color:#38BDF8;font-size:.72rem;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,color .15s}
 		.ke-all-srv:hover{border-color:#0891B2;background:#0891B215;color:#fff}
-
-		/* ── Contact icon wrapper ── */
 		.ke-contact-icon{width:1.9rem;height:1.9rem;border-radius:.45rem;background:#0a1a30;border:1px solid #132040;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:border-color .15s,background .15s}
 		.ke-contact-row:hover .ke-contact-icon{background:#0891B220;border-color:#0891B260}
-
-		/* ── Back-to-top inline button ── */
 		.ke-back-top{background:none;border:1px solid #1e3a5f;border-radius:.375rem;color:#38BDF8;font-size:.75rem;font-weight:700;padding:.3rem .7rem;cursor:pointer;transition:background .15s,border-color .15s;white-space:nowrap;flex-shrink:0}
 		.ke-back-top:hover,.ke-back-top:focus{background:#0891B215;border-color:#0891B2;outline:none}
-
-		/* ── Reduced motion ── */
 		@media(prefers-reduced-motion:reduce){.ke-soc-pill,.ke-ind-tag{transition:none!important;transform:none!important}}
 	`;
-	document.head.appendChild(_footerStyles);
+	document.head.appendChild(_fs);
 }
-
 const Footer = memo(({ navigate }) => {
 	const year = new Date().getFullYear();
 	return (
@@ -11905,6 +11873,7 @@ const Footer = memo(({ navigate }) => {
 			role="contentinfo"
 			style={{ background: "#050d1a", color: "#fff", fontFamily: "sans-serif" }}
 		>
+			{/* ── Scoped styles ── */}
 			{/* ── Top accent bar ── */}
 			<div
 				aria-hidden="true"
@@ -14592,6 +14561,8 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 					schema={productSchema}
 					canonicalPath={`/product/${product.id}`}
 					pageType="website"
+					ogImage={product.images?.[0] ? `${SITE_URL}/products/${product.images[0]}` : undefined}
+					keywords={[product.title, product.category, ...(product.tags || []), "Keshav Enterprises", "Shamli India"].filter(Boolean).join(", ")}
 				/>
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<nav
@@ -14643,7 +14614,7 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												alt=""
 												width="1"
 												height="1"
-												loading="lazy"
+												loading="eager"
 												decoding="async"
 												onLoad={() => probeOk(i)}
 												onError={() => probeErr(i)}
@@ -14703,12 +14674,6 @@ const ProductDetailPage = memo(({ productId, navigate }) => {
 												<img
 													key={activeImage}
 													src={activeImage}
-													srcSet={[
-														`${activeImage}?w=400 400w`,
-														`${activeImage}?w=800 800w`,
-														`${activeImage} 1200w`,
-													].join(", ")}
-													sizes="(max-width: 1024px) 100vw, 42vw"
 													alt=""
 													aria-hidden="true"
 													loading="eager"
@@ -18885,6 +18850,8 @@ const BlogPostPage = memo(({ slug, navigate }) => {
 				pageType="article"
 				publishedTime={post.date}
 				schema={blogSchema}
+				ogImage={post.coverImage ? `${SITE_URL}/${post.coverImage}` : undefined}
+				keywords={post.tags?.length ? [...post.tags, "Keshav Enterprises", "turbine engineering India"].join(", ") : undefined}
 			/>
 			<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* Breadcrumb */}
@@ -19249,6 +19216,7 @@ const ServicesPage = memo(({ navigate }) => (
 			canonicalPath="/services"
 			pageType="website"
 			schema={FAQ_SCHEMA}
+			keywords="steam turbine overhauling India, turbine reverse engineering, turbine erection commissioning, dynamic balancing service, lube oil flushing, machine alignment, Triveni turbine service, BHEL turbine maintenance, Keshav Enterprises Shamli"
 		/>
 		<div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
 			<div
@@ -20780,18 +20748,6 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					},
 				],
 			},
-			// ── FAQ schema from procedure steps (enables rich results) ──
-			...(service.procedure && service.procedure.length > 0 ? [{
-				"@type": "FAQPage",
-				mainEntity: service.procedure.map((step, i) => ({
-					"@type": "Question",
-					name: typeof step === "string" ? `Step ${i + 1}: ${step}` : `Step ${i + 1}: ${step.title || step}`,
-					acceptedAnswer: {
-						"@type": "Answer",
-						text: typeof step === "string" ? step : (step.desc || step.title || step),
-					},
-				})),
-			}] : []),
 		],
 	}), [service, serviceId]);
 
@@ -20804,6 +20760,7 @@ const ServiceDetailPage = memo(({ serviceId, navigate }) => {
 					canonicalPath={`/service/${serviceId}`}
 					pageType="website"
 					schema={serviceSchema}
+					keywords={[service.title, ...(service.tools || []).slice(0, 4), "Keshav Enterprises India", "Shamli UP", "OEM turbine service"].filter(Boolean).join(", ")}
 				/>
 
 				{/* Reading progress bar — blue-600 matching site CTA */}
@@ -21901,6 +21858,7 @@ const ProductsPage = memo(({ navigate }) => {
 				description={`${PRODUCTS.length} precision-engineered industrial products: turbine spares, filter elements, HVAC air filters, expansion joints, strainers, flexible hoses, rubber products, and electronic equipment.`}
 				canonicalPath="/products"
 				pageType="website"
+				keywords="turbine spare parts India, lube oil filter elements, HVAC air filters industrial, expansion joints manufacturer, basket strainer, steam trap, turbine blades, OEM compatible spares, Triveni BHEL Siemens spare parts, Keshav Enterprises Shamli"
 			/>
 
 			{/* Hero */}
@@ -23288,6 +23246,7 @@ const IndustryDetailPage = memo(({ industryId, navigate }) => {
 				canonicalPath={`/industry/${ind.id}`}
 				pageType="website"
 				schema={industrySchema}
+				keywords={[ind.title, "turbine maintenance", "industrial spares India", "Keshav Enterprises", ...(ind.keywords || [])].filter(Boolean).join(", ")}
 			/>
 
 			{/* ── Hero ── */}
@@ -23692,6 +23651,7 @@ const IndustriesPage = memo(({ navigate }) => (
 			description="Keshav Enterprises serves power plants, sugar mills, paper mills, oil & gas, petrochemical, agro, and cement industries with specialized turbine engineering and industrial products."
 			canonicalPath="/industries"
 			pageType="website"
+			keywords="power plant turbine service, sugar mill turbine maintenance, paper mill turbine, oil gas turbine engineering, petrochemical turbine spares, cement plant turbine, industrial turbine India, Keshav Enterprises"
 		/>
 		<div className="bg-[#0A192F] text-white py-24 mb-16 border-b-8 border-blue-600 relative overflow-hidden">
 			<div
@@ -24253,6 +24213,7 @@ const ContactPage = memo(({ navigate }) => {
 				canonicalPath="/contact"
 				pageType="website"
 				schema={FAQ_SCHEMA}
+				keywords="contact turbine engineer India, turbine RFQ India, industrial engineering quote Shamli, turbine breakdown support, Keshav Enterprises phone, steam turbine maintenance contact"
 			/>
 
 			{/* Hero — matches site-wide dark banner pattern */}
@@ -25178,7 +25139,7 @@ class ErrorBoundary extends React.Component {
 	}
 
 	_handleGoHome() {
-		window.location.hash = "#/";
+		window.location.href = "/";
 		this.setState({ hasError: false, error: null });
 	}
 
@@ -25487,6 +25448,7 @@ const ProjectGalleryPage = memo(({ navigate }) => {
 				canonicalPath="/projects"
 				pageType="website"
 				schema={PROJECTS_LIST_SCHEMA}
+				keywords="turbine overhaul case study India, turbine engineering project, steam turbine commissioning, reverse engineering case study, lube oil flushing project, Keshav Enterprises projects"
 			/>
 
 			{/* ── Hero ── */}
@@ -25954,6 +25916,7 @@ const ProjectDetailPage = memo(({ projectId, navigate }) => {
 				canonicalPath={`/project/${cs.id}`}
 				pageType="article"
 				schema={projectSchema}
+				keywords={[cs.category, cs.title, "turbine case study India", "Keshav Enterprises"].filter(Boolean).join(", ")}
 			/>
 
 			{/* ── Hero ── */}
@@ -26861,7 +26824,7 @@ const DownloadsPage = memo(({ navigate }) => {
 	const downloadsSchema = useMemo(() => ({
 		"@context": "https://schema.org",
 		"@type": "ItemList",
-		name: "Free Technical Downloads — Keshav Turbo Services",
+		name: "Free Technical Downloads — Keshav Enterprises",
 		description: "Free steam turbine engineering documents: overhaul checklists, lube oil datasheets, bearing clearance references, and RFQ templates.",
 		url: `${SITE_URL}/downloads`,
 		numberOfItems: DOWNLOADS.length,
