@@ -9,7 +9,8 @@ export default defineConfig({
   //
   // For www.keshavturbotech.com (root domain), use: base: '/'
   // UNLESS you want the site in a subpath, in which case keep the current setting
-  base: '/',  // ← CHANGED: Was '/keshav-enterprises/' — Update if different
+  base: '/keshav-enterprises/',  // ← Must match your GitHub Pages repo name (keshav2169.github.io/keshav-enterprises/)
+              // If you later move to a custom domain (root deploy), change this back to '/'
   plugins: [
     react(),
     tailwindcss(),
