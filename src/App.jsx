@@ -8487,12 +8487,12 @@ const THUMB_SIZE_STYLE = { width: "clamp(56px, 15vw, 84px)", height: "clamp(56px
 
 // Live production domain. Keep /public/sitemap.xml, robots.txt,
 // llms.txt, and llms-full.txt deployed alongside this app.
-const SITE_URL = "https://www.keshavturbotech.com";
+const SITE_URL = "https://www.keshavturboservices.com";
 const OG_IMAGE = `${SITE_URL}/og-image.webp`;
 
 // Single source of truth for the business name and known aliases.
 // Update here and every schema / meta tag stays in sync automatically.
-const BRAND_NAME      = "Keshav Enterprises";
+const BRAND_NAME      = "Keshav Turbo Services";
 const BRAND_ALT_NAMES = ["Keshav Enterprises", "Keshav Engg"];
 const BRAND_TAGLINE   = "Industrial Steam Turbine Engineering — Shamli, UP";
 const BRAND_AUTHOR    = "Keshav Enterprises Engineering Team";
@@ -9379,7 +9379,7 @@ const SEOHead = memo(
 				'meta[property="og:image:alt"]',
 				"property",
 				"og:image:alt",
-				"Keshav Enterprises — Industrial Turbine Engineering, Shamli, UP",
+				"Keshav Turbo Services — Industrial Turbine Engineering, Shamli, UP",
 			);
 			sm('meta[property="og:locale"]', "property", "og:locale", "en_IN");
 			// og:locale:alternate — signals multilingual support to social crawlers
@@ -9442,7 +9442,7 @@ const SEOHead = memo(
 				'meta[name="twitter:image:alt"]',
 				"name",
 				"twitter:image:alt",
-				"Keshav Enterprises — Industrial Turbine Engineering",
+				"Keshav Turbo Services — Industrial Turbine Engineering",
 			);
 
 			// ── Geo ──
@@ -26824,7 +26824,7 @@ const DownloadsPage = memo(({ navigate }) => {
 	const downloadsSchema = useMemo(() => ({
 		"@context": "https://schema.org",
 		"@type": "ItemList",
-		name: "Free Technical Downloads — Keshav Enterprises",
+		name: "Free Technical Downloads — Keshav Turbo Services",
 		description: "Free steam turbine engineering documents: overhaul checklists, lube oil datasheets, bearing clearance references, and RFQ templates.",
 		url: `${SITE_URL}/downloads`,
 		numberOfItems: DOWNLOADS.length,
